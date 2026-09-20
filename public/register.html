@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Cuenta — ProyectoSueldos</title>
+  <!-- Tabler Core CSS -->
+  <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
+  <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
+  <link rel="stylesheet" href="/css/custom.css">
+</head>
+<body class="d-flex flex-column bg-light">
+  <div class="page page-center">
+    <div class="container container-tight py-4">
+      <div class="text-center mb-4">
+        <a href="/" class="navbar-brand navbar-brand-autodark justify-content-center">
+          <div class="brand-icon me-2">PS</div>
+          <span class="fs-2">ProyectoSueldos</span>
+        </a>
+      </div>
+
+      <div class="card card-md shadow-xs">
+        <div class="card-body">
+          <h2 class="h2 text-center mb-2">Comienza tu Prueba Gratuita</h2>
+          <p class="text-muted text-center mb-4 small">Registra tu estudio o empresa y accede de inmediato.</p>
+
+          <div id="register-alert" class="alert alert-danger d-none mb-3" role="alert"></div>
+
+          <form id="register-form" autocomplete="off">
+            <div class="mb-3">
+              <label class="form-label required">Nombre de la Cuenta o Estudio</label>
+              <input
+                type="text"
+                id="accountName"
+                class="form-control"
+                placeholder="Ej. Estudio Contable Martínez & Asoc."
+                required
+                autofocus
+              >
+            </div>
+
+            <div class="row">
+              <div class="col-6 mb-3">
+                <label class="form-label required">Nombre</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  class="form-control"
+                  placeholder="Juan"
+                  required
+                >
+              </div>
+              <div class="col-6 mb-3">
+                <label class="form-label required">Apellido</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  class="form-control"
+                  placeholder="Pérez"
+                  required
+                >
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required">Correo Electrónico</label>
+              <input
+                type="email"
+                id="email"
+                class="form-control"
+                placeholder="juan.perez@estudio.com"
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required">Contraseña</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="Mínimo 8 caracteres"
+                minlength="8"
+                required
+              >
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required">Confirmar Contraseña</label>
+              <input
+                type="password"
+                id="confirmPassword"
+                class="form-control"
+                placeholder="Repite la contraseña"
+                minlength="8"
+                required
+              >
+            </div>
+
+            <div class="form-footer">
+              <button type="submit" class="btn btn-primary w-100">
+                Crear Cuenta
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="text-center text-muted mt-3">
+        ¿Ya tienes una cuenta registrada? <a href="/login.html" tabindex="-1">Inicia sesión</a>
+      </div>
+      <div class="text-center mt-2">
+        <a href="/" class="small text-muted"><i class="ti ti-arrow-left me-1"></i> Volver al inicio</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/vendor/tabler/js/tabler.min.js"></script>
+  <script type="module">
+    import { initRegisterForm, checkAlreadyAuthenticated } from '/js/auth.js';
+    checkAlreadyAuthenticated();
+    initRegisterForm();
+  </script>
+</body>
+</html>

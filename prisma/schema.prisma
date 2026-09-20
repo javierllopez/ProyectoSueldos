@@ -1,0 +1,170 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum AccountStatus {
+  TRIAL
+  ACTIVE
+  SUSPENDED
+  CANCELLED
+
+  @@map("accounts_status")
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  MEMBER
+
+  @@map("users_role")
+}
+
+enum UserCompanyRole {
+  ADMIN
+  OPERATOR
+  VIEWER
+
+  @@map("user_company_accesses_role")
+}
+
+enum CompanyStatus {
+  PROVISIONING
+  ACTIVE
+  SUSPENDED
+  ARCHIVED
+
+  @@map("company_registries_status")
+}
+
+model Account {
+  id           String            @id @default(uuid())
+  name         String            @map("name")
+  status       AccountStatus     @default(TRIAL) @map("status")
+  maxCompanies Int               @default(1) @map("max_companies")
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+  deletedAt    DateTime?         @map("deleted_at")
+
+  companies    CompanyRegistry[]
+  users        User[]
+
+  @@map("accounts")
+}
+
+model User {
+  id              String              @id @default(uuid())
+  accountId       String              @map("account_id")
+  email           String              @unique @map("email")
+  passwordHash    String              @map("password_hash")
+  firstName       String              @map("first_name")
+  lastName        String              @map("last_name")
+  cuil            String?             @db.VarChar(11) @map("cuil")
+  phone           String?             @map("phone")
+  position        String?             @map("position")
+  role            UserRole            @default(MEMBER) @map("role")
+  isActive        Boolean             @default(true) @map("is_active")
+  lastLoginAt     DateTime?           @map("last_login_at")
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+  deletedAt       DateTime?           @map("deleted_at")
+
+  account         Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  companyAccesses UserCompanyAccess[]
+  refreshTokens   RefreshToken[]
+
+  @@index([accountId])
+  @@map("users")
+}
+
+model CompanyRegistry {
+  id           String              @id @default(uuid())
+  accountId    String              @map("account_id")
+  name         String              @map("name")
+  tradeName    String?             @map("trade_name")
+  cuit         String              @map("cuit") @db.VarChar(11)
+  dbName       String              @unique @map("db_name")
+  dbHost       String              @default("localhost") @map("db_host")
+  dbPort       Int                 @default(3306) @map("db_port")
+  activityCode String?             @map("activity_code") @db.VarChar(10)
+  status       CompanyStatus       @default(PROVISIONING) @map("status")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
+  deletedAt    DateTime?           @map("deleted_at")
+
+  account      Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  userAccesses UserCompanyAccess[]
+  activity     ClaeActivity?       @relation(fields: [activityCode], references: [code])
+
+  @@unique([accountId, cuit])
+  @@index([accountId])
+  @@index([activityCode])
+  @@map("company_registries")
+}
+
+model ClaeActivity {
+  code         String            @id @db.VarChar(10)
+  description  String            @db.VarChar(500)
+  group        String?           @db.VarChar(10)
+  groupDesc    String?           @map("group_desc") @db.VarChar(255)
+  division     String?           @db.VarChar(10)
+  divisionDesc String?           @map("division_desc") @db.VarChar(255)
+  section      String?           @db.VarChar(5)
+  sectionDesc  String?           @map("section_desc") @db.VarChar(255)
+  createdAt    DateTime          @default(now()) @map("created_at")
+  updatedAt    DateTime          @updatedAt @map("updated_at")
+
+  companies    CompanyRegistry[]
+
+  @@index([description])
+  @@map("clae_activities")
+}
+
+model UserCompanyAccess {
+  userId    String          @map("user_id")
+  companyId String          @map("company_id")
+  role      UserCompanyRole @default(OPERATOR) @map("role")
+  createdAt DateTime        @default(now()) @map("created_at")
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company CompanyRegistry @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@id([userId, companyId])
+  @@index([companyId])
+  @@map("user_company_accesses")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  userId    String    @map("user_id")
+  token     String    @unique @db.VarChar(500) @map("token")
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  accountId String?  @map("account_id")
+  userId    String?  @map("user_id")
+  action    String   @map("action")
+  entity    String   @map("entity")
+  entityId  String?  @map("entity_id")
+  details   String?  @db.Text @map("details")
+  ipAddress String?  @map("ip_address")
+  userAgent String?  @map("user_agent")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([accountId])
+  @@index([userId])
+  @@map("audit_logs")
+}

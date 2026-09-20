@@ -1,0 +1,19 @@
+node_modules
+
+# Variables de entorno fuera del control de versiones
+.env
+
+# Logs
+*.log
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+
+# Binarios nativos y archivos temporales
+*.tmp*
+*.node
+

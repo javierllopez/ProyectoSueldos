@@ -1,0 +1,250 @@
+================================================================================
+INSTRUCTIVO TÉCNICO DE IMPLEMENTACIÓN: LIBRO DE SUELDOS DIGITAL (LSD) - ARCA
+================================================================================
+Destinado a: Antigravity (Asistente de Desarrollo & Generación de Código)
+Propósito: Guía de especificaciones de diseño de registro, estructuras de archivos
+           planos (.TXT), lógica de cálculo de Bases Imponibles y manejo de topes
+           para la presentación unificada ante ARCA (ex AFIP) y Formulario F.931.
+================================================================================
+
+--------------------------------------------------------------------------------
+1. REGLAS GENERALES Y ESPECIFICACIONES FORMATIVAS DE LOS ARCHIVOS .TXT
+--------------------------------------------------------------------------------
+1.1. Codificación de Archivos:
+     - Formato obligatorio: ANSI (Texto plano de 1 byte por carácter, ISO-8859-1 / Windows-1252).
+     - NO utilizar UTF-8 con BOM, UTF-16 ni Unicode.
+     - Final de línea: Estándar Windows CRLF (\r\n).
+
+1.2. Reglas de Alineación y Relleno:
+     - Campos ALFANUMÉRICOS: Alineados a la IZQUIERDA y rellenados con ESPACIOS EN BLANCO a la DERECHA hasta alcanzar la longitud fija del campo.
+     - Campos NUMÉRICOS: Alineados a la DERECHA y rellenados con CEROS ("0") a la IZQUIERDA hasta alcanzar la longitud fija del campo.
+     - Campos DECIMALES / MONETARIOS: Alineados a la DERECHA y rellenados con CEROS ("0") a la IZQUIERDA. 
+       * IMPORTANTE: Se informan SIN SEPARADOR DECIMAL (sin puntos ni comas).
+       * Las dos (2) últimas posiciones del campo corresponden implícitamente a los centavos.
+       * Ejemplo: Un valor monetario de $150.450,50 en un campo de longitud 15 se codifica como: "0000015045050".
+
+1.3. Arquitectura de Archivos a Generar:
+     - Archivo 1: Parametrización de Conceptos (Longitud fija: 195 caracteres por línea).
+     - Archivo 2: Importación de Liquidaciones de Haberes (Longitud fija: 999 caracteres por línea).
+
+================================================================================
+2. ESTRUCTURA Y DISEÑO DE REGISTRO: PARAMETRIZACIÓN DE CONCEPTOS (195 CHARS)
+================================================================================
+Este archivo se utiliza para relacionar (mapear) los códigos de conceptos de la liquidación propia del empleador con la grilla universal de Conceptos ARCA.
+
+-------------------------------------------------------------------------------------------------------------------
+POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | REGLAS Y OBSERVACIONES
+-------------------------------------------------------------------------------------------------------------------
+1         | 6         | 6    | Alfa | Código de Concepto ARCA           | Debe existir en la tabla general ARCA (Ej. 110000).
+7         | 16        | 10   | Alfa | Código de Concepto Empleador      | Código interno asignado por el sistema de haberes.
+17        | 166       | 150  | Alfa | Descripción Concepto Empleador    | Nombre o texto visible en el recibo de sueldo.
+167       | 167       | 1    | Alfa | Marca de Repetición               | "1" = Si se repite en la misma liq. / "0" = No.
+168       | 168       | 1    | Num  | Aportes SIPA (Jubilación)         | "1" = Aplica / "0" = No aplica.
+169       | 169       | 1    | Num  | Contribuciones SIPA               | "1" = Aplica / "0" = No aplica.
+170       | 170       | 1    | Num  | Aportes INSSJyP (PAMI)            | "1" = Aplica / "0" = No aplica.
+171       | 171       | 1    | Num  | Contribuciones INSSJyP            | "1" = Aplica / "0" = No aplica.
+172       | 172       | 1    | Num  | Aportes Obra Social               | "1" = Aplica / "0" = No aplica.
+173       | 173       | 1    | Num  | Contribuciones Obra Social        | "1" = Aplica / "0" = No aplica.
+174       | 174       | 1    | Num  | Aportes FSR (ex ANSSAL)           | "1" = Aplica / "0" = No aplica.
+175       | 175       | 1    | Num  | Contribuciones FSR (ex ANSSAL)    | "1" = Aplica / "0" = No aplica.
+176       | 176       | 1    | Num  | Aportes RENATRE / RENATEA         | "1" = Aplica / "0" = No aplica.
+177       | 177       | 1    | Num  | Contribuciones RENATRE / RENATEA  | "1" = Aplica / "0" = No aplica.
+178       | 178       | 1    | Alfa | Campo Libre                       | Rellenar con espacio en blanco (" ").
+179       | 179       | 1    | Num  | Contribuciones Asig. Familiares   | "1" = Aplica / "0" = No aplica.
+180       | 180       | 1    | Alfa | Campo Libre                       | Rellenar con espacio en blanco (" ").
+181       | 181       | 1    | Num  | Contribuciones Fondo Nac. Empleo  | "1" = Aplica / "0" = No aplica.
+182       | 182       | 1    | Alfa | Campo Libre                       | Rellenar con espacio en blanco (" ").
+183       | 183       | 1    | Num  | Contribuciones LRT (ART)          | "1" = Aplica / "0" = No aplica.
+184       | 184       | 1    | Num  | Aportes Regímenes Diferenciales   | "1" = Aplica / "0" = No aplica.
+185       | 185       | 1    | Alfa | Campo Libre                       | Rellenar con espacio en blanco (" ").
+186       | 186       | 1    | Num  | Aportes Regímenes Especiales      | "1" = Aplica / "0" = No aplica.
+187       | 195       | 9    | Alfa | Campos Libres de Relleno          | Rellenar con 9 espacios en blanco ("         ").
+-------------------------------------------------------------------------------------------------------------------
+
+Reglas de Negocio para Parametrización:
+- Descuentos (Rango 810000 a 829999): Todos los campos de subsistemas (pos. 168 a 186) deben fijarse obligatoriamente en "0".
+- Remunerativos (Rango 110000 a 499999): Los subsistemas generales deben configurarse en "1", salvo Regímenes Diferenciales/Especiales que dependen del tipo de tarea.
+
+================================================================================
+3. ESTRUCTURA Y DISEÑO DE REGISTRO: LIQUIDACIÓN DE HABERES (999 CHARS)
+================================================================================
+Archivo plano que agrupa los datos de la nómina y la liquidación mensual. Toda línea debe medir exactamente 999 caracteres.
+
+--------------------------------------------------------------------------------
+3.1. REGISTRO TIPO 01: DATOS REFERENCIALES DE LA LIQUIDACIÓN (CABECERA DE ENVÍO)
+--------------------------------------------------------------------------------
+POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
+--------------------------------------------------------------------------------
+1         | 2         | 2    | Alfa | Tipo de Registro                  | Fijo "01".
+3         | 13        | 11   | Num  | CUIT del Empleador                | 11 dígitos numéricos sin guiones.
+14        | 15        | 2    | Alfa | Identificación del Envío          | "SJ" = Liquidación + F.931 / "RE" = Solo F.931.
+16        | 21        | 6    | Num  | Período                           | Formato AAAAMM (Ej. 202609).
+22        | 22        | 1    | Alfa | Tipo de Liquidación               | "M" = Mensual / "Q" = Quincenal.
+23        | 27        | 5    | Num  | Número de Liquidación             | Secuencial ascendente dentro del período (Ej. 00001).
+28        | 29        | 2    | Alfa | Días Base                         | Fijo "30".
+30        | 35        | 6    | Num  | Cantidad de Registros 04          | Cantidad exacta de registros 04 contenidos en el TXT.
+36        | 999       | 964  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+3.2. REGISTRO TIPO 02: DATOS REFERENCIALES DEL TRABAJADOR
+--------------------------------------------------------------------------------
+POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
+--------------------------------------------------------------------------------
+1         | 2         | 2    | Alfa | Tipo de Registro                  | Fijo "02".
+3         | 13        | 11   | Num  | CUIL del Trabajador               | 11 dígitos numéricos sin guiones.
+14        | 23        | 10   | Alfa | Legajo del Trabajador             | Código de legajo interno.
+24        | 73        | 50   | Alfa | Dependencia de Revista            | Sector / Sucursal / Área.
+74        | 95        | 22   | Alfa | CBU de Acreditación               | CBU bancario (Requerido si forma de pago == 3).
+96        | 98        | 3    | Num  | Días para Proporcionar Tope       | Días liquidados para prorratear topes.
+99        | 106       | 8    | Num  | Fecha de Pago                     | Formato AAAAMMDD.
+107       | 114       | 8    | Num  | Fecha de Rúbrica                  | Formato AAAAMMDD (o ceros si no aplica).
+115       | 115       | 1    | Alfa | Forma de Pago                     | "1"=Efectivo, "2"=Cheque, "3"=CBU, "4"=Otros.
+116       | 999       | 884  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+3.3. REGISTRO TIPO 03: DETALLE DE CONCEPTOS LIQUIDADOS
+--------------------------------------------------------------------------------
+POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
+--------------------------------------------------------------------------------
+1         | 2         | 2    | Alfa | Tipo de Registro                  | Fijo "03".
+3         | 13        | 11   | Num  | CUIL del Trabajador               | 11 dígitos numéricos sin guiones.
+14        | 23        | 10   | Alfa | Código Concepto Empleador         | Debe coincidir con el parametrizado.
+24        | 28        | 5    | Num  | Cantidad                          | 3 enteros + 2 decimales implícitos (Ej. 03000 = 30,00).
+29        | 29        | 1    | Alfa | Unidades                          | "$" = Importe monetario, "%" = Porcentaje, "A", "M", "Q".
+30        | 44        | 15   | Num  | Importe                           | 13 enteros + 2 decimales implícitos.
+45        | 45        | 1    | Alfa | Indicador Débito / Crédito        | "C" = Crédito (Suma) / "D" = Débito (Resta).
+46        | 51        | 6    | Num  | Período Ajuste Retroactivo        | AAAAMM si es retroactivo, caso contrario 000000.
+52        | 999       | 948  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+3.4. REGISTRO TIPO 04: ATRIBUTOS LABORALES Y BASES IMPONIBLES (F.931)
+--------------------------------------------------------------------------------
+POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
+--------------------------------------------------------------------------------
+1         | 2         | 2    | Alfa | Tipo de Registro                  | Fijo "04".
+3         | 13        | 11   | Num  | CUIL del Trabajador               | 11 dígitos numéricos.
+14        | 14        | 1    | Alfa | Marca Cónyuge                     | "1" = Posee cónyuge / "0" = No.
+15        | 16        | 2    | Num  | Cantidad de Hijos                 | Cantidad de hijos a cargo.
+17        | 17        | 1    | Alfa | Marca Trabajador en CCT           | "1" = Dentro de Convenio / "0" = Fuera de CCT.
+18        | 18        | 1    | Alfa | Marca Cobertura SCVO              | "1" = Posee Seguro Colectivo Vida Oblig. / "0" = No.
+19        | 19        | 1    | Alfa | Marca Corresponde Reducción       | "1" = Corresponde reducción contribuciones / "0" = No.
+20        | 20        | 1    | Alfa | Código Tipo Empleador             | Según tabla Declaración en Línea.
+21        | 21        | 1    | Alfa | Código Tipo de Operación          | Según tabla Declaración en Línea.
+22        | 23        | 2    | Alfa | Código Situación de Revista       | Ej. "01" (Activo), "12" (Vacaciones), "13" (Lic. s/goce).
+24        | 25        | 2    | Alfa | Código de Condición               | Ej. "01" (Servicios Comunes), "02" (Jubilado).
+26        | 28        | 3    | Alfa | Código de Actividad               | Código de actividad AFIP/ARCA.
+29        | 31        | 3    | Alfa | Código Modalidad de Contratación | Ej. "001" (Tiempo Completo), "002" (Tiempo Parcial).
+32        | 33        | 2    | Alfa | Código de Siniestrado             | Según tabla LRT.
+34        | 35        | 2    | Alfa | Código de Localidad               | Jurisdicción geográfica.
+36        | 37        | 2    | Alfa | Situación de Revista 1             | Primer estado del período.
+38        | 39        | 2    | Num  | Día Inicio Situación 1            | Día del mes de inicio (Ej. 01).
+40        | 41        | 2    | Alfa | Situación de Revista 2             | Segundo estado (si hubo cambio).
+42        | 43        | 2    | Num  | Día Inicio Situación 2            | Día del mes de inicio.
+44        | 45        | 2    | Alfa | Situación de Revista 3             | Tercer estado.
+46        | 47        | 2    | Num  | Día Inicio Situación 3            | Día del mes de inicio.
+48        | 49        | 2    | Num  | Cantidad Días Trabajados          | Días laborados efecticos.
+50        | 52        | 3    | Num  | Cantidad Horas Trabajadas         | Horas en el período.
+53        | 57        | 5    | Num  | Porcentaje Aporte Adicional SS    | 3 enteros + 2 decimales implícitos.
+58        | 62        | 5    | Num  | Porcentaje Contribución Diferencial| 3 enteros + 2 decimales implícitos.
+63        | 68        | 6    | Alfa | Código Obra Social Trabajador     | Código oficial RNOS de 6 dígitos.
+69        | 70        | 2    | Num  | Cantidad Adherentes Obra Social   | Número de familiares adherentes.
+71        | 85        | 15   | Num  | Aporte Adicional Obra Social      | 13 enteros + 2 decimales implícitos.
+86        | 100       | 15   | Num  | Contribución Adicional Obra Social | 13 enteros + 2 decimales implícitos.
+101       | 115       | 15   | Num  | Base Diferencial Aporte OS y FSR  | Monto base para diferencial OS.
+116       | 130       | 15   | Num  | Base Diferencial Contrib. OS y FSR | Monto base para diferencial contrib OS.
+131       | 145       | 15   | Num  | Base Diferencial LRT              | Base especial para ART.
+146       | 160       | 15   | Num  | Remuneración Maternidad ANSES     | Remuneración bruta si aplica Lic. Maternidad.
+161       | 175       | 15   | Num  | Remuneración Bruta Total          | Suma total de conceptos remunerativos.
+176       | 190       | 15   | Num  | Base Imponible 1                   | SIPA Aportes (Sujeta a tope máximo y mínimo).
+191       | 205       | 15   | Num  | Base Imponible 2                   | SIPA Contribuciones (Sin tope máximo).
+206       | 220       | 15   | Num  | Base Imponible 3                   | INSSJyP Contribuciones (Sin tope máximo).
+221       | 235       | 15   | Num  | Base Imponible 4                   | Obra Social Aportes y Contrib. (Sujeta a tope OS).
+236       | 250       | 15   | Num  | Base Imponible 5                   | INSSJyP Aportes (Sujeta a tope máximo y mínimo).
+251       | 265       | 15   | Num  | Base Imponible 6                   | Regímenes Diferenciales Aportes.
+266       | 280       | 15   | Num  | Base Imponible 7                   | Regímenes Diferenciales Contribuciones.
+281       | 295       | 15   | Num  | Base Imponible 8                   | FSR / ex ANSSAL Contribuciones (Sujeta a tope OS).
+296       | 310       | 15   | Num  | Base Imponible 9                   | LRT / FNE / AAFF / RENATRE (Bruto + No Remun LRT).
+311       | 325       | 15   | Num  | Base Diferencial Aporte Seg. Soc.  | Base para diferencial de jubilación.
+326       | 340       | 15   | Num  | Base Diferencial Contrib. Seg. Soc| Base para diferencial contrib. jubilación.
+341       | 355       | 15   | Num  | Base Imponible 10                  | SIPA Contrib. Sujeta a Detracción (BI 2 - Detracción).
+356       | 370       | 15   | Num  | Importe a Detraer (Ley 27.541)    | Monto computable a detraer en la liquidación.
+371       | 999       | 629  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
+--------------------------------------------------------------------------------
+
+================================================================================
+4. LÓGICA DE CÁLCULO DE BASES IMPONIBLES Y MANEJO DE TOPES
+================================================================================
+
+4.1. Fórmulas de Determinación de Bases Imponibles (BI):
+--------------------------------------------------------------------------------
+BASE IMPONIBLE | CONCEPTO TRIBUTARIO                          | FÓRMULA / COMPOSICIÓN Y LÍMITES
+--------------------------------------------------------------------------------
+Rem. Bruta     | Remuneración Bruta Total                     | Suma (Conceptos Remunerativos)
+BI 1           | Aportes SIPA (Jubilación)                    | MIN(MAX(Suma(Remunerativos), Tope_Mínimo), Tope_Máximo)
+BI 2           | Contribuciones SIPA                          | MAX(Suma(Remunerativos), Tope_Mínimo) [SIN TOPE MÁXIMO]
+BI 3           | Contribuciones INSSJyP (PAMI)                | MAX(Suma(Remunerativos), Tope_Mínimo) [SIN TOPE MÁXIMO]
+BI 4           | Aportes y Contribuciones Obra Social         | MIN(MAX(Suma(Remun) + Suma(No Remun c/OS), Tope_Min), Tope_OS)
+BI 5           | Aportes INSSJyP (PAMI)                       | Coincide con BI 1: MIN(MAX(Suma(Remun), Tope_Min), Tope_Max)
+BI 6           | Aportes Regímenes Diferenciales              | Remunerativos de actividades penosas/insalubres
+BI 7           | Contribuciones Regímenes Diferenciales       | Remunerativos de actividades penosas/insalubres
+BI 8           | Contribuciones FSR (ex ANSSAL)               | Coincide exactamente con BI 4 (Obra Social)
+BI 9           | Contribuciones LRT, FNE, AAFF, RENATRE        | Suma(Remunerativos) + Suma(No Remunerativos con LRT)
+BI 10          | Contribuciones SIPA con Detracción           | MAX(BI 2 - Importe_A_Detraer, Tope_Mínimo)
+--------------------------------------------------------------------------------
+
+4.2. Algoritmo de Manejo de Topes Mensuales, SAC y Vacaciones:
+
+A) Tope Mensual General (ANSES):
+   - Determinado en cada período por resolución oficial de ANSES (Tope Mínimo y Tope Máximo).
+   - Aplica directamente a las Bases Imponibles 1, 4, 5 y 8.
+
+B) Tratamiento de Sueldo Anual Complementario (SAC):
+   - Conceptos SAC Semestral (Rango ARCA 120000 al 129999 excepto 120003):
+     * Se liquidan en los períodos de Junio y Diciembre. ARCA aplica automáticamente el tope tope anual/semestral completo de 180 días.
+   - Concepto SAC Proporcional (Código ARCA 120003):
+     * Utilizado en liquidaciones proporcionales o bajas.
+     * REGLA TÉCNICA OBLIGATORIA: En el Registro Tipo 03 correspondiente al concepto 120003, se DEBE informar en el campo "Cantidad" (Pos. 24-28) los DÍAS A PROPORCIONAR (Ej. 70 días = "07000").
+     * Fórmula de Cálculo del Tope Proporcional en Backend:
+       1. Tope_Diario_SAC = Tope_Mensual_ANSES / 360
+       2. Tope_SAC_Aplicable = Tope_Diario_SAC * Días_Informados_en_Cantidad
+       3. Tope_Máximo_Total = Tope_Mensual_ANSES + Tope_SAC_Aplicable
+
+C) Tratamiento de Adelanto Vacacional:
+   - REGLA TÉCNICA OBLIGATORIA: Asignar al concepto el Código ARCA 150000 ("Adelanto Vacacional").
+   - Informar en el campo "Cantidad" del Registro Tipo 03 la cantidad de días de vacaciones disfrutados.
+   - Permite que el sistema ARCA gestione y valide un tope vacacional independiente sin colisionar ni reducir el tope mensual ordinario ni el del SAC.
+
+D) Acumulación Multiliquidación:
+   - Cuando se presentan múltiples liquidaciones dentro del mismo período (Ej. Liq 1 Mensual, Liq 2 SAC, Liq 3 Horas Extras), los importes de haberes y días se consolidan y acumulan por CUIL para revalidad los topes globales en la liquidación final del mes.
+
+================================================================================
+5. REGLAS DE VALIDACIÓN Y CONTROL DE CONSISTENCIA PARA BACKEND (ANTIGRAVITY)
+================================================================================
+El motor de generación debe validar antes de exportar los archivos .TXT:
+
+1. Estructura Jerárquica Obligatoria en el TXT de Liquidaciones:
+   Línea 1: Registro 01 (Cabecera del envío).
+   Bloque de Empleado 1:
+     - Registro 02 (Datos del Trabajador).
+     - Registro 03 (Concepto 1).
+     - Registro 03 (Concepto 2)...
+     - Registro 04 (Bases Imponibles F.931).
+   Bloque de Empleado N...
+
+2. Validación de Conteo de Filas:
+   - El valor numérico declarado en el Registro 01 (Pos. 30-35: Cantidad de registros 04) DEBE coincidir con el total de líneas "04" presentes en el archivo plano.
+
+3. Validación de Longitudes Exactas:
+   - Cada línea de Conceptos debe ser exactamente de 195 bytes (sin contar \r\n).
+   - Cada línea de Liquidaciones debe ser exactamente de 999 bytes (sin contar \r\n).
+
+4. Consistencia Matemática entre Registro 03 y Registro 04:
+   - Sumatoria de Conceptos Remunerativos de Registro 03 == Remuneración Bruta de Registro 04.
+   - Los importes de los descuentos de Aportes (Conceptos ARCA 810000 SIPA, 810001 INSSJyP, 810002 Obra Social) deben coincidir exactamente con la aplicación de las alícuotas legales sobre las Bases Imponibles correspondientes de Registro 04:
+     * Aporte SIPA (810000) == BI 1 * 11%
+     * Aporte INSSJyP (810001) == BI 5 * 3%
+     * Aporte Obra Social (810002) == BI 4 * 3%
+================================================================================

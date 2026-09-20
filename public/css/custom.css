@@ -1,0 +1,1251 @@
+/* Estilos personalizados y branding para ProyectoSueldos sobre Tabler */
+
+:root {
+  --tblr-primary: #0666eb;
+  --tblr-primary-rgb: 6, 102, 235;
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #182433;
+  --bs-border-color: #dadcde;
+  --bs-border-color-translucent: rgba(4, 32, 69, 0.14);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* Navbar branding */
+.navbar-brand-autodark {
+  font-weight: 700;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #0666eb 0%, #206bc4 100%);
+  color: white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Tenant selector dropdown styling */
+.company-selector-btn {
+  min-width: 220px;
+  text-align: left;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.company-badge-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #2fb344;
+  display: inline-block;
+  margin-right: 6px;
+}
+
+/* Cards & Tables */
+.card-table tr td,
+.card-table tr th {
+  vertical-align: middle;
+}
+
+/* Loading overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+/* Toasts flotantes */
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1060;
+}
+
+/* Hero section on Landing */
+.hero-section {
+  padding: 5rem 0 3rem 0;
+  background: radial-gradient(circle at top, rgba(6, 102, 235, 0.05) 0%, transparent 70%);
+}
+
+.feature-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   PALETA Y TEMÁTICA: MÓDULO DE PERSONAL (Teal & Cyan Identity)
+   ========================================================================== */
+
+:root {
+  --personnel-teal: #0ca678;
+  --personnel-teal-dark: #087f5b;
+  --personnel-teal-light: #e6fcf5;
+  --personnel-teal-border: #c3fae8;
+  --personnel-accent: #20c997;
+}
+
+/* Identidad visual del header de personal (Compacto para maximizar espacio vertical) */
+.theme-personnel-header {
+  background: linear-gradient(135deg, #0ca678 0%, #087f5b 100%);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.45rem 1.15rem;
+  box-shadow: 0 2px 8px rgba(12, 166, 120, 0.15);
+}
+
+.theme-personnel-badge {
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.03em;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.55rem;
+}
+
+/* Barra Lateral Izquierda (Sidebar) del Módulo de Personal */
+.personnel-sidebar-card {
+  border: 1px solid #d3f9d8;
+  border-radius: 12px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(12, 166, 120, 0.07);
+}
+
+.personnel-sidebar-header {
+  background: linear-gradient(to right, #e6fcf5, #f4fbf8);
+  padding: 0.85rem 1.15rem;
+  border-bottom: 1px solid #c3fae8;
+}
+
+.personnel-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  color: #2b453e;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 0.25rem 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.personnel-nav-item:hover {
+  background: #e6fcf5;
+  color: #087f5b;
+  transform: translateX(3px);
+}
+
+.personnel-nav-item.active {
+  background: linear-gradient(135deg, #0ca678 0%, #099268 100%);
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(12, 166, 120, 0.28);
+}
+
+.personnel-nav-item.active .badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.personnel-nav-item.active small {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.personnel-nav-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  background: #e6fcf5;
+  color: #0ca678;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.personnel-nav-item.active .personnel-nav-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Botones con estilo temático de Personal */
+.btn-personnel {
+  background: linear-gradient(135deg, #0ca678 0%, #099268 100%);
+  border-color: #087f5b;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(12, 166, 120, 0.2);
+}
+
+.btn-personnel:hover, .btn-personnel:focus, .btn-personnel:active {
+  background: linear-gradient(135deg, #099268 0%, #087f5b 100%);
+  border-color: #066646;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-outline-personnel,
+.btn-outline-teal {
+  color: #0ca678;
+  border-color: #0ca678;
+  background: transparent;
+  font-weight: 600;
+}
+
+.btn-outline-personnel:hover,
+.btn-outline-teal:hover {
+  background: #0ca678;
+  border-color: #0ca678;
+  color: #ffffff;
+}
+
+/* Botones de acción compactos con ícono */
+.btn-icon {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.btn-icon .ti,
+.btn-icon i {
+  font-size: 1.25rem;
+  line-height: 1;
+  margin: 0 !important;
+  display: inline-block;
+}
+
+.btn-sm.btn-icon {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.btn-sm.btn-icon .ti,
+.btn-sm.btn-icon i {
+  font-size: 1.05rem;
+  line-height: 1;
+  margin: 0 !important;
+}
+
+/* Acentos de tarjeta en Personal */
+.card-personnel-accent {
+  border-top: 3px solid #0ca678 !important;
+}
+
+/* Colores de texto y fondos de apoyo */
+.text-teal {
+  color: #0ca678 !important;
+}
+
+.bg-teal-lt {
+  background-color: #e6fcf5 !important;
+  color: #0ca678 !important;
+}
+
+/* Indicador en navbar superior cuando la vista es Personal */
+.nav-link.active-personnel {
+  color: #0ca678 !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid #0ca678 !important;
+}
+
+/* Pestañas temáticas para Modales de Personal */
+.nav-tabs-personnel {
+  border-bottom: 2px solid #c3fae8;
+  gap: 0.25rem;
+}
+
+.nav-tabs-personnel .nav-link {
+  color: #495057;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid transparent;
+  border-bottom: 2px solid transparent;
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.nav-tabs-personnel .nav-link:hover {
+  color: #087f5b;
+  background-color: #f4fbf8;
+  border-color: #e6fcf5 #e6fcf5 transparent;
+}
+
+.nav-tabs-personnel .nav-link.active {
+  color: #087f5b !important;
+  background-color: #ffffff;
+  border-color: #c3fae8 #c3fae8 #ffffff;
+  border-bottom: 2px solid #0ca678 !important;
+  font-weight: 700;
+}
+
+/* Pestañas de legajo de empleado */
+#modal-employee-form .nav-tabs-personnel {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+#modal-employee-form .nav-tabs-personnel .nav-item {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+#modal-employee-form .nav-tabs-personnel .nav-link {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   SUBMENÚES DESPLEGABLES (ACORDEÓN) EN BARRA LATERAL DE PERSONAL
+   ========================================================================== */
+
+.personnel-menu-group {
+  margin-bottom: 0.25rem;
+}
+
+.personnel-parent-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #2b453e;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 0.15rem 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  user-select: none;
+}
+
+.personnel-parent-item:hover {
+  background: #e6fcf5;
+  color: #087f5b;
+}
+
+.personnel-parent-item .chevron-icon {
+  transition: transform 0.25s ease;
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: #0ca678;
+}
+
+.personnel-parent-item:not(.collapsed) .chevron-icon {
+  transform: rotate(90deg);
+}
+
+.personnel-parent-item:not(.collapsed) {
+  background: #f0fdf9;
+  color: #087f5b;
+}
+
+.personnel-submenu-list {
+  padding-left: 0.75rem;
+  margin-right: 0.5rem;
+  border-left: 2px solid #c3fae8;
+  margin-left: 1.85rem;
+  margin-top: 0.2rem;
+  margin-bottom: 0.4rem;
+}
+
+.personnel-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.85rem;
+  color: #495057;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  margin: 0.15rem 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.personnel-sub-item:hover {
+  background: #e6fcf5;
+  color: #087f5b;
+  font-weight: 600;
+  transform: translateX(3px);
+}
+
+.personnel-sub-item.active {
+  background: #0ca678;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(12, 166, 120, 0.22);
+}
+
+.personnel-sub-item.active .badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+.personnel-sub-item .sub-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #20c997;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.personnel-sub-item.active .sub-bullet {
+  background: #ffffff;
+}
+
+/* Ficha de Empresa - Pestañas sin scroll */
+.company-profile-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+.company-profile-card .card-header-tabs {
+  background: #f8fafc;
+}
+
+.company-profile-card .card-header-tabs .nav-link {
+  color: #64748b;
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.company-profile-card .card-header-tabs .nav-link:hover {
+  color: #1e293b;
+  background: rgba(241, 245, 249, 0.7);
+}
+
+.company-profile-card .card-header-tabs .nav-link.active {
+  color: #0666eb;
+  background: #ffffff;
+  border-bottom: 3px solid #0666eb;
+}
+
+.company-profile-card .tab-pane {
+  min-height: 280px;
+}
+
+/* Modal de Empleado (Legajo) - Altura controlada, footer fijo visible y pestañas sin wrap */
+#modal-employee-form .modal-dialog {
+  max-width: min(96vw, 1200px);
+  max-height: calc(100vh - 2.5rem);
+  margin: 1.25rem auto;
+  display: flex;
+}
+
+#modal-employee-form .modal-content {
+  max-height: calc(100vh - 2.5rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#modal-employee-form #form-employee {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#modal-employee-form .modal-header,
+#modal-employee-form .employee-permanent-bar,
+#modal-employee-form .employee-tabs-bar {
+  flex-shrink: 0;
+}
+
+#modal-employee-form .modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  min-height: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+#modal-employee-form .modal-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: #f8fafc !important;
+  border-top: 1px solid rgba(98, 105, 118, 0.16);
+  flex-shrink: 0;
+}
+
+.nav-tabs-personnel .nav-link {
+  white-space: nowrap !important;
+  font-size: 0.84rem;
+  padding: 0.5rem 0.65rem;
+  font-weight: 600;
+}
+
+.nav-tabs-personnel .nav-link i {
+  font-size: 1rem;
+}
+
+.encuadre-preview-card {
+  border-radius: 8px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.encuadre-preview-card:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.encuadre-preview-title {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+  color: #64748b;
+  margin-bottom: 0.15rem;
+}
+
+.encuadre-preview-value {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.25;
+}
+
+.encuadre-preview-sub {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.2;
+}
+
+/* Control de Google Maps en Pestaña de Domicilio */
+.employee-map-card {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border-color: #e2e8f0 !important;
+  min-height: 260px;
+}
+
+.employee-map-card .card-header {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.employee-map-card .card-footer {
+  border-top: 1px solid #e2e8f0;
+}
+
+#employee-map-placeholder {
+  min-height: 185px;
+  background: radial-gradient(circle, #f8fafc 0%, #f1f5f9 100%);
+}
+
+#employee-map-iframe {
+  border: 0;
+  display: block;
+}
+
+/* ==========================================================================
+   MÓDULO DE LIQUIDACIÓN DE SUELDOS (PALETA ROYAL INDIGO / DEEP VIOLET)
+   ========================================================================== */
+
+:root {
+  --payroll-indigo: #4263eb;
+  --payroll-indigo-dark: #364fc7;
+  --payroll-indigo-light: #edf2ff;
+  --payroll-indigo-border: #bac8ff;
+  --payroll-indigo-hover: #3b5bdb;
+}
+
+.theme-payroll-header {
+  background: linear-gradient(135deg, #2b3a8c 0%, #3b5bdb 60%, #4263eb 100%);
+  border-radius: 10px;
+  padding: 0.9rem 1.4rem;
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(59, 91, 219, 0.25);
+}
+
+.theme-payroll-badge {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+}
+
+.btn-payroll {
+  background-color: #4263eb;
+  border-color: #4263eb;
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-payroll:hover,
+.btn-payroll:focus {
+  background-color: #364fc7;
+  border-color: #364fc7;
+  color: #ffffff;
+  box-shadow: 0 3px 10px rgba(66, 99, 235, 0.35);
+}
+
+.btn-outline-payroll {
+  border-color: #4263eb;
+  color: #4263eb;
+  background: transparent;
+  font-weight: 600;
+}
+
+.btn-outline-payroll:hover {
+  background-color: #4263eb;
+  color: #ffffff;
+}
+
+.card-payroll-accent {
+  border-top: 3px solid #4263eb;
+}
+
+/* Sidebar de Liquidaciones */
+.payroll-sidebar-card {
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid rgba(98, 105, 118, 0.16);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.payroll-sidebar-header {
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(98, 105, 118, 0.12);
+}
+
+.payroll-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 1rem;
+  color: #495057;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.payroll-nav-item:hover {
+  background: #edf2ff;
+  color: #364fc7;
+  border-left-color: #748ffc;
+}
+
+.payroll-nav-item.active {
+  background: #edf2ff;
+  color: #364fc7;
+  border-left-color: #4263eb;
+}
+
+.payroll-nav-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e7edff;
+  color: #4263eb;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.payroll-nav-item.active .payroll-nav-icon {
+  background: #4263eb;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(66, 99, 235, 0.35);
+}
+
+/* Submenú de Conceptos y Matrices */
+.payroll-nav-dropdown {
+  position: relative;
+}
+
+.payroll-nav-dropdown .payroll-nav-item[aria-expanded="false"] .submenu-caret {
+  transform: rotate(-90deg);
+}
+
+.payroll-nav-dropdown .payroll-nav-item[aria-expanded="true"] .submenu-caret {
+  transform: rotate(0deg);
+}
+
+.payroll-submenu {
+  background: #fbfcfe;
+  border-left: 2px dashed #dbe4ff;
+  margin-left: 2rem;
+  padding: 0.25rem 0.5rem 0.4rem 0.25rem;
+}
+
+.payroll-nav-subitem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.42rem 0.75rem;
+  color: #495057;
+  font-size: 0.815rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  margin-bottom: 2px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.payroll-nav-subitem:hover {
+  background: #edf2ff;
+  color: #364fc7;
+}
+
+.payroll-nav-subitem.active {
+  background: #4263eb;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(66, 99, 235, 0.28);
+}
+
+.payroll-nav-subitem.active .badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+
+/* Grilla / Matriz Interactiva de Novedades */
+.table-novedades th {
+  background-color: #f8fafc;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.6rem;
+  vertical-align: middle;
+}
+
+.table-novedades td {
+  padding: 0.4rem 0.5rem;
+  vertical-align: middle;
+}
+
+.table-novedades input.form-control-sm {
+  font-size: 0.84rem;
+  padding: 0.25rem 0.45rem;
+  border-color: #d0d7de;
+}
+
+.table-novedades input.form-control-sm:focus {
+  border-color: #4263eb;
+  box-shadow: 0 0 0 0.18rem rgba(66, 99, 235, 0.18);
+}
+
+/* Diseñador de Fórmulas */
+.btn-token-formula {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  font-family: var(--tblr-font-monospace);
+  font-weight: 600;
+  background-color: #edf2ff;
+  border: 1px solid #bac8ff;
+  color: #364fc7;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-token-formula:hover {
+  background-color: #4263eb;
+  color: #ffffff;
+  border-color: #4263eb;
+}
+
+/* ==========================================================================
+   RECIBO DE HABERES OFICIAL (OPCIÓN A - HOJA VECTORIAL A4 PORTRAIT)
+   Conforme Ley N° 27.802 & Decreto N° 407/2026
+   ========================================================================== */
+
+.payslip-sheet-container {
+  background-color: #525659;
+  padding: 1.5rem 1rem;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+  max-height: 78vh;
+}
+
+.payslip-sheet {
+  background-color: #ffffff;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm 15mm;
+  margin: 0 auto;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  box-sizing: border-box;
+  color: #1a1a1a;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+  position: relative;
+}
+
+.payslip-box {
+  border: 1px solid #2b3a8c;
+  border-radius: 4px;
+  margin-bottom: 7px;
+  overflow: hidden;
+}
+
+.payslip-box-header {
+  background-color: #2b3a8c;
+  color: #ffffff;
+  padding: 3px 8px;
+  font-weight: 700;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payslip-box-body {
+  padding: 6px 8px;
+  background-color: #ffffff;
+}
+
+.payslip-table-items {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 10.5px;
+}
+
+.payslip-table-items th {
+  background-color: #f1f3f9;
+  border-bottom: 1.5px solid #2b3a8c;
+  padding: 4px 6px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 9.5px;
+  color: #2b3a8c;
+}
+
+.payslip-table-items td {
+  padding: 3.5px 6px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.payslip-table-items tr:last-child td {
+  border-bottom: none;
+}
+
+.payslip-net-box {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 2px solid #2e7d32;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+.payslip-net-amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1b5e20;
+}
+
+.payslip-signature-area {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.payslip-signature-box {
+  width: 45%;
+  border-top: 1px dashed #666;
+  padding-top: 5px;
+  text-align: center;
+  font-size: 9.5px;
+  color: #555;
+}
+
+/* Gráfico de Torta SVG Distribución Costo Laboral Total = 100% */
+.cost-pie-svg {
+  width: 80px;
+  height: 80px;
+  transform: rotate(-90deg);
+  border-radius: 50%;
+}
+
+.cost-pie-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9.5px;
+  margin-bottom: 2px;
+}
+
+.cost-pie-color-bullet {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* REGLAS DE IMPRESIÓN OFICIALES (A4 PORTRAIT) */
+@media print {
+  /* Ocultar toda la interfaz del sistema */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Mostrar exclusivamente la hoja de recibo */
+  #modal-view-payslip,
+  #modal-view-payslip * {
+    visibility: visible;
+  }
+
+  #modal-view-payslip .modal-dialog {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #modal-view-payslip .modal-content {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+  }
+
+  #modal-view-payslip .modal-header,
+  #modal-view-payslip .modal-footer {
+    display: none !important;
+  }
+
+  .payslip-sheet-container {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .payslip-sheet {
+    box-shadow: none !important;
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    page-break-after: always;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+}
+
+/* ==========================================================================
+   Browse de Recibos de Sueldo - Optimización sin scroll lateral
+   ========================================================================== */
+.table-slips-compact {
+  width: 100% !important;
+  margin-bottom: 0;
+  table-layout: auto;
+}
+
+.table-slips-compact th,
+.table-slips-compact td {
+  padding: 0.5rem 0.65rem !important;
+  vertical-align: middle;
+}
+
+.table-slips-compact thead th {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #5c6873;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #e6e8eb;
+  white-space: nowrap;
+}
+
+.table-slips-compact tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.table-slips-compact tbody tr:hover {
+  background-color: rgba(66, 99, 235, 0.035);
+}
+
+#slips-pagination-container {
+  overflow-x: hidden;
+}
+
+#slips-pagination-list .page-link {
+  min-width: 28px;
+  height: 28px;
+  padding: 0 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+.table-slips-compact th.col-slip-status,
+.table-slips-compact td.col-slip-status {
+  width: 50px !important;
+  min-width: 50px !important;
+  max-width: 50px !important;
+  text-align: center !important;
+  padding: 0.5rem 0.25rem !important;
+  overflow: visible !important;
+}
+
+.table-slips-compact th.col-slip-action,
+.table-slips-compact td.col-slip-action {
+  width: 76px !important;
+  min-width: 76px !important;
+  max-width: 76px !important;
+  text-align: right !important;
+  padding: 0.5rem 0.25rem !important;
+  overflow: visible !important;
+}
+
+.table-slips-compact .btn-view-slip,
+.table-slips-compact .btn-audit-slip {
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  overflow: visible !important;
+}
+
+.table-slips-compact .btn-view-slip .ti,
+.table-slips-compact .btn-audit-slip .ti,
+.table-slips-compact .col-slip-status .ti {
+  font-size: 1.15rem !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* ==========================================================================
+   Conceptos Auxiliares, Auditoría y Diseñador Visual de Fórmulas
+   ========================================================================== */
+.bg-purple {
+  background-color: #6f42c1 !important;
+}
+
+.text-purple {
+  color: #6f42c1 !important;
+}
+
+.bg-purple-lt {
+  background-color: rgba(111, 66, 193, 0.12) !important;
+  color: #6f42c1 !important;
+}
+
+.btn-outline-purple {
+  color: #6f42c1 !important;
+  border-color: #6f42c1 !important;
+  background-color: transparent !important;
+}
+
+.btn-outline-purple:hover {
+  color: #ffffff !important;
+  background-color: #6f42c1 !important;
+  border-color: #6f42c1 !important;
+}
+
+.alert-purple {
+  background-color: rgba(111, 66, 193, 0.08) !important;
+  border-color: rgba(111, 66, 193, 0.25) !important;
+  color: #4a2882 !important;
+}
+
+#formula-live-status {
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-token-formula {
+  font-family: var(--tblr-font-monospace, monospace);
+  font-size: 0.74rem;
+  font-weight: 600;
+  border-radius: 4px;
+  transition: all 0.12s ease;
+}
+
+.btn-token-formula:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================================================================
+   ESTILOS TOM-SELECT INTEGRADOS A TABLER
+   ========================================================================== */
+.ts-wrapper .ts-control,
+.ts-control {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #182433 !important;
+  border: 1px solid #dadcde !important;
+  border-radius: 4px !important;
+  font-size: 0.875rem !important;
+  min-height: calc(1.5em + 0.75rem + 2px) !important;
+  padding: 0.375rem 0.75rem !important;
+}
+
+.ts-wrapper.single.input-active .ts-control,
+.ts-wrapper.focus .ts-control,
+.ts-control.focus {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border-color: #90b5ff !important;
+  box-shadow: 0 0 0 0.25rem rgba(32, 107, 196, 0.25) !important;
+}
+
+.ts-control input {
+  color: #182433 !important;
+  background: transparent !important;
+}
+
+.ts-dropdown,
+.ts-dropdown.form-control,
+.ts-dropdown.form-select {
+  position: absolute !important;
+  z-index: 1065 !important;
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #182433 !important;
+  border: 1px solid #c5d0dc !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+  overflow: hidden !important;
+}
+
+.ts-dropdown .ts-dropdown-content {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #182433 !important;
+  max-height: 260px !important;
+  overflow-y: auto !important;
+  padding: 4px 0 !important;
+}
+
+.ts-dropdown .option {
+  padding: 8px 12px !important;
+  font-size: 0.875rem !important;
+  color: #182433 !important;
+  background-color: #ffffff !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease, color 0.15s ease !important;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ts-dropdown .option:last-child {
+  border-bottom: none !important;
+}
+
+.ts-dropdown .option:hover,
+.ts-dropdown .option.active {
+  background-color: #f1f5f9 !important;
+  color: #0666eb !important;
+  font-weight: 500 !important;
+}
+
+.ts-dropdown .option.selected {
+  background-color: #edf2ff !important;
+  color: #3b5bdb !important;
+  font-weight: 600 !important;
+}
+
+.ts-dropdown .option.selected.active,
+.ts-dropdown .option.selected:hover {
+  background-color: #3b5bdb !important;
+  color: #ffffff !important;
+}
+
+.ts-dropdown .no-results {
+  padding: 10px 14px !important;
+  color: #6c7a9c !important;
+  font-size: 0.85rem !important;
+  background-color: #ffffff !important;
+}
+
+.ts-dropdown .optgroup-header {
+  padding: 6px 12px !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  color: #6c7a9c !important;
+  background-color: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+

@@ -1,0 +1,3012 @@
+[
+  {
+    "code": "0110",
+    "name": "Fuerzas armadas",
+    "groupCode": "0",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Fuerzas armadas"
+  },
+  {
+    "code": "1110",
+    "name": "Director General / Presidente Ejecutivo",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Máxima autoridad de gestión, planificación estratégica y representación societaria de la empresa."
+  },
+  {
+    "code": "1120",
+    "name": "Gerente de Administración y Finanzas",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Conducción de la gestión contable, presupuestaria, impositiva y financiera de la organización."
+  },
+  {
+    "code": "1130",
+    "name": "Gerente Comercial y Marketing",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Responsable de la estrategia comercial, ventas, canales de distribución y posicionamiento de marca."
+  },
+  {
+    "code": "1140",
+    "name": "Gerente de Operaciones y Producción",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Planificación, supervisión y optimización de las operaciones productivas y logísticas."
+  },
+  {
+    "code": "1141",
+    "name": "Dirigentes y administradores de partidos políticos",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Dirigentes y administradores de partidos políticos"
+  },
+  {
+    "code": "1142",
+    "name": "Dirigentes y administradores de organizaciones de empleadores, de trabajadores y de otras de interés socioeconómico",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Dirigentes y administradores de organizaciones de empleadores, de trabajadores y de otras de interés socioeconómico"
+  },
+  {
+    "code": "1143",
+    "name": "Dirigentes y administradores de organizaciones humanitarias y de otras organizaciones especializadas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Dirigentes y administradores de organizaciones humanitarias y de otras organizaciones especializadas"
+  },
+  {
+    "code": "1150",
+    "name": "Gerente de Recursos Humanos",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Gestión del talento, relaciones laborales, liquidación de haberes, capacitación y bienestar laboral."
+  },
+  {
+    "code": "1160",
+    "name": "Gerente de Tecnología y Sistemas (CTO/CIO)",
+    "groupCode": "1",
+    "groupName": "Dirección y Gerencia",
+    "description": "Dirección estratégica de infraestructura tecnológica, desarrollo de software y ciberseguridad."
+  },
+  {
+    "code": "1210",
+    "name": "Directores generales y gerentes generales de empresa",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores generales y gerentes generales de empresa"
+  },
+  {
+    "code": "1221",
+    "name": "Directores de departamentos de producción y operaciones, agricultura, caza, silvicultura y pesca",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, agricultura, caza, silvicultura y pesca"
+  },
+  {
+    "code": "1222",
+    "name": "Directores de departamentos de producción y operaciones, industrias manufactureras",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, industrias manufactureras"
+  },
+  {
+    "code": "1223",
+    "name": "Directores de departamentos de producción y operaciones, construcción y obras públicas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, construcción y obras públicas"
+  },
+  {
+    "code": "1224",
+    "name": "Directores de departamentos de producción y operaciones, comercio mayorista y minorista",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, comercio mayorista y minorista"
+  },
+  {
+    "code": "1225",
+    "name": "Directores de departamentos de producción y operaciones, restauración y hostelería",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, restauración y hostelería"
+  },
+  {
+    "code": "1226",
+    "name": "Directores de departamentos de producción y operaciones, transporte, almacenamiento y comunicaciones",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, transporte, almacenamiento y comunicaciones"
+  },
+  {
+    "code": "1227",
+    "name": "Directores de departamentos de producción y operaciones, empresas de intermediación y servicios a empresas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, empresas de intermediación y servicios a empresas"
+  },
+  {
+    "code": "1228",
+    "name": "Directores de departamentos de producción y operaciones, servicios de cuidados personales, limpieza y servicios similares",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, servicios de cuidados personales, limpieza y servicios similares"
+  },
+  {
+    "code": "1229",
+    "name": "Directores de departamentos de producción y operaciones, no clasificados bajo otros epígrafes",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de producción y operaciones, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "1231",
+    "name": "Directores de departamentos financieros y administrativos",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos financieros y administrativos"
+  },
+  {
+    "code": "1232",
+    "name": "Directores de departamentos de personal y de relaciones laborales",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de personal y de relaciones laborales"
+  },
+  {
+    "code": "1233",
+    "name": "Directores de departamentos de ventas y comercialización",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de ventas y comercialización"
+  },
+  {
+    "code": "1234",
+    "name": "Directores de departamentos de publicidad y de relaciones públicas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de publicidad y de relaciones públicas"
+  },
+  {
+    "code": "1235",
+    "name": "Directores de departamentos de abastecimiento y distribución",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de abastecimiento y distribución"
+  },
+  {
+    "code": "1236",
+    "name": "Directores de departamentos de servicios de informática",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de servicios de informática"
+  },
+  {
+    "code": "1237",
+    "name": "Directores de departamentos de investigaciones y desarrollo",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Directores de departamentos de investigaciones y desarrollo"
+  },
+  {
+    "code": "1239",
+    "name": "Otros directores de departamentos, no clasificados bajo otros epígrafes",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros directores de departamentos, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "1311",
+    "name": "Gerentes de empresas de agricultura, caza, silvicultura y pesca",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de agricultura, caza, silvicultura y pesca"
+  },
+  {
+    "code": "1312",
+    "name": "Gerentes de industrias manufactureras",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de industrias manufactureras"
+  },
+  {
+    "code": "1313",
+    "name": "Gerentes de empresas de construcción y obras públicas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de construcción y obras públicas"
+  },
+  {
+    "code": "1314",
+    "name": "Gerentes de comercios mayoristas y minoristas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de comercios mayoristas y minoristas"
+  },
+  {
+    "code": "1315",
+    "name": "Gerentes de empresas de restauración y hostelería",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de restauración y hostelería"
+  },
+  {
+    "code": "1316",
+    "name": "Gerentes de empresas de transporte, almacenamiento y comunicaciones",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de transporte, almacenamiento y comunicaciones"
+  },
+  {
+    "code": "1317",
+    "name": "Gerentes de empresas de intermediación y servicios a empresas",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de intermediación y servicios a empresas"
+  },
+  {
+    "code": "1318",
+    "name": "Gerentes de empresas de servicios de cuidados Personales, limpieza y servicios similares",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas de servicios de cuidados Personales, limpieza y servicios similares"
+  },
+  {
+    "code": "1319",
+    "name": "Gerentes de empresas, no clasificados bajo otros epígrafes",
+    "groupCode": "1",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Gerentes de empresas, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2110",
+    "name": "Contador Público / Auditor",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Auditoría contable, balances, declaraciones juradas impositivas y dictámenes financieros."
+  },
+  {
+    "code": "2111",
+    "name": "Físicos y astrónomos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Físicos y astrónomos"
+  },
+  {
+    "code": "2112",
+    "name": "Meteorólogos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Meteorólogos"
+  },
+  {
+    "code": "2113",
+    "name": "Químicos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Químicos"
+  },
+  {
+    "code": "2114",
+    "name": "Geólogos y geofísicos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Geólogos y geofísicos"
+  },
+  {
+    "code": "2120",
+    "name": "Abogado / Asesor Letrado",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Asesoramiento jurídico integral en materia laboral, contractual, corporativa y litigios."
+  },
+  {
+    "code": "2121",
+    "name": "Matemáticos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Matemáticos y afines"
+  },
+  {
+    "code": "2122",
+    "name": "Estadísticos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Estadísticos"
+  },
+  {
+    "code": "2130",
+    "name": "Ingeniero Industrial / de Procesos",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Diseño, optimización y control de procesos productivos, calidad y mejora continua."
+  },
+  {
+    "code": "2131",
+    "name": "Creadores y analistas de sistemas informáticos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Creadores y analistas de sistemas informáticos"
+  },
+  {
+    "code": "2132",
+    "name": "Programadores informáticos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Programadores informáticos"
+  },
+  {
+    "code": "2139",
+    "name": "Profesionales de la informática, no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de la informática, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2140",
+    "name": "Desarrollador de Software / Programador",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Diseño, programación, prueba y despliegue de aplicaciones de software y plataformas digitales."
+  },
+  {
+    "code": "2141",
+    "name": "Arquitectos, urbanistas e ingenieros de tránsito",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Arquitectos, urbanistas e ingenieros de tránsito"
+  },
+  {
+    "code": "2142",
+    "name": "Ingenieros civiles",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros civiles"
+  },
+  {
+    "code": "2143",
+    "name": "Ingenieros electricistas",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros electricistas"
+  },
+  {
+    "code": "2144",
+    "name": "Ingenieros electronicistas y de telecomunicaciones",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros electronicistas y de telecomunicaciones"
+  },
+  {
+    "code": "2145",
+    "name": "Ingenieros mecánicos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros mecánicos"
+  },
+  {
+    "code": "2146",
+    "name": "Ingenieros químicos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros químicos"
+  },
+  {
+    "code": "2147",
+    "name": "Ingenieros de minas y metalúrgicos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ingenieros de minas y metalúrgicos y afines"
+  },
+  {
+    "code": "2148",
+    "name": "Cartógrafos y agrimensores",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cartógrafos y agrimensores"
+  },
+  {
+    "code": "2149",
+    "name": "Arquitectos, ingenieros y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Arquitectos, ingenieros y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2150",
+    "name": "Analista de Datos / Business Intelligence",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Modelado de datos, tableros de control analítico, métricas operativas y soporte para la toma de decisiones."
+  },
+  {
+    "code": "2160",
+    "name": "Médico Laboral",
+    "groupCode": "2",
+    "groupName": "Profesionales Científicos e Intelectuales",
+    "description": "Atención médica laboral, exámenes preocupacionales y de control de ausentismo, y salud ocupacional."
+  },
+  {
+    "code": "2211",
+    "name": "Biólogos, botánicos, zoólogos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Biólogos, botánicos, zoólogos y afines"
+  },
+  {
+    "code": "2212",
+    "name": "Farmacólogos, patólogos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Farmacólogos, patólogos y afines"
+  },
+  {
+    "code": "2213",
+    "name": "Agrónomos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agrónomos y afines"
+  },
+  {
+    "code": "2221",
+    "name": "Médicos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Médicos"
+  },
+  {
+    "code": "2222",
+    "name": "Odontólogos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Odontólogos"
+  },
+  {
+    "code": "2223",
+    "name": "Veterinarios",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Veterinarios"
+  },
+  {
+    "code": "2224",
+    "name": "Farmacéuticos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Farmacéuticos"
+  },
+  {
+    "code": "2229",
+    "name": "Médicos y profesionales afines (excepto el personal de enfermería y partería), no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Médicos y profesionales afines (excepto el personal de enfermería y partería), no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2230",
+    "name": "Personal de enfermería y partería de nivel superior",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal de enfermería y partería de nivel superior"
+  },
+  {
+    "code": "2310",
+    "name": "Profesores de universidades y otros establecimientos de la enseñanza superior",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesores de universidades y otros establecimientos de la enseñanza superior"
+  },
+  {
+    "code": "2320",
+    "name": "Profesores de la enseñanza secundaria",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesores de la enseñanza secundaria"
+  },
+  {
+    "code": "2331",
+    "name": "Maestros de nivel superior de la enseñanza primaria",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros de nivel superior de la enseñanza primaria"
+  },
+  {
+    "code": "2332",
+    "name": "Maestros de nivel superior de la enseñanza preescolar",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros de nivel superior de la enseñanza preescolar"
+  },
+  {
+    "code": "2340",
+    "name": "Maestros e instructores de nivel superior de la enseñanza especial",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros e instructores de nivel superior de la enseñanza especial"
+  },
+  {
+    "code": "2351",
+    "name": "Especialistas en métodos pedagógicos y material didáctico",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Especialistas en métodos pedagógicos y material didáctico"
+  },
+  {
+    "code": "2352",
+    "name": "Inspectores de la enseñanza",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Inspectores de la enseñanza"
+  },
+  {
+    "code": "2359",
+    "name": "Otros profesionales de la enseñanza, no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros profesionales de la enseñanza, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2411",
+    "name": "Contadores",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Contadores"
+  },
+  {
+    "code": "2412",
+    "name": "Especialistas en políticas y servicios de personal y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Especialistas en políticas y servicios de personal y afines"
+  },
+  {
+    "code": "2419",
+    "name": "Especialistas en organización y administración de empresas y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Especialistas en organización y administración de empresas y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2421",
+    "name": "Abogados",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Abogados"
+  },
+  {
+    "code": "2422",
+    "name": "Jueces",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Jueces"
+  },
+  {
+    "code": "2429",
+    "name": "Profesionales del derecho, no clasificados bajo otros epígrafes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales del derecho, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "2431",
+    "name": "Archiveros y conservadores de museos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Archiveros y conservadores de museos"
+  },
+  {
+    "code": "2432",
+    "name": "Bibliotecarios, documentalistas y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Bibliotecarios, documentalistas y afines"
+  },
+  {
+    "code": "2441",
+    "name": "Economistas",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Economistas"
+  },
+  {
+    "code": "2442",
+    "name": "Sociólogos, antropólogos y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Sociólogos, antropólogos y afines"
+  },
+  {
+    "code": "2443",
+    "name": "Filósofos, historiadores y especialistas en ciencias políticas",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Filósofos, historiadores y especialistas en ciencias políticas"
+  },
+  {
+    "code": "2444",
+    "name": "Filólogos, traductores e intérpretes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Filólogos, traductores e intérpretes"
+  },
+  {
+    "code": "2445",
+    "name": "Psicólogos",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Psicólogos"
+  },
+  {
+    "code": "2446",
+    "name": "Profesionales del trabajo social",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales del trabajo social"
+  },
+  {
+    "code": "2451",
+    "name": "Autores, periodistas y otros escritores",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Autores, periodistas y otros escritores"
+  },
+  {
+    "code": "2452",
+    "name": "Escultores, pintores y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Escultores, pintores y afines"
+  },
+  {
+    "code": "2453",
+    "name": "Compositores, músicos y cantantes",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Compositores, músicos y cantantes"
+  },
+  {
+    "code": "2454",
+    "name": "Coreógrafos y bailarines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Coreógrafos y bailarines"
+  },
+  {
+    "code": "2455",
+    "name": "Actores y directores de cine, radio, teatro, televisión y afines",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Actores y directores de cine, radio, teatro, televisión y afines"
+  },
+  {
+    "code": "2460",
+    "name": "Sacerdotes de distintas religiones",
+    "groupCode": "2",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Sacerdotes de distintas religiones"
+  },
+  {
+    "code": "3110",
+    "name": "Técnico en Higiene y Seguridad Laboral",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Inspección de condiciones de trabajo, prevención de accidentes, planes de evacuación y cumplimiento de ART."
+  },
+  {
+    "code": "3111",
+    "name": "Técnicos en ciencias físicas y químicas",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en ciencias físicas y químicas"
+  },
+  {
+    "code": "3112",
+    "name": "Técnicos en ingeniería civil",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en ingeniería civil"
+  },
+  {
+    "code": "3113",
+    "name": "Electrotécnicos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Electrotécnicos"
+  },
+  {
+    "code": "3114",
+    "name": "Técnicos en electrónica y telecomunicaciones",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en electrónica y telecomunicaciones"
+  },
+  {
+    "code": "3115",
+    "name": "Técnicos en mecánica y construcción mecánica",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en mecánica y construcción mecánica"
+  },
+  {
+    "code": "3116",
+    "name": "Técnicos en química industrial",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en química industrial"
+  },
+  {
+    "code": "3117",
+    "name": "Técnicos en ingeniería de minas y metalurgia",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en ingeniería de minas y metalurgia"
+  },
+  {
+    "code": "3118",
+    "name": "Delineantes y dibujantes técnicos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Delineantes y dibujantes técnicos"
+  },
+  {
+    "code": "3119",
+    "name": "Técnicos en ciencias físicas y químicas y en ingeniería, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en ciencias físicas y químicas y en ingeniería, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3120",
+    "name": "Técnico Electromecánico",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Mantenimiento preventivo y correctivo de motores, circuitos eléctricos e instalaciones mecánicas."
+  },
+  {
+    "code": "3121",
+    "name": "Técnicos en programación informática",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en programación informática"
+  },
+  {
+    "code": "3122",
+    "name": "Técnicos en control de equipos informáticos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en control de equipos informáticos"
+  },
+  {
+    "code": "3123",
+    "name": "Técnicos en control de robots industriales",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en control de robots industriales"
+  },
+  {
+    "code": "3130",
+    "name": "Técnico de Soporte IT y Redes",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Mantenimiento de puestos de trabajo informáticos, servidores, conectividad y soporte a usuarios."
+  },
+  {
+    "code": "3131",
+    "name": "Fotógrafos y operadores de equipos de grabación de imagen y sonido",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Fotógrafos y operadores de equipos de grabación de imagen y sonido"
+  },
+  {
+    "code": "3132",
+    "name": "Operadores de equipos de radiodifusión, televisión y telecomunicaciones",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de equipos de radiodifusión, televisión y telecomunicaciones"
+  },
+  {
+    "code": "3133",
+    "name": "Operadores de aparatos de diagnóstico y tratamiento médicos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de aparatos de diagnóstico y tratamiento médicos"
+  },
+  {
+    "code": "3139",
+    "name": "Operadores de equipos ópticos y electrónicos, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de equipos ópticos y electrónicos, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3140",
+    "name": "Técnico Químico / Analista de Calidad",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Ensayos de laboratorio, toma de muestras, control de estándares de materias primas y productos elaborados."
+  },
+  {
+    "code": "3141",
+    "name": "Oficiales maquinistas",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Oficiales maquinistas"
+  },
+  {
+    "code": "3142",
+    "name": "Capitanes, oficiales de cubierta y prácticos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Capitanes, oficiales de cubierta y prácticos"
+  },
+  {
+    "code": "3143",
+    "name": "Pilotos de aviación y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pilotos de aviación y afines"
+  },
+  {
+    "code": "3144",
+    "name": "Controladores de tráfico aéreo",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Controladores de tráfico aéreo"
+  },
+  {
+    "code": "3145",
+    "name": "Técnicos en seguridad aeronáutica",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en seguridad aeronáutica"
+  },
+  {
+    "code": "3150",
+    "name": "Asistente Contable e Impositivo",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Conciliaciones bancarias, registraciones en libros de IVA, retenciones y preparación de liquidaciones."
+  },
+  {
+    "code": "3151",
+    "name": "Inspectores de edificios y de prevención e investigación de incendios",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Inspectores de edificios y de prevención e investigación de incendios"
+  },
+  {
+    "code": "3152",
+    "name": "Inspectores de seguridad y salud y control de calidad",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Inspectores de seguridad y salud y control de calidad"
+  },
+  {
+    "code": "3160",
+    "name": "Asistente de Recursos Humanos y Nómina",
+    "groupCode": "3",
+    "groupName": "Técnicos y Nivel Medio",
+    "description": "Control de legajos, asistencia, novedades de sueldos, certificados de trabajo y trámites en ARCA/ANSES."
+  },
+  {
+    "code": "3211",
+    "name": "Técnicos en ciencias biológicas y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en ciencias biológicas y afines"
+  },
+  {
+    "code": "3212",
+    "name": "Técnicos en agronomía, zootecnia y silvicultura",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en agronomía, zootecnia y silvicultura"
+  },
+  {
+    "code": "3213",
+    "name": "Consejeros agrícolas y forestales",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Consejeros agrícolas y forestales"
+  },
+  {
+    "code": "3221",
+    "name": "Practicantes y asistentes médicos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Practicantes y asistentes médicos"
+  },
+  {
+    "code": "3222",
+    "name": "Higienistas y otro personal sanitario",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Higienistas y otro personal sanitario"
+  },
+  {
+    "code": "3223",
+    "name": "Técnicos en dietética y nutrición",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en dietética y nutrición"
+  },
+  {
+    "code": "3224",
+    "name": "Técnicos en optometría y ópticos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos en optometría y ópticos"
+  },
+  {
+    "code": "3225",
+    "name": "Dentistas auxiliares y ayudantes de odontología",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Dentistas auxiliares y ayudantes de odontología"
+  },
+  {
+    "code": "3226",
+    "name": "Fisioterapeutas y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Fisioterapeutas y afines"
+  },
+  {
+    "code": "3227",
+    "name": "Técnicos y asistentes veterinarios",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos y asistentes veterinarios"
+  },
+  {
+    "code": "3228",
+    "name": "Técnicos y asistentes farmacéuticos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Técnicos y asistentes farmacéuticos"
+  },
+  {
+    "code": "3229",
+    "name": "Profesionales nivel medio medicina moderna/salud (excepto personal enfermería y partería) no clasificados bajo otro epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales nivel medio medicina moderna/salud (excepto personal enfermería y partería) no clasificados bajo otro epígrafes"
+  },
+  {
+    "code": "3231",
+    "name": "Personal de enfermería de nivel medio",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal de enfermería de nivel medio"
+  },
+  {
+    "code": "3232",
+    "name": "Personal de partería de nivel medio",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal de partería de nivel medio"
+  },
+  {
+    "code": "3241",
+    "name": "Practicantes de la medicina tradicional",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Practicantes de la medicina tradicional"
+  },
+  {
+    "code": "3242",
+    "name": "Curanderos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Curanderos"
+  },
+  {
+    "code": "3310",
+    "name": "Maestros de nivel medio de la enseñanza primaria",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros de nivel medio de la enseñanza primaria"
+  },
+  {
+    "code": "3320",
+    "name": "Maestros de nivel medio de la enseñanza preescolar",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros de nivel medio de la enseñanza preescolar"
+  },
+  {
+    "code": "3330",
+    "name": "Maestros de nivel medio de la enseñanza especial",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maestros de nivel medio de la enseñanza especial"
+  },
+  {
+    "code": "3340",
+    "name": "Otros maestros e instructores de nivel medio",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros maestros e instructores de nivel medio"
+  },
+  {
+    "code": "3411",
+    "name": "Agentes de bolsa, cambio y otros servicios financieros",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de bolsa, cambio y otros servicios financieros"
+  },
+  {
+    "code": "3412",
+    "name": "Agentes de seguros",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de seguros"
+  },
+  {
+    "code": "3413",
+    "name": "Agentes inmobiliarios",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes inmobiliarios"
+  },
+  {
+    "code": "3414",
+    "name": "Agentes de viajes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de viajes"
+  },
+  {
+    "code": "3415",
+    "name": "Representantes comerciales y técnicos de ventas",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Representantes comerciales y técnicos de ventas"
+  },
+  {
+    "code": "3416",
+    "name": "Compradores",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Compradores"
+  },
+  {
+    "code": "3417",
+    "name": "Tasadores y subastadores",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Tasadores y subastadores"
+  },
+  {
+    "code": "3419",
+    "name": "Profesionales de nivel medio en operaciones financieras y comerciales, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de nivel medio en operaciones financieras y comerciales, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3421",
+    "name": "Agentes de compras y consignatarios",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de compras y consignatarios"
+  },
+  {
+    "code": "3422",
+    "name": "Declarantes o gestores de aduana",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Declarantes o gestores de aduana"
+  },
+  {
+    "code": "3423",
+    "name": "Agentes públicos y privados de colocación y contratistas de mano de obra",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes públicos y privados de colocación y contratistas de mano de obra"
+  },
+  {
+    "code": "3429",
+    "name": "Agentes comerciales y corredores, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes comerciales y corredores, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3431",
+    "name": "Profesionales de nivel medio de servicios administrativos y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de nivel medio de servicios administrativos y afines"
+  },
+  {
+    "code": "3432",
+    "name": "Profesionales de nivel medio del derecho y servicios legales o afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de nivel medio del derecho y servicios legales o afines"
+  },
+  {
+    "code": "3433",
+    "name": "Tenedores de libros",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Tenedores de libros"
+  },
+  {
+    "code": "3434",
+    "name": "Profesionales de nivel medio de servicios estadísticos, matemáticos y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de nivel medio de servicios estadísticos, matemáticos y afines"
+  },
+  {
+    "code": "3439",
+    "name": "Profesionales de nivel medio de servicios de administración, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Profesionales de nivel medio de servicios de administración, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3441",
+    "name": "Agentes de aduana e inspectores de fronteras",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de aduana e inspectores de fronteras"
+  },
+  {
+    "code": "3442",
+    "name": "Funcionarios del fisco",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Funcionarios del fisco"
+  },
+  {
+    "code": "3443",
+    "name": "Funcionarios de servicios de seguridad social",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Funcionarios de servicios de seguridad social"
+  },
+  {
+    "code": "3444",
+    "name": "Funcionarios de servicios de expedición de licencias y permisos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Funcionarios de servicios de expedición de licencias y permisos"
+  },
+  {
+    "code": "3449",
+    "name": "Agentes de las administraciones públicas de aduanas, impuestos y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agentes de las administraciones públicas de aduanas, impuestos y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "3450",
+    "name": "Inspectores de policía y detectives",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Inspectores de policía y detectives"
+  },
+  {
+    "code": "3460",
+    "name": "Trabajadores y asistentes sociales de nivel medio",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Trabajadores y asistentes sociales de nivel medio"
+  },
+  {
+    "code": "3471",
+    "name": "Decoradores y diseñadores",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Decoradores y diseñadores"
+  },
+  {
+    "code": "3472",
+    "name": "Locutores de radio y televisión y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Locutores de radio y televisión y afines"
+  },
+  {
+    "code": "3473",
+    "name": "Músicos, cantantes y bailarines callejeros, de cabaret y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Músicos, cantantes y bailarines callejeros, de cabaret y afines"
+  },
+  {
+    "code": "3474",
+    "name": "Payasos, prestidigitadores, acróbatas y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Payasos, prestidigitadores, acróbatas y afines"
+  },
+  {
+    "code": "3475",
+    "name": "Atletas, deportistas y afines",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Atletas, deportistas y afines"
+  },
+  {
+    "code": "3480",
+    "name": "Auxiliares laicos de los cultos",
+    "groupCode": "3",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Auxiliares laicos de los cultos"
+  },
+  {
+    "code": "4110",
+    "name": "Empleado Administrativo General",
+    "groupCode": "4",
+    "groupName": "Personal de Apoyo Administrativo",
+    "description": "Carga de comprobantes, archivo físico y digital, gestión de correspondencia y soporte operativo general."
+  },
+  {
+    "code": "4111",
+    "name": "Taquígrafos y mecanógrafos",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Taquígrafos y mecanógrafos"
+  },
+  {
+    "code": "4112",
+    "name": "Operadores de máquinas de tratamiento de textos y afines",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de tratamiento de textos y afines"
+  },
+  {
+    "code": "4113",
+    "name": "Operadores de entrada de datos",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de entrada de datos"
+  },
+  {
+    "code": "4114",
+    "name": "Operadores de calculadoras",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de calculadoras"
+  },
+  {
+    "code": "4115",
+    "name": "Secretarios",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Secretarios"
+  },
+  {
+    "code": "4120",
+    "name": "Facturista / Cuentas a Cobrar",
+    "groupCode": "4",
+    "groupName": "Personal de Apoyo Administrativo",
+    "description": "Emisión de comprobantes electrónicos en ARCA, seguimiento de cobranzas y cuentas corrientes."
+  },
+  {
+    "code": "4121",
+    "name": "Empleados de contabilidad y cálculo de costos",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de contabilidad y cálculo de costos"
+  },
+  {
+    "code": "4122",
+    "name": "Empleados de servicios estadísticos y financieros",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de servicios estadísticos y financieros"
+  },
+  {
+    "code": "4130",
+    "name": "Recepcionista / Telefonista",
+    "groupCode": "4",
+    "groupName": "Personal de Apoyo Administrativo",
+    "description": "Atención al público en mesa de entrada, conmutador telefónico, recepción de proveedores y mensajería."
+  },
+  {
+    "code": "4131",
+    "name": "Empleados de control de abastecimientos inventario",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de control de abastecimientos inventario"
+  },
+  {
+    "code": "4132",
+    "name": "Empleados de servicios de apoyo a la producción",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de servicios de apoyo a la producción"
+  },
+  {
+    "code": "4133",
+    "name": "Empleados de servicios de transporte",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de servicios de transporte"
+  },
+  {
+    "code": "4140",
+    "name": "Secretario / Asistente de Dirección",
+    "groupCode": "4",
+    "groupName": "Personal de Apoyo Administrativo",
+    "description": "Gestión de agenda, redacción de minutas, coordinación de viajes y reuniones ejecutivas."
+  },
+  {
+    "code": "4141",
+    "name": "Empleados de bibliotecas y archivos",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de bibliotecas y archivos"
+  },
+  {
+    "code": "4142",
+    "name": "Empleados de servicios de correos",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de servicios de correos"
+  },
+  {
+    "code": "4143",
+    "name": "Codificadores de datos, correctores de pruebas de imprenta y afines",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Codificadores de datos, correctores de pruebas de imprenta y afines"
+  },
+  {
+    "code": "4144",
+    "name": "Escribientes públicos y afines",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Escribientes públicos y afines"
+  },
+  {
+    "code": "4150",
+    "name": "Encargado de Compras y Abastecimiento",
+    "groupCode": "4",
+    "groupName": "Personal de Apoyo Administrativo",
+    "description": "Cotizaciones con proveedores, emisión de órdenes de compra, control de plazos y recepción de insumos."
+  },
+  {
+    "code": "4190",
+    "name": "Otros oficinistas",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros oficinistas"
+  },
+  {
+    "code": "4211",
+    "name": "Cajeros y expendedores de billetes",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cajeros y expendedores de billetes"
+  },
+  {
+    "code": "4212",
+    "name": "Pagadores y cobradores de ventanilla y taquilleros",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pagadores y cobradores de ventanilla y taquilleros"
+  },
+  {
+    "code": "4213",
+    "name": "Receptores de apuestas y afines",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Receptores de apuestas y afines"
+  },
+  {
+    "code": "4214",
+    "name": "Prestamistas",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Prestamistas"
+  },
+  {
+    "code": "4215",
+    "name": "Cobradores y afines",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cobradores y afines"
+  },
+  {
+    "code": "4221",
+    "name": "Empleados de agencias de viajes",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Empleados de agencias de viajes"
+  },
+  {
+    "code": "4222",
+    "name": "Recepcionistas y empleados de informaciones",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Recepcionistas y empleados de informaciones"
+  },
+  {
+    "code": "4223",
+    "name": "Telefonistas",
+    "groupCode": "4",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Telefonistas"
+  },
+  {
+    "code": "5110",
+    "name": "Vendedor de Salón / Mostrador",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Atención directa a clientes en local comercial, asesoramiento sobre productos y cierre de operaciones."
+  },
+  {
+    "code": "5111",
+    "name": "Camareros y azafatas",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Camareros y azafatas"
+  },
+  {
+    "code": "5112",
+    "name": "Revisores, guardas y cobradores de los transportes públicos",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Revisores, guardas y cobradores de los transportes públicos"
+  },
+  {
+    "code": "5113",
+    "name": "Guías",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Guías"
+  },
+  {
+    "code": "5120",
+    "name": "Ejecutivo de Ventas / Preventista / Viajante",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Desarrollo de cartera de clientes corporativos, visitas comerciales a clientes y cobranzas en ruta."
+  },
+  {
+    "code": "5121",
+    "name": "Ecónomos, mayordomos y afines",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ecónomos, mayordomos y afines"
+  },
+  {
+    "code": "5122",
+    "name": "Cocineros",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cocineros"
+  },
+  {
+    "code": "5123",
+    "name": "Camareros y taberneros",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Camareros y taberneros"
+  },
+  {
+    "code": "5130",
+    "name": "Cajero de Comercio / Cobrador",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Cobro en puntos de venta mediante efectivo, tarjetas y pagos digitales, arqueo y cierre de caja diario."
+  },
+  {
+    "code": "5131",
+    "name": "Niñeras y celadoras infantiles",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Niñeras y celadoras infantiles"
+  },
+  {
+    "code": "5132",
+    "name": "Ayudantes de enfermería en instituciones",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ayudantes de enfermería en instituciones"
+  },
+  {
+    "code": "5133",
+    "name": "Ayudantes de enfermería a domicilio",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ayudantes de enfermería a domicilio"
+  },
+  {
+    "code": "5139",
+    "name": "Trabajadores de los cuidados personales y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Trabajadores de los cuidados personales y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "5140",
+    "name": "Repositor de Mercaderías / Gondolero",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Reposición de artículos en góndolas, control de fechas de vencimiento, exhibición y cartelería de precios."
+  },
+  {
+    "code": "5141",
+    "name": "Peluqueros, especialistas en tratamientos de belleza y afines",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peluqueros, especialistas en tratamientos de belleza y afines"
+  },
+  {
+    "code": "5142",
+    "name": "Acompañantes y ayudas de cámara",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Acompañantes y ayudas de cámara"
+  },
+  {
+    "code": "5143",
+    "name": "Personal de pompas fúnebres y embalsamadores",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal de pompas fúnebres y embalsamadores"
+  },
+  {
+    "code": "5149",
+    "name": "Otros trabajadores de servicios personales a particulares. no clasificados bajo otros epígrafes",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros trabajadores de servicios personales a particulares. no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "5150",
+    "name": "Mozo / Camarero de Salón",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Servicio y atención a comensales en restaurantes, bares, cafeterías y salones de eventos."
+  },
+  {
+    "code": "5151",
+    "name": "Astrólogos y afines",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Astrólogos y afines"
+  },
+  {
+    "code": "5152",
+    "name": "Adivinadores, quirománticos y afines",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Adivinadores, quirománticos y afines"
+  },
+  {
+    "code": "5160",
+    "name": "Cocinero / Maestro Pizzero / Pastelero",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Elaboración de platos gastronómicos, manipulación higiénica de alimentos y control de mermas."
+  },
+  {
+    "code": "5161",
+    "name": "Bomberos",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Bomberos"
+  },
+  {
+    "code": "5162",
+    "name": "Policías",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Policías"
+  },
+  {
+    "code": "5163",
+    "name": "Guardianes de prisión",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Guardianes de prisión"
+  },
+  {
+    "code": "5169",
+    "name": "Personal de los servicios de protección y seguridad, no clasificado bajo otros epígrafes",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal de los servicios de protección y seguridad, no clasificado bajo otros epígrafes"
+  },
+  {
+    "code": "5170",
+    "name": "Vigilador / Personal de Seguridad Privada",
+    "groupCode": "5",
+    "groupName": "Servicios y Vendedores",
+    "description": "Control de acceso de personas y vehículos, rondas de prevención, monitoreo de cámaras y alarmas."
+  },
+  {
+    "code": "5210",
+    "name": "Modelos de modas, arte y publicidad",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Modelos de modas, arte y publicidad"
+  },
+  {
+    "code": "5220",
+    "name": "Vendedores y demostradores de tiendas y almacenes",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Vendedores y demostradores de tiendas y almacenes"
+  },
+  {
+    "code": "5230",
+    "name": "Vendedores de quioscos y de puestos de mercado",
+    "groupCode": "5",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Vendedores de quioscos y de puestos de mercado"
+  },
+  {
+    "code": "6111",
+    "name": "Agricultores y trabajadores calificados de cultivos extensivos",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agricultores y trabajadores calificados de cultivos extensivos"
+  },
+  {
+    "code": "6112",
+    "name": "Agricultores y trabajadores calificados de plantaciones de árboles y arbustos",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agricultores y trabajadores calificados de plantaciones de árboles y arbustos"
+  },
+  {
+    "code": "6113",
+    "name": "Agricultores y trabajadores calificados de huertas, invernaderos, viveros y jardines",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agricultores y trabajadores calificados de huertas, invernaderos, viveros y jardines"
+  },
+  {
+    "code": "6114",
+    "name": "Agricultores y trabajadores calificados de cultivos mixtos",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Agricultores y trabajadores calificados de cultivos mixtos"
+  },
+  {
+    "code": "6121",
+    "name": "Criadores de ganado y otros animales domésticos, productores de leche y sus derivados",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Criadores de ganado y otros animales domésticos, productores de leche y sus derivados"
+  },
+  {
+    "code": "6122",
+    "name": "Avicultores y trabajadores calificados de la avicultura",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Avicultores y trabajadores calificados de la avicultura"
+  },
+  {
+    "code": "6123",
+    "name": "Apicultores y sericicultores y trabajadores calificados de la apicultura y la sericicultura",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Apicultores y sericicultores y trabajadores calificados de la apicultura y la sericicultura"
+  },
+  {
+    "code": "6124",
+    "name": "Criadores y trabajadores calificados de la cría de animales domésticos diversos",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Criadores y trabajadores calificados de la cría de animales domésticos diversos"
+  },
+  {
+    "code": "6129",
+    "name": "Criadores y trabajadores pecuarios calificados de cría de animales p mercado y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Criadores y trabajadores pecuarios calificados de cría de animales p mercado y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "6130",
+    "name": "Productores y trabajadores agropecuarios calificados cuya producción se destina al mercado",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Productores y trabajadores agropecuarios calificados cuya producción se destina al mercado"
+  },
+  {
+    "code": "6141",
+    "name": "Taladores y otros trabajadores forestales",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Taladores y otros trabajadores forestales"
+  },
+  {
+    "code": "6142",
+    "name": "Carboneros de carbón vegetal y afines",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Carboneros de carbón vegetal y afines"
+  },
+  {
+    "code": "6151",
+    "name": "Criadores de especies acuáticas",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Criadores de especies acuáticas"
+  },
+  {
+    "code": "6152",
+    "name": "Pescadores de agua dulce y en aguas costeras",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pescadores de agua dulce y en aguas costeras"
+  },
+  {
+    "code": "6153",
+    "name": "Pescadores de alta mar",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pescadores de alta mar"
+  },
+  {
+    "code": "6154",
+    "name": "Cazadores y tramperos",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cazadores y tramperos"
+  },
+  {
+    "code": "6210",
+    "name": "Trabajadores agropecuarios y pesqueros de subsistencia",
+    "groupCode": "6",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Trabajadores agropecuarios y pesqueros de subsistencia"
+  },
+  {
+    "code": "7110",
+    "name": "Oficial Mecánico de Mantenimiento",
+    "groupCode": "7",
+    "groupName": "Oficios y Operarios Calificados",
+    "description": "Reparación y ajuste de motores, engranajes, bombas y maquinaria pesada de planta."
+  },
+  {
+    "code": "7111",
+    "name": "Mineros y canteros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mineros y canteros"
+  },
+  {
+    "code": "7112",
+    "name": "Pegadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pegadores"
+  },
+  {
+    "code": "7113",
+    "name": "Tronzadores, labrantes y grabadores de piedra",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Tronzadores, labrantes y grabadores de piedra"
+  },
+  {
+    "code": "7120",
+    "name": "Oficial Electricista Industrial",
+    "groupCode": "7",
+    "groupName": "Oficios y Operarios Calificados",
+    "description": "Instalación de tableros trifásicos, cableados industriales, sensores y motores eléctricos."
+  },
+  {
+    "code": "7121",
+    "name": "Constructores con técnicas y materiales tradicionales",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Constructores con técnicas y materiales tradicionales"
+  },
+  {
+    "code": "7122",
+    "name": "Albañiles y mamposteros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Albañiles y mamposteros"
+  },
+  {
+    "code": "7123",
+    "name": "Operarios en cemento armado, enfoscadores y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operarios en cemento armado, enfoscadores y afines"
+  },
+  {
+    "code": "7124",
+    "name": "Carpinteros de armar y de blanco",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Carpinteros de armar y de blanco"
+  },
+  {
+    "code": "7129",
+    "name": "Oficiales y operarios de la construcción (obra gruesa) y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Oficiales y operarios de la construcción (obra gruesa) y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "7130",
+    "name": "Soldador Calificado (MIG/TIG/Eléctrica)",
+    "groupCode": "7",
+    "groupName": "Oficios y Operarios Calificados",
+    "description": "Soldaduras de precisión en cañerías, estructuras metálicas y recipientes a presión."
+  },
+  {
+    "code": "7131",
+    "name": "Techadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Techadores"
+  },
+  {
+    "code": "7132",
+    "name": "Parqueteros y colocadores de suelos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Parqueteros y colocadores de suelos"
+  },
+  {
+    "code": "7133",
+    "name": "Revocadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Revocadores"
+  },
+  {
+    "code": "7134",
+    "name": "Instaladores de material aislante y de insonorización",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Instaladores de material aislante y de insonorización"
+  },
+  {
+    "code": "7135",
+    "name": "Cristaleros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cristaleros"
+  },
+  {
+    "code": "7136",
+    "name": "Fontaneros e instaladores de tuberías",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Fontaneros e instaladores de tuberías"
+  },
+  {
+    "code": "7137",
+    "name": "Electricistas de obras y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Electricistas de obras y afines"
+  },
+  {
+    "code": "7140",
+    "name": "Oficial Albañil / Constructor",
+    "groupCode": "7",
+    "groupName": "Oficios y Operarios Calificados",
+    "description": "Levantamiento de muros, revoques, colocación de cerámicos y trabajos de albañilería general."
+  },
+  {
+    "code": "7141",
+    "name": "Pintores y empapeladores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pintores y empapeladores"
+  },
+  {
+    "code": "7142",
+    "name": "Barnizadores y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Barnizadores y afines"
+  },
+  {
+    "code": "7143",
+    "name": "Limpiadores de fachadas y deshollinadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Limpiadores de fachadas y deshollinadores"
+  },
+  {
+    "code": "7211",
+    "name": "Moldeadores y macheros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Moldeadores y macheros"
+  },
+  {
+    "code": "7212",
+    "name": "Soldadores y oxicortadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Soldadores y oxicortadores"
+  },
+  {
+    "code": "7213",
+    "name": "Chapistas y caldereros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Chapistas y caldereros"
+  },
+  {
+    "code": "7214",
+    "name": "Montadores de estructuras metálicas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de estructuras metálicas"
+  },
+  {
+    "code": "7215",
+    "name": "Aparejadores y empalmadores de cables",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Aparejadores y empalmadores de cables"
+  },
+  {
+    "code": "7216",
+    "name": "Buzos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Buzos"
+  },
+  {
+    "code": "7221",
+    "name": "Herreros y forjadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Herreros y forjadores"
+  },
+  {
+    "code": "7222",
+    "name": "Herramentistas y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Herramentistas y afines"
+  },
+  {
+    "code": "7223",
+    "name": "Reguladores y reguladores-operadores de máquinas herramientas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Reguladores y reguladores-operadores de máquinas herramientas"
+  },
+  {
+    "code": "7224",
+    "name": "Pulidores de metales y afiladores de herramientas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pulidores de metales y afiladores de herramientas"
+  },
+  {
+    "code": "7231",
+    "name": "Mecánicos y ajustadores de vehículos de motor",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y ajustadores de vehículos de motor"
+  },
+  {
+    "code": "7232",
+    "name": "Mecánicos y ajustadores de motores de avión",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y ajustadores de motores de avión"
+  },
+  {
+    "code": "7233",
+    "name": "Mecánicos y ajustadores de máquinas agrícolas e industriales",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y ajustadores de máquinas agrícolas e industriales"
+  },
+  {
+    "code": "7241",
+    "name": "Mecánicos y ajustadores electricistas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y ajustadores electricistas"
+  },
+  {
+    "code": "7242",
+    "name": "Ajustadores electronicistas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ajustadores electronicistas"
+  },
+  {
+    "code": "7243",
+    "name": "Mecánicos y reparadores de aparatos electrónicos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y reparadores de aparatos electrónicos"
+  },
+  {
+    "code": "7244",
+    "name": "Instaladores y reparadores de telégrafos y teléfonos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Instaladores y reparadores de telégrafos y teléfonos"
+  },
+  {
+    "code": "7245",
+    "name": "Instaladores y reparadores de líneas eléctricas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Instaladores y reparadores de líneas eléctricas"
+  },
+  {
+    "code": "7311",
+    "name": "Mecánicos y reparadores de instrumentos de precisión",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mecánicos y reparadores de instrumentos de precisión"
+  },
+  {
+    "code": "7312",
+    "name": "Constructores y afinadores de instrumentos musicales",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Constructores y afinadores de instrumentos musicales"
+  },
+  {
+    "code": "7313",
+    "name": "Joyeros, orfebres y plateros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Joyeros, orfebres y plateros"
+  },
+  {
+    "code": "7321",
+    "name": "Alfareros y afines (barro, arcilla y abrasivos)",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Alfareros y afines (barro, arcilla y abrasivos)"
+  },
+  {
+    "code": "7322",
+    "name": "Sopladores, modeladores, laminadores, cortadores y pulidores de vidrio",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Sopladores, modeladores, laminadores, cortadores y pulidores de vidrio"
+  },
+  {
+    "code": "7323",
+    "name": "Grabadores de vidrio",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Grabadores de vidrio"
+  },
+  {
+    "code": "7324",
+    "name": "Pintores decoradores de vidrio, cerámica y otros materiales",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Pintores decoradores de vidrio, cerámica y otros materiales"
+  },
+  {
+    "code": "7331",
+    "name": "Artesanos de la madera y materiales similares",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Artesanos de la madera y materiales similares"
+  },
+  {
+    "code": "7332",
+    "name": "Artesanos de los tejidos, el cuero y materiales similares",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Artesanos de los tejidos, el cuero y materiales similares"
+  },
+  {
+    "code": "7341",
+    "name": "Cajistas, tipógrafos y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cajistas, tipógrafos y afines"
+  },
+  {
+    "code": "7342",
+    "name": "Estereotipistas y galvanotipistas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Estereotipistas y galvanotipistas"
+  },
+  {
+    "code": "7343",
+    "name": "Grabadores de imprenta y fotograbadores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Grabadores de imprenta y fotograbadores"
+  },
+  {
+    "code": "7344",
+    "name": "Operarios de la fotografía y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operarios de la fotografía y afines"
+  },
+  {
+    "code": "7345",
+    "name": "Encuadernadores y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Encuadernadores y afines"
+  },
+  {
+    "code": "7346",
+    "name": "Impresores de sericigrafía y estampadores a la plancha y en textiles",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Impresores de sericigrafía y estampadores a la plancha y en textiles"
+  },
+  {
+    "code": "7411",
+    "name": "Carniceros, pescaderos y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Carniceros, pescaderos y afines"
+  },
+  {
+    "code": "7412",
+    "name": "Panaderos, pasteleros y confiteros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Panaderos, pasteleros y confiteros"
+  },
+  {
+    "code": "7413",
+    "name": "Operarios de la elaboración de productos lácteos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operarios de la elaboración de productos lácteos"
+  },
+  {
+    "code": "7414",
+    "name": "Operarios de la conservación de frutas. legumbres, verduras y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operarios de la conservación de frutas. legumbres, verduras y afines"
+  },
+  {
+    "code": "7415",
+    "name": "Catadores y clasificadores de alimentos y bebidas",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Catadores y clasificadores de alimentos y bebidas"
+  },
+  {
+    "code": "7416",
+    "name": "Preparadores y elaboradores de tabaco y sus productos",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Preparadores y elaboradores de tabaco y sus productos"
+  },
+  {
+    "code": "7421",
+    "name": "Operarios del tratamiento de la madera",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operarios del tratamiento de la madera"
+  },
+  {
+    "code": "7422",
+    "name": "Ebanistas y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Ebanistas y afines"
+  },
+  {
+    "code": "7423",
+    "name": "Reguladores y reguladores-operadores de máquinas de labrar madera",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Reguladores y reguladores-operadores de máquinas de labrar madera"
+  },
+  {
+    "code": "7424",
+    "name": "Cesteros, bruceros y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Cesteros, bruceros y afines"
+  },
+  {
+    "code": "7431",
+    "name": "Preparadores de fibras",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Preparadores de fibras"
+  },
+  {
+    "code": "7432",
+    "name": "Tejedores con telares o de tejidos de punto afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Tejedores con telares o de tejidos de punto afines"
+  },
+  {
+    "code": "7433",
+    "name": "Sastres, modistos y sombrereros",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Sastres, modistos y sombrereros"
+  },
+  {
+    "code": "7434",
+    "name": "Peleteros y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peleteros y afines"
+  },
+  {
+    "code": "7435",
+    "name": "Patronistas y cortadores de tela, cuero y afine",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Patronistas y cortadores de tela, cuero y afine"
+  },
+  {
+    "code": "7436",
+    "name": "Costureros, bordadores y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Costureros, bordadores y afines"
+  },
+  {
+    "code": "7437",
+    "name": "Tapiceros, colchoneros y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Tapiceros, colchoneros y afines"
+  },
+  {
+    "code": "7441",
+    "name": "Apelambradores, pellejeros y curtidores",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Apelambradores, pellejeros y curtidores"
+  },
+  {
+    "code": "7442",
+    "name": "Zapateros y afines",
+    "groupCode": "7",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Zapateros y afines"
+  },
+  {
+    "code": "8110",
+    "name": "Operador de Autoelevador / Clarkista",
+    "groupCode": "8",
+    "groupName": "Operadores de Maquinaria y Choferes",
+    "description": "Manejo seguro de autoelevadores, estiba en racks de altura y movimiento de pallets en depósitos."
+  },
+  {
+    "code": "8111",
+    "name": "Operadores de instalaciones mineras",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones mineras"
+  },
+  {
+    "code": "8112",
+    "name": "Operadores de instalaciones de procesamiento de minerales y rocas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de procesamiento de minerales y rocas"
+  },
+  {
+    "code": "8113",
+    "name": "Perforadores y sondistas de pozos y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Perforadores y sondistas de pozos y afines"
+  },
+  {
+    "code": "8120",
+    "name": "Chofer de Transporte de Carga / Camión",
+    "groupCode": "8",
+    "groupName": "Operadores de Maquinaria y Choferes",
+    "description": "Conducción de camiones, furgones y semirremolques de media y larga distancia para transporte de mercadería."
+  },
+  {
+    "code": "8121",
+    "name": "Operadores de hornos de minerales y de hornos de primera fusión de metales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de hornos de minerales y de hornos de primera fusión de metales"
+  },
+  {
+    "code": "8122",
+    "name": "Operadores de homos de segunda fusión, máquinas de colar y moldear metales y trenes de laminación",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de homos de segunda fusión, máquinas de colar y moldear metales y trenes de laminación"
+  },
+  {
+    "code": "8123",
+    "name": "Operadores de instalaciones de tratamiento térmico de metales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de tratamiento térmico de metales"
+  },
+  {
+    "code": "8124",
+    "name": "Operadores de máquinas trefiladoras y estiradoras de metales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas trefiladoras y estiradoras de metales"
+  },
+  {
+    "code": "8130",
+    "name": "Chofer de Reparto / Conductor de Utilitario",
+    "groupCode": "8",
+    "groupName": "Operadores de Maquinaria y Choferes",
+    "description": "Distribución urbana de pedidos, entrega a clientes finales y rendición de comprobantes."
+  },
+  {
+    "code": "8131",
+    "name": "Operadores de homos de vidriería y cerámica y operadores de máquinas afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de homos de vidriería y cerámica y operadores de máquinas afines"
+  },
+  {
+    "code": "8139",
+    "name": "Operadores de instalaciones de vidriería, cerámica y afines, no clasificados bajo otros epígrafes",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de vidriería, cerámica y afines, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "8140",
+    "name": "Operador de Maquinaria de Producción",
+    "groupCode": "8",
+    "groupName": "Operadores de Maquinaria y Choferes",
+    "description": "Operación continua de prensas, envasadoras automáticas, inyectoras o líneas de ensamblaje."
+  },
+  {
+    "code": "8141",
+    "name": "Operadores de instalaciones de procesamiento de la madera",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de procesamiento de la madera"
+  },
+  {
+    "code": "8142",
+    "name": "Operadores de instalaciones para la preparación de pasta para papel",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones para la preparación de pasta para papel"
+  },
+  {
+    "code": "8143",
+    "name": "Operadores de instalaciones para la fabricación de papel",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones para la fabricación de papel"
+  },
+  {
+    "code": "8151",
+    "name": "Operadores de instalaciones quebrantadoras, trituradoras y mezcladoras de sustancias químicas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones quebrantadoras, trituradoras y mezcladoras de sustancias químicas"
+  },
+  {
+    "code": "8152",
+    "name": "Operadores de instalaciones de tratamiento químico térmico",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de tratamiento químico térmico"
+  },
+  {
+    "code": "8153",
+    "name": "Operadores de equipos de filtración y separación de sustancias químicas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de equipos de filtración y separación de sustancias químicas"
+  },
+  {
+    "code": "8154",
+    "name": "Operadores de equipos de destilación y de reacción química (excepto petróleo y gas natural)",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de equipos de destilación y de reacción química (excepto petróleo y gas natural)"
+  },
+  {
+    "code": "8155",
+    "name": "Operadores de instalaciones de refinación de petróleo y gas natural",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de refinación de petróleo y gas natural"
+  },
+  {
+    "code": "8159",
+    "name": "Operadores de instalaciones de tratamientos químicos. no clasificados bajo otros epígrafes",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de tratamientos químicos. no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "8161",
+    "name": "Operadores de instalaciones de producción de energía",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de instalaciones de producción de energía"
+  },
+  {
+    "code": "8162",
+    "name": "Operadores de máquinas de vapor y calderas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de vapor y calderas"
+  },
+  {
+    "code": "8163",
+    "name": "Operadores de incineradores, instalaciones de tratamiento de agua y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de incineradores, instalaciones de tratamiento de agua y afines"
+  },
+  {
+    "code": "8171",
+    "name": "Operadores de cadenas de montaje automatizadas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de cadenas de montaje automatizadas"
+  },
+  {
+    "code": "8172",
+    "name": "Operadores de robots industriales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de robots industriales"
+  },
+  {
+    "code": "8211",
+    "name": "Operadores de máquinas herramientas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas herramientas"
+  },
+  {
+    "code": "8212",
+    "name": "Operadores de máquinas para fabricar cemento y otros productos minerales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar cemento y otros productos minerales"
+  },
+  {
+    "code": "8221",
+    "name": "Operadores de máquinas para fabricar productos farmacéuticos y cosméticos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos farmacéuticos y cosméticos"
+  },
+  {
+    "code": "8222",
+    "name": "Operadores de máquinas para fabricar municiones y explosivos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar municiones y explosivos"
+  },
+  {
+    "code": "8223",
+    "name": "Operadores de máquinas pulidoras, galvanizadoras y recubridoras de metales",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas pulidoras, galvanizadoras y recubridoras de metales"
+  },
+  {
+    "code": "8224",
+    "name": "Operadores de máquinas para fabricar accesorios fotográficos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar accesorios fotográficos"
+  },
+  {
+    "code": "8229",
+    "name": "Operadores de máquinas para fabricar productos químicos, no clasificados bajo otros epígrafes",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos químicos, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "8231",
+    "name": "Operadores de máquinas para fabricar productos de caucho",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos de caucho"
+  },
+  {
+    "code": "8232",
+    "name": "Operadores de máquinas para fabricar productos de material plástico",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos de material plástico"
+  },
+  {
+    "code": "8240",
+    "name": "Operadores de máquinas para fabricar productos de madera",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos de madera"
+  },
+  {
+    "code": "8251",
+    "name": "Operadores de máquinas de imprenta",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de imprenta"
+  },
+  {
+    "code": "8252",
+    "name": "Operadores de máquinas de encuadernación",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de encuadernación"
+  },
+  {
+    "code": "8253",
+    "name": "Operadores de máquinas para fabricar productos de papel",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos de papel"
+  },
+  {
+    "code": "8261",
+    "name": "Operadores de máquinas de preparación de fibras, hilado y devanado",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de preparación de fibras, hilado y devanado"
+  },
+  {
+    "code": "8262",
+    "name": "Operadores de telares y otras máquinas tejedoras",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de telares y otras máquinas tejedoras"
+  },
+  {
+    "code": "8263",
+    "name": "Operadores de máquinas para coser",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para coser"
+  },
+  {
+    "code": "8264",
+    "name": "Operadores de máquinas de blanqueo, teñido y tintura",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de blanqueo, teñido y tintura"
+  },
+  {
+    "code": "8265",
+    "name": "Operadores de máquinas de tratamiento de pieles y cueros",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de tratamiento de pieles y cueros"
+  },
+  {
+    "code": "8266",
+    "name": "Operadores de máquinas para la fabricación de calzado y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para la fabricación de calzado y afines"
+  },
+  {
+    "code": "8269",
+    "name": "Operadores de máquinas para fabricar productos textiles y artículos de piel y cuero, no clasificados bajo otros epígrafes",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar productos textiles y artículos de piel y cuero, no clasificados bajo otros epígrafes"
+  },
+  {
+    "code": "8271",
+    "name": "Operadores de máquinas para elaborar carne, pescado y mariscos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar carne, pescado y mariscos"
+  },
+  {
+    "code": "8272",
+    "name": "Operadores de máquinas para elaborar productos lácteos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar productos lácteos"
+  },
+  {
+    "code": "8273",
+    "name": "Operadores de máquinas para moler cereales y especias",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para moler cereales y especias"
+  },
+  {
+    "code": "8274",
+    "name": "Operadores de máquinas para elaborar cereales, productos de panadería y repostería y artículos de chocolate",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar cereales, productos de panadería y repostería y artículos de chocolate"
+  },
+  {
+    "code": "8275",
+    "name": "Operadores de máquinas para elaborar frutos húmedos y secos y hortalizas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar frutos húmedos y secos y hortalizas"
+  },
+  {
+    "code": "8276",
+    "name": "Operadores de máquinas para fabricar azúcares",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para fabricar azúcares"
+  },
+  {
+    "code": "8277",
+    "name": "Operadores de máquinas para elaborar té, café y cacao",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar té, café y cacao"
+  },
+  {
+    "code": "8278",
+    "name": "Operadores de máquinas para elaborar cerveza, vinos y otras bebidas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar cerveza, vinos y otras bebidas"
+  },
+  {
+    "code": "8279",
+    "name": "Operadores de máquinas para elaborar productos del tabaco",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas para elaborar productos del tabaco"
+  },
+  {
+    "code": "8281",
+    "name": "Montadores de mecanismos y elementos mecánicos de máquinas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de mecanismos y elementos mecánicos de máquinas"
+  },
+  {
+    "code": "8282",
+    "name": "Montadores de equipos eléctricos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de equipos eléctricos"
+  },
+  {
+    "code": "8283",
+    "name": "Montadores de equipos electrónicos",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de equipos electrónicos"
+  },
+  {
+    "code": "8284",
+    "name": "Montadores de productos metálicos, de caucho y de material plástico",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de productos metálicos, de caucho y de material plástico"
+  },
+  {
+    "code": "8285",
+    "name": "Montadores de productos de madera y de materiales afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de productos de madera y de materiales afines"
+  },
+  {
+    "code": "8286",
+    "name": "Montadores de productos de cartón, textiles y materiales afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Montadores de productos de cartón, textiles y materiales afines"
+  },
+  {
+    "code": "8290",
+    "name": "Otros operadores de máquinas y montadores",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Otros operadores de máquinas y montadores"
+  },
+  {
+    "code": "8311",
+    "name": "Maquinistas de locomotoras",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Maquinistas de locomotoras"
+  },
+  {
+    "code": "8312",
+    "name": "Guardafrenos, guardagujas y agentes de maniobras",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Guardafrenos, guardagujas y agentes de maniobras"
+  },
+  {
+    "code": "8321",
+    "name": "Conductores de motocicletas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de motocicletas"
+  },
+  {
+    "code": "8322",
+    "name": "Conductores de automóviles, taxis y camionetas",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de automóviles, taxis y camionetas"
+  },
+  {
+    "code": "8323",
+    "name": "Conductores de autobuses y tranvías",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de autobuses y tranvías"
+  },
+  {
+    "code": "8324",
+    "name": "Conductores de camiones pesados",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de camiones pesados"
+  },
+  {
+    "code": "8331",
+    "name": "Operadores de maquinaria agrícola y forestal motorizada",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de maquinaria agrícola y forestal motorizada"
+  },
+  {
+    "code": "8332",
+    "name": "Operadores de máquinas de movimiento de tierras y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de máquinas de movimiento de tierras y afines"
+  },
+  {
+    "code": "8333",
+    "name": "Operadores de grúas, de aparatos elevadores y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de grúas, de aparatos elevadores y afines"
+  },
+  {
+    "code": "8334",
+    "name": "Operadores de carretillas elevadoras",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Operadores de carretillas elevadoras"
+  },
+  {
+    "code": "8340",
+    "name": "Marineros de cubierta y afines",
+    "groupCode": "8",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Marineros de cubierta y afines"
+  },
+  {
+    "code": "9110",
+    "name": "Operario de Depósito / Pañolero",
+    "groupCode": "9",
+    "groupName": "Ocupaciones Elementales",
+    "description": "Recepción, control de remitos, preparación de pedidos (picking/packing) y orden de stock."
+  },
+  {
+    "code": "9111",
+    "name": "Vendedores ambulantes de productos comestibles",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Vendedores ambulantes de productos comestibles"
+  },
+  {
+    "code": "9112",
+    "name": "Vendedores ambulantes de productos no comestibles",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Vendedores ambulantes de productos no comestibles"
+  },
+  {
+    "code": "9113",
+    "name": "Vendedores a domicilio y por teléfono",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Vendedores a domicilio y por teléfono"
+  },
+  {
+    "code": "9120",
+    "name": "Peón de Carga y Descarga",
+    "groupCode": "9",
+    "groupName": "Ocupaciones Elementales",
+    "description": "Carga y descarga manual o con zorra hidráulica de camiones, bultos y contenedores."
+  },
+  {
+    "code": "9130",
+    "name": "Personal de Limpieza y Maestranza",
+    "groupCode": "9",
+    "groupName": "Ocupaciones Elementales",
+    "description": "Aseo general de oficinas, plantas productivas, sanitarios, áreas comunes y recolección interna de residuos."
+  },
+  {
+    "code": "9131",
+    "name": "Personal doméstico",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Personal doméstico"
+  },
+  {
+    "code": "9132",
+    "name": "Limpiadores de oficinas, hoteles y otros establecimientos",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Limpiadores de oficinas, hoteles y otros establecimientos"
+  },
+  {
+    "code": "9133",
+    "name": "Lavanderos y planchadores manuales",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Lavanderos y planchadores manuales"
+  },
+  {
+    "code": "9140",
+    "name": "Cadete / Mensajero General",
+    "groupCode": "9",
+    "groupName": "Ocupaciones Elementales",
+    "description": "Trámites bancarios, entrega de documentación física, gestiones ante organismos y compras menores."
+  },
+  {
+    "code": "9141",
+    "name": "Conserjes",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conserjes"
+  },
+  {
+    "code": "9142",
+    "name": "Lavadores de vehículos, ventanas y afines",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Lavadores de vehículos, ventanas y afines"
+  },
+  {
+    "code": "9151",
+    "name": "Mensajeros, porteadores y repartidores",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mensajeros, porteadores y repartidores"
+  },
+  {
+    "code": "9152",
+    "name": "Porteros y guardianes y afines",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Porteros y guardianes y afines"
+  },
+  {
+    "code": "9153",
+    "name": "Recolectores de dinero en aparatos de venta automática, lectores de medidores y afines",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Recolectores de dinero en aparatos de venta automática, lectores de medidores y afines"
+  },
+  {
+    "code": "9161",
+    "name": "Recolectores de basura",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Recolectores de basura"
+  },
+  {
+    "code": "9162",
+    "name": "Barrenderos y afines",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Barrenderos y afines"
+  },
+  {
+    "code": "9211",
+    "name": "Mozos de labranza y peones agropecuarios",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Mozos de labranza y peones agropecuarios"
+  },
+  {
+    "code": "9212",
+    "name": "Peones forestales",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones forestales"
+  },
+  {
+    "code": "9213",
+    "name": "Peones de la pesca, la caza y la trampa",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de la pesca, la caza y la trampa"
+  },
+  {
+    "code": "9311",
+    "name": "Peones de minas y canteras",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de minas y canteras"
+  },
+  {
+    "code": "9312",
+    "name": "Peones de obras públicas y mantenimiento: carreteras, presas y obras similares",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de obras públicas y mantenimiento: carreteras, presas y obras similares"
+  },
+  {
+    "code": "9313",
+    "name": "Peones de la construcción de edificios",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de la construcción de edificios"
+  },
+  {
+    "code": "9321",
+    "name": "Peones de montaje",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de montaje"
+  },
+  {
+    "code": "9322",
+    "name": "Embaladores manuales y otros peones de la industria manufacturera",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Embaladores manuales y otros peones de la industria manufacturera"
+  },
+  {
+    "code": "9331",
+    "name": "Conductores de vehículos accionados a pedal o a brazo",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de vehículos accionados a pedal o a brazo"
+  },
+  {
+    "code": "9332",
+    "name": "Conductores de vehículos y máquinas de tracción animal",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Conductores de vehículos y máquinas de tracción animal"
+  },
+  {
+    "code": "9333",
+    "name": "Peones de carga",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Peones de carga"
+  },
+  {
+    "code": "9998",
+    "name": "SIN INFORMAR",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "SIN INFORMAR"
+  },
+  {
+    "code": "9999",
+    "name": "Seleccione puesto",
+    "groupCode": "9",
+    "groupName": "Ocupaciones ARCA / F.883",
+    "description": "Seleccione puesto"
+  }
+]

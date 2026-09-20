@@ -1,0 +1,1250 @@
+[
+  {
+    "code": "1",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "A tiempo parcial: Indeterminado/permanente",
+    "description": "A tiempo parcial: Indeterminado/permanente",
+    "isActive": true
+  },
+  {
+    "code": "2",
+    "periodFrom": "199606",
+    "periodTo": "999999",
+    "name": "Becarios-Residencias médicas Ley 22127",
+    "description": "Becarios-Residencias médicas Ley 22127",
+    "isActive": true
+  },
+  {
+    "code": "3",
+    "periodFrom": "199810",
+    "periodTo": "999999",
+    "name": "De aprendizaje Ley 25013",
+    "description": "De aprendizaje Ley 25013",
+    "isActive": true
+  },
+  {
+    "code": "8",
+    "periodFrom": "199904",
+    "periodTo": "999999",
+    "name": "A tiempo completo indeterminado/Trabajo permanente",
+    "description": "A tiempo completo indeterminado/Trabajo permanente",
+    "isActive": true
+  },
+  {
+    "code": "10",
+    "periodFrom": "199606",
+    "periodTo": "999999",
+    "name": "Práctica profesionalizante - Dcto. 1374/11 - Pasantía sin obra social",
+    "description": "Práctica profesionalizante - Dcto. 1374/11 - Pasantía sin obra social",
+    "isActive": true
+  },
+  {
+    "code": "11",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "Trabajo de temporada",
+    "description": "Trabajo de temporada",
+    "isActive": true
+  },
+  {
+    "code": "12",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "Trabajo eventual",
+    "description": "Trabajo eventual",
+    "isActive": true
+  },
+  {
+    "code": "14",
+    "periodFrom": "200006",
+    "periodTo": "999999",
+    "name": "Nuevo período de prueba",
+    "description": "Nuevo período de prueba",
+    "isActive": true
+  },
+  {
+    "code": "18",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "Trabajador discapacitado Art.34.Ley 24147",
+    "description": "Trabajador discapacitado Art.34.Ley 24147",
+    "isActive": true
+  },
+  {
+    "code": "21",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "A tiempo parcial determinado (contrato a plazo fijo)",
+    "description": "A tiempo parcial determinado (contrato a plazo fijo)",
+    "isActive": true
+  },
+  {
+    "code": "22",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "A tiempo completo determinado (contrato a plazo fijo)",
+    "description": "A tiempo completo determinado (contrato a plazo fijo)",
+    "isActive": true
+  },
+  {
+    "code": "23",
+    "periodFrom": "199910",
+    "periodTo": "999999",
+    "name": "Personal no permanente Ley N°22248",
+    "description": "Personal no permanente Ley N°22248",
+    "isActive": true
+  },
+  {
+    "code": "24",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Personal de la construcción Ley N°22250",
+    "description": "Personal de la construcción Ley N°22250",
+    "isActive": true
+  },
+  {
+    "code": "25",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Empleo público provincial",
+    "description": "Empleo público provincial",
+    "isActive": true
+  },
+  {
+    "code": "26",
+    "periodFrom": "199606",
+    "periodTo": "999999",
+    "name": "Beneficiario de programa de empleo,capacitación y de recueración productiva",
+    "description": "Beneficiario de programa de empleo,capacitación y de recueración productiva",
+    "isActive": true
+  },
+  {
+    "code": "27",
+    "periodFrom": "200110",
+    "periodTo": "999999",
+    "name": "Pasantías Ley 26427 - con obra social -",
+    "description": "Pasantías Ley 26427 - con obra social -",
+    "isActive": true
+  },
+  {
+    "code": "28",
+    "periodFrom": "195001",
+    "periodTo": "999999",
+    "name": "Programas  jefes y jefas de hogar",
+    "description": "Programas  jefes y jefas de hogar",
+    "isActive": true
+  },
+  {
+    "code": "29",
+    "periodFrom": "200306",
+    "periodTo": "999999",
+    "name": "AFA Regimen especial. Aportante autonomo",
+    "description": "AFA Regimen especial. Aportante autonomo",
+    "isActive": true
+  },
+  {
+    "code": "30",
+    "periodFrom": "200403",
+    "periodTo": "999999",
+    "name": "Nuevo período de prueba trabajador discapacitado Art.87 Ley N°24013",
+    "description": "Nuevo período de prueba trabajador discapacitado Art.87 Ley N°24013",
+    "isActive": true
+  },
+  {
+    "code": "31",
+    "periodFrom": "200403",
+    "periodTo": "999999",
+    "name": "Trabajador discapacitado Art.87 Ley N°24013",
+    "description": "Trabajador discapacitado Art.87 Ley N°24013",
+    "isActive": true
+  },
+  {
+    "code": "44",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Changa solidaria.CCT 62/75",
+    "description": "Changa solidaria.CCT 62/75",
+    "isActive": true
+  },
+  {
+    "code": "45",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Personal no permanente hoteles CCT 362/03 Art.68 Inc.B)",
+    "description": "Personal no permanente hoteles CCT 362/03 Art.68 Inc.B)",
+    "isActive": true
+  },
+  {
+    "code": "46",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Planta transitoria Adm.Pública Nacional, Provincial y/o Municipal",
+    "description": "Planta transitoria Adm.Pública Nacional, Provincial y/o Municipal",
+    "isActive": true
+  },
+  {
+    "code": "47",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Representante Gremial",
+    "description": "Representante Gremial",
+    "isActive": true
+  },
+  {
+    "code": "48",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Art.4°Ley 24241.Traslado temporario desdes el exterior ó Conv.bilateral de Seg.Social",
+    "description": "Art.4°Ley 24241.Traslado temporario desdes el exterior ó Conv.bilateral de Seg.Social",
+    "isActive": true
+  },
+  {
+    "code": "49",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "Director - Empleado SA con Obra Social y LRT",
+    "description": "Director - Empleado SA con Obra Social y LRT",
+    "isActive": true
+  },
+  {
+    "code": "51",
+    "periodFrom": "200812",
+    "periodTo": "999999",
+    "name": "Pasantias Ley 26.427 - con obra social - beneficiario pensión de discapacidad",
+    "description": "Pasantias Ley 26.427 - con obra social - beneficiario pensión de discapacidad",
+    "isActive": true
+  },
+  {
+    "code": "60",
+    "periodFrom": "201509",
+    "periodTo": "999999",
+    "name": "Taller Protegido Especial para el Empleo (TPEE) Ley 26816, art. 2º punto 1",
+    "description": "Taller Protegido Especial para el Empleo (TPEE) Ley 26816, art. 2º punto 1",
+    "isActive": true
+  },
+  {
+    "code": "61",
+    "periodFrom": "201601",
+    "periodTo": "999999",
+    "name": "Actor - Intérprete en Empleador Contratante Ley 27.203- C/OBRA SOCIAL",
+    "description": "Actor - Intérprete en Empleador Contratante Ley 27.203- C/OBRA SOCIAL",
+    "isActive": true
+  },
+  {
+    "code": "62",
+    "periodFrom": "201601",
+    "periodTo": "999999",
+    "name": "Actor - Intérprete en Empleador Contratante Ley 27.203- S/OBRA SOCIAL",
+    "description": "Actor - Intérprete en Empleador Contratante Ley 27.203- S/OBRA SOCIAL",
+    "isActive": true
+  },
+  {
+    "code": "63",
+    "periodFrom": "202210",
+    "periodTo": "999999",
+    "name": "Acciones de Entrenamiento para el Trabajo  - Res 1107/2022",
+    "description": "Acciones de Entrenamiento para el Trabajo  - Res 1107/2022",
+    "isActive": true
+  },
+  {
+    "code": "65",
+    "periodFrom": "202310",
+    "periodTo": "999999",
+    "name": "A Tiempo indeterminado /Trabajo permanente discontinuo",
+    "description": "A Tiempo indeterminado /Trabajo permanente discontinuo",
+    "isActive": true
+  },
+  {
+    "code": "95",
+    "periodFrom": "201001",
+    "periodTo": "999999",
+    "name": "Planes Ministerio de Trabajo",
+    "description": "Planes Ministerio de Trabajo",
+    "isActive": true
+  },
+  {
+    "code": "96",
+    "periodFrom": "200311",
+    "periodTo": "999999",
+    "name": "Plan Trabajadores por San Luis Ley 5411",
+    "description": "Plan Trabajadores por San Luis Ley 5411",
+    "isActive": true
+  },
+  {
+    "code": "97",
+    "periodFrom": "200702",
+    "periodTo": "999999",
+    "name": "Programa Trabajo para Jovenes Tucumanos",
+    "description": "Programa Trabajo para Jovenes Tucumanos",
+    "isActive": true
+  },
+  {
+    "code": "98",
+    "periodFrom": "200601",
+    "periodTo": "999999",
+    "name": "BONUS- SEGUNDA OPORTUNIDAD",
+    "description": "BONUS- SEGUNDA OPORTUNIDAD",
+    "isActive": true
+  },
+  {
+    "code": "99",
+    "periodFrom": "199407",
+    "periodTo": "999999",
+    "name": "LRT(Direc.SA, Municip.Org.cent.y descent.Emp.Mixta,docent.priv.opúbl.de jurisd.incorp. o no al SIJP",
+    "description": "LRT(Direc.SA, Municip.Org.cent.y descent.Emp.Mixta,docent.priv.opúbl.de jurisd.incorp. o no al SIJP",
+    "isActive": true
+  },
+  {
+    "code": "102",
+    "periodFrom": "201503",
+    "periodTo": "999999",
+    "name": "Empleado Servicio Eventual en Usuaria DTO 762",
+    "description": "Empleado Servicio Eventual en Usuaria DTO 762",
+    "isActive": true
+  },
+  {
+    "code": "103",
+    "periodFrom": "201805",
+    "periodTo": "999999",
+    "name": "Retiro Voluntario - Decreto 263/2018 y otros",
+    "description": "Retiro Voluntario - Decreto 263/2018 y otros",
+    "isActive": true
+  },
+  {
+    "code": "110",
+    "periodFrom": "201201",
+    "periodTo": "999999",
+    "name": "Trabajo permanente prestación continua Ley 26727",
+    "description": "Trabajo permanente prestación continua Ley 26727",
+    "isActive": true
+  },
+  {
+    "code": "111",
+    "periodFrom": "201201",
+    "periodTo": "999999",
+    "name": "Trabajo temporario Ley 26727",
+    "description": "Trabajo temporario Ley 26727",
+    "isActive": true
+  },
+  {
+    "code": "112",
+    "periodFrom": "201201",
+    "periodTo": "999999",
+    "name": "Trabajo permanente discontinuo ley 26727",
+    "description": "Trabajo permanente discontinuo ley 26727",
+    "isActive": true
+  },
+  {
+    "code": "982",
+    "periodFrom": "201602",
+    "periodTo": "999999",
+    "name": "CCG vitivinícola de Catamarca",
+    "description": "CCG vitivinícola de Catamarca",
+    "isActive": true
+  },
+  {
+    "code": "983",
+    "periodFrom": "201602",
+    "periodTo": "999999",
+    "name": "CCG vitivinícola de Salta",
+    "description": "CCG vitivinícola de Salta",
+    "isActive": true
+  },
+  {
+    "code": "984",
+    "periodFrom": "201512",
+    "periodTo": "999999",
+    "name": "CCG foresto industrial de Chaco",
+    "description": "CCG foresto industrial de Chaco",
+    "isActive": true
+  },
+  {
+    "code": "985",
+    "periodFrom": "201503",
+    "periodTo": "999999",
+    "name": "CCG Vitivinícola de Neuquén",
+    "description": "CCG Vitivinícola de Neuquén",
+    "isActive": true
+  },
+  {
+    "code": "987",
+    "periodFrom": "201601",
+    "periodTo": "999999",
+    "name": "CCG Vitivinícola de La Rioja",
+    "description": "CCG Vitivinícola de La Rioja",
+    "isActive": true
+  },
+  {
+    "code": "988",
+    "periodFrom": "201904",
+    "periodTo": "999999",
+    "name": "CCG  Limones de Tucuman Salta y Jujuy",
+    "description": "CCG  Limones de Tucuman Salta y Jujuy",
+    "isActive": true
+  },
+  {
+    "code": "989",
+    "periodFrom": "201212",
+    "periodTo": "999999",
+    "name": "CCG Tabaco Salta",
+    "description": "CCG Tabaco Salta",
+    "isActive": true
+  },
+  {
+    "code": "990",
+    "periodFrom": "201212",
+    "periodTo": "999999",
+    "name": "CCG Tabaco Jujuy",
+    "description": "CCG Tabaco Jujuy",
+    "isActive": true
+  },
+  {
+    "code": "991",
+    "periodFrom": "201212",
+    "periodTo": "999999",
+    "name": "CCG vitivinícola de Río Negro",
+    "description": "CCG vitivinícola de Río Negro",
+    "isActive": true
+  },
+  {
+    "code": "992",
+    "periodFrom": "201206",
+    "periodTo": "999999",
+    "name": "CCG multiproducto del Chaco",
+    "description": "CCG multiproducto del Chaco",
+    "isActive": true
+  },
+  {
+    "code": "994",
+    "periodFrom": "201503",
+    "periodTo": "999999",
+    "name": "CCG Yerba mate Misiones y Corrientes",
+    "description": "CCG Yerba mate Misiones y Corrientes",
+    "isActive": true
+  },
+  {
+    "code": "995",
+    "periodFrom": "201203",
+    "periodTo": "999999",
+    "name": "CCG Vitivinícola de San Juan",
+    "description": "CCG Vitivinícola de San Juan",
+    "isActive": true
+  },
+  {
+    "code": "996",
+    "periodFrom": "201203",
+    "periodTo": "999999",
+    "name": "CCG Vitivinícola de Mendoza",
+    "description": "CCG Vitivinícola de Mendoza",
+    "isActive": true
+  },
+  {
+    "code": "997",
+    "periodFrom": "201012",
+    "periodTo": "999999",
+    "name": "CCG FORESTAL CHACO",
+    "description": "CCG FORESTAL CHACO",
+    "isActive": true
+  },
+  {
+    "code": "998",
+    "periodFrom": "201010",
+    "periodTo": "999999",
+    "name": "CCG TABACO VIRGINIA CHACO",
+    "description": "CCG TABACO VIRGINIA CHACO",
+    "isActive": true
+  },
+  {
+    "code": "0",
+    "periodFrom": "199407",
+    "periodTo": "199909",
+    "name": "Contrato Modalidad Promovida.Reducción 0%",
+    "description": "Contrato Modalidad Promovida.Reducción 0%",
+    "isActive": false
+  },
+  {
+    "code": "4",
+    "periodFrom": "199910",
+    "periodTo": "200010",
+    "name": "Especial de Fomento del Empleo: L.24465",
+    "description": "Especial de Fomento del Empleo: L.24465",
+    "isActive": false
+  },
+  {
+    "code": "5",
+    "periodFrom": "199910",
+    "periodTo": "200005",
+    "name": "Fomento del empleo. L.24013 y 24465",
+    "description": "Fomento del empleo. L.24013 y 24465",
+    "isActive": false
+  },
+  {
+    "code": "6",
+    "periodFrom": "199910",
+    "periodTo": "200010",
+    "name": "Lanzamiento nueva actividad. Idem 005",
+    "description": "Lanzamiento nueva actividad. Idem 005",
+    "isActive": false
+  },
+  {
+    "code": "7",
+    "periodFrom": "199504",
+    "periodTo": "200007",
+    "name": "Período de prueba. Leyes 24465 y 25013",
+    "description": "Período de prueba. Leyes 24465 y 25013",
+    "isActive": false
+  },
+  {
+    "code": "9",
+    "periodFrom": "199910",
+    "periodTo": "200005",
+    "name": "Práctica laboral para jovenes",
+    "description": "Práctica laboral para jovenes",
+    "isActive": false
+  },
+  {
+    "code": "13",
+    "periodFrom": "199910",
+    "periodTo": "200105",
+    "name": "Trabajo formación",
+    "description": "Trabajo formación",
+    "isActive": false
+  },
+  {
+    "code": "15",
+    "periodFrom": "200006",
+    "periodTo": "200409",
+    "name": "Puesto nuevo varones y mujeres de 25 a 44 años",
+    "description": "Puesto nuevo varones y mujeres de 25 a 44 años",
+    "isActive": false
+  },
+  {
+    "code": "16",
+    "periodFrom": "200006",
+    "periodTo": "200402",
+    "name": "Nuevo período de prueba trabajador discapacitado Art.34 Ley 24147",
+    "description": "Nuevo período de prueba trabajador discapacitado Art.34 Ley 24147",
+    "isActive": false
+  },
+  {
+    "code": "17",
+    "periodFrom": "200006",
+    "periodTo": "200409",
+    "name": "Puesto nuevo menor de 25 años, varones y mujeres de 45 o más años y mujer jefe de flia.s/limite/edad",
+    "description": "Puesto nuevo menor de 25 años, varones y mujeres de 45 o más años y mujer jefe de flia.s/limite/edad",
+    "isActive": false
+  },
+  {
+    "code": "19",
+    "periodFrom": "200006",
+    "periodTo": "200409",
+    "name": "Puesto nuevo.Varones y mujeres 25 a 44 años Art.34.Ley 24147",
+    "description": "Puesto nuevo.Varones y mujeres 25 a 44 años Art.34.Ley 24147",
+    "isActive": false
+  },
+  {
+    "code": "20",
+    "periodFrom": "200006",
+    "periodTo": "200409",
+    "name": "Pto.nuevo menor 25 años,varones y mujeres 45 o más y mujer jefe flia.s/limite/edad.Art.34 L.24147",
+    "description": "Pto.nuevo menor 25 años,varones y mujeres 45 o más y mujer jefe flia.s/limite/edad.Art.34 L.24147",
+    "isActive": false
+  },
+  {
+    "code": "32",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877",
+    "description": "Período de prueba Art.6 Ley 25877",
+    "isActive": false
+  },
+  {
+    "code": "33",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877.Beneficiarios de planes jefes y jefas de hogar",
+    "description": "Período de prueba Art.6 Ley 25877.Beneficiarios de planes jefes y jefas de hogar",
+    "isActive": false
+  },
+  {
+    "code": "34",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877.Art.34 Ley 24147",
+    "description": "Período de prueba Art.6 Ley 25877.Art.34 Ley 24147",
+    "isActive": false
+  },
+  {
+    "code": "35",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877.Art.34 Ley 24147.Beneficiarios planes jefes y jefas de hogar",
+    "description": "Período de prueba Art.6 Ley 25877.Art.34 Ley 24147.Beneficiarios planes jefes y jefas de hogar",
+    "isActive": false
+  },
+  {
+    "code": "36",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877.Trabajador discapacitado Art.87 Ley 24013",
+    "description": "Período de prueba Art.6 Ley 25877.Trabajador discapacitado Art.87 Ley 24013",
+    "isActive": false
+  },
+  {
+    "code": "37",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Período de prueba Art.6 Ley 25877.Trab.discapacitado Art.87 Ley 24013 Benef.jefes-jefas hogar",
+    "description": "Período de prueba Art.6 Ley 25877.Trab.discapacitado Art.87 Ley 24013 Benef.jefes-jefas hogar",
+    "isActive": false
+  },
+  {
+    "code": "38",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nuevo Art. 6 Ley 25877",
+    "description": "Puesto nuevo Art. 6 Ley 25877",
+    "isActive": false
+  },
+  {
+    "code": "39",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nuevo Art.6 Ley 25877.beneficiario de planes jefes y jefas de hogar",
+    "description": "Puesto nuevo Art.6 Ley 25877.beneficiario de planes jefes y jefas de hogar",
+    "isActive": false
+  },
+  {
+    "code": "40",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nuevo Art.6 Ley 25877.Art.34 Ley 24147",
+    "description": "Puesto nuevo Art.6 Ley 25877.Art.34 Ley 24147",
+    "isActive": false
+  },
+  {
+    "code": "41",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nuevo Art.6 Ley 25877. Art.34 Ley 24147.Beneficiarios de planes jefes y jefas de hogar",
+    "description": "Puesto nuevo Art.6 Ley 25877. Art.34 Ley 24147.Beneficiarios de planes jefes y jefas de hogar",
+    "isActive": false
+  },
+  {
+    "code": "42",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nuevo Art.6 Ley 25877.Trabajador discapacitado Art.87 Ley 24013",
+    "description": "Puesto nuevo Art.6 Ley 25877.Trabajador discapacitado Art.87 Ley 24013",
+    "isActive": false
+  },
+  {
+    "code": "43",
+    "periodFrom": "200403",
+    "periodTo": "200812",
+    "name": "Puesto nvo. Art.6 ley 25877.Trab.discapacitado Art.87 ley 24013.Benef.planes jefes y jefas de hogar",
+    "description": "Puesto nvo. Art.6 ley 25877.Trab.discapacitado Art.87 ley 24013.Benef.planes jefes y jefas de hogar",
+    "isActive": false
+  },
+  {
+    "code": "50",
+    "periodFrom": "199407",
+    "periodTo": "199909",
+    "name": "Contrato modalidad promovida .Reducción 50%",
+    "description": "Contrato modalidad promovida .Reducción 50%",
+    "isActive": false
+  },
+  {
+    "code": "100",
+    "periodFrom": "199407",
+    "periodTo": "199909",
+    "name": "Contrato modalidad promovida.Reducción 100%",
+    "description": "Contrato modalidad promovida.Reducción 100%",
+    "isActive": false
+  },
+  {
+    "code": "101",
+    "periodFrom": "194001",
+    "periodTo": "199406",
+    "name": "Pre-SIJP (Anterior a 07/1994)",
+    "description": "Pre-SIJP (Anterior a 07/1994)",
+    "isActive": false
+  },
+  {
+    "code": "114",
+    "periodFrom": "201303",
+    "periodTo": "201502",
+    "name": "Trabajo temporario con Reducción Ley 26727",
+    "description": "Trabajo temporario con Reducción Ley 26727",
+    "isActive": false
+  },
+  {
+    "code": "115",
+    "periodFrom": "201303",
+    "periodTo": "201502",
+    "name": "Trabajo permanente discontinuo con Reducción ley 26727",
+    "description": "Trabajo permanente discontinuo con Reducción ley 26727",
+    "isActive": false
+  },
+  {
+    "code": "201",
+    "periodFrom": "200812",
+    "periodTo": "201312",
+    "name": "Puesto Nuevo ART.16 LEY 26476",
+    "description": "Puesto Nuevo ART.16 LEY 26476",
+    "isActive": false
+  },
+  {
+    "code": "202",
+    "periodFrom": "200812",
+    "periodTo": "201312",
+    "name": "Puesto Nuevo ART.16 LEY 26476 Trabajador  Discapacitado ART.34 LEY 24147",
+    "description": "Puesto Nuevo ART.16 LEY 26476 Trabajador  Discapacitado ART.34 LEY 24147",
+    "isActive": false
+  },
+  {
+    "code": "203",
+    "periodFrom": "200812",
+    "periodTo": "201312",
+    "name": "Puesto Nuevo ART.16 LEY 26476 Trabajador Discapacitado ART. 87 LEY 24013",
+    "description": "Puesto Nuevo ART.16 LEY 26476 Trabajador Discapacitado ART. 87 LEY 24013",
+    "isActive": false
+  },
+  {
+    "code": "211",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 11 Inc b L26476 Reg Pers n/Registrado",
+    "description": "Art 11 Inc b L26476 Reg Pers n/Registrado",
+    "isActive": false
+  },
+  {
+    "code": "212",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 11 Inc b L26476 Reg Pers n/Registrado Disc Art 34 L24147",
+    "description": "Art 11 Inc b L26476 Reg Pers n/Registrado Disc Art 34 L24147",
+    "isActive": false
+  },
+  {
+    "code": "213",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 11 Inc b L 26476 Reg Pers n/Registrado Disc Art 87 L24013",
+    "description": "Art 11 Inc b L 26476 Reg Pers n/Registrado Disc Art 87 L24013",
+    "isActive": false
+  },
+  {
+    "code": "221",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 12 L26476 Reg Pers n/Registrado",
+    "description": "Art 12 L26476 Reg Pers n/Registrado",
+    "isActive": false
+  },
+  {
+    "code": "222",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 12 L26476 Reg Pers n/Registrado Disc Art 34 L24147",
+    "description": "Art 12 L26476 Reg Pers n/Registrado Disc Art 34 L24147",
+    "isActive": false
+  },
+  {
+    "code": "223",
+    "periodFrom": "195001",
+    "periodTo": "200812",
+    "name": "Art 12 L26476 Reg Pers n/Registrado Disc Art 87 L24013",
+    "description": "Art 12 L26476 Reg Pers n/Registrado Disc Art 87 L24013",
+    "isActive": false
+  },
+  {
+    "code": "301",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Tiempo indeterminado",
+    "description": "Art. 19 Ley 26940. Tiempo indeterminado",
+    "isActive": false
+  },
+  {
+    "code": "302",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Trabajador discapacitado art. 34 L 24147. Tiempo indeterminado",
+    "description": "Art. 19 Ley 26940. Trabajador discapacitado art. 34 L 24147. Tiempo indeterminado",
+    "isActive": false
+  },
+  {
+    "code": "303",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Trabajador discapacitado art. 87 L 24013. Tiempo indeterminado",
+    "description": "Art. 19 Ley 26940. Trabajador discapacitado art. 87 L 24013. Tiempo indeterminado",
+    "isActive": false
+  },
+  {
+    "code": "304",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Tiempo parcial. Art. 92 ter LCT",
+    "description": "Art. 19 Ley 26940. Tiempo parcial. Art. 92 ter LCT",
+    "isActive": false
+  },
+  {
+    "code": "305",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Trabajador discapacitado art. 34 L 24147. Tiempo parcial. Art. 92 ter LCT",
+    "description": "Art. 19 Ley 26940. Trabajador discapacitado art. 34 L 24147. Tiempo parcial. Art. 92 ter LCT",
+    "isActive": false
+  },
+  {
+    "code": "306",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 19 Ley 26940. Trabajador discapacitado art. 87 L 24013. Tiempo parcial. Art. 92 ter LCT",
+    "description": "Art. 19 Ley 26940. Trabajador discapacitado art. 87 L 24013. Tiempo parcial. Art. 92 ter LCT",
+    "isActive": false
+  },
+  {
+    "code": "307",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. Hasta 15 empleados. Primeros 12 meses. Tiempo indeterminado",
+    "description": "Art. 24 Ley 26940. Hasta 15 empleados. Primeros 12 meses. Tiempo indeterminado",
+    "isActive": false
+  },
+  {
+    "code": "308",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. H/ 15 emp. 1ros 12 meses. Tiempo indet. Trabajador discap. art. 34 L 24147",
+    "description": "Art. 24 Ley 26940. H/ 15 emp. 1ros 12 meses. Tiempo indet. Trabajador discap. art. 34 L 24147",
+    "isActive": false
+  },
+  {
+    "code": "309",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. H/ 15 emp. 1ros 12 meses. Tiempo indet. Trabajador discap. art. 87 L 24013",
+    "description": "Art. 24 Ley 26940. H/ 15 emp. 1ros 12 meses. Tiempo indet. Trabajador discap. art. 87 L 24013",
+    "isActive": false
+  },
+  {
+    "code": "313",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. 16 a 80 empleados. Tiempo indeterminado",
+    "description": "Art. 24 Ley 26940. 16 a 80 empleados. Tiempo indeterminado",
+    "isActive": false
+  },
+  {
+    "code": "314",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. 16 a 80 empl. Tiempo indet. Trabajador discapacitado art. 34 L 24147",
+    "description": "Art. 24 Ley 26940. 16 a 80 empl. Tiempo indet. Trabajador discapacitado art. 34 L 24147",
+    "isActive": false
+  },
+  {
+    "code": "315",
+    "periodFrom": "201408",
+    "periodTo": "201712",
+    "name": "Art. 24 Ley 26940. 16 a 80 empl. Tiempo indet. Trabajador discapacitado art. 87 L 24013",
+    "description": "Art. 24 Ley 26940. 16 a 80 empl. Tiempo indet. Trabajador discapacitado art. 87 L 24013",
+    "isActive": false
+  },
+  {
+    "code": "401",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Puesto nuevo Art 2 inc. a Decreto 191/ 2021. Primeros 12 meses",
+    "description": "Puesto nuevo Art 2 inc. a Decreto 191/ 2021. Primeros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "402",
+    "periodFrom": "202204",
+    "periodTo": "202405",
+    "name": "Puesto nuevo Art 2 inc. b Decreto 191/ 2021. Segundos 12 meses",
+    "description": "Puesto nuevo Art 2 inc. b Decreto 191/ 2021. Segundos 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "403",
+    "periodFrom": "202304",
+    "periodTo": "202505",
+    "name": "Puesto nuevo Art 2 inc. c Decreto 191/ 2021. Terceros 12 meses",
+    "description": "Puesto nuevo Art 2 inc. c Decreto 191/ 2021. Terceros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "404",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Puesto nuevo Art 2 inc. d Decreto 191/ 2021. Primeros 12 meses",
+    "description": "Puesto nuevo Art 2 inc. d Decreto 191/ 2021. Primeros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "405",
+    "periodFrom": "202204",
+    "periodTo": "202405",
+    "name": "Puesto nuevo Art 2 inc. e Decreto 191/ 2021 segundos 12 meses",
+    "description": "Puesto nuevo Art 2 inc. e Decreto 191/ 2021 segundos 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "406",
+    "periodFrom": "202304",
+    "periodTo": "202505",
+    "name": "Puesto nuevo Art 2 inc. f Decreto 191/ 2021 terceros 12 meses",
+    "description": "Puesto nuevo Art 2 inc. f Decreto 191/ 2021 terceros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "407",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. a Decreto 191/ 2021. Primeros 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. a Decreto 191/ 2021. Primeros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "408",
+    "periodFrom": "202204",
+    "periodTo": "202405",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. b Decreto 191/ 2021. Segundos 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. b Decreto 191/ 2021. Segundos 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "409",
+    "periodFrom": "202304",
+    "periodTo": "202505",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. c Decreto 191/ 2021. Terceros 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. c Decreto 191/ 2021. Terceros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "410",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. d Decreto 191/ 2021. Primeros 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. d Decreto 191/ 2021. Primeros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "411",
+    "periodFrom": "202204",
+    "periodTo": "202405",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. e Decreto 191/ 2021. Segundos 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. e Decreto 191/ 2021. Segundos 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "412",
+    "periodFrom": "202304",
+    "periodTo": "202505",
+    "name": "Tiempo parcial. Puesto nuevo Art 2 inc. f Decreto 191/ 2021. Terceros 12 meses",
+    "description": "Tiempo parcial. Puesto nuevo Art 2 inc. f Decreto 191/ 2021. Terceros 12 meses",
+    "isActive": false
+  },
+  {
+    "code": "413",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. a Decreto 191/ 2021",
+    "description": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. a Decreto 191/ 2021",
+    "isActive": false
+  },
+  {
+    "code": "414",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. d Decreto 191/ 2021",
+    "description": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. d Decreto 191/ 2021",
+    "isActive": false
+  },
+  {
+    "code": "415",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Discapacitado Ley 24.013 y Tiempo parcial Puesto nuevo Art 2 inc. a Decreto 191/ 2021",
+    "description": "Discapacitado Ley 24.013 y Tiempo parcial Puesto nuevo Art 2 inc. a Decreto 191/ 2021",
+    "isActive": false
+  },
+  {
+    "code": "416",
+    "periodFrom": "202104",
+    "periodTo": "202305",
+    "name": "Discapacitado Ley 24.013 y Tiempo parcial Puesto nuevo Art 2 inc. d Decreto 191/ 2021",
+    "description": "Discapacitado Ley 24.013 y Tiempo parcial Puesto nuevo Art 2 inc. d Decreto 191/ 2021",
+    "isActive": false
+  },
+  {
+    "code": "501",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "description": "Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "502",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Puesto Nuevo Art 2 inc. b.Dec. 493/2021",
+    "description": "Puesto Nuevo Art 2 inc. b.Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "503",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Tiempo parcial. Puesto Nuevo Art 2 inc. a.Dec. 493/2021",
+    "description": "Tiempo parcial. Puesto Nuevo Art 2 inc. a.Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "504",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Tiempo parcial. Puesto Nuevo Art 2 inc. b.Dec. 493/2021",
+    "description": "Tiempo parcial. Puesto Nuevo Art 2 inc. b.Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "505",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. a. Dec. 493/2021",
+    "description": "Discapacitado Ley 24.013 y Puesto nuevo Art 2 inc. a. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "506",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Discapacitado Ley 24.013 y Tiempo parcial Puesto Nuevo Art 2 inc. a.Dec. 493/2021",
+    "description": "Discapacitado Ley 24.013 y Tiempo parcial Puesto Nuevo Art 2 inc. a.Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "507",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Trabajo permanente prestación continua Ley 26727. Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "description": "Trabajo permanente prestación continua Ley 26727. Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "508",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Trabajo permanente prestación continua Ley 26727. Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "description": "Trabajo permanente prestación continua Ley 26727. Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "509",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Trabajo permanente discontinuo ley 26727. Puesto Nuevo Art 2 inc. a.  Dec. 493/2021",
+    "description": "Trabajo permanente discontinuo ley 26727. Puesto Nuevo Art 2 inc. a.  Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "510",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Trabajo permanente discontinuo ley 26727. Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "description": "Trabajo permanente discontinuo ley 26727. Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "511",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Personal de la Construcción L 22250 Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "description": "Personal de la Construcción L 22250 Puesto Nuevo Art 2 inc. a. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "512",
+    "periodFrom": "202109",
+    "periodTo": "202209",
+    "name": "Personal de la Construcción L 22250 Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "description": "Personal de la Construcción L 22250 Puesto Nuevo Art 2 inc. b. Dec. 493/2021",
+    "isActive": false
+  },
+  {
+    "code": "601",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Plazo indeterminado a tiempo completo (art 90 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 100%.",
+    "description": "Plazo indeterminado a tiempo completo (art 90 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 100%.",
+    "isActive": false
+  },
+  {
+    "code": "602",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Plazo indeterminado a tpo parcial (art 90 y art 92 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 50%",
+    "description": "Plazo indeterminado a tpo parcial (art 90 y art 92 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 50%",
+    "isActive": false
+  },
+  {
+    "code": "603",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Plazo fijo a tiempo completo ( art 93 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 100%.",
+    "description": "Plazo fijo a tiempo completo ( art 93 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 100%.",
+    "isActive": false
+  },
+  {
+    "code": "604",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Plazo fijo a tiempo parcial ( art 92 y art 93 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 50%.",
+    "description": "Plazo fijo a tiempo parcial ( art 92 y art 93 Ley 20744) Art 2 Dec 551/22 y 1085/24. Red. 50%.",
+    "isActive": false
+  },
+  {
+    "code": "605",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trabajo de temporada a tiempo completo (art 96 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 100%.",
+    "description": "Trabajo de temporada a tiempo completo (art 96 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 100%.",
+    "isActive": false
+  },
+  {
+    "code": "606",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trabajo de temporada a tpo parcial (art 92 y art 96 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "description": "Trabajo de temporada a tpo parcial (art 92 y art 96 Ley 20744) Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "isActive": false
+  },
+  {
+    "code": "607",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trab agrario perm prest cont a tpo compl (Ley 26727). Pto Nvo Art 2 Dec 551/22 y 1085/24. Red. 100%",
+    "description": "Trab agrario perm prest cont a tpo compl (Ley 26727). Pto Nvo Art 2 Dec 551/22 y 1085/24. Red. 100%",
+    "isActive": false
+  },
+  {
+    "code": "608",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trab agrario perm pres continua a tpo pcial (Ley 26727) Pto Nvo Art 2 Dec.551/22 y 1085/24. Red.50 %",
+    "description": "Trab agrario perm pres continua a tpo pcial (Ley 26727) Pto Nvo Art 2 Dec.551/22 y 1085/24. Red.50 %",
+    "isActive": false
+  },
+  {
+    "code": "609",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trab agrario perm discont a tpo completo (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red.100%",
+    "description": "Trab agrario perm discont a tpo completo (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red.100%",
+    "isActive": false
+  },
+  {
+    "code": "610",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trabajo agrario perm discont a tpo parcial (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "description": "Trabajo agrario perm discont a tpo parcial (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "isActive": false
+  },
+  {
+    "code": "611",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trabajo agrario de temp a tpo completo (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red.100%",
+    "description": "Trabajo agrario de temp a tpo completo (Ley 26727) Pto Nvo Art 2 Dec. 551/22 y 1085/24. Red.100%",
+    "isActive": false
+  },
+  {
+    "code": "612",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Trabajo agrario de temp a tpo parcial (Ley 26727). Pto Nuevo Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "description": "Trabajo agrario de temp a tpo parcial (Ley 26727). Pto Nuevo Art 2 Dec. 551/22 y 1085/24. Red. 50%",
+    "isActive": false
+  },
+  {
+    "code": "613",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Personal de la Construcción a tpo completo (Ley 22250) Pto Nvo Art 2. Dec. 551/22 y 1085/24 Red.100%",
+    "description": "Personal de la Construcción a tpo completo (Ley 22250) Pto Nvo Art 2. Dec. 551/22 y 1085/24 Red.100%",
+    "isActive": false
+  },
+  {
+    "code": "614",
+    "periodFrom": "202210",
+    "periodTo": "202711",
+    "name": "Pers.de la Constr a tpo pcial (L22250 y art 92 L20744) Pto Nvo Art 2. Dec.551/22 y 1085/24. Red. 50%",
+    "description": "Pers.de la Constr a tpo pcial (L22250 y art 92 L20744) Pto Nvo Art 2. Dec.551/22 y 1085/24. Red. 50%",
+    "isActive": false
+  },
+  {
+    "code": "701",
+    "periodFrom": "199407",
+    "periodTo": "202407",
+    "name": "Regularización personal no registrado. Art 77 Ley 27.742.",
+    "description": "Regularización personal no registrado. Art 77 Ley 27.742.",
+    "isActive": false
+  },
+  {
+    "code": "702",
+    "periodFrom": "199407",
+    "periodTo": "202407",
+    "name": "Regularización personal no registrado. Art 77 Ley 27.742 Micro y Peq. Emp. y ent. sin fines de lucro",
+    "description": "Regularización personal no registrado. Art 77 Ley 27.742 Micro y Peq. Emp. y ent. sin fines de lucro",
+    "isActive": false
+  },
+  {
+    "code": "703",
+    "periodFrom": "199407",
+    "periodTo": "202407",
+    "name": "Regularización personal no registrado. Art 77 Ley 27.742. Medianas Empresas Tramo 1 y 2.",
+    "description": "Regularización personal no registrado. Art 77 Ley 27.742. Medianas Empresas Tramo 1 y 2.",
+    "isActive": false
+  },
+  {
+    "code": "704",
+    "periodFrom": "199407",
+    "periodTo": "202610",
+    "name": "Regularización personal no registrado. Art. 169 - Ley 27.802. Micro y Peq. Emp. Ent. s/ fin de lucro",
+    "description": "Regularización personal no registrado. Art. 169 - Ley 27.802. Micro y Peq. Emp. Ent. s/ fin de lucro",
+    "isActive": false
+  },
+  {
+    "code": "705",
+    "periodFrom": "199407",
+    "periodTo": "202610",
+    "name": "Regularización personal no registrado. Art. 169 - Ley 27.802. Medianas Empresas Tramo 1 y 2.",
+    "description": "Regularización personal no registrado. Art. 169 - Ley 27.802. Medianas Empresas Tramo 1 y 2.",
+    "isActive": false
+  },
+  {
+    "code": "706",
+    "periodFrom": "199407",
+    "periodTo": "202610",
+    "name": "Regularización personal no registrado. Art. 169 - Ley 27.802. Demás empleadores.",
+    "description": "Regularización personal no registrado. Art. 169 - Ley 27.802. Demás empleadores.",
+    "isActive": false
+  },
+  {
+    "code": "710",
+    "periodFrom": "202605",
+    "periodTo": "203103",
+    "name": "Régimen de Incentivo para la Formalización Laboral - Ley 27.802",
+    "description": "Régimen de Incentivo para la Formalización Laboral - Ley 27.802",
+    "isActive": false
+  }
+]

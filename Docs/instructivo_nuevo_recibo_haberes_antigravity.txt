@@ -1,0 +1,247 @@
+INSTRUCTIVO TÉCNICO DE IMPLEMENTACIÓN PARA ANTIGRAVITY
+SISTEMA DE LIQUIDACIÓN DE HABERES - MÓDULO DE EMISIÓN DE RECIBOS DE SUELDO DIGITALES
+NORMATIVA VIGENTE: LEY N° 27.802 (MODERNIZACIÓN LABORAL), DECRETO N° 407/2026 Y RESOLUCIONES ARCA 2026
+
+================================================================================
+1. OBJETIVO Y MARCO REGULATORIO
+================================================================================
+Este instructivo establece las especificaciones técnicas, el diseño de datos, las reglas de cálculo y los requisitos de maquetación requeridos para programar el motor de generación de recibos de sueldo digitales y PDF.
+
+Fundamentos Normativos:
+- Ley N° 27.802 (Modernización Laboral, BO 06/03/2026):
+  * Art. 139 LCT (sustituido por Art. 38 Ley 27.802): Emisión en formato digital con firma electrónica/digital (Ley 25.506) o papel. Se elimina la obligación del duplicado en papel.
+  * Art. 140 LCT (sustituido por Art. 39 Ley 27.802): 10 enunciaciones obligatorias (incisos a al j), incluyendo la visibilización explícita del Costo Laboral Total y contribuciones patronales.
+  * Art. 143 LCT (sustituido por Art. 40 Ley 27.802): Validez de conservación digitalizada (2 años para prescripción laboral, 10 años para obligaciones de la Seguridad Social).
+- Decreto N° 407/2026 (BO 01/06/2026):
+  * Modifica el Art. 140 de la LCT e introduce la estructura obligatoria en 4 bloques y la inclusión del Gráfico de Torta de Costo Laboral Total (Anexo III).
+- Resoluciones Generales ARCA / AFIP: RG 5250 (Libro de Sueldos Digital) y RG 5565/2024 (Mi Liquidación Digital / App ARCA móvil).
+
+================================================================================
+2. ESTRUCTURA OBLIGATORIA DEL RECIBO (LOS 4 BLOQUES + GRÁFICO VISUAL)
+================================================================================
+El nuevo modelo legal exige organizar la información salarial en 4 secciones o bloques claramente diferenciados, sumados a un gráfico de torta obligatorio.
+
+--------------------------------------------------------------------------------
+BLOQUE 1: ENCABEZADO Y DATOS IDENTIFICATORIOS (Sección A)
+--------------------------------------------------------------------------------
+Contiene los datos del empleador, del trabajador y los parámetros de la liquidación (Art. 140 inc. a, b, e, i LCT).
+
+Campos obligatorios del Empleador:
+  - Razón Social / Nombre Completo del Empleador
+  - CUIT del Empleador
+  - Domicilio Fiscal y Jurisdicción
+  - Registro / Inscripción Legal (si corresponde)
+
+Campos obligatorios del Trabajador:
+  - Apellido y Nombre completo
+  - CUIL del Trabajador
+  - Legajo interno
+  - Categoría profesional / Puesto efectivamente desempeñado
+  - Tarea cumplida durante el período
+  - Fecha de ingreso
+  - Antigüedad reconocida (Años y Meses)
+  - Convenio Colectivo de Trabajo (CCT) aplicable
+  - Calificación profesional
+
+Campos de la Liquidación:
+  - Período liquidado (Mes/Año, Ej. 09/2026)
+  - Tipo de liquidación (Mensual, 1° Quincena, 2° Quincena, SAC, Vacaciones, Final)
+  - Número de liquidación
+  - Días o Horas liquidadas en el período
+
+--------------------------------------------------------------------------------
+BLOQUE 2: CONTRIBUCIONES PATRONALES Y COSTO LABORAL TOTAL (Sección B - Novedad Ley 27.802 / Inc. j)
+--------------------------------------------------------------------------------
+Transparenta todas las cargas y obligaciones fiscales y convencionales asumidas exclusivamente por el empleador sobre la relación laboral. No se descuentan del sueldo del trabajador.
+
+Conceptos Obligatorios a Detallar (con Base de Cálculo, Alícuota y Monto):
+  1. SIPA (Contribución Previsional Patronal)
+  2. INSSJP / PAMI (Contribución Patronal)
+  3. Obra Social Patronal (Contribución O.S.)
+  4. Fondo Nacional de Empleo (FNE)
+  5. Asignaciones Familiares (AAFF Patronal)
+  6. ART (Aseguradora de Riesgos del Trabajo: Alícuota % + Cuota Fija por trabajador)
+  7. SCVO (Seguro Colectivo de Vida Obligatorio)
+  8. Aportes Patronales a Cámaras Empresariales / Fondos de Convención (según CCT)
+  9. Cuota / Contribución Patronal Sindical (si corresponde según CCT)
+
+Regla de Prorrateo: Si existen conceptos globales contratados por la empresa (ej. pólizas o montos fijos por nómina), el sistema debe prorratear e imputar la cuota exacta individual a cada recibo.
+
+--------------------------------------------------------------------------------
+BLOQUE 3: TOTAL REMUNERACIÓN BRUTA Y DEDUCCIONES DEL TRABAJADOR (Sección C)
+--------------------------------------------------------------------------------
+Presenta el detalle de los ingresos devengados y las retenciones practicadas al empleado.
+
+Conceptos de Ingreso (Haberes):
+  - Conceptos Remunerativos: Sueldo Básico, Horas Extras (50%, 100%, 200%), Comisiones, Presentismo, Antigüedad, Adicionales de Convenio, SAC, Adelanto Vacacional, Gratificaciones.
+  - Conceptos No Remunerativos: Viáticos con/sin comprobante, Asignaciones Familiares, Sumas no remunerativas convencionales, Beneficios sociales (comedor, guardería, etc.).
+
+Deducciones y Retenciones al Trabajador (Art. 140 inc. f LCT):
+  - Aporte Jubilatorio (SIPA 11%)
+  - Aporte INSSJP / PAMI (Ley 19.032 - 3%)
+  - Aporte Obra Social (Ley 23.660 - 3%)
+  - Cuota Sindical / Aporte Solidario del Trabajador (según CCT)
+  - Impuesto a las Ganancias 4ta Categoría (Retención ARCA)
+  - Embargos Judiciales / Descuentos autorizados por ley
+
+--------------------------------------------------------------------------------
+BLOQUE 4: REMUNERACIÓN NETA Y DATOS DE PAGO (Sección D)
+--------------------------------------------------------------------------------
+Informa el líquido final a percibir por el trabajador.
+
+Campos Obligatorios:
+  - Importe Neto a Cobrar en Números ($)
+  - Importe Neto a Cobrar en Letras (Ej: "PESOS UN MILLÓN DOSCIENTOS MIL CON 00/100")
+  - Fecha de Pago (Formato AAAA-MM-DD)
+  - Forma de Pago (Acreditación en cuenta bancaria, Efectivo, Cheque)
+  - CBU / Alía de la cuenta de acreditación y Banco pagador
+  - Lugar y fecha de emisión del recibo
+  - Cuña Fiscal y Sindical: Explicación resumida del destino de los fondos retenidos y aportados (Seguridad Social, Salud, Sindicato).
+
+--------------------------------------------------------------------------------
+BLOQUE 5: GRÁFICO DE TORTA OBLIGATORIO (VISUALIZACIÓN DE COSTO LABORAL)
+--------------------------------------------------------------------------------
+El Decreto 407/2026 exige incluir en el frente o cuerpo principal del recibo un gráfico circular que muestre visualmente la distribución del Costo Laboral Total (100%).
+
+Segmentos Obligatorios del Gráfico:
+  1. Sueldo Neto cobrado por el trabajador (%)
+  2. Aportes y Deducciones del trabajador (%) [Jubilación, PAMI, OS, Sindicato, Ganancias]
+  3. Contribuciones Patronales a la Seguridad Social (%) [SIPA, PAMI, FNE, AAFF]
+  4. Contribuciones Patronales a Obra Social / Salud (%)
+  5. ART y Seguros (%) [Riesgos del Trabajo + SCVO]
+  6. Aportes a Cámaras Empresariales / Cuota Patronal Sindical (%)
+
+================================================================================
+3. ESTRUCTURA DE DATOS / JSON SCHEMA RECOMENDADO PARA EL BACKEND
+================================================================================
+Antigravity debe implementar la siguiente estructura JSON en el payload que alimenta la plantilla de generación del recibo:
+
+{
+  "recibo_id": "REC-2026-09-00142",
+  "fecha_emision": "2026-09-30",
+  "periodo": "2026-09",
+  "tipo_liquidacion": "MENSUAL",
+  "empleador": {
+    "razon_social": "EMPRESA EJEMPLO S.A.",
+    "cuit": "30711111112",
+    "domicilio": "Av. Corrientes 1234, CABA",
+    "actividad": "Servicios de Software"
+  },
+  "trabajador": {
+    "legajo": "000142",
+    "apellido_nombre": "GARCIA JUAN PABLO",
+    "cuil": "20345678909",
+    "fecha_ingreso": "2021-03-15",
+    "antiguedad_anos": 5,
+    "categoria": "Analista Senior",
+    "tarea_desempenada": "Desarrollo Backend",
+    "cct": "130/75 - Empleados de Comercio",
+    "cbu": "0170001520000001234567",
+    "banco": "Banco de la Nación Argentina"
+  },
+  "liquidacion": {
+    "dias_liquidados": 30,
+    "horas_liquidadas": 160,
+    "fecha_pago": "2026-10-04",
+    "forma_pago": "Acreditación en Cuenta CBU"
+  },
+  "conceptos_remunerativos": [
+    {"codigo": "1000", "descripcion": "Sueldo Básico", "cantidad": 30, "unidad": "Días", "importe": 1500000.00},
+    {"codigo": "1010", "descripcion": "Antigüedad", "cantidad": 5, "unidad": "%", "importe": 75000.00},
+    {"codigo": "1020", "descripcion": "Presentismo", "cantidad": 8.33, "unidad": "%", "importe": 131200.00}
+  ],
+  "conceptos_no_remunerativos": [
+    {"codigo": "5000", "descripcion": "Asignación No Remunerativa CCT", "cantidad": 1, "unidad": "Fijo", "importe": 100000.00}
+  ],
+  "deducciones_trabajador": [
+    {"codigo": "8000", "descripcion": "Aporte Jubilatorio SIPA (11%)", "porcentaje": 11.0, "importe": 187682.00},
+    {"codigo": "8001", "descripcion": "Aporte INSSJP / PAMI (3%)", "porcentaje": 3.0, "importe": 51186.00},
+    {"codigo": "8002", "descripcion": "Aporte Obra Social (3%)", "porcentaje": 3.0, "importe": 51186.00},
+    {"codigo": "8004", "descripcion": "Cuota Sindical SEC (2%)", "porcentaje": 2.0, "importe": 34124.00},
+    {"codigo": "8008", "descripcion": "Retención Impuesto a las Ganancias", "porcentaje": 0.0, "importe": 45000.00}
+  ],
+  "contribuciones_patronales": [
+    {"codigo": "C001", "descripcion": "Contribución Previsional SIPA (16%)", "base": 1706200.00, "alicuota": 16.0, "importe": 272992.00},
+    {"codigo": "C002", "descripcion": "Contribución INSSJP / PAMI (2%)", "base": 1706200.00, "alicuota": 2.0, "importe": 34124.00},
+    {"codigo": "C003", "descripcion": "Contribución Obra Social (6%)", "base": 1706200.00, "alicuota": 6.0, "importe": 102372.00},
+    {"codigo": "C004", "descripcion": "Contribución FNE (1.5%)", "base": 1706200.00, "alicuota": 1.5, "importe": 25593.00},
+    {"codigo": "C005", "descripcion": "Contribución AAFF (4.5%)", "base": 1706200.00, "alicuota": 4.5, "importe": 76779.00},
+    {"codigo": "C006", "descripcion": "ART (Alícuota 3.5% + Cuota Fija $850)", "base": 1806200.00, "alicuota": 3.5, "importe": 64067.00},
+    {"codigo": "C007", "descripcion": "Seguro Colectivo de Vida Obligatorio (SCVO)", "base": 1.0, "alicuota": 0.0, "importe": 650.00},
+    {"codigo": "C008", "descripcion": "Contribución Patronal FAECYS (0.5%)", "base": 1706200.00, "alicuota": 0.5, "importe": 8531.00}
+  ],
+  "totales": {
+    "total_remunerativo": 1706200.00,
+    "total_no_remunerativo": 100000.00,
+    "remuneracion_bruta_total": 1806200.00,
+    "total_deducciones_trabajador": 369178.00,
+    "sueldo_neto": 1437022.00,
+    "sueldo_neto_letras": "PESOS UN MILLÓN CUATROCIENTOS TREINTA Y SIETE MIL VEINTIDÓS CON 00/100",
+    "total_contribuciones_patronales": 585108.00,
+    "costo_laboral_total": 2391308.00
+  },
+  "distribucion_costo_porcentual": {
+    "pct_neto_trabajador": 60.10,
+    "pct_aportes_trabajador": 15.44,
+    "pct_contribuciones_seguridad_social": 17.13,
+    "pct_contribuciones_obra_social": 4.28,
+    "pct_art_y_seguros": 2.71,
+    "pct_aportes_camaras_sindicato": 0.34
+  }
+}
+
+================================================================================
+4. FÓRMULAS ARITMÉTICAS Y VALIDACIONES EN BACKEND
+================================================================================
+El motor de código debe ejecutar de forma estricta las siguientes ecuaciones antes de renderizar el recibo:
+
+1. Remuneración Bruta Total ($RB$):
+   $RB = \sum \text{Importes Remunerativos} + \sum \text{Importes No Remunerativos}$
+
+2. Total Deducciones del Trabajador ($TD$):
+   $TD = \sum \text{Deducciones} (SIPA + INSSJP + OS + Sindicato + Ganancias + Embargos)$
+
+3. Sueldo Neto o Líquido ($SN$):
+   $SN = RB - TD$
+
+4. Total Contribuciones Patronales ($TCP$):
+   $TCP = \sum \text{Contribuciones Patronales} (SIPA + PAMI + OS + FNE + AAFF + ART + SCVO + Cámaras/Sindicato)$
+
+5. Costo Laboral Total ($CLT$):
+   $CLT = RB + TCP$
+
+6. Cálculo de Porcentajes del Gráfico de Torta (sobre $CLT = 100\%$):
+   - $\% \text{Sueldo Neto} = (SN / CLT) \times 100$
+   - $\% \text{Deducciones Trabajador} = (TD / CLT) \times 100$
+   - $\% \text{Contribuciones Patronales SUSS} = (\sum \text{Contrib. SUSS} / CLT) \times 100$
+   - $\% \text{Contribuciones Salud / OS} = (\text{Contrib. OS} / CLT) \times 100$
+   - $\% \text{ART y Seguros} = ((\text{ART} + \text{SCVO}) / CLT) \times 100$
+   - $\% \text{Cámaras y Sindicato Patronal} = (\text{Contrib. Cámaras/Sindical} / CLT) \times 100$
+
+Regla de Control de Redondeo: La suma de todos los porcentajes del gráfico de torta debe cerrar exactamente en 100.00%.
+
+================================================================================
+5. REQUISITOS TÉCNICOS PARA GENERACIÓN EN PDF Y DIGITAL
+================================================================================
+1. Maquetación y Formato visual:
+   - Formato de hoja: A4 vertical (Portrait).
+   - Estructura limpia de 4 paneles o cajas diferenciadas mediante bordes sutiles.
+   - El Gráfico de Torta debe renderizarse vectorialmente (SVG) o generarse vía librería de gráficos (Chart.js / ReportLab / Matplotlib) e incrustarse en el cuadrante inferior o dorso.
+   - Incluir leyenda explicativa de "Cuña Fiscal y Sindical".
+
+2. Firma Electrónica / Digital (Art. 139 LCT y Ley 25.506):
+   - Para recibos 100% digitales, reemplazar la firma hológrafa por una infraestructura de firma electrónica avanzada o digital.
+   - Registrar metadatos obligatorios en la firma: IP de emisión/firma, Hash SHA-256 del documento PDF, Marca de tiempo (Timestamp RFC 3161), ID de dispositivo y comprobante de entrega en portal del empleado / app.
+
+3. Trazabilidad con ARCA:
+   - Los importes declarados en el recibo deben ser 100% coincidentes con los informados en el Libro de Sueldos Digital (LSD - F.931) y visibles en la app "ARCA móvil" (Mi Liquidación Digital).
+
+================================================================================
+6. SUITE DE TEST Y VALIDACIONES AUTOMÁTICAS
+================================================================================
+Antigravity debe programar tests unitarios que verifiquen:
+  [A] $SN == RB - TD$ (Error si difiere por más de $0.01).
+  [B] $CLT == RB + TCP$ (Verificación de consistencia del costo patronal).
+  [C] Presencia de los 10 incisos obligatorios del Art. 140 LCT.
+  [D] Gráfico de torta visible con la suma de componentes igual a $CLT$.
+  [E] Generación de hash SHA-256 e integración con firma electrónica.

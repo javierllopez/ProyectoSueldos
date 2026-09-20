@@ -1,0 +1,122 @@
+[
+  {
+    "code": "01",
+    "name": "Servicios comunes (Mayor de 18 años)",
+    "regime": "GENERAL",
+    "description": "Régimen previsional general de la Ley 24.241 sin régimen diferencial ni reducción de jornada."
+  },
+  {
+    "code": "02",
+    "name": "Servicios diferenciados - Fundición y laminación",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68 Art. 1 Inc. a: Tareas directas de fundición, forja y laminación de metales."
+  },
+  {
+    "code": "03",
+    "name": "Servicios diferenciados - Cámaras frías",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68 Art. 1 Inc. b: Tareas habituales en cámaras frías o frigoríficas a temperaturas inferiores a 0°C."
+  },
+  {
+    "code": "04",
+    "name": "Servicios diferenciados - Altas temperaturas o vapores",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68 Art. 1 Inc. c: Tareas en ambientes con alta temperatura y emanaciones directas de vapor."
+  },
+  {
+    "code": "05",
+    "name": "Servicios diferenciados - Lugares subterráneos o cerrados",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68 Art. 1 Inc. d: Tareas en galerías subterráneas, túneles o espacios confinados sin luz natural."
+  },
+  {
+    "code": "06",
+    "name": "Servicios en tareas penosas o riesgosas",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68 Art. 2: Tareas determinantes de vejez o agotamiento prematuro."
+  },
+  {
+    "code": "07",
+    "name": "Actividades insalubres (Jornada 6 hs)",
+    "regime": "INSALUBRE",
+    "description": "Ley 11.544 Art. 2: Tareas declaradas insalubres por autoridad laboral con jornada de 6 hs diarias o 36 hs semanales."
+  },
+  {
+    "code": "08",
+    "name": "Menores de 16 a 18 años",
+    "regime": "MENORES",
+    "description": "Trabajadores menores de edad comprendidos en el régimen de jornada reducida y tutela laboral (Ley 26.390)."
+  },
+  {
+    "code": "09",
+    "name": "Servicios docentes primarios y secundarios",
+    "regime": "ESPECIAL",
+    "description": "Decreto 137/2005: Personal docente de nivel inicial, primario, medio o técnico no universitario."
+  },
+  {
+    "code": "10",
+    "name": "Servicios docentes universitarios",
+    "regime": "ESPECIAL",
+    "description": "Ley 26.508: Docentes e investigadores de las Universidades Nacionales."
+  },
+  {
+    "code": "11",
+    "name": "Investigadores científicos y tecnológicos",
+    "regime": "ESPECIAL",
+    "description": "Ley 22.929 y Decreto 160/2005: Investigadores y personal técnico de apoyo del CONICET y organismos de CyT."
+  },
+  {
+    "code": "12",
+    "name": "Personal embarcado y navegación",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 637/69: Personal embarcado de navegación marítima, fluvial, portuaria y de pesca marítima."
+  },
+  {
+    "code": "13",
+    "name": "Personal aeronavegante y tripulación de vuelo",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68: Pilotos, comandantes de aeronave y tripulantes de cabina de pasajeros."
+  },
+  {
+    "code": "14",
+    "name": "Conductores de transporte automotor de pasajeros",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 4257/68: Choferes de líneas urbanas, interurbanas y de larga distancia de autotransporte de pasajeros."
+  },
+  {
+    "code": "15",
+    "name": "Trabajadores de la actividad agraria",
+    "regime": "ESPECIAL",
+    "description": "Ley 26.727: Régimen de trabajo agrario para labores permanentes o temporarias en el ámbito rural."
+  },
+  {
+    "code": "16",
+    "name": "Trabajadores de la industria de la construcción",
+    "regime": "DIFERENCIADO",
+    "description": "Ley 22.250 y Ley 26.494: Régimen previsional diferencial para operarios de la construcción."
+  },
+  {
+    "code": "17",
+    "name": "Personal de generación eléctrica en alta tensión",
+    "regime": "DIFERENCIADO",
+    "description": "Decreto 937/74: Tareas directas en redes y líneas de transmisión eléctrica de alta o media tensión."
+  },
+  {
+    "code": "18",
+    "name": "Recolección de residuos y barrido urbano",
+    "regime": "DIFERENCIADO",
+    "description": "Tareas de recolección domiciliaria o industrial de residuos, descarga y barrido de la vía pública."
+  },
+  {
+    "code": "19",
+    "name": "Personal de seguridad privada armada",
+    "regime": "GENERAL",
+    "description": "Vigilancia privada, custodia armada y seguridad de caudales o personas."
+  },
+  {
+    "code": "20",
+    "name": "Minería y extracción de hidrocarburos",
+    "regime": "DIFERENCIADO",
+    "description": "Labores directas en boca de pozo petrolífero/gasífero o minería subterránea / a cielo abierto."
+  }
+]

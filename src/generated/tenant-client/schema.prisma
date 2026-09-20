@@ -1,0 +1,594 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/tenant-client"
+}
+
+model CompanyProfile {
+  id                  String    @id @default(uuid())
+  legalName           String    @map("legal_name")
+  tradeName           String?   @map("trade_name")
+  cuit                String    @map("cuit") @db.VarChar(11)
+  taxCondition        String?   @default("RESPONSABLE_INSCRIPTO") @map("tax_condition")
+  grossIncomeNumber   String?   @map("gross_income_number")
+  address             String?   @map("address")
+  city                String?   @map("city")
+  province            String?   @map("province")
+  postalCode          String?   @map("postal_code")
+  phone               String?   @map("phone")
+  email               String?   @map("email")
+  activityStart       DateTime? @map("activity_start")
+  activityCode        String?   @map("activity_code") @db.VarChar(10)
+  activityDescription String?   @map("activity_description") @db.VarChar(500)
+  artName             String?   @map("art_name")
+  bankName            String?   @map("bank_name")
+  bankCbu             String?   @map("bank_cbu") @db.VarChar(22)
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+  deletedAt           DateTime? @map("deleted_at")
+
+  @@map("company_profile")
+}
+
+model Department {
+  id        String    @id @default(uuid())
+  name      String    @map("name")
+  code      String?   @map("code")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  employees Employee[]
+
+  @@map("departments")
+}
+
+model ArcaCct {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  sector      String?  @map("sector")
+  description String?  @map("description") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  jobPositions JobPosition[]
+
+  @@map("arca_ccts")
+}
+
+model ArcaCategory {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  cct         String?  @map("cct")
+  description String?  @map("description") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  jobPositions JobPosition[]
+
+  @@map("arca_categories")
+}
+
+model ArcaPosition {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  groupCode   String?  @map("group_code")
+  groupName   String?  @map("group_name")
+  description String?  @map("description") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  jobPositions JobPosition[]
+
+  @@map("arca_positions")
+}
+
+model ArcaServiceType {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  regime      String?  @map("regime")
+  description String?  @map("description") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  jobPositions JobPosition[]
+
+  @@map("arca_service_types")
+}
+
+model ArcaCctCategoryPosition {
+  id           String   @id @default(uuid())
+  cctCode      String   @map("cct_code") @db.VarChar(50)
+  categoryCode String   @map("category_code") @db.VarChar(50)
+  positionCode String   @map("position_code") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([cctCode, categoryCode, positionCode], map: "uniq_cct_cat_pos")
+  @@index([cctCode], map: "idx_cct_code")
+  @@index([categoryCode], map: "idx_cat_code")
+  @@index([positionCode], map: "idx_pos_code")
+  @@map("arca_cct_category_positions")
+}
+
+model ArcaContractModality {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  periodFrom  String?  @map("period_from") @db.VarChar(10)
+  periodTo    String?  @map("period_to") @db.VarChar(10)
+  description String?  @map("description") @db.Text
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  employees Employee[]
+
+  @@map("arca_contract_modalities")
+}
+
+model JobPosition {
+  id              String    @id @default(uuid())
+  name            String    @map("name")
+  code            String?   @map("code")
+  cctCode         String?   @map("cct_code") @db.VarChar(50)
+  categoryCode    String?   @map("category_code") @db.VarChar(50)
+  positionCode    String?   @map("position_code") @db.VarChar(50)
+  serviceTypeCode String?   @map("service_type_code") @db.VarChar(50)
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+
+  cct          ArcaCct?         @relation(fields: [cctCode], references: [code])
+  category     ArcaCategory?    @relation(fields: [categoryCode], references: [code])
+  arcaPosition ArcaPosition?    @relation(fields: [positionCode], references: [code])
+  serviceType  ArcaServiceType? @relation(fields: [serviceTypeCode], references: [code])
+  employees    Employee[]
+
+  @@index([cctCode])
+  @@index([categoryCode])
+  @@index([positionCode])
+  @@index([serviceTypeCode])
+  @@map("job_positions")
+}
+
+model HealthInsurance {
+  id        String    @id @default(uuid())
+  name      String    @map("name")
+  code      String?   @map("code")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  employees Employee[]
+
+  @@map("health_insurances")
+}
+
+model Union {
+  id        String    @id @default(uuid())
+  name      String    @map("name")
+  code      String?   @map("code")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  employees Employee[]
+
+  @@map("unions")
+}
+
+model Mutual {
+  id        String    @id @default(uuid())
+  name      String    @map("name")
+  code      String?   @map("code")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  employees Employee[]
+
+  @@map("mutuals")
+}
+
+model Employee {
+  id             String   @id @default(uuid())
+  fileNumber     String   @unique @map("file_number")
+  lastName       String   @map("last_name")
+  firstName      String   @map("first_name")
+  photo          String?  @map("photo") @db.LongText
+  hireDate       DateTime @map("hire_date")
+  birthDate      DateTime @map("birth_date")
+  documentType   String   @default("DNI") @map("document_type")
+  documentNumber String   @map("document_number")
+  cuil           String   @unique @map("cuil") @db.VarChar(11)
+  gender         String   @default("M") @map("gender")
+
+  // Domicilio
+  street       String? @map("street")
+  streetNumber String? @map("street_number")
+  floor        String? @map("floor")
+  apartment    String? @map("apartment")
+  city         String? @map("city")
+  postalCode   String? @map("postal_code")
+  province     String? @map("province")
+
+  // Contacto y estado
+  email             String?   @map("email")
+  phone             String?   @map("phone")
+  status            String    @default("ACTIVE") @map("status")
+  terminationDate   DateTime? @map("termination_date")
+  terminationReason String?   @map("termination_reason") @db.VarChar(255)
+
+  // Claves Foráneas
+  departmentId         String? @map("department_id")
+  jobPositionId        String? @map("job_position_id")
+  healthInsuranceId    String? @map("health_insurance_id")
+  unionId              String? @map("union_id")
+  mutualId             String? @map("mutual_id")
+  contractModalityCode String? @map("contract_modality_code") @db.VarChar(50)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  // Perfil de Liquidación, Jornada y Remuneración Pactada
+  payrollGroup        String  @default("MENSUAL") @map("payroll_group") @db.VarChar(50)
+  isPartTime          Boolean @default(false) @map("is_part_time")
+  weeklyWorkingHours  Decimal @default(48.00) @map("weekly_working_hours") @db.Decimal(5, 2)
+  monthlyWorkingHours Decimal @default(200.00) @map("monthly_working_hours") @db.Decimal(6, 2)
+  partTimePercentage  Decimal @default(100.00) @map("part_time_percentage") @db.Decimal(5, 2)
+  basicSalary         Decimal @default(0.00) @map("basic_salary") @db.Decimal(12, 2)
+  hourlyRate          Decimal @default(0.00) @map("hourly_rate") @db.Decimal(12, 2)
+
+  department       Department?           @relation(fields: [departmentId], references: [id])
+  jobPosition      JobPosition?          @relation(fields: [jobPositionId], references: [id])
+  healthInsurance  HealthInsurance?      @relation(fields: [healthInsuranceId], references: [id])
+  union            Union?                @relation(fields: [unionId], references: [id])
+  mutual           Mutual?               @relation(fields: [mutualId], references: [id])
+  contractModality ArcaContractModality? @relation(fields: [contractModalityCode], references: [code])
+  paySlips         PaySlip[]
+  relatives        EmployeeRelative[]
+  assignedConcepts EmployeeConcept[]
+  periodNovelties  PeriodNovelty[]
+
+  @@index([departmentId])
+  @@index([jobPositionId])
+  @@index([healthInsuranceId])
+  @@index([unionId])
+  @@index([mutualId])
+  @@index([contractModalityCode])
+  @@map("employees")
+}
+
+model Kinship {
+  id        String    @id @default(uuid())
+  name      String    @map("name")
+  code      String?   @map("code")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  relatives EmployeeRelative[]
+
+  @@map("kinships")
+}
+
+model EmployeeRelative {
+  id             String    @id @default(uuid())
+  employeeId     String    @map("employee_id")
+  kinshipId      String    @map("kinship_id")
+  lastName       String    @map("last_name")
+  firstName      String    @map("first_name")
+  documentType   String    @default("DNI") @map("document_type")
+  documentNumber String    @map("document_number")
+  cuil           String?   @map("cuil") @db.VarChar(11)
+  birthDate      DateTime  @map("birth_date")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  kinship  Kinship  @relation(fields: [kinshipId], references: [id])
+
+  @@index([employeeId])
+  @@index([kinshipId])
+  @@map("employee_relatives")
+}
+
+model Concept {
+  id               String  @id @default(uuid())
+  code             String  @unique @map("code")
+  name             String  @map("name")
+  type             String  @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY
+  calculationType  String  @default("FIXED") @map("calculation_type") // FIXED, PERCENTAGE, FORMULA, MATRIX
+  periodType       String? @default("ALL") @map("period_type") @db.VarChar(50)
+  scope            String  @default("GENERAL") @map("scope") @db.VarChar(20) // GENERAL, INDIVIDUAL
+  defaultValue     Decimal @default(0.00) @map("default_value") @db.Decimal(12, 2)
+  noveltyDataType  String  @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE
+  calculationOrder Int     @default(100) @map("calculation_order")
+  formula          String? @map("formula") @db.Text
+  matrixData       String? @map("matrix_data") @db.LongText
+  isActive         Boolean @default(true) @map("is_active")
+  isPersistent     Boolean @default(true) @map("is_persistent")
+
+  // ARCA LSD Mapping (195 chars)
+  arcaConceptCode       String? @map("arca_concept_code") @db.VarChar(10)
+  appliesSipaAporte     Boolean @default(false) @map("applies_sipa_aporte")
+  appliesSipaContrib    Boolean @default(false) @map("applies_sipa_contrib")
+  appliesInssjypAporte  Boolean @default(false) @map("applies_inssjyp_aporte")
+  appliesInssjypContrib Boolean @default(false) @map("applies_inssjyp_contrib")
+  appliesOsAporte       Boolean @default(false) @map("applies_os_aporte")
+  appliesOsContrib      Boolean @default(false) @map("applies_os_contrib")
+  appliesFsrAporte      Boolean @default(false) @map("applies_fsr_aporte")
+  appliesFsrContrib     Boolean @default(false) @map("applies_fsr_contrib")
+  appliesRenatreAporte  Boolean @default(false) @map("applies_renatre_aporte")
+  appliesRenatreContrib Boolean @default(false) @map("applies_renatre_contrib")
+  appliesAaffContrib    Boolean @default(false) @map("applies_aaff_contrib")
+  appliesFneContrib     Boolean @default(false) @map("applies_fne_contrib")
+  appliesLrtContrib     Boolean @default(false) @map("applies_lrt_contrib")
+  isRepeatable          Boolean @default(false) @map("is_repeatable")
+
+  matrixId          String?           @map("matrix_id")
+  matrix            PayrollMatrix?    @relation(fields: [matrixId], references: [id])
+  assignedEmployees EmployeeConcept[]
+  periodNovelties   PeriodNovelty[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  @@map("concepts")
+}
+
+model EmployeeConcept {
+  id         String    @id @default(uuid())
+  employeeId String    @map("employee_id")
+  conceptId  String    @map("concept_id")
+  amount     Decimal?  @map("amount") @db.Decimal(12, 2)
+  units      Decimal?  @map("units") @db.Decimal(12, 2)
+  notes      String?   @map("notes") @db.VarChar(255)
+  validFrom  DateTime? @map("valid_from")
+  validTo    DateTime? @map("valid_to")
+  isActive   Boolean   @default(true) @map("is_active")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  concept  Concept  @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([employeeId, conceptId], map: "uniq_emp_concept")
+  @@index([employeeId])
+  @@index([conceptId])
+  @@map("employee_concepts")
+}
+
+model PayrollMatrix {
+  id               String    @id @default(uuid())
+  code             String    @unique @map("code") @db.VarChar(50)
+  name             String    @map("name") @db.VarChar(150)
+  description      String?   @map("description") @db.VarChar(255)
+  inputConceptCode String    @map("input_concept_code") @db.VarChar(50)
+  matchType        String    @default("RANGE") @map("match_type") @db.VarChar(20) // RANGE, EXACT
+  defaultValue     Decimal   @default(0.00) @map("default_value") @db.Decimal(12, 2)
+  rows             String    @map("rows") @db.LongText
+  isActive         Boolean   @default(true) @map("is_active")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+  deletedAt        DateTime? @map("deleted_at")
+
+  concepts Concept[]
+
+  @@map("payroll_matrices")
+}
+
+model PayrollFixedValue {
+  id          String    @id @default(uuid())
+  code        String    @unique @map("code") @db.VarChar(50)
+  name        String    @map("name") @db.VarChar(150)
+  description String?   @map("description") @db.VarChar(255)
+  value       Decimal   @default(0.00) @map("value") @db.Decimal(12, 2)
+  unit        String    @default("$") @map("unit") @db.VarChar(20) // $, %, Horas, Puntos, Unidades
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  @@map("payroll_fixed_values")
+}
+
+model PayrollPeriod {
+  id                String    @id @default(uuid())
+  year              Int       @map("year")
+  month             Int       @map("month")
+  periodType        String    @default("MONTHLY") @map("period_type") // MONTHLY, QUINCE_1, QUINCE_2, SAC_1, SAC_2, VACATIONS, FINAL
+  settlementNumber  Int       @default(1) @map("settlement_number")
+  settlementName    String?   @map("settlement_name") @db.VarChar(191)
+  settlementType    String    @default("M") @map("settlement_type") @db.VarChar(5) // M, Q
+  paymentDate       DateTime? @map("payment_date")
+  paymentPlace      String?   @map("payment_place") @db.VarChar(100)
+  depositDate       DateTime? @map("deposit_date")
+  depositBank       String?   @map("deposit_bank") @db.VarChar(100)
+  rubricDate        DateTime? @map("rubric_date")
+  status            String    @default("DRAFT") @map("status") // DRAFT, CALCULATED, CLOSED
+  totalGross        Decimal   @default(0.00) @map("total_gross") @db.Decimal(14, 2)
+  totalNet          Decimal   @default(0.00) @map("total_net") @db.Decimal(14, 2)
+  totalEmployerCost Decimal   @default(0.00) @map("total_employer_cost") @db.Decimal(14, 2)
+  closedAt          DateTime? @map("closed_at")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  paySlips        PaySlip[]
+  periodNovelties PeriodNovelty[]
+
+  @@unique([year, month, periodType, settlementNumber])
+  @@map("payroll_periods")
+}
+
+model PaySlip {
+  id                 String    @id @default(uuid())
+  payrollPeriodId    String    @map("payroll_period_id")
+  employeeId         String    @map("employee_id")
+  grossSalary        Decimal   @map("gross_salary") @db.Decimal(12, 2)
+  remunerativeSalary Decimal   @default(0.00) @map("remunerative_salary") @db.Decimal(12, 2)
+  nonRemunerative    Decimal   @default(0.00) @map("non_remunerative") @db.Decimal(12, 2)
+  totalDeductions    Decimal   @map("total_deductions") @db.Decimal(12, 2)
+  netSalary          Decimal   @map("net_salary") @db.Decimal(12, 2)
+  netSalaryWords     String?   @map("net_salary_words") @db.VarChar(500)
+  paymentDate        DateTime? @map("payment_date")
+  paymentMethod      String?   @default("CBU") @map("payment_method") @db.VarChar(20)
+  bankName           String?   @map("bank_name") @db.VarChar(100)
+  cbu                String?   @map("cbu") @db.VarChar(30)
+  workedDays         Int       @default(30) @map("worked_days")
+  workedHours        Decimal?  @map("worked_hours") @db.Decimal(8, 2)
+
+  // Contribuciones Patronales (Bloque 2 Ley 27.802 & Dec 407/2026)
+  sipaContrib          Decimal @default(0.00) @map("sipa_contrib") @db.Decimal(12, 2)
+  inssjypContrib       Decimal @default(0.00) @map("inssjyp_contrib") @db.Decimal(12, 2)
+  osContrib            Decimal @default(0.00) @map("os_contrib") @db.Decimal(12, 2)
+  fneContrib           Decimal @default(0.00) @map("fne_contrib") @db.Decimal(12, 2)
+  aaffContrib          Decimal @default(0.00) @map("aaff_contrib") @db.Decimal(12, 2)
+  artContrib           Decimal @default(0.00) @map("art_contrib") @db.Decimal(12, 2)
+  scvoContrib          Decimal @default(0.00) @map("scvo_contrib") @db.Decimal(12, 2)
+  unionContrib         Decimal @default(0.00) @map("union_contrib") @db.Decimal(12, 2)
+  totalEmployerContrib Decimal @default(0.00) @map("total_employer_contrib") @db.Decimal(12, 2)
+  totalLaborCost       Decimal @default(0.00) @map("total_labor_cost") @db.Decimal(12, 2)
+
+  // Porcentajes Gráfico de Torta Costo Laboral Total = 100% (Bloque 5)
+  pctNetSalary             Decimal @default(0.00) @map("pct_net_salary") @db.Decimal(6, 2)
+  pctEmployeeDeductions    Decimal @default(0.00) @map("pct_employee_deductions") @db.Decimal(6, 2)
+  pctSocialSecurityContrib Decimal @default(0.00) @map("pct_social_security_contrib") @db.Decimal(6, 2)
+  pctHealthContrib         Decimal @default(0.00) @map("pct_health_contrib") @db.Decimal(6, 2)
+  pctArtAndInsurance       Decimal @default(0.00) @map("pct_art_and_insurance") @db.Decimal(6, 2)
+  pctUnionAndChambers      Decimal @default(0.00) @map("pct_union_and_chambers") @db.Decimal(6, 2)
+
+  signatureHash String?   @map("signature_hash") @db.VarChar(64)
+  signedAt      DateTime? @map("signed_at")
+  status        String    @default("DRAFT") @map("status") // DRAFT, ISSUED, SIGNED
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id])
+  employee      Employee      @relation(fields: [employeeId], references: [id])
+  items         PaySlipItem[]
+  basis         PaySlipBasis?
+
+  @@unique([payrollPeriodId, employeeId])
+  @@index([payrollPeriodId])
+  @@index([employeeId])
+  @@map("pay_slips")
+}
+
+model PaySlipItem {
+  id              String   @id @default(uuid())
+  paySlipId       String   @map("pay_slip_id")
+  conceptId       String?  @map("concept_id")
+  conceptCode     String   @map("concept_code")
+  conceptName     String   @map("concept_name")
+  type            String   @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY, EMPLOYER_CONTRIBUTION
+  units           Decimal? @map("units") @db.Decimal(12, 2)
+  unitLabel       String?  @map("unit_label") @db.VarChar(20) // Días, %, Horas, Fijo
+  rate            Decimal? @map("rate") @db.Decimal(12, 2)
+  baseAmount      Decimal? @map("base_amount") @db.Decimal(12, 2)
+  amount          Decimal  @map("amount") @db.Decimal(12, 2)
+  arcaConceptCode String?  @map("arca_concept_code") @db.VarChar(10)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  paySlip PaySlip @relation(fields: [paySlipId], references: [id], onDelete: Cascade)
+
+  @@index([paySlipId])
+  @@map("pay_slip_items")
+}
+
+model PaySlipBasis {
+  id        String @id @default(uuid())
+  paySlipId String @unique @map("pay_slip_id")
+
+  // 10 Bases Imponibles F.931
+  baseImponible1   Decimal @default(0.00) @map("base_imponible_1") @db.Decimal(12, 2) // SIPA Aportes
+  baseImponible2   Decimal @default(0.00) @map("base_imponible_2") @db.Decimal(12, 2) // SIPA Contribuciones
+  baseImponible3   Decimal @default(0.00) @map("base_imponible_3") @db.Decimal(12, 2) // INSSJyP Contribuciones
+  baseImponible4   Decimal @default(0.00) @map("base_imponible_4") @db.Decimal(12, 2) // OS Aportes y Contrib.
+  baseImponible5   Decimal @default(0.00) @map("base_imponible_5") @db.Decimal(12, 2) // INSSJyP Aportes
+  baseImponible6   Decimal @default(0.00) @map("base_imponible_6") @db.Decimal(12, 2) // Reg. Dif. Aportes
+  baseImponible7   Decimal @default(0.00) @map("base_imponible_7") @db.Decimal(12, 2) // Reg. Dif. Contrib.
+  baseImponible8   Decimal @default(0.00) @map("base_imponible_8") @db.Decimal(12, 2) // FSR Contrib.
+  baseImponible9   Decimal @default(0.00) @map("base_imponible_9") @db.Decimal(12, 2) // LRT / ART / FNE / AAFF
+  baseImponible10  Decimal @default(0.00) @map("base_imponible_10") @db.Decimal(12, 2) // SIPA Contrib c/Detracción
+  detractionAmount Decimal @default(0.00) @map("detraction_amount") @db.Decimal(12, 2) // Detracción Ley 27.541
+
+  // Atributos de revista
+  situationCode    String  @default("01") @map("situation_code") @db.VarChar(5)
+  conditionCode    String  @default("01") @map("condition_code") @db.VarChar(5)
+  activityCode     String  @default("000") @map("activity_code") @db.VarChar(10)
+  contractModality String  @default("001") @map("contract_modality") @db.VarChar(10)
+  hasSpouse        Boolean @default(false) @map("has_spouse")
+  childrenCount    Int     @default(0) @map("children_count")
+  hasScvo          Boolean @default(true) @map("has_scvo")
+  hasCct           Boolean @default(true) @map("has_cct")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  paySlip PaySlip @relation(fields: [paySlipId], references: [id], onDelete: Cascade)
+
+  @@map("pay_slip_bases")
+}
+
+model PayrollSetting {
+  id           String @id @default(uuid())
+  employerType String @default("SERVICIOS_COMERCIO") @map("employer_type") @db.VarChar(50)
+
+  // Alícuotas Patronales SUSS (%)
+  sipaRate    Decimal @default(10.77) @map("sipa_rate") @db.Decimal(6, 2)
+  inssjypRate Decimal @default(1.58) @map("inssjyp_rate") @db.Decimal(6, 2)
+  osRate      Decimal @default(6.00) @map("os_rate") @db.Decimal(6, 2)
+  fneRate     Decimal @default(0.94) @map("fne_rate") @db.Decimal(6, 2)
+  aaffRate    Decimal @default(4.70) @map("aaff_rate") @db.Decimal(6, 2)
+
+  // ART y Seguros
+  artRate     Decimal @default(3.50) @map("art_rate") @db.Decimal(6, 2)
+  artFixedFee Decimal @default(850.00) @map("art_fixed_fee") @db.Decimal(10, 2)
+  scvoFee     Decimal @default(650.00) @map("scvo_fee") @db.Decimal(10, 2)
+
+  // Detracción y Topes
+  detractionBase Decimal @default(7003.68) @map("detraction_base") @db.Decimal(10, 2)
+  ansesMinCap    Decimal @default(82287.12) @map("anses_min_cap") @db.Decimal(12, 2)
+  ansesMaxCap    Decimal @default(2674292.72) @map("anses_max_cap") @db.Decimal(12, 2)
+
+  // Jornada Estándar de la Empresa
+  standardWeeklyHours  Decimal @default(48.00) @map("standard_weekly_hours") @db.Decimal(5, 2)
+  standardMonthlyHours Decimal @default(200.00) @map("standard_monthly_hours") @db.Decimal(6, 2)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("payroll_settings")
+}
+
+model PeriodNovelty {
+  id              String   @id @default(uuid())
+  payrollPeriodId String   @map("payroll_period_id")
+  employeeId      String   @map("employee_id")
+  conceptId       String   @map("concept_id")
+  units           Decimal? @map("units") @db.Decimal(12, 2)
+  amount          Decimal? @map("amount") @db.Decimal(12, 2)
+  notes           String?  @map("notes") @db.VarChar(255)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+  employee      Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  concept       Concept       @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([payrollPeriodId, employeeId, conceptId], map: "uniq_period_emp_concept")
+  @@index([payrollPeriodId])
+  @@index([employeeId])
+  @@index([conceptId])
+  @@map("period_novelties")
+}
