@@ -79,6 +79,11 @@ export type Mutual = $Result.DefaultSelection<Prisma.$MutualPayload>
  */
 export type Employee = $Result.DefaultSelection<Prisma.$EmployeePayload>
 /**
+ * Model SalaryScale
+ * 
+ */
+export type SalaryScale = $Result.DefaultSelection<Prisma.$SalaryScalePayload>
+/**
  * Model Kinship
  * 
  */
@@ -386,6 +391,16 @@ export class PrismaClient<
     * ```
     */
   get employee(): Prisma.EmployeeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.salaryScale`: Exposes CRUD operations for the **SalaryScale** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SalaryScales
+    * const salaryScales = await prisma.salaryScale.findMany()
+    * ```
+    */
+  get salaryScale(): Prisma.SalaryScaleDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.kinship`: Exposes CRUD operations for the **Kinship** model.
@@ -960,6 +975,7 @@ export namespace Prisma {
     Union: 'Union',
     Mutual: 'Mutual',
     Employee: 'Employee',
+    SalaryScale: 'SalaryScale',
     Kinship: 'Kinship',
     EmployeeRelative: 'EmployeeRelative',
     Concept: 'Concept',
@@ -990,7 +1006,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "healthInsurance" | "union" | "mutual" | "employee" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "healthInsurance" | "union" | "mutual" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1849,6 +1865,72 @@ export namespace Prisma {
           count: {
             args: Prisma.EmployeeCountArgs<ExtArgs>
             result: $Utils.Optional<EmployeeCountAggregateOutputType> | number
+          }
+        }
+      }
+      SalaryScale: {
+        payload: Prisma.$SalaryScalePayload<ExtArgs>
+        fields: Prisma.SalaryScaleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SalaryScaleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SalaryScaleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          findFirst: {
+            args: Prisma.SalaryScaleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SalaryScaleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          findMany: {
+            args: Prisma.SalaryScaleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>[]
+          }
+          create: {
+            args: Prisma.SalaryScaleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          createMany: {
+            args: Prisma.SalaryScaleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SalaryScaleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          update: {
+            args: Prisma.SalaryScaleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          deleteMany: {
+            args: Prisma.SalaryScaleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SalaryScaleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SalaryScaleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalaryScalePayload>
+          }
+          aggregate: {
+            args: Prisma.SalaryScaleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSalaryScale>
+          }
+          groupBy: {
+            args: Prisma.SalaryScaleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SalaryScaleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SalaryScaleCountArgs<ExtArgs>
+            result: $Utils.Optional<SalaryScaleCountAggregateOutputType> | number
           }
         }
       }
@@ -2753,6 +2835,7 @@ export namespace Prisma {
     union?: UnionOmit
     mutual?: MutualOmit
     employee?: EmployeeOmit
+    salaryScale?: SalaryScaleOmit
     kinship?: KinshipOmit
     employeeRelative?: EmployeeRelativeOmit
     concept?: ConceptOmit
@@ -3205,6 +3288,37 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountPeriodNoveltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PeriodNoveltyWhereInput
+  }
+
+
+  /**
+   * Count Type SalaryScaleCountOutputType
+   */
+
+  export type SalaryScaleCountOutputType = {
+    employees: number
+  }
+
+  export type SalaryScaleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employees?: boolean | SalaryScaleCountOutputTypeCountEmployeesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SalaryScaleCountOutputType without action
+   */
+  export type SalaryScaleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScaleCountOutputType
+     */
+    select?: SalaryScaleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SalaryScaleCountOutputType without action
+   */
+  export type SalaryScaleCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeWhereInput
   }
 
 
@@ -15212,6 +15326,7 @@ export namespace Prisma {
     unionId: string | null
     mutualId: string | null
     contractModalityCode: string | null
+    salaryScaleId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15254,6 +15369,7 @@ export namespace Prisma {
     unionId: string | null
     mutualId: string | null
     contractModalityCode: string | null
+    salaryScaleId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15296,6 +15412,7 @@ export namespace Prisma {
     unionId: number
     mutualId: number
     contractModalityCode: number
+    salaryScaleId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -15356,6 +15473,7 @@ export namespace Prisma {
     unionId?: true
     mutualId?: true
     contractModalityCode?: true
+    salaryScaleId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15398,6 +15516,7 @@ export namespace Prisma {
     unionId?: true
     mutualId?: true
     contractModalityCode?: true
+    salaryScaleId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15440,6 +15559,7 @@ export namespace Prisma {
     unionId?: true
     mutualId?: true
     contractModalityCode?: true
+    salaryScaleId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15569,6 +15689,7 @@ export namespace Prisma {
     unionId: string | null
     mutualId: string | null
     contractModalityCode: string | null
+    salaryScaleId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -15630,6 +15751,7 @@ export namespace Prisma {
     unionId?: boolean
     mutualId?: boolean
     contractModalityCode?: boolean
+    salaryScaleId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -15646,6 +15768,7 @@ export namespace Prisma {
     union?: boolean | Employee$unionArgs<ExtArgs>
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
+    salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -15685,6 +15808,7 @@ export namespace Prisma {
     unionId?: boolean
     mutualId?: boolean
     contractModalityCode?: boolean
+    salaryScaleId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -15697,7 +15821,7 @@ export namespace Prisma {
     hourlyRate?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     department?: boolean | Employee$departmentArgs<ExtArgs>
     jobPosition?: boolean | Employee$jobPositionArgs<ExtArgs>
@@ -15705,6 +15829,7 @@ export namespace Prisma {
     union?: boolean | Employee$unionArgs<ExtArgs>
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
+    salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -15721,6 +15846,7 @@ export namespace Prisma {
       union: Prisma.$UnionPayload<ExtArgs> | null
       mutual: Prisma.$MutualPayload<ExtArgs> | null
       contractModality: Prisma.$ArcaContractModalityPayload<ExtArgs> | null
+      salaryScale: Prisma.$SalaryScalePayload<ExtArgs> | null
       paySlips: Prisma.$PaySlipPayload<ExtArgs>[]
       relatives: Prisma.$EmployeeRelativePayload<ExtArgs>[]
       assignedConcepts: Prisma.$EmployeeConceptPayload<ExtArgs>[]
@@ -15756,6 +15882,7 @@ export namespace Prisma {
       unionId: string | null
       mutualId: string | null
       contractModalityCode: string | null
+      salaryScaleId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -16112,6 +16239,7 @@ export namespace Prisma {
     union<T extends Employee$unionArgs<ExtArgs> = {}>(args?: Subset<T, Employee$unionArgs<ExtArgs>>): Prisma__UnionClient<$Result.GetResult<Prisma.$UnionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     mutual<T extends Employee$mutualArgs<ExtArgs> = {}>(args?: Subset<T, Employee$mutualArgs<ExtArgs>>): Prisma__MutualClient<$Result.GetResult<Prisma.$MutualPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     contractModality<T extends Employee$contractModalityArgs<ExtArgs> = {}>(args?: Subset<T, Employee$contractModalityArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    salaryScale<T extends Employee$salaryScaleArgs<ExtArgs> = {}>(args?: Subset<T, Employee$salaryScaleArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paySlips<T extends Employee$paySlipsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$paySlipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaySlipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     relatives<T extends Employee$relativesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$relativesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRelativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedConcepts<T extends Employee$assignedConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$assignedConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -16174,6 +16302,7 @@ export namespace Prisma {
     readonly unionId: FieldRef<"Employee", 'String'>
     readonly mutualId: FieldRef<"Employee", 'String'>
     readonly contractModalityCode: FieldRef<"Employee", 'String'>
+    readonly salaryScaleId: FieldRef<"Employee", 'String'>
     readonly createdAt: FieldRef<"Employee", 'DateTime'>
     readonly updatedAt: FieldRef<"Employee", 'DateTime'>
     readonly deletedAt: FieldRef<"Employee", 'DateTime'>
@@ -16641,6 +16770,25 @@ export namespace Prisma {
   }
 
   /**
+   * Employee.salaryScale
+   */
+  export type Employee$salaryScaleArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    where?: SalaryScaleWhereInput
+  }
+
+  /**
    * Employee.paySlips
    */
   export type Employee$paySlipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16752,6 +16900,1028 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EmployeeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SalaryScale
+   */
+
+  export type AggregateSalaryScale = {
+    _count: SalaryScaleCountAggregateOutputType | null
+    _avg: SalaryScaleAvgAggregateOutputType | null
+    _sum: SalaryScaleSumAggregateOutputType | null
+    _min: SalaryScaleMinAggregateOutputType | null
+    _max: SalaryScaleMaxAggregateOutputType | null
+  }
+
+  export type SalaryScaleAvgAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type SalaryScaleSumAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type SalaryScaleMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    code: string | null
+    description: string | null
+    amount: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type SalaryScaleMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    code: string | null
+    description: string | null
+    amount: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type SalaryScaleCountAggregateOutputType = {
+    id: number
+    name: number
+    code: number
+    description: number
+    amount: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type SalaryScaleAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type SalaryScaleSumAggregateInputType = {
+    amount?: true
+  }
+
+  export type SalaryScaleMinAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    amount?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type SalaryScaleMaxAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    amount?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type SalaryScaleCountAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    amount?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type SalaryScaleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalaryScale to aggregate.
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalaryScales to fetch.
+     */
+    orderBy?: SalaryScaleOrderByWithRelationInput | SalaryScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SalaryScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalaryScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalaryScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SalaryScales
+    **/
+    _count?: true | SalaryScaleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SalaryScaleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SalaryScaleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SalaryScaleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SalaryScaleMaxAggregateInputType
+  }
+
+  export type GetSalaryScaleAggregateType<T extends SalaryScaleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSalaryScale]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSalaryScale[P]>
+      : GetScalarType<T[P], AggregateSalaryScale[P]>
+  }
+
+
+
+
+  export type SalaryScaleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SalaryScaleWhereInput
+    orderBy?: SalaryScaleOrderByWithAggregationInput | SalaryScaleOrderByWithAggregationInput[]
+    by: SalaryScaleScalarFieldEnum[] | SalaryScaleScalarFieldEnum
+    having?: SalaryScaleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SalaryScaleCountAggregateInputType | true
+    _avg?: SalaryScaleAvgAggregateInputType
+    _sum?: SalaryScaleSumAggregateInputType
+    _min?: SalaryScaleMinAggregateInputType
+    _max?: SalaryScaleMaxAggregateInputType
+  }
+
+  export type SalaryScaleGroupByOutputType = {
+    id: string
+    name: string
+    code: string | null
+    description: string | null
+    amount: Decimal
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: SalaryScaleCountAggregateOutputType | null
+    _avg: SalaryScaleAvgAggregateOutputType | null
+    _sum: SalaryScaleSumAggregateOutputType | null
+    _min: SalaryScaleMinAggregateOutputType | null
+    _max: SalaryScaleMaxAggregateOutputType | null
+  }
+
+  type GetSalaryScaleGroupByPayload<T extends SalaryScaleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SalaryScaleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SalaryScaleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SalaryScaleGroupByOutputType[P]>
+            : GetScalarType<T[P], SalaryScaleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SalaryScaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    description?: boolean
+    amount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
+    _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["salaryScale"]>
+
+
+
+  export type SalaryScaleSelectScalar = {
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    description?: boolean
+    amount?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "amount" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
+  export type SalaryScaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
+    _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SalaryScalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SalaryScale"
+    objects: {
+      employees: Prisma.$EmployeePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      code: string | null
+      description: string | null
+      amount: Prisma.Decimal
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["salaryScale"]>
+    composites: {}
+  }
+
+  type SalaryScaleGetPayload<S extends boolean | null | undefined | SalaryScaleDefaultArgs> = $Result.GetResult<Prisma.$SalaryScalePayload, S>
+
+  type SalaryScaleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SalaryScaleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SalaryScaleCountAggregateInputType | true
+    }
+
+  export interface SalaryScaleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SalaryScale'], meta: { name: 'SalaryScale' } }
+    /**
+     * Find zero or one SalaryScale that matches the filter.
+     * @param {SalaryScaleFindUniqueArgs} args - Arguments to find a SalaryScale
+     * @example
+     * // Get one SalaryScale
+     * const salaryScale = await prisma.salaryScale.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SalaryScaleFindUniqueArgs>(args: SelectSubset<T, SalaryScaleFindUniqueArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SalaryScale that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SalaryScaleFindUniqueOrThrowArgs} args - Arguments to find a SalaryScale
+     * @example
+     * // Get one SalaryScale
+     * const salaryScale = await prisma.salaryScale.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SalaryScaleFindUniqueOrThrowArgs>(args: SelectSubset<T, SalaryScaleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalaryScale that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleFindFirstArgs} args - Arguments to find a SalaryScale
+     * @example
+     * // Get one SalaryScale
+     * const salaryScale = await prisma.salaryScale.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SalaryScaleFindFirstArgs>(args?: SelectSubset<T, SalaryScaleFindFirstArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SalaryScale that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleFindFirstOrThrowArgs} args - Arguments to find a SalaryScale
+     * @example
+     * // Get one SalaryScale
+     * const salaryScale = await prisma.salaryScale.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SalaryScaleFindFirstOrThrowArgs>(args?: SelectSubset<T, SalaryScaleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SalaryScales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SalaryScales
+     * const salaryScales = await prisma.salaryScale.findMany()
+     * 
+     * // Get first 10 SalaryScales
+     * const salaryScales = await prisma.salaryScale.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const salaryScaleWithIdOnly = await prisma.salaryScale.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SalaryScaleFindManyArgs>(args?: SelectSubset<T, SalaryScaleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SalaryScale.
+     * @param {SalaryScaleCreateArgs} args - Arguments to create a SalaryScale.
+     * @example
+     * // Create one SalaryScale
+     * const SalaryScale = await prisma.salaryScale.create({
+     *   data: {
+     *     // ... data to create a SalaryScale
+     *   }
+     * })
+     * 
+     */
+    create<T extends SalaryScaleCreateArgs>(args: SelectSubset<T, SalaryScaleCreateArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SalaryScales.
+     * @param {SalaryScaleCreateManyArgs} args - Arguments to create many SalaryScales.
+     * @example
+     * // Create many SalaryScales
+     * const salaryScale = await prisma.salaryScale.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SalaryScaleCreateManyArgs>(args?: SelectSubset<T, SalaryScaleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SalaryScale.
+     * @param {SalaryScaleDeleteArgs} args - Arguments to delete one SalaryScale.
+     * @example
+     * // Delete one SalaryScale
+     * const SalaryScale = await prisma.salaryScale.delete({
+     *   where: {
+     *     // ... filter to delete one SalaryScale
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SalaryScaleDeleteArgs>(args: SelectSubset<T, SalaryScaleDeleteArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SalaryScale.
+     * @param {SalaryScaleUpdateArgs} args - Arguments to update one SalaryScale.
+     * @example
+     * // Update one SalaryScale
+     * const salaryScale = await prisma.salaryScale.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SalaryScaleUpdateArgs>(args: SelectSubset<T, SalaryScaleUpdateArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SalaryScales.
+     * @param {SalaryScaleDeleteManyArgs} args - Arguments to filter SalaryScales to delete.
+     * @example
+     * // Delete a few SalaryScales
+     * const { count } = await prisma.salaryScale.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SalaryScaleDeleteManyArgs>(args?: SelectSubset<T, SalaryScaleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SalaryScales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SalaryScales
+     * const salaryScale = await prisma.salaryScale.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SalaryScaleUpdateManyArgs>(args: SelectSubset<T, SalaryScaleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SalaryScale.
+     * @param {SalaryScaleUpsertArgs} args - Arguments to update or create a SalaryScale.
+     * @example
+     * // Update or create a SalaryScale
+     * const salaryScale = await prisma.salaryScale.upsert({
+     *   create: {
+     *     // ... data to create a SalaryScale
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SalaryScale we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SalaryScaleUpsertArgs>(args: SelectSubset<T, SalaryScaleUpsertArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SalaryScales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleCountArgs} args - Arguments to filter SalaryScales to count.
+     * @example
+     * // Count the number of SalaryScales
+     * const count = await prisma.salaryScale.count({
+     *   where: {
+     *     // ... the filter for the SalaryScales we want to count
+     *   }
+     * })
+    **/
+    count<T extends SalaryScaleCountArgs>(
+      args?: Subset<T, SalaryScaleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SalaryScaleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SalaryScale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SalaryScaleAggregateArgs>(args: Subset<T, SalaryScaleAggregateArgs>): Prisma.PrismaPromise<GetSalaryScaleAggregateType<T>>
+
+    /**
+     * Group by SalaryScale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SalaryScaleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SalaryScaleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SalaryScaleGroupByArgs['orderBy'] }
+        : { orderBy?: SalaryScaleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SalaryScaleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSalaryScaleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SalaryScale model
+   */
+  readonly fields: SalaryScaleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SalaryScale.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SalaryScaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employees<T extends SalaryScale$employeesArgs<ExtArgs> = {}>(args?: Subset<T, SalaryScale$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SalaryScale model
+   */
+  interface SalaryScaleFieldRefs {
+    readonly id: FieldRef<"SalaryScale", 'String'>
+    readonly name: FieldRef<"SalaryScale", 'String'>
+    readonly code: FieldRef<"SalaryScale", 'String'>
+    readonly description: FieldRef<"SalaryScale", 'String'>
+    readonly amount: FieldRef<"SalaryScale", 'Decimal'>
+    readonly createdAt: FieldRef<"SalaryScale", 'DateTime'>
+    readonly updatedAt: FieldRef<"SalaryScale", 'DateTime'>
+    readonly deletedAt: FieldRef<"SalaryScale", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SalaryScale findUnique
+   */
+  export type SalaryScaleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter, which SalaryScale to fetch.
+     */
+    where: SalaryScaleWhereUniqueInput
+  }
+
+  /**
+   * SalaryScale findUniqueOrThrow
+   */
+  export type SalaryScaleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter, which SalaryScale to fetch.
+     */
+    where: SalaryScaleWhereUniqueInput
+  }
+
+  /**
+   * SalaryScale findFirst
+   */
+  export type SalaryScaleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter, which SalaryScale to fetch.
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalaryScales to fetch.
+     */
+    orderBy?: SalaryScaleOrderByWithRelationInput | SalaryScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalaryScales.
+     */
+    cursor?: SalaryScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalaryScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalaryScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalaryScales.
+     */
+    distinct?: SalaryScaleScalarFieldEnum | SalaryScaleScalarFieldEnum[]
+  }
+
+  /**
+   * SalaryScale findFirstOrThrow
+   */
+  export type SalaryScaleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter, which SalaryScale to fetch.
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalaryScales to fetch.
+     */
+    orderBy?: SalaryScaleOrderByWithRelationInput | SalaryScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SalaryScales.
+     */
+    cursor?: SalaryScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalaryScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalaryScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SalaryScales.
+     */
+    distinct?: SalaryScaleScalarFieldEnum | SalaryScaleScalarFieldEnum[]
+  }
+
+  /**
+   * SalaryScale findMany
+   */
+  export type SalaryScaleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter, which SalaryScales to fetch.
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SalaryScales to fetch.
+     */
+    orderBy?: SalaryScaleOrderByWithRelationInput | SalaryScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SalaryScales.
+     */
+    cursor?: SalaryScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SalaryScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SalaryScales.
+     */
+    skip?: number
+    distinct?: SalaryScaleScalarFieldEnum | SalaryScaleScalarFieldEnum[]
+  }
+
+  /**
+   * SalaryScale create
+   */
+  export type SalaryScaleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SalaryScale.
+     */
+    data: XOR<SalaryScaleCreateInput, SalaryScaleUncheckedCreateInput>
+  }
+
+  /**
+   * SalaryScale createMany
+   */
+  export type SalaryScaleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SalaryScales.
+     */
+    data: SalaryScaleCreateManyInput | SalaryScaleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SalaryScale update
+   */
+  export type SalaryScaleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SalaryScale.
+     */
+    data: XOR<SalaryScaleUpdateInput, SalaryScaleUncheckedUpdateInput>
+    /**
+     * Choose, which SalaryScale to update.
+     */
+    where: SalaryScaleWhereUniqueInput
+  }
+
+  /**
+   * SalaryScale updateMany
+   */
+  export type SalaryScaleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SalaryScales.
+     */
+    data: XOR<SalaryScaleUpdateManyMutationInput, SalaryScaleUncheckedUpdateManyInput>
+    /**
+     * Filter which SalaryScales to update
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * Limit how many SalaryScales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalaryScale upsert
+   */
+  export type SalaryScaleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SalaryScale to update in case it exists.
+     */
+    where: SalaryScaleWhereUniqueInput
+    /**
+     * In case the SalaryScale found by the `where` argument doesn't exist, create a new SalaryScale with this data.
+     */
+    create: XOR<SalaryScaleCreateInput, SalaryScaleUncheckedCreateInput>
+    /**
+     * In case the SalaryScale was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SalaryScaleUpdateInput, SalaryScaleUncheckedUpdateInput>
+  }
+
+  /**
+   * SalaryScale delete
+   */
+  export type SalaryScaleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
+    /**
+     * Filter which SalaryScale to delete.
+     */
+    where: SalaryScaleWhereUniqueInput
+  }
+
+  /**
+   * SalaryScale deleteMany
+   */
+  export type SalaryScaleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SalaryScales to delete
+     */
+    where?: SalaryScaleWhereInput
+    /**
+     * Limit how many SalaryScales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SalaryScale.employees
+   */
+  export type SalaryScale$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Employee
+     */
+    select?: EmployeeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Employee
+     */
+    omit?: EmployeeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeInclude<ExtArgs> | null
+    where?: EmployeeWhereInput
+    orderBy?: EmployeeOrderByWithRelationInput | EmployeeOrderByWithRelationInput[]
+    cursor?: EmployeeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeScalarFieldEnum | EmployeeScalarFieldEnum[]
+  }
+
+  /**
+   * SalaryScale without action
+   */
+  export type SalaryScaleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SalaryScale
+     */
+    select?: SalaryScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SalaryScale
+     */
+    omit?: SalaryScaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SalaryScaleInclude<ExtArgs> | null
   }
 
 
@@ -30411,6 +31581,7 @@ export namespace Prisma {
     unionId: 'unionId',
     mutualId: 'mutualId',
     contractModalityCode: 'contractModalityCode',
+    salaryScaleId: 'salaryScaleId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
@@ -30424,6 +31595,20 @@ export namespace Prisma {
   };
 
   export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+  export const SalaryScaleScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    description: 'description',
+    amount: 'amount',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type SalaryScaleScalarFieldEnum = (typeof SalaryScaleScalarFieldEnum)[keyof typeof SalaryScaleScalarFieldEnum]
 
 
   export const KinshipScalarFieldEnum: {
@@ -30878,10 +32063,21 @@ export namespace Prisma {
     unionId: 'unionId',
     mutualId: 'mutualId',
     contractModalityCode: 'contractModalityCode',
+    salaryScaleId: 'salaryScaleId',
     payrollGroup: 'payrollGroup'
   };
 
   export type EmployeeOrderByRelevanceFieldEnum = (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum]
+
+
+  export const SalaryScaleOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    description: 'description'
+  };
+
+  export type SalaryScaleOrderByRelevanceFieldEnum = (typeof SalaryScaleOrderByRelevanceFieldEnum)[keyof typeof SalaryScaleOrderByRelevanceFieldEnum]
 
 
   export const KinshipOrderByRelevanceFieldEnum: {
@@ -31959,6 +33155,7 @@ export namespace Prisma {
     unionId?: StringNullableFilter<"Employee"> | string | null
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
+    salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -31975,6 +33172,7 @@ export namespace Prisma {
     union?: XOR<UnionNullableScalarRelationFilter, UnionWhereInput> | null
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
+    salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -32011,6 +33209,7 @@ export namespace Prisma {
     unionId?: SortOrderInput | SortOrder
     mutualId?: SortOrderInput | SortOrder
     contractModalityCode?: SortOrderInput | SortOrder
+    salaryScaleId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -32027,6 +33226,7 @@ export namespace Prisma {
     union?: UnionOrderByWithRelationInput
     mutual?: MutualOrderByWithRelationInput
     contractModality?: ArcaContractModalityOrderByWithRelationInput
+    salaryScale?: SalaryScaleOrderByWithRelationInput
     paySlips?: PaySlipOrderByRelationAggregateInput
     relatives?: EmployeeRelativeOrderByRelationAggregateInput
     assignedConcepts?: EmployeeConceptOrderByRelationAggregateInput
@@ -32067,6 +33267,7 @@ export namespace Prisma {
     unionId?: StringNullableFilter<"Employee"> | string | null
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
+    salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -32083,6 +33284,7 @@ export namespace Prisma {
     union?: XOR<UnionNullableScalarRelationFilter, UnionWhereInput> | null
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
+    salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -32119,6 +33321,7 @@ export namespace Prisma {
     unionId?: SortOrderInput | SortOrder
     mutualId?: SortOrderInput | SortOrder
     contractModalityCode?: SortOrderInput | SortOrder
+    salaryScaleId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -32169,6 +33372,7 @@ export namespace Prisma {
     unionId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     mutualId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+    salaryScaleId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Employee"> | Date | string | null
@@ -32179,6 +33383,79 @@ export namespace Prisma {
     partTimePercentage?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type SalaryScaleWhereInput = {
+    AND?: SalaryScaleWhereInput | SalaryScaleWhereInput[]
+    OR?: SalaryScaleWhereInput[]
+    NOT?: SalaryScaleWhereInput | SalaryScaleWhereInput[]
+    id?: StringFilter<"SalaryScale"> | string
+    name?: StringFilter<"SalaryScale"> | string
+    code?: StringNullableFilter<"SalaryScale"> | string | null
+    description?: StringNullableFilter<"SalaryScale"> | string | null
+    amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
+    updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
+    employees?: EmployeeListRelationFilter
+  }
+
+  export type SalaryScaleOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    employees?: EmployeeOrderByRelationAggregateInput
+    _relevance?: SalaryScaleOrderByRelevanceInput
+  }
+
+  export type SalaryScaleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SalaryScaleWhereInput | SalaryScaleWhereInput[]
+    OR?: SalaryScaleWhereInput[]
+    NOT?: SalaryScaleWhereInput | SalaryScaleWhereInput[]
+    name?: StringFilter<"SalaryScale"> | string
+    code?: StringNullableFilter<"SalaryScale"> | string | null
+    description?: StringNullableFilter<"SalaryScale"> | string | null
+    amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
+    updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
+    employees?: EmployeeListRelationFilter
+  }, "id">
+
+  export type SalaryScaleOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: SalaryScaleCountOrderByAggregateInput
+    _avg?: SalaryScaleAvgOrderByAggregateInput
+    _max?: SalaryScaleMaxOrderByAggregateInput
+    _min?: SalaryScaleMinOrderByAggregateInput
+    _sum?: SalaryScaleSumOrderByAggregateInput
+  }
+
+  export type SalaryScaleScalarWhereWithAggregatesInput = {
+    AND?: SalaryScaleScalarWhereWithAggregatesInput | SalaryScaleScalarWhereWithAggregatesInput[]
+    OR?: SalaryScaleScalarWhereWithAggregatesInput[]
+    NOT?: SalaryScaleScalarWhereWithAggregatesInput | SalaryScaleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SalaryScale"> | string
+    name?: StringWithAggregatesFilter<"SalaryScale"> | string
+    code?: StringNullableWithAggregatesFilter<"SalaryScale"> | string | null
+    description?: StringNullableWithAggregatesFilter<"SalaryScale"> | string | null
+    amount?: DecimalWithAggregatesFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"SalaryScale"> | Date | string | null
   }
 
   export type KinshipWhereInput = {
@@ -34595,6 +35872,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -34631,6 +35909,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -34687,6 +35966,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -34723,6 +36003,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34769,6 +36050,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -34847,6 +36129,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -34857,6 +36140,87 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type SalaryScaleCreateInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeCreateNestedManyWithoutSalaryScaleInput
+  }
+
+  export type SalaryScaleUncheckedCreateInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeUncheckedCreateNestedManyWithoutSalaryScaleInput
+  }
+
+  export type SalaryScaleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUpdateManyWithoutSalaryScaleNestedInput
+  }
+
+  export type SalaryScaleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUncheckedUpdateManyWithoutSalaryScaleNestedInput
+  }
+
+  export type SalaryScaleCreateManyInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SalaryScaleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SalaryScaleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type KinshipCreateInput = {
@@ -37232,6 +38596,11 @@ export namespace Prisma {
     isNot?: ArcaContractModalityWhereInput | null
   }
 
+  export type SalaryScaleNullableScalarRelationFilter = {
+    is?: SalaryScaleWhereInput | null
+    isNot?: SalaryScaleWhereInput | null
+  }
+
   export type PaySlipListRelationFilter = {
     every?: PaySlipWhereInput
     some?: PaySlipWhereInput
@@ -37308,6 +38677,7 @@ export namespace Prisma {
     unionId?: SortOrder
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
+    salaryScaleId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -37358,6 +38728,7 @@ export namespace Prisma {
     unionId?: SortOrder
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
+    salaryScaleId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -37400,6 +38771,7 @@ export namespace Prisma {
     unionId?: SortOrder
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
+    salaryScaleId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -37434,6 +38806,53 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type SalaryScaleOrderByRelevanceInput = {
+    fields: SalaryScaleOrderByRelevanceFieldEnum | SalaryScaleOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SalaryScaleCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SalaryScaleAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type SalaryScaleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SalaryScaleMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    amount?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SalaryScaleSumOrderByAggregateInput = {
+    amount?: SortOrder
   }
 
   export type KinshipOrderByRelevanceInput = {
@@ -39089,6 +40508,12 @@ export namespace Prisma {
     connect?: ArcaContractModalityWhereUniqueInput
   }
 
+  export type SalaryScaleCreateNestedOneWithoutEmployeesInput = {
+    create?: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: SalaryScaleCreateOrConnectWithoutEmployeesInput
+    connect?: SalaryScaleWhereUniqueInput
+  }
+
   export type PaySlipCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -39213,6 +40638,16 @@ export namespace Prisma {
     update?: XOR<XOR<ArcaContractModalityUpdateToOneWithWhereWithoutEmployeesInput, ArcaContractModalityUpdateWithoutEmployeesInput>, ArcaContractModalityUncheckedUpdateWithoutEmployeesInput>
   }
 
+  export type SalaryScaleUpdateOneWithoutEmployeesNestedInput = {
+    create?: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: SalaryScaleCreateOrConnectWithoutEmployeesInput
+    upsert?: SalaryScaleUpsertWithoutEmployeesInput
+    disconnect?: SalaryScaleWhereInput | boolean
+    delete?: SalaryScaleWhereInput | boolean
+    connect?: SalaryScaleWhereUniqueInput
+    update?: XOR<XOR<SalaryScaleUpdateToOneWithWhereWithoutEmployeesInput, SalaryScaleUpdateWithoutEmployeesInput>, SalaryScaleUncheckedUpdateWithoutEmployeesInput>
+  }
+
   export type PaySlipUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -39323,6 +40758,48 @@ export namespace Prisma {
     update?: PeriodNoveltyUpdateWithWhereUniqueWithoutEmployeeInput | PeriodNoveltyUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: PeriodNoveltyUpdateManyWithWhereWithoutEmployeeInput | PeriodNoveltyUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
+  }
+
+  export type EmployeeCreateNestedManyWithoutSalaryScaleInput = {
+    create?: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput> | EmployeeCreateWithoutSalaryScaleInput[] | EmployeeUncheckedCreateWithoutSalaryScaleInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSalaryScaleInput | EmployeeCreateOrConnectWithoutSalaryScaleInput[]
+    createMany?: EmployeeCreateManySalaryScaleInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type EmployeeUncheckedCreateNestedManyWithoutSalaryScaleInput = {
+    create?: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput> | EmployeeCreateWithoutSalaryScaleInput[] | EmployeeUncheckedCreateWithoutSalaryScaleInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSalaryScaleInput | EmployeeCreateOrConnectWithoutSalaryScaleInput[]
+    createMany?: EmployeeCreateManySalaryScaleInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type EmployeeUpdateManyWithoutSalaryScaleNestedInput = {
+    create?: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput> | EmployeeCreateWithoutSalaryScaleInput[] | EmployeeUncheckedCreateWithoutSalaryScaleInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSalaryScaleInput | EmployeeCreateOrConnectWithoutSalaryScaleInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput | EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput[]
+    createMany?: EmployeeCreateManySalaryScaleInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutSalaryScaleInput | EmployeeUpdateWithWhereUniqueWithoutSalaryScaleInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutSalaryScaleInput | EmployeeUpdateManyWithWhereWithoutSalaryScaleInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutSalaryScaleNestedInput = {
+    create?: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput> | EmployeeCreateWithoutSalaryScaleInput[] | EmployeeUncheckedCreateWithoutSalaryScaleInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSalaryScaleInput | EmployeeCreateOrConnectWithoutSalaryScaleInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput | EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput[]
+    createMany?: EmployeeCreateManySalaryScaleInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutSalaryScaleInput | EmployeeUpdateWithWhereUniqueWithoutSalaryScaleInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutSalaryScaleInput | EmployeeUpdateManyWithWhereWithoutSalaryScaleInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
   export type EmployeeRelativeCreateNestedManyWithoutKinshipInput = {
@@ -40108,6 +41585,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -40143,6 +41621,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -40218,6 +41697,7 @@ export namespace Prisma {
     unionId?: StringNullableFilter<"Employee"> | string | null
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
+    salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -40493,6 +41973,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -40528,6 +42009,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     unionId?: string | null
     mutualId?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -40703,6 +42185,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -40738,6 +42221,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -40937,6 +42421,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -40972,6 +42457,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -41053,6 +42539,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -41088,6 +42575,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -41169,6 +42657,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -41204,6 +42693,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     unionId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -41394,6 +42884,33 @@ export namespace Prisma {
   export type ArcaContractModalityCreateOrConnectWithoutEmployeesInput = {
     where: ArcaContractModalityWhereUniqueInput
     create: XOR<ArcaContractModalityCreateWithoutEmployeesInput, ArcaContractModalityUncheckedCreateWithoutEmployeesInput>
+  }
+
+  export type SalaryScaleCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SalaryScaleUncheckedCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    amount?: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SalaryScaleCreateOrConnectWithoutEmployeesInput = {
+    where: SalaryScaleWhereUniqueInput
+    create: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
   }
 
   export type PaySlipCreateWithoutEmployeeInput = {
@@ -41780,6 +43297,39 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type SalaryScaleUpsertWithoutEmployeesInput = {
+    update: XOR<SalaryScaleUpdateWithoutEmployeesInput, SalaryScaleUncheckedUpdateWithoutEmployeesInput>
+    create: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
+    where?: SalaryScaleWhereInput
+  }
+
+  export type SalaryScaleUpdateToOneWithWhereWithoutEmployeesInput = {
+    where?: SalaryScaleWhereInput
+    data: XOR<SalaryScaleUpdateWithoutEmployeesInput, SalaryScaleUncheckedUpdateWithoutEmployeesInput>
+  }
+
+  export type SalaryScaleUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SalaryScaleUncheckedUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type PaySlipUpsertWithWhereUniqueWithoutEmployeeInput = {
     where: PaySlipWhereUniqueInput
     update: XOR<PaySlipUpdateWithoutEmployeeInput, PaySlipUncheckedUpdateWithoutEmployeeInput>
@@ -41937,6 +43487,124 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
   }
 
+  export type EmployeeCreateWithoutSalaryScaleInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutSalaryScaleInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutSalaryScaleInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput>
+  }
+
+  export type EmployeeCreateManySalaryScaleInputEnvelope = {
+    data: EmployeeCreateManySalaryScaleInput | EmployeeCreateManySalaryScaleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput = {
+    where: EmployeeWhereUniqueInput
+    update: XOR<EmployeeUpdateWithoutSalaryScaleInput, EmployeeUncheckedUpdateWithoutSalaryScaleInput>
+    create: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput>
+  }
+
+  export type EmployeeUpdateWithWhereUniqueWithoutSalaryScaleInput = {
+    where: EmployeeWhereUniqueInput
+    data: XOR<EmployeeUpdateWithoutSalaryScaleInput, EmployeeUncheckedUpdateWithoutSalaryScaleInput>
+  }
+
+  export type EmployeeUpdateManyWithWhereWithoutSalaryScaleInput = {
+    where: EmployeeScalarWhereInput
+    data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutSalaryScaleInput>
+  }
+
   export type EmployeeRelativeCreateWithoutKinshipInput = {
     id?: string
     lastName: string
@@ -42031,6 +43699,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -42066,6 +43735,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42160,6 +43830,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -42195,6 +43866,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -42455,6 +44127,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -42490,6 +44163,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42640,6 +44314,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -42675,6 +44350,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43161,6 +44837,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -43196,6 +44873,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -43421,6 +45099,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -43456,6 +45135,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44019,6 +45699,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -44054,6 +45735,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -44261,6 +45943,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -44296,6 +45979,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44425,6 +46109,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -44476,6 +46161,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -44511,6 +46197,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44556,6 +46243,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44797,6 +46485,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     unionId?: string | null
     mutualId?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -44848,6 +46537,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -44883,6 +46573,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44928,6 +46619,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44969,6 +46661,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45020,6 +46713,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -45055,6 +46749,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45100,6 +46795,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45141,6 +46837,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45192,6 +46889,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -45227,6 +46925,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45272,6 +46971,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45313,6 +47013,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45364,6 +47065,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -45399,6 +47101,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45444,6 +47147,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45485,6 +47189,7 @@ export namespace Prisma {
     healthInsuranceId?: string | null
     unionId?: string | null
     contractModalityCode?: string | null
+    salaryScaleId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45536,6 +47241,7 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -45571,6 +47277,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45616,6 +47323,7 @@ export namespace Prisma {
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45938,6 +47646,182 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeCreateManySalaryScaleInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type EmployeeUpdateWithoutSalaryScaleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutSalaryScaleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutSalaryScaleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
   }
 
   export type EmployeeRelativeCreateManyKinshipInput = {

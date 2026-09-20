@@ -80,6 +80,13 @@ router.patch(
   employeeController.update
 );
 
+router.put(
+  '/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateEmployeeSchema),
+  employeeController.update
+);
+
 router.delete(
   '/:id',
   requireCompanyRole('ADMIN', 'OPERATOR'),

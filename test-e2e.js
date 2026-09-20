@@ -2102,7 +2102,167 @@ async function runTests() {
     console.log('     Status Quitar Concepto:', deleteConceptRes.status);
     if (deleteConceptRes.status !== 200) throw new Error('Falló eliminación de concepto asignado a empleado');
 
-    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 23) PASARON EXITOSAMENTE!');
+    // =========================================================================
+    // 24. NÓMINAS (SUELDOS BÁSICOS) & ACTUALIZACIÓN MASIVA
+    // =========================================================================
+    console.log('\n2️⃣4️⃣ Test: MÓDULO DE NÓMINAS (SUELDOS BÁSICOS) & AUMENTO MASIVO');
+
+    // 24.1 Crear Nómina de Sueldo Básico
+    console.log('  -> 24.1: POST /api/v1/payroll/salary-scales (Crear Nómina)');
+    const createScaleRes = await fetch(`${baseUrl}/payroll/salary-scales`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: 'Maestranza Categoría A',
+        code: 'MAE-A',
+        amount: 750000.00,
+        description: 'Personal de limpieza y mantenimiento inicial',
+      }),
+    });
+    const createScaleJson = await createScaleRes.json();
+    console.log('     Status Crear Nómina:', createScaleRes.status, 'Nombre:', createScaleJson.data?.name);
+    if (createScaleRes.status !== 201 || !createScaleJson.data?.id) {
+      throw new Error('Falló creación de nómina: ' + JSON.stringify(createScaleJson));
+    }
+    const scaleId = createScaleJson.data.id;
+
+    // 24.2 Listar Nóminas
+    console.log('  -> 24.2: GET /api/v1/payroll/salary-scales (Listar Nóminas)');
+    const listScalesRes = await fetch(`${baseUrl}/payroll/salary-scales`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const listScalesJson = await listScalesRes.json();
+    console.log('     Status Listar Nóminas:', listScalesRes.status, 'Total:', listScalesJson.data?.length);
+    if (listScalesRes.status !== 200 || !Array.isArray(listScalesJson.data) || listScalesJson.data.length === 0) {
+      throw new Error('Falló listado de nóminas: ' + JSON.stringify(listScalesJson));
+    }
+
+    // 24.3 Asignar Nómina al Empleado en Ficha de Personal
+    console.log('  -> 24.3: PUT /api/v1/employees/:id con salaryScaleId');
+    const updateEmpScaleRes = await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        salaryScaleId: scaleId,
+      }),
+    });
+    const updateEmpScaleJson = await updateEmpScaleRes.json();
+    console.log('     Status Asignar Nómina:', updateEmpScaleRes.status, 'Básico sincronizado:', updateEmpScaleJson.data?.basicSalary);
+    if (updateEmpScaleRes.status !== 200 || Number(updateEmpScaleJson.data?.basicSalary) !== 750000) {
+      throw new Error('Falló sincronización de sueldo básico desde la nómina asignada: ' + JSON.stringify(updateEmpScaleJson));
+    }
+
+    // 24.4 Previsualizar Aumento Masivo (10% en porcentaje)
+    console.log('  -> 24.4: POST /api/v1/payroll/salary-scales/mass-increase/preview (10%)');
+    const previewScaleRes = await fetch(`${baseUrl}/payroll/salary-scales/mass-increase/preview`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        increaseType: 'PERCENTAGE',
+        value: 10,
+        rounding: 'DECIMAL_2',
+      }),
+    });
+    const previewScaleJson = await previewScaleRes.json();
+    console.log('     Status Previsualización:', previewScaleRes.status, 'Nóminas afectadas:', previewScaleJson.data?.totalScales, 'Colaboradores:', previewScaleJson.data?.totalEmployeesAffected);
+    if (previewScaleRes.status !== 200 || previewScaleJson.data?.totalScales < 1) {
+      throw new Error('Falló previsualización de aumento masivo: ' + JSON.stringify(previewScaleJson));
+    }
+    const scalePreviewItem = previewScaleJson.data.preview.find((p) => p.id === scaleId);
+    if (!scalePreviewItem || scalePreviewItem.newAmount !== 825000) {
+      throw new Error(`Cálculo de previsualización incorrecto. Esperado 825000, obtenido: ${scalePreviewItem?.newAmount}`);
+    }
+
+    // 24.5 Aplicar Aumento Masivo (10% en porcentaje)
+    console.log('  -> 24.5: POST /api/v1/payroll/salary-scales/mass-increase/apply (10%)');
+    const applyScaleRes = await fetch(`${baseUrl}/payroll/salary-scales/mass-increase/apply`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        increaseType: 'PERCENTAGE',
+        value: 10,
+        rounding: 'DECIMAL_2',
+      }),
+    });
+    const applyScaleJson = await applyScaleRes.json();
+    console.log('     Status Aplicar Aumento:', applyScaleRes.status, 'Nóminas actualizadas:', applyScaleJson.data?.totalScalesUpdated, 'Colaboradores:', applyScaleJson.data?.totalEmployeesUpdated);
+    if (applyScaleRes.status !== 200 || applyScaleJson.data?.totalScalesUpdated < 1) {
+      throw new Error('Falló aplicación de aumento masivo de nóminas: ' + JSON.stringify(applyScaleJson));
+    }
+
+    // 24.6 Verificar Sincronización en Cascada del Empleado
+    console.log('  -> 24.6: GET /api/v1/employees/:id (Verificar nuevo básico en cascada)');
+    const verifyEmpRes = await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const verifyEmpJson = await verifyEmpRes.json();
+    console.log('     Básico resultante del empleado:', verifyEmpJson.data?.basicSalary);
+    if (Number(verifyEmpJson.data?.basicSalary) !== 825000) {
+      throw new Error(`El empleado no se sincronizó en cascada a 825000. Valor: ${verifyEmpJson.data?.basicSalary}`);
+    }
+
+    // 24.7 Constraint de Borrado: No se puede eliminar si tiene empleados asignados
+    console.log('  -> 24.7: DELETE /api/v1/payroll/salary-scales/:id (Debe rechazar por tener colaboradores)');
+    const deleteFailRes = await fetch(`${baseUrl}/payroll/salary-scales/${scaleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    console.log('     Status intento de borrado:', deleteFailRes.status);
+    if (deleteFailRes.status !== 400) {
+      throw new Error('Se esperaba status 400 al intentar eliminar nómina con colaboradores asignados');
+    }
+
+    // 24.8 Desasignar y Eliminar Nómina
+    console.log('  -> 24.8: Desasignar nómina y DELETE /api/v1/payroll/salary-scales/:id');
+    await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        salaryScaleId: null,
+      }),
+    });
+    const deleteSuccessRes = await fetch(`${baseUrl}/payroll/salary-scales/${scaleId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    console.log('     Status borrado con nómina desasignada:', deleteSuccessRes.status);
+    if (deleteSuccessRes.status !== 200) {
+      throw new Error('Falló eliminación de nómina sin colaboradores asignados');
+    }
+
+    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 24) PASARON EXITOSAMENTE!');
   } finally {
     // 🧹 Limpieza automática de recursos temporales creados exclusivamente por el test
     if (testDbName && testDbName.startsWith('sueldos_emp_30708381256_')) {

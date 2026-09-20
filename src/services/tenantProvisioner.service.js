@@ -146,6 +146,17 @@ const TENANT_TABLE_DEFINITIONS = [
     \`deleted_at\` DATETIME(3) NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
+  `CREATE TABLE IF NOT EXISTS \`salary_scales\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`code\` VARCHAR(50) NULL,
+    \`description\` TEXT NULL,
+    \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
   `CREATE TABLE IF NOT EXISTS \`employees\` (
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`file_number\` VARCHAR(191) NOT NULL UNIQUE,
@@ -176,6 +187,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`union_id\` VARCHAR(191) NULL,
     \`mutual_id\` VARCHAR(191) NULL,
     \`contract_modality_code\` VARCHAR(50) NULL,
+    \`salary_scale_id\` VARCHAR(191) NULL,
     \`payroll_group\` VARCHAR(50) NOT NULL DEFAULT 'MENSUAL',
     \`is_part_time\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`weekly_working_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
@@ -192,6 +204,7 @@ const TENANT_TABLE_DEFINITIONS = [
     INDEX \`employees_union_id_idx\` (\`union_id\`),
     INDEX \`employees_mutual_id_idx\` (\`mutual_id\`),
     INDEX \`employees_contract_modality_code_idx\` (\`contract_modality_code\`),
+    INDEX \`employees_salary_scale_id_idx\` (\`salary_scale_id\`),
     CONSTRAINT \`employees_department_id_fkey\` FOREIGN KEY (\`department_id\`) REFERENCES \`departments\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_job_position_id_fkey\` FOREIGN KEY (\`job_position_id\`) REFERENCES \`job_positions\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_health_insurance_id_fkey\` FOREIGN KEY (\`health_insurance_id\`) REFERENCES \`health_insurances\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -870,6 +883,19 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`salary_scales\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`code\` VARCHAR(50) NULL,
+        \`description\` TEXT NULL,
+        \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
     // 2. Crear tabla principal employees si no existe
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`employees\` (
@@ -931,6 +957,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       { name: 'union_id', def: 'VARCHAR(191) NULL' },
       { name: 'mutual_id', def: 'VARCHAR(191) NULL' },
       { name: 'contract_modality_code', def: 'VARCHAR(50) NULL' },
+      { name: 'salary_scale_id', def: 'VARCHAR(191) NULL' },
       { name: 'termination_date', def: 'DATETIME(3) NULL' },
       { name: 'termination_reason', def: 'VARCHAR(255) NULL' },
       { name: 'payroll_group', def: "VARCHAR(50) NOT NULL DEFAULT 'MENSUAL'" },
@@ -972,6 +999,53 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
           console.warn(`Aviso al modificar columna legacy ${legacyCol.name}:`, e.message);
         }
       }
+    }
+
+    // 4b. Migración automática: agrupar básicos existentes y asignar a nóminas según puesto de trabajo
+    try {
+      const unassignedEmps = await tenantClient.employee.findMany({
+        where: { salaryScaleId: null, deletedAt: null },
+        include: { jobPosition: true },
+      });
+
+      if (unassignedEmps.length > 0) {
+        for (const emp of unassignedEmps) {
+          const basic = Number(emp.basicSalary) || 0;
+          const puestoName = emp.jobPosition?.name?.trim() || 'General';
+          const scaleName = puestoName;
+
+          let scale = await tenantClient.salaryScale.findFirst({
+            where: {
+              name: scaleName,
+              amount: basic,
+              deletedAt: null,
+            },
+          });
+
+          if (!scale) {
+            const existingWithName = await tenantClient.salaryScale.findFirst({
+              where: { name: scaleName, deletedAt: null },
+            });
+            const finalName = existingWithName ? `${scaleName} ($${basic.toLocaleString('es-AR')})` : scaleName;
+
+            scale = await tenantClient.salaryScale.create({
+              data: {
+                name: finalName,
+                code: emp.jobPosition?.code ? `${emp.jobPosition.code}-BAS` : null,
+                description: `Nómina inicial asignada a ${puestoName}`,
+                amount: basic,
+              },
+            });
+          }
+
+          await tenantClient.employee.update({
+            where: { id: emp.id },
+            data: { salaryScaleId: scale.id },
+          });
+        }
+      }
+    } catch (migErr) {
+      console.warn('Aviso en migración inicial de nóminas:', migErr.message);
     }
 
     // 5. Crear tabla employee_relatives si no existe

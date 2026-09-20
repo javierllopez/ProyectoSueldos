@@ -280,6 +280,7 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   unionId: 'unionId',
   mutualId: 'mutualId',
   contractModalityCode: 'contractModalityCode',
+  salaryScaleId: 'salaryScaleId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -290,6 +291,17 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   partTimePercentage: 'partTimePercentage',
   basicSalary: 'basicSalary',
   hourlyRate: 'hourlyRate'
+};
+
+exports.Prisma.SalaryScaleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  amount: 'amount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.KinshipScalarFieldEnum = {
@@ -666,7 +678,15 @@ exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
   unionId: 'unionId',
   mutualId: 'mutualId',
   contractModalityCode: 'contractModalityCode',
+  salaryScaleId: 'salaryScaleId',
   payrollGroup: 'payrollGroup'
+};
+
+exports.Prisma.SalaryScaleOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description'
 };
 
 exports.Prisma.KinshipOrderByRelevanceFieldEnum = {
@@ -796,6 +816,7 @@ exports.Prisma.ModelName = {
   Union: 'Union',
   Mutual: 'Mutual',
   Employee: 'Employee',
+  SalaryScale: 'SalaryScale',
   Kinship: 'Kinship',
   EmployeeRelative: 'EmployeeRelative',
   Concept: 'Concept',

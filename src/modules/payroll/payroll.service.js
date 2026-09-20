@@ -211,6 +211,7 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       healthInsurance: true,
       union: true,
       mutual: true,
+      salaryScale: true,
       relatives: {
         where: { deletedAt: null },
         include: { kinship: true },

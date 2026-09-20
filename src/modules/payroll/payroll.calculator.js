@@ -347,7 +347,11 @@ export function calculateEmployeePayroll({
     workedDays = Number(basicInput.units);
   }
 
-  const baseSalaryNominal = Number(employee.basicSalary || 0);
+  const baseSalaryNominal = Number(
+    employee.salaryScale?.amount !== undefined && employee.salaryScale?.amount !== null
+      ? employee.salaryScale.amount
+      : (employee.basicSalary || 0)
+  );
 
   // Contexto de valores para resolución de fórmulas
   const context = {

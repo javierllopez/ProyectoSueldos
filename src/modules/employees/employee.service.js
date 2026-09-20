@@ -58,6 +58,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         union: { select: { id: true, name: true, code: true } },
         mutual: { select: { id: true, name: true, code: true } },
         contractModality: true,
+        salaryScale: { select: { id: true, name: true, code: true, amount: true } },
       },
     }),
     tenantPrisma.employee.count({ where }),
@@ -96,6 +97,7 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
       union: true,
       mutual: true,
       contractModality: true,
+      salaryScale: true,
       relatives: {
         where: { deletedAt: null },
         include: { kinship: true },
@@ -262,6 +264,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       unionId: employeeData.unionId ? employeeData.unionId.trim() : null,
       mutualId: employeeData.mutualId ? employeeData.mutualId.trim() : null,
       contractModalityCode: employeeData.contractModalityCode ? employeeData.contractModalityCode.trim() : null,
+      salaryScaleId: employeeData.salaryScaleId ? employeeData.salaryScaleId.trim() : null,
       payrollGroup: employeeData.payrollGroup ? employeeData.payrollGroup.trim() : 'MENSUAL',
       isPartTime: employeeData.isPartTime ?? false,
       weeklyWorkingHours: hoursToDecimal(employeeData.weeklyWorkingHours, 48.00),
@@ -284,6 +287,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       union: true,
       mutual: true,
       contractModality: true,
+      salaryScale: true,
       relatives: {
         include: { kinship: true },
       },
@@ -432,6 +436,17 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
     }
   }
 
+  if (data.salaryScaleId !== undefined) {
+    updatePayload.salaryScaleId = data.salaryScaleId ? data.salaryScaleId.trim() : null;
+    if (updatePayload.salaryScaleId) {
+      const scale = await tenantPrisma.salaryScale.findFirst({
+        where: { id: updatePayload.salaryScaleId, deletedAt: null },
+      });
+      if (scale) {
+        updatePayload.basicSalary = Number(scale.amount);
+      }
+    }
+  }
   if (data.payrollGroup !== undefined) updatePayload.payrollGroup = data.payrollGroup ? data.payrollGroup.trim() : 'MENSUAL';
   if (data.isPartTime !== undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
   if (data.weeklyWorkingHours !== undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, 48.00);
@@ -456,6 +471,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       union: true,
       mutual: true,
       contractModality: true,
+      salaryScale: true,
       assignedConcepts: {
         include: { concept: true },
         orderBy: { createdAt: 'asc' },
