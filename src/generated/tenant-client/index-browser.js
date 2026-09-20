@@ -290,7 +290,9 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   monthlyWorkingHours: 'monthlyWorkingHours',
   partTimePercentage: 'partTimePercentage',
   basicSalary: 'basicSalary',
-  hourlyRate: 'hourlyRate'
+  hourlyRate: 'hourlyRate',
+  cbu: 'cbu',
+  bankAccountType: 'bankAccountType'
 };
 
 exports.Prisma.SalaryScaleScalarFieldEnum = {
@@ -679,7 +681,9 @@ exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
   mutualId: 'mutualId',
   contractModalityCode: 'contractModalityCode',
   salaryScaleId: 'salaryScaleId',
-  payrollGroup: 'payrollGroup'
+  payrollGroup: 'payrollGroup',
+  cbu: 'cbu',
+  bankAccountType: 'bankAccountType'
 };
 
 exports.Prisma.SalaryScaleOrderByRelevanceFieldEnum = {

@@ -37,6 +37,8 @@ export async function listSalaryScales(tenantPrisma, { search } = {}) {
     description: scale.description,
     amount: Number(scale.amount),
     assignedEmployeesCount: scale._count?.employees || 0,
+    employeesCount: scale._count?.employees || 0,
+    _count: scale._count,
     createdAt: scale.createdAt,
     updatedAt: scale.updatedAt,
   }));

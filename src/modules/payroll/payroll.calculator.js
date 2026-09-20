@@ -366,7 +366,6 @@ export function calculateEmployeePayroll({
     BASICO: baseSalaryNominal,
     [basicCode]: baseSalaryNominal,
     '1000': baseSalaryNominal,
-    VALOR_HORA: Number(employee.hourlyRate || 0),
     ES_JORNADA_PARCIAL: employee.isPartTime ? 1 : 0,
     PORCENTAJE_JORNADA: Number(employee.partTimePercentage || 100),
     HORAS_SEMANALES: Number(employee.weeklyWorkingHours || 48),
@@ -551,7 +550,16 @@ export function calculateEmployeePayroll({
     let units = 1;
     let unitLabel = 'Fijo';
 
-    if (noveltyType === 'HORAS') {
+    if (noveltyType === 'SOLO_ASIGNACION') {
+      unitLabel = 'Fijo';
+      units = 1;
+      context.HORAS = 0;
+      context.CANTIDAD = 1;
+      context.UNIDADES = 1;
+      context.PORCENTAJE = 0;
+      context.PORCENTAJE_ENTERO = 0;
+      context.PROPIO_VALOR = 1;
+    } else if (noveltyType === 'HORAS') {
       unitLabel = 'Horas';
       if (inputOverride?.units !== undefined && inputOverride?.units !== null) {
         units = hoursToDecimal(inputOverride.units, 0);

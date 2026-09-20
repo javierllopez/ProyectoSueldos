@@ -2751,10 +2751,25 @@
                 </div>
               </div>
 
-              <!-- CAMPOS APELLIDO Y NOMBRE -->
+              <!-- CAMPOS PRINCIPALES PERMANENTES: LEGAJO, APELLIDO, NOMBRE, FECHA DE INGRESO -->
               <div class="flex-grow-1">
-                <div class="row g-2">
-                  <div class="col-md-6">
+                <div class="row g-2 align-items-end">
+                  <div class="col-md-2">
+                    <label class="form-label required fw-bold mb-1">
+                      N° Legajo <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-icon">
+                      <span class="input-icon-addon"><i class="ti ti-hash text-teal"></i></span>
+                      <input
+                        type="text"
+                        class="form-control font-monospace fw-bold text-teal"
+                        id="employee-input-file-number"
+                        required
+                        placeholder="Ej. L-001"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
                     <label class="form-label required fw-bold mb-1">
                       Apellido(s) <span class="text-danger">*</span>
                     </label>
@@ -2769,7 +2784,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <label class="form-label required fw-bold mb-1">
                       Nombre(s) <span class="text-danger">*</span>
                     </label>
@@ -2783,6 +2798,17 @@
                         placeholder="Ej. Martín Alejandro"
                       />
                     </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label required fw-bold mb-1">
+                      F. Ingreso <span class="text-danger">*</span>
+                    </label>
+                    <input
+                      type="date"
+                      class="form-control"
+                      id="employee-input-hire-date"
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -2873,7 +2899,7 @@
                   aria-controls="tab-pane-emp-payroll"
                   aria-selected="false"
                 >
-                  <i class="ti ti-calculator me-1"></i> 6. Liquidación y Haberes (<span id="emp-concepts-tab-count">0</span>)
+                  <i class="ti ti-calculator me-1"></i> 6. Haberes y Cobro <span id="emp-concepts-tab-count" class="d-none">0</span>
                 </button>
               </li>
             </ul>
@@ -2940,26 +2966,7 @@
                 aria-labelledby="tab-btn-emp-job"
               >
                 <div class="row g-2 mb-3">
-                  <div class="col-md-4">
-                    <label class="form-label required fw-bold">N° de Legajo</label>
-                    <input type="text" class="form-control font-monospace fw-bold text-teal" id="employee-input-file-number" required placeholder="Ej. L-001" />
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label required fw-bold">Fecha de Ingreso</label>
-                    <input type="date" class="form-control" id="employee-input-hire-date" required />
-                  </div>
-                  <div class="col-md-4">
-                    <label class="form-label required fw-bold">Estado</label>
-                    <select class="form-select" id="employee-input-status">
-                      <option value="ACTIVE" selected>Activo</option>
-                      <option value="INACTIVE">Inactivo / Baja</option>
-                      <option value="ON_LEAVE">Con Licencia</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row g-2 mb-3">
-                  <div class="col-md-6">
+                  <div class="col-md-5">
                     <label class="form-label required fw-bold">
                       Sector de Empresa <span class="text-danger">*</span>
                     </label>
@@ -2967,12 +2974,20 @@
                       <option value="">Seleccionar Sector...</option>
                     </select>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <label class="form-label required fw-bold">
                       Puesto de Trabajo <span class="text-danger">*</span>
                     </label>
                     <select class="form-select" id="employee-input-job-position" required>
                       <option value="">Seleccionar Puesto...</option>
+                    </select>
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label required fw-bold">Estado Laboral</label>
+                    <select class="form-select" id="employee-input-status">
+                      <option value="ACTIVE" selected>Activo</option>
+                      <option value="INACTIVE">Inactivo / Baja</option>
+                      <option value="ON_LEAVE">Con Licencia</option>
                     </select>
                   </div>
                 </div>
@@ -3326,73 +3341,68 @@
                     <span class="badge bg-teal text-white" id="emp-jornada-badge">Jornada Completa (100%)</span>
                   </div>
                   <div class="card-body p-3">
-                    <div class="row g-3 align-items-end">
-                      <div class="col-md-4">
+                    <div class="row g-2 align-items-end">
+                      <div class="col-md-3">
                         <label class="form-label required fw-bold mb-1">
-                          Nómina / Grupo de Liquidación
+                          Nómina / Grupo
                         </label>
                         <select class="form-select" id="employee-input-payroll-group">
-                          <option value="MENSUAL" selected>Mensual (Administración / Comercio / Servicios)</option>
-                          <option value="JORNAL">Jornalizado / Quincenal (Operarios / Fábrica)</option>
+                          <option value="MENSUAL" selected>Mensual (Administración / Comercio)</option>
+                          <option value="JORNAL">Jornalizado / Quincenal (Operarios)</option>
                           <option value="CONFIDENCIAL">Dirección / Fuera de Convenio</option>
                           <option value="MEDIO_TIEMPO">Medio Tiempo / Tiempo Parcial</option>
                         </select>
                       </div>
 
                       <div class="col-md-3">
-                        <div class="form-check form-switch mb-2">
+                        <div class="form-check form-switch mb-1">
                           <input class="form-check-input" type="checkbox" id="employee-input-is-part-time">
-                          <label class="form-check-label fw-bold" for="employee-input-is-part-time">¿Es Jornada Reducida / Parcial?</label>
+                          <label class="form-check-label fw-bold small" for="employee-input-is-part-time">¿Jornada Reducida / Parcial?</label>
                         </div>
-                        <div class="small text-muted">Aplica art. 92 TER LCT / proporcionalidad.</div>
+                        <div class="text-muted" style="font-size: 0.70rem;">Art. 92 TER LCT / proporcional</div>
                       </div>
 
-                      <div class="col-md-5">
-                        <div class="row g-2">
-                          <div class="col-6">
-                            <label class="form-label fw-bold mb-1">Horas Semanales (HH:MM)</label>
-                            <div class="input-group">
-                              <span class="input-group-text"><i class="ti ti-clock"></i></span>
-                              <input type="text" class="form-control font-monospace" id="employee-input-weekly-hours" placeholder="48:00" value="48:00" />
-                            </div>
-                            <div class="form-hint" style="font-size: 0.72rem;">Ej. 48:00, 44:30, 24:00</div>
-                          </div>
-                          <div class="col-6">
-                            <label class="form-label fw-bold mb-1">Horas Mensuales (HH:MM)</label>
-                            <div class="input-group">
-                              <span class="input-group-text"><i class="ti ti-calendar"></i></span>
-                              <input type="text" class="form-control font-monospace" id="employee-input-monthly-hours" placeholder="200:00" value="200:00" />
-                            </div>
-                            <div class="form-hint" style="font-size: 0.72rem;">Ej. 200:00 o 100:00</div>
-                          </div>
+                      <div class="col-md-2">
+                        <label class="form-label fw-bold mb-1 small">Horas Semanales</label>
+                        <div class="input-group">
+                          <span class="input-group-text p-1"><i class="ti ti-clock"></i></span>
+                          <input type="text" class="form-control font-monospace" id="employee-input-weekly-hours" placeholder="48:00" />
                         </div>
                       </div>
-                    </div>
 
-                    <div class="row g-2 mt-2 pt-2 border-top">
-                      <div class="col-md-4">
-                        <label class="form-label fw-bold mb-1">Porcentaje de Jornada Calculado</label>
+                      <div class="col-md-2">
+                        <label class="form-label fw-bold mb-1 small">Horas Mensuales</label>
+                        <div class="input-group">
+                          <span class="input-group-text p-1"><i class="ti ti-calendar"></i></span>
+                          <input type="text" class="form-control font-monospace" id="employee-input-monthly-hours" placeholder="200:00" />
+                        </div>
+                      </div>
+
+                      <div class="col-md-2">
+                        <label class="form-label fw-bold mb-1 small">% Jornada</label>
                         <div class="input-group">
                           <input type="number" class="form-control font-monospace bg-light" id="employee-input-part-time-pct" value="100" min="1" max="100" step="0.01" readonly />
-                          <span class="input-group-text">%</span>
+                          <span class="input-group-text p-1">%</span>
                         </div>
-                        <div class="form-hint" style="font-size: 0.72rem;">Calculado automáticamente respecto a la jornada normal de la empresa.</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- CARD 2: REMUNERACIÓN BÁSICA Y VALOR HORA -->
+                <!-- CARD 2: REMUNERACIÓN BÁSICA ASIGNADA -->
                 <div class="card mb-3 border border-teal-subtle shadow-xs">
-                  <div class="card-header bg-teal-lt py-2 px-3 d-flex align-items-center gap-2">
-                    <i class="ti ti-currency-dollar text-teal fs-2"></i>
-                    <span class="fw-bold text-dark">Sueldo Básico y Remuneración Fija del Colaborador</span>
+                  <div class="card-header bg-teal-lt py-2 px-3 d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-2">
+                      <i class="ti ti-cash-banknote text-teal fs-2"></i>
+                      <span class="fw-bold text-dark">Sueldo Básico del Colaborador</span>
+                    </div>
+                    <span class="badge bg-teal-lt font-monospace fs-4 fw-bold" id="employee-scale-amount-display">$ 0.00</span>
                   </div>
                   <div class="card-body p-3">
-                    <div class="row g-3">
-                      <div class="col-md-6">
+                    <div class="row g-3 align-items-center">
+                      <div class="col-md-8">
                         <label class="form-label fw-bold mb-1">
-                          Nómina / Básico Asignado
+                          Nómina / Básico Asignado <span class="text-danger">*</span>
                         </label>
                         <div class="input-group">
                           <span class="input-group-text"><i class="ti ti-cash-banknote text-teal"></i></span>
@@ -3400,62 +3410,68 @@
                             <option value="">-- Seleccionar Nómina --</option>
                           </select>
                         </div>
-                        <div class="d-flex align-items-center justify-content-between mt-1">
-                          <div class="form-hint" style="font-size: 0.72rem;">Sueldo básico asignado según nómina seleccionada.</div>
-                          <span class="badge bg-teal-lt font-monospace fs-4 fw-bold" id="employee-scale-amount-display">$ 0.00</span>
-                        </div>
+                        <div class="form-hint" style="font-size: 0.72rem;">Sueldo básico asignado según nómina seleccionada desde el módulo de Haberes.</div>
                         <input type="hidden" id="employee-input-basic-salary" value="0.00" />
                       </div>
-                      <div class="col-md-6">
-                        <label class="form-label fw-bold mb-1">
-                          Valor Hora ($)
-                        </label>
-                        <div class="input-group">
-                          <span class="input-group-text">$</span>
-                          <input type="number" step="0.01" min="0" class="form-control font-monospace fs-3 fw-bold text-dark" id="employee-input-hourly-rate" placeholder="0.00" value="0.00" />
+                      <div class="col-md-4">
+                        <div class="p-2 bg-light rounded border text-center">
+                          <div class="text-muted small">Importe Básico Mensual</div>
+                          <div class="fs-2 fw-bold text-teal font-monospace" id="employee-scale-amount-card-display">$ 0.00</div>
                         </div>
-                        <div class="form-hint">Valor hora de convenio o pactado para liquidación de horas normales, extras y ausencias.</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <!-- CARD 3: CONCEPTOS FIJOS ASIGNADOS -->
+                <!-- CARD 3: DATOS BANCARIOS Y COBRO DE HABERES (C.B.U.) -->
                 <div class="card border border-teal-subtle shadow-xs">
                   <div class="card-header bg-teal-lt py-2 px-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
-                      <i class="ti ti-receipt text-teal fs-2"></i>
-                      <span class="fw-bold text-dark">Conceptos Fijos / Recurrentes Asignados Específicamente</span>
+                      <i class="ti ti-building-bank text-teal fs-2"></i>
+                      <span class="fw-bold text-dark">Datos Bancarios para Pago de Haberes</span>
                     </div>
-                    <button type="button" class="btn btn-sm btn-personnel" id="btn-add-employee-concept">
-                      <i class="ti ti-plus me-1"></i> Asignar Concepto Fijo
-                    </button>
+                    <span class="badge bg-secondary-lt font-monospace" id="employee-cbu-bank-badge">Sin C.B.U.</span>
                   </div>
-                  <div class="card-body p-0">
-                    <div class="table-responsive" style="max-height: 240px; overflow-y: auto;">
-                      <table class="table table-sm table-vcenter card-table table-hover mb-0" id="employee-concepts-table">
-                        <thead class="bg-light sticky-top">
-                          <tr>
-                            <th style="width: 80px;">Código</th>
-                            <th>Denominación del Concepto</th>
-                            <th>Tipo</th>
-                            <th class="text-end">Importe Fijo ($)</th>
-                            <th class="text-center">Unidades</th>
-                            <th>Vigencia</th>
-                            <th class="text-center">Estado</th>
-                            <th class="w-1 text-end">Acciones</th>
-                          </tr>
-                        </thead>
-                        <tbody id="employee-concepts-table-body">
-                          <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
-                              <i class="ti ti-info-circle me-1"></i> No posee conceptos fijos asignados aún. Hacé click en "Asignar Concepto Fijo" para agregar uno.
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                  <div class="card-body p-3">
+                    <div class="row g-3">
+                      <div class="col-md-7">
+                        <label class="form-label fw-bold mb-1">
+                          C.B.U. (Clave Bancaria Uniforme) <span class="text-muted fw-normal small">(22 dígitos)</span>
+                        </label>
+                        <div class="input-icon">
+                          <input
+                            type="text"
+                            class="form-control font-monospace fw-bold"
+                            id="employee-input-cbu"
+                            maxlength="22"
+                            placeholder="Ej. 0110599520000001234567"
+                            autocomplete="off"
+                          />
+                          <span class="input-icon-addon" id="employee-cbu-status">
+                            <i class="ti ti-credit-card text-muted"></i>
+                          </span>
+                        </div>
+                        <div id="employee-cbu-feedback" class="form-hint">
+                          Ingresá los 22 dígitos numéricos. Se validarán los dígitos verificadores según el procedimiento del B.C.R.A.
+                        </div>
+                      </div>
+                      <div class="col-md-5">
+                        <label class="form-label fw-bold mb-1">Tipo de Cuenta Bancaria</label>
+                        <select class="form-select" id="employee-select-account-type">
+                          <option value="CAJA_AHORRO_PESOS" selected>Caja de Ahorros en Pesos (Cuenta Sueldo)</option>
+                          <option value="CUENTA_CORRIENTE_PESOS">Cuenta Corriente en Pesos</option>
+                          <option value="CAJA_AHORRO_DOLARES">Caja de Ahorros en Dólares</option>
+                          <option value="OTRA">Otra Cuenta / Billetera Virtual</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                <!-- Elementos ocultos defensivos para compatibilidad con código JS previo -->
+                <div class="d-none">
+                  <input type="number" id="employee-input-hourly-rate" value="0.00" />
+                  <table><tbody id="employee-concepts-table-body"></tbody></table>
                 </div>
               </div>
             </div>
@@ -4683,6 +4699,8 @@
         </form>
       </div>
     </div>
+  </div>
+
   <!-- MODAL: NÓMINA / ESCALA SALARIAL -->
   <div class="modal modal-blur fade" id="modal-salary-scale" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -5074,6 +5092,7 @@
                   <option value="CANTIDAD" selected>Cantidad / Unidades</option>
                   <option value="HORAS">Horas (HH:MM o decimal)</option>
                   <option value="PORCENTAJE">Porcentaje (ej. 15 = 15%)</option>
+                  <option value="SOLO_ASIGNACION">Solo asignación</option>
                 </select>
               </div>
               <div class="col-md-3">
@@ -5145,7 +5164,6 @@
                           <option value="SUELDO_BASICO_EMPLEADO">[SUELDO_BASICO_EMPLEADO] Sueldo Básico Nominal del Empleado</option>
                           <option value="ANTIGUEDAD_ANOS">[ANTIGUEDAD_ANOS] Años de Antigüedad</option>
                           <option value="ANTIGUEDAD_MESES">[ANTIGUEDAD_MESES] Meses de Antigüedad</option>
-                          <option value="VALOR_HORA">[VALOR_HORA] Valor Hora Normal</option>
                           <option value="VALOR_DIA">[VALOR_DIA] Valor Día Normal</option>
                           <option value="DIAS_TRABAJADOS">[DIAS_TRABAJADOS] Días Trabajados en el Período</option>
                           <option value="HORAS_TRABAJADAS">[HORAS_TRABAJADAS] Horas Trabajadas en el Período</option>

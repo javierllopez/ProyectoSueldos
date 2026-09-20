@@ -243,6 +243,8 @@ model Employee {
   partTimePercentage   Decimal   @default(100.00) @db.Decimal(5, 2) @map("part_time_percentage")
   basicSalary          Decimal   @default(0.00) @db.Decimal(12, 2) @map("basic_salary")
   hourlyRate           Decimal   @default(0.00) @db.Decimal(12, 2) @map("hourly_rate")
+  cbu                  String?   @map("cbu") @db.VarChar(22)
+  bankAccountType      String?   @map("bank_account_type") @db.VarChar(30)
 
   department           Department?           @relation(fields: [departmentId], references: [id])
   jobPosition          JobPosition?          @relation(fields: [jobPositionId], references: [id])
@@ -325,7 +327,7 @@ model Concept {
   periodType      String?   @default("ALL") @map("period_type") @db.VarChar(50)
   scope           String    @default("GENERAL") @map("scope") @db.VarChar(20) // GENERAL, INDIVIDUAL
   defaultValue    Decimal   @default(0.00) @db.Decimal(12, 2) @map("default_value")
-  noveltyDataType String    @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE
+  noveltyDataType String    @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE, SOLO_ASIGNACION
   calculationOrder Int      @default(100) @map("calculation_order")
   formula         String?   @db.Text @map("formula")
   matrixData      String?   @db.LongText @map("matrix_data")

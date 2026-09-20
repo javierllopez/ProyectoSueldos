@@ -15337,6 +15337,8 @@ export namespace Prisma {
     partTimePercentage: Decimal | null
     basicSalary: Decimal | null
     hourlyRate: Decimal | null
+    cbu: string | null
+    bankAccountType: string | null
   }
 
   export type EmployeeMaxAggregateOutputType = {
@@ -15380,6 +15382,8 @@ export namespace Prisma {
     partTimePercentage: Decimal | null
     basicSalary: Decimal | null
     hourlyRate: Decimal | null
+    cbu: string | null
+    bankAccountType: string | null
   }
 
   export type EmployeeCountAggregateOutputType = {
@@ -15423,6 +15427,8 @@ export namespace Prisma {
     partTimePercentage: number
     basicSalary: number
     hourlyRate: number
+    cbu: number
+    bankAccountType: number
     _all: number
   }
 
@@ -15484,6 +15490,8 @@ export namespace Prisma {
     partTimePercentage?: true
     basicSalary?: true
     hourlyRate?: true
+    cbu?: true
+    bankAccountType?: true
   }
 
   export type EmployeeMaxAggregateInputType = {
@@ -15527,6 +15535,8 @@ export namespace Prisma {
     partTimePercentage?: true
     basicSalary?: true
     hourlyRate?: true
+    cbu?: true
+    bankAccountType?: true
   }
 
   export type EmployeeCountAggregateInputType = {
@@ -15570,6 +15580,8 @@ export namespace Prisma {
     partTimePercentage?: true
     basicSalary?: true
     hourlyRate?: true
+    cbu?: true
+    bankAccountType?: true
     _all?: true
   }
 
@@ -15700,6 +15712,8 @@ export namespace Prisma {
     partTimePercentage: Decimal
     basicSalary: Decimal
     hourlyRate: Decimal
+    cbu: string | null
+    bankAccountType: string | null
     _count: EmployeeCountAggregateOutputType | null
     _avg: EmployeeAvgAggregateOutputType | null
     _sum: EmployeeSumAggregateOutputType | null
@@ -15762,6 +15776,8 @@ export namespace Prisma {
     partTimePercentage?: boolean
     basicSalary?: boolean
     hourlyRate?: boolean
+    cbu?: boolean
+    bankAccountType?: boolean
     department?: boolean | Employee$departmentArgs<ExtArgs>
     jobPosition?: boolean | Employee$jobPositionArgs<ExtArgs>
     healthInsurance?: boolean | Employee$healthInsuranceArgs<ExtArgs>
@@ -15819,9 +15835,11 @@ export namespace Prisma {
     partTimePercentage?: boolean
     basicSalary?: boolean
     hourlyRate?: boolean
+    cbu?: boolean
+    bankAccountType?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate" | "cbu" | "bankAccountType", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     department?: boolean | Employee$departmentArgs<ExtArgs>
     jobPosition?: boolean | Employee$jobPositionArgs<ExtArgs>
@@ -15893,6 +15911,8 @@ export namespace Prisma {
       partTimePercentage: Prisma.Decimal
       basicSalary: Prisma.Decimal
       hourlyRate: Prisma.Decimal
+      cbu: string | null
+      bankAccountType: string | null
     }, ExtArgs["result"]["employee"]>
     composites: {}
   }
@@ -16313,6 +16333,8 @@ export namespace Prisma {
     readonly partTimePercentage: FieldRef<"Employee", 'Decimal'>
     readonly basicSalary: FieldRef<"Employee", 'Decimal'>
     readonly hourlyRate: FieldRef<"Employee", 'Decimal'>
+    readonly cbu: FieldRef<"Employee", 'String'>
+    readonly bankAccountType: FieldRef<"Employee", 'String'>
   }
     
 
@@ -31591,7 +31613,9 @@ export namespace Prisma {
     monthlyWorkingHours: 'monthlyWorkingHours',
     partTimePercentage: 'partTimePercentage',
     basicSalary: 'basicSalary',
-    hourlyRate: 'hourlyRate'
+    hourlyRate: 'hourlyRate',
+    cbu: 'cbu',
+    bankAccountType: 'bankAccountType'
   };
 
   export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
@@ -32064,7 +32088,9 @@ export namespace Prisma {
     mutualId: 'mutualId',
     contractModalityCode: 'contractModalityCode',
     salaryScaleId: 'salaryScaleId',
-    payrollGroup: 'payrollGroup'
+    payrollGroup: 'payrollGroup',
+    cbu: 'cbu',
+    bankAccountType: 'bankAccountType'
   };
 
   export type EmployeeOrderByRelevanceFieldEnum = (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum]
@@ -33166,6 +33192,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
+    cbu?: StringNullableFilter<"Employee"> | string | null
+    bankAccountType?: StringNullableFilter<"Employee"> | string | null
     department?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     jobPosition?: XOR<JobPositionNullableScalarRelationFilter, JobPositionWhereInput> | null
     healthInsurance?: XOR<HealthInsuranceNullableScalarRelationFilter, HealthInsuranceWhereInput> | null
@@ -33220,6 +33248,8 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+    cbu?: SortOrderInput | SortOrder
+    bankAccountType?: SortOrderInput | SortOrder
     department?: DepartmentOrderByWithRelationInput
     jobPosition?: JobPositionOrderByWithRelationInput
     healthInsurance?: HealthInsuranceOrderByWithRelationInput
@@ -33278,6 +33308,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
+    cbu?: StringNullableFilter<"Employee"> | string | null
+    bankAccountType?: StringNullableFilter<"Employee"> | string | null
     department?: XOR<DepartmentNullableScalarRelationFilter, DepartmentWhereInput> | null
     jobPosition?: XOR<JobPositionNullableScalarRelationFilter, JobPositionWhereInput> | null
     healthInsurance?: XOR<HealthInsuranceNullableScalarRelationFilter, HealthInsuranceWhereInput> | null
@@ -33332,6 +33364,8 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+    cbu?: SortOrderInput | SortOrder
+    bankAccountType?: SortOrderInput | SortOrder
     _count?: EmployeeCountOrderByAggregateInput
     _avg?: EmployeeAvgOrderByAggregateInput
     _max?: EmployeeMaxOrderByAggregateInput
@@ -33383,6 +33417,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
+    cbu?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+    bankAccountType?: StringNullableWithAggregatesFilter<"Employee"> | string | null
   }
 
   export type SalaryScaleWhereInput = {
@@ -35866,6 +35902,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -35920,6 +35958,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -35960,6 +36000,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -36014,6 +36056,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -36061,6 +36105,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateManyMutationInput = {
@@ -36097,6 +36143,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeUncheckedUpdateManyInput = {
@@ -36140,6 +36188,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type SalaryScaleCreateInput = {
@@ -38688,6 +38738,8 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+    cbu?: SortOrder
+    bankAccountType?: SortOrder
   }
 
   export type EmployeeAvgOrderByAggregateInput = {
@@ -38739,6 +38791,8 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+    cbu?: SortOrder
+    bankAccountType?: SortOrder
   }
 
   export type EmployeeMinOrderByAggregateInput = {
@@ -38782,6 +38836,8 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+    cbu?: SortOrder
+    bankAccountType?: SortOrder
   }
 
   export type EmployeeSumOrderByAggregateInput = {
@@ -41580,6 +41636,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
@@ -41632,6 +41690,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -41708,6 +41768,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFilter<"Employee"> | Decimal | DecimalJsLike | number | string
+    cbu?: StringNullableFilter<"Employee"> | string | null
+    bankAccountType?: StringNullableFilter<"Employee"> | string | null
   }
 
   export type JobPositionCreateWithoutCctInput = {
@@ -41968,6 +42030,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -42020,6 +42084,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -42180,6 +42246,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
@@ -42232,6 +42300,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -42416,6 +42486,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
@@ -42468,6 +42540,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -42534,6 +42608,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -42586,6 +42662,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -42652,6 +42730,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -42704,6 +42784,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -43521,6 +43603,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -43573,6 +43657,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -43693,6 +43779,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -43746,6 +43834,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
@@ -43824,6 +43914,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -43877,6 +43969,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -44121,6 +44215,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -44174,6 +44270,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
@@ -44308,6 +44406,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -44361,6 +44461,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -44831,6 +44933,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -44884,6 +44988,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
@@ -45093,6 +45199,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -45146,6 +45254,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -45693,6 +45803,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     department?: DepartmentCreateNestedOneWithoutEmployeesInput
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
@@ -45746,6 +45858,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
@@ -45937,6 +46051,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -45990,6 +46106,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -46120,6 +46238,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutDepartmentInput = {
@@ -46156,6 +46276,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
@@ -46208,6 +46330,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -46254,6 +46378,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type JobPositionCreateManyCctInput = {
@@ -46496,6 +46622,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutContractModalityInput = {
@@ -46532,6 +46660,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -46584,6 +46714,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -46630,6 +46762,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeCreateManyJobPositionInput = {
@@ -46672,6 +46806,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutJobPositionInput = {
@@ -46708,6 +46844,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
@@ -46760,6 +46898,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -46806,6 +46946,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeCreateManyHealthInsuranceInput = {
@@ -46848,6 +46990,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutHealthInsuranceInput = {
@@ -46884,6 +47028,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
@@ -46936,6 +47082,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -46982,6 +47130,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeCreateManyUnionInput = {
@@ -47024,6 +47174,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutUnionInput = {
@@ -47060,6 +47212,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -47112,6 +47266,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -47158,6 +47314,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeCreateManyMutualInput = {
@@ -47200,6 +47358,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutMutualInput = {
@@ -47236,6 +47396,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -47288,6 +47450,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -47334,6 +47498,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PaySlipCreateManyEmployeeInput = {
@@ -47688,6 +47854,8 @@ export namespace Prisma {
     partTimePercentage?: Decimal | DecimalJsLike | number | string
     basicSalary?: Decimal | DecimalJsLike | number | string
     hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
   }
 
   export type EmployeeUpdateWithoutSalaryScaleInput = {
@@ -47724,6 +47892,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     department?: DepartmentUpdateOneWithoutEmployeesNestedInput
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
@@ -47776,6 +47946,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
@@ -47822,6 +47994,8 @@ export namespace Prisma {
     partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type EmployeeRelativeCreateManyKinshipInput = {

@@ -71,6 +71,8 @@ export const createEmployeeSchema = z.object({
   partTimePercentage: z.coerce.number().min(0).max(100).nullable().optional(),
   basicSalary: z.coerce.number().min(0, 'El sueldo básico debe ser mayor o igual a 0').nullable().optional(),
   hourlyRate: z.coerce.number().min(0, 'El valor hora debe ser mayor o igual a 0').nullable().optional(),
+  cbu: z.string().trim().max(22).nullable().optional().or(z.literal('')),
+  bankAccountType: z.string().trim().max(30).nullable().optional().or(z.literal('')),
 
   // Familiares opcionales
   relatives: z.array(

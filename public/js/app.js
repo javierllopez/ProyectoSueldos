@@ -26,6 +26,106 @@ function formatCuit(cuit) {
   return `${clean.slice(0, 2)}-${clean.slice(2, 10)}-${clean.slice(10)}`;
 }
 
+// Catálogo oficial de entidades financieras del BCRA (Códigos de 3 dígitos de CBU)
+const BCRA_BANK_CODES = {
+  '005': 'The Royal Bank of Scotland N.V.',
+  '007': 'Banco de Galicia y Buenos Aires',
+  '011': 'Banco de la Nación Argentina',
+  '014': 'Banco de la Provincia de Buenos Aires',
+  '015': 'Industrial and Commercial Bank of China (ICBC)',
+  '016': 'Citibank N.A.',
+  '017': 'BBVA Argentina',
+  '018': 'Banco de la Provincia de Córdoba',
+  '020': 'Banco de la Ciudad de Buenos Aires',
+  '027': 'Banco Santander Argentina',
+  '029': 'Banco de la Provincia del Neuquén',
+  '034': 'Banco Patagonia',
+  '044': 'Banco Hipotecario S.A.',
+  '045': 'Banco de San Juan',
+  '065': 'Banco Municipal de Rosario',
+  '072': 'Banco Santander',
+  '083': 'Banco del Chubut',
+  '086': 'Banco de Santa Cruz',
+  '093': 'Banco de La Pampa',
+  '094': 'Banco de Corrientes',
+  '097': 'Banco Provincia del Neuquén',
+  '147': 'Banco Interfinanzas',
+  '150': 'HSBC Bank Argentina',
+  '165': 'JP Morgan Chase Bank',
+  '191': 'Banco Credicoop Cooperativo Limitado',
+  '198': 'Banco de Valores',
+  '247': 'Banco Roela',
+  '254': 'Banco Mariva',
+  '259': 'Banco Itaú Argentina',
+  '262': 'Bank of America',
+  '266': 'BNP Paribas',
+  '268': 'Banco Provincia de Tierra del Fuego',
+  '269': 'Banco de la República Oriental del Uruguay',
+  '277': 'Banco Sáenz',
+  '281': 'Banco Meridian',
+  '285': 'Banco Macro S.A.',
+  '299': 'Banco Comafi',
+  '300': 'Banco BICE',
+  '301': 'Banco Piano',
+  '305': 'Banco Julio',
+  '309': 'Banco Rioja',
+  '310': 'Banco del Sol',
+  '311': 'Nuevo Banco del Chaco',
+  '312': 'Banco Voii',
+  '315': 'Banco de Formosa',
+  '319': 'Banco CMF',
+  '321': 'Banco de Santiago del Estero',
+  '322': 'Nuevo Banco de Santa Fe',
+  '330': 'Banco BMA',
+  '338': 'Banco de Servicios Financieros',
+  '340': 'Banco Bica',
+  '341': 'Banco Coinag',
+  '384': 'Wilobank',
+  '386': 'Nuevo Banco de Entre Ríos',
+  '389': 'Banco Columbia',
+  '426': 'Banco BIND (Banco Industrial)',
+  '431': 'Banco Cetelem',
+  '432': 'Banco de Comercio',
+  '448': 'Banco Roela',
+  '000': 'CVU - Billetera Virtual (PSP)',
+};
+
+function getCbuBankName(cbu) {
+  if (!cbu || typeof cbu !== 'string') return null;
+  const clean = cbu.replace(/\D/g, '');
+  if (clean.length < 3) return null;
+  const bankCode = clean.slice(0, 3);
+  return BCRA_BANK_CODES[bankCode] || `Entidad Bancaria N° ${bankCode}`;
+}
+
+// CBU validator (Procedimiento y algoritmo oficial de dígitos verificadores del B.C.R.A.)
+function isValidCbu(cbu) {
+  if (!cbu || typeof cbu !== 'string') return false;
+  const clean = cbu.replace(/\D/g, '');
+  if (clean.length !== 22) return false;
+  if (/^0{22}$/.test(clean)) return false;
+
+  // Bloque 1: Entidad (3), Sucursal (4), Verificador (1) -> Ponderador [7, 1, 3, 9, 7, 1, 3]
+  const w1 = [7, 1, 3, 9, 7, 1, 3];
+  let s1 = 0;
+  for (let i = 0; i < 7; i++) {
+    s1 += parseInt(clean[i], 10) * w1[i];
+  }
+  const d1 = (10 - (s1 % 10)) % 10;
+  if (d1 !== parseInt(clean[7], 10)) return false;
+
+  // Bloque 2: Cuenta (13), Verificador (1) -> Ponderador [3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3]
+  const w2 = [3, 9, 7, 1, 3, 9, 7, 1, 3, 9, 7, 1, 3];
+  let s2 = 0;
+  for (let i = 0; i < 13; i++) {
+    s2 += parseInt(clean[8 + i], 10) * w2[i];
+  }
+  const d2 = (10 - (s2 % 10)) % 10;
+  if (d2 !== parseInt(clean[21], 10)) return false;
+
+  return true;
+}
+
 // Formateador numérico universal con separador de miles y decimales en formato es-AR
 function formatNumber(val, decimals = 2) {
   const num = Number(val !== undefined && val !== null ? val : 0);
@@ -100,6 +200,7 @@ function decimalToHours(val, defaultValue = '00:00') {
 function getConceptInputType(concept) {
   if (!concept) return 'UNITS';
   const dt = (concept.noveltyDataType || '').toUpperCase();
+  if (dt === 'SOLO_ASIGNACION' || dt === 'NONE' || dt === 'SIN_NOVEDAD') return 'NONE';
   if (dt === 'HORAS' || dt === 'HOURS') return 'HOURS';
   if (dt === 'PORCENTAJE' || dt === 'PERCENTAGE') return 'PERCENTAGE';
   if (dt === 'IMPORTE' || dt === 'AMOUNT') return 'AMOUNT';
@@ -117,6 +218,10 @@ function formatNoveltyValue(concept, item) {
   const amt = item.fixedAmount !== null && item.fixedAmount !== undefined
     ? item.fixedAmount
     : (item.amount !== null && item.amount !== undefined ? item.amount : null);
+
+  if (inputType === 'NONE') {
+    return '<span class="badge bg-blue-lt fw-bold px-2 py-1"><i class="ti ti-check me-1"></i>Asignado (Fórmula)</span>';
+  }
 
   if (inputType === 'HOURS') {
     if (units !== null && units !== undefined && units !== '') {
@@ -248,6 +353,20 @@ function renderDynamicNoveltyControl(containerId, concept, initialData = {}) {
 
   container.dataset.inputType = inputType;
 
+  if (inputType === 'NONE') {
+    container.innerHTML = `
+      <div class="alert alert-info py-2 px-3 mb-1 d-flex align-items-center gap-2">
+        <i class="ti ti-info-circle fs-2 text-info"></i>
+        <div>
+          <strong>Concepto por Asignación / Fórmula:</strong><br>
+          <span class="small text-muted">No requiere ingresar horas ni unidades. El resultado se calculará automáticamente según la fórmula configurada para el concepto.</span>
+        </div>
+      </div>
+      <input type="hidden" id="${prefix}-val-input" value="1" />
+    `;
+    return;
+  }
+
   if (inputType === 'HOURS') {
     const formattedHours = (units !== null && units !== undefined && units !== '')
       ? decimalToHours(units)
@@ -347,6 +466,15 @@ function getDynamicNoveltyControlValue(containerId) {
   const input = document.getElementById(`${prefix}-val-input`);
 
   if (!input) return { error: 'No se encontró el campo de valor' };
+
+  if (inputType === 'NONE') {
+    return {
+      inputType: 'NONE',
+      units: 1,
+      amount: null,
+      fixedAmount: null,
+    };
+  }
 
   const rawVal = input.value.trim();
   if (rawVal === '') {
@@ -1913,7 +2041,7 @@ class AppController {
     setTableLoading('mutuals-table-body', 4, 'Cargando mutuales...', 'mutuals-pagination-container');
     setTableLoading('kinships-table-body', 4, 'Cargando parentescos...', 'kinships-pagination-container');
 
-    const [deptRes, jobRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, profileRes, salaryScalesRes] = await Promise.all([
+    const [deptRes, jobRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, profileRes, salaryScalesRes, payrollSettingsRes] = await Promise.all([
       apiRequest('/departments'),
       apiRequest('/job-positions'),
       apiRequest('/health-insurances'),
@@ -1927,6 +2055,7 @@ class AppController {
       apiRequest('/arca-contract-modalities'),
       apiRequest('/companies/profile').catch(() => ({ data: null })),
       apiRequest('/payroll/salary-scales').catch(() => ({ data: [] })),
+      apiRequest('/payroll/settings').catch(() => ({ data: null })),
     ]);
 
     this.departments = deptRes.data || [];
@@ -1944,6 +2073,9 @@ class AppController {
     this.payrollSalaryScales = this.salaryScales;
     if (profileRes && profileRes.data) {
       this.activeCompanyProfile = profileRes.data;
+    }
+    if (payrollSettingsRes && payrollSettingsRes.data) {
+      this.payrollSettings = payrollSettingsRes.data;
     }
     this.populateJobPositionModalSelectors();
 
@@ -3191,7 +3323,7 @@ class AppController {
 
   updateEmployeeJornadaBadge() {
     const isPartTime = Boolean(document.getElementById('employee-input-is-part-time')?.checked);
-    const weeklyStr = document.getElementById('employee-input-weekly-hours')?.value || '48:00';
+    const weeklyStr = document.getElementById('employee-input-weekly-hours')?.value || (this.payrollSettings?.standardWeeklyHoursFormatted || '48:00');
     const stdWeeklyStr = this.payrollSettings?.standardWeeklyHoursFormatted || '48:00';
     const weeklyDec = this.parseHoursToDecimal(weeklyStr);
     const stdWeeklyDec = this.parseHoursToDecimal(stdWeeklyStr) || 48;
@@ -3213,6 +3345,77 @@ class AppController {
       } else {
         badge.textContent = `Jornada Completa (${pct}%)`;
         badge.className = 'badge bg-teal text-white';
+      }
+    }
+  }
+
+  updateCbuValidationUI() {
+    const cbuInput = document.getElementById('employee-input-cbu');
+    const cbuStatus = document.getElementById('employee-cbu-status');
+    const cbuFeedback = document.getElementById('employee-cbu-feedback');
+    const cbuBadge = document.getElementById('employee-cbu-bank-badge');
+    if (!cbuInput) return;
+
+    const val = cbuInput.value.replace(/\D/g, '');
+    cbuInput.value = val;
+
+    if (!val) {
+      cbuInput.classList.remove('is-valid', 'is-invalid');
+      if (cbuStatus) cbuStatus.innerHTML = '<i class="ti ti-credit-card text-muted"></i>';
+      if (cbuFeedback) {
+        cbuFeedback.className = 'form-hint';
+        cbuFeedback.textContent = 'Ingresá los 22 dígitos numéricos. Se validarán los dígitos verificadores según el procedimiento del B.C.R.A.';
+      }
+      if (cbuBadge) {
+        cbuBadge.className = 'badge bg-secondary-lt font-monospace';
+        cbuBadge.textContent = 'Sin C.B.U.';
+      }
+      return;
+    }
+
+    const bankName = getCbuBankName(val);
+
+    if (val.length === 22) {
+      if (isValidCbu(val)) {
+        cbuInput.classList.remove('is-invalid');
+        cbuInput.classList.add('is-valid');
+        if (cbuStatus) cbuStatus.innerHTML = '<i class="ti ti-check text-success"></i>';
+        if (cbuFeedback) {
+          cbuFeedback.className = 'valid-feedback d-block';
+          cbuFeedback.innerHTML = `✓ C.B.U. válido (${escapeHtml(bankName || 'Entidad Bancaria')})`;
+        }
+        if (cbuBadge) {
+          cbuBadge.className = 'badge bg-success-lt font-monospace';
+          cbuBadge.innerHTML = `<i class="ti ti-building-bank me-1"></i>${escapeHtml(bankName || 'Banco Oficial')}`;
+        }
+      } else {
+        cbuInput.classList.remove('is-valid');
+        cbuInput.classList.add('is-invalid');
+        if (cbuStatus) cbuStatus.innerHTML = '<i class="ti ti-x text-danger"></i>';
+        if (cbuFeedback) {
+          cbuFeedback.className = 'invalid-feedback d-block';
+          cbuFeedback.textContent = '✗ Dígitos verificadores de C.B.U. incorrectos (Algoritmo B.C.R.A.)';
+        }
+        if (cbuBadge) {
+          cbuBadge.className = 'badge bg-danger-lt font-monospace';
+          cbuBadge.textContent = 'C.B.U. Inválido';
+        }
+      }
+    } else {
+      cbuInput.classList.remove('is-valid', 'is-invalid');
+      if (cbuStatus) cbuStatus.innerHTML = '<i class="ti ti-credit-card text-warning"></i>';
+      if (cbuFeedback) {
+        cbuFeedback.className = 'form-hint text-warning';
+        cbuFeedback.textContent = `Ingresando dígitos: ${val.length} / 22...`;
+      }
+      if (cbuBadge) {
+        if (val.length >= 3 && bankName) {
+          cbuBadge.className = 'badge bg-info-lt font-monospace';
+          cbuBadge.textContent = bankName;
+        } else {
+          cbuBadge.className = 'badge bg-secondary-lt font-monospace';
+          cbuBadge.textContent = 'Verificando...';
+        }
       }
     }
   }
@@ -4108,7 +4311,17 @@ class AppController {
     });
 
     // Eventos reactivos de jornada laboral y horas en Tab 6
-    document.getElementById('employee-input-is-part-time')?.addEventListener('change', () => {
+    document.getElementById('employee-input-is-part-time')?.addEventListener('change', (e) => {
+      if (!e.target.checked) {
+        const stdWeekly = this.payrollSettings?.standardWeeklyHoursFormatted || '48:00';
+        const stdMonthly = this.payrollSettings?.standardMonthlyHoursFormatted || '200:00';
+        if (document.getElementById('employee-input-weekly-hours')) {
+          document.getElementById('employee-input-weekly-hours').value = stdWeekly;
+        }
+        if (document.getElementById('employee-input-monthly-hours')) {
+          document.getElementById('employee-input-monthly-hours').value = stdMonthly;
+        }
+      }
       this.updateEmployeeJornadaBadge();
     });
     document.getElementById('employee-input-weekly-hours')?.addEventListener('input', () => {
@@ -4117,6 +4330,13 @@ class AppController {
     document.getElementById('employee-input-weekly-hours')?.addEventListener('change', () => {
       this.updateEmployeeJornadaBadge();
     });
+
+    // Validación y detección automática de banco para CBU en Tab 6
+    const cbuInputEl = document.getElementById('employee-input-cbu');
+    if (cbuInputEl) {
+      cbuInputEl.addEventListener('input', () => this.updateCbuValidationUI());
+      cbuInputEl.addEventListener('blur', () => this.updateCbuValidationUI());
+    }
 
     // Botón para asignar concepto fijo al empleado
     document.getElementById('btn-add-employee-concept')?.addEventListener('click', () => {
@@ -4133,12 +4353,16 @@ class AppController {
       const selectedId = e.target.value;
       const scale = (this.salaryScales || []).find((s) => s.id === selectedId);
       const amountDisplay = document.getElementById('employee-scale-amount-display');
+      const cardDisplay = document.getElementById('employee-scale-amount-card-display');
       const basicSalaryInput = document.getElementById('employee-input-basic-salary');
       if (scale) {
-        if (amountDisplay) amountDisplay.textContent = `$ ${formatNumber(scale.amount)}`;
+        const txt = `$ ${formatNumber(scale.amount)}`;
+        if (amountDisplay) amountDisplay.textContent = txt;
+        if (cardDisplay) cardDisplay.textContent = txt;
         if (basicSalaryInput) basicSalaryInput.value = scale.amount;
       } else {
         if (amountDisplay) amountDisplay.textContent = '$ 0,00';
+        if (cardDisplay) cardDisplay.textContent = '$ 0,00';
         if (basicSalaryInput) basicSalaryInput.value = '0.00';
       }
     });
@@ -4230,6 +4454,23 @@ class AppController {
           return;
         }
 
+        const cbuRaw = document.getElementById('employee-input-cbu')?.value?.replace(/\D/g, '') || null;
+        if (cbuRaw) {
+          if (!isValidCbu(cbuRaw)) {
+            const tabBtn = document.getElementById('tab-btn-emp-payroll');
+            if (tabBtn && window.bootstrap?.Tab) new window.bootstrap.Tab(tabBtn).show();
+            document.getElementById('employee-input-cbu')?.focus();
+            if (alertBox) {
+              alertBox.innerHTML = 'El C.B.U. ingresado es inválido según los dígitos verificadores del B.C.R.A.';
+              alertBox.classList.remove('d-none');
+              alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            showToast('El C.B.U. ingresado es inválido (algoritmo B.C.R.A.)', 'danger');
+            return;
+          }
+        }
+        const bankAccountType = document.getElementById('employee-select-account-type')?.value || 'CAJA_AHORRO_PESOS';
+
         const payload = {
           fileNumber,
           lastName,
@@ -4262,7 +4503,8 @@ class AppController {
           partTimePercentage: Number(document.getElementById('employee-input-part-time-pct')?.value || 100),
           salaryScaleId: document.getElementById('employee-select-salary-scale')?.value || null,
           basicSalary: Number(document.getElementById('employee-input-basic-salary')?.value || 0),
-          hourlyRate: Number(document.getElementById('employee-input-hourly-rate')?.value || 0),
+          cbu: cbuRaw,
+          bankAccountType: bankAccountType,
           email: document.getElementById('employee-input-email')?.value?.trim() || null,
           phone: document.getElementById('employee-input-phone')?.value?.trim() || null,
         };
@@ -4276,18 +4518,6 @@ class AppController {
             documentNumber: r.documentNumber,
             cuil: r.cuil || null,
             birthDate: r.birthDate,
-          }));
-        }
-
-        if (!id && this.currentEmployeeConcepts.length > 0) {
-          payload.assignedConcepts = this.currentEmployeeConcepts.map((c) => ({
-            conceptId: c.conceptId,
-            amount: c.amount !== null && c.amount !== undefined ? Number(c.amount) : null,
-            units: c.units !== null && c.units !== undefined ? Number(c.units) : null,
-            startDate: c.startDate || null,
-            endDate: c.endDate || null,
-            notes: c.notes || null,
-            isActive: c.isActive !== false,
           }));
         }
 
@@ -4907,12 +5137,16 @@ class AppController {
 
       const found = scales.find((s) => s.id === selectedSalaryScale);
       const amountDisplay = document.getElementById('employee-scale-amount-display');
+      const cardDisplay = document.getElementById('employee-scale-amount-card-display');
       const basicSalaryInput = document.getElementById('employee-input-basic-salary');
       if (found) {
-        if (amountDisplay) amountDisplay.textContent = `$ ${formatNumber(found.amount)}`;
+        const txt = `$ ${formatNumber(found.amount)}`;
+        if (amountDisplay) amountDisplay.textContent = txt;
+        if (cardDisplay) cardDisplay.textContent = txt;
         if (basicSalaryInput) basicSalaryInput.value = found.amount;
       } else {
         if (amountDisplay) amountDisplay.textContent = '$ 0,00';
+        if (cardDisplay) cardDisplay.textContent = '$ 0,00';
       }
     }
   }
@@ -5138,6 +5372,30 @@ class AppController {
     if (document.getElementById('employee-input-hourly-rate')) document.getElementById('employee-input-hourly-rate').value = '0.00';
     const scaleDisplayNew = document.getElementById('employee-scale-amount-display');
     if (scaleDisplayNew) scaleDisplayNew.textContent = '$ 0,00';
+    const cardScaleDisplay = document.getElementById('employee-scale-amount-card-display');
+    if (cardScaleDisplay) cardScaleDisplay.textContent = '$ 0,00';
+
+    // Reset CBU y Tipo de Cuenta
+    const cbuInputNew = document.getElementById('employee-input-cbu');
+    if (cbuInputNew) {
+      cbuInputNew.value = '';
+      cbuInputNew.classList.remove('is-valid', 'is-invalid');
+    }
+    const cbuBadgeNew = document.getElementById('employee-cbu-bank-badge');
+    if (cbuBadgeNew) {
+      cbuBadgeNew.className = 'badge bg-secondary-lt font-monospace';
+      cbuBadgeNew.textContent = 'Sin C.B.U.';
+    }
+    const cbuStatusIconNew = document.getElementById('employee-cbu-status');
+    if (cbuStatusIconNew) cbuStatusIconNew.innerHTML = '<i class="ti ti-credit-card text-muted"></i>';
+    const cbuFeedbackNew = document.getElementById('employee-cbu-feedback');
+    if (cbuFeedbackNew) {
+      cbuFeedbackNew.className = 'form-hint';
+      cbuFeedbackNew.textContent = 'Ingresá los 22 dígitos numéricos. Se validarán los dígitos verificadores según el procedimiento del B.C.R.A.';
+    }
+    const acctTypeSelectNew = document.getElementById('employee-select-account-type');
+    if (acctTypeSelectNew) acctTypeSelectNew.value = 'CAJA_AHORRO_PESOS';
+
     this.currentEmployeeConcepts = [];
     this.renderEmployeeConceptsTable();
     this.updateEmployeeJornadaBadge();
@@ -5251,6 +5509,17 @@ class AppController {
       document.getElementById('employee-input-hourly-rate').value = fullEmp.hourlyRate !== undefined && fullEmp.hourlyRate !== null ? fullEmp.hourlyRate : '0.00';
     }
     this.updateEmployeeJornadaBadge();
+
+    // Cargar CBU y Tipo de Cuenta Bancaria
+    const cbuInputEdit = document.getElementById('employee-input-cbu');
+    if (cbuInputEdit) {
+      cbuInputEdit.value = fullEmp.cbu || '';
+    }
+    const acctTypeSelectEdit = document.getElementById('employee-select-account-type');
+    if (acctTypeSelectEdit) {
+      acctTypeSelectEdit.value = fullEmp.bankAccountType || 'CAJA_AHORRO_PESOS';
+    }
+    this.updateCbuValidationUI();
 
     this.populateEmployeeSelects(
       fullEmp.departmentId,
@@ -7933,7 +8202,7 @@ class AppController {
 
     tbody.innerHTML = paginatedItems
       .map((scale) => {
-        const empCount = scale._count?.employees ?? scale.employeesCount ?? 0;
+        const empCount = scale.assignedEmployeesCount ?? scale.employeesCount ?? scale._count?.employees ?? 0;
         return `
           <tr>
             <td>

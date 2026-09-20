@@ -195,6 +195,8 @@ const TENANT_TABLE_DEFINITIONS = [
     \`part_time_percentage\` DECIMAL(5, 2) NOT NULL DEFAULT 100.00,
     \`basic_salary\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`hourly_rate\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`cbu\` VARCHAR(22) NULL,
+    \`bank_account_type\` VARCHAR(30) NULL,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL,
@@ -967,6 +969,8 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       { name: 'part_time_percentage', def: 'DECIMAL(5, 2) NOT NULL DEFAULT 100.00' },
       { name: 'basic_salary', def: 'DECIMAL(12, 2) NOT NULL DEFAULT 0.00' },
       { name: 'hourly_rate', def: 'DECIMAL(12, 2) NOT NULL DEFAULT 0.00' },
+      { name: 'cbu', def: 'VARCHAR(22) NULL' },
+      { name: 'bank_account_type', def: 'VARCHAR(30) NULL' },
     ];
 
     const existingEmpCols = await tenantClient.$queryRawUnsafe(

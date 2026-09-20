@@ -10,7 +10,6 @@ import { splitArguments } from './formulaEvaluator.js';
 export const SYSTEM_VARIABLES = new Set([
   'ANTIGUEDAD_ANOS',
   'ANTIGUEDAD_MESES',
-  'VALOR_HORA',
   'DIAS_TRABAJADOS',
   'HORAS_TRABAJADAS',
   'SUELDO_BASICO_EMPLEADO',

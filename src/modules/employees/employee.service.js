@@ -272,6 +272,8 @@ export async function createEmployee(tenantPrisma, employeeData) {
       partTimePercentage: employeeData.partTimePercentage !== undefined && employeeData.partTimePercentage !== null ? Number(employeeData.partTimePercentage) : 100.00,
       basicSalary: employeeData.basicSalary !== undefined && employeeData.basicSalary !== null ? Number(employeeData.basicSalary) : 0.00,
       hourlyRate: employeeData.hourlyRate !== undefined && employeeData.hourlyRate !== null ? Number(employeeData.hourlyRate) : 0.00,
+      cbu: employeeData.cbu ? employeeData.cbu.trim() : null,
+      bankAccountType: employeeData.bankAccountType ? employeeData.bankAccountType.trim() : null,
       relatives: relativesData,
     },
     include: {
@@ -454,6 +456,8 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
   if (data.partTimePercentage !== undefined) updatePayload.partTimePercentage = Number(data.partTimePercentage);
   if (data.basicSalary !== undefined) updatePayload.basicSalary = Number(data.basicSalary);
   if (data.hourlyRate !== undefined) updatePayload.hourlyRate = Number(data.hourlyRate);
+  if (data.cbu !== undefined) updatePayload.cbu = data.cbu ? data.cbu.trim() : null;
+  if (data.bankAccountType !== undefined) updatePayload.bankAccountType = data.bankAccountType ? data.bankAccountType.trim() : null;
 
   const employee = await tenantPrisma.employee.update({
     where: { id: employeeId },
