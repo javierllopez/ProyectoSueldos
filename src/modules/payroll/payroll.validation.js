@@ -86,7 +86,7 @@ export const conceptBaseSchema = z.object({
   settlementType: z.string().trim().max(50).optional(),
   scope: z.enum(['GENERAL', 'INDIVIDUAL']).default('GENERAL'),
   defaultValue: z.coerce.number().default(0.0),
-  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE']).default('CANTIDAD'),
+  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION']).default('CANTIDAD'),
   calculationOrder: z.coerce.number().int().optional(),
   formula: z.string().trim().optional().nullable(),
   matrixData: z.string().trim().optional().nullable(),

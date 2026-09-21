@@ -11790,7 +11790,16 @@ class AppController {
       await this.loadPayrollConcepts();
     } catch (err) {
       if (alertBox) {
-        alertBox.textContent = err.message || 'Error al guardar el concepto';
+        let msg = err.message || 'Error al guardar el concepto';
+        if (err.details && Array.isArray(err.details) && err.details.length > 0) {
+          const detailMessages = err.details
+            .map((d) => `• ${d.field ? `<strong>${escapeHtml(d.field)}:</strong> ` : ''}${escapeHtml(d.message)}`)
+            .join('<br>');
+          msg = `<div class="fw-bold mb-1">${escapeHtml(err.message)}:</div>${detailMessages}`;
+          alertBox.innerHTML = msg;
+        } else {
+          alertBox.textContent = msg;
+        }
         alertBox.classList.remove('d-none');
       }
       showToast(err.message, 'danger');
