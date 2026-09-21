@@ -78,8 +78,11 @@ export function numberToSpanishWords(amount) {
 export function evaluateSafeExpression(expr) {
   if (!expr || typeof expr !== 'string') return 0;
 
+  // Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
+  const normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
+
   // Limpiar caracteres no permitidos
-  const sanitized = expr.replace(/[^0-9+\-*/().\s]/g, '').trim();
+  const sanitized = normalized.replace(/[^0-9+\-*/().\s]/g, '').trim();
   if (!sanitized) return 0;
 
   try {

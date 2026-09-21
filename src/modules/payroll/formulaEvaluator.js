@@ -21,7 +21,15 @@ export function splitArguments(argsStr) {
     if (ch === '(') depth++;
     else if (ch === ')') depth--;
 
-    if (ch === ',' && depth === 0) {
+    // Separar por ';' o por ',' respetando comas decimales entre dígitos (ej: 0,25)
+    const isDecimalComma =
+      ch === ',' &&
+      i > 0 &&
+      /\d/.test(argsStr[i - 1]) &&
+      i < argsStr.length - 1 &&
+      /\d/.test(argsStr[i + 1]);
+
+    if ((ch === ';' || (ch === ',' && !isDecimalComma)) && depth === 0) {
       args.push(current.trim());
       current = '';
     } else {
@@ -266,8 +274,11 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
 export function evaluateBasicMath(expr) {
   if (!expr || typeof expr !== 'string') return 0;
 
+  // Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
+  const normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
+
   // Sanitizar caracteres permitidos
-  const sanitized = expr.replace(/[^0-9+\-*/().\s]/g, '').trim();
+  const sanitized = normalized.replace(/[^0-9+\-*/().\s]/g, '').trim();
   if (!sanitized) return 0;
 
   try {
