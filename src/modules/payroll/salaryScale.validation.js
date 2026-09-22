@@ -5,6 +5,7 @@ export const createSalaryScaleSchema = z.object({
   code: z.string().max(50).nullable().optional(),
   description: z.string().max(1000).nullable().optional(),
   amount: z.coerce.number().min(0, 'El sueldo básico debe ser mayor o igual a 0'),
+  isInternOnly: z.boolean().optional(),
 });
 
 export const updateSalaryScaleSchema = z.object({
@@ -12,6 +13,7 @@ export const updateSalaryScaleSchema = z.object({
   code: z.string().max(50).nullable().optional(),
   description: z.string().max(1000).nullable().optional(),
   amount: z.coerce.number().min(0, 'El sueldo básico debe ser mayor o igual a 0').optional(),
+  isInternOnly: z.boolean().optional(),
 });
 
 export const massScaleIncreaseSchema = z.object({

@@ -152,6 +152,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`code\` VARCHAR(50) NULL,
     \`description\` TEXT NULL,
     \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL
@@ -892,11 +893,28 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         \`code\` VARCHAR(50) NULL,
         \`description\` TEXT NULL,
         \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
+
+    // Comprobar columnas clave en salary_scales para migraciones no destructivas
+    const salaryScaleCols = [
+      { name: 'is_intern_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+    ];
+    const existingScaleCols = await tenantClient.$queryRawUnsafe(
+      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'salary_scales'`
+    );
+    const existingScaleColSet = new Set(existingScaleCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+    for (const col of salaryScaleCols) {
+      if (!existingScaleColSet.has(col.name.toLowerCase())) {
+        await tenantClient.$executeRawUnsafe(
+          `ALTER TABLE \`salary_scales\` ADD COLUMN \`${col.name}\` ${col.def};`
+        );
+      }
+    }
 
     // 2. Crear tabla principal employees si no existe
     await tenantClient.$executeRawUnsafe(`
@@ -1216,6 +1234,35 @@ export const DEFAULT_CONCEPTS = [
     appliesAaffContrib: true,
     appliesFneContrib: true,
     appliesLrtContrib: true,
+    isRepeatable: false,
+  },
+  // 1.b Asignación Estímulo Ley 26.427 (No Remunerativo - Pasantías Educativas)
+  {
+    code: '1001',
+    name: 'Asignación Estímulo Ley 26.427',
+    type: 'NON_REMUNERATIVE',
+    calculationType: 'FIXED',
+    scope: 'GENERAL',
+    noveltyDataType: 'CANTIDAD',
+    defaultValue: 0.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '550000',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: true,   // Obra Social 6% patronal (Art. 14 Ley 26.427)
+    appliesFsrAporte: false,
+    appliesFsrContrib: true,  // Fondo Solidario de Redistribución
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: true,  // Cobertura ART Ley 24.557
     isRepeatable: false,
   },
   // 2. Sueldo Anual Complementario (SAC) (Remunerativo - Rango 1000..3999)
@@ -1585,10 +1632,25 @@ export async function ensureTenantPayrollSchema(tenantClient) {
       });
     }
 
-    // 9. Precargar Conceptos Estándar si la tabla está vacía
-    const countConcepts = await tenantClient.concept.count();
-    if (countConcepts === 0) {
-      for (const concept of DEFAULT_CONCEPTS) {
+    // 9. Precargar o asegurar Conceptos Estándar si faltan en el tenant
+    for (const concept of DEFAULT_CONCEPTS) {
+      const existing = await tenantClient.concept.findUnique({
+        where: { code: concept.code },
+      });
+      if (!existing) {
+        await tenantClient.concept.create({
+          data: {
+            id: crypto.randomUUID(),
+            ...concept,
+          },
+        });
+      } else if (existing.deletedAt !== null && concept.code === '1001' && existing.name !== concept.name) {
+        // Si el concepto 1001 preexistente estaba eliminado y era un concepto previo ajeno,
+        // actualizar el código del concepto legacy para que no colisione y dar de alta el concepto oficial de pasantías
+        await tenantClient.concept.update({
+          where: { id: existing.id },
+          data: { code: `1001_LEGACY_${existing.id.substring(0, 8)}` },
+        });
         await tenantClient.concept.create({
           data: {
             id: crypto.randomUUID(),

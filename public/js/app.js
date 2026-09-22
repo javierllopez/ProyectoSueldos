@@ -4367,6 +4367,35 @@ class AppController {
       }
     });
 
+    // Cambio en modalidad de contratación: filtrar nóminas exclusivas o estándar y sugerir jornada
+    document.getElementById('employee-input-contract-modality')?.addEventListener('change', (e) => {
+      const selectedModality = e.target.value;
+      const isIntern = String(selectedModality) === '27' || String(selectedModality) === '51';
+      this.updateSalaryScaleOptions(selectedModality);
+
+      // Si es pasante, sugerir o ajustar tope de 20 hs semanales (Ley 26.427 Art. 13)
+      if (isIntern) {
+        const weeklyInput = document.getElementById('employee-input-weekly-hours');
+        const monthlyInput = document.getElementById('employee-input-monthly-hours');
+        const partTimeSwitch = document.getElementById('employee-input-is-part-time');
+        const partTimePct = document.getElementById('employee-input-part-time-pct');
+        const jornadaBadge = document.getElementById('emp-jornada-badge');
+
+        if (weeklyInput && (!weeklyInput.value || parseFloat(weeklyInput.value) > 20)) {
+          weeklyInput.value = '20:00';
+        }
+        if (monthlyInput && (!monthlyInput.value || parseFloat(monthlyInput.value) > 80)) {
+          monthlyInput.value = '80:00';
+        }
+        if (partTimeSwitch) partTimeSwitch.checked = true;
+        if (partTimePct) partTimePct.value = '50';
+        if (jornadaBadge) {
+          jornadaBadge.textContent = 'Pasantía Educativa (Máx 20 hs)';
+          jornadaBadge.className = 'badge bg-teal text-white';
+        }
+      }
+    });
+
     // Botones de toolbar en Nómina de Personal
     document.getElementById('btn-open-mass-wage-increase-emp')?.addEventListener('click', () => {
       this.openMassWageIncreaseModal();
@@ -5124,30 +5153,64 @@ class AppController {
       updateSearchableSelect(modSelect, optionsHtml, selectedContractModality ? String(selectedContractModality) : '');
     }
 
-    const scaleSelect = document.getElementById('employee-select-salary-scale');
-    if (scaleSelect) {
-      const scales = this.salaryScales || [];
-      const optsHtml =
-        '<option value="">-- Seleccionar Nómina --</option>' +
-        scales
-          .map((s) => `<option value="${s.id}" data-amount="${s.amount}" ${s.id === selectedSalaryScale ? 'selected' : ''}>${escapeHtml(s.name)} ($ ${formatNumber(s.amount)})</option>`)
-          .join('');
-      scaleSelect.innerHTML = optsHtml;
-      scaleSelect.value = selectedSalaryScale || '';
+    this.updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale);
+  }
 
-      const found = scales.find((s) => s.id === selectedSalaryScale);
-      const amountDisplay = document.getElementById('employee-scale-amount-display');
-      const cardDisplay = document.getElementById('employee-scale-amount-card-display');
-      const basicSalaryInput = document.getElementById('employee-input-basic-salary');
-      if (found) {
-        const txt = `$ ${formatNumber(found.amount)}`;
-        if (amountDisplay) amountDisplay.textContent = txt;
-        if (cardDisplay) cardDisplay.textContent = txt;
-        if (basicSalaryInput) basicSalaryInput.value = found.amount;
-      } else {
-        if (amountDisplay) amountDisplay.textContent = '$ 0,00';
-        if (cardDisplay) cardDisplay.textContent = '$ 0,00';
-      }
+  /**
+   * Filtra y actualiza dinámicamente las opciones del selector de nómina según la modalidad de contrato
+   * (Mostrando únicamente nóminas de pasantes para modalidades 27 y 51, o únicamente estándar para las demás).
+   */
+  updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale) {
+    const scaleSelect = document.getElementById('employee-select-salary-scale');
+    if (!scaleSelect) return;
+
+    const modCode = selectedContractModality !== undefined && selectedContractModality !== null
+      ? String(selectedContractModality)
+      : (document.getElementById('employee-input-contract-modality')?.value || '');
+    const isInternMod = modCode === '27' || modCode === '51';
+    const allScales = this.salaryScales || [];
+    const filteredScales = isInternMod
+      ? allScales.filter((s) => s.isInternOnly === true)
+      : allScales.filter((s) => !s.isInternOnly);
+
+    // Actualizar títulos e indicaciones visuales
+    const cardTitle = document.getElementById('employee-scale-card-title');
+    const selectLabel = document.getElementById('employee-scale-select-label');
+    const selectHint = document.getElementById('employee-scale-select-hint');
+    const amountLabel = document.getElementById('employee-scale-amount-label');
+
+    if (cardTitle) cardTitle.textContent = isInternMod ? 'Asignación Estímulo del Pasante (Ley 26.427)' : 'Sueldo Básico del Colaborador';
+    if (selectLabel) selectLabel.innerHTML = isInternMod ? 'Nómina de Pasante Asignada <span class="text-danger">*</span>' : 'Nómina / Básico Asignado <span class="text-danger">*</span>';
+    if (selectHint) selectHint.textContent = isInternMod ? 'Nómina exclusiva de asignación estímulo para pasantes educativos (Ley 26.427).' : 'Sueldo básico asignado según nómina seleccionada desde el módulo de Haberes.';
+    if (amountLabel) amountLabel.textContent = isInternMod ? 'Asignación Estímulo Mensual' : 'Importe Básico Mensual';
+
+    let targetSelection = selectedSalaryScale || scaleSelect.value || '';
+    if (!filteredScales.some((s) => s.id === targetSelection)) {
+      targetSelection = '';
+    }
+
+    const placeholderText = isInternMod ? '-- Seleccionar Nómina de Pasante --' : '-- Seleccionar Nómina --';
+    const optsHtml =
+      `<option value="">${placeholderText}</option>` +
+      filteredScales
+        .map((s) => `<option value="${s.id}" data-amount="${s.amount}" ${s.id === targetSelection ? 'selected' : ''}>${escapeHtml(s.name)} ($ ${formatNumber(s.amount)})</option>`)
+        .join('');
+    scaleSelect.innerHTML = optsHtml;
+    scaleSelect.value = targetSelection;
+
+    const found = filteredScales.find((s) => s.id === targetSelection);
+    const amountDisplay = document.getElementById('employee-scale-amount-display');
+    const cardDisplay = document.getElementById('employee-scale-amount-card-display');
+    const basicSalaryInput = document.getElementById('employee-input-basic-salary');
+    if (found) {
+      const txt = `$ ${formatNumber(found.amount)}`;
+      if (amountDisplay) amountDisplay.textContent = txt;
+      if (cardDisplay) cardDisplay.textContent = txt;
+      if (basicSalaryInput) basicSalaryInput.value = found.amount;
+    } else {
+      if (amountDisplay) amountDisplay.textContent = '$ 0,00';
+      if (cardDisplay) cardDisplay.textContent = '$ 0,00';
+      if (basicSalaryInput) basicSalaryInput.value = '0.00';
     }
   }
 
@@ -7594,7 +7657,7 @@ class AppController {
         }
 
         const targetPaneId = item.getAttribute('href');
-        document.querySelectorAll('#payroll-tab-content .tab-pane').forEach((p) => {
+        document.querySelectorAll('#payroll-tab-content > .tab-pane').forEach((p) => {
           p.classList.remove('show', 'active');
         });
         const targetPane = document.querySelector(targetPaneId);
@@ -7704,6 +7767,7 @@ class AppController {
     const slipsPeriodSelect = document.getElementById('slips-period-select');
     if (slipsPeriodSelect) {
       slipsPeriodSelect.addEventListener('change', () => {
+        this.activePayrollPeriodId = slipsPeriodSelect.value;
         this.payrollSlipsPage = 1;
         this.loadPayrollSlips(slipsPeriodSelect.value);
       });
@@ -8206,7 +8270,10 @@ class AppController {
         return `
           <tr>
             <td>
-              <div class="fw-bold text-dark">${escapeHtml(scale.name)}</div>
+              <div class="d-flex align-items-center gap-2">
+                <div class="fw-bold text-dark">${escapeHtml(scale.name)}</div>
+                ${scale.isInternOnly ? '<span class="badge bg-teal-lt text-teal"><i class="ti ti-school me-1"></i>Pasantes Ley 26.427</span>' : ''}
+              </div>
             </td>
             <td>
               ${scale.code ? `<span class="badge bg-secondary-lt font-monospace">${escapeHtml(scale.code)}</span>` : '<span class="text-muted small">-</span>'}
@@ -8268,6 +8335,9 @@ class AppController {
     document.getElementById('scale-form-id').value = '';
     document.getElementById('modal-salary-scale-title').textContent = 'Nueva Nómina de Sueldo Básico';
     document.getElementById('scale-form-alert')?.classList.add('d-none');
+    const internCheck = document.getElementById('scale-input-is-intern-only');
+    if (internCheck) internCheck.checked = false;
+
     const submitBtn = document.getElementById('btn-save-salary-scale');
     if (submitBtn) submitBtn.innerHTML = '<i class="ti ti-device-floppy me-1"></i> Guardar Nómina';
     getBootstrapModal(document.getElementById('modal-salary-scale'))?.show();
@@ -8282,6 +8352,9 @@ class AppController {
     document.getElementById('scale-input-code').value = scale.code || '';
     document.getElementById('scale-input-amount').value = scale.amount;
     document.getElementById('scale-input-description').value = scale.description || '';
+    const internCheck = document.getElementById('scale-input-is-intern-only');
+    if (internCheck) internCheck.checked = Boolean(scale.isInternOnly);
+
     document.getElementById('modal-salary-scale-title').textContent = `Editar Nómina: ${scale.name}`;
     document.getElementById('scale-form-alert')?.classList.add('d-none');
 
@@ -8298,6 +8371,7 @@ class AppController {
     const code = document.getElementById('scale-input-code').value.trim() || null;
     const amount = Number(document.getElementById('scale-input-amount').value);
     const description = document.getElementById('scale-input-description').value.trim() || null;
+    const isInternOnly = document.getElementById('scale-input-is-intern-only')?.checked || false;
     const alertBox = document.getElementById('scale-form-alert');
     const submitBtn = document.getElementById('btn-save-salary-scale');
 
@@ -8313,7 +8387,7 @@ class AppController {
       if (submitBtn) submitBtn.disabled = true;
       if (alertBox) alertBox.classList.add('d-none');
 
-      const payload = { name, code, amount, description };
+      const payload = { name, code, amount, description, isInternOnly };
       let res;
       if (id) {
         res = await apiRequest(`/payroll/salary-scales/${id}`, {
@@ -8640,6 +8714,8 @@ class AppController {
     tbody.querySelectorAll('.btn-calc-period').forEach((btn) => {
       btn.addEventListener('click', () => {
         const periodId = btn.dataset.id;
+        this.activePayrollPeriodId = periodId;
+        this.syncPayrollPeriodSelectors(periodId);
         document.getElementById('side-payroll-settlement')?.click();
         const select = document.getElementById('settlement-period-select');
         if (select) {
@@ -8652,6 +8728,8 @@ class AppController {
     tbody.querySelectorAll('.btn-view-period-slips').forEach((btn) => {
       btn.addEventListener('click', () => {
         const periodId = btn.dataset.id;
+        this.activePayrollPeriodId = periodId;
+        this.syncPayrollPeriodSelectors(periodId);
         document.getElementById('side-payroll-slips')?.click();
         const select = document.getElementById('slips-period-select');
         if (select) {
@@ -8702,7 +8780,10 @@ class AppController {
     });
   }
 
-  syncPayrollPeriodSelectors() {
+  syncPayrollPeriodSelectors(preferredPeriodId = null) {
+    if (preferredPeriodId) {
+      this.activePayrollPeriodId = preferredPeriodId;
+    }
     const selectors = [
       'nov-nopers-emp-period-select',
       'nov-nopers-con-period-select',
@@ -8714,17 +8795,16 @@ class AppController {
     selectors.forEach((selId) => {
       const el = document.getElementById(selId);
       if (!el) return;
-      const currentVal = el.value;
       if (this.payrollPeriods.length === 0) {
         updateSearchableSelect(el, '<option value="">No hay liquidaciones registradas</option>', '');
         return;
       }
+      const targetVal = this.activePayrollPeriodId || el.value || (this.payrollPeriods.length > 0 ? this.payrollPeriods[0].id : '');
       const optsHtml = this.payrollPeriods
         .map(
-          (p) => `<option value="${p.id}" ${p.id === currentVal ? 'selected' : ''}>${String(p.month).padStart(2, '0')}/${p.year} - ${escapeHtml(p.settlementName)} (${p.status})</option>`
+          (p) => `<option value="${p.id}" ${p.id === targetVal ? 'selected' : ''}>${String(p.month).padStart(2, '0')}/${p.year} - ${escapeHtml(p.settlementName)} (${p.status})</option>`
         )
         .join('');
-      const targetVal = currentVal || (this.payrollPeriods.length > 0 ? this.payrollPeriods[0].id : '');
       updateSearchableSelect(el, optsHtml, targetVal);
     });
   }
@@ -8769,14 +8849,20 @@ class AppController {
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Creando...';
 
     try {
-      await apiRequest('/payroll/periods', {
+      const res = await apiRequest('/payroll/periods', {
         method: 'POST',
         body: JSON.stringify(payload),
       });
 
+      const newPeriodId = res?.data?.id || res?.id;
+      if (newPeriodId) {
+        this.activePayrollPeriodId = newPeriodId;
+      }
+
       showToast('Liquidación creada exitosamente');
       getBootstrapModal(document.getElementById('modal-payroll-period-form'))?.hide();
       await this.loadPayrollPeriods();
+      this.syncPayrollPeriodSelectors(this.activePayrollPeriodId);
     } catch (err) {
       if (alertBox) {
         alertBox.textContent = err.message || 'Error al crear la liquidación';
@@ -9566,9 +9652,18 @@ class AppController {
     if (form) form.reset();
     document.getElementById('period-novelty-alert')?.classList.add('d-none');
 
-    const effectivePeriodId = periodId || novelty?.payrollPeriodId || document.getElementById('nov-nopers-emp-period-select')?.value || document.getElementById('nov-nopers-con-period-select')?.value;
+    const effectivePeriodId = periodId || novelty?.payrollPeriodId || this.activePayrollPeriodId || document.getElementById('nov-nopers-emp-period-select')?.value || document.getElementById('nov-nopers-con-period-select')?.value;
     document.getElementById('period-novelty-id').value = novelty?.id || '';
     document.getElementById('period-novelty-period-id').value = effectivePeriodId || '';
+
+    const periodObj = (this.payrollPeriods || []).find((p) => p.id === effectivePeriodId);
+    const periodName = periodObj ? `${periodObj.settlementName} (${String(periodObj.month).padStart(2, '0')}/${periodObj.year})` : '';
+    const subtitleEl = document.getElementById('modal-period-novelty-subtitle');
+    if (subtitleEl) {
+      subtitleEl.innerHTML = periodName
+        ? `<span class="badge bg-blue-lt text-blue me-1"><i class="ti ti-calendar me-1"></i>${escapeHtml(periodName)}</span> <span class="text-muted">Novedad individual no persistente</span>`
+        : 'Novedad individual no persistente';
+    }
 
     // Manejo de Colaborador
     const empSelect = document.getElementById('period-novelty-employee-select');
@@ -10104,6 +10199,17 @@ class AppController {
     document.getElementById('btn-settlement-calc-batch').disabled = isClosed;
     document.getElementById('btn-settlement-calc-all').disabled = isClosed;
 
+    // Asegurar que la sub-pestaña de liquidación individual esté activa y visible si ninguna está seleccionada
+    const activeSubTab = document.querySelector('#pane-payroll-settlement .tab-content > .tab-pane.active');
+    if (!activeSubTab) {
+      document.querySelectorAll('#pane-payroll-settlement .nav-tabs .nav-link').forEach((l) => l.classList.remove('active'));
+      document.querySelectorAll('#pane-payroll-settlement .tab-content > .tab-pane').forEach((p) => p.classList.remove('show', 'active'));
+      document.querySelector('#pane-payroll-settlement a[href="#tab-settlement-single"]')?.classList.add('active');
+      document.getElementById('tab-settlement-single')?.classList.add('show', 'active');
+    } else if (!activeSubTab.classList.contains('show')) {
+      activeSubTab.classList.add('show');
+    }
+
     try {
       const [employees, slipsRes, deptsRes] = await Promise.all([
         this.fetchActiveEmployees(),
@@ -10511,7 +10617,10 @@ class AppController {
     const perSelectEmp = document.getElementById('nov-nopers-emp-period-select');
     const empSelect = document.getElementById('nov-nopers-emp-select');
     if (perSelectEmp) {
-      perSelectEmp.addEventListener('change', () => this.refreshNovNoPersEmpTable(perSelectEmp.value, empSelect?.value));
+      perSelectEmp.addEventListener('change', () => {
+        this.activePayrollPeriodId = perSelectEmp.value;
+        this.refreshNovNoPersEmpTable(perSelectEmp.value, empSelect?.value);
+      });
     }
     if (empSelect) {
       empSelect.addEventListener('change', () => this.refreshNovNoPersEmpTable(perSelectEmp?.value, empSelect.value));
@@ -10521,7 +10630,7 @@ class AppController {
       btnAddEmp.addEventListener('click', () => {
         this.openPeriodNoveltyModal({
           employeeId: empSelect?.value,
-          periodId: perSelectEmp?.value,
+          periodId: perSelectEmp?.value || this.activePayrollPeriodId,
         });
       });
     }
@@ -10530,7 +10639,10 @@ class AppController {
     const perSelectCon = document.getElementById('nov-nopers-con-period-select');
     const conSelect = document.getElementById('nov-nopers-con-select');
     if (perSelectCon) {
-      perSelectCon.addEventListener('change', () => this.refreshNovNoPersConTable(perSelectCon.value, conSelect?.value));
+      perSelectCon.addEventListener('change', () => {
+        this.activePayrollPeriodId = perSelectCon.value;
+        this.refreshNovNoPersConTable(perSelectCon.value, conSelect?.value);
+      });
     }
     if (conSelect) {
       conSelect.addEventListener('change', () => this.refreshNovNoPersConTable(perSelectCon?.value, conSelect.value));
@@ -10540,7 +10652,7 @@ class AppController {
       btnAddCon.addEventListener('click', () => {
         this.openPeriodNoveltyModal({
           conceptId: conSelect?.value,
-          periodId: perSelectCon?.value,
+          periodId: perSelectCon?.value || this.activePayrollPeriodId,
         });
       });
     }
@@ -10713,7 +10825,10 @@ class AppController {
   setupSettlementHandlers() {
     const periodSelect = document.getElementById('settlement-period-select');
     if (periodSelect) {
-      periodSelect.addEventListener('change', () => this.loadSettlementView());
+      periodSelect.addEventListener('change', () => {
+        this.activePayrollPeriodId = periodSelect.value;
+        this.loadSettlementView();
+      });
     }
 
     // Modalidad 1: Individual
@@ -11208,19 +11323,18 @@ class AppController {
 
       return `
         <tr class="${rowClass}">
-          <td class="text-center font-monospace text-muted small">${idx + 1}</td>
-          <td class="font-monospace fw-bold text-primary">${escapeHtml(it.conceptCode)}</td>
-          <td>
-            <div class="fw-semibold text-dark">${escapeHtml(it.conceptName)}</div>
-            ${isAux ? '<div class="small text-purple"><i class="ti ti-info-circle me-1"></i>Paso de cálculo intermedio (No impreso en recibo oficial ni ARCA)</div>' : ''}
+          <td class="text-center font-monospace text-muted small py-1">${idx + 1}</td>
+          <td class="font-monospace fw-bold text-primary py-1">${escapeHtml(it.conceptCode)}</td>
+          <td class="py-1">
+            <span class="fw-semibold text-dark text-truncate d-inline-block align-middle" style="max-width: 320px;" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
           </td>
-          <td>${typeBadges[it.type] || it.type}</td>
-          <td class="text-center font-monospace">${unitsStr}</td>
-          <td class="text-end font-monospace text-muted">${baseStr}</td>
-          <td class="text-end font-monospace fw-bold ${isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : 'text-dark')}">
+          <td class="py-1">${typeBadges[it.type] || it.type}</td>
+          <td class="text-center font-monospace py-1">${unitsStr}</td>
+          <td class="text-end font-monospace text-muted py-1">${baseStr}</td>
+          <td class="text-end font-monospace fw-bold py-1 ${isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : 'text-dark')}">
             ${it.type === 'DEDUCTION' ? '-' : ''}$ ${amountStr}
           </td>
-          <td class="text-center">
+          <td class="text-center py-1">
             <code>${escapeHtml(it.arcaConceptCode || '-')}</code>
           </td>
         </tr>
@@ -11229,60 +11343,59 @@ class AppController {
 
     area.innerHTML = `
       <!-- Encabezado de Auditoría -->
-      <div class="card shadow-xs mb-3">
-        <div class="card-body p-3">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div class="card shadow-xs mb-2">
+        <div class="card-body py-2 px-3">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div>
               <div class="d-flex align-items-center gap-2">
-                <span class="avatar avatar-md bg-purple-lt text-purple fw-bold rounded-circle">
+                <span class="avatar avatar-sm bg-purple-lt text-purple fw-bold rounded-circle">
                   ${escapeHtml(((emp.firstName?.[0] || '') + (emp.lastName?.[0] || '')).toUpperCase() || 'EM')}
                 </span>
                 <div>
-                  <h4 class="mb-0 fw-bold">${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}</h4>
+                  <h4 class="mb-0 fw-bold fs-3">${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}</h4>
                   <div class="small text-muted font-monospace">
                     Legajo: <strong>${escapeHtml(emp.fileNumber || '-')}</strong> | CUIL: <strong>${formatCuit(emp.cuil)}</strong> | ${escapeHtml(emp.jobPosition?.name || '-')}
                   </div>
                 </div>
               </div>
             </div>
-            <div class="text-end">
-              <div class="text-muted small">Período Liquidado</div>
-              <div class="fw-bold">${escapeHtml(period.settlementName || `${period.month}/${period.year}`)}</div>
-              <span class="badge bg-green-lt fs-4 font-monospace mt-1">Neto: $ ${formatMoney(slip.netSalary)}</span>
+            <div class="text-end d-flex align-items-center gap-3">
+              <div class="text-end">
+                <div class="text-muted small">Período Liquidado</div>
+                <div class="fw-bold">${escapeHtml(period.settlementName || `${period.month}/${period.year}`)}</div>
+              </div>
+              <span class="badge bg-green-lt fs-3 font-monospace py-1 px-2">Neto: $ ${formatMoney(slip.netSalary)}</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Alerta Explicativa de Conceptos Auxiliares -->
-      <div class="alert alert-purple d-flex align-items-center mb-3 py-2" role="alert">
-        <i class="ti ti-info-circle fs-2 me-2"></i>
-        <div class="small">
-          <strong>Auditoría Técnica de Conceptos:</strong> Esta tabla expone la totalidad de conceptos procesados en la liquidación. Los conceptos marcados como 
-          <span class="badge bg-purple text-white mx-1"><i class="ti ti-tools me-1"></i>Auxiliar</span> 
-          actúan como variables intermedias y fórmulas acumuladoras para otros cálculos complejos, pero no figuran en el recibo legal ni se transmiten al LSD de ARCA.
+      <!-- Tabla Integral de Conceptos con Scroll Independiente (Máximo 5 renglones visibles sin scroll) -->
+      <div class="card shadow-xs mb-2">
+        <div class="card-header py-1 px-3 bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="card-title mb-0 text-dark">
+              <i class="ti ti-list-details me-1 text-primary"></i> Secuencia Completa de Conceptos Liquidados
+            </h5>
+            <span class="badge bg-primary-lt font-monospace">${items.length} conceptos</span>
+          </div>
+          <div class="small text-muted d-flex align-items-center flex-wrap gap-1">
+            <span class="badge bg-purple text-white"><i class="ti ti-tools me-1"></i>Auxiliar</span>
+            <span class="small">Variables intermedias de cálculo (no impresas en recibo legal ni ARCA)</span>
+          </div>
         </div>
-      </div>
-
-      <!-- Tabla Integral de Conceptos -->
-      <div class="card shadow-xs mb-3">
-        <div class="card-header py-2 px-3 bg-white">
-          <h5 class="card-title mb-0 text-dark">
-            <i class="ti ti-list-details me-1 text-primary"></i> Secuencia Completa de Conceptos Liquidados (${items.length})
-          </h5>
-        </div>
-        <div class="table-responsive">
-          <table class="table table-vcenter card-table table-hover table-sm">
-            <thead>
+        <div class="table-responsive" style="max-height: 212px; overflow-y: auto;">
+          <table class="table table-vcenter card-table table-hover table-sm mb-0">
+            <thead class="sticky-top bg-light border-bottom" style="z-index: 2;">
               <tr class="table-light">
-                <th class="text-center" style="width: 45px;">#</th>
-                <th style="width: 80px;">Código</th>
-                <th>Concepto / Variable</th>
-                <th style="width: 170px;">Tipo</th>
-                <th class="text-center" style="width: 90px;">Unidades</th>
-                <th class="text-end" style="width: 120px;">Base / Tasa</th>
-                <th class="text-end" style="width: 130px;">Importe ($)</th>
-                <th class="text-center" style="width: 90px;">Código ARCA</th>
+                <th class="text-center py-1" style="width: 45px;">#</th>
+                <th class="py-1" style="width: 80px;">Código</th>
+                <th class="py-1">Concepto / Variable</th>
+                <th class="py-1" style="width: 170px;">Tipo</th>
+                <th class="text-center py-1" style="width: 90px;">Unidades</th>
+                <th class="text-end py-1" style="width: 120px;">Base / Tasa</th>
+                <th class="text-end py-1" style="width: 130px;">Importe ($)</th>
+                <th class="text-center py-1" style="width: 90px;">Código ARCA</th>
               </tr>
             </thead>
             <tbody>
@@ -11293,39 +11406,39 @@ class AppController {
       </div>
 
       <!-- Bases Imponibles F.931 ARCA y Costo Laboral -->
-      <div class="row g-3">
+      <div class="row g-2">
         <div class="col-md-6">
           <div class="card shadow-xs h-100">
-            <div class="card-header py-2 px-3 bg-white">
+            <div class="card-header py-1 px-3 bg-white">
               <h5 class="card-title mb-0 small text-uppercase text-muted">
                 <i class="ti ti-building-bank me-1 text-indigo"></i> Bases Imponibles ARCA F.931
               </h5>
             </div>
-            <div class="card-body p-3">
+            <div class="card-body py-2 px-3">
               <table class="table table-sm table-borderless mb-0 small">
                 <tr>
-                  <td class="text-muted">Base 1 (SIPA Topeada):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible1)}</td>
+                  <td class="text-muted py-0">Base 1 (SIPA Topeada):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible1)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Base 2 (INSSJyP PAMI):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible2)}</td>
+                  <td class="text-muted py-0">Base 2 (INSSJyP PAMI):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible2)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Base 3 (Fondo Nac. Empleo):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible3)}</td>
+                  <td class="text-muted py-0">Base 3 (Fondo Nac. Empleo):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible3)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Base 4 (Asignaciones Familiares):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible4)}</td>
+                  <td class="text-muted py-0">Base 4 (Asignaciones Familiares):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible4)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Base 5 (Obra Social Patronal):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible5)}</td>
+                  <td class="text-muted py-0">Base 5 (Obra Social Patronal):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible5)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Base 9 (LRT / Riesgos Trabajo sin tope):</td>
-                  <td class="text-end font-monospace fw-bold">$ ${formatMoney(basis.baseImponible9)}</td>
+                  <td class="text-muted py-0">Base 9 (LRT / Riesgos Trabajo sin tope):</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible9)}</td>
                 </tr>
               </table>
             </div>
@@ -11334,36 +11447,36 @@ class AppController {
 
         <div class="col-md-6">
           <div class="card shadow-xs h-100">
-            <div class="card-header py-2 px-3 bg-white">
+            <div class="card-header py-1 px-3 bg-white">
               <h5 class="card-title mb-0 small text-uppercase text-muted">
                 <i class="ti ti-calculator me-1 text-teal"></i> Resumen de Costo y Aportes Patronales
               </h5>
             </div>
-            <div class="card-body p-3">
+            <div class="card-body py-2 px-3">
               <table class="table table-sm table-borderless mb-0 small">
                 <tr>
-                  <td class="text-muted">Total Remunerativo:</td>
-                  <td class="text-end font-monospace fw-bold text-success">$ ${formatMoney(slip.remunerativeSalary)}</td>
+                  <td class="text-muted py-0">Total Remunerativo:</td>
+                  <td class="text-end font-monospace fw-bold text-success py-0">$ ${formatMoney(slip.remunerativeSalary)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Total No Remunerativo:</td>
-                  <td class="text-end font-monospace fw-bold text-primary">$ ${formatMoney(slip.nonRemunerative)}</td>
+                  <td class="text-muted py-0">Total No Remunerativo:</td>
+                  <td class="text-end font-monospace fw-bold text-primary py-0">$ ${formatMoney(slip.nonRemunerative)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Total Deducciones Empleado:</td>
-                  <td class="text-end font-monospace fw-bold text-danger">-$ ${formatMoney(slip.totalDeductions)}</td>
+                  <td class="text-muted py-0">Total Deducciones Empleado:</td>
+                  <td class="text-end font-monospace fw-bold text-danger py-0">-$ ${formatMoney(slip.totalDeductions)}</td>
                 </tr>
                 <tr class="border-top">
-                  <td class="fw-bold">Sueldo Neto de Bolsillo:</td>
-                  <td class="text-end font-monospace fw-bold fs-4 text-success">$ ${formatMoney(slip.netSalary)}</td>
+                  <td class="fw-bold py-1">Sueldo Neto de Bolsillo:</td>
+                  <td class="text-end font-monospace fw-bold fs-4 text-success py-1">$ ${formatMoney(slip.netSalary)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted">Total Contribuciones Patronales:</td>
-                  <td class="text-end font-monospace fw-bold text-indigo">$ ${formatMoney(slip.totalEmployerContrib)}</td>
+                  <td class="text-muted py-0">Total Contribuciones Patronales:</td>
+                  <td class="text-end font-monospace fw-bold text-indigo py-0">$ ${formatMoney(slip.totalEmployerContrib)}</td>
                 </tr>
                 <tr class="border-top">
-                  <td class="fw-bold text-dark">Costo Laboral Total Empresa:</td>
-                  <td class="text-end font-monospace fw-bold fs-4 text-dark">$ ${formatMoney(slip.totalLaborCost)}</td>
+                  <td class="fw-bold text-dark py-1">Costo Laboral Total Empresa:</td>
+                  <td class="text-end font-monospace fw-bold fs-4 text-dark py-1">$ ${formatMoney(slip.totalLaborCost)}</td>
                 </tr>
               </table>
             </div>

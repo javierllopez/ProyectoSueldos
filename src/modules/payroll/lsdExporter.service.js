@@ -208,7 +208,7 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       formatAlpha(basis.situationCode || '01', 2) + // 22-23
       formatAlpha(basis.conditionCode || '01', 2) + // 24-25
       formatAlpha(basis.activityCode || '049', 3) + // 26-28
-      formatAlpha(basis.contractModality || '001', 3) + // 29-31
+      formatAlpha(basis.contractModality ? String(basis.contractModality).padStart(3, '0') : '001', 3) + // 29-31
       '00' + // 32-33 Siniestrado
       '00' + // 34-35 Localidad
       formatAlpha(basis.situationCode || '01', 2) + // 36-37 Sit 1

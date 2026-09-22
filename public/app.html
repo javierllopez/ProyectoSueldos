@@ -132,109 +132,160 @@
               </div>
             </div>
 
-            <!-- Métricas -->
-            <div class="row row-cards mb-4">
-              <div class="col-sm-6 col-lg-4">
-                <div class="card card-sm shadow-xs">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="bg-primary text-white avatar">
-                          <i class="ti ti-building fs-2"></i>
-                        </span>
+            <!-- Métricas y Contenido Scrollable -->
+            <div class="screen-scroll-body">
+              <div class="row row-cards mb-4">
+                <div class="col-sm-6 col-lg-4">
+                  <div class="card card-sm shadow-xs">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span class="bg-primary text-white avatar">
+                            <i class="ti ti-building fs-2"></i>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <div class="font-weight-medium">Empresas Registradas</div>
+                          <div class="text-muted fs-3 fw-bold" id="stat-companies-count">0</div>
+                        </div>
                       </div>
-                      <div class="col">
-                        <div class="font-weight-medium">Empresas Registradas</div>
-                        <div class="text-muted fs-3 fw-bold" id="stat-companies-count">0</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                  <div class="card card-sm shadow-xs">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span class="bg-green text-white avatar">
+                            <i class="ti ti-users fs-2"></i>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <div class="font-weight-medium">Colaboradores en Cuenta</div>
+                          <div class="text-muted fs-3 fw-bold" id="stat-users-count">0</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                  <div class="card card-sm shadow-xs">
+                    <div class="card-body">
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <span class="bg-azure text-white avatar">
+                            <i class="ti ti-activity fs-2"></i>
+                          </span>
+                        </div>
+                        <div class="col">
+                          <div class="font-weight-medium">Estado del Sistema</div>
+                          <div class="text-muted fs-3 fw-bold">
+                            <span class="badge bg-success-lt">Operativo</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div class="col-sm-6 col-lg-4">
-                <div class="card card-sm shadow-xs">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="bg-success text-white avatar">
-                          <i class="ti ti-building-community fs-2"></i>
-                        </span>
-                      </div>
-                      <div class="col">
-                        <div class="font-weight-medium">Empresa Activa</div>
-                        <div class="text-truncate fs-4 fw-bold text-success" id="stat-active-company">-</div>
+              <!-- Accesos Rápidos y Novedades -->
+              <div class="row g-4">
+                <div class="col-md-8">
+                  <div class="card shadow-xs">
+                    <div class="card-header bg-transparent">
+                      <h3 class="card-title">Accesos Rápidos</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <div class="col-sm-6">
+                          <a href="#" class="card card-link card-link-pop text-decoration-none shadow-xs border p-3 d-block" data-view-target="companies">
+                            <div class="d-flex align-items-center gap-3">
+                              <span class="avatar bg-blue-lt text-blue"><i class="ti ti-building fs-2"></i></span>
+                              <div>
+                                <div class="fw-bold text-dark">Empresas</div>
+                                <div class="text-muted small">Gestiona razones sociales y bases de datos</div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="col-sm-6 admin-only">
+                          <a href="#" class="card card-link card-link-pop text-decoration-none shadow-xs border p-3 d-block" data-view-target="users">
+                            <div class="d-flex align-items-center gap-3">
+                              <span class="avatar bg-green-lt text-green"><i class="ti ti-user-plus fs-2"></i></span>
+                              <div>
+                                <div class="fw-bold text-dark">Usuarios</div>
+                                <div class="text-muted small">Invita operadores y asigna permisos</div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="col-sm-6">
+                          <a href="#" class="card card-link card-link-pop text-decoration-none shadow-xs border p-3 d-block" data-view-target="employees">
+                            <div class="d-flex align-items-center gap-3">
+                              <span class="avatar bg-teal-lt text-teal"><i class="ti ti-users-group fs-2"></i></span>
+                              <div>
+                                <div class="fw-bold text-dark">Personal y Nómina</div>
+                                <div class="text-muted small">Administración de legajos y RRHH</div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
+                        <div class="col-sm-6">
+                          <a href="#" class="card card-link card-link-pop text-decoration-none shadow-xs border p-3 d-block" data-view-target="payroll">
+                            <div class="d-flex align-items-center gap-3">
+                              <span class="avatar bg-purple-lt text-purple"><i class="ti ti-calculator fs-2"></i></span>
+                              <div>
+                                <div class="fw-bold text-dark">Liquidación de Sueldos</div>
+                                <div class="text-muted small">Conceptos, períodos y Libro ARCA</div>
+                              </div>
+                            </div>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-sm-6 col-lg-4">
-                <div class="card card-sm shadow-xs">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-                        <span class="bg-azure text-white avatar">
-                          <i class="ti ti-sparkles fs-2"></i>
-                        </span>
+                <div class="col-md-4">
+                  <div class="card h-100 shadow-xs">
+                    <div class="card-header bg-transparent">
+                      <h3 class="card-title">Empresa Activa</h3>
+                    </div>
+                    <div class="card-body">
+                      <div class="d-flex align-items-center gap-3 mb-3">
+                        <span class="avatar avatar-lg bg-primary-lt text-primary fw-bold" id="dash-active-company-avatar">PS</span>
+                        <div>
+                          <h4 class="mb-0" id="dash-active-company-name">Cargando...</h4>
+                          <small class="text-muted" id="dash-active-company-cuit">-</small>
+                        </div>
                       </div>
-                      <div class="col">
-                        <div class="font-weight-medium">Plan de Suscripción</div>
-                        <div class="text-muted fs-3 fw-bold" id="stat-plan-name">TRIAL</div>
-                      </div>
+                      <p class="text-muted small">
+                        Estás operando sobre la base de datos aislada de esta empresa. Los cambios en personal y nómina solo afectarán a esta razón social.
+                      </p>
+                      <button class="btn btn-outline-primary btn-sm w-100" data-view-target="company-profile">
+                        <i class="ti ti-edit me-1"></i> Cargar Datos de Empresa
+                      </button>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Accesos rápidos -->
-            <div class="row row-cards">
-              <div class="col-md-4">
-                <div class="card h-100 shadow-xs">
-                  <div class="card-header bg-transparent">
-                    <h3 class="card-title"><i class="ti ti-building me-2 text-primary"></i> Gestión de Empresas</h3>
-                  </div>
-                  <div class="card-body">
-                    <p class="text-muted">
-                      Da de alta nuevas empresas con CUIT validado. Cada empresa dispondrá de su propia base física en MySQL con aislamiento completo.
-                    </p>
-                    <button class="btn btn-outline-primary" data-view-target="companies">
-                      <i class="ti ti-arrow-right me-1"></i> Ver Empresas
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4">
-                <div class="card h-100 shadow-xs">
-                  <div class="card-header bg-transparent">
-                    <h3 class="card-title"><i class="ti ti-file-certificate me-2 text-success"></i> Ficha de la Empresa Activa</h3>
-                  </div>
-                  <div class="card-body">
-                    <p class="text-muted">
-                      Completa los datos fiscales, domicilio legal, contacto, ART y banco para la liquidación de haberes y emisión de recibos.
-                    </p>
-                    <button class="btn btn-outline-success" data-view-target="company-profile">
-                      <i class="ti ti-edit me-1"></i> Cargar Datos de Empresa
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="col-md-4 admin-only">
-                <div class="card h-100 shadow-xs">
-                  <div class="card-header bg-transparent">
-                    <h3 class="card-title"><i class="ti ti-users me-2 text-purple"></i> Equipo de Trabajo</h3>
-                  </div>
-                  <div class="card-body">
-                    <p class="text-muted">
-                      Invita a otros operadores o contadores a tu cuenta y asígnales acceso selectivo a una o varias empresas.
-                    </p>
-                    <button class="btn btn-outline-secondary" data-view-target="users">
-                      <i class="ti ti-user-plus me-1"></i> Administrar Colaboradores
-                    </button>
+                <div class="col-md-4 admin-only">
+                  <div class="card h-100 shadow-xs">
+                    <div class="card-header bg-transparent">
+                      <h3 class="card-title"><i class="ti ti-users me-2 text-purple"></i> Equipo de Trabajo</h3>
+                    </div>
+                    <div class="card-body">
+                      <p class="text-muted">
+                        Invita a otros operadores o contadores a tu cuenta y asígnales acceso selectivo a una o varias empresas.
+                      </p>
+                      <button class="btn btn-outline-secondary" data-view-target="users">
+                        <i class="ti ti-user-plus me-1"></i> Administrar Colaboradores
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -325,51 +376,53 @@
               <h2 class="page-title h1">Mi Cuenta y Suscripción</h2>
             </div>
 
-            <div class="row row-cards">
-              <div class="col-md-6">
-                <div class="card shadow-xs">
-                  <div class="card-header bg-transparent">
-                    <h3 class="card-title">Datos del Cliente</h3>
-                  </div>
-                  <div class="card-body">
-                    <div class="mb-3">
-                      <label class="form-label text-muted small">Nombre de la Cuenta / Estudio</label>
-                      <div class="fs-3 fw-bold" id="account-view-name">-</div>
+            <div class="screen-scroll-body">
+              <div class="row row-cards">
+                <div class="col-md-6">
+                  <div class="card shadow-xs">
+                    <div class="card-header bg-transparent">
+                      <h3 class="card-title">Datos del Cliente</h3>
                     </div>
-                    <div class="mb-3">
-                      <label class="form-label text-muted small">Estado de la Cuenta</label>
-                      <div><span class="badge bg-success" id="account-view-plan">TRIAL</span></div>
-                    </div>
-                    <div>
-                      <label class="form-label text-muted small">Cupo de Empresas</label>
-                      <div class="fs-4 text-primary fw-medium" id="account-view-limit">-</div>
+                    <div class="card-body">
+                      <div class="mb-3">
+                        <label class="form-label text-muted small">Nombre de la Cuenta / Estudio</label>
+                        <div class="fs-3 fw-bold" id="account-view-name">-</div>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label text-muted small">Estado de la Cuenta</label>
+                        <div><span class="badge bg-success" id="account-view-plan">TRIAL</span></div>
+                      </div>
+                      <div>
+                        <label class="form-label text-muted small">Cupo de Empresas</label>
+                        <div class="fs-4 text-primary fw-medium" id="account-view-limit">-</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="col-md-6">
-                <div class="card shadow-xs">
-                  <div class="card-header bg-transparent">
-                    <h3 class="card-title">Seguridad y Arquitectura</h3>
-                  </div>
-                  <div class="card-body">
-                    <ul class="list-unstyled">
-                      <li class="mb-3 d-flex align-items-start gap-2">
-                        <i class="ti ti-shield-lock text-success fs-2"></i>
-                        <div>
-                          <strong>Seguridad Multi-Tenant Estricta</strong>
-                          <div class="text-muted small">Tus datos nunca se mezclan con los de otras empresas en consultas compartidas.</div>
-                        </div>
-                      </li>
-                      <li class="mb-3 d-flex align-items-start gap-2">
-                        <i class="ti ti-database text-azure fs-2"></i>
-                        <div>
-                          <strong>Motor de Bases de Datos Dual</strong>
-                          <div class="text-muted small">Actualmente operando con MySQL en desarrollo, 100% portable a PostgreSQL.</div>
-                        </div>
-                      </li>
-                    </ul>
+                <div class="col-md-6">
+                  <div class="card shadow-xs">
+                    <div class="card-header bg-transparent">
+                      <h3 class="card-title">Seguridad y Arquitectura</h3>
+                    </div>
+                    <div class="card-body">
+                      <ul class="list-unstyled">
+                        <li class="mb-3 d-flex align-items-start gap-2">
+                          <i class="ti ti-shield-lock text-success fs-2"></i>
+                          <div>
+                            <strong>Seguridad Multi-Tenant Estricta</strong>
+                            <div class="text-muted small">Tus datos nunca se mezclan con los de otras empresas en consultas compartidas.</div>
+                          </div>
+                        </li>
+                        <li class="mb-3 d-flex align-items-start gap-2">
+                          <i class="ti ti-database text-azure fs-2"></i>
+                          <div>
+                            <strong>Motor de Bases de Datos Dual</strong>
+                            <div class="text-muted small">Actualmente operando con MySQL en desarrollo, 100% portable a PostgreSQL.</div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -639,9 +692,9 @@
             </div>
 
             <!-- Layout con Barra Lateral Izquierda (Sidebar) y Área de Contenido -->
-            <div class="row g-4">
+            <div class="row gx-3 gy-0 module-layout-row">
               <!-- BARRA LATERAL IZQUIERDA CON SUBMENÚES -->
-              <div class="col-lg-3 col-md-4">
+              <div class="col-lg-3 col-md-4 sidebar-col-container">
                 <div class="personnel-sidebar-card mb-3">
                   <div class="personnel-sidebar-header">
                     <div class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.05em;">
@@ -751,7 +804,7 @@
               </div>
 
               <!-- ÁREA DERECHA DE CONTENIDO -->
-              <div class="col-lg-9 col-md-8">
+              <div class="col-lg-9 col-md-8 content-col-container">
                 <div class="tab-content" id="personnel-tab-content">
                   <!-- PANE 1: NÓMINA DE PERSONAL -->
                   <div class="tab-pane fade show active" id="pane-personnel-employees" role="tabpanel">
@@ -1240,9 +1293,9 @@
             </div>
 
             <!-- Layout con Barra Lateral Izquierda (Sidebar) y Área de Contenido -->
-            <div class="row g-4">
+            <div class="row gx-3 gy-0 module-layout-row">
               <!-- BARRA LATERAL IZQUIERDA CON SUBMENÚES DE SUELDOS -->
-              <div class="col-lg-3 col-md-4">
+              <div class="col-lg-3 col-md-4 sidebar-col-container">
                 <div class="payroll-sidebar-card mb-3">
                   <div class="payroll-sidebar-header">
                     <div class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.05em;">
@@ -1408,7 +1461,7 @@
               </div>
 
               <!-- ÁREA DERECHA DE CONTENIDO -->
-              <div class="col-lg-9 col-md-8">
+              <div class="col-lg-9 col-md-8 content-col-container">
                 <div class="tab-content" id="payroll-tab-content">
                   <!-- PANE: NÓMINA (SUELDOS BÁSICOS) -->
                   <div class="tab-pane fade" id="pane-payroll-salary-scales" role="tabpanel">
@@ -2139,60 +2192,63 @@
                       </div>
                     </div>
 
-                    <!-- Panel de Auditoría ARCA -->
-                    <div id="lsd-validation-box" class="card shadow-xs mb-3 border-0 bg-light-subtle">
-                      <div class="card-body p-3">
-                        <div class="d-flex align-items-center gap-2 mb-2">
-                          <i class="ti ti-shield-check fs-2 text-success" id="lsd-status-icon"></i>
-                          <div>
-                            <h4 class="card-title mb-0" id="lsd-status-title">Consistencia de Liquidación</h4>
-                            <div class="text-muted small" id="lsd-status-desc">Seleccione un período para auditar los 999 caracteres por registro.</div>
-                          </div>
-                        </div>
-                        <div id="lsd-errors-list" class="alert alert-danger py-2 small d-none mb-0"></div>
-                      </div>
-                    </div>
-
-                    <!-- Tarjetas de Descarga de Archivos Planos ARCA -->
-                    <div class="row g-3">
-                      <!-- ARCHIVO 1: CONCEPTOS -->
-                      <div class="col-md-6">
-                        <div class="card h-100 shadow-xs">
-                          <div class="card-body">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                              <span class="avatar bg-blue-lt text-blue"><i class="ti ti-file-text fs-2"></i></span>
-                              <div>
-                                <h4 class="card-title mb-0">Archivo 1: Parametrización de Conceptos</h4>
-                                <small class="text-muted">Longitud estricta: 195 caracteres / registro</small>
-                              </div>
+                    <!-- Panel de Auditoría y Tarjetas de Descarga Scrollables -->
+                    <div class="screen-scroll-body">
+                      <!-- Panel de Auditoría ARCA -->
+                      <div id="lsd-validation-box" class="card shadow-xs mb-3 border-0 bg-light-subtle">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center gap-2 mb-2">
+                            <i class="ti ti-shield-check fs-2 text-success" id="lsd-status-icon"></i>
+                            <div>
+                              <h4 class="card-title mb-0" id="lsd-status-title">Consistencia de Liquidación</h4>
+                              <div class="text-muted small" id="lsd-status-desc">Seleccione un período para auditar los 999 caracteres por registro.</div>
                             </div>
-                            <p class="text-muted small mb-3">
-                              Exporta el catálogo de conceptos del sistema con sus correspondencias a los subsistemas de Seguridad Social, Obra Social, FSR y LRT de ARCA.
-                            </p>
-                            <button type="button" class="btn btn-outline-primary w-100" id="btn-download-lsd-concepts">
-                              <i class="ti ti-download me-1"></i> Descargar Conceptos ARCA (.txt)
-                            </button>
                           </div>
+                          <div id="lsd-errors-list" class="alert alert-danger py-2 small d-none mb-0"></div>
                         </div>
                       </div>
 
-                      <!-- ARCHIVO 2: LIQUIDACIÓN DE HABERES F.931 -->
-                      <div class="col-md-6">
-                        <div class="card h-100 shadow-xs">
-                          <div class="card-body">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                              <span class="avatar bg-purple-lt text-purple"><i class="ti ti-database-export fs-2"></i></span>
-                              <div>
-                                <h4 class="card-title mb-0">Archivo 2: Liquidación de Sueldos (F.931)</h4>
-                                <small class="text-muted">Longitud estricta: 999 caracteres / registro</small>
+                      <!-- Tarjetas de Descarga de Archivos Planos ARCA -->
+                      <div class="row g-3">
+                        <!-- ARCHIVO 1: CONCEPTOS -->
+                        <div class="col-md-6">
+                          <div class="card h-100 shadow-xs">
+                            <div class="card-body">
+                              <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="avatar bg-blue-lt text-blue"><i class="ti ti-file-text fs-2"></i></span>
+                                <div>
+                                  <h4 class="card-title mb-0">Archivo 1: Parametrización de Conceptos</h4>
+                                  <small class="text-muted">Longitud estricta: 195 caracteres / registro</small>
+                                </div>
                               </div>
+                              <p class="text-muted small mb-3">
+                                Exporta el catálogo de conceptos del sistema con sus correspondencias a los subsistemas de Seguridad Social, Obra Social, FSR y LRT de ARCA.
+                              </p>
+                              <button type="button" class="btn btn-outline-primary w-100" id="btn-download-lsd-concepts">
+                                <i class="ti ti-download me-1"></i> Descargar Conceptos ARCA (.txt)
+                              </button>
                             </div>
-                            <p class="text-muted small mb-3">
-                              Genera los Registros 01 (Encabezado), 02 (Datos de Empleado), 03 (Conceptos liquidados) y 04 (Bases Imponibles 1 a 10 y atributos de revista).
-                            </p>
-                            <button type="button" class="btn btn-payroll w-100" id="btn-download-lsd-payroll">
-                              <i class="ti ti-download me-1"></i> Descargar Libro de Sueldos Digital (.txt)
-                            </button>
+                          </div>
+                        </div>
+
+                        <!-- ARCHIVO 2: LIQUIDACIÓN DE HABERES F.931 -->
+                        <div class="col-md-6">
+                          <div class="card h-100 shadow-xs">
+                            <div class="card-body">
+                              <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="avatar bg-purple-lt text-purple"><i class="ti ti-database-export fs-2"></i></span>
+                                <div>
+                                  <h4 class="card-title mb-0">Archivo 2: Liquidación de Sueldos (F.931)</h4>
+                                  <small class="text-muted">Longitud estricta: 999 caracteres / registro</small>
+                                </div>
+                              </div>
+                              <p class="text-muted small mb-3">
+                                Genera los Registros 01 (Encabezado), 02 (Datos de Empleado), 03 (Conceptos liquidados) y 04 (Bases Imponibles 1 a 10 y atributos de revista).
+                              </p>
+                              <button type="button" class="btn btn-payroll w-100" id="btn-download-lsd-payroll">
+                                <i class="ti ti-download me-1"></i> Descargar Libro de Sueldos Digital (.txt)
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -3394,14 +3450,14 @@
                   <div class="card-header bg-teal-lt py-2 px-3 d-flex align-items-center justify-content-between">
                     <div class="d-flex align-items-center gap-2">
                       <i class="ti ti-cash-banknote text-teal fs-2"></i>
-                      <span class="fw-bold text-dark">Sueldo Básico del Colaborador</span>
+                      <span class="fw-bold text-dark" id="employee-scale-card-title">Sueldo Básico del Colaborador</span>
                     </div>
                     <span class="badge bg-teal-lt font-monospace fs-4 fw-bold" id="employee-scale-amount-display">$ 0.00</span>
                   </div>
                   <div class="card-body p-3">
                     <div class="row g-3 align-items-center">
                       <div class="col-md-8">
-                        <label class="form-label fw-bold mb-1">
+                        <label class="form-label fw-bold mb-1" id="employee-scale-select-label">
                           Nómina / Básico Asignado <span class="text-danger">*</span>
                         </label>
                         <div class="input-group">
@@ -3410,12 +3466,12 @@
                             <option value="">-- Seleccionar Nómina --</option>
                           </select>
                         </div>
-                        <div class="form-hint" style="font-size: 0.72rem;">Sueldo básico asignado según nómina seleccionada desde el módulo de Haberes.</div>
+                        <div class="form-hint" id="employee-scale-select-hint" style="font-size: 0.72rem;">Sueldo básico asignado según nómina seleccionada desde el módulo de Haberes.</div>
                         <input type="hidden" id="employee-input-basic-salary" value="0.00" />
                       </div>
                       <div class="col-md-4">
                         <div class="p-2 bg-light rounded border text-center">
-                          <div class="text-muted small">Importe Básico Mensual</div>
+                          <div class="text-muted small" id="employee-scale-amount-label">Importe Básico Mensual</div>
                           <div class="fs-2 fw-bold text-teal font-monospace" id="employee-scale-amount-card-display">$ 0.00</div>
                         </div>
                       </div>
@@ -4739,6 +4795,16 @@
                   <span class="input-group-text">$</span>
                   <input type="number" step="0.01" min="0" class="form-control font-monospace fs-2 fw-bold text-dark" id="scale-input-amount" required placeholder="0.00" />
                 </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-check form-switch cursor-pointer">
+                <input class="form-check-input" type="checkbox" id="scale-input-is-intern-only">
+                <span class="form-check-label fw-bold">Nómina exclusiva para Pasantes (Ley 26.427)</span>
+              </label>
+              <div class="form-hint" style="font-size: 0.75rem;">
+                Si se activa, esta nómina representa una "Asignación Estímulo" no remunerativa y sólo podrá asignarse a colaboradores con modalidad de pasantía (código 27 o 51).
               </div>
             </div>
 

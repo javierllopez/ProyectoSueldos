@@ -499,6 +499,186 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
   const lsdPayrollFile = generateLsdPayrollFile({ paySlips: [paySlipMock], period, company: { cuit: '30712345678' } });
   assert(!lsdPayrollFile.includes('031015'), 'El archivo de liquidación LSD NO debe contener registros 03 para el concepto auxiliar 1015');
   assert(lsdPayrollFile.includes('1000'), 'El archivo de liquidación LSD debe contener el concepto 1000');
+  // ----------------------------------------------------
+  // 7. RÉGIMEN DE PASANTÍAS EDUCATIVAS (LEY 26.427 - MODALIDAD 27 / 51)
+  // ----------------------------------------------------
+  console.log('\n--- 7. Régimen de Pasantías Educativas (Ley 26.427) ---');
+
+  const internEmployee = {
+    id: 'emp-intern-1',
+    fileNumber: 'PAS-001',
+    firstName: 'Martín',
+    lastName: 'Pasante',
+    cuil: '20421234567',
+    status: 'ACTIVE',
+    hireDate: new Date('2026-03-01'),
+    contractModalityCode: '27', // Pasantías Ley 26427
+    weeklyWorkingHours: 20.00,
+    monthlyWorkingHours: 80.00,
+    isPartTime: true,
+    basicSalary: 400000.00,
+    salaryScale: {
+      id: 'scale-intern-1',
+      name: 'Pasantía Universitaria Sistemas',
+      amount: 400000.00,
+      isInternOnly: true,
+    },
+  };
+
+  const internPayrollSettings = {
+    sipaRate: 10.77,
+    inssjypRate: 1.58,
+    osRate: 6.00,
+    fneRate: 0.94,
+    aaffRate: 4.70,
+    artRate: 3.50,
+    artFixedFee: 850.00,
+    scvoFee: 650.00,
+    detractionBase: 7003.68,
+    ansesMinCap: 82287.12,
+    ansesMaxCap: 2674292.72,
+  };
+
+  // Test 7.1: Liquidación Estándar de Pasante
+  const internResult = calculateEmployeePayroll({
+    employee: internEmployee,
+    period,
+    payrollSettings: internPayrollSettings,
+    allConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const item1000 = internResult.items.find((i) => i.conceptCode === '1000');
+  const item1001 = internResult.items.find((i) => i.conceptCode === '1001');
+
+  assert(!item1000, 'Pasante NO debe liquidar concepto 1000 (Sueldo Básico)');
+  assert(item1001 !== undefined, 'Pasante DEBE liquidar concepto 1001 (Asignación Estímulo Ley 26.427)');
+  assert(item1001 && item1001.amount === 400000, `Concepto 1001 debe liquidarse completo por 400.000 (obtenido ${item1001?.amount})`);
+  assert(item1001 && item1001.type === 'NON_REMUNERATIVE', 'Concepto 1001 debe ser de tipo NON_REMUNERATIVE');
+  assert(internResult.totals.totalRemunerative === 0, `Total remunerativo de pasante debe ser 0 (obtenido ${internResult.totals.totalRemunerative})`);
+  assert(internResult.totals.totalNonRemunerative === 400000, `Total no remunerativo de pasante debe ser 400.000 (obtenido ${internResult.totals.totalNonRemunerative})`);
+  assert(internResult.totals.totalDeductions === 0, `Aportes del pasante deben ser 0.00 (obtenido ${internResult.totals.totalDeductions})`);
+  assert(internResult.totals.netSalary === 400000, `Sueldo neto del pasante debe ser 400.000 (obtenido ${internResult.totals.netSalary})`);
+
+  // Contribuciones patronales del pasante (solo Obra Social 6% y ART)
+  assert(internResult.totals.sipaContrib === 0, `SIPA patronal pasante debe ser 0 (obtenido ${internResult.totals.sipaContrib})`);
+  assert(internResult.totals.inssjypContrib === 0, `INSSJyP patronal pasante debe ser 0 (obtenido ${internResult.totals.inssjypContrib})`);
+  assert(internResult.totals.fneContrib === 0, `FNE patronal pasante debe ser 0 (obtenido ${internResult.totals.fneContrib})`);
+  assert(internResult.totals.aaffContrib === 0, `AAFF patronal pasante debe ser 0 (obtenido ${internResult.totals.aaffContrib})`);
+  assert(internResult.totals.osContrib === 24000, `Obra Social patronal (6% de 400.000) debe ser 24.000 (obtenido ${internResult.totals.osContrib})`);
+  const expectedArt = Math.round((400000 * 0.035 + 850) * 100) / 100; // 14.850
+  assert(internResult.totals.artContrib === expectedArt, `ART patronal pasante debe ser ${expectedArt} (obtenido ${internResult.totals.artContrib})`);
+
+  // Bases imponibles F.931
+  assert(internResult.basis.baseImponible1 === 0, `BI 1 SIPA Aportes debe ser 0 (obtenido ${internResult.basis.baseImponible1})`);
+  assert(internResult.basis.baseImponible2 === 0, `BI 2 SIPA Contribuciones debe ser 0 (obtenido ${internResult.basis.baseImponible2})`);
+  assert(internResult.basis.baseImponible4 === 400000, `BI 4 Obra Social debe ser 400.000 (obtenido ${internResult.basis.baseImponible4})`);
+  assert(internResult.basis.baseImponible8 === 400000, `BI 8 FSR debe ser 400.000 (obtenido ${internResult.basis.baseImponible8})`);
+  assert(internResult.basis.baseImponible9 === 400000, `BI 9 LRT debe ser 400.000 (obtenido ${internResult.basis.baseImponible9})`);
+  assert(internResult.basis.contractModality === '027', `Modalidad contractual en F.931 debe ser '027' (obtenido ${internResult.basis.contractModality})`);
+
+  // Test 7.2: Novedad de Inasistencia cargada mediante concepto creado por el usuario
+  const conceptoDescuentoAusencia = {
+    id: 'c-desc-aus-1',
+    code: '4005',
+    name: 'Descuento Inasistencia Pasante',
+    type: 'DEDUCTION',
+    calculationType: 'FORMULA',
+    scope: 'INDIVIDUAL',
+    noveltyDataType: 'CANTIDAD',
+    formula: '([1001] / 30) * [CANTIDAD]',
+    calculationOrder: 200,
+    arcaConceptCode: '810000',
+  };
+
+  const conceptsWithCustomDeduction = [...allConcepts, conceptoDescuentoAusencia];
+  const internWithNoveltyResult = calculateEmployeePayroll({
+    employee: internEmployee,
+    period,
+    payrollSettings: internPayrollSettings,
+    allConcepts: conceptsWithCustomDeduction,
+    inputItems: [
+      { conceptCode: '4005', units: 5, notes: '5 inasistencias injustificadas' },
+    ],
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const itemDesc = internWithNoveltyResult.items.find((i) => i.conceptCode === '4005');
+  const item1001Novelty = internWithNoveltyResult.items.find((i) => i.conceptCode === '1001');
+
+  assert(item1001Novelty && item1001Novelty.amount === 400000, 'Concepto 1001 permanece completo por 400.000 aún con novedades');
+  assert(itemDesc !== undefined, 'Concepto de descuento 4005 debe liquidarse en el recibo');
+  const expectedDesc = Math.round(((400000 / 30) * 5) * 100) / 100; // 66.666,67
+  assertClose(itemDesc?.amount, expectedDesc, `Descuento por inasistencia de 5 días debe ser ${expectedDesc}`);
+  const expectedNetoConDesc = Math.round((400000 - expectedDesc) * 100) / 100;
+  assertClose(internWithNoveltyResult.totals.netSalary, expectedNetoConDesc, `Neto con descuento de inasistencia debe ser ${expectedNetoConDesc}`);
+
+  // Test 7.3: Exclusión de Período SAC para Pasantes
+  const sacPeriod = { year: 2026, month: 6, periodType: 'SAC_1', settlementNumber: 1 };
+  const sacResult = calculateEmployeePayroll({
+    employee: internEmployee,
+    period: sacPeriod,
+    payrollSettings: internPayrollSettings,
+    allConcepts,
+  });
+  assert(sacResult.items.length === 0, 'Pasante no debe generar items en liquidación de período SAC');
+  assert(sacResult.totals.netSalary === 0, 'Sueldo neto de pasante en período SAC debe ser 0');
+
+  // Test 7.4: Exportación LSD Registro 03 y Registro 04 de Pasante
+  const internSlipMock = {
+    id: 'slip-intern-1',
+    grossSalary: internResult.totals.grossSalary,
+    netSalary: internResult.totals.netSalary,
+    paymentDate: new Date('2026-07-05'),
+    workedDays: 30,
+    employee: internEmployee,
+    basis: internResult.basis,
+    items: internResult.items,
+  };
+
+  const lsdInternPayroll = generateLsdPayrollFile({
+    paySlips: [internSlipMock],
+    period,
+    company: { cuit: '30712345678' },
+  });
+
+  assert(lsdInternPayroll.includes('03204212345671001'), 'LSD debe generar Registro 03 con el concepto 1001 para el pasante');
+  assert(lsdInternPayroll.includes('0420421234567'), 'LSD debe generar Registro 04 para el pasante');
+  assert(lsdInternPayroll.includes('027'), 'LSD Registro 04 debe contener modalidad 027');
+
+  // Test 7.5: Inmunidad frente a conceptos asignados residuales de código 1001 o remunerativos
+  const internWithResidualAssigned = {
+    ...internEmployee,
+    assignedConcepts: [
+      {
+        id: 'ac-residual-1',
+        amount: 85000,
+        concept: {
+          id: 'old-1001',
+          code: '1001',
+          name: 'Adicional fijo antiguo',
+          type: 'REMUNERATIVE',
+          deletedAt: new Date(),
+          isActive: false,
+        },
+      },
+    ],
+  };
+
+  const residualResult = calculateEmployeePayroll({
+    employee: internWithResidualAssigned,
+    period,
+    payrollSettings: internPayrollSettings,
+    allConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const res1001 = residualResult.items.find((i) => i.conceptCode === '1001');
+  assert(res1001 && res1001.amount === 400000, `Pasante debe ignorar residuo asignado de 85.000 y liquidar 400.000 (obtenido ${res1001?.amount})`);
+  assert(residualResult.totals.totalRemunerative === 0, 'Pasante no debe computar concepto remunerativo residual');
 }
 
 console.log('\n====================================================');

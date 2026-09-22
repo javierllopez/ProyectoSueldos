@@ -269,14 +269,15 @@ model Employee {
 }
 
 model SalaryScale {
-  id          String    @id @default(uuid())
-  name        String    @map("name")
-  code        String?   @map("code") @db.VarChar(50)
-  description String?   @map("description") @db.Text
-  amount      Decimal   @default(0.00) @map("amount") @db.Decimal(12, 2)
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt @map("updated_at")
-  deletedAt   DateTime? @map("deleted_at")
+  id           String    @id @default(uuid())
+  name         String    @map("name")
+  code         String?   @map("code") @db.VarChar(50)
+  description  String?   @map("description") @db.Text
+  amount       Decimal   @default(0.00) @map("amount") @db.Decimal(12, 2)
+  isInternOnly Boolean   @default(false) @map("is_intern_only")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
 
   employees Employee[]
 

@@ -1249,3 +1249,373 @@ body {
   border-bottom: 1px solid #e2e8f0 !important;
 }
 
+/* ==========================================================================
+   SISTEMA DE LAYOUT FULL-VIEWPORT SIN SCROLL GENERAL DE PÁGINA
+   Encabezados Fijos en Cascada (Navbar, Módulos, Pantallas) y Scrolles Independientes
+   ========================================================================== */
+
+@media (min-width: 992px) {
+  /* 1. Bloqueo del Scroll Global de la Ventana */
+  html, body {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* 2. Nivel 1: Navbar General Fija Superior y Sub-Navbar de Módulos */
+  header.navbar,
+  .page > header.navbar,
+  .page > .navbar-expand-md {
+    flex-shrink: 0 !important;
+  }
+
+  /* 3. Contenedores Principales de Alto Completo y Cero Desborde */
+  .page-wrapper {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+  }
+
+  .page-body {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    padding: 0.5rem 0 !important;
+    margin: 0 !important;
+  }
+
+  .page-body > .container-xl {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    max-width: 100% !important;
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+    overflow: hidden !important;
+    margin: 0 auto !important;
+  }
+
+  /* 4. Vistas Activas (.app-view) */
+  .app-view:not(.d-none) {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  /* 5. Nivel 2: Encabezados Temáticos de Módulo Fijos */
+  .theme-personnel-header,
+  .theme-payroll-header {
+    flex-shrink: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* 6. Layout de Dos Columnas en Personal y Sueldos */
+  .module-layout-row,
+  #view-employees > .row,
+  #view-payroll > .row {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    --tblr-gutter-y: 0 !important;
+    --bs-gutter-y: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+
+  .sidebar-col-container,
+  .content-col-container,
+  #view-employees > .row > .col-lg-3,
+  #view-employees > .row > .col-lg-9,
+  #view-payroll > .row > .col-lg-3,
+  #view-payroll > .row > .col-lg-9 {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* 7. Menúes Laterales con Scroll Vertical Independiente */
+  .personnel-sidebar-card,
+  .payroll-sidebar-card {
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .personnel-sidebar-header,
+  .payroll-sidebar-header {
+    flex-shrink: 0 !important;
+  }
+
+  #personnel-sidebar-nav,
+  #payroll-sidebar-nav {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-bottom: 1.5rem !important;
+  }
+
+  /* 8. Contenedor de Pestañas / Pantallas a la Derecha */
+  #personnel-tab-content,
+  #payroll-tab-content {
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    flex: 1 1 0 !important;
+  }
+
+  #personnel-tab-content > .tab-pane,
+  #payroll-tab-content > .tab-pane {
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  #personnel-tab-content > .tab-pane.active,
+  #payroll-tab-content > .tab-pane.active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    min-height: 0 !important;
+    flex: 1 1 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* 9. Nivel 3: Encabezado de Cada Pantalla Fijo (Buscador, Filtros, Botones de Acción) */
+  #personnel-tab-content .card-personnel-accent,
+  #payroll-tab-content .card-payroll-accent,
+  .screen-fixed-header,
+  .app-view > .page-header {
+    flex-shrink: 0 !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* 10. Área Inferior de Contenido: Tablas y Listas con Scroll Independiente */
+  #personnel-tab-content > .tab-pane > .card:not(.card-personnel-accent):not(.screen-fixed-header),
+  #payroll-tab-content > .tab-pane > .card:not(.card-payroll-accent):not(.screen-fixed-header),
+  #view-companies > .card,
+  #view-users > .card {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  #personnel-tab-content .card > .card-header,
+  #payroll-tab-content .card > .card-header {
+    flex-shrink: 0 !important;
+  }
+
+  #personnel-tab-content .table-responsive,
+  #payroll-tab-content .table-responsive,
+  #view-companies .table-responsive,
+  #view-users .table-responsive {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+  }
+
+  /* Pie de Tabla con Paginación FIJO e ÍNTEGRO (Nunca Truncado) */
+  #personnel-tab-content .card-footer,
+  #payroll-tab-content .card-footer,
+  #view-companies .card-footer,
+  #view-users .card-footer {
+    flex-shrink: 0 !important;
+    background-color: #ffffff !important;
+    border-top: 1px solid var(--bs-border-color) !important;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    margin: 0 !important;
+    position: relative !important;
+    z-index: 5 !important;
+  }
+
+  /* 11. Cabeceras de Tabla Pegajosas (Sticky Headers) */
+  .card-table thead th,
+  .table-responsive thead th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 2 !important;
+    background-color: #f8fafc !important;
+    box-shadow: inset 0 -1px 0 var(--bs-border-color) !important;
+  }
+
+  /* 12. Contenedor de Scroll Inferior para Pantallas con Formulario o Múltiples Tarjetas */
+  .screen-scroll-body {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding-right: 4px !important;
+  }
+
+  /* Pantalla de Liquidación (pane-payroll-settlement) */
+  #pane-payroll-settlement > .card:last-child {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  #pane-payroll-settlement > .card:last-child > .card-header {
+    flex-shrink: 0 !important;
+  }
+
+  #pane-payroll-settlement > .card:last-child > .card-body.tab-content {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  /* Pantalla de Alícuotas Patronales (pane-payroll-settings) */
+  #pane-payroll-settings form {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+
+  #pane-payroll-settings .card {
+    flex: 1 1 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  #pane-payroll-settings .card-header {
+    flex-shrink: 0 !important;
+  }
+
+  #pane-payroll-settings .card-body {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  #pane-payroll-settings .card-footer {
+    flex-shrink: 0 !important;
+    background-color: #ffffff !important;
+  }
+
+  /* Pantalla de Perfil de Empresa (view-company-profile) */
+  #view-company-profile > div:first-child,
+  #view-company-profile #profile-alert,
+  #view-company-profile #profile-readonly-notice {
+    flex-shrink: 0 !important;
+  }
+
+  #view-company-profile #form-company-profile {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  #view-company-profile .company-profile-card {
+    flex: 1 1 0 !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    margin-bottom: 0 !important;
+  }
+
+  #view-company-profile .company-profile-card .card-header {
+    flex-shrink: 0 !important;
+  }
+
+  #view-company-profile .company-profile-card .card-body {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+  }
+
+  #view-company-profile .company-profile-card .card-footer {
+    flex-shrink: 0 !important;
+    background-color: #ffffff !important;
+  }
+}
+
+/* Scrollbars modernas, discretas y delgadas */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 155, 175, 0.35);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 115, 135, 0.6);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 155, 175, 0.35) transparent;
+}
+
+

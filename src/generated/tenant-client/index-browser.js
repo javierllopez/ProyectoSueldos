@@ -301,6 +301,7 @@ exports.Prisma.SalaryScaleScalarFieldEnum = {
   code: 'code',
   description: 'description',
   amount: 'amount',
+  isInternOnly: 'isInternOnly',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

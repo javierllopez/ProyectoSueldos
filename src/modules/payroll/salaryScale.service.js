@@ -3,7 +3,7 @@ import { ensureTenantPersonnelSchema } from '../../services/tenantProvisioner.se
 /**
  * Lista las nóminas / escalas salariales activas con conteo de colaboradores asignados.
  */
-export async function listSalaryScales(tenantPrisma, { search } = {}) {
+export async function listSalaryScales(tenantPrisma, { search, isInternOnly } = {}) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
   const where = { deletedAt: null };
@@ -14,6 +14,9 @@ export async function listSalaryScales(tenantPrisma, { search } = {}) {
       { code: { contains: term } },
       { description: { contains: term } },
     ];
+  }
+  if (isInternOnly !== undefined && isInternOnly !== null && isInternOnly !== '') {
+    where.isInternOnly = isInternOnly === 'true' || isInternOnly === true;
   }
 
   const scales = await tenantPrisma.salaryScale.findMany({
@@ -36,6 +39,7 @@ export async function listSalaryScales(tenantPrisma, { search } = {}) {
     code: scale.code,
     description: scale.description,
     amount: Number(scale.amount),
+    isInternOnly: Boolean(scale.isInternOnly),
     assignedEmployeesCount: scale._count?.employees || 0,
     employeesCount: scale._count?.employees || 0,
     _count: scale._count,
@@ -76,6 +80,7 @@ export async function getSalaryScaleById(tenantPrisma, id) {
   return {
     ...scale,
     amount: Number(scale.amount),
+    isInternOnly: Boolean(scale.isInternOnly),
     employees: scale.employees.map((e) => ({
       ...e,
       basicSalary: Number(e.basicSalary),
@@ -95,12 +100,14 @@ export async function createSalaryScale(tenantPrisma, data) {
       code: data.code?.trim() || null,
       description: data.description?.trim() || null,
       amount: Number(data.amount),
+      isInternOnly: Boolean(data.isInternOnly),
     },
   });
 
   return {
     ...scale,
     amount: Number(scale.amount),
+    isInternOnly: Boolean(scale.isInternOnly),
   };
 }
 
@@ -125,6 +132,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
   if (data.code !== undefined) updateData.code = data.code ? data.code.trim() : null;
   if (data.description !== undefined) updateData.description = data.description ? data.description.trim() : null;
   if (data.amount !== undefined) updateData.amount = Number(data.amount);
+  if (data.isInternOnly !== undefined) updateData.isInternOnly = Boolean(data.isInternOnly);
 
   const updated = await tenantPrisma.salaryScale.update({
     where: { id },
@@ -144,6 +152,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
   return {
     ...updated,
     amount: Number(updated.amount),
+    isInternOnly: Boolean(updated.isInternOnly),
     affectedEmployeesCount,
   };
 }

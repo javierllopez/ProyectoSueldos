@@ -13,7 +13,11 @@
     "prisma:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "prisma:studio": "prisma studio --schema=prisma/schema.prisma",
     "seed:clae": "node src/scripts/seedClae.js",
-    "test": "node test-e2e.js"
+    "test": "node test-e2e.js",
+    "notebook:status": "node src/scripts/notebooklm/status.js",
+    "notebook:auth": "node src/scripts/notebooklm/auth.js",
+    "notebook:add": "node src/scripts/notebooklm/add.js",
+    "notebook:query": "node src/scripts/notebooklm/query.js"
   },
   "keywords": [
     "saas",

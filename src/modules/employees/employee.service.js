@@ -104,6 +104,9 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
         orderBy: { createdAt: 'asc' },
       },
       assignedConcepts: {
+        where: {
+          concept: { deletedAt: null },
+        },
         include: { concept: true },
         orderBy: { createdAt: 'asc' },
       },
@@ -235,6 +238,30 @@ export async function createEmployee(tenantPrisma, employeeData) {
         }
       : undefined;
 
+  let assignedBasicSalary = employeeData.basicSalary !== undefined && employeeData.basicSalary !== null ? Number(employeeData.basicSalary) : 0.00;
+  const modCode = employeeData.contractModalityCode ? employeeData.contractModalityCode.trim() : null;
+  const isInternModality = modCode === '27' || modCode === '51';
+  const scaleId = employeeData.salaryScaleId ? employeeData.salaryScaleId.trim() : null;
+
+  if (scaleId) {
+    const scale = await tenantPrisma.salaryScale.findFirst({
+      where: { id: scaleId, deletedAt: null },
+    });
+    if (scale) {
+      if (isInternModality && !scale.isInternOnly) {
+        const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
+        err.status = 400;
+        throw err;
+      }
+      if (!isInternModality && scale.isInternOnly) {
+        const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+        err.status = 400;
+        throw err;
+      }
+      assignedBasicSalary = Number(scale.amount);
+    }
+  }
+
   const employee = await tenantPrisma.employee.create({
     data: {
       id: crypto.randomUUID(),
@@ -263,14 +290,14 @@ export async function createEmployee(tenantPrisma, employeeData) {
       healthInsuranceId: employeeData.healthInsuranceId,
       unionId: employeeData.unionId ? employeeData.unionId.trim() : null,
       mutualId: employeeData.mutualId ? employeeData.mutualId.trim() : null,
-      contractModalityCode: employeeData.contractModalityCode ? employeeData.contractModalityCode.trim() : null,
-      salaryScaleId: employeeData.salaryScaleId ? employeeData.salaryScaleId.trim() : null,
+      contractModalityCode: modCode,
+      salaryScaleId: scaleId,
       payrollGroup: employeeData.payrollGroup ? employeeData.payrollGroup.trim() : 'MENSUAL',
       isPartTime: employeeData.isPartTime ?? false,
-      weeklyWorkingHours: hoursToDecimal(employeeData.weeklyWorkingHours, 48.00),
-      monthlyWorkingHours: hoursToDecimal(employeeData.monthlyWorkingHours, 200.00),
+      weeklyWorkingHours: hoursToDecimal(employeeData.weeklyWorkingHours, isInternModality ? 20.00 : 48.00),
+      monthlyWorkingHours: hoursToDecimal(employeeData.monthlyWorkingHours, isInternModality ? 80.00 : 200.00),
       partTimePercentage: employeeData.partTimePercentage !== undefined && employeeData.partTimePercentage !== null ? Number(employeeData.partTimePercentage) : 100.00,
-      basicSalary: employeeData.basicSalary !== undefined && employeeData.basicSalary !== null ? Number(employeeData.basicSalary) : 0.00,
+      basicSalary: assignedBasicSalary,
       hourlyRate: employeeData.hourlyRate !== undefined && employeeData.hourlyRate !== null ? Number(employeeData.hourlyRate) : 0.00,
       cbu: employeeData.cbu ? employeeData.cbu.trim() : null,
       bankAccountType: employeeData.bankAccountType ? employeeData.bankAccountType.trim() : null,
@@ -438,6 +465,9 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
     }
   }
 
+  const targetModality = updatePayload.contractModalityCode !== undefined ? updatePayload.contractModalityCode : current.contractModalityCode;
+  const isInternModality = targetModality === '27' || targetModality === '51';
+
   if (data.salaryScaleId !== undefined) {
     updatePayload.salaryScaleId = data.salaryScaleId ? data.salaryScaleId.trim() : null;
     if (updatePayload.salaryScaleId) {
@@ -445,19 +475,61 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
         where: { id: updatePayload.salaryScaleId, deletedAt: null },
       });
       if (scale) {
+        if (isInternModality && !scale.isInternOnly) {
+          const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
+          err.status = 400;
+          throw err;
+        }
+        if (!isInternModality && scale.isInternOnly) {
+          const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+          err.status = 400;
+          throw err;
+        }
         updatePayload.basicSalary = Number(scale.amount);
       }
     }
+  } else if (updatePayload.contractModalityCode !== undefined && current.salaryScaleId) {
+    const scale = await tenantPrisma.salaryScale.findFirst({
+      where: { id: current.salaryScaleId, deletedAt: null },
+    });
+    if (scale) {
+      if (isInternModality && !scale.isInternOnly) {
+        const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), debe asignarse una nómina exclusiva para pasantes.');
+        err.status = 400;
+        throw err;
+      }
+      if (!isInternModality && scale.isInternOnly) {
+        const err = new Error('La nómina actualmente asignada es exclusiva para pasantes y no corresponde a la nueva modalidad.');
+        err.status = 400;
+        throw err;
+      }
+    }
   }
+
   if (data.payrollGroup !== undefined) updatePayload.payrollGroup = data.payrollGroup ? data.payrollGroup.trim() : 'MENSUAL';
   if (data.isPartTime !== undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
-  if (data.weeklyWorkingHours !== undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, 48.00);
-  if (data.monthlyWorkingHours !== undefined) updatePayload.monthlyWorkingHours = hoursToDecimal(data.monthlyWorkingHours, 200.00);
+  if (data.weeklyWorkingHours !== undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
+  if (data.monthlyWorkingHours !== undefined) updatePayload.monthlyWorkingHours = hoursToDecimal(data.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
   if (data.partTimePercentage !== undefined) updatePayload.partTimePercentage = Number(data.partTimePercentage);
   if (data.basicSalary !== undefined) updatePayload.basicSalary = Number(data.basicSalary);
   if (data.hourlyRate !== undefined) updatePayload.hourlyRate = Number(data.hourlyRate);
   if (data.cbu !== undefined) updatePayload.cbu = data.cbu ? data.cbu.trim() : null;
   if (data.bankAccountType !== undefined) updatePayload.bankAccountType = data.bankAccountType ? data.bankAccountType.trim() : null;
+
+  if (isInternModality) {
+    // Para pasantes (Ley 26.427), desactivar conceptos asignados residuales de código 1001, remunerativos o eliminados
+    await tenantPrisma.employeeConcept.updateMany({
+      where: {
+        employeeId,
+        OR: [
+          { concept: { code: '1001' } },
+          { concept: { type: 'REMUNERATIVE' } },
+          { concept: { deletedAt: { not: null } } },
+        ],
+      },
+      data: { isActive: false },
+    });
+  }
 
   const employee = await tenantPrisma.employee.update({
     where: { id: employeeId },
@@ -477,6 +549,9 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       contractModality: true,
       salaryScale: true,
       assignedConcepts: {
+        where: {
+          concept: { deletedAt: null },
+        },
         include: { concept: true },
         orderBy: { createdAt: 'asc' },
       },

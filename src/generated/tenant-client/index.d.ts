@@ -16951,6 +16951,7 @@ export namespace Prisma {
     code: string | null
     description: string | null
     amount: Decimal | null
+    isInternOnly: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -16962,6 +16963,7 @@ export namespace Prisma {
     code: string | null
     description: string | null
     amount: Decimal | null
+    isInternOnly: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -16973,6 +16975,7 @@ export namespace Prisma {
     code: number
     description: number
     amount: number
+    isInternOnly: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -16994,6 +16997,7 @@ export namespace Prisma {
     code?: true
     description?: true
     amount?: true
+    isInternOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -17005,6 +17009,7 @@ export namespace Prisma {
     code?: true
     description?: true
     amount?: true
+    isInternOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -17016,6 +17021,7 @@ export namespace Prisma {
     code?: true
     description?: true
     amount?: true
+    isInternOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -17114,6 +17120,7 @@ export namespace Prisma {
     code: string | null
     description: string | null
     amount: Decimal
+    isInternOnly: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -17144,6 +17151,7 @@ export namespace Prisma {
     code?: boolean
     description?: boolean
     amount?: boolean
+    isInternOnly?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -17159,12 +17167,13 @@ export namespace Prisma {
     code?: boolean
     description?: boolean
     amount?: boolean
+    isInternOnly?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "amount" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
+  export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "amount" | "isInternOnly" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
   export type SalaryScaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
     _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
@@ -17181,6 +17190,7 @@ export namespace Prisma {
       code: string | null
       description: string | null
       amount: Prisma.Decimal
+      isInternOnly: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -17559,6 +17569,7 @@ export namespace Prisma {
     readonly code: FieldRef<"SalaryScale", 'String'>
     readonly description: FieldRef<"SalaryScale", 'String'>
     readonly amount: FieldRef<"SalaryScale", 'Decimal'>
+    readonly isInternOnly: FieldRef<"SalaryScale", 'Boolean'>
     readonly createdAt: FieldRef<"SalaryScale", 'DateTime'>
     readonly updatedAt: FieldRef<"SalaryScale", 'DateTime'>
     readonly deletedAt: FieldRef<"SalaryScale", 'DateTime'>
@@ -31627,6 +31638,7 @@ export namespace Prisma {
     code: 'code',
     description: 'description',
     amount: 'amount',
+    isInternOnly: 'isInternOnly',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -33430,6 +33442,7 @@ export namespace Prisma {
     code?: StringNullableFilter<"SalaryScale"> | string | null
     description?: StringNullableFilter<"SalaryScale"> | string | null
     amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
@@ -33442,6 +33455,7 @@ export namespace Prisma {
     code?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
+    isInternOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -33458,6 +33472,7 @@ export namespace Prisma {
     code?: StringNullableFilter<"SalaryScale"> | string | null
     description?: StringNullableFilter<"SalaryScale"> | string | null
     amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
@@ -33470,6 +33485,7 @@ export namespace Prisma {
     code?: SortOrderInput | SortOrder
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
+    isInternOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -33489,6 +33505,7 @@ export namespace Prisma {
     code?: StringNullableWithAggregatesFilter<"SalaryScale"> | string | null
     description?: StringNullableWithAggregatesFilter<"SalaryScale"> | string | null
     amount?: DecimalWithAggregatesFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolWithAggregatesFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"SalaryScale"> | Date | string | null
@@ -36198,6 +36215,7 @@ export namespace Prisma {
     code?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
+    isInternOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36210,6 +36228,7 @@ export namespace Prisma {
     code?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
+    isInternOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36222,6 +36241,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36234,6 +36254,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36246,6 +36267,7 @@ export namespace Prisma {
     code?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
+    isInternOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36257,6 +36279,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36268,6 +36291,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38876,6 +38900,7 @@ export namespace Prisma {
     code?: SortOrder
     description?: SortOrder
     amount?: SortOrder
+    isInternOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -38891,6 +38916,7 @@ export namespace Prisma {
     code?: SortOrder
     description?: SortOrder
     amount?: SortOrder
+    isInternOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -38902,6 +38928,7 @@ export namespace Prisma {
     code?: SortOrder
     description?: SortOrder
     amount?: SortOrder
+    isInternOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42974,6 +43001,7 @@ export namespace Prisma {
     code?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
+    isInternOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42985,6 +43013,7 @@ export namespace Prisma {
     code?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
+    isInternOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -43396,6 +43425,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -43407,6 +43437,7 @@ export namespace Prisma {
     code?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

@@ -228,6 +228,19 @@ export function findBasicSalaryConcept(allConcepts) {
 }
 
 /**
+ * Busca de forma dinámica el concepto de Asignación Estímulo para pasantes (Ley 26.427).
+ */
+export function findInternStimulusConcept(allConcepts) {
+  if (!Array.isArray(allConcepts)) return null;
+  return (
+    allConcepts.find((c) => c.code === '1001') ||
+    allConcepts.find((c) => c.type === 'NON_REMUNERATIVE' && /est[ií]mulo|pasant/i.test(c.name)) ||
+    allConcepts.find((c) => c.arcaConceptCode === '550000') ||
+    null
+  );
+}
+
+/**
  * Motor central de cálculo salarial para un legajo en una liquidación.
  * Retorna todos los conceptos liquidados, subtotales, totales, deducciones,
  * contribuciones patronales, bases imponibles ARCA F.931 y porcentajes del gráfico de torta.
@@ -242,6 +255,87 @@ export function calculateEmployeePayroll({
   allFixedValues = [], // Catálogo de valores globales fijos (constantes)
   historicalData = {}, // Historial de recibos e items previos del empleado
 }) {
+  const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '51';
+
+  // Si es pasante y el período es de SAC (aguinaldo), no se liquida aguinaldo (Ley 26.427)
+  if (isIntern && (period.periodType === 'SAC_1' || period.periodType === 'SAC_2')) {
+    return {
+      items: [],
+      totals: {
+        totalRemunerative: 0,
+        totalNonRemunerative: 0,
+        grossSalary: 0,
+        totalDeductions: 0,
+        netSalary: 0,
+        netSalaryWords: numberToSpanishWords(0),
+        sipaContrib: 0,
+        inssjypContrib: 0,
+        osContrib: 0,
+        fneContrib: 0,
+        aaffContrib: 0,
+        artContrib: 0,
+        scvoContrib: 0,
+        unionContrib: 0,
+        totalEmployerContrib: 0,
+        totalLaborCost: 0,
+      },
+      distribution: {
+        pctNetSalary: 0,
+        pctEmployeeDeductions: 0,
+        pctSocialSecurityContrib: 0,
+        pctHealthContrib: 0,
+        pctArtAndInsurance: 0,
+        pctUnionAndChambers: 0,
+      },
+      basis: {
+        baseImponible1: 0,
+        baseImponible2: 0,
+        baseImponible3: 0,
+        baseImponible4: 0,
+        baseImponible5: 0,
+        baseImponible6: 0,
+        baseImponible7: 0,
+        baseImponible8: 0,
+        baseImponible9: 0,
+        baseImponible10: 0,
+        detractionAmount: 0,
+        situationCode: employee.status === 'ACTIVE' ? '01' : '13',
+        conditionCode: '01',
+        activityCode: '000',
+        contractModality: (employee.contractModalityCode || '027').padStart(3, '0'),
+        hasSpouse: false,
+        childrenCount: 0,
+        hasScvo: false,
+        hasCct: false,
+      },
+      signatureHash: '',
+    };
+  }
+
+  // Asegurar concepto 1001 en el catálogo si es pasante y no vino precargado
+  if (isIntern && !allConcepts.some((c) => c.code === '1001')) {
+    allConcepts = [
+      ...allConcepts,
+      {
+        id: 'virtual-1001',
+        code: '1001',
+        name: 'Asignación Estímulo Ley 26.427',
+        type: 'NON_REMUNERATIVE',
+        calculationType: 'FIXED',
+        scope: 'GENERAL',
+        defaultValue: 0,
+        noveltyDataType: 'CANTIDAD',
+        calculationOrder: 100,
+        isPersistent: true,
+        isActive: true,
+        arcaConceptCode: '550000',
+        appliesOsContrib: true,
+        appliesFsrContrib: true,
+        appliesLrtContrib: true,
+      },
+    ];
+  }
+
   const periodDate = period.paymentDate ? new Date(period.paymentDate) : new Date(period.year, period.month - 1, 28);
   const seniority = calculateSeniority(employee.hireDate, periodDate);
 
@@ -330,9 +424,12 @@ export function calculateEmployeePayroll({
   if (Array.isArray(employee.assignedConcepts)) {
     for (const ac of employee.assignedConcepts) {
       if (ac.isActive !== false) {
+        if (ac.concept && (ac.concept.deletedAt !== null || ac.concept.isActive === false)) continue;
         if (ac.validFrom && new Date(ac.validFrom) > periodDate) continue;
         if (ac.validTo && new Date(ac.validTo) < periodDate) continue;
         const code = ac.concept?.code || (allConcepts.find((c) => c.id === ac.conceptId)?.code);
+        // Si es pasante, nunca asociar conceptos bajo el código 1001 (reservado para la asignación estímulo base) ni remunerativos de convenio
+        if (isIntern && (code === '1001' || ac.concept?.type === 'REMUNERATIVE')) continue;
         if (code) {
           assignedConceptsMap.set(String(code).trim(), ac);
         }
@@ -342,7 +439,8 @@ export function calculateEmployeePayroll({
 
   // Días y horas liquidadas (por defecto 30 días base)
   let workedDays = 30;
-  let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : (employee.isPartTime ? 80 : 160);
+  const defaultHours = isIntern ? 80 : (employee.isPartTime ? 80 : 160);
+  let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours;
 
   // Si se ingresó explícitamente en conceptos o novedades
   const basicInput = inputsMap.get(basicCode) || inputsMap.get('1000') || inputsMap.get('100');
@@ -369,10 +467,13 @@ export function calculateEmployeePayroll({
     BASICO: baseSalaryNominal,
     [basicCode]: baseSalaryNominal,
     '1000': baseSalaryNominal,
-    ES_JORNADA_PARCIAL: employee.isPartTime ? 1 : 0,
-    PORCENTAJE_JORNADA: Number(employee.partTimePercentage || 100),
-    HORAS_SEMANALES: Number(employee.weeklyWorkingHours || 48),
-    HORAS_CONTRATO: Number(employee.monthlyWorkingHours || 200),
+    '1001': baseSalaryNominal,
+    ASIGNACION_ESTIMULO: baseSalaryNominal,
+    ESTIMULO: baseSalaryNominal,
+    ES_JORNADA_PARCIAL: (isIntern || employee.isPartTime) ? 1 : 0,
+    PORCENTAJE_JORNADA: isIntern ? 50.00 : Number(employee.partTimePercentage || 100),
+    HORAS_SEMANALES: isIntern ? 20.00 : Number(employee.weeklyWorkingHours || 48),
+    HORAS_CONTRATO: isIntern ? 80.00 : Number(employee.monthlyWorkingHours || 200),
     GRUPO_NOMINA: employee.payrollGroup || 'MENSUAL',
     TOTAL_REMUNERATIVO: 0,
     TOTAL_NO_REMUNERATIVO: 0,
@@ -400,13 +501,18 @@ export function calculateEmployeePayroll({
   function resolveConceptValue(concept, inputOverride) {
     const calcType = concept.calculationType;
 
+    // Para pasantes (Ley 26.427): la Asignación Estímulo es SIEMPRE el importe mensual total pactado en la nómina.
+    // (Ausencias, licencias o eventualidades se liquidan exclusivamente mediante conceptos de novedad creados por el usuario).
+    if (isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000')) {
+      return baseSalaryNominal > 0 ? baseSalaryNominal : Number(concept.defaultValue || 0);
+    }
+
     // Si el usuario ingresó un importe fijo manual directo en la novedad o viene asignado
     if (inputOverride && inputOverride.amount !== undefined && inputOverride.amount !== null && String(inputOverride.amount).trim() !== '') {
       return Number(inputOverride.amount);
     }
 
-    // Concepto básico: siempre el valor mensual completo pactado sin prorratear por días trabajados.
-    // (Ausencias injustificadas o altas/bajas se descuentan mediante conceptos específicos).
+    // Concepto básico estándar: siempre el valor mensual completo pactado.
     if (concept.code === basicCode || concept.code === '1000' || concept.code === '100') {
       const baseMonthly = baseSalaryNominal > 0 ? baseSalaryNominal : Number(concept.defaultValue || 0);
       return baseMonthly;
@@ -530,8 +636,31 @@ export function calculateEmployeePayroll({
     }
 
     const isBasic = concept.code === basicCode;
+    const isInternStimulus = isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000');
+
+    // Si es pasante, suprimir el sueldo básico tradicional 1000 y conceptos remunerativos/auxiliares generales de convenio
+    if (isIntern && (isBasic || concept.code === '1000' || concept.code === '100' || concept.code === '001')) {
+      continue;
+    }
+    if (isIntern && (concept.type === 'REMUNERATIVE' || concept.type === 'AUXILIARY') && !manualOverride && !assignedRecord) {
+      continue;
+    }
+
+    // Si NO es pasante, no se liquida el concepto 1001 (salvo novedad explícita cargada al legajo)
+    if (!isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000') && !manualOverride && !assignedRecord) {
+      continue;
+    }
+
+    // Para pasantes: las deducciones automáticas de seguridad social general y sindicato no aplican (Ley 26.427)
+    if (isIntern && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
+      const isStatutoryDeduction =
+        concept.arcaConceptCode?.startsWith('810') ||
+        /jubilaci|sipa|inssjyp|pami|obra\s*social|sindic/i.test(concept.name);
+      if (isStatutoryDeduction) continue;
+    }
+
     const isUnionConcept = concept.arcaConceptCode === '810004' || /sindic/i.test(concept.name) || concept.code === '8004' || concept.code === '6005' || concept.code === '304';
-    if (concept.type === 'DEDUCTION' && isUnionConcept && !employee.unionId && !inputOverride && !assignedRecord) {
+    if (concept.type === 'DEDUCTION' && isUnionConcept && (!employee.unionId || isIntern) && !inputOverride && !assignedRecord) {
       continue;
     }
 
@@ -540,6 +669,7 @@ export function calculateEmployeePayroll({
       Boolean(assignedRecord) ||
       (isConceptPersistent(concept) &&
         (isBasic ||
+          isInternStimulus ||
           concept.type === 'AUXILIARY' ||
           concept.calculationType === 'MATRIX' ||
           concept.calculationType === 'FORMULA' ||
@@ -660,10 +790,18 @@ export function calculateEmployeePayroll({
       const rawAmount = resolveConceptValue(concept, inputOverride);
       const finalAmount = Math.round(rawAmount * 100) / 100;
 
-      if (finalAmount > 0 || inputOverride) {
+      if (finalAmount !== 0 || inputOverride) {
         context[concept.code] = finalAmount;
+        if (isInternStimulus) {
+          context.ASIGNACION_ESTIMULO = finalAmount;
+          context.ESTIMULO = finalAmount;
+          context['1001'] = finalAmount;
+          context.BASICO = finalAmount;
+          context.SUELDO_BASICO = finalAmount;
+        }
+
         context.TOTAL_NO_REMUNERATIVO += finalAmount;
-        if (concept.appliesOsAporte) {
+        if (concept.appliesOsAporte || isInternStimulus || concept.appliesOsContrib) {
           context.BASE_OBRA_SOCIAL += finalAmount;
         }
         context.TOTAL_BRUTO = Math.round((context.TOTAL_REMUNERATIVO + context.TOTAL_NO_REMUNERATIVO) * 100) / 100;
@@ -673,8 +811,8 @@ export function calculateEmployeePayroll({
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'NON_REMUNERATIVE',
-          units,
-          unitLabel,
+          units: isInternStimulus ? 30 : units,
+          unitLabel: isInternStimulus ? 'Días' : unitLabel,
           rate: null,
           baseAmount: null,
           amount: finalAmount,
@@ -752,10 +890,17 @@ export function calculateEmployeePayroll({
   let biLrt = 0;
 
   if (hasRemuneration) {
-    biSipaContrib = Math.max(totalRemunerative, minCap);
-    biSipaWithDetraction = Math.max(biSipaContrib - detraction, minCap);
-    biOsContrib = Math.min(Math.max(context.BASE_OBRA_SOCIAL, minCap), maxCap);
-    biLrt = grossSalary;
+    if (isIntern) {
+      biSipaContrib = 0.00;
+      biSipaWithDetraction = 0.00;
+      biOsContrib = Math.round(context.BASE_OBRA_SOCIAL * 100) / 100;
+      biLrt = grossSalary;
+    } else {
+      biSipaContrib = Math.max(totalRemunerative, minCap);
+      biSipaWithDetraction = Math.max(biSipaContrib - detraction, minCap);
+      biOsContrib = Math.min(Math.max(context.BASE_OBRA_SOCIAL, minCap), maxCap);
+      biLrt = grossSalary;
+    }
   }
 
   const sipaRate = Number(payrollSettings.sipaRate || 10.77) / 100;
@@ -767,14 +912,14 @@ export function calculateEmployeePayroll({
   const artFixed = Number(payrollSettings.artFixedFee || 850.00);
   const scvoFee = Number(payrollSettings.scvoFee || 650.00);
 
-  const sipaContrib = hasRemuneration ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
-  const inssjypContrib = hasRemuneration ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
+  const sipaContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
+  const inssjypContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
   const osContrib = hasRemuneration ? Math.round(biOsContrib * osRate * 100) / 100 : 0.00;
-  const fneContrib = hasRemuneration ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
-  const aaffContrib = hasRemuneration ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
+  const fneContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
+  const aaffContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
   const artContrib = hasRemuneration ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
   const scvoContrib = hasRemuneration ? scvoFee : 0.00;
-  const unionContrib = (hasRemuneration && employee.unionId) ? Math.round(totalRemunerative * 0.005 * 100) / 100 : 0.00;
+  const unionContrib = (!isIntern && hasRemuneration && employee.unionId) ? Math.round(totalRemunerative * 0.005 * 100) / 100 : 0.00;
 
   const totalEmployerContrib = Math.round(
     (sipaContrib + inssjypContrib + osContrib + fneContrib + aaffContrib + artContrib + scvoContrib + unionContrib) * 100
@@ -796,7 +941,7 @@ export function calculateEmployeePayroll({
   const pctUnionAndChambers = Math.round((100.00 - currentSum) * 100) / 100;
 
   // --- PASO 7: Bases Imponibles F.931 (LSD Registro 04) ---
-  const biSipaAporte = hasRemuneration ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
+  const biSipaAporte = (!isIntern && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
   const biInssjypAporte = biSipaAporte;
 
   const relatives = employee.relatives || [];
@@ -805,24 +950,24 @@ export function calculateEmployeePayroll({
 
   const basisData = {
     baseImponible1: biSipaAporte,
-    baseImponible2: biSipaContrib,
-    baseImponible3: biSipaContrib,
+    baseImponible2: isIntern ? 0.00 : biSipaContrib,
+    baseImponible3: isIntern ? 0.00 : biSipaContrib,
     baseImponible4: biOsContrib,
     baseImponible5: biInssjypAporte,
     baseImponible6: 0.00,
     baseImponible7: 0.00,
     baseImponible8: biOsContrib,
     baseImponible9: biLrt,
-    baseImponible10: biSipaWithDetraction,
-    detractionAmount: detraction,
+    baseImponible10: isIntern ? 0.00 : biSipaWithDetraction,
+    detractionAmount: isIntern ? 0.00 : detraction,
     situationCode: employee.status === 'ACTIVE' ? '01' : '13',
     conditionCode: '01',
     activityCode: '000',
-    contractModality: employee.contractModalityCode || '001',
+    contractModality: (employee.contractModalityCode || (isIntern ? '027' : '001')).padStart(3, '0'),
     hasSpouse,
     childrenCount,
     hasScvo: true,
-    hasCct: Boolean(employee.jobPosition?.cctCode),
+    hasCct: isIntern ? false : Boolean(employee.jobPosition?.cctCode),
   };
 
   // --- PASO 8: Hash SHA-256 de Trazabilidad y Firma Electrónica ---
@@ -848,6 +993,14 @@ export function calculateEmployeePayroll({
       totalDeductions,
       netSalary,
       netSalaryWords,
+      sipaContrib,
+      inssjypContrib,
+      osContrib,
+      fneContrib,
+      aaffContrib,
+      artContrib,
+      scvoContrib,
+      unionContrib,
       totalEmployerContrib,
       totalLaborCost,
     },
