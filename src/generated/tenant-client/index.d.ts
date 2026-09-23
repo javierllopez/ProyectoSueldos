@@ -59,6 +59,16 @@ export type ArcaContractModality = $Result.DefaultSelection<Prisma.$ArcaContract
  */
 export type JobPosition = $Result.DefaultSelection<Prisma.$JobPositionPayload>
 /**
+ * Model WorkShift
+ * 
+ */
+export type WorkShift = $Result.DefaultSelection<Prisma.$WorkShiftPayload>
+/**
+ * Model WorkShiftDetail
+ * 
+ */
+export type WorkShiftDetail = $Result.DefaultSelection<Prisma.$WorkShiftDetailPayload>
+/**
  * Model HealthInsurance
  * 
  */
@@ -351,6 +361,26 @@ export class PrismaClient<
     * ```
     */
   get jobPosition(): Prisma.JobPositionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.workShift`: Exposes CRUD operations for the **WorkShift** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WorkShifts
+    * const workShifts = await prisma.workShift.findMany()
+    * ```
+    */
+  get workShift(): Prisma.WorkShiftDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.workShiftDetail`: Exposes CRUD operations for the **WorkShiftDetail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more WorkShiftDetails
+    * const workShiftDetails = await prisma.workShiftDetail.findMany()
+    * ```
+    */
+  get workShiftDetail(): Prisma.WorkShiftDetailDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.healthInsurance`: Exposes CRUD operations for the **HealthInsurance** model.
@@ -971,6 +1001,8 @@ export namespace Prisma {
     ArcaCctCategoryPosition: 'ArcaCctCategoryPosition',
     ArcaContractModality: 'ArcaContractModality',
     JobPosition: 'JobPosition',
+    WorkShift: 'WorkShift',
+    WorkShiftDetail: 'WorkShiftDetail',
     HealthInsurance: 'HealthInsurance',
     Union: 'Union',
     Mutual: 'Mutual',
@@ -1006,7 +1038,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "healthInsurance" | "union" | "mutual" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "mutual" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1601,6 +1633,138 @@ export namespace Prisma {
           count: {
             args: Prisma.JobPositionCountArgs<ExtArgs>
             result: $Utils.Optional<JobPositionCountAggregateOutputType> | number
+          }
+        }
+      }
+      WorkShift: {
+        payload: Prisma.$WorkShiftPayload<ExtArgs>
+        fields: Prisma.WorkShiftFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WorkShiftFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WorkShiftFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          findFirst: {
+            args: Prisma.WorkShiftFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WorkShiftFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          findMany: {
+            args: Prisma.WorkShiftFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>[]
+          }
+          create: {
+            args: Prisma.WorkShiftCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          createMany: {
+            args: Prisma.WorkShiftCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WorkShiftDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          update: {
+            args: Prisma.WorkShiftUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          deleteMany: {
+            args: Prisma.WorkShiftDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WorkShiftUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WorkShiftUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftPayload>
+          }
+          aggregate: {
+            args: Prisma.WorkShiftAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWorkShift>
+          }
+          groupBy: {
+            args: Prisma.WorkShiftGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WorkShiftGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WorkShiftCountArgs<ExtArgs>
+            result: $Utils.Optional<WorkShiftCountAggregateOutputType> | number
+          }
+        }
+      }
+      WorkShiftDetail: {
+        payload: Prisma.$WorkShiftDetailPayload<ExtArgs>
+        fields: Prisma.WorkShiftDetailFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.WorkShiftDetailFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.WorkShiftDetailFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          findFirst: {
+            args: Prisma.WorkShiftDetailFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.WorkShiftDetailFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          findMany: {
+            args: Prisma.WorkShiftDetailFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>[]
+          }
+          create: {
+            args: Prisma.WorkShiftDetailCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          createMany: {
+            args: Prisma.WorkShiftDetailCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.WorkShiftDetailDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          update: {
+            args: Prisma.WorkShiftDetailUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          deleteMany: {
+            args: Prisma.WorkShiftDetailDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.WorkShiftDetailUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.WorkShiftDetailUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$WorkShiftDetailPayload>
+          }
+          aggregate: {
+            args: Prisma.WorkShiftDetailAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWorkShiftDetail>
+          }
+          groupBy: {
+            args: Prisma.WorkShiftDetailGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WorkShiftDetailGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.WorkShiftDetailCountArgs<ExtArgs>
+            result: $Utils.Optional<WorkShiftDetailCountAggregateOutputType> | number
           }
         }
       }
@@ -2831,6 +2995,8 @@ export namespace Prisma {
     arcaCctCategoryPosition?: ArcaCctCategoryPositionOmit
     arcaContractModality?: ArcaContractModalityOmit
     jobPosition?: JobPositionOmit
+    workShift?: WorkShiftOmit
+    workShiftDetail?: WorkShiftDetailOmit
     healthInsurance?: HealthInsuranceOmit
     union?: UnionOmit
     mutual?: MutualOmit
@@ -3136,6 +3302,46 @@ export namespace Prisma {
    * JobPositionCountOutputType without action
    */
   export type JobPositionCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeWhereInput
+  }
+
+
+  /**
+   * Count Type WorkShiftCountOutputType
+   */
+
+  export type WorkShiftCountOutputType = {
+    details: number
+    employees: number
+  }
+
+  export type WorkShiftCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | WorkShiftCountOutputTypeCountDetailsArgs
+    employees?: boolean | WorkShiftCountOutputTypeCountEmployeesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * WorkShiftCountOutputType without action
+   */
+  export type WorkShiftCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftCountOutputType
+     */
+    select?: WorkShiftCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * WorkShiftCountOutputType without action
+   */
+  export type WorkShiftCountOutputTypeCountDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WorkShiftDetailWhereInput
+  }
+
+  /**
+   * WorkShiftCountOutputType without action
+   */
+  export type WorkShiftCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeWhereInput
   }
 
@@ -12371,6 +12577,2197 @@ export namespace Prisma {
 
 
   /**
+   * Model WorkShift
+   */
+
+  export type AggregateWorkShift = {
+    _count: WorkShiftCountAggregateOutputType | null
+    _avg: WorkShiftAvgAggregateOutputType | null
+    _sum: WorkShiftSumAggregateOutputType | null
+    _min: WorkShiftMinAggregateOutputType | null
+    _max: WorkShiftMaxAggregateOutputType | null
+  }
+
+  export type WorkShiftAvgAggregateOutputType = {
+    dailyHours: Decimal | null
+    weeklyHours: Decimal | null
+    monthlyHours: Decimal | null
+    monthlyDays: Decimal | null
+  }
+
+  export type WorkShiftSumAggregateOutputType = {
+    dailyHours: Decimal | null
+    weeklyHours: Decimal | null
+    monthlyHours: Decimal | null
+    monthlyDays: Decimal | null
+  }
+
+  export type WorkShiftMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    code: string | null
+    description: string | null
+    cycleType: string | null
+    dailyHours: Decimal | null
+    weeklyHours: Decimal | null
+    monthlyHours: Decimal | null
+    monthlyDays: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type WorkShiftMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    code: string | null
+    description: string | null
+    cycleType: string | null
+    dailyHours: Decimal | null
+    weeklyHours: Decimal | null
+    monthlyHours: Decimal | null
+    monthlyDays: Decimal | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type WorkShiftCountAggregateOutputType = {
+    id: number
+    name: number
+    code: number
+    description: number
+    cycleType: number
+    dailyHours: number
+    weeklyHours: number
+    monthlyHours: number
+    monthlyDays: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type WorkShiftAvgAggregateInputType = {
+    dailyHours?: true
+    weeklyHours?: true
+    monthlyHours?: true
+    monthlyDays?: true
+  }
+
+  export type WorkShiftSumAggregateInputType = {
+    dailyHours?: true
+    weeklyHours?: true
+    monthlyHours?: true
+    monthlyDays?: true
+  }
+
+  export type WorkShiftMinAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    cycleType?: true
+    dailyHours?: true
+    weeklyHours?: true
+    monthlyHours?: true
+    monthlyDays?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type WorkShiftMaxAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    cycleType?: true
+    dailyHours?: true
+    weeklyHours?: true
+    monthlyHours?: true
+    monthlyDays?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type WorkShiftCountAggregateInputType = {
+    id?: true
+    name?: true
+    code?: true
+    description?: true
+    cycleType?: true
+    dailyHours?: true
+    weeklyHours?: true
+    monthlyHours?: true
+    monthlyDays?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type WorkShiftAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkShift to aggregate.
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShifts to fetch.
+     */
+    orderBy?: WorkShiftOrderByWithRelationInput | WorkShiftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WorkShiftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShifts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShifts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WorkShifts
+    **/
+    _count?: true | WorkShiftCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WorkShiftAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WorkShiftSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WorkShiftMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WorkShiftMaxAggregateInputType
+  }
+
+  export type GetWorkShiftAggregateType<T extends WorkShiftAggregateArgs> = {
+        [P in keyof T & keyof AggregateWorkShift]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWorkShift[P]>
+      : GetScalarType<T[P], AggregateWorkShift[P]>
+  }
+
+
+
+
+  export type WorkShiftGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WorkShiftWhereInput
+    orderBy?: WorkShiftOrderByWithAggregationInput | WorkShiftOrderByWithAggregationInput[]
+    by: WorkShiftScalarFieldEnum[] | WorkShiftScalarFieldEnum
+    having?: WorkShiftScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WorkShiftCountAggregateInputType | true
+    _avg?: WorkShiftAvgAggregateInputType
+    _sum?: WorkShiftSumAggregateInputType
+    _min?: WorkShiftMinAggregateInputType
+    _max?: WorkShiftMaxAggregateInputType
+  }
+
+  export type WorkShiftGroupByOutputType = {
+    id: string
+    name: string
+    code: string | null
+    description: string | null
+    cycleType: string
+    dailyHours: Decimal
+    weeklyHours: Decimal
+    monthlyHours: Decimal
+    monthlyDays: Decimal
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: WorkShiftCountAggregateOutputType | null
+    _avg: WorkShiftAvgAggregateOutputType | null
+    _sum: WorkShiftSumAggregateOutputType | null
+    _min: WorkShiftMinAggregateOutputType | null
+    _max: WorkShiftMaxAggregateOutputType | null
+  }
+
+  type GetWorkShiftGroupByPayload<T extends WorkShiftGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WorkShiftGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WorkShiftGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WorkShiftGroupByOutputType[P]>
+            : GetScalarType<T[P], WorkShiftGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WorkShiftSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    description?: boolean
+    cycleType?: boolean
+    dailyHours?: boolean
+    weeklyHours?: boolean
+    monthlyHours?: boolean
+    monthlyDays?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    details?: boolean | WorkShift$detailsArgs<ExtArgs>
+    employees?: boolean | WorkShift$employeesArgs<ExtArgs>
+    _count?: boolean | WorkShiftCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["workShift"]>
+
+
+
+  export type WorkShiftSelectScalar = {
+    id?: boolean
+    name?: boolean
+    code?: boolean
+    description?: boolean
+    cycleType?: boolean
+    dailyHours?: boolean
+    weeklyHours?: boolean
+    monthlyHours?: boolean
+    monthlyDays?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type WorkShiftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "cycleType" | "dailyHours" | "weeklyHours" | "monthlyHours" | "monthlyDays" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["workShift"]>
+  export type WorkShiftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | WorkShift$detailsArgs<ExtArgs>
+    employees?: boolean | WorkShift$employeesArgs<ExtArgs>
+    _count?: boolean | WorkShiftCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $WorkShiftPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WorkShift"
+    objects: {
+      details: Prisma.$WorkShiftDetailPayload<ExtArgs>[]
+      employees: Prisma.$EmployeePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      code: string | null
+      description: string | null
+      cycleType: string
+      dailyHours: Prisma.Decimal
+      weeklyHours: Prisma.Decimal
+      monthlyHours: Prisma.Decimal
+      monthlyDays: Prisma.Decimal
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["workShift"]>
+    composites: {}
+  }
+
+  type WorkShiftGetPayload<S extends boolean | null | undefined | WorkShiftDefaultArgs> = $Result.GetResult<Prisma.$WorkShiftPayload, S>
+
+  type WorkShiftCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WorkShiftFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WorkShiftCountAggregateInputType | true
+    }
+
+  export interface WorkShiftDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WorkShift'], meta: { name: 'WorkShift' } }
+    /**
+     * Find zero or one WorkShift that matches the filter.
+     * @param {WorkShiftFindUniqueArgs} args - Arguments to find a WorkShift
+     * @example
+     * // Get one WorkShift
+     * const workShift = await prisma.workShift.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WorkShiftFindUniqueArgs>(args: SelectSubset<T, WorkShiftFindUniqueArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WorkShift that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WorkShiftFindUniqueOrThrowArgs} args - Arguments to find a WorkShift
+     * @example
+     * // Get one WorkShift
+     * const workShift = await prisma.workShift.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WorkShiftFindUniqueOrThrowArgs>(args: SelectSubset<T, WorkShiftFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkShift that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftFindFirstArgs} args - Arguments to find a WorkShift
+     * @example
+     * // Get one WorkShift
+     * const workShift = await prisma.workShift.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WorkShiftFindFirstArgs>(args?: SelectSubset<T, WorkShiftFindFirstArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkShift that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftFindFirstOrThrowArgs} args - Arguments to find a WorkShift
+     * @example
+     * // Get one WorkShift
+     * const workShift = await prisma.workShift.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WorkShiftFindFirstOrThrowArgs>(args?: SelectSubset<T, WorkShiftFindFirstOrThrowArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WorkShifts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WorkShifts
+     * const workShifts = await prisma.workShift.findMany()
+     * 
+     * // Get first 10 WorkShifts
+     * const workShifts = await prisma.workShift.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const workShiftWithIdOnly = await prisma.workShift.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WorkShiftFindManyArgs>(args?: SelectSubset<T, WorkShiftFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WorkShift.
+     * @param {WorkShiftCreateArgs} args - Arguments to create a WorkShift.
+     * @example
+     * // Create one WorkShift
+     * const WorkShift = await prisma.workShift.create({
+     *   data: {
+     *     // ... data to create a WorkShift
+     *   }
+     * })
+     * 
+     */
+    create<T extends WorkShiftCreateArgs>(args: SelectSubset<T, WorkShiftCreateArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WorkShifts.
+     * @param {WorkShiftCreateManyArgs} args - Arguments to create many WorkShifts.
+     * @example
+     * // Create many WorkShifts
+     * const workShift = await prisma.workShift.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WorkShiftCreateManyArgs>(args?: SelectSubset<T, WorkShiftCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a WorkShift.
+     * @param {WorkShiftDeleteArgs} args - Arguments to delete one WorkShift.
+     * @example
+     * // Delete one WorkShift
+     * const WorkShift = await prisma.workShift.delete({
+     *   where: {
+     *     // ... filter to delete one WorkShift
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WorkShiftDeleteArgs>(args: SelectSubset<T, WorkShiftDeleteArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WorkShift.
+     * @param {WorkShiftUpdateArgs} args - Arguments to update one WorkShift.
+     * @example
+     * // Update one WorkShift
+     * const workShift = await prisma.workShift.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WorkShiftUpdateArgs>(args: SelectSubset<T, WorkShiftUpdateArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WorkShifts.
+     * @param {WorkShiftDeleteManyArgs} args - Arguments to filter WorkShifts to delete.
+     * @example
+     * // Delete a few WorkShifts
+     * const { count } = await prisma.workShift.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WorkShiftDeleteManyArgs>(args?: SelectSubset<T, WorkShiftDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkShifts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WorkShifts
+     * const workShift = await prisma.workShift.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WorkShiftUpdateManyArgs>(args: SelectSubset<T, WorkShiftUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WorkShift.
+     * @param {WorkShiftUpsertArgs} args - Arguments to update or create a WorkShift.
+     * @example
+     * // Update or create a WorkShift
+     * const workShift = await prisma.workShift.upsert({
+     *   create: {
+     *     // ... data to create a WorkShift
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WorkShift we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WorkShiftUpsertArgs>(args: SelectSubset<T, WorkShiftUpsertArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WorkShifts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftCountArgs} args - Arguments to filter WorkShifts to count.
+     * @example
+     * // Count the number of WorkShifts
+     * const count = await prisma.workShift.count({
+     *   where: {
+     *     // ... the filter for the WorkShifts we want to count
+     *   }
+     * })
+    **/
+    count<T extends WorkShiftCountArgs>(
+      args?: Subset<T, WorkShiftCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WorkShiftCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WorkShift.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WorkShiftAggregateArgs>(args: Subset<T, WorkShiftAggregateArgs>): Prisma.PrismaPromise<GetWorkShiftAggregateType<T>>
+
+    /**
+     * Group by WorkShift.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WorkShiftGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WorkShiftGroupByArgs['orderBy'] }
+        : { orderBy?: WorkShiftGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WorkShiftGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkShiftGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WorkShift model
+   */
+  readonly fields: WorkShiftFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WorkShift.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WorkShiftClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    details<T extends WorkShift$detailsArgs<ExtArgs> = {}>(args?: Subset<T, WorkShift$detailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    employees<T extends WorkShift$employeesArgs<ExtArgs> = {}>(args?: Subset<T, WorkShift$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WorkShift model
+   */
+  interface WorkShiftFieldRefs {
+    readonly id: FieldRef<"WorkShift", 'String'>
+    readonly name: FieldRef<"WorkShift", 'String'>
+    readonly code: FieldRef<"WorkShift", 'String'>
+    readonly description: FieldRef<"WorkShift", 'String'>
+    readonly cycleType: FieldRef<"WorkShift", 'String'>
+    readonly dailyHours: FieldRef<"WorkShift", 'Decimal'>
+    readonly weeklyHours: FieldRef<"WorkShift", 'Decimal'>
+    readonly monthlyHours: FieldRef<"WorkShift", 'Decimal'>
+    readonly monthlyDays: FieldRef<"WorkShift", 'Decimal'>
+    readonly isActive: FieldRef<"WorkShift", 'Boolean'>
+    readonly createdAt: FieldRef<"WorkShift", 'DateTime'>
+    readonly updatedAt: FieldRef<"WorkShift", 'DateTime'>
+    readonly deletedAt: FieldRef<"WorkShift", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WorkShift findUnique
+   */
+  export type WorkShiftFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShift to fetch.
+     */
+    where: WorkShiftWhereUniqueInput
+  }
+
+  /**
+   * WorkShift findUniqueOrThrow
+   */
+  export type WorkShiftFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShift to fetch.
+     */
+    where: WorkShiftWhereUniqueInput
+  }
+
+  /**
+   * WorkShift findFirst
+   */
+  export type WorkShiftFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShift to fetch.
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShifts to fetch.
+     */
+    orderBy?: WorkShiftOrderByWithRelationInput | WorkShiftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkShifts.
+     */
+    cursor?: WorkShiftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShifts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShifts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkShifts.
+     */
+    distinct?: WorkShiftScalarFieldEnum | WorkShiftScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShift findFirstOrThrow
+   */
+  export type WorkShiftFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShift to fetch.
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShifts to fetch.
+     */
+    orderBy?: WorkShiftOrderByWithRelationInput | WorkShiftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkShifts.
+     */
+    cursor?: WorkShiftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShifts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShifts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkShifts.
+     */
+    distinct?: WorkShiftScalarFieldEnum | WorkShiftScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShift findMany
+   */
+  export type WorkShiftFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShifts to fetch.
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShifts to fetch.
+     */
+    orderBy?: WorkShiftOrderByWithRelationInput | WorkShiftOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WorkShifts.
+     */
+    cursor?: WorkShiftWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShifts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShifts.
+     */
+    skip?: number
+    distinct?: WorkShiftScalarFieldEnum | WorkShiftScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShift create
+   */
+  export type WorkShiftCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WorkShift.
+     */
+    data: XOR<WorkShiftCreateInput, WorkShiftUncheckedCreateInput>
+  }
+
+  /**
+   * WorkShift createMany
+   */
+  export type WorkShiftCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WorkShifts.
+     */
+    data: WorkShiftCreateManyInput | WorkShiftCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WorkShift update
+   */
+  export type WorkShiftUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WorkShift.
+     */
+    data: XOR<WorkShiftUpdateInput, WorkShiftUncheckedUpdateInput>
+    /**
+     * Choose, which WorkShift to update.
+     */
+    where: WorkShiftWhereUniqueInput
+  }
+
+  /**
+   * WorkShift updateMany
+   */
+  export type WorkShiftUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WorkShifts.
+     */
+    data: XOR<WorkShiftUpdateManyMutationInput, WorkShiftUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkShifts to update
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * Limit how many WorkShifts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkShift upsert
+   */
+  export type WorkShiftUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WorkShift to update in case it exists.
+     */
+    where: WorkShiftWhereUniqueInput
+    /**
+     * In case the WorkShift found by the `where` argument doesn't exist, create a new WorkShift with this data.
+     */
+    create: XOR<WorkShiftCreateInput, WorkShiftUncheckedCreateInput>
+    /**
+     * In case the WorkShift was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WorkShiftUpdateInput, WorkShiftUncheckedUpdateInput>
+  }
+
+  /**
+   * WorkShift delete
+   */
+  export type WorkShiftDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    /**
+     * Filter which WorkShift to delete.
+     */
+    where: WorkShiftWhereUniqueInput
+  }
+
+  /**
+   * WorkShift deleteMany
+   */
+  export type WorkShiftDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkShifts to delete
+     */
+    where?: WorkShiftWhereInput
+    /**
+     * Limit how many WorkShifts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkShift.details
+   */
+  export type WorkShift$detailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    where?: WorkShiftDetailWhereInput
+    orderBy?: WorkShiftDetailOrderByWithRelationInput | WorkShiftDetailOrderByWithRelationInput[]
+    cursor?: WorkShiftDetailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WorkShiftDetailScalarFieldEnum | WorkShiftDetailScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShift.employees
+   */
+  export type WorkShift$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Employee
+     */
+    select?: EmployeeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Employee
+     */
+    omit?: EmployeeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeInclude<ExtArgs> | null
+    where?: EmployeeWhereInput
+    orderBy?: EmployeeOrderByWithRelationInput | EmployeeOrderByWithRelationInput[]
+    cursor?: EmployeeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeScalarFieldEnum | EmployeeScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShift without action
+   */
+  export type WorkShiftDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model WorkShiftDetail
+   */
+
+  export type AggregateWorkShiftDetail = {
+    _count: WorkShiftDetailCountAggregateOutputType | null
+    _avg: WorkShiftDetailAvgAggregateOutputType | null
+    _sum: WorkShiftDetailSumAggregateOutputType | null
+    _min: WorkShiftDetailMinAggregateOutputType | null
+    _max: WorkShiftDetailMaxAggregateOutputType | null
+  }
+
+  export type WorkShiftDetailAvgAggregateOutputType = {
+    dayOfWeek: number | null
+    cycleDayNumber: number | null
+    breakMinutes: number | null
+    netHours: Decimal | null
+  }
+
+  export type WorkShiftDetailSumAggregateOutputType = {
+    dayOfWeek: number | null
+    cycleDayNumber: number | null
+    breakMinutes: number | null
+    netHours: Decimal | null
+  }
+
+  export type WorkShiftDetailMinAggregateOutputType = {
+    id: string | null
+    workShiftId: string | null
+    dayOfWeek: number | null
+    cycleDayNumber: number | null
+    dayName: string | null
+    isWorkDay: boolean | null
+    startTime: string | null
+    endTime: string | null
+    crossesMidnight: boolean | null
+    breakMinutes: number | null
+    netHours: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WorkShiftDetailMaxAggregateOutputType = {
+    id: string | null
+    workShiftId: string | null
+    dayOfWeek: number | null
+    cycleDayNumber: number | null
+    dayName: string | null
+    isWorkDay: boolean | null
+    startTime: string | null
+    endTime: string | null
+    crossesMidnight: boolean | null
+    breakMinutes: number | null
+    netHours: Decimal | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type WorkShiftDetailCountAggregateOutputType = {
+    id: number
+    workShiftId: number
+    dayOfWeek: number
+    cycleDayNumber: number
+    dayName: number
+    isWorkDay: number
+    startTime: number
+    endTime: number
+    crossesMidnight: number
+    breakMinutes: number
+    netHours: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type WorkShiftDetailAvgAggregateInputType = {
+    dayOfWeek?: true
+    cycleDayNumber?: true
+    breakMinutes?: true
+    netHours?: true
+  }
+
+  export type WorkShiftDetailSumAggregateInputType = {
+    dayOfWeek?: true
+    cycleDayNumber?: true
+    breakMinutes?: true
+    netHours?: true
+  }
+
+  export type WorkShiftDetailMinAggregateInputType = {
+    id?: true
+    workShiftId?: true
+    dayOfWeek?: true
+    cycleDayNumber?: true
+    dayName?: true
+    isWorkDay?: true
+    startTime?: true
+    endTime?: true
+    crossesMidnight?: true
+    breakMinutes?: true
+    netHours?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WorkShiftDetailMaxAggregateInputType = {
+    id?: true
+    workShiftId?: true
+    dayOfWeek?: true
+    cycleDayNumber?: true
+    dayName?: true
+    isWorkDay?: true
+    startTime?: true
+    endTime?: true
+    crossesMidnight?: true
+    breakMinutes?: true
+    netHours?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type WorkShiftDetailCountAggregateInputType = {
+    id?: true
+    workShiftId?: true
+    dayOfWeek?: true
+    cycleDayNumber?: true
+    dayName?: true
+    isWorkDay?: true
+    startTime?: true
+    endTime?: true
+    crossesMidnight?: true
+    breakMinutes?: true
+    netHours?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type WorkShiftDetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkShiftDetail to aggregate.
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShiftDetails to fetch.
+     */
+    orderBy?: WorkShiftDetailOrderByWithRelationInput | WorkShiftDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: WorkShiftDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShiftDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShiftDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned WorkShiftDetails
+    **/
+    _count?: true | WorkShiftDetailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: WorkShiftDetailAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: WorkShiftDetailSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WorkShiftDetailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WorkShiftDetailMaxAggregateInputType
+  }
+
+  export type GetWorkShiftDetailAggregateType<T extends WorkShiftDetailAggregateArgs> = {
+        [P in keyof T & keyof AggregateWorkShiftDetail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWorkShiftDetail[P]>
+      : GetScalarType<T[P], AggregateWorkShiftDetail[P]>
+  }
+
+
+
+
+  export type WorkShiftDetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: WorkShiftDetailWhereInput
+    orderBy?: WorkShiftDetailOrderByWithAggregationInput | WorkShiftDetailOrderByWithAggregationInput[]
+    by: WorkShiftDetailScalarFieldEnum[] | WorkShiftDetailScalarFieldEnum
+    having?: WorkShiftDetailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WorkShiftDetailCountAggregateInputType | true
+    _avg?: WorkShiftDetailAvgAggregateInputType
+    _sum?: WorkShiftDetailSumAggregateInputType
+    _min?: WorkShiftDetailMinAggregateInputType
+    _max?: WorkShiftDetailMaxAggregateInputType
+  }
+
+  export type WorkShiftDetailGroupByOutputType = {
+    id: string
+    workShiftId: string
+    dayOfWeek: number | null
+    cycleDayNumber: number | null
+    dayName: string | null
+    isWorkDay: boolean
+    startTime: string | null
+    endTime: string | null
+    crossesMidnight: boolean
+    breakMinutes: number
+    netHours: Decimal
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: WorkShiftDetailCountAggregateOutputType | null
+    _avg: WorkShiftDetailAvgAggregateOutputType | null
+    _sum: WorkShiftDetailSumAggregateOutputType | null
+    _min: WorkShiftDetailMinAggregateOutputType | null
+    _max: WorkShiftDetailMaxAggregateOutputType | null
+  }
+
+  type GetWorkShiftDetailGroupByPayload<T extends WorkShiftDetailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WorkShiftDetailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WorkShiftDetailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WorkShiftDetailGroupByOutputType[P]>
+            : GetScalarType<T[P], WorkShiftDetailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type WorkShiftDetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    workShiftId?: boolean
+    dayOfWeek?: boolean
+    cycleDayNumber?: boolean
+    dayName?: boolean
+    isWorkDay?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    crossesMidnight?: boolean
+    breakMinutes?: boolean
+    netHours?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workShift?: boolean | WorkShiftDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["workShiftDetail"]>
+
+
+
+  export type WorkShiftDetailSelectScalar = {
+    id?: boolean
+    workShiftId?: boolean
+    dayOfWeek?: boolean
+    cycleDayNumber?: boolean
+    dayName?: boolean
+    isWorkDay?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    crossesMidnight?: boolean
+    breakMinutes?: boolean
+    netHours?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type WorkShiftDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "workShiftId" | "dayOfWeek" | "cycleDayNumber" | "dayName" | "isWorkDay" | "startTime" | "endTime" | "crossesMidnight" | "breakMinutes" | "netHours" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["workShiftDetail"]>
+  export type WorkShiftDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workShift?: boolean | WorkShiftDefaultArgs<ExtArgs>
+  }
+
+  export type $WorkShiftDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "WorkShiftDetail"
+    objects: {
+      workShift: Prisma.$WorkShiftPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      workShiftId: string
+      dayOfWeek: number | null
+      cycleDayNumber: number | null
+      dayName: string | null
+      isWorkDay: boolean
+      startTime: string | null
+      endTime: string | null
+      crossesMidnight: boolean
+      breakMinutes: number
+      netHours: Prisma.Decimal
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["workShiftDetail"]>
+    composites: {}
+  }
+
+  type WorkShiftDetailGetPayload<S extends boolean | null | undefined | WorkShiftDetailDefaultArgs> = $Result.GetResult<Prisma.$WorkShiftDetailPayload, S>
+
+  type WorkShiftDetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<WorkShiftDetailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: WorkShiftDetailCountAggregateInputType | true
+    }
+
+  export interface WorkShiftDetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['WorkShiftDetail'], meta: { name: 'WorkShiftDetail' } }
+    /**
+     * Find zero or one WorkShiftDetail that matches the filter.
+     * @param {WorkShiftDetailFindUniqueArgs} args - Arguments to find a WorkShiftDetail
+     * @example
+     * // Get one WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends WorkShiftDetailFindUniqueArgs>(args: SelectSubset<T, WorkShiftDetailFindUniqueArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one WorkShiftDetail that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {WorkShiftDetailFindUniqueOrThrowArgs} args - Arguments to find a WorkShiftDetail
+     * @example
+     * // Get one WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends WorkShiftDetailFindUniqueOrThrowArgs>(args: SelectSubset<T, WorkShiftDetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkShiftDetail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailFindFirstArgs} args - Arguments to find a WorkShiftDetail
+     * @example
+     * // Get one WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends WorkShiftDetailFindFirstArgs>(args?: SelectSubset<T, WorkShiftDetailFindFirstArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first WorkShiftDetail that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailFindFirstOrThrowArgs} args - Arguments to find a WorkShiftDetail
+     * @example
+     * // Get one WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends WorkShiftDetailFindFirstOrThrowArgs>(args?: SelectSubset<T, WorkShiftDetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more WorkShiftDetails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all WorkShiftDetails
+     * const workShiftDetails = await prisma.workShiftDetail.findMany()
+     * 
+     * // Get first 10 WorkShiftDetails
+     * const workShiftDetails = await prisma.workShiftDetail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const workShiftDetailWithIdOnly = await prisma.workShiftDetail.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends WorkShiftDetailFindManyArgs>(args?: SelectSubset<T, WorkShiftDetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a WorkShiftDetail.
+     * @param {WorkShiftDetailCreateArgs} args - Arguments to create a WorkShiftDetail.
+     * @example
+     * // Create one WorkShiftDetail
+     * const WorkShiftDetail = await prisma.workShiftDetail.create({
+     *   data: {
+     *     // ... data to create a WorkShiftDetail
+     *   }
+     * })
+     * 
+     */
+    create<T extends WorkShiftDetailCreateArgs>(args: SelectSubset<T, WorkShiftDetailCreateArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many WorkShiftDetails.
+     * @param {WorkShiftDetailCreateManyArgs} args - Arguments to create many WorkShiftDetails.
+     * @example
+     * // Create many WorkShiftDetails
+     * const workShiftDetail = await prisma.workShiftDetail.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends WorkShiftDetailCreateManyArgs>(args?: SelectSubset<T, WorkShiftDetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a WorkShiftDetail.
+     * @param {WorkShiftDetailDeleteArgs} args - Arguments to delete one WorkShiftDetail.
+     * @example
+     * // Delete one WorkShiftDetail
+     * const WorkShiftDetail = await prisma.workShiftDetail.delete({
+     *   where: {
+     *     // ... filter to delete one WorkShiftDetail
+     *   }
+     * })
+     * 
+     */
+    delete<T extends WorkShiftDetailDeleteArgs>(args: SelectSubset<T, WorkShiftDetailDeleteArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one WorkShiftDetail.
+     * @param {WorkShiftDetailUpdateArgs} args - Arguments to update one WorkShiftDetail.
+     * @example
+     * // Update one WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends WorkShiftDetailUpdateArgs>(args: SelectSubset<T, WorkShiftDetailUpdateArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more WorkShiftDetails.
+     * @param {WorkShiftDetailDeleteManyArgs} args - Arguments to filter WorkShiftDetails to delete.
+     * @example
+     * // Delete a few WorkShiftDetails
+     * const { count } = await prisma.workShiftDetail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends WorkShiftDetailDeleteManyArgs>(args?: SelectSubset<T, WorkShiftDetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more WorkShiftDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many WorkShiftDetails
+     * const workShiftDetail = await prisma.workShiftDetail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends WorkShiftDetailUpdateManyArgs>(args: SelectSubset<T, WorkShiftDetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one WorkShiftDetail.
+     * @param {WorkShiftDetailUpsertArgs} args - Arguments to update or create a WorkShiftDetail.
+     * @example
+     * // Update or create a WorkShiftDetail
+     * const workShiftDetail = await prisma.workShiftDetail.upsert({
+     *   create: {
+     *     // ... data to create a WorkShiftDetail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the WorkShiftDetail we want to update
+     *   }
+     * })
+     */
+    upsert<T extends WorkShiftDetailUpsertArgs>(args: SelectSubset<T, WorkShiftDetailUpsertArgs<ExtArgs>>): Prisma__WorkShiftDetailClient<$Result.GetResult<Prisma.$WorkShiftDetailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of WorkShiftDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailCountArgs} args - Arguments to filter WorkShiftDetails to count.
+     * @example
+     * // Count the number of WorkShiftDetails
+     * const count = await prisma.workShiftDetail.count({
+     *   where: {
+     *     // ... the filter for the WorkShiftDetails we want to count
+     *   }
+     * })
+    **/
+    count<T extends WorkShiftDetailCountArgs>(
+      args?: Subset<T, WorkShiftDetailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WorkShiftDetailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a WorkShiftDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WorkShiftDetailAggregateArgs>(args: Subset<T, WorkShiftDetailAggregateArgs>): Prisma.PrismaPromise<GetWorkShiftDetailAggregateType<T>>
+
+    /**
+     * Group by WorkShiftDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WorkShiftDetailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends WorkShiftDetailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: WorkShiftDetailGroupByArgs['orderBy'] }
+        : { orderBy?: WorkShiftDetailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, WorkShiftDetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWorkShiftDetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the WorkShiftDetail model
+   */
+  readonly fields: WorkShiftDetailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for WorkShiftDetail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__WorkShiftDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workShift<T extends WorkShiftDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkShiftDefaultArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the WorkShiftDetail model
+   */
+  interface WorkShiftDetailFieldRefs {
+    readonly id: FieldRef<"WorkShiftDetail", 'String'>
+    readonly workShiftId: FieldRef<"WorkShiftDetail", 'String'>
+    readonly dayOfWeek: FieldRef<"WorkShiftDetail", 'Int'>
+    readonly cycleDayNumber: FieldRef<"WorkShiftDetail", 'Int'>
+    readonly dayName: FieldRef<"WorkShiftDetail", 'String'>
+    readonly isWorkDay: FieldRef<"WorkShiftDetail", 'Boolean'>
+    readonly startTime: FieldRef<"WorkShiftDetail", 'String'>
+    readonly endTime: FieldRef<"WorkShiftDetail", 'String'>
+    readonly crossesMidnight: FieldRef<"WorkShiftDetail", 'Boolean'>
+    readonly breakMinutes: FieldRef<"WorkShiftDetail", 'Int'>
+    readonly netHours: FieldRef<"WorkShiftDetail", 'Decimal'>
+    readonly notes: FieldRef<"WorkShiftDetail", 'String'>
+    readonly createdAt: FieldRef<"WorkShiftDetail", 'DateTime'>
+    readonly updatedAt: FieldRef<"WorkShiftDetail", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * WorkShiftDetail findUnique
+   */
+  export type WorkShiftDetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShiftDetail to fetch.
+     */
+    where: WorkShiftDetailWhereUniqueInput
+  }
+
+  /**
+   * WorkShiftDetail findUniqueOrThrow
+   */
+  export type WorkShiftDetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShiftDetail to fetch.
+     */
+    where: WorkShiftDetailWhereUniqueInput
+  }
+
+  /**
+   * WorkShiftDetail findFirst
+   */
+  export type WorkShiftDetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShiftDetail to fetch.
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShiftDetails to fetch.
+     */
+    orderBy?: WorkShiftDetailOrderByWithRelationInput | WorkShiftDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkShiftDetails.
+     */
+    cursor?: WorkShiftDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShiftDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShiftDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkShiftDetails.
+     */
+    distinct?: WorkShiftDetailScalarFieldEnum | WorkShiftDetailScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShiftDetail findFirstOrThrow
+   */
+  export type WorkShiftDetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShiftDetail to fetch.
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShiftDetails to fetch.
+     */
+    orderBy?: WorkShiftDetailOrderByWithRelationInput | WorkShiftDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for WorkShiftDetails.
+     */
+    cursor?: WorkShiftDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShiftDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShiftDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of WorkShiftDetails.
+     */
+    distinct?: WorkShiftDetailScalarFieldEnum | WorkShiftDetailScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShiftDetail findMany
+   */
+  export type WorkShiftDetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which WorkShiftDetails to fetch.
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of WorkShiftDetails to fetch.
+     */
+    orderBy?: WorkShiftDetailOrderByWithRelationInput | WorkShiftDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing WorkShiftDetails.
+     */
+    cursor?: WorkShiftDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` WorkShiftDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` WorkShiftDetails.
+     */
+    skip?: number
+    distinct?: WorkShiftDetailScalarFieldEnum | WorkShiftDetailScalarFieldEnum[]
+  }
+
+  /**
+   * WorkShiftDetail create
+   */
+  export type WorkShiftDetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to create a WorkShiftDetail.
+     */
+    data: XOR<WorkShiftDetailCreateInput, WorkShiftDetailUncheckedCreateInput>
+  }
+
+  /**
+   * WorkShiftDetail createMany
+   */
+  export type WorkShiftDetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many WorkShiftDetails.
+     */
+    data: WorkShiftDetailCreateManyInput | WorkShiftDetailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * WorkShiftDetail update
+   */
+  export type WorkShiftDetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to update a WorkShiftDetail.
+     */
+    data: XOR<WorkShiftDetailUpdateInput, WorkShiftDetailUncheckedUpdateInput>
+    /**
+     * Choose, which WorkShiftDetail to update.
+     */
+    where: WorkShiftDetailWhereUniqueInput
+  }
+
+  /**
+   * WorkShiftDetail updateMany
+   */
+  export type WorkShiftDetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update WorkShiftDetails.
+     */
+    data: XOR<WorkShiftDetailUpdateManyMutationInput, WorkShiftDetailUncheckedUpdateManyInput>
+    /**
+     * Filter which WorkShiftDetails to update
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * Limit how many WorkShiftDetails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkShiftDetail upsert
+   */
+  export type WorkShiftDetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * The filter to search for the WorkShiftDetail to update in case it exists.
+     */
+    where: WorkShiftDetailWhereUniqueInput
+    /**
+     * In case the WorkShiftDetail found by the `where` argument doesn't exist, create a new WorkShiftDetail with this data.
+     */
+    create: XOR<WorkShiftDetailCreateInput, WorkShiftDetailUncheckedCreateInput>
+    /**
+     * In case the WorkShiftDetail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<WorkShiftDetailUpdateInput, WorkShiftDetailUncheckedUpdateInput>
+  }
+
+  /**
+   * WorkShiftDetail delete
+   */
+  export type WorkShiftDetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+    /**
+     * Filter which WorkShiftDetail to delete.
+     */
+    where: WorkShiftDetailWhereUniqueInput
+  }
+
+  /**
+   * WorkShiftDetail deleteMany
+   */
+  export type WorkShiftDetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which WorkShiftDetails to delete
+     */
+    where?: WorkShiftDetailWhereInput
+    /**
+     * Limit how many WorkShiftDetails to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * WorkShiftDetail without action
+   */
+  export type WorkShiftDetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShiftDetail
+     */
+    select?: WorkShiftDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShiftDetail
+     */
+    omit?: WorkShiftDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftDetailInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model HealthInsurance
    */
 
@@ -15327,6 +17724,7 @@ export namespace Prisma {
     mutualId: string | null
     contractModalityCode: string | null
     salaryScaleId: string | null
+    workShiftId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15372,6 +17770,7 @@ export namespace Prisma {
     mutualId: string | null
     contractModalityCode: string | null
     salaryScaleId: string | null
+    workShiftId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15417,6 +17816,7 @@ export namespace Prisma {
     mutualId: number
     contractModalityCode: number
     salaryScaleId: number
+    workShiftId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -15480,6 +17880,7 @@ export namespace Prisma {
     mutualId?: true
     contractModalityCode?: true
     salaryScaleId?: true
+    workShiftId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15525,6 +17926,7 @@ export namespace Prisma {
     mutualId?: true
     contractModalityCode?: true
     salaryScaleId?: true
+    workShiftId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15570,6 +17972,7 @@ export namespace Prisma {
     mutualId?: true
     contractModalityCode?: true
     salaryScaleId?: true
+    workShiftId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15702,6 +18105,7 @@ export namespace Prisma {
     mutualId: string | null
     contractModalityCode: string | null
     salaryScaleId: string | null
+    workShiftId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -15766,6 +18170,7 @@ export namespace Prisma {
     mutualId?: boolean
     contractModalityCode?: boolean
     salaryScaleId?: boolean
+    workShiftId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -15785,6 +18190,7 @@ export namespace Prisma {
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
+    workShift?: boolean | Employee$workShiftArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -15825,6 +18231,7 @@ export namespace Prisma {
     mutualId?: boolean
     contractModalityCode?: boolean
     salaryScaleId?: boolean
+    workShiftId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -15839,7 +18246,7 @@ export namespace Prisma {
     bankAccountType?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate" | "cbu" | "bankAccountType", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "workShiftId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate" | "cbu" | "bankAccountType", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     department?: boolean | Employee$departmentArgs<ExtArgs>
     jobPosition?: boolean | Employee$jobPositionArgs<ExtArgs>
@@ -15848,6 +18255,7 @@ export namespace Prisma {
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
+    workShift?: boolean | Employee$workShiftArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -15865,6 +18273,7 @@ export namespace Prisma {
       mutual: Prisma.$MutualPayload<ExtArgs> | null
       contractModality: Prisma.$ArcaContractModalityPayload<ExtArgs> | null
       salaryScale: Prisma.$SalaryScalePayload<ExtArgs> | null
+      workShift: Prisma.$WorkShiftPayload<ExtArgs> | null
       paySlips: Prisma.$PaySlipPayload<ExtArgs>[]
       relatives: Prisma.$EmployeeRelativePayload<ExtArgs>[]
       assignedConcepts: Prisma.$EmployeeConceptPayload<ExtArgs>[]
@@ -15901,6 +18310,7 @@ export namespace Prisma {
       mutualId: string | null
       contractModalityCode: string | null
       salaryScaleId: string | null
+      workShiftId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -16260,6 +18670,7 @@ export namespace Prisma {
     mutual<T extends Employee$mutualArgs<ExtArgs> = {}>(args?: Subset<T, Employee$mutualArgs<ExtArgs>>): Prisma__MutualClient<$Result.GetResult<Prisma.$MutualPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     contractModality<T extends Employee$contractModalityArgs<ExtArgs> = {}>(args?: Subset<T, Employee$contractModalityArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     salaryScale<T extends Employee$salaryScaleArgs<ExtArgs> = {}>(args?: Subset<T, Employee$salaryScaleArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    workShift<T extends Employee$workShiftArgs<ExtArgs> = {}>(args?: Subset<T, Employee$workShiftArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paySlips<T extends Employee$paySlipsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$paySlipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaySlipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     relatives<T extends Employee$relativesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$relativesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRelativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedConcepts<T extends Employee$assignedConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$assignedConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -16323,6 +18734,7 @@ export namespace Prisma {
     readonly mutualId: FieldRef<"Employee", 'String'>
     readonly contractModalityCode: FieldRef<"Employee", 'String'>
     readonly salaryScaleId: FieldRef<"Employee", 'String'>
+    readonly workShiftId: FieldRef<"Employee", 'String'>
     readonly createdAt: FieldRef<"Employee", 'DateTime'>
     readonly updatedAt: FieldRef<"Employee", 'DateTime'>
     readonly deletedAt: FieldRef<"Employee", 'DateTime'>
@@ -16808,6 +19220,25 @@ export namespace Prisma {
      */
     include?: SalaryScaleInclude<ExtArgs> | null
     where?: SalaryScaleWhereInput
+  }
+
+  /**
+   * Employee.workShift
+   */
+  export type Employee$workShiftArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the WorkShift
+     */
+    select?: WorkShiftSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the WorkShift
+     */
+    omit?: WorkShiftOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkShiftInclude<ExtArgs> | null
+    where?: WorkShiftWhereInput
   }
 
   /**
@@ -31548,6 +33979,45 @@ export namespace Prisma {
   export type JobPositionScalarFieldEnum = (typeof JobPositionScalarFieldEnum)[keyof typeof JobPositionScalarFieldEnum]
 
 
+  export const WorkShiftScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    description: 'description',
+    cycleType: 'cycleType',
+    dailyHours: 'dailyHours',
+    weeklyHours: 'weeklyHours',
+    monthlyHours: 'monthlyHours',
+    monthlyDays: 'monthlyDays',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type WorkShiftScalarFieldEnum = (typeof WorkShiftScalarFieldEnum)[keyof typeof WorkShiftScalarFieldEnum]
+
+
+  export const WorkShiftDetailScalarFieldEnum: {
+    id: 'id',
+    workShiftId: 'workShiftId',
+    dayOfWeek: 'dayOfWeek',
+    cycleDayNumber: 'cycleDayNumber',
+    dayName: 'dayName',
+    isWorkDay: 'isWorkDay',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    crossesMidnight: 'crossesMidnight',
+    breakMinutes: 'breakMinutes',
+    netHours: 'netHours',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type WorkShiftDetailScalarFieldEnum = (typeof WorkShiftDetailScalarFieldEnum)[keyof typeof WorkShiftDetailScalarFieldEnum]
+
+
   export const HealthInsuranceScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -31615,6 +34085,7 @@ export namespace Prisma {
     mutualId: 'mutualId',
     contractModalityCode: 'contractModalityCode',
     salaryScaleId: 'salaryScaleId',
+    workShiftId: 'workShiftId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
@@ -32045,6 +34516,29 @@ export namespace Prisma {
   export type JobPositionOrderByRelevanceFieldEnum = (typeof JobPositionOrderByRelevanceFieldEnum)[keyof typeof JobPositionOrderByRelevanceFieldEnum]
 
 
+  export const WorkShiftOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    code: 'code',
+    description: 'description',
+    cycleType: 'cycleType'
+  };
+
+  export type WorkShiftOrderByRelevanceFieldEnum = (typeof WorkShiftOrderByRelevanceFieldEnum)[keyof typeof WorkShiftOrderByRelevanceFieldEnum]
+
+
+  export const WorkShiftDetailOrderByRelevanceFieldEnum: {
+    id: 'id',
+    workShiftId: 'workShiftId',
+    dayName: 'dayName',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    notes: 'notes'
+  };
+
+  export type WorkShiftDetailOrderByRelevanceFieldEnum = (typeof WorkShiftDetailOrderByRelevanceFieldEnum)[keyof typeof WorkShiftDetailOrderByRelevanceFieldEnum]
+
+
   export const HealthInsuranceOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
@@ -32100,6 +34594,7 @@ export namespace Prisma {
     mutualId: 'mutualId',
     contractModalityCode: 'contractModalityCode',
     salaryScaleId: 'salaryScaleId',
+    workShiftId: 'workShiftId',
     payrollGroup: 'payrollGroup',
     cbu: 'cbu',
     bankAccountType: 'bankAccountType'
@@ -32977,6 +35472,210 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"JobPosition"> | Date | string | null
   }
 
+  export type WorkShiftWhereInput = {
+    AND?: WorkShiftWhereInput | WorkShiftWhereInput[]
+    OR?: WorkShiftWhereInput[]
+    NOT?: WorkShiftWhereInput | WorkShiftWhereInput[]
+    id?: StringFilter<"WorkShift"> | string
+    name?: StringFilter<"WorkShift"> | string
+    code?: StringNullableFilter<"WorkShift"> | string | null
+    description?: StringNullableFilter<"WorkShift"> | string | null
+    cycleType?: StringFilter<"WorkShift"> | string
+    dailyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"WorkShift"> | boolean
+    createdAt?: DateTimeFilter<"WorkShift"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkShift"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"WorkShift"> | Date | string | null
+    details?: WorkShiftDetailListRelationFilter
+    employees?: EmployeeListRelationFilter
+  }
+
+  export type WorkShiftOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    cycleType?: SortOrder
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    details?: WorkShiftDetailOrderByRelationAggregateInput
+    employees?: EmployeeOrderByRelationAggregateInput
+    _relevance?: WorkShiftOrderByRelevanceInput
+  }
+
+  export type WorkShiftWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: WorkShiftWhereInput | WorkShiftWhereInput[]
+    OR?: WorkShiftWhereInput[]
+    NOT?: WorkShiftWhereInput | WorkShiftWhereInput[]
+    name?: StringFilter<"WorkShift"> | string
+    code?: StringNullableFilter<"WorkShift"> | string | null
+    description?: StringNullableFilter<"WorkShift"> | string | null
+    cycleType?: StringFilter<"WorkShift"> | string
+    dailyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFilter<"WorkShift"> | boolean
+    createdAt?: DateTimeFilter<"WorkShift"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkShift"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"WorkShift"> | Date | string | null
+    details?: WorkShiftDetailListRelationFilter
+    employees?: EmployeeListRelationFilter
+  }, "id">
+
+  export type WorkShiftOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrderInput | SortOrder
+    description?: SortOrderInput | SortOrder
+    cycleType?: SortOrder
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: WorkShiftCountOrderByAggregateInput
+    _avg?: WorkShiftAvgOrderByAggregateInput
+    _max?: WorkShiftMaxOrderByAggregateInput
+    _min?: WorkShiftMinOrderByAggregateInput
+    _sum?: WorkShiftSumOrderByAggregateInput
+  }
+
+  export type WorkShiftScalarWhereWithAggregatesInput = {
+    AND?: WorkShiftScalarWhereWithAggregatesInput | WorkShiftScalarWhereWithAggregatesInput[]
+    OR?: WorkShiftScalarWhereWithAggregatesInput[]
+    NOT?: WorkShiftScalarWhereWithAggregatesInput | WorkShiftScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WorkShift"> | string
+    name?: StringWithAggregatesFilter<"WorkShift"> | string
+    code?: StringNullableWithAggregatesFilter<"WorkShift"> | string | null
+    description?: StringNullableWithAggregatesFilter<"WorkShift"> | string | null
+    cycleType?: StringWithAggregatesFilter<"WorkShift"> | string
+    dailyHours?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    isActive?: BoolWithAggregatesFilter<"WorkShift"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"WorkShift"> | Date | string | null
+  }
+
+  export type WorkShiftDetailWhereInput = {
+    AND?: WorkShiftDetailWhereInput | WorkShiftDetailWhereInput[]
+    OR?: WorkShiftDetailWhereInput[]
+    NOT?: WorkShiftDetailWhereInput | WorkShiftDetailWhereInput[]
+    id?: StringFilter<"WorkShiftDetail"> | string
+    workShiftId?: StringFilter<"WorkShiftDetail"> | string
+    dayOfWeek?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    cycleDayNumber?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    dayName?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    isWorkDay?: BoolFilter<"WorkShiftDetail"> | boolean
+    startTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    endTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    crossesMidnight?: BoolFilter<"WorkShiftDetail"> | boolean
+    breakMinutes?: IntFilter<"WorkShiftDetail"> | number
+    netHours?: DecimalFilter<"WorkShiftDetail"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    createdAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+    workShift?: XOR<WorkShiftScalarRelationFilter, WorkShiftWhereInput>
+  }
+
+  export type WorkShiftDetailOrderByWithRelationInput = {
+    id?: SortOrder
+    workShiftId?: SortOrder
+    dayOfWeek?: SortOrderInput | SortOrder
+    cycleDayNumber?: SortOrderInput | SortOrder
+    dayName?: SortOrderInput | SortOrder
+    isWorkDay?: SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
+    crossesMidnight?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workShift?: WorkShiftOrderByWithRelationInput
+    _relevance?: WorkShiftDetailOrderByRelevanceInput
+  }
+
+  export type WorkShiftDetailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: WorkShiftDetailWhereInput | WorkShiftDetailWhereInput[]
+    OR?: WorkShiftDetailWhereInput[]
+    NOT?: WorkShiftDetailWhereInput | WorkShiftDetailWhereInput[]
+    workShiftId?: StringFilter<"WorkShiftDetail"> | string
+    dayOfWeek?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    cycleDayNumber?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    dayName?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    isWorkDay?: BoolFilter<"WorkShiftDetail"> | boolean
+    startTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    endTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    crossesMidnight?: BoolFilter<"WorkShiftDetail"> | boolean
+    breakMinutes?: IntFilter<"WorkShiftDetail"> | number
+    netHours?: DecimalFilter<"WorkShiftDetail"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    createdAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+    workShift?: XOR<WorkShiftScalarRelationFilter, WorkShiftWhereInput>
+  }, "id">
+
+  export type WorkShiftDetailOrderByWithAggregationInput = {
+    id?: SortOrder
+    workShiftId?: SortOrder
+    dayOfWeek?: SortOrderInput | SortOrder
+    cycleDayNumber?: SortOrderInput | SortOrder
+    dayName?: SortOrderInput | SortOrder
+    isWorkDay?: SortOrder
+    startTime?: SortOrderInput | SortOrder
+    endTime?: SortOrderInput | SortOrder
+    crossesMidnight?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: WorkShiftDetailCountOrderByAggregateInput
+    _avg?: WorkShiftDetailAvgOrderByAggregateInput
+    _max?: WorkShiftDetailMaxOrderByAggregateInput
+    _min?: WorkShiftDetailMinOrderByAggregateInput
+    _sum?: WorkShiftDetailSumOrderByAggregateInput
+  }
+
+  export type WorkShiftDetailScalarWhereWithAggregatesInput = {
+    AND?: WorkShiftDetailScalarWhereWithAggregatesInput | WorkShiftDetailScalarWhereWithAggregatesInput[]
+    OR?: WorkShiftDetailScalarWhereWithAggregatesInput[]
+    NOT?: WorkShiftDetailScalarWhereWithAggregatesInput | WorkShiftDetailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"WorkShiftDetail"> | string
+    workShiftId?: StringWithAggregatesFilter<"WorkShiftDetail"> | string
+    dayOfWeek?: IntNullableWithAggregatesFilter<"WorkShiftDetail"> | number | null
+    cycleDayNumber?: IntNullableWithAggregatesFilter<"WorkShiftDetail"> | number | null
+    dayName?: StringNullableWithAggregatesFilter<"WorkShiftDetail"> | string | null
+    isWorkDay?: BoolWithAggregatesFilter<"WorkShiftDetail"> | boolean
+    startTime?: StringNullableWithAggregatesFilter<"WorkShiftDetail"> | string | null
+    endTime?: StringNullableWithAggregatesFilter<"WorkShiftDetail"> | string | null
+    crossesMidnight?: BoolWithAggregatesFilter<"WorkShiftDetail"> | boolean
+    breakMinutes?: IntWithAggregatesFilter<"WorkShiftDetail"> | number
+    netHours?: DecimalWithAggregatesFilter<"WorkShiftDetail"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableWithAggregatesFilter<"WorkShiftDetail"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"WorkShiftDetail"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"WorkShiftDetail"> | Date | string
+  }
+
   export type HealthInsuranceWhereInput = {
     AND?: HealthInsuranceWhereInput | HealthInsuranceWhereInput[]
     OR?: HealthInsuranceWhereInput[]
@@ -33194,6 +35893,7 @@ export namespace Prisma {
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
+    workShiftId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -33213,6 +35913,7 @@ export namespace Prisma {
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
+    workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -33250,6 +35951,7 @@ export namespace Prisma {
     mutualId?: SortOrderInput | SortOrder
     contractModalityCode?: SortOrderInput | SortOrder
     salaryScaleId?: SortOrderInput | SortOrder
+    workShiftId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -33269,6 +35971,7 @@ export namespace Prisma {
     mutual?: MutualOrderByWithRelationInput
     contractModality?: ArcaContractModalityOrderByWithRelationInput
     salaryScale?: SalaryScaleOrderByWithRelationInput
+    workShift?: WorkShiftOrderByWithRelationInput
     paySlips?: PaySlipOrderByRelationAggregateInput
     relatives?: EmployeeRelativeOrderByRelationAggregateInput
     assignedConcepts?: EmployeeConceptOrderByRelationAggregateInput
@@ -33310,6 +36013,7 @@ export namespace Prisma {
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
+    workShiftId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -33329,6 +36033,7 @@ export namespace Prisma {
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
+    workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -33366,6 +36071,7 @@ export namespace Prisma {
     mutualId?: SortOrderInput | SortOrder
     contractModalityCode?: SortOrderInput | SortOrder
     salaryScaleId?: SortOrderInput | SortOrder
+    workShiftId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -33419,6 +36125,7 @@ export namespace Prisma {
     mutualId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+    workShiftId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Employee"> | Date | string | null
@@ -35684,6 +38391,244 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type WorkShiftCreateInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    details?: WorkShiftDetailCreateNestedManyWithoutWorkShiftInput
+    employees?: EmployeeCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftUncheckedCreateInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    details?: WorkShiftDetailUncheckedCreateNestedManyWithoutWorkShiftInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    details?: WorkShiftDetailUpdateManyWithoutWorkShiftNestedInput
+    employees?: EmployeeUpdateManyWithoutWorkShiftNestedInput
+  }
+
+  export type WorkShiftUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    details?: WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutWorkShiftNestedInput
+  }
+
+  export type WorkShiftCreateManyInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type WorkShiftUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type WorkShiftUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type WorkShiftDetailCreateInput = {
+    id?: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workShift: WorkShiftCreateNestedOneWithoutDetailsInput
+  }
+
+  export type WorkShiftDetailUncheckedCreateInput = {
+    id?: string
+    workShiftId: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WorkShiftDetailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workShift?: WorkShiftUpdateOneRequiredWithoutDetailsNestedInput
+  }
+
+  export type WorkShiftDetailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workShiftId?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkShiftDetailCreateManyInput = {
+    id?: string
+    workShiftId: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WorkShiftDetailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkShiftDetailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    workShiftId?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type HealthInsuranceCreateInput = {
     id?: string
     name: string
@@ -35928,6 +38873,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -35965,6 +38911,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36026,6 +38973,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -36063,6 +39011,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -36112,6 +39061,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -36195,6 +39145,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38530,6 +41481,241 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type WorkShiftDetailListRelationFilter = {
+    every?: WorkShiftDetailWhereInput
+    some?: WorkShiftDetailWhereInput
+    none?: WorkShiftDetailWhereInput
+  }
+
+  export type WorkShiftDetailOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type WorkShiftOrderByRelevanceInput = {
+    fields: WorkShiftOrderByRelevanceFieldEnum | WorkShiftOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type WorkShiftCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    cycleType?: SortOrder
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type WorkShiftAvgOrderByAggregateInput = {
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+  }
+
+  export type WorkShiftMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    cycleType?: SortOrder
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type WorkShiftMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    code?: SortOrder
+    description?: SortOrder
+    cycleType?: SortOrder
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type WorkShiftSumOrderByAggregateInput = {
+    dailyHours?: SortOrder
+    weeklyHours?: SortOrder
+    monthlyHours?: SortOrder
+    monthlyDays?: SortOrder
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type WorkShiftScalarRelationFilter = {
+    is?: WorkShiftWhereInput
+    isNot?: WorkShiftWhereInput
+  }
+
+  export type WorkShiftDetailOrderByRelevanceInput = {
+    fields: WorkShiftDetailOrderByRelevanceFieldEnum | WorkShiftDetailOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type WorkShiftDetailCountOrderByAggregateInput = {
+    id?: SortOrder
+    workShiftId?: SortOrder
+    dayOfWeek?: SortOrder
+    cycleDayNumber?: SortOrder
+    dayName?: SortOrder
+    isWorkDay?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    crossesMidnight?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkShiftDetailAvgOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
+    cycleDayNumber?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+  }
+
+  export type WorkShiftDetailMaxOrderByAggregateInput = {
+    id?: SortOrder
+    workShiftId?: SortOrder
+    dayOfWeek?: SortOrder
+    cycleDayNumber?: SortOrder
+    dayName?: SortOrder
+    isWorkDay?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    crossesMidnight?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkShiftDetailMinOrderByAggregateInput = {
+    id?: SortOrder
+    workShiftId?: SortOrder
+    dayOfWeek?: SortOrder
+    cycleDayNumber?: SortOrder
+    dayName?: SortOrder
+    isWorkDay?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    crossesMidnight?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type WorkShiftDetailSumOrderByAggregateInput = {
+    dayOfWeek?: SortOrder
+    cycleDayNumber?: SortOrder
+    breakMinutes?: SortOrder
+    netHours?: SortOrder
+  }
+
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
   export type HealthInsuranceOrderByRelevanceInput = {
     fields: HealthInsuranceOrderByRelevanceFieldEnum | HealthInsuranceOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -38629,17 +41815,6 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-  }
-
   export type DepartmentNullableScalarRelationFilter = {
     is?: DepartmentWhereInput | null
     isNot?: DepartmentWhereInput | null
@@ -38673,6 +41848,11 @@ export namespace Prisma {
   export type SalaryScaleNullableScalarRelationFilter = {
     is?: SalaryScaleWhereInput | null
     isNot?: SalaryScaleWhereInput | null
+  }
+
+  export type WorkShiftNullableScalarRelationFilter = {
+    is?: WorkShiftWhereInput | null
+    isNot?: WorkShiftWhereInput | null
   }
 
   export type PaySlipListRelationFilter = {
@@ -38752,6 +41932,7 @@ export namespace Prisma {
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
+    workShiftId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -38805,6 +41986,7 @@ export namespace Prisma {
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
+    workShiftId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -38850,6 +42032,7 @@ export namespace Prisma {
     mutualId?: SortOrder
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
+    workShiftId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -38870,22 +42053,6 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
-  }
-
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[]
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[]
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedDecimalFilter<$PrismaModel>
-    _sum?: NestedDecimalFilter<$PrismaModel>
-    _min?: NestedDecimalFilter<$PrismaModel>
-    _max?: NestedDecimalFilter<$PrismaModel>
   }
 
   export type SalaryScaleOrderByRelevanceInput = {
@@ -39032,17 +42199,6 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type PayrollMatrixNullableScalarRelationFilter = {
     is?: PayrollMatrixWhereInput | null
     isNot?: PayrollMatrixWhereInput | null
@@ -39170,22 +42326,6 @@ export namespace Prisma {
   export type ConceptSumOrderByAggregateInput = {
     defaultValue?: SortOrder
     calculationOrder?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type DecimalNullableFilter<$PrismaModel = never> = {
@@ -40429,6 +43569,128 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
+  export type WorkShiftDetailCreateNestedManyWithoutWorkShiftInput = {
+    create?: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput> | WorkShiftDetailCreateWithoutWorkShiftInput[] | WorkShiftDetailUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: WorkShiftDetailCreateOrConnectWithoutWorkShiftInput | WorkShiftDetailCreateOrConnectWithoutWorkShiftInput[]
+    createMany?: WorkShiftDetailCreateManyWorkShiftInputEnvelope
+    connect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+  }
+
+  export type EmployeeCreateNestedManyWithoutWorkShiftInput = {
+    create?: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput> | EmployeeCreateWithoutWorkShiftInput[] | EmployeeUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutWorkShiftInput | EmployeeCreateOrConnectWithoutWorkShiftInput[]
+    createMany?: EmployeeCreateManyWorkShiftInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type WorkShiftDetailUncheckedCreateNestedManyWithoutWorkShiftInput = {
+    create?: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput> | WorkShiftDetailCreateWithoutWorkShiftInput[] | WorkShiftDetailUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: WorkShiftDetailCreateOrConnectWithoutWorkShiftInput | WorkShiftDetailCreateOrConnectWithoutWorkShiftInput[]
+    createMany?: WorkShiftDetailCreateManyWorkShiftInputEnvelope
+    connect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+  }
+
+  export type EmployeeUncheckedCreateNestedManyWithoutWorkShiftInput = {
+    create?: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput> | EmployeeCreateWithoutWorkShiftInput[] | EmployeeUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutWorkShiftInput | EmployeeCreateOrConnectWithoutWorkShiftInput[]
+    createMany?: EmployeeCreateManyWorkShiftInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type WorkShiftDetailUpdateManyWithoutWorkShiftNestedInput = {
+    create?: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput> | WorkShiftDetailCreateWithoutWorkShiftInput[] | WorkShiftDetailUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: WorkShiftDetailCreateOrConnectWithoutWorkShiftInput | WorkShiftDetailCreateOrConnectWithoutWorkShiftInput[]
+    upsert?: WorkShiftDetailUpsertWithWhereUniqueWithoutWorkShiftInput | WorkShiftDetailUpsertWithWhereUniqueWithoutWorkShiftInput[]
+    createMany?: WorkShiftDetailCreateManyWorkShiftInputEnvelope
+    set?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    disconnect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    delete?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    connect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    update?: WorkShiftDetailUpdateWithWhereUniqueWithoutWorkShiftInput | WorkShiftDetailUpdateWithWhereUniqueWithoutWorkShiftInput[]
+    updateMany?: WorkShiftDetailUpdateManyWithWhereWithoutWorkShiftInput | WorkShiftDetailUpdateManyWithWhereWithoutWorkShiftInput[]
+    deleteMany?: WorkShiftDetailScalarWhereInput | WorkShiftDetailScalarWhereInput[]
+  }
+
+  export type EmployeeUpdateManyWithoutWorkShiftNestedInput = {
+    create?: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput> | EmployeeCreateWithoutWorkShiftInput[] | EmployeeUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutWorkShiftInput | EmployeeCreateOrConnectWithoutWorkShiftInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutWorkShiftInput | EmployeeUpsertWithWhereUniqueWithoutWorkShiftInput[]
+    createMany?: EmployeeCreateManyWorkShiftInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutWorkShiftInput | EmployeeUpdateWithWhereUniqueWithoutWorkShiftInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutWorkShiftInput | EmployeeUpdateManyWithWhereWithoutWorkShiftInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
+  }
+
+  export type WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftNestedInput = {
+    create?: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput> | WorkShiftDetailCreateWithoutWorkShiftInput[] | WorkShiftDetailUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: WorkShiftDetailCreateOrConnectWithoutWorkShiftInput | WorkShiftDetailCreateOrConnectWithoutWorkShiftInput[]
+    upsert?: WorkShiftDetailUpsertWithWhereUniqueWithoutWorkShiftInput | WorkShiftDetailUpsertWithWhereUniqueWithoutWorkShiftInput[]
+    createMany?: WorkShiftDetailCreateManyWorkShiftInputEnvelope
+    set?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    disconnect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    delete?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    connect?: WorkShiftDetailWhereUniqueInput | WorkShiftDetailWhereUniqueInput[]
+    update?: WorkShiftDetailUpdateWithWhereUniqueWithoutWorkShiftInput | WorkShiftDetailUpdateWithWhereUniqueWithoutWorkShiftInput[]
+    updateMany?: WorkShiftDetailUpdateManyWithWhereWithoutWorkShiftInput | WorkShiftDetailUpdateManyWithWhereWithoutWorkShiftInput[]
+    deleteMany?: WorkShiftDetailScalarWhereInput | WorkShiftDetailScalarWhereInput[]
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutWorkShiftNestedInput = {
+    create?: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput> | EmployeeCreateWithoutWorkShiftInput[] | EmployeeUncheckedCreateWithoutWorkShiftInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutWorkShiftInput | EmployeeCreateOrConnectWithoutWorkShiftInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutWorkShiftInput | EmployeeUpsertWithWhereUniqueWithoutWorkShiftInput[]
+    createMany?: EmployeeCreateManyWorkShiftInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutWorkShiftInput | EmployeeUpdateWithWhereUniqueWithoutWorkShiftInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutWorkShiftInput | EmployeeUpdateManyWithWhereWithoutWorkShiftInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
+  }
+
+  export type WorkShiftCreateNestedOneWithoutDetailsInput = {
+    create?: XOR<WorkShiftCreateWithoutDetailsInput, WorkShiftUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: WorkShiftCreateOrConnectWithoutDetailsInput
+    connect?: WorkShiftWhereUniqueInput
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type WorkShiftUpdateOneRequiredWithoutDetailsNestedInput = {
+    create?: XOR<WorkShiftCreateWithoutDetailsInput, WorkShiftUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: WorkShiftCreateOrConnectWithoutDetailsInput
+    upsert?: WorkShiftUpsertWithoutDetailsInput
+    connect?: WorkShiftWhereUniqueInput
+    update?: XOR<XOR<WorkShiftUpdateToOneWithWhereWithoutDetailsInput, WorkShiftUpdateWithoutDetailsInput>, WorkShiftUncheckedUpdateWithoutDetailsInput>
+  }
+
   export type EmployeeCreateNestedManyWithoutHealthInsuranceInput = {
     create?: XOR<EmployeeCreateWithoutHealthInsuranceInput, EmployeeUncheckedCreateWithoutHealthInsuranceInput> | EmployeeCreateWithoutHealthInsuranceInput[] | EmployeeUncheckedCreateWithoutHealthInsuranceInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutHealthInsuranceInput | EmployeeCreateOrConnectWithoutHealthInsuranceInput[]
@@ -40597,6 +43859,12 @@ export namespace Prisma {
     connect?: SalaryScaleWhereUniqueInput
   }
 
+  export type WorkShiftCreateNestedOneWithoutEmployeesInput = {
+    create?: XOR<WorkShiftCreateWithoutEmployeesInput, WorkShiftUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: WorkShiftCreateOrConnectWithoutEmployeesInput
+    connect?: WorkShiftWhereUniqueInput
+  }
+
   export type PaySlipCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -40651,14 +43919,6 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutEmployeeInput | PeriodNoveltyCreateOrConnectWithoutEmployeeInput[]
     createMany?: PeriodNoveltyCreateManyEmployeeInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
-  }
-
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string
-    increment?: Decimal | DecimalJsLike | number | string
-    decrement?: Decimal | DecimalJsLike | number | string
-    multiply?: Decimal | DecimalJsLike | number | string
-    divide?: Decimal | DecimalJsLike | number | string
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -40729,6 +43989,16 @@ export namespace Prisma {
     delete?: SalaryScaleWhereInput | boolean
     connect?: SalaryScaleWhereUniqueInput
     update?: XOR<XOR<SalaryScaleUpdateToOneWithWhereWithoutEmployeesInput, SalaryScaleUpdateWithoutEmployeesInput>, SalaryScaleUncheckedUpdateWithoutEmployeesInput>
+  }
+
+  export type WorkShiftUpdateOneWithoutEmployeesNestedInput = {
+    create?: XOR<WorkShiftCreateWithoutEmployeesInput, WorkShiftUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: WorkShiftCreateOrConnectWithoutEmployeesInput
+    upsert?: WorkShiftUpsertWithoutEmployeesInput
+    disconnect?: WorkShiftWhereInput | boolean
+    delete?: WorkShiftWhereInput | boolean
+    connect?: WorkShiftWhereUniqueInput
+    update?: XOR<XOR<WorkShiftUpdateToOneWithWhereWithoutEmployeesInput, WorkShiftUpdateWithoutEmployeesInput>, WorkShiftUncheckedUpdateWithoutEmployeesInput>
   }
 
   export type PaySlipUpdateManyWithoutEmployeeNestedInput = {
@@ -40987,14 +44257,6 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutConceptInput | PeriodNoveltyCreateOrConnectWithoutConceptInput[]
     createMany?: PeriodNoveltyCreateManyConceptInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type PayrollMatrixUpdateOneWithoutConceptsNestedInput = {
@@ -41575,6 +44837,33 @@ export namespace Prisma {
     _max?: NestedDecimalFilter<$PrismaModel>
   }
 
+  export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedFloatNullableFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[]
@@ -41671,6 +44960,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -41707,6 +44997,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -41785,6 +45076,7 @@ export namespace Prisma {
     mutualId?: StringNullableFilter<"Employee"> | string | null
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
+    workShiftId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -42065,6 +45357,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -42101,6 +45394,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42281,6 +45575,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -42317,6 +45612,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42479,6 +45775,292 @@ export namespace Prisma {
     data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutJobPositionInput>
   }
 
+  export type WorkShiftDetailCreateWithoutWorkShiftInput = {
+    id?: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WorkShiftDetailUncheckedCreateWithoutWorkShiftInput = {
+    id?: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type WorkShiftDetailCreateOrConnectWithoutWorkShiftInput = {
+    where: WorkShiftDetailWhereUniqueInput
+    create: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput>
+  }
+
+  export type WorkShiftDetailCreateManyWorkShiftInputEnvelope = {
+    data: WorkShiftDetailCreateManyWorkShiftInput | WorkShiftDetailCreateManyWorkShiftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeCreateWithoutWorkShiftInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutWorkShiftInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutWorkShiftInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput>
+  }
+
+  export type EmployeeCreateManyWorkShiftInputEnvelope = {
+    data: EmployeeCreateManyWorkShiftInput | EmployeeCreateManyWorkShiftInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkShiftDetailUpsertWithWhereUniqueWithoutWorkShiftInput = {
+    where: WorkShiftDetailWhereUniqueInput
+    update: XOR<WorkShiftDetailUpdateWithoutWorkShiftInput, WorkShiftDetailUncheckedUpdateWithoutWorkShiftInput>
+    create: XOR<WorkShiftDetailCreateWithoutWorkShiftInput, WorkShiftDetailUncheckedCreateWithoutWorkShiftInput>
+  }
+
+  export type WorkShiftDetailUpdateWithWhereUniqueWithoutWorkShiftInput = {
+    where: WorkShiftDetailWhereUniqueInput
+    data: XOR<WorkShiftDetailUpdateWithoutWorkShiftInput, WorkShiftDetailUncheckedUpdateWithoutWorkShiftInput>
+  }
+
+  export type WorkShiftDetailUpdateManyWithWhereWithoutWorkShiftInput = {
+    where: WorkShiftDetailScalarWhereInput
+    data: XOR<WorkShiftDetailUpdateManyMutationInput, WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftInput>
+  }
+
+  export type WorkShiftDetailScalarWhereInput = {
+    AND?: WorkShiftDetailScalarWhereInput | WorkShiftDetailScalarWhereInput[]
+    OR?: WorkShiftDetailScalarWhereInput[]
+    NOT?: WorkShiftDetailScalarWhereInput | WorkShiftDetailScalarWhereInput[]
+    id?: StringFilter<"WorkShiftDetail"> | string
+    workShiftId?: StringFilter<"WorkShiftDetail"> | string
+    dayOfWeek?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    cycleDayNumber?: IntNullableFilter<"WorkShiftDetail"> | number | null
+    dayName?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    isWorkDay?: BoolFilter<"WorkShiftDetail"> | boolean
+    startTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    endTime?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    crossesMidnight?: BoolFilter<"WorkShiftDetail"> | boolean
+    breakMinutes?: IntFilter<"WorkShiftDetail"> | number
+    netHours?: DecimalFilter<"WorkShiftDetail"> | Decimal | DecimalJsLike | number | string
+    notes?: StringNullableFilter<"WorkShiftDetail"> | string | null
+    createdAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"WorkShiftDetail"> | Date | string
+  }
+
+  export type EmployeeUpsertWithWhereUniqueWithoutWorkShiftInput = {
+    where: EmployeeWhereUniqueInput
+    update: XOR<EmployeeUpdateWithoutWorkShiftInput, EmployeeUncheckedUpdateWithoutWorkShiftInput>
+    create: XOR<EmployeeCreateWithoutWorkShiftInput, EmployeeUncheckedCreateWithoutWorkShiftInput>
+  }
+
+  export type EmployeeUpdateWithWhereUniqueWithoutWorkShiftInput = {
+    where: EmployeeWhereUniqueInput
+    data: XOR<EmployeeUpdateWithoutWorkShiftInput, EmployeeUncheckedUpdateWithoutWorkShiftInput>
+  }
+
+  export type EmployeeUpdateManyWithWhereWithoutWorkShiftInput = {
+    where: EmployeeScalarWhereInput
+    data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutWorkShiftInput>
+  }
+
+  export type WorkShiftCreateWithoutDetailsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftUncheckedCreateWithoutDetailsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeUncheckedCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftCreateOrConnectWithoutDetailsInput = {
+    where: WorkShiftWhereUniqueInput
+    create: XOR<WorkShiftCreateWithoutDetailsInput, WorkShiftUncheckedCreateWithoutDetailsInput>
+  }
+
+  export type WorkShiftUpsertWithoutDetailsInput = {
+    update: XOR<WorkShiftUpdateWithoutDetailsInput, WorkShiftUncheckedUpdateWithoutDetailsInput>
+    create: XOR<WorkShiftCreateWithoutDetailsInput, WorkShiftUncheckedCreateWithoutDetailsInput>
+    where?: WorkShiftWhereInput
+  }
+
+  export type WorkShiftUpdateToOneWithWhereWithoutDetailsInput = {
+    where?: WorkShiftWhereInput
+    data: XOR<WorkShiftUpdateWithoutDetailsInput, WorkShiftUncheckedUpdateWithoutDetailsInput>
+  }
+
+  export type WorkShiftUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUpdateManyWithoutWorkShiftNestedInput
+  }
+
+  export type WorkShiftUncheckedUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUncheckedUpdateManyWithoutWorkShiftNestedInput
+  }
+
   export type EmployeeCreateWithoutHealthInsuranceInput = {
     id?: string
     fileNumber: string
@@ -42521,6 +46103,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -42557,6 +46140,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42643,6 +46227,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -42679,6 +46264,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -42765,6 +46351,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -42801,6 +46388,7 @@ export namespace Prisma {
     unionId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -43022,6 +46610,45 @@ export namespace Prisma {
   export type SalaryScaleCreateOrConnectWithoutEmployeesInput = {
     where: SalaryScaleWhereUniqueInput
     create: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
+  }
+
+  export type WorkShiftCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    details?: WorkShiftDetailCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftUncheckedCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    code?: string | null
+    description?: string | null
+    cycleType?: string
+    dailyHours?: Decimal | DecimalJsLike | number | string
+    weeklyHours?: Decimal | DecimalJsLike | number | string
+    monthlyHours?: Decimal | DecimalJsLike | number | string
+    monthlyDays?: Decimal | DecimalJsLike | number | string
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    details?: WorkShiftDetailUncheckedCreateNestedManyWithoutWorkShiftInput
+  }
+
+  export type WorkShiftCreateOrConnectWithoutEmployeesInput = {
+    where: WorkShiftWhereUniqueInput
+    create: XOR<WorkShiftCreateWithoutEmployeesInput, WorkShiftUncheckedCreateWithoutEmployeesInput>
   }
 
   export type PaySlipCreateWithoutEmployeeInput = {
@@ -43443,6 +47070,51 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type WorkShiftUpsertWithoutEmployeesInput = {
+    update: XOR<WorkShiftUpdateWithoutEmployeesInput, WorkShiftUncheckedUpdateWithoutEmployeesInput>
+    create: XOR<WorkShiftCreateWithoutEmployeesInput, WorkShiftUncheckedCreateWithoutEmployeesInput>
+    where?: WorkShiftWhereInput
+  }
+
+  export type WorkShiftUpdateToOneWithWhereWithoutEmployeesInput = {
+    where?: WorkShiftWhereInput
+    data: XOR<WorkShiftUpdateWithoutEmployeesInput, WorkShiftUncheckedUpdateWithoutEmployeesInput>
+  }
+
+  export type WorkShiftUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    details?: WorkShiftDetailUpdateManyWithoutWorkShiftNestedInput
+  }
+
+  export type WorkShiftUncheckedUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    cycleType?: StringFieldUpdateOperationsInput | string
+    dailyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    details?: WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftNestedInput
+  }
+
   export type PaySlipUpsertWithWhereUniqueWithoutEmployeeInput = {
     where: PaySlipWhereUniqueInput
     update: XOR<PaySlipUpdateWithoutEmployeeInput, PaySlipUncheckedUpdateWithoutEmployeeInput>
@@ -43642,6 +47314,7 @@ export namespace Prisma {
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -43678,6 +47351,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -43819,6 +47493,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -43855,6 +47530,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -43954,6 +47630,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -43990,6 +47667,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44255,6 +47933,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -44291,6 +47970,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -44446,6 +48126,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -44482,6 +48163,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -44973,6 +48655,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -45009,6 +48692,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45239,6 +48923,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -45275,6 +48960,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -45843,6 +49529,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -45879,6 +49566,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46091,6 +49779,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -46127,6 +49816,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46259,6 +49949,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46315,6 +50006,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -46351,6 +50043,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46399,6 +50092,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46643,6 +50337,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46699,6 +50394,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -46735,6 +50431,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46783,6 +50480,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46827,6 +50525,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46883,6 +50582,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -46919,6 +50619,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46962,6 +50663,259 @@ export namespace Prisma {
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type WorkShiftDetailCreateManyWorkShiftInput = {
+    id?: string
+    dayOfWeek?: number | null
+    cycleDayNumber?: number | null
+    dayName?: string | null
+    isWorkDay?: boolean
+    startTime?: string | null
+    endTime?: string | null
+    crossesMidnight?: boolean
+    breakMinutes?: number
+    netHours?: Decimal | DecimalJsLike | number | string
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeCreateManyWorkShiftInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+  }
+
+  export type WorkShiftDetailUpdateWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkShiftDetailUncheckedUpdateWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    dayOfWeek?: NullableIntFieldUpdateOperationsInput | number | null
+    cycleDayNumber?: NullableIntFieldUpdateOperationsInput | number | null
+    dayName?: NullableStringFieldUpdateOperationsInput | string | null
+    isWorkDay?: BoolFieldUpdateOperationsInput | boolean
+    startTime?: NullableStringFieldUpdateOperationsInput | string | null
+    endTime?: NullableStringFieldUpdateOperationsInput | string | null
+    crossesMidnight?: BoolFieldUpdateOperationsInput | boolean
+    breakMinutes?: IntFieldUpdateOperationsInput | number
+    netHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeUpdateWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutWorkShiftInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
     healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -47011,6 +50965,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47067,6 +51022,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -47103,6 +51059,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47151,6 +51108,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47195,6 +51153,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47251,6 +51210,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -47287,6 +51247,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47335,6 +51296,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47379,6 +51341,7 @@ export namespace Prisma {
     unionId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47435,6 +51398,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -47471,6 +51435,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47519,6 +51484,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47875,6 +51841,7 @@ export namespace Prisma {
     unionId?: string | null
     mutualId?: string | null
     contractModalityCode?: string | null
+    workShiftId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47931,6 +51898,7 @@ export namespace Prisma {
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -47967,6 +51935,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48015,6 +51984,7 @@ export namespace Prisma {
     unionId?: NullableStringFieldUpdateOperationsInput | string | null
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

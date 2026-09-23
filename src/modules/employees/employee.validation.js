@@ -62,6 +62,7 @@ export const createEmployeeSchema = z.object({
   mutualId: z.string().trim().nullable().optional().or(z.literal('')),
   contractModalityCode: z.string().trim().nullable().optional().or(z.literal('')),
   salaryScaleId: z.string().trim().nullable().optional().or(z.literal('')),
+  workShiftId: z.string().trim().nullable().optional().or(z.literal('')),
 
   // Parámetros de Liquidación y Jornada
   payrollGroup: z.string().trim().default('MENSUAL'),

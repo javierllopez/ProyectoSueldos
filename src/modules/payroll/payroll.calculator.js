@@ -454,6 +454,20 @@ export function calculateEmployeePayroll({
       : (employee.basicSalary || 0)
   );
 
+  // Parámetros de Jornada de Trabajo asignada o fallback seguro
+  const shiftDaily = employee.workShift?.dailyHours
+    ? Number(employee.workShift.dailyHours)
+    : (isIntern ? 4.00 : (Number(employee.weeklyWorkingHours || 48) / 5));
+  const shiftWeekly = employee.workShift?.weeklyHours
+    ? Number(employee.workShift.weeklyHours)
+    : (isIntern ? 20.00 : Number(employee.weeklyWorkingHours || 48));
+  const shiftMonthly = employee.workShift?.monthlyHours
+    ? Number(employee.workShift.monthlyHours)
+    : (isIntern ? 80.00 : Number(employee.monthlyWorkingHours || 200));
+  const shiftDays = employee.workShift?.monthlyDays
+    ? Number(employee.workShift.monthlyDays)
+    : (isIntern ? 20.00 : 30.00);
+
   // Contexto de valores para resolución de fórmulas
   const context = {
     ANTIGUEDAD_ANOS: seniority.years,
@@ -472,8 +486,15 @@ export function calculateEmployeePayroll({
     ESTIMULO: baseSalaryNominal,
     ES_JORNADA_PARCIAL: (isIntern || employee.isPartTime) ? 1 : 0,
     PORCENTAJE_JORNADA: isIntern ? 50.00 : Number(employee.partTimePercentage || 100),
-    HORAS_SEMANALES: isIntern ? 20.00 : Number(employee.weeklyWorkingHours || 48),
-    HORAS_CONTRATO: isIntern ? 80.00 : Number(employee.monthlyWorkingHours || 200),
+    HORAS_SEMANALES: shiftWeekly,
+    HORAS_CONTRATO: shiftMonthly,
+    HORAS_MENSUALES: shiftMonthly,
+    HORAS_DIARIAS: shiftDaily,
+    DIAS_MENSUALES: shiftDays,
+    JORNADA_HORAS_DIARIAS: shiftDaily,
+    JORNADA_HORAS_SEMANALES: shiftWeekly,
+    JORNADA_HORAS_MENSUALES: shiftMonthly,
+    JORNADA_DIAS_MENSUALES: shiftDays,
     GRUPO_NOMINA: employee.payrollGroup || 'MENSUAL',
     TOTAL_REMUNERATIVO: 0,
     TOTAL_NO_REMUNERATIVO: 0,

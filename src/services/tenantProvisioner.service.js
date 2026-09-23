@@ -119,6 +119,41 @@ const TENANT_TABLE_DEFINITIONS = [
     CONSTRAINT \`job_positions_service_type_code_fkey\` FOREIGN KEY (\`service_type_code\`) REFERENCES \`arca_service_types\`(\`code\`) ON DELETE SET NULL ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
+  `CREATE TABLE IF NOT EXISTS \`work_shifts\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`code\` VARCHAR(50) NULL,
+    \`description\` TEXT NULL,
+    \`cycle_type\` VARCHAR(30) NOT NULL DEFAULT 'SEMANAL',
+    \`daily_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 8.00,
+    \`weekly_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
+    \`monthly_hours\` DECIMAL(6, 2) NOT NULL DEFAULT 200.00,
+    \`monthly_days\` DECIMAL(5, 2) NOT NULL DEFAULT 30.00,
+    \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`work_shift_details\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`work_shift_id\` VARCHAR(191) NOT NULL,
+    \`day_of_week\` INT NULL,
+    \`cycle_day_number\` INT NULL,
+    \`day_name\` VARCHAR(50) NULL,
+    \`is_work_day\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`start_time\` VARCHAR(5) NULL,
+    \`end_time\` VARCHAR(5) NULL,
+    \`crosses_midnight\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`break_minutes\` INT NOT NULL DEFAULT 0,
+    \`net_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+    \`notes\` VARCHAR(255) NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    INDEX \`idx_wsd_shift_id\` (\`work_shift_id\`),
+    CONSTRAINT \`fk_wsd_work_shift\` FOREIGN KEY (\`work_shift_id\`) REFERENCES \`work_shifts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
   `CREATE TABLE IF NOT EXISTS \`health_insurances\` (
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`name\` VARCHAR(191) NOT NULL,
@@ -900,6 +935,45 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`work_shifts\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`code\` VARCHAR(50) NULL,
+        \`description\` TEXT NULL,
+        \`cycle_type\` VARCHAR(30) NOT NULL DEFAULT 'SEMANAL',
+        \`daily_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 8.00,
+        \`weekly_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
+        \`monthly_hours\` DECIMAL(6, 2) NOT NULL DEFAULT 200.00,
+        \`monthly_days\` DECIMAL(5, 2) NOT NULL DEFAULT 30.00,
+        \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`work_shift_details\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`work_shift_id\` VARCHAR(191) NOT NULL,
+        \`day_of_week\` INT NULL,
+        \`cycle_day_number\` INT NULL,
+        \`day_name\` VARCHAR(50) NULL,
+        \`is_work_day\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`start_time\` VARCHAR(5) NULL,
+        \`end_time\` VARCHAR(5) NULL,
+        \`crosses_midnight\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`break_minutes\` INT NOT NULL DEFAULT 0,
+        \`net_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 0.00,
+        \`notes\` VARCHAR(255) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        INDEX \`idx_wsd_shift_id\` (\`work_shift_id\`),
+        CONSTRAINT \`fk_wsd_work_shift\` FOREIGN KEY (\`work_shift_id\`) REFERENCES \`work_shifts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
     // Comprobar columnas clave en salary_scales para migraciones no destructivas
     const salaryScaleCols = [
       { name: 'is_intern_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
@@ -947,6 +1021,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         \`health_insurance_id\` VARCHAR(191) NULL,
         \`union_id\` VARCHAR(191) NULL,
         \`mutual_id\` VARCHAR(191) NULL,
+        \`work_shift_id\` VARCHAR(191) NULL,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL,
@@ -954,7 +1029,8 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         INDEX \`employees_job_position_id_idx\` (\`job_position_id\`),
         INDEX \`employees_health_insurance_id_idx\` (\`health_insurance_id\`),
         INDEX \`employees_union_id_idx\` (\`union_id\`),
-        INDEX \`employees_mutual_id_idx\` (\`mutual_id\`)
+        INDEX \`employees_mutual_id_idx\` (\`mutual_id\`),
+        INDEX \`employees_work_shift_id_idx\` (\`work_shift_id\`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
@@ -978,6 +1054,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       { name: 'mutual_id', def: 'VARCHAR(191) NULL' },
       { name: 'contract_modality_code', def: 'VARCHAR(50) NULL' },
       { name: 'salary_scale_id', def: 'VARCHAR(191) NULL' },
+      { name: 'work_shift_id', def: 'VARCHAR(191) NULL' },
       { name: 'termination_date', def: 'DATETIME(3) NULL' },
       { name: 'termination_reason', def: 'VARCHAR(255) NULL' },
       { name: 'payroll_group', def: "VARCHAR(50) NOT NULL DEFAULT 'MENSUAL'" },

@@ -679,6 +679,171 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
   const res1001 = residualResult.items.find((i) => i.conceptCode === '1001');
   assert(res1001 && res1001.amount === 400000, `Pasante debe ignorar residuo asignado de 85.000 y liquidar 400.000 (obtenido ${res1001?.amount})`);
   assert(residualResult.totals.totalRemunerative === 0, 'Pasante no debe computar concepto remunerativo residual');
+
+  // ====================================================
+  // 8. Módulo de Jornadas de Trabajo y Variables en Fórmulas
+  // ====================================================
+  console.log('\n--- 8. Módulo de Jornadas de Trabajo y Variables en Fórmulas ---');
+
+  // Test 8.1: Validación de fórmulas con variables de jornada
+  const valResult1 = validateConceptFormula({
+    formula: 'REDONDEAR([SUELDO_BASICO_EMPLEADO] / [JORNADA_HORAS_MENSUALES], 2)',
+    conceptCode: '1020',
+    calculationOrder: 150,
+  });
+  assert(valResult1.isValid, 'Fórmula con [JORNADA_HORAS_MENSUALES] debe ser VÁLIDA');
+
+  const valResult2 = validateConceptFormula({
+    formula: 'REDONDEAR([SUELDO_BASICO_EMPLEADO] / [JORNADA_DIAS_MENSUALES], 2)',
+    conceptCode: '1025',
+    calculationOrder: 160,
+  });
+  assert(valResult2.isValid, 'Fórmula con [JORNADA_DIAS_MENSUALES] debe ser VÁLIDA');
+
+  // Test 8.2: Liquidación de empleado con Jornada Nocturna 7hs asignada
+  const nightShiftEmployee = {
+    id: 'emp-night-1',
+    fileNumber: 'N-001',
+    cuil: '20334455667',
+    lastName: 'Nocturno',
+    firstName: 'Juan',
+    basicSalary: 1000000,
+    salaryScale: { amount: 1000000 },
+    hireDate: new Date(2023, 0, 1),
+    isPartTime: false,
+    weeklyWorkingHours: 35,
+    monthlyWorkingHours: 150,
+    partTimePercentage: 100,
+    workShift: {
+      id: 'ws-noct-1',
+      name: 'Jornada Nocturna 7hs',
+      code: 'NOCT_7H',
+      dailyHours: 7.00,
+      weeklyHours: 35.00,
+      monthlyHours: 150.00,
+      monthlyDays: 21.00,
+      cycleType: 'SEMANAL',
+    },
+    assignedConcepts: [],
+  };
+
+  const nightShiftConcepts = [
+    {
+      id: 'c-1000',
+      code: '1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      calculationOrder: 100,
+      isPersistent: true,
+      defaultValue: 1000000,
+    },
+    {
+      id: 'c-1020',
+      code: '1020',
+      name: 'Valor Hora Nocturna (10hs extras)',
+      type: 'REMUNERATIVE',
+      calculationType: 'FORMULA',
+      formula: 'REDONDEAR(([SUELDO_BASICO_EMPLEADO] / [JORNADA_HORAS_MENSUALES]) * 10 * 1.5, 2)',
+      calculationOrder: 150,
+      isPersistent: true,
+    },
+    {
+      id: 'c-1025',
+      code: '1025',
+      name: 'Plus por Día Alterno Franco',
+      type: 'NON_REMUNERATIVE',
+      calculationType: 'FORMULA',
+      formula: 'REDONDEAR([SUELDO_BASICO_EMPLEADO] / [JORNADA_DIAS_MENSUALES], 2)',
+      calculationOrder: 160,
+      isPersistent: true,
+    },
+  ];
+
+  const nightResult = calculateEmployeePayroll({
+    employee: nightShiftEmployee,
+    period,
+    payrollSettings: internPayrollSettings,
+    allConcepts: nightShiftConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const hourItem = nightResult.items.find((i) => i.conceptCode === '1020');
+  // Valor hora = 1.000.000 / 150 = 6666.67. Con 10 hs al 50%: 6666.666... * 15 = 100000
+  assert(hourItem && hourItem.amount === 100000, `Valor hora nocturna con [JORNADA_HORAS_MENSUALES] debe ser 100.000 (obtenido ${hourItem?.amount})`);
+
+  const dayItem = nightResult.items.find((i) => i.conceptCode === '1025');
+  // Valor día = 1.000.000 / 21 = 47619.05
+  assert(dayItem && dayItem.amount === 47619.05, `Valor día con [JORNADA_DIAS_MENSUALES] debe ser 47.619,05 (obtenido ${dayItem?.amount})`);
+
+  // Test 8.3: Fallback seguro para empleado sin jornada asignada
+  const legacyEmployee = {
+    id: 'emp-legacy-1',
+    fileNumber: 'L-001',
+    cuil: '20223344556',
+    lastName: 'Tradicional',
+    firstName: 'Pedro',
+    basicSalary: 1200000,
+    salaryScale: { amount: 1200000 },
+    hireDate: new Date(2022, 0, 1),
+    isPartTime: false,
+    weeklyWorkingHours: 48,
+    monthlyWorkingHours: 200,
+    partTimePercentage: 100,
+    workShift: null, // Sin jornada asignada
+    assignedConcepts: [],
+  };
+
+  const legacyConcepts = [
+    {
+      id: 'c-legacy-basic',
+      code: '1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      calculationOrder: 100,
+      isPersistent: true,
+      defaultValue: 1200000,
+    },
+    {
+      id: 'c-legacy-1',
+      code: '1020',
+      name: 'Valor Hora Estándar',
+      type: 'REMUNERATIVE',
+      calculationType: 'FORMULA',
+      formula: 'REDONDEAR([SUELDO_BASICO_EMPLEADO] / [JORNADA_HORAS_MENSUALES], 2)',
+      calculationOrder: 150,
+      isPersistent: true,
+    },
+    {
+      id: 'c-legacy-2',
+      code: '1025',
+      name: 'Valor Día Estándar',
+      type: 'REMUNERATIVE',
+      calculationType: 'FORMULA',
+      formula: 'REDONDEAR([SUELDO_BASICO_EMPLEADO] / [JORNADA_DIAS_MENSUALES], 2)',
+      calculationOrder: 160,
+      isPersistent: true,
+    },
+  ];
+
+  const legacyResult = calculateEmployeePayroll({
+    employee: legacyEmployee,
+    period,
+    payrollSettings: internPayrollSettings,
+    allConcepts: legacyConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const legHour = legacyResult.items.find((i) => i.conceptCode === '1020');
+  // Fallback mensual = 200 hs -> 1.200.000 / 200 = 6000
+  assert(legHour && legHour.amount === 6000, `Fallback mensual sin jornada asignada debe ser 6000 (obtenido ${legHour?.amount})`);
+
+  const legDay = legacyResult.items.find((i) => i.conceptCode === '1025');
+  // Fallback días = 30 días -> 1.200.000 / 30 = 40000
+  assert(legDay && legDay.amount === 40000, `Fallback días sin jornada asignada debe ser 40000 (obtenido ${legDay?.amount})`);
 }
 
 console.log('\n====================================================');

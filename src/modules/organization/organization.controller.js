@@ -1,4 +1,5 @@
 import * as organizationService from './organization.service.js';
+import * as workShiftService from './workShift.service.js';
 
 // --- SECTORES ---
 
@@ -119,4 +120,38 @@ export async function listArcaContractModalities(req, res) {
   });
   return res.status(200).json({ data: modalities });
 }
+
+// --- JORNADAS DE TRABAJO ---
+
+export async function listWorkShifts(req, res) {
+  const result = await workShiftService.listWorkShifts(req.tenantPrisma, req.query);
+  return res.status(200).json(result);
+}
+
+export async function getWorkShiftById(req, res) {
+  const shift = await workShiftService.getWorkShiftById(req.tenantPrisma, req.params.id);
+  return res.status(200).json({ data: shift });
+}
+
+export async function createWorkShift(req, res) {
+  const shift = await workShiftService.createWorkShift(req.tenantPrisma, req.body);
+  return res.status(201).json({
+    data: shift,
+    message: 'Jornada de trabajo creada exitosamente',
+  });
+}
+
+export async function updateWorkShift(req, res) {
+  const shift = await workShiftService.updateWorkShift(req.tenantPrisma, req.params.id, req.body);
+  return res.status(200).json({
+    data: shift,
+    message: 'Jornada de trabajo actualizada exitosamente',
+  });
+}
+
+export async function deleteWorkShift(req, res) {
+  const result = await workShiftService.deleteWorkShift(req.tenantPrisma, req.params.id);
+  return res.status(200).json(result);
+}
+
 

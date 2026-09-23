@@ -154,6 +154,49 @@ model JobPosition {
   @@map("job_positions")
 }
 
+model WorkShift {
+  id           String    @id @default(uuid())
+  name         String    @map("name")
+  code         String?   @map("code") @db.VarChar(50)
+  description  String?   @map("description") @db.Text
+  cycleType    String    @default("SEMANAL") @map("cycle_type") @db.VarChar(30)
+  dailyHours   Decimal   @default(8.00) @map("daily_hours") @db.Decimal(5, 2)
+  weeklyHours  Decimal   @default(48.00) @map("weekly_hours") @db.Decimal(5, 2)
+  monthlyHours Decimal   @default(200.00) @map("monthly_hours") @db.Decimal(6, 2)
+  monthlyDays  Decimal   @default(30.00) @map("monthly_days") @db.Decimal(5, 2)
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  details   WorkShiftDetail[]
+  employees Employee[]
+
+  @@map("work_shifts")
+}
+
+model WorkShiftDetail {
+  id              String   @id @default(uuid())
+  workShiftId     String   @map("work_shift_id")
+  dayOfWeek       Int?     @map("day_of_week")
+  cycleDayNumber  Int?     @map("cycle_day_number")
+  dayName         String?  @map("day_name") @db.VarChar(50)
+  isWorkDay       Boolean  @default(true) @map("is_work_day")
+  startTime       String?  @map("start_time") @db.VarChar(5)
+  endTime         String?  @map("end_time") @db.VarChar(5)
+  crossesMidnight Boolean  @default(false) @map("crosses_midnight")
+  breakMinutes    Int      @default(0) @map("break_minutes")
+  netHours        Decimal  @default(0.00) @map("net_hours") @db.Decimal(5, 2)
+  notes           String?  @map("notes") @db.VarChar(255)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  workShift WorkShift @relation(fields: [workShiftId], references: [id], onDelete: Cascade)
+
+  @@index([workShiftId])
+  @@map("work_shift_details")
+}
+
 model HealthInsurance {
   id        String    @id @default(uuid())
   name      String    @map("name")
@@ -230,6 +273,7 @@ model Employee {
   mutualId             String? @map("mutual_id")
   contractModalityCode String? @map("contract_modality_code") @db.VarChar(50)
   salaryScaleId        String? @map("salary_scale_id")
+  workShiftId          String? @map("work_shift_id")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -253,6 +297,7 @@ model Employee {
   mutual           Mutual?               @relation(fields: [mutualId], references: [id])
   contractModality ArcaContractModality? @relation(fields: [contractModalityCode], references: [code])
   salaryScale      SalaryScale?          @relation(fields: [salaryScaleId], references: [id])
+  workShift        WorkShift?            @relation(fields: [workShiftId], references: [id])
   paySlips         PaySlip[]
   relatives        EmployeeRelative[]
   assignedConcepts EmployeeConcept[]
@@ -265,6 +310,7 @@ model Employee {
   @@index([mutualId])
   @@index([contractModalityCode])
   @@index([salaryScaleId])
+  @@index([workShiftId])
   @@map("employees")
 }
 

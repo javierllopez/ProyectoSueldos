@@ -552,6 +552,10 @@ class AppController {
     this.jobPositionsPage = 1;
     this.jobPositionsPageSize = 5;
     this.pendingImportJobPositions = [];
+    this.workShifts = [];
+    this.workShiftsPage = 1;
+    this.workShiftsPageSize = 5;
+    this.currentWorkShiftDetails = [];
     this.healthInsurances = [];
     this.healthInsurancesPage = 1;
     this.healthInsurancesPageSize = 5;
@@ -2036,14 +2040,16 @@ class AppController {
 
     setTableLoading('departments-table-body', 4, 'Cargando sectores...', 'departments-pagination-container');
     setTableLoading('job-positions-table-body', 4, 'Cargando puestos de trabajo...', 'job-positions-pagination-container');
+    setTableLoading('work-shifts-table-body', 9, 'Cargando jornadas de trabajo...', 'work-shifts-pagination-container');
     setTableLoading('health-insurances-table-body', 4, 'Cargando obras sociales...', 'health-insurances-pagination-container');
     setTableLoading('unions-table-body', 4, 'Cargando sindicatos...', 'unions-pagination-container');
     setTableLoading('mutuals-table-body', 4, 'Cargando mutuales...', 'mutuals-pagination-container');
     setTableLoading('kinships-table-body', 4, 'Cargando parentescos...', 'kinships-pagination-container');
 
-    const [deptRes, jobRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, profileRes, salaryScalesRes, payrollSettingsRes] = await Promise.all([
+    const [deptRes, jobRes, shiftRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, profileRes, salaryScalesRes, payrollSettingsRes] = await Promise.all([
       apiRequest('/departments'),
       apiRequest('/job-positions'),
+      apiRequest('/work-shifts').catch(() => ({ data: [] })),
       apiRequest('/health-insurances'),
       apiRequest('/unions'),
       apiRequest('/mutuals'),
@@ -2060,6 +2066,7 @@ class AppController {
 
     this.departments = deptRes.data || [];
     this.jobPositions = jobRes.data || [];
+    this.workShifts = shiftRes.data || [];
     this.healthInsurances = hiRes.data || [];
     this.unions = unionRes.data || [];
     this.mutuals = mutualRes.data || [];
@@ -2085,6 +2092,8 @@ class AppController {
     if (bDept) bDept.textContent = this.departments.length;
     const bJob = document.getElementById('personnel-badge-job-count');
     if (bJob) bJob.textContent = this.jobPositions.length;
+    const bShift = document.getElementById('personnel-badge-shifts-count');
+    if (bShift) bShift.textContent = this.workShifts.length;
     const bHi = document.getElementById('personnel-badge-hi-count');
     if (bHi) bHi.textContent = this.healthInsurances.length;
     const bUnion = document.getElementById('personnel-badge-union-count');
@@ -2127,6 +2136,7 @@ class AppController {
 
     this.renderDepartmentsTable();
     this.renderJobPositionsTable();
+    this.renderWorkShiftsTable();
     this.renderHealthInsurancesTable();
     this.renderUnionsTable();
     this.renderMutualsTable();
@@ -2682,6 +2692,159 @@ class AppController {
     });
 
     tbody.querySelectorAll('.btn-filter-job-employees').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.switchPersonnelPane('#pane-personnel-employees');
+      });
+    });
+  }
+
+  renderWorkShiftsTable() {
+    const tbody = document.getElementById('work-shifts-table-body');
+    if (!tbody) return;
+
+    const searchTerm = document.getElementById('work-shift-search-input')?.value?.toLowerCase().trim() || '';
+    const filtered = this.workShifts.filter((s) => {
+      if (!searchTerm) return true;
+      return (
+        (s.name && s.name.toLowerCase().includes(searchTerm)) ||
+        (s.code && s.code.toLowerCase().includes(searchTerm)) ||
+        (s.description && s.description.toLowerCase().includes(searchTerm)) ||
+        (s.cycleType && s.cycleType.toLowerCase().includes(searchTerm))
+      );
+    });
+
+    const countLabel = document.getElementById('work-shifts-count-label');
+    if (countLabel) countLabel.textContent = this.workShifts.length;
+
+    const paginationContainer = document.getElementById('work-shifts-pagination-container');
+    const paginationInfo = document.getElementById('work-shifts-pagination-info');
+    const paginationList = document.getElementById('work-shifts-pagination-list');
+
+    if (filtered.length === 0) {
+      if (paginationContainer) paginationContainer.classList.add('d-none');
+      if (searchTerm) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="text-center py-5 text-muted">
+              <i class="ti ti-search-off fs-1 d-block mb-2 text-teal"></i>
+              No se encontraron jornadas que coincidan con "<strong>${escapeHtml(searchTerm)}</strong>".
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="text-center py-5 text-muted">
+              <i class="ti ti-clock-play fs-1 d-block mb-2 text-teal opacity-50"></i>
+              <div class="fw-bold mb-1">No hay jornadas de trabajo registradas en la empresa</div>
+              <small class="d-block mb-3">Define los tipos de jornada (normales, nocturnas, franqueros o rotativas) para asociarlas a los colaboradores y utilizarlas en las fórmulas de nómina.</small>
+              <button class="btn btn-sm btn-personnel" onclick="document.getElementById('btn-open-new-work-shift-modal').click()">
+                <i class="ti ti-plus me-1"></i> Crear Primera Jornada
+              </button>
+            </td>
+          </tr>
+        `;
+      }
+      return;
+    }
+
+    const pageSize = this.workShiftsPageSize || 5;
+    const totalPages = Math.ceil(filtered.length / pageSize) || 1;
+    if (this.workShiftsPage > totalPages) this.workShiftsPage = totalPages;
+    if (this.workShiftsPage < 1) this.workShiftsPage = 1;
+
+    const startIndex = (this.workShiftsPage - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, filtered.length);
+    const paginatedItems = filtered.slice(startIndex, endIndex);
+
+    if (paginationContainer) paginationContainer.classList.remove('d-none');
+    if (paginationInfo) {
+      paginationInfo.innerHTML = `Mostrando <strong>${startIndex + 1}</strong> a <strong>${endIndex}</strong> de <strong>${filtered.length}</strong> jornadas` +
+        (searchTerm ? ` (filtradas de ${this.workShifts.length})` : '');
+    }
+
+    if (paginationList) {
+      this.renderPaginationControls(paginationList, this.workShiftsPage, totalPages, (newPage) => {
+        this.workShiftsPage = newPage;
+        this.renderWorkShiftsTable();
+      });
+    }
+
+    tbody.innerHTML = paginatedItems
+      .map((s) => {
+        const codeBadge = s.code
+          ? `<span class="badge bg-teal-lt text-teal font-monospace px-2 py-1">${escapeHtml(s.code)}</span>`
+          : `<span class="badge bg-secondary-lt text-muted font-monospace px-2 py-1">S/C</span>`;
+
+        let cycleBadge = '<span class="badge bg-blue-lt text-blue">Semanal</span>';
+        if (s.cycleType === 'ROTATIVO_DIAS') {
+          cycleBadge = `<span class="badge bg-purple-lt text-purple"><i class="ti ti-repeat me-1"></i>Rotativo (${s.cycleLengthDays || 6}d)</span>`;
+        } else if (s.cycleType === 'FRANQUERO') {
+          cycleBadge = '<span class="badge bg-azure-lt text-azure"><i class="ti ti-calendar-event me-1"></i>Franquero</span>';
+        }
+
+        const empBadge =
+          (s.employeeCount || 0) > 0
+            ? `<button class="btn btn-sm btn-outline-teal btn-filter-shift-employees py-0 px-2" data-id="${s.id}" title="Ver colaboradores con esta jornada">
+                <i class="ti ti-users me-1"></i><strong>${s.employeeCount}</strong> ${s.employeeCount === 1 ? 'empleado' : 'empleados'}
+               </button>`
+            : `<span class="badge bg-light text-muted border"><i class="ti ti-user-x me-1"></i>0 empleados</span>`;
+
+        const descHtml = s.description
+          ? `<div class="small text-muted text-truncate" style="max-width: 320px;" title="${escapeHtml(s.description)}">${escapeHtml(s.description)}</div>`
+          : '';
+
+        return `
+          <tr>
+            <td>${codeBadge}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                <span class="avatar avatar-xs bg-blue-lt text-blue rounded me-2">
+                  <i class="ti ti-clock"></i>
+                </span>
+                <div>
+                  <div class="fw-bold text-dark">${escapeHtml(s.name)}</div>
+                  ${descHtml}
+                </div>
+              </div>
+            </td>
+            <td>${cycleBadge}</td>
+            <td class="text-center font-monospace fw-bold text-dark">${Number(s.dailyHours).toFixed(2)} hs</td>
+            <td class="text-center font-monospace fw-bold text-dark">${Number(s.weeklyHours).toFixed(2)} hs</td>
+            <td class="text-center font-monospace fw-bold text-dark">${Number(s.monthlyHours).toFixed(2)} hs</td>
+            <td class="text-center font-monospace text-muted">${Number(s.monthlyDays).toFixed(2)} d</td>
+            <td class="text-center">${empBadge}</td>
+            <td class="text-end">
+              <div class="d-inline-flex gap-1">
+                <button class="btn btn-sm btn-outline-primary btn-edit-shift" data-id="${s.id}" title="Editar Jornada">
+                  <i class="ti ti-edit me-1"></i>Editar
+                </button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-shift" data-id="${s.id}" data-name="${escapeHtml(s.name)}" data-count="${s.employeeCount || 0}" title="Eliminar Jornada">
+                  <i class="ti ti-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    tbody.querySelectorAll('.btn-edit-shift').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const s = this.workShifts.find((x) => x.id === btn.dataset.id);
+        if (s) this.openEditWorkShiftModal(s);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-delete-shift').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const count = parseInt(btn.dataset.count, 10) || 0;
+        this.deleteWorkShift(btn.dataset.id, btn.dataset.name, count);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-filter-shift-employees').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
         this.switchPersonnelPane('#pane-personnel-employees');
@@ -3337,9 +3500,15 @@ class AppController {
     const pctInput = document.getElementById('employee-input-part-time-pct');
     if (pctInput) pctInput.value = pct;
 
+    const shiftId = document.getElementById('employee-select-work-shift')?.value;
+    const shift = shiftId ? (this.workShifts || []).find((s) => s.id === shiftId) : null;
+
     const badge = document.getElementById('emp-jornada-badge');
     if (badge) {
-      if (isPartTime || pct < 100) {
+      if (shift) {
+        badge.innerHTML = `<i class="ti ti-clock-check me-1"></i>${escapeHtml(shift.name)} (${Number(shift.weeklyHours).toFixed(1)}hs sem / ${Number(shift.dailyHours).toFixed(1)}hs día)`;
+        badge.className = 'badge bg-blue text-white shadow-xs';
+      } else if (isPartTime || pct < 100) {
         badge.textContent = `Jornada Parcial (${pct}%)`;
         badge.className = 'badge bg-warning text-dark';
       } else {
@@ -4023,6 +4192,8 @@ class AppController {
       this.renderDepartmentsTable();
     } else if (targetSelector === '#pane-personnel-job-positions') {
       this.renderJobPositionsTable();
+    } else if (targetSelector === '#pane-personnel-work-shifts') {
+      this.renderWorkShiftsTable();
     } else if (targetSelector === '#pane-personnel-health-insurances') {
       this.renderHealthInsurancesTable();
     } else if (targetSelector === '#pane-personnel-unions') {
@@ -4153,6 +4324,12 @@ class AppController {
     document.getElementById('btn-download-job-position-template')?.addEventListener('click', () => this.downloadJobPositionTemplate());
     document.getElementById('job-position-import-file')?.addEventListener('change', (e) => this.handleJobPositionFileSelect(e));
     document.getElementById('btn-confirm-import-job-positions')?.addEventListener('click', () => this.confirmImportJobPositions());
+    document.getElementById('btn-open-new-work-shift-modal')?.addEventListener('click', () => this.openNewWorkShiftModal());
+    document.getElementById('work-shift-search-input')?.addEventListener('input', () => {
+      this.workShiftsPage = 1;
+      this.renderWorkShiftsTable();
+    });
+    this.setupWorkShiftModalEvents();
     document.getElementById('btn-open-new-health-insurance-modal')?.addEventListener('click', () => this.openNewHealthInsuranceModal());
     document.getElementById('btn-open-new-union-modal')?.addEventListener('click', () => this.openNewUnionModal());
     document.getElementById('btn-open-new-mutual-modal')?.addEventListener('click', () => this.openNewMutualModal());
@@ -4329,6 +4506,9 @@ class AppController {
     });
     document.getElementById('employee-input-weekly-hours')?.addEventListener('change', () => {
       this.updateEmployeeJornadaBadge();
+    });
+    document.getElementById('employee-select-work-shift')?.addEventListener('change', (e) => {
+      this.handleEmployeeWorkShiftChange(e.target.value);
     });
 
     // Validación y detección automática de banco para CBU en Tab 6
@@ -4527,6 +4707,7 @@ class AppController {
           contractModalityCode: document.getElementById('employee-input-contract-modality')?.value || null,
           payrollGroup: document.getElementById('employee-input-payroll-group')?.value || 'MENSUAL',
           isPartTime: Boolean(document.getElementById('employee-input-is-part-time')?.checked),
+          workShiftId: document.getElementById('employee-select-work-shift')?.value || null,
           weeklyWorkingHours,
           monthlyWorkingHours,
           partTimePercentage: Number(document.getElementById('employee-input-part-time-pct')?.value || 100),
@@ -5085,7 +5266,7 @@ class AppController {
 
   // --- Aperturas de Modales Auxiliares ---
 
-  populateEmployeeSelects(selectedDept = '', selectedJob = '', selectedHi = '', selectedUnion = '', selectedMutual = '', selectedContractModality = '', selectedSalaryScale = '') {
+  populateEmployeeSelects(selectedDept = '', selectedJob = '', selectedHi = '', selectedUnion = '', selectedMutual = '', selectedContractModality = '', selectedSalaryScale = '', selectedWorkShift = '') {
     const deptSelect = document.getElementById('employee-input-department');
     if (deptSelect) {
       const optsHtml =
@@ -5153,7 +5334,57 @@ class AppController {
       updateSearchableSelect(modSelect, optionsHtml, selectedContractModality ? String(selectedContractModality) : '');
     }
 
+    // Selector de Jornada de Trabajo en Tab 6
+    const shiftSelect = document.getElementById('employee-select-work-shift');
+    if (shiftSelect) {
+      const activeShifts = (this.workShifts || []).filter((s) => s.isActive !== false);
+      const optsHtml =
+        '<option value="">Sin jornada específica asignada (Usar estándar 8hs/48hs/200hs)</option>' +
+        activeShifts
+          .map(
+            (s) =>
+              `<option value="${s.id}" ${s.id === selectedWorkShift ? 'selected' : ''}>${escapeHtml(s.name)} (${Number(s.weeklyHours).toFixed(1)}hs sem / ${Number(s.monthlyHours).toFixed(1)}hs mes / ${Number(s.dailyHours).toFixed(1)}hs día)</option>`
+          )
+          .join('');
+      updateSearchableSelect(shiftSelect, optsHtml, selectedWorkShift);
+    }
+
     this.updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale);
+  }
+
+  handleEmployeeWorkShiftChange(shiftId) {
+    const daysInput = document.getElementById('employee-input-monthly-days');
+    const dailyHoursInput = document.getElementById('employee-input-daily-hours');
+    const weeklyHoursInput = document.getElementById('employee-input-weekly-hours');
+    const monthlyHoursInput = document.getElementById('employee-input-monthly-hours');
+    const isPartTimeCheck = document.getElementById('employee-input-is-part-time');
+
+    if (!shiftId) {
+      if (daysInput) daysInput.value = '30.00';
+      if (dailyHoursInput) dailyHoursInput.value = '8.00';
+      if (weeklyHoursInput && !weeklyHoursInput.value) {
+        weeklyHoursInput.value = this.payrollSettings?.standardWeeklyHoursFormatted || '48:00';
+      }
+      if (monthlyHoursInput && !monthlyHoursInput.value) {
+        monthlyHoursInput.value = this.payrollSettings?.standardMonthlyHoursFormatted || '200:00';
+      }
+      this.updateEmployeeJornadaBadge();
+      return;
+    }
+
+    const shift = (this.workShifts || []).find((s) => s.id === shiftId);
+    if (!shift) return;
+
+    if (daysInput) daysInput.value = Number(shift.monthlyDays).toFixed(2);
+    if (dailyHoursInput) dailyHoursInput.value = Number(shift.dailyHours).toFixed(2);
+    if (weeklyHoursInput) weeklyHoursInput.value = this.formatDecimalToHours(shift.weeklyHours);
+    if (monthlyHoursInput) monthlyHoursInput.value = this.formatDecimalToHours(shift.monthlyHours);
+
+    const stdWeeklyDec = this.parseHoursToDecimal(this.payrollSettings?.standardWeeklyHoursFormatted || '48:00') || 48;
+    if (isPartTimeCheck) {
+      isPartTimeCheck.checked = Number(shift.weeklyHours) < stdWeeklyDec;
+    }
+    this.updateEmployeeJornadaBadge();
   }
 
   /**
@@ -5463,7 +5694,8 @@ class AppController {
     this.renderEmployeeConceptsTable();
     this.updateEmployeeJornadaBadge();
 
-    this.populateEmployeeSelects('', '', '', '', '', '8', '');
+    this.populateEmployeeSelects('', '', '', '', '', '8', '', '');
+    this.handleEmployeeWorkShiftChange('');
     this.updateEmployeeEncuadrePreview('');
     this.updateEmployeeMapPreview();
 
@@ -5584,6 +5816,7 @@ class AppController {
     }
     this.updateCbuValidationUI();
 
+    const empShiftId = fullEmp.workShiftId || fullEmp.workShift?.id || '';
     this.populateEmployeeSelects(
       fullEmp.departmentId,
       fullEmp.jobPositionId,
@@ -5591,8 +5824,10 @@ class AppController {
       fullEmp.unionId,
       fullEmp.mutualId,
       fullEmp.contractModalityCode || '8',
-      fullEmp.salaryScaleId || fullEmp.salaryScale?.id || ''
+      fullEmp.salaryScaleId || fullEmp.salaryScale?.id || '',
+      empShiftId
     );
+    this.handleEmployeeWorkShiftChange(empShiftId);
     this.updateEmployeeEncuadrePreview(fullEmp.jobPositionId);
     this.updateEmployeeMapPreview();
 
@@ -7417,6 +7652,729 @@ class AppController {
         showToast('Puesto de trabajo eliminado correctamente');
         await this.loadPersonnelAuxiliaryData();
       },
+    });
+  }
+
+  // --- Jornadas de Trabajo (Estructura Organizacional) ---
+
+  openNewWorkShiftModal() {
+    document.getElementById('form-work-shift').reset();
+    document.getElementById('work-shift-form-id').value = '';
+    document.getElementById('modal-work-shift-form-title').textContent = 'Nueva Jornada de Trabajo';
+    document.getElementById('work-shift-status-badge').textContent = 'Nueva Definición';
+    document.getElementById('work-shift-status-badge').className = 'badge bg-blue-lt';
+    document.getElementById('work-shift-form-alert')?.classList.add('d-none');
+    document.getElementById('work-shift-select-cycle-type').value = 'SEMANAL';
+    const cycleHint = document.getElementById('work-shift-cycle-hint');
+    if (cycleHint) cycleHint.textContent = 'Esquema semanal fijo con asignación de francos.';
+    document.getElementById('btn-add-cycle-day')?.classList.add('d-none');
+
+    // Cargar plantilla por defecto: Normal Diurna (L a V 8hs)
+    this.applyWorkShiftPreset('NORMAL_5D', false);
+
+    const submitBtn = document.getElementById('btn-save-work-shift');
+    if (submitBtn) submitBtn.innerHTML = '<i class="ti ti-device-floppy me-1"></i> Guardar Jornada';
+    getBootstrapModal(document.getElementById('modal-work-shift-form'))?.show();
+  }
+
+  async openEditWorkShiftModal(shift) {
+    document.getElementById('form-work-shift').reset();
+    document.getElementById('work-shift-form-id').value = shift.id;
+    document.getElementById('modal-work-shift-form-title').textContent = `Editar Jornada: ${shift.name}`;
+    document.getElementById('work-shift-status-badge').textContent = 'Modificando';
+    document.getElementById('work-shift-status-badge').className = 'badge bg-teal-lt';
+    document.getElementById('work-shift-form-alert')?.classList.add('d-none');
+
+    document.getElementById('work-shift-input-name').value = shift.name || '';
+    document.getElementById('work-shift-input-code').value = shift.code || '';
+    document.getElementById('work-shift-select-cycle-type').value = shift.cycleType || 'SEMANAL';
+    document.getElementById('work-shift-input-description').value = shift.description || '';
+
+    // Totales de horas
+    document.getElementById('work-shift-input-daily-hours').value = Number(shift.dailyHours || 8).toFixed(2);
+    document.getElementById('work-shift-input-weekly-hours').value = Number(shift.weeklyHours || 48).toFixed(2);
+    document.getElementById('work-shift-input-monthly-hours').value = Number(shift.monthlyHours || 200).toFixed(2);
+    document.getElementById('work-shift-input-monthly-days').value = Number(shift.monthlyDays || 30).toFixed(2);
+
+    const isRotativo = shift.cycleType === 'ROTATIVO_DIAS';
+    const btnAddCycleDay = document.getElementById('btn-add-cycle-day');
+    if (btnAddCycleDay) {
+      if (isRotativo) btnAddCycleDay.classList.remove('d-none');
+      else btnAddCycleDay.classList.add('d-none');
+    }
+    const cycleHint = document.getElementById('work-shift-cycle-hint');
+    if (cycleHint) {
+      cycleHint.textContent = isRotativo
+        ? 'Ciclo de N días continuos que rotan secuencialmente.'
+        : 'Esquema semanal fijo con asignación de francos.';
+    }
+
+    // Cargar detalles desde el objeto o desde la API para asegurar frescura
+    let details = shift.details;
+    if (!details || details.length === 0) {
+      try {
+        const res = await apiRequest(`/work-shifts/${shift.id}`);
+        if (res.data?.details) {
+          details = res.data.details;
+        }
+      } catch (err) {
+        console.warn('No se pudieron obtener detalles completos de la jornada:', err);
+      }
+    }
+
+    if (details && details.length > 0) {
+      this.currentWorkShiftDetails = JSON.parse(JSON.stringify(details));
+    } else {
+      // Fallback a 7 días semanales
+      const dayNames = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+      this.currentWorkShiftDetails = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+        dayOfWeek: d,
+        cycleDayNumber: null,
+        dayName: dayNames[d],
+        isWorkDay: d <= 5,
+        startTime: d <= 5 ? '08:00' : null,
+        endTime: d <= 5 ? '16:00' : null,
+        breakMinutes: 0,
+        netHours: d <= 5 ? Number(shift.dailyHours || 8) : 0,
+        crossesMidnight: false,
+      }));
+    }
+
+    this.renderWorkShiftDiagramRows();
+
+    const submitBtn = document.getElementById('btn-save-work-shift');
+    if (submitBtn) submitBtn.innerHTML = '<i class="ti ti-device-floppy me-1"></i> Actualizar Jornada';
+    getBootstrapModal(document.getElementById('modal-work-shift-form'))?.show();
+  }
+
+  async deleteWorkShift(id, name, employeeCount = 0) {
+    if (employeeCount > 0) {
+      this.confirmDeleteAction({
+        title: 'Jornada con Colaboradores Asignados',
+        message: `No es posible eliminar la jornada <strong>"${escapeHtml(name)}"</strong> porque se encuentra asignada a <strong>${employeeCount}</strong> colaborador(es) activo(s).`,
+        warning: 'Por favor, reasigne previamente a los colaboradores a otra jornada activa.',
+        confirmText: 'Entendido',
+        onConfirm: async () => {},
+      });
+      return;
+    }
+
+    this.confirmDeleteAction({
+      title: 'Eliminar Jornada de Trabajo',
+      message: `¿Estás seguro de que deseas eliminar la jornada <strong>"${escapeHtml(name)}"</strong> de la estructura organizacional?`,
+      confirmText: 'Eliminar Jornada',
+      onConfirm: async () => {
+        await apiRequest(`/work-shifts/${id}`, { method: 'DELETE' });
+        showToast('Jornada de trabajo eliminada correctamente', 'success');
+        await this.loadPersonnelAuxiliaryData();
+      },
+    });
+  }
+
+  computeShiftDetailNetHours(startTime, endTime, breakMinutes = 0) {
+    if (!startTime || !endTime) return { netHours: 0, crossesMidnight: false };
+    const parts1 = startTime.split(':').map(Number);
+    const parts2 = endTime.split(':').map(Number);
+    if (parts1.length !== 2 || parts2.length !== 2 || isNaN(parts1[0]) || isNaN(parts2[0])) {
+      return { netHours: 0, crossesMidnight: false };
+    }
+    const startMin = parts1[0] * 60 + parts1[1];
+    const endMin = parts2[0] * 60 + parts2[1];
+    let totalMin = endMin - startMin;
+    let crossesMidnight = false;
+    if (totalMin < 0) {
+      totalMin += 24 * 60;
+      crossesMidnight = true;
+    }
+    const netMin = Math.max(0, totalMin - (parseInt(breakMinutes, 10) || 0));
+    const netHours = Math.round((netMin / 60) * 100) / 100;
+    return { netHours, crossesMidnight };
+  }
+
+  renderWorkShiftDiagramRows() {
+    const tbody = document.getElementById('work-shift-details-tbody');
+    if (!tbody) return;
+
+    const details = this.currentWorkShiftDetails || [];
+    const dayNames = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const cycleType = document.getElementById('work-shift-select-cycle-type')?.value || 'SEMANAL';
+
+    let totalNetHours = 0;
+    let workDays = 0;
+    let francoDays = 0;
+
+    tbody.innerHTML = details
+      .map((d, idx) => {
+        const rowId = `shift-row-${idx}`;
+        const dayLabel = d.dayName || (d.dayOfWeek ? dayNames[d.dayOfWeek] : `Día ${d.cycleDayNumber || idx + 1}`);
+        const isWork = Boolean(d.isWorkDay);
+        const startTimeVal = d.startTime || (isWork ? '08:00' : '');
+        const endTimeVal = d.endTime || (isWork ? '16:00' : '');
+        const breakMins = parseInt(d.breakMinutes, 10) || 0;
+
+        let { netHours, crossesMidnight } = this.computeShiftDetailNetHours(startTimeVal, endTimeVal, breakMins);
+        if (!isWork) {
+          netHours = 0;
+          crossesMidnight = false;
+          francoDays++;
+        } else {
+          workDays++;
+          totalNetHours += netHours;
+        }
+
+        // Actualizar en memoria
+        d.netHours = netHours;
+        d.crossesMidnight = crossesMidnight;
+
+        let badgeHtml = '<span class="badge bg-secondary-lt text-muted font-monospace">Franco</span>';
+        if (isWork) {
+          if (crossesMidnight) {
+            badgeHtml = '<span class="badge bg-indigo-lt text-indigo"><i class="ti ti-moon me-1"></i>+1 día (Nocturno)</span>';
+          } else {
+            badgeHtml = '<span class="badge bg-teal-lt text-teal"><i class="ti ti-sun me-1"></i>Diurno</span>';
+          }
+        }
+
+        const deleteBtnHtml =
+          cycleType === 'ROTATIVO_DIAS' && details.length > 2
+            ? `<button type="button" class="btn btn-sm btn-ghost-danger py-0 px-1 btn-delete-shift-row" data-idx="${idx}" title="Eliminar este tramo del ciclo">
+                <i class="ti ti-x"></i>
+               </button>`
+            : '';
+
+        return `
+          <tr id="${rowId}" data-idx="${idx}" class="${!isWork ? 'bg-light-subtle opacity-75' : ''}">
+            <td class="align-middle">
+              <span class="fw-bold ${isWork ? 'text-dark' : 'text-muted'}">${escapeHtml(dayLabel)}</span>
+            </td>
+            <td class="text-center align-middle">
+              <div class="form-check form-switch d-inline-block m-0">
+                <input class="form-check-input shift-row-switch" type="checkbox" data-idx="${idx}" ${isWork ? 'checked' : ''}>
+                <label class="form-check-label small fw-semibold ms-1">${isWork ? 'Laborable' : 'Franco'}</label>
+              </div>
+            </td>
+            <td class="align-middle">
+              <input type="time" class="form-control form-control-sm font-monospace shift-row-start" data-idx="${idx}" value="${startTimeVal}" ${!isWork ? 'disabled' : ''}>
+            </td>
+            <td class="align-middle">
+              <input type="time" class="form-control form-control-sm font-monospace shift-row-end" data-idx="${idx}" value="${endTimeVal}" ${!isWork ? 'disabled' : ''}>
+            </td>
+            <td class="text-center align-middle">
+              <input type="number" class="form-control form-control-sm font-monospace text-center shift-row-break" data-idx="${idx}" min="0" max="480" step="5" value="${breakMins}" ${!isWork ? 'disabled' : ''}>
+            </td>
+            <td class="text-center align-middle shift-row-badge-cell">
+              ${badgeHtml}
+            </td>
+            <td class="text-end align-middle font-monospace fw-bold fs-4 ${isWork ? 'text-primary' : 'text-muted'} shift-row-net-cell">
+              ${netHours.toFixed(2)} hs
+            </td>
+            <td class="text-center align-middle">
+              ${deleteBtnHtml}
+            </td>
+          </tr>
+        `;
+      })
+      .join('');
+
+    // Actualizar resumen en pie de tabla
+    const summaryText = document.getElementById('work-shift-diagram-summary-text');
+    if (summaryText) {
+      summaryText.textContent = `Resumen del ciclo: ${workDays} días laborables, ${francoDays} francos.`;
+    }
+    const totalHoursDisplay = document.getElementById('work-shift-diagram-total-hours');
+    if (totalHoursDisplay) {
+      totalHoursDisplay.textContent = `${totalNetHours.toFixed(2)} hs`;
+    }
+
+    // Vincular eventos reactivos a los inputs de cada fila
+    tbody.querySelectorAll('.shift-row-switch').forEach((sw) => {
+      sw.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        if (this.currentWorkShiftDetails[idx]) {
+          this.currentWorkShiftDetails[idx].isWorkDay = e.target.checked;
+          if (e.target.checked) {
+            if (!this.currentWorkShiftDetails[idx].startTime) this.currentWorkShiftDetails[idx].startTime = '08:00';
+            if (!this.currentWorkShiftDetails[idx].endTime) this.currentWorkShiftDetails[idx].endTime = '16:00';
+          }
+        }
+        this.renderWorkShiftDiagramRows();
+        this.syncWorkShiftTotalsFromDiagram(false);
+      });
+    });
+
+    const updateRowOnTimeChange = (idx) => {
+      const row = tbody.querySelector(`tr[data-idx="${idx}"]`);
+      if (!row) return;
+      const startEl = row.querySelector('.shift-row-start');
+      const endEl = row.querySelector('.shift-row-end');
+      const breakEl = row.querySelector('.shift-row-break');
+      const badgeCell = row.querySelector('.shift-row-badge-cell');
+      const netCell = row.querySelector('.shift-row-net-cell');
+
+      const startVal = startEl?.value || '08:00';
+      const endVal = endEl?.value || '16:00';
+      const breakVal = parseInt(breakEl?.value, 10) || 0;
+
+      const { netHours, crossesMidnight } = this.computeShiftDetailNetHours(startVal, endVal, breakVal);
+
+      if (this.currentWorkShiftDetails[idx]) {
+        this.currentWorkShiftDetails[idx].startTime = startVal;
+        this.currentWorkShiftDetails[idx].endTime = endVal;
+        this.currentWorkShiftDetails[idx].breakMinutes = breakVal;
+        this.currentWorkShiftDetails[idx].netHours = netHours;
+        this.currentWorkShiftDetails[idx].crossesMidnight = crossesMidnight;
+      }
+
+      if (badgeCell) {
+        if (crossesMidnight) {
+          badgeCell.innerHTML = '<span class="badge bg-indigo-lt text-indigo"><i class="ti ti-moon me-1"></i>+1 día (Nocturno)</span>';
+        } else {
+          badgeCell.innerHTML = '<span class="badge bg-teal-lt text-teal"><i class="ti ti-sun me-1"></i>Diurno</span>';
+        }
+      }
+      if (netCell) {
+        netCell.textContent = `${netHours.toFixed(2)} hs`;
+      }
+
+      // Recalcular total acumulado en el pie
+      let sum = 0;
+      this.currentWorkShiftDetails.forEach((item) => {
+        if (item.isWorkDay) sum += Number(item.netHours || 0);
+      });
+      if (totalHoursDisplay) totalHoursDisplay.textContent = `${sum.toFixed(2)} hs`;
+    };
+
+    tbody.querySelectorAll('.shift-row-start, .shift-row-end, .shift-row-break').forEach((inp) => {
+      inp.addEventListener('input', (e) => {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        updateRowOnTimeChange(idx);
+      });
+      inp.addEventListener('change', (e) => {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        updateRowOnTimeChange(idx);
+        this.syncWorkShiftTotalsFromDiagram(false);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-delete-shift-row').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.idx, 10);
+        this.currentWorkShiftDetails.splice(idx, 1);
+        // Re-indexar días del ciclo
+        this.currentWorkShiftDetails.forEach((d, i) => {
+          d.cycleDayNumber = i + 1;
+          d.dayName = `Día ${i + 1}`;
+        });
+        this.renderWorkShiftDiagramRows();
+        this.syncWorkShiftTotalsFromDiagram(false);
+      });
+    });
+  }
+
+  collectWorkShiftDetailsFromDOM() {
+    const tbody = document.getElementById('work-shift-details-tbody');
+    if (!tbody) return this.currentWorkShiftDetails || [];
+
+    const rows = tbody.querySelectorAll('tr[data-idx]');
+    const details = [];
+
+    rows.forEach((row) => {
+      const idx = parseInt(row.dataset.idx, 10);
+      const original = this.currentWorkShiftDetails[idx] || {};
+      const isWork = Boolean(row.querySelector('.shift-row-switch')?.checked);
+      const startTime = isWork ? (row.querySelector('.shift-row-start')?.value || '08:00') : null;
+      const endTime = isWork ? (row.querySelector('.shift-row-end')?.value || '16:00') : null;
+      const breakMinutes = isWork ? (parseInt(row.querySelector('.shift-row-break')?.value, 10) || 0) : 0;
+
+      const { netHours, crossesMidnight } = isWork
+        ? this.computeShiftDetailNetHours(startTime, endTime, breakMinutes)
+        : { netHours: 0, crossesMidnight: false };
+
+      details.push({
+        id: original.id || undefined,
+        dayOfWeek: original.dayOfWeek !== undefined ? original.dayOfWeek : null,
+        cycleDayNumber: original.cycleDayNumber !== undefined ? original.cycleDayNumber : null,
+        dayName: original.dayName || null,
+        isWorkDay: isWork,
+        startTime: startTime,
+        endTime: endTime,
+        crossesMidnight: crossesMidnight,
+        breakMinutes: breakMinutes,
+        netHours: netHours,
+        notes: original.notes || null,
+      });
+    });
+
+    this.currentWorkShiftDetails = details;
+    return details;
+  }
+
+  syncWorkShiftTotalsFromDiagram(userInitiated = false) {
+    const details = this.collectWorkShiftDetailsFromDOM();
+    const cycleType = document.getElementById('work-shift-select-cycle-type')?.value || 'SEMANAL';
+
+    let totalDiagramHours = 0;
+    let workDaysCount = 0;
+
+    details.forEach((d) => {
+      if (d.isWorkDay) {
+        workDaysCount++;
+        totalDiagramHours += Number(d.netHours || 0);
+      }
+    });
+
+    // 1. Horas diarias sugeridas: promedio de horas por día laborable
+    const dailyHours = workDaysCount > 0 ? Math.round((totalDiagramHours / workDaysCount) * 100) / 100 : 8.00;
+
+    // 2. Horas semanales sugeridas
+    let weeklyHours = totalDiagramHours;
+    if (cycleType === 'ROTATIVO_DIAS') {
+      const cycleLen = details.length || 7;
+      weeklyHours = Math.round(((totalDiagramHours / cycleLen) * 7) * 100) / 100;
+    }
+
+    // 3. Horas mensuales sugeridas (semanal * 4.3333, o tope 200 para 48hs estándar)
+    let monthlyHours = 200.00;
+    if (Math.abs(weeklyHours - 48) < 0.1) {
+      monthlyHours = 200.00;
+    } else {
+      monthlyHours = Math.round((weeklyHours * (52 / 12)) * 100) / 100;
+    }
+
+    // 4. Días mensuales sugeridos (30 días por defecto legal en Argentina)
+    const monthlyDays = 30.00;
+
+    const dailyInp = document.getElementById('work-shift-input-daily-hours');
+    const weeklyInp = document.getElementById('work-shift-input-weekly-hours');
+    const monthlyInp = document.getElementById('work-shift-input-monthly-hours');
+    const daysInp = document.getElementById('work-shift-input-monthly-days');
+
+    if (dailyInp) dailyInp.value = dailyHours.toFixed(2);
+    if (weeklyInp) weeklyInp.value = weeklyHours.toFixed(2);
+    if (monthlyInp) monthlyInp.value = monthlyHours.toFixed(2);
+    if (daysInp) daysInp.value = monthlyDays.toFixed(2);
+
+    if (userInitiated) {
+      showToast('Totales sugeridos calculados desde el diagrama de horarios', 'info');
+    }
+  }
+
+  applyWorkShiftPreset(presetKey, showNotification = true) {
+    const dayNames = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    let name = '';
+    let code = '';
+    let cycleType = 'SEMANAL';
+    let description = '';
+    let details = [];
+    let dailyHours = 8.00;
+    let weeklyHours = 40.00;
+    let monthlyHours = 173.33;
+    let monthlyDays = 30.00;
+
+    if (presetKey === 'NORMAL_5D') {
+      name = 'Jornada Normal Diurna (L a V 8hs)';
+      code = 'NORM_5D';
+      cycleType = 'SEMANAL';
+      description = 'Jornada estándar de 40 horas semanales distribuidas de lunes a viernes (08:00 a 16:00 hs). Sábados y domingos francos.';
+      dailyHours = 8.00;
+      weeklyHours = 40.00;
+      monthlyHours = 173.33;
+      monthlyDays = 30.00;
+      details = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+        dayOfWeek: d,
+        cycleDayNumber: null,
+        dayName: dayNames[d],
+        isWorkDay: d <= 5,
+        startTime: d <= 5 ? '08:00' : null,
+        endTime: d <= 5 ? '16:00' : null,
+        breakMinutes: 0,
+        netHours: d <= 5 ? 8.00 : 0,
+        crossesMidnight: false,
+      }));
+    } else if (presetKey === 'NORMAL_6D') {
+      name = 'Jornada Normal con Sábado (L a V 8hs, Sáb 4hs)';
+      code = 'NORM_6D';
+      cycleType = 'SEMANAL';
+      description = 'Jornada semanal de 44 horas. Lunes a viernes 8hs (08:00 a 16:00 hs) y sábado 4hs (08:00 a 12:00 hs). Domingo franco.';
+      dailyHours = 8.00;
+      weeklyHours = 44.00;
+      monthlyHours = 190.67;
+      monthlyDays = 30.00;
+      details = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+        dayOfWeek: d,
+        cycleDayNumber: null,
+        dayName: dayNames[d],
+        isWorkDay: d <= 6,
+        startTime: '08:00',
+        endTime: d <= 5 ? '16:00' : (d === 6 ? '12:00' : null),
+        breakMinutes: 0,
+        netHours: d <= 5 ? 8.00 : (d === 6 ? 4.00 : 0),
+        crossesMidnight: false,
+      }));
+    } else if (presetKey === 'NIGHT') {
+      name = 'Jornada Nocturna Continua 7hs (22:00 a 05:00)';
+      code = 'NOCT_7H';
+      cycleType = 'SEMANAL';
+      description = 'Régimen nocturno según Art. 200 LCT (máximo legal 7 horas diarias entre las 21:00 y las 06:00). Turno de 22:00 a 05:00 hs (+1 día cruce de medianoche).';
+      dailyHours = 7.00;
+      weeklyHours = 35.00;
+      monthlyHours = 151.67;
+      monthlyDays = 30.00;
+      details = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+        dayOfWeek: d,
+        cycleDayNumber: null,
+        dayName: dayNames[d],
+        isWorkDay: d <= 5,
+        startTime: d <= 5 ? '22:00' : null,
+        endTime: d <= 5 ? '05:00' : null,
+        breakMinutes: 0,
+        netHours: d <= 5 ? 7.00 : 0,
+        crossesMidnight: d <= 5,
+      }));
+    } else if (presetKey === 'FRANQUERO') {
+      name = 'Personal Franquero Fin de Semana (Sáb-Dom 12hs)';
+      code = 'FRANQ_24H';
+      cycleType = 'FRANQUERO';
+      description = 'Guardia y cobertura de fines de semana. Turnos de 12 horas (08:00 a 20:00 hs) sábados y domingos. Lunes a viernes francos.';
+      dailyHours = 12.00;
+      weeklyHours = 24.00;
+      monthlyHours = 104.00;
+      monthlyDays = 30.00;
+      details = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+        dayOfWeek: d,
+        cycleDayNumber: null,
+        dayName: dayNames[d],
+        isWorkDay: d >= 6,
+        startTime: d >= 6 ? '08:00' : null,
+        endTime: d >= 6 ? '20:00' : null,
+        breakMinutes: 0,
+        netHours: d >= 6 ? 12.00 : 0,
+        crossesMidnight: false,
+      }));
+    } else if (presetKey === 'ALTERNO_1X1') {
+      name = 'Ciclo Alterno 1x1 (1 día 12hs, 1 día franco)';
+      code = 'ROT_1X1';
+      cycleType = 'ROTATIVO_DIAS';
+      description = 'Régimen de guardia continua 1x1: 1 día de guardia de 12 horas (07:00 a 19:00 hs) seguido de 1 día de descanso completo.';
+      dailyHours = 12.00;
+      weeklyHours = 42.00;
+      monthlyHours = 182.00;
+      monthlyDays = 30.00;
+      details = [
+        {
+          dayOfWeek: null,
+          cycleDayNumber: 1,
+          dayName: 'Día 1 (Guardia 12hs)',
+          isWorkDay: true,
+          startTime: '07:00',
+          endTime: '19:00',
+          breakMinutes: 0,
+          netHours: 12.00,
+          crossesMidnight: false,
+        },
+        {
+          dayOfWeek: null,
+          cycleDayNumber: 2,
+          dayName: 'Día 2 (Franco)',
+          isWorkDay: false,
+          startTime: null,
+          endTime: null,
+          breakMinutes: 0,
+          netHours: 0.00,
+          crossesMidnight: false,
+        },
+      ];
+    } else if (presetKey === 'ROTATIVO_4X2') {
+      name = 'Ciclo Rotativo 4x2 (4 días 8hs, 2 días franco)';
+      code = 'ROT_4X2';
+      cycleType = 'ROTATIVO_DIAS';
+      description = 'Régimen continuo de producción: 4 días consecutivos de labor (06:00 a 14:00 hs) seguidos de 2 días consecutivos de franco.';
+      dailyHours = 8.00;
+      weeklyHours = 37.33;
+      monthlyHours = 161.78;
+      monthlyDays = 30.00;
+      details = [1, 2, 3, 4, 5, 6].map((i) => ({
+        dayOfWeek: null,
+        cycleDayNumber: i,
+        dayName: i <= 4 ? `Día ${i} (Turno 8hs)` : `Día ${i} (Franco)`,
+        isWorkDay: i <= 4,
+        startTime: i <= 4 ? '06:00' : null,
+        endTime: i <= 4 ? '14:00' : null,
+        breakMinutes: 0,
+        netHours: i <= 4 ? 8.00 : 0,
+        crossesMidnight: false,
+      }));
+    }
+
+    document.getElementById('work-shift-input-name').value = name;
+    document.getElementById('work-shift-input-code').value = code;
+    document.getElementById('work-shift-select-cycle-type').value = cycleType;
+    document.getElementById('work-shift-input-description').value = description;
+
+    // Totales sugeridos
+    document.getElementById('work-shift-input-daily-hours').value = dailyHours.toFixed(2);
+    document.getElementById('work-shift-input-weekly-hours').value = weeklyHours.toFixed(2);
+    document.getElementById('work-shift-input-monthly-hours').value = monthlyHours.toFixed(2);
+    document.getElementById('work-shift-input-monthly-days').value = monthlyDays.toFixed(2);
+
+    const isRotativo = cycleType === 'ROTATIVO_DIAS';
+    const btnAddCycleDay = document.getElementById('btn-add-cycle-day');
+    if (btnAddCycleDay) {
+      if (isRotativo) btnAddCycleDay.classList.remove('d-none');
+      else btnAddCycleDay.classList.add('d-none');
+    }
+    const cycleHint = document.getElementById('work-shift-cycle-hint');
+    if (cycleHint) {
+      cycleHint.textContent = isRotativo
+        ? 'Ciclo de N días continuos que rotan secuencialmente.'
+        : 'Esquema semanal fijo con asignación de francos.';
+    }
+
+    this.currentWorkShiftDetails = details;
+    this.renderWorkShiftDiagramRows();
+
+    if (showNotification) {
+      showToast(`Plantilla cargada: ${name}`, 'info');
+    }
+  }
+
+  setupWorkShiftModalEvents() {
+    // Cambio de tipo de ciclo
+    document.getElementById('work-shift-select-cycle-type')?.addEventListener('change', (e) => {
+      const isRotativo = e.target.value === 'ROTATIVO_DIAS';
+      const btnAddCycleDay = document.getElementById('btn-add-cycle-day');
+      if (btnAddCycleDay) {
+        if (isRotativo) btnAddCycleDay.classList.remove('d-none');
+        else btnAddCycleDay.classList.add('d-none');
+      }
+      const cycleHint = document.getElementById('work-shift-cycle-hint');
+      if (cycleHint) {
+        cycleHint.textContent = isRotativo
+          ? 'Ciclo de N días continuos (ej. 1x1, 4x2) que rotan secuencialmente.'
+          : 'Esquema semanal fijo con asignación de francos.';
+      }
+    });
+
+    // Botón añadir día al ciclo
+    document.getElementById('btn-add-cycle-day')?.addEventListener('click', () => {
+      const details = this.currentWorkShiftDetails || [];
+      const newDayNum = details.length + 1;
+      details.push({
+        dayOfWeek: null,
+        cycleDayNumber: newDayNum,
+        dayName: `Día ${newDayNum}`,
+        isWorkDay: true,
+        startTime: '08:00',
+        endTime: '16:00',
+        breakMinutes: 0,
+        netHours: 8.00,
+        crossesMidnight: false,
+      });
+      this.currentWorkShiftDetails = details;
+      this.renderWorkShiftDiagramRows();
+      this.syncWorkShiftTotalsFromDiagram(false);
+    });
+
+    // Botón para sincronizar y sugerir totales desde el diagrama
+    document.getElementById('btn-sync-shift-totals')?.addEventListener('click', () => {
+      this.syncWorkShiftTotalsFromDiagram(true);
+    });
+
+    // Presets rápidos
+    document.getElementById('preset-shift-normal-5d')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('NORMAL_5D');
+    });
+    document.getElementById('preset-shift-normal-6d')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('NORMAL_6D');
+    });
+    document.getElementById('preset-shift-night')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('NIGHT');
+    });
+    document.getElementById('preset-shift-franquero')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('FRANQUERO');
+    });
+    document.getElementById('preset-shift-alterno-1x1')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('ALTERNO_1X1');
+    });
+    document.getElementById('preset-shift-rotativo-4x2')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.applyWorkShiftPreset('ROTATIVO_4X2');
+    });
+
+    // Submit del Formulario de Jornada
+    document.getElementById('form-work-shift')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('work-shift-form-id')?.value;
+      const alertBox = document.getElementById('work-shift-form-alert');
+      const submitBtn = document.getElementById('btn-save-work-shift');
+      if (alertBox) alertBox.classList.add('d-none');
+
+      const nameVal = document.getElementById('work-shift-input-name')?.value?.trim();
+      const codeVal = document.getElementById('work-shift-input-code')?.value?.trim().toUpperCase();
+      const cycleTypeVal = document.getElementById('work-shift-select-cycle-type')?.value || 'SEMANAL';
+      const descVal = document.getElementById('work-shift-input-description')?.value?.trim();
+
+      const dailyHoursVal = parseFloat(document.getElementById('work-shift-input-daily-hours')?.value) || 8.00;
+      const weeklyHoursVal = parseFloat(document.getElementById('work-shift-input-weekly-hours')?.value) || 48.00;
+      const monthlyHoursVal = parseFloat(document.getElementById('work-shift-input-monthly-hours')?.value) || 200.00;
+      const monthlyDaysVal = parseFloat(document.getElementById('work-shift-input-monthly-days')?.value) || 30.00;
+
+      if (!nameVal) {
+        if (alertBox) {
+          alertBox.textContent = 'La denominación de la jornada es obligatoria.';
+          alertBox.classList.remove('d-none');
+        }
+        return;
+      }
+
+      // Recopilar detalles del diagrama en pantalla
+      const details = this.collectWorkShiftDetailsFromDOM();
+
+      const payload = {
+        name: nameVal,
+        code: codeVal || null,
+        description: descVal || null,
+        cycleType: cycleTypeVal,
+        dailyHours: dailyHoursVal,
+        weeklyHours: weeklyHoursVal,
+        monthlyHours: monthlyHoursVal,
+        monthlyDays: monthlyDaysVal,
+        details: details,
+      };
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Guardando...';
+      }
+
+      try {
+        if (id) {
+          await apiRequest(`/work-shifts/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+          showToast('Jornada de trabajo actualizada exitosamente', 'success');
+        } else {
+          await apiRequest('/work-shifts', { method: 'POST', body: JSON.stringify(payload) });
+          showToast('Jornada de trabajo creada exitosamente', 'success');
+        }
+        getBootstrapModal(document.getElementById('modal-work-shift-form'))?.hide();
+        await this.loadPersonnelAuxiliaryData();
+      } catch (err) {
+        if (alertBox) {
+          alertBox.textContent = err.message || 'Error al guardar jornada de trabajo';
+          alertBox.classList.remove('d-none');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = id
+            ? '<i class="ti ti-device-floppy me-1"></i> Actualizar Jornada'
+            : '<i class="ti ti-device-floppy me-1"></i> Guardar Jornada';
+        }
+      }
     });
   }
 

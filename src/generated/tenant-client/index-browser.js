@@ -223,6 +223,39 @@ exports.Prisma.JobPositionScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
+exports.Prisma.WorkShiftScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  cycleType: 'cycleType',
+  dailyHours: 'dailyHours',
+  weeklyHours: 'weeklyHours',
+  monthlyHours: 'monthlyHours',
+  monthlyDays: 'monthlyDays',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.WorkShiftDetailScalarFieldEnum = {
+  id: 'id',
+  workShiftId: 'workShiftId',
+  dayOfWeek: 'dayOfWeek',
+  cycleDayNumber: 'cycleDayNumber',
+  dayName: 'dayName',
+  isWorkDay: 'isWorkDay',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  crossesMidnight: 'crossesMidnight',
+  breakMinutes: 'breakMinutes',
+  netHours: 'netHours',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.HealthInsuranceScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -281,6 +314,7 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   mutualId: 'mutualId',
   contractModalityCode: 'contractModalityCode',
   salaryScaleId: 'salaryScaleId',
+  workShiftId: 'workShiftId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -636,6 +670,23 @@ exports.Prisma.JobPositionOrderByRelevanceFieldEnum = {
   serviceTypeCode: 'serviceTypeCode'
 };
 
+exports.Prisma.WorkShiftOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code',
+  description: 'description',
+  cycleType: 'cycleType'
+};
+
+exports.Prisma.WorkShiftDetailOrderByRelevanceFieldEnum = {
+  id: 'id',
+  workShiftId: 'workShiftId',
+  dayName: 'dayName',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  notes: 'notes'
+};
+
 exports.Prisma.HealthInsuranceOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -682,6 +733,7 @@ exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
   mutualId: 'mutualId',
   contractModalityCode: 'contractModalityCode',
   salaryScaleId: 'salaryScaleId',
+  workShiftId: 'workShiftId',
   payrollGroup: 'payrollGroup',
   cbu: 'cbu',
   bankAccountType: 'bankAccountType'
@@ -817,6 +869,8 @@ exports.Prisma.ModelName = {
   ArcaCctCategoryPosition: 'ArcaCctCategoryPosition',
   ArcaContractModality: 'ArcaContractModality',
   JobPosition: 'JobPosition',
+  WorkShift: 'WorkShift',
+  WorkShiftDetail: 'WorkShiftDetail',
   HealthInsurance: 'HealthInsurance',
   Union: 'Union',
   Mutual: 'Mutual',

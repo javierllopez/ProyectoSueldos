@@ -59,6 +59,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         mutual: { select: { id: true, name: true, code: true } },
         contractModality: true,
         salaryScale: { select: { id: true, name: true, code: true, amount: true } },
+        workShift: { select: { id: true, name: true, code: true, dailyHours: true, weeklyHours: true, monthlyHours: true, monthlyDays: true, cycleType: true } },
       },
     }),
     tenantPrisma.employee.count({ where }),
@@ -98,6 +99,13 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
       mutual: true,
       contractModality: true,
       salaryScale: true,
+      workShift: {
+        include: {
+          details: {
+            orderBy: [{ dayOfWeek: 'asc' }, { cycleDayNumber: 'asc' }],
+          },
+        },
+      },
       relatives: {
         where: { deletedAt: null },
         include: { kinship: true },
@@ -262,6 +270,26 @@ export async function createEmployee(tenantPrisma, employeeData) {
     }
   }
 
+  let assignedWorkShiftId = employeeData.workShiftId ? employeeData.workShiftId.trim() : null;
+  let finalWeeklyHours = hoursToDecimal(employeeData.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
+  let finalMonthlyHours = hoursToDecimal(employeeData.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
+  let finalIsPartTime = employeeData.isPartTime ?? false;
+  let finalPartTimePct = employeeData.partTimePercentage !== undefined && employeeData.partTimePercentage !== null ? Number(employeeData.partTimePercentage) : 100.00;
+
+  if (assignedWorkShiftId) {
+    const ws = await tenantPrisma.workShift.findFirst({
+      where: { id: assignedWorkShiftId, deletedAt: null },
+    });
+    if (ws) {
+      finalWeeklyHours = Number(ws.weeklyHours || 48.00);
+      finalMonthlyHours = Number(ws.monthlyHours || 200.00);
+      finalIsPartTime = finalWeeklyHours < 48;
+      finalPartTimePct = Math.min(100, Math.round((finalWeeklyHours / 48) * 10000) / 100);
+    } else {
+      assignedWorkShiftId = null;
+    }
+  }
+
   const employee = await tenantPrisma.employee.create({
     data: {
       id: crypto.randomUUID(),
@@ -292,11 +320,12 @@ export async function createEmployee(tenantPrisma, employeeData) {
       mutualId: employeeData.mutualId ? employeeData.mutualId.trim() : null,
       contractModalityCode: modCode,
       salaryScaleId: scaleId,
+      workShiftId: assignedWorkShiftId,
       payrollGroup: employeeData.payrollGroup ? employeeData.payrollGroup.trim() : 'MENSUAL',
-      isPartTime: employeeData.isPartTime ?? false,
-      weeklyWorkingHours: hoursToDecimal(employeeData.weeklyWorkingHours, isInternModality ? 20.00 : 48.00),
-      monthlyWorkingHours: hoursToDecimal(employeeData.monthlyWorkingHours, isInternModality ? 80.00 : 200.00),
-      partTimePercentage: employeeData.partTimePercentage !== undefined && employeeData.partTimePercentage !== null ? Number(employeeData.partTimePercentage) : 100.00,
+      isPartTime: finalIsPartTime,
+      weeklyWorkingHours: finalWeeklyHours,
+      monthlyWorkingHours: finalMonthlyHours,
+      partTimePercentage: finalPartTimePct,
       basicSalary: assignedBasicSalary,
       hourlyRate: employeeData.hourlyRate !== undefined && employeeData.hourlyRate !== null ? Number(employeeData.hourlyRate) : 0.00,
       cbu: employeeData.cbu ? employeeData.cbu.trim() : null,
@@ -317,6 +346,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       mutual: true,
       contractModality: true,
       salaryScale: true,
+      workShift: true,
       relatives: {
         include: { kinship: true },
       },
@@ -506,11 +536,29 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
     }
   }
 
+  if (data.workShiftId !== undefined) {
+    const wsId = data.workShiftId ? data.workShiftId.trim() : null;
+    updatePayload.workShiftId = wsId;
+    if (wsId) {
+      const ws = await tenantPrisma.workShift.findFirst({
+        where: { id: wsId, deletedAt: null },
+      });
+      if (ws) {
+        const wHours = Number(ws.weeklyHours || 48.00);
+        const mHours = Number(ws.monthlyHours || 200.00);
+        updatePayload.weeklyWorkingHours = wHours;
+        updatePayload.monthlyWorkingHours = mHours;
+        updatePayload.isPartTime = wHours < 48;
+        updatePayload.partTimePercentage = Math.min(100, Math.round((wHours / 48) * 10000) / 100);
+      }
+    }
+  }
+
   if (data.payrollGroup !== undefined) updatePayload.payrollGroup = data.payrollGroup ? data.payrollGroup.trim() : 'MENSUAL';
-  if (data.isPartTime !== undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
-  if (data.weeklyWorkingHours !== undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
-  if (data.monthlyWorkingHours !== undefined) updatePayload.monthlyWorkingHours = hoursToDecimal(data.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
-  if (data.partTimePercentage !== undefined) updatePayload.partTimePercentage = Number(data.partTimePercentage);
+  if (data.isPartTime !== undefined && data.workShiftId === undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
+  if (data.weeklyWorkingHours !== undefined && data.workShiftId === undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
+  if (data.monthlyWorkingHours !== undefined && data.workShiftId === undefined) updatePayload.monthlyWorkingHours = hoursToDecimal(data.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
+  if (data.partTimePercentage !== undefined && data.workShiftId === undefined) updatePayload.partTimePercentage = Number(data.partTimePercentage);
   if (data.basicSalary !== undefined) updatePayload.basicSalary = Number(data.basicSalary);
   if (data.hourlyRate !== undefined) updatePayload.hourlyRate = Number(data.hourlyRate);
   if (data.cbu !== undefined) updatePayload.cbu = data.cbu ? data.cbu.trim() : null;
@@ -548,6 +596,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       mutual: true,
       contractModality: true,
       salaryScale: true,
+      workShift: true,
       assignedConcepts: {
         where: {
           concept: { deletedAt: null },

@@ -724,7 +724,7 @@
                         </div>
                         <div class="flex-fill">
                           <div>Estructura Organizacional</div>
-                          <small class="text-muted d-block" style="font-size: 0.7rem;">Sectores y puestos</small>
+                          <small class="text-muted d-block" style="font-size: 0.7rem;">Sectores, puestos y jornadas</small>
                         </div>
                         <i class="ti ti-chevron-right chevron-icon"></i>
                       </div>
@@ -739,6 +739,11 @@
                             <span class="sub-bullet"></span>
                             <span>Puestos de Trabajo</span>
                             <span class="badge bg-purple-lt ms-auto" id="personnel-badge-job-count">0</span>
+                          </a>
+                          <a href="#pane-personnel-work-shifts" class="personnel-sub-item" id="side-personnel-work-shifts" data-bs-toggle="tab" data-bs-target="#pane-personnel-work-shifts" role="tab">
+                            <span class="sub-bullet"></span>
+                            <span>Jornadas y Horarios</span>
+                            <span class="badge bg-blue-lt ms-auto" id="personnel-badge-shifts-count">0</span>
                           </a>
                         </div>
                       </div>
@@ -1006,6 +1011,73 @@
                           <span class="text-muted small ms-1" id="job-positions-pagination-info">Mostrando 0 puestos</span>
                         </div>
                         <ul class="pagination pagination-sm m-0 ms-auto" id="job-positions-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: JORNADAS DE TRABAJO -->
+                  <div class="tab-pane fade" id="pane-personnel-work-shifts" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Jornadas -->
+                    <div class="card shadow-xs mb-3 card-personnel-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-5">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-teal"></i></span>
+                              <input type="text" id="work-shift-search-input" class="form-control" placeholder="Buscar por denominación o código de jornada..." />
+                            </div>
+                          </div>
+                          <div class="col-md-4 text-md-start">
+                            <span class="text-muted small">
+                              <i class="ti ti-info-circle me-1 text-teal"></i> Total: <strong id="work-shifts-count-label" class="text-dark">0</strong> jornadas registradas
+                            </span>
+                          </div>
+                          <div class="col-md-3 text-end">
+                            <button type="button" class="btn btn-personnel w-100" id="btn-open-new-work-shift-modal">
+                              <i class="ti ti-plus me-1"></i> Nueva Jornada
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Jornadas de Trabajo -->
+                    <div class="card shadow-xs">
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th style="width: 100px;">Código</th>
+                              <th>Denominación</th>
+                              <th style="width: 130px;">Régimen</th>
+                              <th class="text-center" style="width: 90px;">Hs. Diarias</th>
+                              <th class="text-center" style="width: 100px;">Hs. Semanales</th>
+                              <th class="text-center" style="width: 100px;">Hs. Mensuales</th>
+                              <th class="text-center" style="width: 90px;">Días/Mes</th>
+                              <th class="text-center" style="width: 130px;">Empleados</th>
+                              <th class="w-1 text-end" style="width: 130px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="work-shifts-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Jornadas de Trabajo -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top" id="work-shifts-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="work-shifts-page-size-select" class="form-select form-select-sm" style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="work-shifts-pagination-info">Mostrando 0 jornadas</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="work-shifts-pagination-list">
                           <!-- Dinámico vía app.js -->
                         </ul>
                       </div>
@@ -3410,37 +3482,41 @@
                         </select>
                       </div>
 
-                      <div class="col-md-3">
-                        <div class="form-check form-switch mb-1">
-                          <input class="form-check-input" type="checkbox" id="employee-input-is-part-time">
-                          <label class="form-check-label fw-bold small" for="employee-input-is-part-time">¿Jornada Reducida / Parcial?</label>
-                        </div>
-                        <div class="text-muted" style="font-size: 0.70rem;">Art. 92 TER LCT / proporcional</div>
+                      <div class="col-md-4">
+                        <label class="form-label fw-bold mb-1">
+                          <i class="ti ti-clock-play me-1 text-teal"></i>Jornada Asignada
+                        </label>
+                        <select class="form-select fw-bold text-dark" id="employee-select-work-shift">
+                          <option value="">-- Sin jornada asignada (Estándar 48hs) --</option>
+                        </select>
+                        <div class="form-hint" id="employee-shift-hint" style="font-size: 0.70rem;">Régimen horario asignado desde Estructura Organizacional.</div>
                       </div>
 
                       <div class="col-md-2">
-                        <label class="form-label fw-bold mb-1 small">Horas Semanales</label>
+                        <label class="form-label fw-bold mb-1 small text-muted">Días en el Mes</label>
                         <div class="input-group">
-                          <span class="input-group-text p-1"><i class="ti ti-clock"></i></span>
-                          <input type="text" class="form-control font-monospace" id="employee-input-weekly-hours" placeholder="48:00" />
-                        </div>
-                      </div>
-
-                      <div class="col-md-2">
-                        <label class="form-label fw-bold mb-1 small">Horas Mensuales</label>
-                        <div class="input-group">
-                          <span class="input-group-text p-1"><i class="ti ti-calendar"></i></span>
-                          <input type="text" class="form-control font-monospace" id="employee-input-monthly-hours" placeholder="200:00" />
+                          <span class="input-group-text p-1 bg-light text-muted"><i class="ti ti-calendar"></i></span>
+                          <input type="text" class="form-control font-monospace bg-light fw-bold text-dark text-center" id="employee-input-monthly-days" value="30" readonly title="Total días mensuales asignados según la jornada (Solo Lectura)" />
                         </div>
                       </div>
 
                       <div class="col-md-2">
-                        <label class="form-label fw-bold mb-1 small">% Jornada</label>
+                        <label class="form-label fw-bold mb-1 small text-muted">Horas en el Día</label>
                         <div class="input-group">
-                          <input type="number" class="form-control font-monospace bg-light" id="employee-input-part-time-pct" value="100" min="1" max="100" step="0.01" readonly />
-                          <span class="input-group-text p-1">%</span>
+                          <span class="input-group-text p-1 bg-light text-muted"><i class="ti ti-clock"></i></span>
+                          <input type="text" class="form-control font-monospace bg-light fw-bold text-dark text-center" id="employee-input-daily-hours" value="8.00" readonly title="Total horas diarias asignadas según la jornada (Solo Lectura)" />
                         </div>
                       </div>
+
+                      <div class="col-md-1">
+                        <label class="form-label fw-bold mb-1 small text-muted">% Jorn.</label>
+                        <input type="number" class="form-control font-monospace bg-light text-center px-1" id="employee-input-part-time-pct" value="100" min="1" max="100" step="0.01" readonly />
+                      </div>
+
+                      <!-- Controles ocultos para preservar compatibilidad con scripts existentes -->
+                      <input type="hidden" id="employee-input-weekly-hours" value="48:00" />
+                      <input type="hidden" id="employee-input-monthly-hours" value="200:00" />
+                      <input type="checkbox" class="d-none" id="employee-input-is-part-time" />
                     </div>
                   </div>
                 </div>
@@ -3601,6 +3677,224 @@
             <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" id="btn-save-department" class="btn btn-personnel ms-auto">
               <i class="ti ti-device-floppy me-1"></i> Guardar Sector
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ABM DE JORNADA DE TRABAJO (ENCABEZADO Y DETALLE) -->
+  <div class="modal modal-blur fade" id="modal-work-shift-form" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-content">
+        <form id="form-work-shift">
+          <input type="hidden" id="work-shift-form-id">
+          <div class="modal-header border-bottom py-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar avatar-sm bg-blue-lt text-blue rounded">
+                <i class="ti ti-clock-play fs-2"></i>
+              </div>
+              <div>
+                <h5 class="modal-title fw-bold" id="modal-work-shift-form-title">Nueva Jornada de Trabajo</h5>
+                <div class="text-muted small">Estructura Organizacional — Régimen Horario y Diagrama Semanal / Ciclos</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body p-3">
+            <div id="work-shift-form-alert" class="alert alert-danger d-none mb-3"></div>
+
+            <!-- CARD 1: ENCABEZADO - DATOS GENERALES Y TOTALES -->
+            <div class="card mb-3 border shadow-xs">
+              <div class="card-header bg-light-subtle py-2 px-3 d-flex align-items-center justify-content-between">
+                <div class="fw-bold text-dark d-flex align-items-center gap-2">
+                  <i class="ti ti-id-badge-2 text-blue"></i>
+                  <span>1. Encabezado: Denominación, Régimen y Totales Oficiales</span>
+                </div>
+                <span class="badge bg-blue-lt" id="work-shift-status-badge">Nueva Definición</span>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-2 mb-3">
+                  <div class="col-md-5">
+                    <label class="form-label required fw-bold mb-1">
+                      Denominación de la Jornada <span class="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="work-shift-input-name"
+                      required
+                      placeholder="Ej. Jornada Nocturna Rotativa 7hs, Franquero Fin de Semana 24hs..."
+                    />
+                    <div class="form-hint">Nombre representativo para asignar a colaboradores y legajos.</div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label class="form-label fw-bold mb-1">
+                      Código Interno <span class="text-muted fw-normal small">(Opcional)</span>
+                    </label>
+                    <div class="input-icon">
+                      <span class="input-icon-addon"><i class="ti ti-tag text-blue"></i></span>
+                      <input
+                        type="text"
+                        class="form-control text-uppercase font-monospace"
+                        id="work-shift-input-code"
+                        placeholder="Ej. NOCT_7H, FRANQ_24, NORM_8H"
+                        maxlength="50"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label required fw-bold mb-1">
+                      Tipo de Régimen / Ciclo <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select fw-bold text-dark" id="work-shift-select-cycle-type">
+                      <option value="SEMANAL" selected>Semanal Estándar (Lunes a Domingo)</option>
+                      <option value="ROTATIVO_DIAS">Ciclo Alterno / Rotativo por Días (1x1, 2x2, 4x2)</option>
+                      <option value="FRANQUERO">Personal Franquero / Guardias</option>
+                    </select>
+                    <div class="form-hint" id="work-shift-cycle-hint">Esquema semanal fijo con asignación de francos.</div>
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold mb-1">
+                    Descripción Aclaratoria / Encuadre Legal y CCT <span class="text-muted fw-normal small">(Opcional)</span>
+                  </label>
+                  <textarea
+                    class="form-control"
+                    id="work-shift-input-description"
+                    rows="2"
+                    placeholder="Ej. Régimen según Art. 200 LCT jornada nocturna máxima 7 horas diarias. Aplicable a personal de maestranza nocturna."
+                  ></textarea>
+                </div>
+
+                <!-- Recuadro de Totales sugeridos con edición manual final -->
+                <div class="p-2 rounded border bg-blue-subtle text-dark">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="small fw-bold text-primary d-flex align-items-center gap-1">
+                      <i class="ti ti-calculator"></i> Totales Oficiales para Fórmulas de Liquidación (Sugeridos automáticamente, editables):
+                    </span>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2" id="btn-sync-shift-totals" title="Recalcular automáticamente en base al diagrama inferior">
+                      <i class="ti ti-refresh me-1"></i> Recalcular desde Diagrama
+                    </button>
+                  </div>
+                  <div class="row g-2 align-items-center">
+                    <div class="col-md-3">
+                      <label class="form-label small fw-bold mb-1 text-muted">Horas Diarias Base</label>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text"><i class="ti ti-clock"></i></span>
+                        <input type="number" class="form-control font-monospace fw-bold" id="work-shift-input-daily-hours" value="8.00" min="0" max="24" step="0.1" required />
+                        <span class="input-group-text">hs/día</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-bold mb-1 text-muted">Horas Semanales</label>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text"><i class="ti ti-calendar-time"></i></span>
+                        <input type="number" class="form-control font-monospace fw-bold" id="work-shift-input-weekly-hours" value="48.00" min="0" max="168" step="0.1" required />
+                        <span class="input-group-text">hs/sem</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-bold mb-1 text-muted">Horas Mensuales</label>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text"><i class="ti ti-calendar"></i></span>
+                        <input type="number" class="form-control font-monospace fw-bold" id="work-shift-input-monthly-hours" value="200.00" min="0" max="744" step="0.1" required />
+                        <span class="input-group-text">hs/mes</span>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <label class="form-label small fw-bold mb-1 text-muted">Días en el Mes</label>
+                      <div class="input-group input-group-sm">
+                        <span class="input-group-text"><i class="ti ti-calendar-event"></i></span>
+                        <input type="number" class="form-control font-monospace fw-bold" id="work-shift-input-monthly-days" value="30.00" min="0" max="31" step="0.5" required />
+                        <span class="input-group-text">días</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CARD 2: DETALLE - DIAGRAMA DE HORARIOS -->
+            <div class="card border shadow-xs">
+              <div class="card-header bg-light-subtle py-2 px-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <div class="fw-bold text-dark d-flex align-items-center gap-2">
+                  <i class="ti ti-calendar-stats text-teal"></i>
+                  <span>2. Detalle: Diagrama de Horarios de la Jornada</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-teal dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                      <i class="ti ti-wand me-1"></i> Cargar Plantilla Rápida
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end shadow-sm">
+                      <a class="dropdown-item" href="#" id="preset-shift-normal-5d">
+                        <i class="ti ti-sun me-2 text-warning"></i> Normal Diurna (L a V 8hs)
+                      </a>
+                      <a class="dropdown-item" href="#" id="preset-shift-normal-6d">
+                        <i class="ti ti-sun me-2 text-warning"></i> Normal con Sábado (L a V 8hs, Sáb 4hs)
+                      </a>
+                      <a class="dropdown-item" href="#" id="preset-shift-night">
+                        <i class="ti ti-moon me-2 text-indigo"></i> Nocturna Continua 7hs (22:00 a 05:00)
+                      </a>
+                      <a class="dropdown-item" href="#" id="preset-shift-franquero">
+                        <i class="ti ti-calendar-event me-2 text-azure"></i> Franquero Fin de Semana (Sáb-Dom 12hs)
+                      </a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#" id="preset-shift-alterno-1x1">
+                        <i class="ti ti-arrows-exchange me-2 text-teal"></i> Ciclo Alterno 1x1 (1 día 12hs, 1 día franco)
+                      </a>
+                      <a class="dropdown-item" href="#" id="preset-shift-rotativo-4x2">
+                        <i class="ti ti-repeat me-2 text-purple"></i> Ciclo Rotativo 4x2 (4 días 8hs, 2 francos)
+                      </a>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-outline-secondary d-none" id="btn-add-cycle-day">
+                    <i class="ti ti-plus me-1"></i> Añadir Día al Ciclo
+                  </button>
+                </div>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-vcenter card-table table-sm" id="work-shift-diagram-table">
+                    <thead class="bg-light">
+                      <tr>
+                        <th style="width: 140px;">Día / Tramo</th>
+                        <th style="width: 130px;" class="text-center">Condición</th>
+                        <th style="width: 130px;">Hora Entrada</th>
+                        <th style="width: 130px;">Hora Salida</th>
+                        <th style="width: 120px;" class="text-center">Pausa (min)</th>
+                        <th style="width: 140px;" class="text-center">Tipo / Cruce</th>
+                        <th style="width: 100px;" class="text-end">Hs. Netas</th>
+                        <th style="width: 60px;" class="text-center">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody id="work-shift-details-tbody">
+                      <!-- Filas dinámicas vía app.js -->
+                    </tbody>
+                    <tfoot class="bg-light-subtle fw-bold">
+                      <tr>
+                        <td colspan="4" class="text-muted small" id="work-shift-diagram-summary-text">
+                          Resumen del ciclo: 0 días laborables, 0 francos.
+                        </td>
+                        <td colspan="2" class="text-end text-muted small">Total Calculado del Diagrama:</td>
+                        <td class="text-end font-monospace text-primary fs-4" id="work-shift-diagram-total-hours">0.00 hs</td>
+                        <td></td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light py-2">
+            <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btn-save-work-shift" class="btn btn-personnel ms-auto">
+              <i class="ti ti-device-floppy me-1"></i> Guardar Jornada
             </button>
           </div>
         </form>
@@ -5226,7 +5520,7 @@
                           <option value="HORAS">[HORAS] Novedad: Horas (formato decimal o HH:MM)</option>
                           <option value="PORCENTAJE">[PORCENTAJE] Novedad: Porcentaje (dividido 100)</option>
                         </optgroup>
-                        <optgroup label="Variables del Colaborador">
+                        <optgroup label="Variables del Colaborador y Jornada">
                           <option value="SUELDO_BASICO_EMPLEADO">[SUELDO_BASICO_EMPLEADO] Sueldo Básico Nominal del Empleado</option>
                           <option value="ANTIGUEDAD_ANOS">[ANTIGUEDAD_ANOS] Años de Antigüedad</option>
                           <option value="ANTIGUEDAD_MESES">[ANTIGUEDAD_MESES] Meses de Antigüedad</option>
@@ -5234,6 +5528,10 @@
                           <option value="DIAS_TRABAJADOS">[DIAS_TRABAJADOS] Días Trabajados en el Período</option>
                           <option value="HORAS_TRABAJADAS">[HORAS_TRABAJADAS] Horas Trabajadas en el Período</option>
                           <option value="HIJOS">[HIJOS] Cantidad de Hijos a Cargo</option>
+                          <option value="JORNADA_HORAS_DIARIAS">[JORNADA_HORAS_DIARIAS] Horas Diarias de la Jornada Asignada</option>
+                          <option value="JORNADA_HORAS_SEMANALES">[JORNADA_HORAS_SEMANALES] Horas Semanales de la Jornada Asignada</option>
+                          <option value="JORNADA_HORAS_MENSUALES">[JORNADA_HORAS_MENSUALES] Horas Mensuales de la Jornada Asignada</option>
+                          <option value="JORNADA_DIAS_MENSUALES">[JORNADA_DIAS_MENSUALES] Días Mensuales de la Jornada Asignada</option>
                         </optgroup>
                         <optgroup label="Conceptos de Nómina Disponibles" id="formula-concept-options-group">
                           <!-- Llenado dinámico desde app.js -->

@@ -12,6 +12,10 @@ import {
   updateJobPositionSchema,
   importJobPositionsSchema,
 } from './organization.validation.js';
+import {
+  createWorkShiftSchema,
+  updateWorkShiftSchema,
+} from './workShift.validation.js';
 
 const router = Router();
 
@@ -72,6 +76,27 @@ router.delete(
   organizationController.deleteJobPosition
 );
 
+// --- Rutas de Jornadas de Trabajo ---
+router.get('/work-shifts', organizationController.listWorkShifts);
+router.get('/work-shifts/:id', organizationController.getWorkShiftById);
+router.post(
+  '/work-shifts',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createWorkShiftSchema),
+  organizationController.createWorkShift
+);
+router.patch(
+  '/work-shifts/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateWorkShiftSchema),
+  organizationController.updateWorkShift
+);
+router.delete(
+  '/work-shifts/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  organizationController.deleteWorkShift
+);
+
 // --- Rutas de Catálogos Oficiales ARCA ---
 router.get('/arca-ccts', organizationController.listArcaCcts);
 router.get('/arca-categories', organizationController.listArcaCategories);
@@ -80,3 +105,4 @@ router.get('/arca-service-types', organizationController.listArcaServiceTypes);
 router.get('/arca-contract-modalities', organizationController.listArcaContractModalities);
 
 export default router;
+
