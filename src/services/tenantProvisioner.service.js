@@ -1159,11 +1159,16 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
           const basic = Number(emp.basicSalary) || 0;
           const puestoName = emp.jobPosition?.name?.trim() || 'General';
           const scaleName = puestoName;
+          const suffixedName = `${scaleName} ($${basic.toLocaleString('es-AR')})`;
 
+          // 1. Buscar si ya existe una nómina con ese puesto y monto, o con el nombre sufijado
           let scale = await tenantClient.salaryScale.findFirst({
             where: {
-              name: scaleName,
-              amount: basic,
+              OR: [
+                { name: scaleName, amount: basic },
+                { name: suffixedName, amount: basic },
+                { name: suffixedName },
+              ],
               deletedAt: null,
             },
           });
@@ -1172,16 +1177,27 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
             const existingWithName = await tenantClient.salaryScale.findFirst({
               where: { name: scaleName, deletedAt: null },
             });
-            const finalName = existingWithName ? `${scaleName} ($${basic.toLocaleString('es-AR')})` : scaleName;
+            const finalName = existingWithName ? suffixedName : scaleName;
 
-            scale = await tenantClient.salaryScale.create({
-              data: {
-                name: finalName,
-                code: emp.jobPosition?.code ? `${emp.jobPosition.code}-BAS` : null,
-                description: `Nómina inicial asignada a ${puestoName}`,
-                amount: basic,
-              },
+            scale = await tenantClient.salaryScale.findFirst({
+              where: { name: finalName, deletedAt: null },
             });
+
+            if (!scale) {
+              const isDirector = emp.contractModalityCode === '99' || /director/i.test(puestoName);
+              const isIntern = emp.contractModalityCode === '27' || emp.contractModalityCode === '51';
+
+              scale = await tenantClient.salaryScale.create({
+                data: {
+                  name: finalName,
+                  code: emp.jobPosition?.code ? `${emp.jobPosition.code}-BAS` : null,
+                  description: `Nómina inicial asignada a ${puestoName}`,
+                  amount: basic,
+                  isDirectorOnly: isDirector,
+                  isInternOnly: isIntern,
+                },
+              });
+            }
           }
 
           await tenantClient.employee.update({

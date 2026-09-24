@@ -16,4 +16,5 @@ node_modules
 # Binarios nativos y archivos temporales
 *.tmp*
 *.node
+scratch/
 
