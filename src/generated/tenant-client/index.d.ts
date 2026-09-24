@@ -11492,6 +11492,7 @@ export namespace Prisma {
     categoryCode: string | null
     positionCode: string | null
     serviceTypeCode: string | null
+    activityCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -11505,6 +11506,7 @@ export namespace Prisma {
     categoryCode: string | null
     positionCode: string | null
     serviceTypeCode: string | null
+    activityCode: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -11518,6 +11520,7 @@ export namespace Prisma {
     categoryCode: number
     positionCode: number
     serviceTypeCode: number
+    activityCode: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -11533,6 +11536,7 @@ export namespace Prisma {
     categoryCode?: true
     positionCode?: true
     serviceTypeCode?: true
+    activityCode?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -11546,6 +11550,7 @@ export namespace Prisma {
     categoryCode?: true
     positionCode?: true
     serviceTypeCode?: true
+    activityCode?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -11559,6 +11564,7 @@ export namespace Prisma {
     categoryCode?: true
     positionCode?: true
     serviceTypeCode?: true
+    activityCode?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -11645,6 +11651,7 @@ export namespace Prisma {
     categoryCode: string | null
     positionCode: string | null
     serviceTypeCode: string | null
+    activityCode: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -11675,6 +11682,7 @@ export namespace Prisma {
     categoryCode?: boolean
     positionCode?: boolean
     serviceTypeCode?: boolean
+    activityCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -11696,12 +11704,13 @@ export namespace Prisma {
     categoryCode?: boolean
     positionCode?: boolean
     serviceTypeCode?: boolean
+    activityCode?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type JobPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "cctCode" | "categoryCode" | "positionCode" | "serviceTypeCode" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["jobPosition"]>
+  export type JobPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "cctCode" | "categoryCode" | "positionCode" | "serviceTypeCode" | "activityCode" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["jobPosition"]>
   export type JobPositionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cct?: boolean | JobPosition$cctArgs<ExtArgs>
     category?: boolean | JobPosition$categoryArgs<ExtArgs>
@@ -11728,6 +11737,7 @@ export namespace Prisma {
       categoryCode: string | null
       positionCode: string | null
       serviceTypeCode: string | null
+      activityCode: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -12112,6 +12122,7 @@ export namespace Prisma {
     readonly categoryCode: FieldRef<"JobPosition", 'String'>
     readonly positionCode: FieldRef<"JobPosition", 'String'>
     readonly serviceTypeCode: FieldRef<"JobPosition", 'String'>
+    readonly activityCode: FieldRef<"JobPosition", 'String'>
     readonly createdAt: FieldRef<"JobPosition", 'DateTime'>
     readonly updatedAt: FieldRef<"JobPosition", 'DateTime'>
     readonly deletedAt: FieldRef<"JobPosition", 'DateTime'>
@@ -12593,6 +12604,7 @@ export namespace Prisma {
     weeklyHours: Decimal | null
     monthlyHours: Decimal | null
     monthlyDays: Decimal | null
+    percentage: Decimal | null
   }
 
   export type WorkShiftSumAggregateOutputType = {
@@ -12600,6 +12612,7 @@ export namespace Prisma {
     weeklyHours: Decimal | null
     monthlyHours: Decimal | null
     monthlyDays: Decimal | null
+    percentage: Decimal | null
   }
 
   export type WorkShiftMinAggregateOutputType = {
@@ -12612,6 +12625,7 @@ export namespace Prisma {
     weeklyHours: Decimal | null
     monthlyHours: Decimal | null
     monthlyDays: Decimal | null
+    percentage: Decimal | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -12628,6 +12642,7 @@ export namespace Prisma {
     weeklyHours: Decimal | null
     monthlyHours: Decimal | null
     monthlyDays: Decimal | null
+    percentage: Decimal | null
     isActive: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -12644,6 +12659,7 @@ export namespace Prisma {
     weeklyHours: number
     monthlyHours: number
     monthlyDays: number
+    percentage: number
     isActive: number
     createdAt: number
     updatedAt: number
@@ -12657,6 +12673,7 @@ export namespace Prisma {
     weeklyHours?: true
     monthlyHours?: true
     monthlyDays?: true
+    percentage?: true
   }
 
   export type WorkShiftSumAggregateInputType = {
@@ -12664,6 +12681,7 @@ export namespace Prisma {
     weeklyHours?: true
     monthlyHours?: true
     monthlyDays?: true
+    percentage?: true
   }
 
   export type WorkShiftMinAggregateInputType = {
@@ -12676,6 +12694,7 @@ export namespace Prisma {
     weeklyHours?: true
     monthlyHours?: true
     monthlyDays?: true
+    percentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -12692,6 +12711,7 @@ export namespace Prisma {
     weeklyHours?: true
     monthlyHours?: true
     monthlyDays?: true
+    percentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -12708,6 +12728,7 @@ export namespace Prisma {
     weeklyHours?: true
     monthlyHours?: true
     monthlyDays?: true
+    percentage?: true
     isActive?: true
     createdAt?: true
     updatedAt?: true
@@ -12811,6 +12832,7 @@ export namespace Prisma {
     weeklyHours: Decimal
     monthlyHours: Decimal
     monthlyDays: Decimal
+    percentage: Decimal
     isActive: boolean
     createdAt: Date
     updatedAt: Date
@@ -12846,6 +12868,7 @@ export namespace Prisma {
     weeklyHours?: boolean
     monthlyHours?: boolean
     monthlyDays?: boolean
+    percentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -12867,13 +12890,14 @@ export namespace Prisma {
     weeklyHours?: boolean
     monthlyHours?: boolean
     monthlyDays?: boolean
+    percentage?: boolean
     isActive?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type WorkShiftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "cycleType" | "dailyHours" | "weeklyHours" | "monthlyHours" | "monthlyDays" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["workShift"]>
+  export type WorkShiftOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "cycleType" | "dailyHours" | "weeklyHours" | "monthlyHours" | "monthlyDays" | "percentage" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["workShift"]>
   export type WorkShiftInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     details?: boolean | WorkShift$detailsArgs<ExtArgs>
     employees?: boolean | WorkShift$employeesArgs<ExtArgs>
@@ -12896,6 +12920,7 @@ export namespace Prisma {
       weeklyHours: Prisma.Decimal
       monthlyHours: Prisma.Decimal
       monthlyDays: Prisma.Decimal
+      percentage: Prisma.Decimal
       isActive: boolean
       createdAt: Date
       updatedAt: Date
@@ -13280,6 +13305,7 @@ export namespace Prisma {
     readonly weeklyHours: FieldRef<"WorkShift", 'Decimal'>
     readonly monthlyHours: FieldRef<"WorkShift", 'Decimal'>
     readonly monthlyDays: FieldRef<"WorkShift", 'Decimal'>
+    readonly percentage: FieldRef<"WorkShift", 'Decimal'>
     readonly isActive: FieldRef<"WorkShift", 'Boolean'>
     readonly createdAt: FieldRef<"WorkShift", 'DateTime'>
     readonly updatedAt: FieldRef<"WorkShift", 'DateTime'>
@@ -19383,6 +19409,7 @@ export namespace Prisma {
     description: string | null
     amount: Decimal | null
     isInternOnly: boolean | null
+    isDirectorOnly: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -19395,6 +19422,7 @@ export namespace Prisma {
     description: string | null
     amount: Decimal | null
     isInternOnly: boolean | null
+    isDirectorOnly: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -19407,6 +19435,7 @@ export namespace Prisma {
     description: number
     amount: number
     isInternOnly: number
+    isDirectorOnly: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -19429,6 +19458,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isInternOnly?: true
+    isDirectorOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -19441,6 +19471,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isInternOnly?: true
+    isDirectorOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -19453,6 +19484,7 @@ export namespace Prisma {
     description?: true
     amount?: true
     isInternOnly?: true
+    isDirectorOnly?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -19552,6 +19584,7 @@ export namespace Prisma {
     description: string | null
     amount: Decimal
     isInternOnly: boolean
+    isDirectorOnly: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -19583,6 +19616,7 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -19599,12 +19633,13 @@ export namespace Prisma {
     description?: boolean
     amount?: boolean
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "amount" | "isInternOnly" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
+  export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "description" | "amount" | "isInternOnly" | "isDirectorOnly" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
   export type SalaryScaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
     _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
@@ -19622,6 +19657,7 @@ export namespace Prisma {
       description: string | null
       amount: Prisma.Decimal
       isInternOnly: boolean
+      isDirectorOnly: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -20001,6 +20037,7 @@ export namespace Prisma {
     readonly description: FieldRef<"SalaryScale", 'String'>
     readonly amount: FieldRef<"SalaryScale", 'Decimal'>
     readonly isInternOnly: FieldRef<"SalaryScale", 'Boolean'>
+    readonly isDirectorOnly: FieldRef<"SalaryScale", 'Boolean'>
     readonly createdAt: FieldRef<"SalaryScale", 'DateTime'>
     readonly updatedAt: FieldRef<"SalaryScale", 'DateTime'>
     readonly deletedAt: FieldRef<"SalaryScale", 'DateTime'>
@@ -33971,6 +34008,7 @@ export namespace Prisma {
     categoryCode: 'categoryCode',
     positionCode: 'positionCode',
     serviceTypeCode: 'serviceTypeCode',
+    activityCode: 'activityCode',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -33989,6 +34027,7 @@ export namespace Prisma {
     weeklyHours: 'weeklyHours',
     monthlyHours: 'monthlyHours',
     monthlyDays: 'monthlyDays',
+    percentage: 'percentage',
     isActive: 'isActive',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -34110,6 +34149,7 @@ export namespace Prisma {
     description: 'description',
     amount: 'amount',
     isInternOnly: 'isInternOnly',
+    isDirectorOnly: 'isDirectorOnly',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -34510,7 +34550,8 @@ export namespace Prisma {
     cctCode: 'cctCode',
     categoryCode: 'categoryCode',
     positionCode: 'positionCode',
-    serviceTypeCode: 'serviceTypeCode'
+    serviceTypeCode: 'serviceTypeCode',
+    activityCode: 'activityCode'
   };
 
   export type JobPositionOrderByRelevanceFieldEnum = (typeof JobPositionOrderByRelevanceFieldEnum)[keyof typeof JobPositionOrderByRelevanceFieldEnum]
@@ -35390,6 +35431,7 @@ export namespace Prisma {
     categoryCode?: StringNullableFilter<"JobPosition"> | string | null
     positionCode?: StringNullableFilter<"JobPosition"> | string | null
     serviceTypeCode?: StringNullableFilter<"JobPosition"> | string | null
+    activityCode?: StringNullableFilter<"JobPosition"> | string | null
     createdAt?: DateTimeFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
@@ -35408,6 +35450,7 @@ export namespace Prisma {
     categoryCode?: SortOrderInput | SortOrder
     positionCode?: SortOrderInput | SortOrder
     serviceTypeCode?: SortOrderInput | SortOrder
+    activityCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -35430,6 +35473,7 @@ export namespace Prisma {
     categoryCode?: StringNullableFilter<"JobPosition"> | string | null
     positionCode?: StringNullableFilter<"JobPosition"> | string | null
     serviceTypeCode?: StringNullableFilter<"JobPosition"> | string | null
+    activityCode?: StringNullableFilter<"JobPosition"> | string | null
     createdAt?: DateTimeFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
@@ -35448,6 +35492,7 @@ export namespace Prisma {
     categoryCode?: SortOrderInput | SortOrder
     positionCode?: SortOrderInput | SortOrder
     serviceTypeCode?: SortOrderInput | SortOrder
+    activityCode?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -35467,6 +35512,7 @@ export namespace Prisma {
     categoryCode?: StringNullableWithAggregatesFilter<"JobPosition"> | string | null
     positionCode?: StringNullableWithAggregatesFilter<"JobPosition"> | string | null
     serviceTypeCode?: StringNullableWithAggregatesFilter<"JobPosition"> | string | null
+    activityCode?: StringNullableWithAggregatesFilter<"JobPosition"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"JobPosition"> | Date | string | null
@@ -35485,6 +35531,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolFilter<"WorkShift"> | boolean
     createdAt?: DateTimeFilter<"WorkShift"> | Date | string
     updatedAt?: DateTimeFilter<"WorkShift"> | Date | string
@@ -35503,6 +35550,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -35525,6 +35573,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolFilter<"WorkShift"> | boolean
     createdAt?: DateTimeFilter<"WorkShift"> | Date | string
     updatedAt?: DateTimeFilter<"WorkShift"> | Date | string
@@ -35543,6 +35592,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -35567,6 +35617,7 @@ export namespace Prisma {
     weeklyHours?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalWithAggregatesFilter<"WorkShift"> | Decimal | DecimalJsLike | number | string
     isActive?: BoolWithAggregatesFilter<"WorkShift"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"WorkShift"> | Date | string
@@ -36150,6 +36201,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"SalaryScale"> | string | null
     amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFilter<"SalaryScale"> | boolean
+    isDirectorOnly?: BoolFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
@@ -36163,6 +36215,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     isInternOnly?: SortOrder
+    isDirectorOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -36180,6 +36233,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"SalaryScale"> | string | null
     amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFilter<"SalaryScale"> | boolean
+    isDirectorOnly?: BoolFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
@@ -36193,6 +36247,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     amount?: SortOrder
     isInternOnly?: SortOrder
+    isDirectorOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -36213,6 +36268,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"SalaryScale"> | string | null
     amount?: DecimalWithAggregatesFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolWithAggregatesFilter<"SalaryScale"> | boolean
+    isDirectorOnly?: BoolWithAggregatesFilter<"SalaryScale"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"SalaryScale"> | Date | string | null
@@ -38304,6 +38360,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -38322,6 +38379,7 @@ export namespace Prisma {
     categoryCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -38332,6 +38390,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38350,6 +38409,7 @@ export namespace Prisma {
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38364,6 +38424,7 @@ export namespace Prisma {
     categoryCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -38373,6 +38434,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38386,6 +38448,7 @@ export namespace Prisma {
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -38401,6 +38464,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38419,6 +38483,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38437,6 +38502,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38455,6 +38521,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38473,6 +38540,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -38489,6 +38557,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -38505,6 +38574,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39167,6 +39237,7 @@ export namespace Prisma {
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39180,6 +39251,7 @@ export namespace Prisma {
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39193,6 +39265,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39206,6 +39279,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39219,6 +39293,7 @@ export namespace Prisma {
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39231,6 +39306,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39243,6 +39319,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -41450,6 +41527,7 @@ export namespace Prisma {
     categoryCode?: SortOrder
     positionCode?: SortOrder
     serviceTypeCode?: SortOrder
+    activityCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -41463,6 +41541,7 @@ export namespace Prisma {
     categoryCode?: SortOrder
     positionCode?: SortOrder
     serviceTypeCode?: SortOrder
+    activityCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -41476,6 +41555,7 @@ export namespace Prisma {
     categoryCode?: SortOrder
     positionCode?: SortOrder
     serviceTypeCode?: SortOrder
+    activityCode?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -41518,6 +41598,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41529,6 +41610,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
   }
 
   export type WorkShiftMaxOrderByAggregateInput = {
@@ -41541,6 +41623,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41557,6 +41640,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -41568,6 +41652,7 @@ export namespace Prisma {
     weeklyHours?: SortOrder
     monthlyHours?: SortOrder
     monthlyDays?: SortOrder
+    percentage?: SortOrder
   }
 
   export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -42068,6 +42153,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isInternOnly?: SortOrder
+    isDirectorOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42084,6 +42170,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isInternOnly?: SortOrder
+    isDirectorOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42096,6 +42183,7 @@ export namespace Prisma {
     description?: SortOrder
     amount?: SortOrder
     isInternOnly?: SortOrder
+    isDirectorOnly?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -45095,6 +45183,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45111,6 +45200,7 @@ export namespace Prisma {
     categoryCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45154,6 +45244,7 @@ export namespace Prisma {
     categoryCode?: StringNullableFilter<"JobPosition"> | string | null
     positionCode?: StringNullableFilter<"JobPosition"> | string | null
     serviceTypeCode?: StringNullableFilter<"JobPosition"> | string | null
+    activityCode?: StringNullableFilter<"JobPosition"> | string | null
     createdAt?: DateTimeFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
@@ -45163,6 +45254,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45179,6 +45271,7 @@ export namespace Prisma {
     cctCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45215,6 +45308,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45231,6 +45325,7 @@ export namespace Prisma {
     cctCode?: string | null
     categoryCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45267,6 +45362,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45283,6 +45379,7 @@ export namespace Prisma {
     cctCode?: string | null
     categoryCode?: string | null
     positionCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -45987,6 +46084,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46004,6 +46102,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46037,6 +46136,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46054,6 +46154,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -46460,6 +46561,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46477,6 +46579,7 @@ export namespace Prisma {
     categoryCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46590,6 +46693,7 @@ export namespace Prisma {
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46602,6 +46706,7 @@ export namespace Prisma {
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
+    isDirectorOnly?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46622,6 +46727,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46639,6 +46745,7 @@ export namespace Prisma {
     weeklyHours?: Decimal | DecimalJsLike | number | string
     monthlyHours?: Decimal | DecimalJsLike | number | string
     monthlyDays?: Decimal | DecimalJsLike | number | string
+    percentage?: Decimal | DecimalJsLike | number | string
     isActive?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -46893,6 +47000,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46910,6 +47018,7 @@ export namespace Prisma {
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47053,6 +47162,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47065,6 +47175,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
+    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -47091,6 +47202,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -47108,6 +47220,7 @@ export namespace Prisma {
     weeklyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     monthlyDays?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    percentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50114,6 +50227,7 @@ export namespace Prisma {
     categoryCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -50123,6 +50237,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50139,6 +50254,7 @@ export namespace Prisma {
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50152,6 +50268,7 @@ export namespace Prisma {
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50164,6 +50281,7 @@ export namespace Prisma {
     cctCode?: string | null
     positionCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -50173,6 +50291,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50189,6 +50308,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50202,6 +50322,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50214,6 +50335,7 @@ export namespace Prisma {
     cctCode?: string | null
     categoryCode?: string | null
     serviceTypeCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -50223,6 +50345,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50239,6 +50362,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50252,6 +50376,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50264,6 +50389,7 @@ export namespace Prisma {
     cctCode?: string | null
     categoryCode?: string | null
     positionCode?: string | null
+    activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -50273,6 +50399,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50289,6 +50416,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -50302,6 +50430,7 @@ export namespace Prisma {
     cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
     positionCode?: NullableStringFieldUpdateOperationsInput | string | null
+    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

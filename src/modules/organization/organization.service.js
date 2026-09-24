@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { ensureTenantPersonnelSchema } from '../../services/tenantProvisioner.service.js';
+import { ensureTenantPersonnelSchema, getArcaActivitiesData } from '../../services/tenantProvisioner.service.js';
 
 // --- SECTORES (DEPARTMENTS) ---
 
@@ -242,6 +242,7 @@ export async function listJobPositions(tenantPrisma) {
     arcaPosition: p.arcaPosition ? { code: p.arcaPosition.code, name: p.arcaPosition.name, groupName: p.arcaPosition.groupName } : null,
     serviceTypeCode: p.serviceTypeCode,
     serviceType: p.serviceType ? { code: p.serviceType.code, name: p.serviceType.name, regime: p.serviceType.regime } : null,
+    activityCode: p.activityCode || '049',
     employeeCount: p._count.employees,
     createdAt: p.createdAt,
     updatedAt: p.updatedAt,
@@ -272,6 +273,7 @@ export async function getJobPositionById(tenantPrisma, id) {
 
   return {
     ...position,
+    activityCode: position.activityCode || '049',
     cct: position.cct ? { code: position.cct.code, name: position.cct.name, sector: position.cct.sector } : null,
     category: position.category ? { code: position.category.code, name: position.category.name, cct: position.category.cct } : null,
     arcaPosition: position.arcaPosition ? { code: position.arcaPosition.code, name: position.arcaPosition.name, groupName: position.arcaPosition.groupName } : null,
@@ -292,6 +294,7 @@ export async function createJobPosition(tenantPrisma, data) {
       categoryCode: data.categoryCode || null,
       positionCode: data.positionCode || null,
       serviceTypeCode: data.serviceTypeCode || null,
+      activityCode: data.activityCode || '049',
     },
     include: {
       cct: true,
@@ -489,6 +492,7 @@ export async function importJobPositions(tenantPrisma, jobPositions) {
       categoryCode: finalCat,
       positionCode: finalPos,
       serviceTypeCode: finalServ,
+      activityCode: item.activityCode ? item.activityCode.trim() : '049',
     });
   }
 
@@ -505,6 +509,7 @@ export async function importJobPositions(tenantPrisma, jobPositions) {
             categoryCode: p.categoryCode,
             positionCode: p.positionCode,
             serviceTypeCode: p.serviceTypeCode,
+            activityCode: p.activityCode || '049',
           },
         })
       )
@@ -534,6 +539,7 @@ export async function updateJobPosition(tenantPrisma, id, data) {
       ...(data.categoryCode !== undefined ? { categoryCode: data.categoryCode || null } : {}),
       ...(data.positionCode !== undefined ? { positionCode: data.positionCode || null } : {}),
       ...(data.serviceTypeCode !== undefined ? { serviceTypeCode: data.serviceTypeCode || null } : {}),
+      ...(data.activityCode !== undefined ? { activityCode: data.activityCode || '049' } : {}),
     },
     include: {
       cct: true,
@@ -724,6 +730,10 @@ export async function listArcaContractModalities(tenantPrisma, { search = '', on
       { code: 'asc' },
     ],
   });
+}
+
+export async function listArcaActivities() {
+  return getArcaActivitiesData();
 }
 
 

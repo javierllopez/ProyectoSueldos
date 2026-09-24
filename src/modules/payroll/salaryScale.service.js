@@ -3,7 +3,7 @@ import { ensureTenantPersonnelSchema } from '../../services/tenantProvisioner.se
 /**
  * Lista las nóminas / escalas salariales activas con conteo de colaboradores asignados.
  */
-export async function listSalaryScales(tenantPrisma, { search, isInternOnly } = {}) {
+export async function listSalaryScales(tenantPrisma, { search, isInternOnly, isDirectorOnly } = {}) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
   const where = { deletedAt: null };
@@ -17,6 +17,9 @@ export async function listSalaryScales(tenantPrisma, { search, isInternOnly } = 
   }
   if (isInternOnly !== undefined && isInternOnly !== null && isInternOnly !== '') {
     where.isInternOnly = isInternOnly === 'true' || isInternOnly === true;
+  }
+  if (isDirectorOnly !== undefined && isDirectorOnly !== null && isDirectorOnly !== '') {
+    where.isDirectorOnly = isDirectorOnly === 'true' || isDirectorOnly === true;
   }
 
   const scales = await tenantPrisma.salaryScale.findMany({
@@ -40,6 +43,7 @@ export async function listSalaryScales(tenantPrisma, { search, isInternOnly } = 
     description: scale.description,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
+    isDirectorOnly: Boolean(scale.isDirectorOnly),
     assignedEmployeesCount: scale._count?.employees || 0,
     employeesCount: scale._count?.employees || 0,
     _count: scale._count,
@@ -81,6 +85,7 @@ export async function getSalaryScaleById(tenantPrisma, id) {
     ...scale,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
+    isDirectorOnly: Boolean(scale.isDirectorOnly),
     employees: scale.employees.map((e) => ({
       ...e,
       basicSalary: Number(e.basicSalary),
@@ -101,6 +106,7 @@ export async function createSalaryScale(tenantPrisma, data) {
       description: data.description?.trim() || null,
       amount: Number(data.amount),
       isInternOnly: Boolean(data.isInternOnly),
+      isDirectorOnly: Boolean(data.isDirectorOnly),
     },
   });
 
@@ -108,6 +114,7 @@ export async function createSalaryScale(tenantPrisma, data) {
     ...scale,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
+    isDirectorOnly: Boolean(scale.isDirectorOnly),
   };
 }
 
@@ -133,6 +140,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
   if (data.description !== undefined) updateData.description = data.description ? data.description.trim() : null;
   if (data.amount !== undefined) updateData.amount = Number(data.amount);
   if (data.isInternOnly !== undefined) updateData.isInternOnly = Boolean(data.isInternOnly);
+  if (data.isDirectorOnly !== undefined) updateData.isDirectorOnly = Boolean(data.isDirectorOnly);
 
   const updated = await tenantPrisma.salaryScale.update({
     where: { id },
@@ -153,6 +161,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
     ...updated,
     amount: Number(updated.amount),
     isInternOnly: Boolean(updated.isInternOnly),
+    isDirectorOnly: Boolean(updated.isDirectorOnly),
     affectedEmployeesCount,
   };
 }

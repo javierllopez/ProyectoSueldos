@@ -1,5 +1,5 @@
 import { ensureTenantPayrollSchema } from '../../services/tenantProvisioner.service.js';
-import { calculateEmployeePayroll, findBasicSalaryConcept } from './payroll.calculator.js';
+import { calculateEmployeePayroll, findBasicSalaryConcept, buildPayrollIndices } from './payroll.calculator.js';
 import { generateLsdConceptsFile, generateLsdPayrollFile, validateLsdConsistency } from './lsdExporter.service.js';
 import { hoursToDecimal, decimalToHours } from '../../utils/timeFormat.js';
 import { validateConceptFormula } from './formulaValidator.js';
@@ -180,8 +180,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     throw err;
   }
 
-  // 1. Obtener parámetros, conceptos, matrices y valores fijos
-  const [payrollSettings, allConcepts, allMatrices, allFixedValues] = await Promise.all([
+  // 1. Obtener parámetros, conceptos, matrices, valores fijos y escalas salariales
+  const [payrollSettings, allConcepts, allMatrices, allFixedValues, allSalaryScales] = await Promise.all([
     getPayrollSettings(tenantPrisma),
     tenantPrisma.concept.findMany({
       where: { isActive: true, deletedAt: null },
@@ -192,6 +192,9 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     }),
     tenantPrisma.payrollFixedValue.findMany({
       where: { isActive: true, deletedAt: null },
+    }),
+    tenantPrisma.salaryScale.findMany({
+      where: { deletedAt: null },
     }),
   ]);
 
@@ -311,7 +314,14 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     historyByEmp.get(slip.employeeId).push(slip);
   }
 
-  // 4. Procesar cálculo para cada empleado
+  // 4. Pre-indexar catálogos para cálculo O(1) y procesar nómina
+  const payrollIndices = buildPayrollIndices({
+    allConcepts,
+    allMatrices,
+    allFixedValues,
+    allSalaryScales,
+  });
+
   let totalGrossPeriod = 0;
   let totalNetPeriod = 0;
   let totalEmployerCostPeriod = 0;
@@ -328,6 +338,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       allConcepts,
       allMatrices,
       allFixedValues,
+      allSalaryScales,
+      indices: payrollIndices,
       historicalData: {
         slips: empHistory,
       },
@@ -343,28 +355,34 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     });
   }
 
-  // 4. Guardar en transacción atómica
+  const empIdsToCalc = slipResults.map((r) => r.employee.id);
+
+  // 5. Guardar en transacción atómica optimizada
   await tenantPrisma.$transaction(async (tx) => {
+    // 5.1. Consulta masiva de recibos existentes
+    const existingSlips = await tx.paySlip.findMany({
+      where: {
+        payrollPeriodId: periodId,
+        employeeId: { in: empIdsToCalc },
+      },
+      select: { id: true, employeeId: true },
+    });
+    const existingSlipsMap = new Map(existingSlips.map((s) => [s.employeeId, s.id]));
+
+    // 5.2. Limpieza masiva de items y bases previas para recibos existentes
+    if (existingSlips.length > 0) {
+      const existingSlipIds = existingSlips.map((s) => s.id);
+      await Promise.all([
+        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: existingSlipIds } } }),
+        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: existingSlipIds } } }),
+      ]);
+    }
+
     for (const res of slipResults) {
       const { employee, calculation } = res;
+      let slipId = existingSlipsMap.get(employee.id);
 
-      // Buscar si ya existía recibo en este período para el empleado
-      const existingSlip = await tx.paySlip.findUnique({
-        where: {
-          payrollPeriodId_employeeId: {
-            payrollPeriodId: periodId,
-            employeeId: employee.id,
-          },
-        },
-      });
-
-      let slipId;
-      if (existingSlip) {
-        slipId = existingSlip.id;
-        // Eliminar items y bases previas para recrear con los nuevos cálculos
-        await tx.paySlipItem.deleteMany({ where: { paySlipId: slipId } });
-        await tx.paySlipBasis.deleteMany({ where: { paySlipId: slipId } });
-
+      if (slipId) {
         await tx.paySlip.update({
           where: { id: slipId },
           data: {
@@ -486,6 +504,9 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
         status: 'CALCULATED',
       },
     });
+  }, {
+    maxWait: 15000,
+    timeout: 60000,
   });
 
   return {
@@ -802,8 +823,8 @@ export async function createConcept(tenantPrisma, data) {
     throw err;
   }
 
-  // Cargar conceptos, valores fijos y matrices en paralelo para auditoría y validación
-  const [allOtherConcepts, fixedValues, matrices] = await Promise.all([
+  // Cargar conceptos, valores fijos, matrices y escalas salariales en paralelo para auditoría y validación
+  const [allOtherConcepts, fixedValues, matrices, salaryScales] = await Promise.all([
     tenantPrisma.concept.findMany({
       where: { deletedAt: null },
       select: { id: true, code: true, name: true, calculationOrder: true },
@@ -815,6 +836,10 @@ export async function createConcept(tenantPrisma, data) {
     tenantPrisma.payrollMatrix.findMany({
       where: { deletedAt: null },
       select: { id: true, code: true, name: true },
+    }),
+    tenantPrisma.salaryScale.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true, amount: true },
     }),
   ]);
 
@@ -847,6 +872,7 @@ export async function createConcept(tenantPrisma, data) {
       allConcepts: allOtherConcepts,
       fixedValues,
       matrices,
+      salaryScales,
     });
     if (!validation.isValid) {
       const err = new Error(`Fórmula inválida: ${validation.errors.join('; ')}`);
@@ -910,7 +936,7 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
 
   // Validar fórmula si aplica
   if (calcType === 'FORMULA' && formula) {
-    const [allOtherConcepts, fixedValues, matrices] = await Promise.all([
+    const [allOtherConcepts, fixedValues, matrices, salaryScales] = await Promise.all([
       tenantPrisma.concept.findMany({
         where: { deletedAt: null, id: { not: conceptId } },
         select: { id: true, code: true, name: true, calculationOrder: true },
@@ -923,6 +949,10 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
         where: { deletedAt: null },
         select: { id: true, code: true, name: true },
       }),
+      tenantPrisma.salaryScale.findMany({
+        where: { deletedAt: null },
+        select: { id: true, code: true, name: true, amount: true },
+      }),
     ]);
     const validation = validateConceptFormula({
       formula,
@@ -932,6 +962,7 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
       allConcepts: allOtherConcepts,
       fixedValues,
       matrices,
+      salaryScales,
     });
     if (!validation.isValid) {
       const err = new Error(`Fórmula inválida: ${validation.errors.join('; ')}`);
@@ -977,7 +1008,7 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
 
 export async function validateFormula(tenantPrisma, { formula, conceptCode, conceptType, type, calculationOrder = 100 }) {
   await ensureTenantPayrollSchema(tenantPrisma);
-  const [allConcepts, fixedValues, matrices] = await Promise.all([
+  const [allConcepts, fixedValues, matrices, salaryScales] = await Promise.all([
     tenantPrisma.concept.findMany({
       where: { deletedAt: null },
       select: { id: true, code: true, name: true, calculationOrder: true },
@@ -990,6 +1021,10 @@ export async function validateFormula(tenantPrisma, { formula, conceptCode, conc
       where: { deletedAt: null },
       select: { id: true, code: true, name: true },
     }),
+    tenantPrisma.salaryScale.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true, amount: true },
+    }),
   ]);
   return validateConceptFormula({
     formula,
@@ -999,6 +1034,7 @@ export async function validateFormula(tenantPrisma, { formula, conceptCode, conc
     allConcepts,
     fixedValues,
     matrices,
+    salaryScales,
   });
 }
 

@@ -129,6 +129,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`weekly_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
     \`monthly_hours\` DECIMAL(6, 2) NOT NULL DEFAULT 200.00,
     \`monthly_days\` DECIMAL(5, 2) NOT NULL DEFAULT 30.00,
+    \`percentage\` DECIMAL(5, 2) NOT NULL DEFAULT 100.00,
     \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -188,6 +189,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`description\` TEXT NULL,
     \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`is_director_only\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL
@@ -558,6 +560,16 @@ export function getArcaPositionsData() {
   }
 }
 
+export function getArcaActivitiesData() {
+  try {
+    const raw = fs.readFileSync(path.resolve('src/data/arcaActivities.json'), 'utf-8');
+    return JSON.parse(raw);
+  } catch (err) {
+    console.warn('Aviso: no se pudo leer arcaActivities.json:', err.message);
+    return [];
+  }
+}
+
 export function getArcaCctsData() {
   try {
     const raw = fs.readFileSync(path.resolve('src/data/arcaCcts.json'), 'utf-8');
@@ -712,11 +724,20 @@ export async function provisionTenantDatabase({ cuit, name, activityCode = null,
   return { dbName, dbHost, dbPort };
 }
 
+// Caché en memoria para evitar sentencias DDL repetitivas e inspecciones de metadatos en cada request HTTP
+const verifiedPersonnelClients = new WeakSet();
+const verifiedPayrollClients = new WeakSet();
+const verifiedProfileClients = new WeakSet();
+
 /**
  * Asegura de forma segura y no destructiva que la tabla company_profile de un tenant existente contenga todas las columnas.
  * @param {object} tenantClient - Cliente de Prisma del tenant.
  */
-export async function ensureTenantProfileSchema(tenantClient) {
+export async function ensureTenantProfileSchema(tenantClient, { force = false } = {}) {
+  if (!tenantClient || (!force && verifiedProfileClients.has(tenantClient))) {
+    return;
+  }
+
   const columnsToAdd = [
     { name: 'trade_name', def: 'VARCHAR(191) NULL' },
     { name: 'tax_condition', def: "VARCHAR(191) NULL DEFAULT 'RESPONSABLE_INSCRIPTO'" },
@@ -748,6 +769,7 @@ export async function ensureTenantProfileSchema(tenantClient) {
         );
       }
     }
+    verifiedProfileClients.add(tenantClient);
   } catch (err) {
     console.warn('Aviso al verificar esquema de company_profile:', err.message);
   }
@@ -757,7 +779,10 @@ export async function ensureTenantProfileSchema(tenantClient) {
  * Asegura que las tablas de Estructura, Afiliaciones y Personal existan con todas sus columnas en el tenant.
  * @param {object} tenantClient - Cliente de Prisma del tenant.
  */
-export async function ensureTenantPersonnelSchema(tenantClient) {
+export async function ensureTenantPersonnelSchema(tenantClient, { force = false } = {}) {
+  if (!tenantClient || (!force && verifiedPersonnelClients.has(tenantClient))) {
+    return;
+  }
   try {
     // 1. Crear tablas auxiliares si no existen
     await tenantClient.$executeRawUnsafe(`
@@ -852,6 +877,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         \`category_code\` VARCHAR(50) NULL,
         \`position_code\` VARCHAR(50) NULL,
         \`service_type_code\` VARCHAR(50) NULL,
+        \`activity_code\` VARCHAR(10) NULL DEFAULT '049',
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL
@@ -864,6 +890,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       { name: 'category_code', def: 'VARCHAR(50) NULL' },
       { name: 'position_code', def: 'VARCHAR(50) NULL' },
       { name: 'service_type_code', def: 'VARCHAR(50) NULL' },
+      { name: 'activity_code', def: "VARCHAR(10) NULL DEFAULT '049'" },
     ];
     const existingJobCols = await tenantClient.$queryRawUnsafe(
       `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'job_positions'`
@@ -929,11 +956,29 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         \`description\` TEXT NULL,
         \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
         \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`is_director_only\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
+
+    // Comprobar columnas clave en salary_scales para migraciones no destructivas
+    const salaryScaleCols = [
+      { name: 'is_intern_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+      { name: 'is_director_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+    ];
+    const existingScaleCols = await tenantClient.$queryRawUnsafe(
+      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'salary_scales'`
+    );
+    const existingScaleColSet = new Set(existingScaleCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+    for (const col of salaryScaleCols) {
+      if (!existingScaleColSet.has(col.name.toLowerCase())) {
+        await tenantClient.$executeRawUnsafe(
+          `ALTER TABLE \`salary_scales\` ADD COLUMN \`${col.name}\` ${col.def};`
+        );
+      }
+    }
 
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`work_shifts\` (
@@ -946,6 +991,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
         \`weekly_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
         \`monthly_hours\` DECIMAL(6, 2) NOT NULL DEFAULT 200.00,
         \`monthly_days\` DECIMAL(5, 2) NOT NULL DEFAULT 30.00,
+        \`percentage\` DECIMAL(5, 2) NOT NULL DEFAULT 100.00,
         \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -974,18 +1020,19 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
-    // Comprobar columnas clave en salary_scales para migraciones no destructivas
-    const salaryScaleCols = [
-      { name: 'is_intern_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+
+    // Comprobar columna percentage en work_shifts para migraciones no destructivas
+    const workShiftCols = [
+      { name: 'percentage', def: 'DECIMAL(5, 2) NOT NULL DEFAULT 100.00' },
     ];
-    const existingScaleCols = await tenantClient.$queryRawUnsafe(
-      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'salary_scales'`
+    const existingWorkShiftCols = await tenantClient.$queryRawUnsafe(
+      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'work_shifts'`
     );
-    const existingScaleColSet = new Set(existingScaleCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
-    for (const col of salaryScaleCols) {
-      if (!existingScaleColSet.has(col.name.toLowerCase())) {
+    const existingWorkShiftColSet = new Set(existingWorkShiftCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+    for (const col of workShiftCols) {
+      if (!existingWorkShiftColSet.has(col.name.toLowerCase())) {
         await tenantClient.$executeRawUnsafe(
-          `ALTER TABLE \`salary_scales\` ADD COLUMN \`${col.name}\` ${col.def};`
+          `ALTER TABLE \`work_shifts\` ADD COLUMN \`${col.name}\` ${col.def};`
         );
       }
     }
@@ -1275,6 +1322,7 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
 
     // 13. Sincronizar y asegurar esquema del módulo de liquidación de sueldos
     await ensureTenantPayrollSchema(tenantClient);
+    verifiedPersonnelClients.add(tenantClient);
   } catch (err) {
     console.warn('Aviso al verificar esquema de personal y afiliaciones:', err.message);
   }
@@ -1284,14 +1332,16 @@ export async function ensureTenantPersonnelSchema(tenantClient) {
  * Conceptos predeterminados del sistema con parametrización ARCA y fórmulas base.
  */
 export const DEFAULT_CONCEPTS = [
-  // 1. Sueldo Básico (Remunerativo - Rango 1000..3999)
+  // 1. Sueldo Básico (Remunerativo - Prefijo SU - Rango 1000..3999)
   {
-    code: '1000',
+    code: 'SU1000',
     name: 'Sueldo Básico',
     type: 'REMUNERATIVE',
     calculationType: 'FIXED',
+    periodType: 'MONTHLY',
     scope: 'GENERAL',
     noveltyDataType: 'CANTIDAD',
+    calculationOrder: 10,
     defaultValue: 0.00,
     formula: null,
     matrixData: null,
@@ -1315,12 +1365,14 @@ export const DEFAULT_CONCEPTS = [
   },
   // 1.b Asignación Estímulo Ley 26.427 (No Remunerativo - Pasantías Educativas)
   {
-    code: '1001',
+    code: 'SU1001',
     name: 'Asignación Estímulo Ley 26.427',
     type: 'NON_REMUNERATIVE',
     calculationType: 'FIXED',
+    periodType: 'MONTHLY',
     scope: 'GENERAL',
     noveltyDataType: 'CANTIDAD',
+    calculationOrder: 20,
     defaultValue: 0.00,
     formula: null,
     matrixData: null,
@@ -1342,14 +1394,16 @@ export const DEFAULT_CONCEPTS = [
     appliesLrtContrib: true,  // Cobertura ART Ley 24.557
     isRepeatable: false,
   },
-  // 2. Sueldo Anual Complementario (SAC) (Remunerativo - Rango 1000..3999)
+  // 2. Sueldo Anual Complementario (SAC) (Remunerativo - Prefijo SA - Reasigna 1200)
   {
-    code: '1200',
+    code: 'SA1000',
     name: 'Sueldo Anual Complementario (SAC)',
     type: 'REMUNERATIVE',
     calculationType: 'FORMULA',
+    periodType: 'SAC',
     scope: 'GENERAL',
     noveltyDataType: 'CANTIDAD',
+    calculationOrder: 10,
     defaultValue: 0.00,
     formula: '[MEJOR_6M] / 2',
     matrixData: null,
@@ -1371,16 +1425,18 @@ export const DEFAULT_CONCEPTS = [
     appliesLrtContrib: true,
     isRepeatable: false,
   },
-  // 3. Adelanto Vacacional (Remunerativo - Rango 1000..3999)
+  // 3. Adelanto Vacacional (Remunerativo - Prefijo VA - Reasigna 1500)
   {
-    code: '1500',
+    code: 'VA1000',
     name: 'Adelanto Vacacional',
     type: 'REMUNERATIVE',
     calculationType: 'FORMULA',
+    periodType: 'VACATIONS',
     scope: 'INDIVIDUAL',
     noveltyDataType: 'CANTIDAD',
+    calculationOrder: 10,
     defaultValue: 0.00,
-    formula: '([1000] / 25) * [CANTIDAD]',
+    formula: '([SU1000] / 25) * [CANTIDAD]',
     matrixData: null,
     isPersistent: false,
     isActive: true,
@@ -1400,12 +1456,139 @@ export const DEFAULT_CONCEPTS = [
     appliesLrtContrib: true,
     isRepeatable: false,
   },
+  // 4. Jubilación SIPA (Deducción - Prefijo GE - Todas las liquidaciones)
+  {
+    code: 'GE6001',
+    name: 'Jubilación SIPA (11%)',
+    type: 'DEDUCTION',
+    calculationType: 'PERCENTAGE',
+    periodType: 'ALL',
+    scope: 'GENERAL',
+    noveltyDataType: 'PORCENTAJE',
+    calculationOrder: 200,
+    defaultValue: 11.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '810000',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: false,
+    appliesFsrAporte: false,
+    appliesFsrContrib: false,
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: false,
+    isRepeatable: false,
+  },
+  // 5. INSSJyP - Ley 19.032 (Deducción - Prefijo GE)
+  {
+    code: 'GE6002',
+    name: 'INSSJyP - Ley 19.032 (3%)',
+    type: 'DEDUCTION',
+    calculationType: 'PERCENTAGE',
+    periodType: 'ALL',
+    scope: 'GENERAL',
+    noveltyDataType: 'PORCENTAJE',
+    calculationOrder: 210,
+    defaultValue: 3.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '810001',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: false,
+    appliesFsrAporte: false,
+    appliesFsrContrib: false,
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: false,
+    isRepeatable: false,
+  },
+  // 6. Obra Social (Deducción - Prefijo GE)
+  {
+    code: 'GE6003',
+    name: 'Obra Social (3%)',
+    type: 'DEDUCTION',
+    calculationType: 'PERCENTAGE',
+    periodType: 'ALL',
+    scope: 'GENERAL',
+    noveltyDataType: 'PORCENTAJE',
+    calculationOrder: 220,
+    defaultValue: 3.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '810002',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: false,
+    appliesFsrAporte: false,
+    appliesFsrContrib: false,
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: false,
+    isRepeatable: false,
+  },
+  // 7. Cuota Sindical (Deducción - Prefijo GE)
+  {
+    code: 'GE6004',
+    name: 'Cuota Sindical (2%)',
+    type: 'DEDUCTION',
+    calculationType: 'PERCENTAGE',
+    periodType: 'ALL',
+    scope: 'GENERAL',
+    noveltyDataType: 'PORCENTAJE',
+    calculationOrder: 230,
+    defaultValue: 2.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '810004',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: false,
+    appliesFsrAporte: false,
+    appliesFsrContrib: false,
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: false,
+    isRepeatable: false,
+  },
 ];
 
 /**
  * Asegura la existencia de tablas, columnas y configuraciones del módulo de liquidación de sueldos.
  */
-export async function ensureTenantPayrollSchema(tenantClient) {
+export async function ensureTenantPayrollSchema(tenantClient, { force = false } = {}) {
+  if (!tenantClient || (!force && verifiedPayrollClients.has(tenantClient))) {
+    return;
+  }
   try {
     // 1. Crear tablas si no existen
     await tenantClient.$executeRawUnsafe(`
@@ -1736,6 +1919,7 @@ export async function ensureTenantPayrollSchema(tenantClient) {
         });
       }
     }
+    verifiedPayrollClients.add(tenantClient);
   } catch (err) {
     console.warn('Aviso al verificar esquema de liquidación de sueldos:', err.message);
   }

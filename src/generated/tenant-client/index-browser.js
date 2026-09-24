@@ -218,6 +218,7 @@ exports.Prisma.JobPositionScalarFieldEnum = {
   categoryCode: 'categoryCode',
   positionCode: 'positionCode',
   serviceTypeCode: 'serviceTypeCode',
+  activityCode: 'activityCode',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -233,6 +234,7 @@ exports.Prisma.WorkShiftScalarFieldEnum = {
   weeklyHours: 'weeklyHours',
   monthlyHours: 'monthlyHours',
   monthlyDays: 'monthlyDays',
+  percentage: 'percentage',
   isActive: 'isActive',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
@@ -336,6 +338,7 @@ exports.Prisma.SalaryScaleScalarFieldEnum = {
   description: 'description',
   amount: 'amount',
   isInternOnly: 'isInternOnly',
+  isDirectorOnly: 'isDirectorOnly',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -667,7 +670,8 @@ exports.Prisma.JobPositionOrderByRelevanceFieldEnum = {
   cctCode: 'cctCode',
   categoryCode: 'categoryCode',
   positionCode: 'positionCode',
-  serviceTypeCode: 'serviceTypeCode'
+  serviceTypeCode: 'serviceTypeCode',
+  activityCode: 'activityCode'
 };
 
 exports.Prisma.WorkShiftOrderByRelevanceFieldEnum = {

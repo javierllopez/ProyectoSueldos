@@ -121,6 +121,11 @@ export async function listArcaContractModalities(req, res) {
   return res.status(200).json({ data: modalities });
 }
 
+export async function listArcaActivities(req, res) {
+  const activities = await organizationService.listArcaActivities();
+  return res.status(200).json({ data: activities });
+}
+
 // --- JORNADAS DE TRABAJO ---
 
 export async function listWorkShifts(req, res) {

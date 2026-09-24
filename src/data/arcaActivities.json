@@ -1,0 +1,248 @@
+[
+  {
+    "code": "049",
+    "t03Code": "49",
+    "name": "Actividades no clasificadas (General / Comercio / Industria / Servicios)",
+    "description": "Régimen general estándar para comercio, servicios e industria privada no encuadrada en regímenes especiales."
+  },
+  {
+    "code": "000",
+    "t03Code": "00",
+    "name": "Zona de Desastre (Decreto Nº 1386/01)",
+    "description": "Zonas de desastre declaradas oficialmente según Decreto 1386/01 (excepto actividad agropecuaria)."
+  },
+  {
+    "code": "001",
+    "t03Code": "01",
+    "name": "Producción Primaria (excepto actividad agropecuaria)",
+    "description": "Explotación de minas, canteras, extracción de petróleo y gas, pesca marítima y fluvial."
+  },
+  {
+    "code": "002",
+    "t03Code": "02",
+    "name": "Producción de bienes sin comercialización",
+    "description": "Fabricación y manufactura directa de bienes sin etapa de venta o distribución comercial integrada."
+  },
+  {
+    "code": "003",
+    "t03Code": "03",
+    "name": "Construcción de inmuebles",
+    "description": "Obras de arquitectura, ingeniería civil y construcción de edificios residenciales o comerciales."
+  },
+  {
+    "code": "004",
+    "t03Code": "04",
+    "name": "Turismo",
+    "description": "Servicios de hotelería, agencias de viaje y actividades de fomento turístico."
+  },
+  {
+    "code": "005",
+    "t03Code": "05",
+    "name": "Investigación Científica y Tecnológica",
+    "description": "Desarrollo tecnológico, laboratorios científicos e innovación bajo regímenes de promoción."
+  },
+  {
+    "code": "006",
+    "t03Code": "06",
+    "name": "Administración Pública (Con Obra Social Ley 23.660)",
+    "description": "Organismos del sector público centralizado o descentralizado con cobertura de obra social nacional."
+  },
+  {
+    "code": "007",
+    "t03Code": "07",
+    "name": "Enseñanza Privada (Ley 13.047 - No Decreto 137/05)",
+    "description": "Institutos y colegios de enseñanza privada regulados por Ley 13.047 fuera del régimen especial de jubilación docente."
+  },
+  {
+    "code": "008",
+    "t03Code": "08",
+    "name": "Servicio Doméstico / Régimen de Casas Particulares",
+    "description": "Personal contratado bajo el régimen de trabajo para el personal de casas particulares."
+  },
+  {
+    "code": "009",
+    "t03Code": "09",
+    "name": "Servicios energéticos (Res. MTESS 268 y 824/09)",
+    "description": "Generación, transporte y distribución de energía eléctrica, gas y combustibles."
+  },
+  {
+    "code": "010",
+    "t03Code": "10",
+    "name": "Universidades Privadas - Personal no docente (Decreto 1123/99)",
+    "description": "Personal administrativo, de maestranza y de servicios generales en universidades privadas reconocidas."
+  },
+  {
+    "code": "011",
+    "t03Code": "11",
+    "name": "Personal Permanente Discontinuo de Empresas de Servicios Eventuales",
+    "description": "Trabajadores asignados por empresas de servicios eventuales a empresas usuarias."
+  },
+  {
+    "code": "012",
+    "t03Code": "12",
+    "name": "Programas Intensivos de Trabajo (PIT)",
+    "description": "Planes de inserción y entrenamiento laboral intensivo bajo convenios estatales."
+  },
+  {
+    "code": "013",
+    "t03Code": "13",
+    "name": "Personal Embarcado",
+    "description": "Tripulación de buques y embarcaciones marítimas, fluviales y lacustres de bandera nacional."
+  },
+  {
+    "code": "014",
+    "t03Code": "14",
+    "name": "Personal Embarcado (Decreto 1255/98 s/Res. SSS 18/99)",
+    "description": "Personal de navegación con encuadre específico y retenciones previsionales según Decreto 1255/98."
+  },
+  {
+    "code": "015",
+    "t03Code": "15",
+    "name": "L.R.T. —Directores S.A., entes mixtos y municipales—",
+    "description": "Directores de sociedades anónimas y funcionarios que aportan exclusivamente a la Ley de Riesgos del Trabajo."
+  },
+  {
+    "code": "016",
+    "t03Code": "16",
+    "name": "No obligados al SIJP (Colegios profesionales, reciprocidad)",
+    "description": "Profesionales afiliados a cajas provinciales o sistemas con convenio de reciprocidad jubilatoria."
+  },
+  {
+    "code": "017",
+    "t03Code": "17",
+    "name": "Obligados al SIJP - Sin Obra Social Nacional",
+    "description": "Personal estatal o regímenes provinciales con aportes al SIJP y cobertura en cajas u obras sociales provinciales."
+  },
+  {
+    "code": "018",
+    "t03Code": "18",
+    "name": "Provincia incorporada al SIJP sin O.S. nacional con ART",
+    "description": "Regímenes de provincias transferidas con aportes previsionales nacionales y seguro de riesgos del trabajo."
+  },
+  {
+    "code": "019",
+    "t03Code": "19",
+    "name": "Provincia incorporada al SIJP sin O.S. nacional sin ART",
+    "description": "Regímenes de provincias transferidas con autoseguro provincial para riesgos del trabajo."
+  },
+  {
+    "code": "020",
+    "t03Code": "20",
+    "name": "Ley Nº 24.331 - Zona Franca",
+    "description": "Trabajadores dependientes en establecimientos radicados dentro de zonas francas nacionales."
+  },
+  {
+    "code": "021",
+    "t03Code": "21",
+    "name": "Empresas del Estado con Obra Social y FNE (Dec. 1024/93)",
+    "description": "Sociedades del Estado y entes públicos con aportes a obras sociales sindicales y Fondo Nacional de Empleo."
+  },
+  {
+    "code": "022",
+    "t03Code": "22",
+    "name": "Empresas del Estado sin Obra Social y con FNE (Dec. 1024/93)",
+    "description": "Entes públicos con cajas asistenciales propias y Fondo Nacional de Empleo."
+  },
+  {
+    "code": "029",
+    "t03Code": "29",
+    "name": "Personal Embarcado con Obra Social (Dec. 1255/98)",
+    "description": "Personal de a bordo con cobertura de salud provista por obras sociales sindicales de la actividad marítima."
+  },
+  {
+    "code": "030",
+    "t03Code": "30",
+    "name": "AFA (Decreto 1212/03) - Aportante Autónomo",
+    "description": "Régimen especial de futbolistas y personal de clubes de fútbol afiliados a AFA."
+  },
+  {
+    "code": "031",
+    "t03Code": "31",
+    "name": "Trabajador Rural de la Armada Argentina",
+    "description": "Personal civil dependiente de dependencias agropecuarias navales."
+  },
+  {
+    "code": "032",
+    "t03Code": "32",
+    "name": "CSJN, Magistrados Provinciales, Revisores de Cuentas",
+    "description": "Poder Judicial de la Nación, jueces y magistrados provinciales con régimen jubilatorio especial."
+  },
+  {
+    "code": "033",
+    "t03Code": "33",
+    "name": "Representante Gremial en uso de licencia",
+    "description": "Dirigentes sindicales con reserva de puesto y licencia gremial legal."
+  },
+  {
+    "code": "034",
+    "t03Code": "34",
+    "name": "Docentes Estatales Nacionales con Obra Social (Dec. 137/05)",
+    "description": "Docentes de nivel inicial, primario y secundario nacional con alícuota diferencial previsional del 13%."
+  },
+  {
+    "code": "035",
+    "t03Code": "35",
+    "name": "Docentes Estatales Nacionales sin Obra Social (Dec. 137/05)",
+    "description": "Docentes estatales bajo régimen diferencial previsional con cobertura de obra social provincial."
+  },
+  {
+    "code": "041",
+    "t03Code": "41",
+    "name": "Construcción - Ley 22.250 / Fondo de Cese Laboral",
+    "description": "Obreros y operarios de la industria de la construcción bajo el régimen del IERIC y Libreta de Trabajo."
+  },
+  {
+    "code": "042",
+    "t03Code": "42",
+    "name": "Producción Primaria y Bienes con Beneficio Fiscal",
+    "description": "Actividades manufactureras y primarias amparadas por regímenes de reducción o crédito fiscal."
+  },
+  {
+    "code": "043",
+    "t03Code": "43",
+    "name": "Comercio y Servicios (Régimen General)",
+    "description": "Empresas comerciales mayoristas, minoristas y de servicios al consumidor."
+  },
+  {
+    "code": "048",
+    "t03Code": "48",
+    "name": "Actividades con Regímenes Previsionales Especiales / Diferenciales",
+    "description": "Trabajadores expuestos a factores de penosidad, insalubridad o regímenes especiales de retiro."
+  },
+  {
+    "code": "050",
+    "t03Code": "50",
+    "name": "Incapacidad Laboral Temporaria (ILT actividades generales)",
+    "description": "Período cubierto por la Aseguradora de Riesgos del Trabajo (ART) por accidente de trabajo o enfermedad profesional."
+  },
+  {
+    "code": "080",
+    "t03Code": "80",
+    "name": "Profesionales y Personal de la Salud (Emergencia Sanitaria)",
+    "description": "Personal asistencial y de soporte médico en clínicas, sanatorios y hospitales privados."
+  },
+  {
+    "code": "088",
+    "t03Code": "88",
+    "name": "Docentes / Enseñanza Privada (Decreto 137/05)",
+    "description": "Docentes de establecimientos educativos privados incorporados a la enseñanza oficial con régimen jubilatorio docente."
+  },
+  {
+    "code": "097",
+    "t03Code": "97",
+    "name": "Investigadores y Científicos (Decreto 160/05)",
+    "description": "Personal dedicado a la investigación científica y tecnológica con régimen previsional del 85% móvil."
+  },
+  {
+    "code": "098",
+    "t03Code": "98",
+    "name": "No Docentes Universitarios Nacionales (Decreto 366/06)",
+    "description": "Personal técnico, administrativo y de servicios en universidades públicas nacionales."
+  },
+  {
+    "code": "099",
+    "t03Code": "99",
+    "name": "Personal de Dirección / Directores con opción relación de dependencia",
+    "description": "Directores de S.A. o socios gerentes de S.R.L. con remuneración formal técnico-administrativa optando por aportes en relación de dependencia."
+  }
+]

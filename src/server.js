@@ -34,6 +34,16 @@ async function bootstrap() {
 
     process.on('SIGINT', () => shutdown('SIGINT'));
     process.on('SIGTERM', () => shutdown('SIGTERM'));
+
+    // 4. Manejadores globales para resiliencia del proceso Node.js
+    process.on('unhandledRejection', (reason, promise) => {
+      console.error('💥 Promesa rechazada no capturada (unhandledRejection):', promise, 'Motivo:', reason);
+    });
+
+    process.on('uncaughtException', (error) => {
+      console.error('💥 Excepción no capturada crítica (uncaughtException):', error);
+      process.exit(1);
+    });
   } catch (error) {
     console.error('❌ Error al iniciar el servidor:', error);
     process.exit(1);

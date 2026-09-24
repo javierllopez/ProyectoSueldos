@@ -35,6 +35,12 @@ export const SYSTEM_VARIABLES = new Set([
   'PORCENTAJE_ENTERO',
   'PROPIO_VALOR',
   'UNIDADES',
+  'VALOR_BASE',
+  'VALOR_DEFECTO',
+  'DEFECTO',
+  'IMPORTE',
+  'MONTO',
+  'VALOR_NOVEDAD',
   'TOTAL_REMUNERATIVO',
   'TOTAL_NO_REMUNERATIVO',
   'TOTAL_DEDUCCIONES',
@@ -70,6 +76,7 @@ export function validateConceptFormula({
   allConcepts = [],
   fixedValues = [],
   matrices = [],
+  salaryScales = [],
 }) {
   const errors = [];
   const warnings = [];
@@ -81,7 +88,25 @@ export function validateConceptFormula({
 
   const cleanFormula = formula.trim();
   const currentCode = String(conceptCode || currentConceptCode || '').trim().toUpperCase();
-  const currentNum = parseInt(currentCode, 10);
+
+  const extractCodeNumber = (c) => {
+    if (!c) return NaN;
+    const str = String(c).trim().toUpperCase();
+    const match = str.match(/^[A-Z]{2}(\d{4})$/);
+    if (match) return parseInt(match[1], 10);
+    const pureNum = parseInt(str, 10);
+    return isNaN(pureNum) ? NaN : pureNum;
+  };
+
+  const extractCodePrefix = (c) => {
+    if (!c) return '';
+    const str = String(c).trim().toUpperCase();
+    const match = str.match(/^([A-Z]{2})\d{4}$/);
+    return match ? match[1] : '';
+  };
+
+  const currentNum = extractCodeNumber(currentCode);
+  const currentPrefix = extractCodePrefix(currentCode);
   const effectiveType = String(type || conceptType || '').trim().toUpperCase();
   const rawOrder = currentCalculationOrder !== undefined ? currentCalculationOrder : calculationOrder;
   const currentOrder = Number(rawOrder !== undefined && rawOrder !== null ? rawOrder : 100);
@@ -97,6 +122,9 @@ export function validateConceptFormula({
   const matrixNames = new Set(matrices.map((m) => String(m.name || '').trim().toUpperCase()));
   const fixedCodes = new Set(fixedValues.map((f) => String(f.code || '').trim().toUpperCase()));
   const fixedNames = new Set(fixedValues.map((f) => String(f.name || '').trim().toUpperCase()));
+  const salaryScaleCodes = new Set(salaryScales.map((s) => String(s.code || '').trim().toUpperCase()).filter(Boolean));
+  const salaryScaleIds = new Set(salaryScales.map((s) => String(s.id || '').trim().toUpperCase()).filter(Boolean));
+  const salaryScaleNames = new Set(salaryScales.map((s) => String(s.name || '').trim().toUpperCase()).filter(Boolean));
 
   // --- 1. Control de Paréntesis ---
   let parenDepth = 0;
@@ -209,6 +237,15 @@ export function validateConceptFormula({
       continue;
     }
 
+    // 4.2b. Token de Nómina / Escala: [NOMINA:COD] o [ESCALA:COD] o [SUELDO_NOMINA:COD]
+    if (/^(?:NOMINA|ESCALA|SUELDO_NOMINA):/i.test(upperToken)) {
+      const scaleKey = rawToken.split(':')[1].trim().toUpperCase();
+      if (salaryScales.length > 0 && !salaryScaleCodes.has(scaleKey) && !salaryScaleIds.has(scaleKey) && !salaryScaleNames.has(scaleKey)) {
+        warnings.push(`La nómina / escala salarial [NOMINA:${scaleKey}] no se encuentra en el catálogo de nóminas registradas.`);
+      }
+      continue;
+    }
+
     // 4.3. Token de Métrica Histórica: [METRICA:CODIGO] o [METRICA]
     const histMatch = upperToken.match(/^((?:ACUM|PROM(?:_FIJO)?|MEJOR|MAYOR)_(?:6M|12M|ANUAL)(?:_ANT)?)(?::([^\]]+))?$/i);
     if (histMatch) {
@@ -264,20 +301,41 @@ export function validateConceptFormula({
     }
 
     // Regla de secuencia de ejecución: el concepto referenciado DEBE ejecutarse antes
-    const targetNum = parseInt(referencedConcept.code, 10);
-    if (!isNaN(currentNum) && !isNaN(targetNum)) {
+    const targetNum = extractCodeNumber(referencedConcept.code);
+    const targetPrefix = extractCodePrefix(referencedConcept.code);
+    const isTargetBaseSalary = referencedConcept.code === 'SU1000' || referencedConcept.code === '1000' || /sueldo\s*b[aá]sico/i.test(referencedConcept.name);
+
+    const targetExplicitOrder = referencedConcept.calculationOrder !== undefined && referencedConcept.calculationOrder !== null ? Number(referencedConcept.calculationOrder) : null;
+    const currentExplicitOrder = calculationOrder !== undefined && calculationOrder !== null ? Number(calculationOrder) : null;
+
+    if (currentExplicitOrder !== null && targetExplicitOrder !== null && currentExplicitOrder !== targetExplicitOrder) {
+      if (targetExplicitOrder >= currentExplicitOrder) {
+        errors.push(
+          `El concepto [${rawToken}] ("${referencedConcept.name}") tiene orden de cálculo ${targetExplicitOrder}, que es posterior o igual al concepto actual (${currentExplicitOrder}). Para poder referenciarlo dentro de la misma liquidación, debe tener un orden estrictamente menor.`
+        );
+      }
+    } else if (currentPrefix && targetPrefix && currentPrefix === targetPrefix && !isNaN(currentNum) && !isNaN(targetNum)) {
+      if (targetNum >= currentNum) {
+        errors.push(
+          `El concepto [${rawToken}] ("${referencedConcept.name}") tiene código ${referencedConcept.code}, que es posterior o igual al concepto actual (${currentCode}). Para poder referenciarlo dentro de la misma liquidación, debe tener un número estrictamente menor.`
+        );
+      }
+    } else if (!currentPrefix && !targetPrefix && !isNaN(currentNum) && !isNaN(targetNum)) {
       if (targetNum >= currentNum) {
         errors.push(
           `El concepto [${rawToken}] ("${referencedConcept.name}") tiene código ${targetNum}, que es posterior o igual al concepto actual (${currentNum}). Para poder referenciarlo, debe tener un código numérico estrictamente menor.`
         );
       }
     } else {
-      // Fallback a calculationOrder si alguno no es numérico puro
-      const targetOrder = Number(referencedConcept.calculationOrder !== undefined ? referencedConcept.calculationOrder : 100);
-      if (targetOrder >= currentOrder) {
-        errors.push(
-          `El concepto [${rawToken}] ("${referencedConcept.name}") tiene orden de cálculo ${targetOrder}, que es posterior o igual al concepto actual (orden ${currentOrder}). Para poder referenciarlo, debe calcularse antes (tener un orden numérico estrictamente menor).`
-        );
+      // Diferente prefijo (ej. VA1000 referenciando SU1000, o una deducción GE referenciando un haber SU)
+      // Si el target es el sueldo básico, siempre está disponible como valor pactado del legajo
+      if (!isTargetBaseSalary) {
+        const targetOrder = Number(referencedConcept.calculationOrder !== undefined ? referencedConcept.calculationOrder : 100);
+        if (targetOrder >= currentOrder) {
+          errors.push(
+            `El concepto [${rawToken}] ("${referencedConcept.name}") tiene orden de cálculo ${targetOrder}, que es posterior o igual al concepto actual (orden ${currentOrder}). Para poder referenciarlo, debe calcularse antes (tener un orden numérico estrictamente menor).`
+          );
+        }
       }
     }
   }

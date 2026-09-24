@@ -41,7 +41,7 @@ export async function listWorkShifts(tenantPrisma, query = {}) {
         _count: {
           select: {
             employees: {
-              where: { deletedAt: null, status: 'ACTIVE' },
+              where: { deletedAt: null },
             },
           },
         },
@@ -56,6 +56,8 @@ export async function listWorkShifts(tenantPrisma, query = {}) {
     weeklyHours: Number(s.weeklyHours || 0),
     monthlyHours: Number(s.monthlyHours || 0),
     monthlyDays: Number(s.monthlyDays || 0),
+    percentage: Number(s.percentage !== undefined && s.percentage !== null ? s.percentage : 100.00),
+    employeeCount: s._count?.employees || 0,
     assignedEmployeesCount: s._count?.employees || 0,
   }));
 
@@ -88,7 +90,7 @@ export async function getWorkShiftById(tenantPrisma, id) {
       _count: {
         select: {
           employees: {
-            where: { deletedAt: null, status: 'ACTIVE' },
+            where: { deletedAt: null },
           },
         },
       },
@@ -107,6 +109,8 @@ export async function getWorkShiftById(tenantPrisma, id) {
     weeklyHours: Number(shift.weeklyHours || 0),
     monthlyHours: Number(shift.monthlyHours || 0),
     monthlyDays: Number(shift.monthlyDays || 0),
+    percentage: Number(shift.percentage !== undefined && shift.percentage !== null ? shift.percentage : 100.00),
+    employeeCount: shift._count?.employees || 0,
     assignedEmployeesCount: shift._count?.employees || 0,
     details: (shift.details || []).map((d) => ({
       ...d,
@@ -134,6 +138,7 @@ export async function createWorkShift(tenantPrisma, data) {
         weeklyHours: Number(headerData.weeklyHours || 48.00),
         monthlyHours: Number(headerData.monthlyHours || 200.00),
         monthlyDays: Number(headerData.monthlyDays || 30.00),
+        percentage: Number(headerData.percentage !== undefined && headerData.percentage !== null ? headerData.percentage : 100.00),
         isActive: headerData.isActive !== false,
       },
     });
@@ -193,6 +198,7 @@ export async function updateWorkShift(tenantPrisma, id, data) {
     if (headerData.weeklyHours !== undefined) updatePayload.weeklyHours = Number(headerData.weeklyHours);
     if (headerData.monthlyHours !== undefined) updatePayload.monthlyHours = Number(headerData.monthlyHours);
     if (headerData.monthlyDays !== undefined) updatePayload.monthlyDays = Number(headerData.monthlyDays);
+    if (headerData.percentage !== undefined) updatePayload.percentage = Number(headerData.percentage);
     if (headerData.isActive !== undefined) updatePayload.isActive = Boolean(headerData.isActive);
 
     if (Object.keys(updatePayload).length > 0) {

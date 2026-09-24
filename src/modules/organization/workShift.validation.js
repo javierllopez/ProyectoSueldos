@@ -26,6 +26,7 @@ export const createWorkShiftSchema = z.object({
   weeklyHours: z.coerce.number().min(0, 'Las horas semanales no pueden ser negativas').max(168, 'Las horas semanales no pueden exceder 168 hs').default(48.00),
   monthlyHours: z.coerce.number().min(0, 'Las horas mensuales no pueden ser negativas').max(744, 'Las horas mensuales no pueden exceder 744 hs').default(200.00),
   monthlyDays: z.coerce.number().min(0, 'Los días mensuales no pueden ser negativos').max(31, 'Los días mensuales no pueden exceder 31 días').default(30.00),
+  percentage: z.coerce.number().min(0, 'El porcentaje no puede ser negativo').max(100, 'El porcentaje no puede exceder 100%').default(100.00),
   isActive: z.boolean().default(true),
   details: z.array(workShiftDetailSchema).optional().default([]),
 });

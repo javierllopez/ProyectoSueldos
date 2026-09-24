@@ -1022,12 +1022,12 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '2500',
+        code: 'SU2500',
         name: 'Bono Productividad',
         type: 'REMUNERATIVE',
         calculationType: 'FORMULA',
         defaultValue: 0,
-        formula: '[1000] * 0.10',
+        formula: '[SU1000] * 0.10',
         arcaConceptCode: '120000',
         appliesSipaAporte: true,
         appliesSipaContrib: true,
@@ -1058,8 +1058,8 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '6001',
-        name: 'Jubilación SIPA Ley 24.241',
+        code: 'GE6005',
+        name: 'Retención Adicional 11%',
         type: 'DEDUCTION',
         calculationType: 'PERCENTAGE',
         defaultValue: 11,
@@ -1145,8 +1145,8 @@ async function runTests() {
             unjustifiedAbsences: 0,
             sickLeaveDays: 0,
             customItems: [
-              { conceptCode: '1000', amount: 1500000 },
-              { conceptCode: '2500' }, // Se calcula con fórmula 10% de 1000 = 150.000
+              { conceptCode: 'SU1000', amount: 1500000 },
+              { conceptCode: 'SU2500' }, // Se calcula con fórmula 10% de SU1000 = 150.000
             ],
           },
         ],
@@ -1317,7 +1317,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1050',
+        code: 'SU1050',
         name: 'Adicional Especial por Matriz',
         type: 'REMUNERATIVE',
         calculationType: 'MATRIX',
@@ -1342,11 +1342,11 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1060',
+        code: 'SU1060',
         name: 'Bono Complementario por Fórmula',
         type: 'REMUNERATIVE',
         calculationType: 'FORMULA',
-        formula: '[1000] * 0.05 + [MATRIZ:MAT_ANTIGUEDAD]',
+        formula: '[SU1000] * 0.05 + [MATRIZ:MAT_ANTIGUEDAD]',
         appliesSipaAporte: true,
         appliesSipaContrib: true,
         appliesOsAporte: true,
@@ -1372,7 +1372,7 @@ async function runTests() {
             employeeId: empFamilyId,
             workedDays: 30,
             customItems: [
-              { conceptCode: '1000', amount: 500000.00 },
+              { conceptCode: 'SU1000', amount: 500000.00 },
             ],
           },
         ],
@@ -1403,8 +1403,8 @@ async function runTests() {
     const matrixSlipDetailJson = await matrixSlipDetailRes.json();
     const items = matrixSlipDetailJson.data.items || [];
 
-    const item1050 = items.find((i) => i.conceptCode === '1050');
-    const item1060 = items.find((i) => i.conceptCode === '1060');
+    const item1050 = items.find((i) => i.conceptCode === 'SU1050');
+    const item1060 = items.find((i) => i.conceptCode === 'SU1060');
 
     console.log('     Item 1050 (Matriz pura - 2 años antigüedad):', item1050 ? `$${item1050.amount}` : 'NO ENCONTRADO');
     console.log('     Item 1060 (Fórmula con [MATRIZ:...]):', item1060 ? `$${item1060.amount}` : 'NO ENCONTRADO');
@@ -1446,7 +1446,7 @@ async function runTests() {
         code: 'MAT_ESCALA_PCT',
         name: 'Escala Porcentual Productividad',
         description: 'Retorna alícuotas porcentuales sobre el básico según escala',
-        inputConceptCode: '1000',
+        inputConceptCode: 'SU1000',
         matchType: 'RANGE',
         defaultValue: 0,
         rows: {
@@ -1473,7 +1473,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1070',
+        code: 'SU1070',
         name: 'Adicional Productividad Escala Pct',
         type: 'REMUNERATIVE',
         calculationType: 'MATRIX',
@@ -1504,7 +1504,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1080',
+        code: 'SU1080',
         name: 'Plus Referencia por Nombre de Matriz',
         type: 'REMUNERATIVE',
         calculationType: 'FORMULA',
@@ -1540,7 +1540,7 @@ async function runTests() {
             employeeId: empFamilyId,
             workedDays: 30,
             customItems: [
-              { conceptCode: '1000', amount: 500000.00 },
+              { conceptCode: 'SU1000', amount: 500000.00 },
             ],
           },
         ],
@@ -1568,8 +1568,8 @@ async function runTests() {
     const slip2DetailJson = await slip2DetailRes.json();
     const items2 = slip2DetailJson.data.items || [];
 
-    const item1070 = items2.find((i) => i.conceptCode === '1070');
-    const item1080 = items2.find((i) => i.conceptCode === '1080');
+    const item1070 = items2.find((i) => i.conceptCode === 'SU1070');
+    const item1080 = items2.find((i) => i.conceptCode === 'SU1080');
 
     console.log('     Item 1070 (Matriz Porcentual 10% sobre básico $500,000):', item1070 ? `$${item1070.amount}` : 'NO ENCONTRADO');
     console.log('     Item 1080 (Fórmula con [MATRIZ:Nombre] -> 10 * 100):', item1080 ? `$${item1080.amount}` : 'NO ENCONTRADO');
@@ -1651,7 +1651,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1090',
+        code: 'SU1090',
         name: 'Adicional Fondo Garantía Salarial (10% SMVM)',
         type: 'REMUNERATIVE',
         calculationType: 'FORMULA',
@@ -1682,7 +1682,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '1091',
+        code: 'SU1091',
         name: 'Plus Salario Mínimo Directo (5% SMVM)',
         type: 'REMUNERATIVE',
         calculationType: 'FORMULA',
@@ -1718,7 +1718,7 @@ async function runTests() {
             employeeId: empFamilyId,
             workedDays: 30,
             customItems: [
-              { conceptCode: '1000', amount: 500000.00 },
+              { conceptCode: 'SU1000', amount: 500000.00 },
             ],
           },
         ],
@@ -1746,8 +1746,8 @@ async function runTests() {
     const slip3DetailJson = await slip3DetailRes.json();
     const items3 = slip3DetailJson.data.items || [];
 
-    const item1090 = items3.find((i) => i.conceptCode === '1090');
-    const item1091 = items3.find((i) => i.conceptCode === '1091');
+    const item1090 = items3.find((i) => i.conceptCode === 'SU1090');
+    const item1091 = items3.find((i) => i.conceptCode === 'SU1091');
 
     console.log('     Item 1090 ([VALOR:SMVM] * 0.10 -> 10% de $350,000):', item1090 ? `$${item1090.amount}` : 'NO ENCONTRADO');
     console.log('     Item 1091 ([SMVM] * 0.05 -> 5% de $350,000):', item1091 ? `$${item1091.amount}` : 'NO ENCONTRADO');
@@ -1898,7 +1898,7 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: '2150',
+        code: 'SU2150',
         name: 'Adicional Especial por Título',
         type: 'REMUNERATIVE',
         scope: 'INDIVIDUAL',
@@ -1983,8 +1983,8 @@ async function runTests() {
     const slip4DetailJson = await slip4DetailRes.json();
     const items4 = slip4DetailJson.data.items || [];
 
-    const slipBasicItem = items4.find((i) => i.conceptCode === '1000');
-    const slip2150Item = items4.find((i) => i.conceptCode === '2150');
+    const slipBasicItem = items4.find((i) => i.conceptCode === 'SU1000' || i.conceptCode === '1000');
+    const slip2150Item = items4.find((i) => i.conceptCode === 'SU2150' || i.conceptCode === '2150');
 
     console.log('     Recibo Concepto 1000 (Sueldo Básico Empleado):', slipBasicItem ? `$${slipBasicItem.amount}` : 'NO ENCONTRADO');
     console.log('     Recibo Concepto 2150 (Adicional Fijo Asignado):', slip2150Item ? `$${slip2150Item.amount}` : 'NO ENCONTRADO');

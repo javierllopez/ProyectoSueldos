@@ -153,7 +153,20 @@ export function resolveHistoricalMetric(metricKey, targetConceptCode, context = 
     } else if (targetCode === 'TOTAL_BRUTO') {
       amount = Number(slip.grossSalary || 0);
     } else if (Array.isArray(slip.items)) {
-      const item = slip.items.find((it) => String(it.conceptCode).trim().toUpperCase() === targetCode);
+      const item = slip.items.find((it) => {
+        const cCode = String(it.conceptCode).trim().toUpperCase();
+        if (cCode === targetCode) return true;
+        // Compatibilidad cruzada entre códigos legacy y nuevos prefijados
+        if (targetCode === 'SU1000' && (cCode === '1000' || cCode === '100')) return true;
+        if (targetCode === '1000' && cCode === 'SU1000') return true;
+        if (targetCode === 'SU1001' && cCode === '1001') return true;
+        if (targetCode === '1001' && cCode === 'SU1001') return true;
+        if (targetCode === 'SA1000' && cCode === '1200') return true;
+        if (targetCode === '1200' && cCode === 'SA1000') return true;
+        if (targetCode === 'VA1000' && cCode === '1500') return true;
+        if (targetCode === '1500' && cCode === 'VA1000') return true;
+        return false;
+      });
       if (item) amount = Number(item.amount || 0);
     }
 
@@ -196,7 +209,7 @@ export function resolveHistoricalMetric(metricKey, targetConceptCode, context = 
 /**
  * Reemplaza tokens [TOKEN] por sus valores numéricos en el contexto.
  */
-export function substituteTokens(expr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null) {
+export function substituteTokens(expr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
   if (!expr || typeof expr !== 'string') return '';
 
   let res = expr;
@@ -214,6 +227,15 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
   res = res.replace(/\[(?:VALOR|FIJO|CONST):([^\]]+)\]/gi, (match, fixedKey) => {
     if (fixedValueResolver) {
       const val = fixedValueResolver(fixedKey.trim());
+      return String(val !== undefined && val !== null ? val : 0);
+    }
+    return '0';
+  });
+
+  // 2b. Reemplazar nóminas / escalas salariales: [NOMINA:COD], [ESCALA:COD], [SUELDO_NOMINA:COD]
+  res = res.replace(/\[(?:NOMINA|ESCALA|SUELDO_NOMINA):([^\]]+)\]/gi, (match, scaleKey) => {
+    if (salaryScaleResolver) {
+      const val = salaryScaleResolver(scaleKey.trim());
       return String(val !== undefined && val !== null ? val : 0);
     }
     return '0';
@@ -243,6 +265,12 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
     if (upperToken === 'PORCENTAJE_ENTERO') {
       return String(context.PORCENTAJE_ENTERO !== undefined ? context.PORCENTAJE_ENTERO : (context.CANTIDAD || 0));
     }
+    if (upperToken === 'VALOR_BASE' || upperToken === 'VALOR_DEFECTO' || upperToken === 'DEFECTO') {
+      return String(context.VALOR_BASE !== undefined ? context.VALOR_BASE : (context.defaultValue || 0));
+    }
+    if (upperToken === 'IMPORTE' || upperToken === 'MONTO' || upperToken === 'VALOR_NOVEDAD') {
+      return String(context.IMPORTE !== undefined ? context.IMPORTE : (context.VALOR_BASE !== undefined ? context.VALOR_BASE : (context.defaultValue || 0)));
+    }
 
     // Totales de grupo
     if (upperToken === 'TOTAL_REMUNERATIVO') return String(Number(context.TOTAL_REMUNERATIVO || 0));
@@ -262,16 +290,25 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
       if (fVal !== null && fVal !== undefined) return String(fVal);
     }
 
+    // Consultar nómina directa si se utiliza por código directo (ej: [MUCAMA])
+    if (salaryScaleResolver) {
+      const sVal = salaryScaleResolver(upperToken);
+      if (sVal !== null && sVal !== undefined) return String(sVal);
+    }
+
     return '0';
   });
 
   return res;
 }
 
+const mathFunctionCache = new Map();
+const MAX_MATH_CACHE = 1000;
+
 /**
- * Evalúa una expresión matemática simple sin funciones complejas de forma segura.
+ * Evalúa una expresión matemática simple sin funciones complejas de forma segura con caché de compilación.
  */
-export function evaluateBasicMath(expr) {
+export function evaluateSafeExpression(expr) {
   if (!expr || typeof expr !== 'string') return 0;
 
   // Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
@@ -282,7 +319,15 @@ export function evaluateBasicMath(expr) {
   if (!sanitized) return 0;
 
   try {
-    const fn = new Function(`'use strict'; return (${sanitized});`);
+    let fn = mathFunctionCache.get(sanitized);
+    if (!fn) {
+      if (mathFunctionCache.size >= MAX_MATH_CACHE) {
+        const keysToDelete = Array.from(mathFunctionCache.keys()).slice(0, 200);
+        for (const k of keysToDelete) mathFunctionCache.delete(k);
+      }
+      fn = new Function(`'use strict'; return (${sanitized});`);
+      mathFunctionCache.set(sanitized, fn);
+    }
     const val = fn();
     return isNaN(val) || !isFinite(val) ? 0 : Number(val);
   } catch (err) {
@@ -290,10 +335,12 @@ export function evaluateBasicMath(expr) {
   }
 }
 
+export const evaluateBasicMath = evaluateSafeExpression;
+
 /**
  * Evalúa expresiones condicionales y comparaciones (>, <, >=, <=, ==, !=).
  */
-export function evaluateCondition(condStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null) {
+export function evaluateCondition(condStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
   if (!condStr || typeof condStr !== 'string') return false;
 
   const operators = ['>=', '<=', '!=', '<>', '==', '=', '>', '<'];
@@ -311,15 +358,15 @@ export function evaluateCondition(condStr, context = {}, historicalData = {}, ma
 
   if (!opFound) {
     // Si no tiene comparador, se evalúa como verdad si el valor numérico es distinto de 0
-    const val = evaluateFormula(condStr, context, historicalData, matrixResolver, fixedValueResolver);
+    const val = evaluateFormula(condStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
     return Boolean(val && val !== 0);
   }
 
   const leftStr = condStr.substring(0, opIndex).trim();
   const rightStr = condStr.substring(opIndex + opFound.length).trim();
 
-  const leftVal = evaluateFormula(leftStr, context, historicalData, matrixResolver, fixedValueResolver);
-  const rightVal = evaluateFormula(rightStr, context, historicalData, matrixResolver, fixedValueResolver);
+  const leftVal = evaluateFormula(leftStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+  const rightVal = evaluateFormula(rightStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
 
   switch (opFound) {
     case '>=': return leftVal >= rightVal;
@@ -341,16 +388,17 @@ export function evaluateCondition(condStr, context = {}, historicalData = {}, ma
  * @param {object} historicalData - Recibos históricos para acumulados
  * @param {function} matrixResolver - Helper para evaluar matrices
  * @param {function} fixedValueResolver - Helper para constantes globales
+ * @param {function} salaryScaleResolver - Helper para escalas salariales / nóminas
  * @returns {number}
  */
-export function evaluateFormula(formulaStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null) {
+export function evaluateFormula(formulaStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
   if (!formulaStr || typeof formulaStr !== 'string') return 0;
 
   let expr = formulaStr.trim();
   if (!expr) return 0;
 
   // 1. Reemplazo preliminar de tokens directos
-  expr = substituteTokens(expr, context, historicalData, matrixResolver, fixedValueResolver);
+  expr = substituteTokens(expr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
 
   // 2. Soporte para operador infijo de topes |<= (techo) y |>= (piso) si el usuario los utilizara
   if (expr.includes('|<=') || expr.includes('|>=') || expr.includes('<|') || expr.includes('|>')) {
@@ -400,42 +448,42 @@ export function evaluateFormula(formulaStr, context = {}, historicalData = {}, m
 
     if (innermostName === 'SI' || innermostName === 'IF') {
       if (args.length >= 2) {
-        const isTrue = evaluateCondition(args[0], context, historicalData, matrixResolver, fixedValueResolver);
+        const isTrue = evaluateCondition(args[0], context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
         const branchExpr = isTrue ? args[1] : (args[2] !== undefined ? args[2] : '0');
-        resolvedVal = evaluateFormula(branchExpr, context, historicalData, matrixResolver, fixedValueResolver);
+        resolvedVal = evaluateFormula(branchExpr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       }
     } else if (innermostName === 'TOPE_MAX') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
-      const maxVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+      const maxVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.min(val, maxVal);
     } else if (innermostName === 'TOPE_MIN') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
-      const minVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+      const minVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.max(val, minVal);
     } else if (innermostName === 'LIMITAR') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
-      const minVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver);
-      const maxVal = evaluateFormula(args[2] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+      const minVal = evaluateFormula(args[1] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+      const maxVal = evaluateFormula(args[2] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.min(Math.max(val, minVal), maxVal);
     } else if (innermostName === 'MIN') {
-      const evaluatedArgs = args.map((a) => evaluateFormula(a, context, historicalData, matrixResolver, fixedValueResolver));
+      const evaluatedArgs = args.map((a) => evaluateFormula(a, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver));
       resolvedVal = Math.min(...evaluatedArgs);
     } else if (innermostName === 'MAX') {
-      const evaluatedArgs = args.map((a) => evaluateFormula(a, context, historicalData, matrixResolver, fixedValueResolver));
+      const evaluatedArgs = args.map((a) => evaluateFormula(a, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver));
       resolvedVal = Math.max(...evaluatedArgs);
     } else if (innermostName === 'REDONDEAR' || innermostName === 'ROUND') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
-      const decimals = Math.max(0, Math.floor(evaluateFormula(args[1] || '2', context, historicalData, matrixResolver, fixedValueResolver)));
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+      const decimals = Math.max(0, Math.floor(evaluateFormula(args[1] || '2', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver)));
       const factor = Math.pow(10, decimals);
       resolvedVal = Math.round(val * factor) / factor;
     } else if (innermostName === 'ABS') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.abs(val);
     } else if (innermostName === 'CEIL') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.ceil(val);
     } else if (innermostName === 'FLOOR') {
-      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver);
+      const val = evaluateFormula(args[0] || '0', context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
       resolvedVal = Math.floor(val);
     }
 

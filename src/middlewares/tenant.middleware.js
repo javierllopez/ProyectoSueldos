@@ -66,6 +66,17 @@ export async function resolveTenant(req, res, next) {
   // 5. Obtener conexión a la base de datos física del tenant
   const tenantPrisma = await tenantConnectionManager.getTenantClient(company);
 
+  // Liberar referencia de uso al finalizar la respuesta para permitir evicción segura
+  let released = false;
+  const onDone = () => {
+    if (!released) {
+      released = true;
+      tenantConnectionManager.releaseClient(company.dbName);
+    }
+  };
+  res.once('finish', onDone);
+  res.once('close', onDone);
+
   // Inyectar en el contexto de la request
   req.company = company;
   req.companyRole = roleInCompany;

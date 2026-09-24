@@ -31,6 +31,7 @@ export const createJobPositionSchema = z.object({
   categoryCode: z.string().max(50, 'El código de categoría no puede exceder los 50 caracteres').trim().nullable().optional(),
   positionCode: z.string().max(50, 'El código de puesto ARCA no puede exceder los 50 caracteres').trim().nullable().optional(),
   serviceTypeCode: z.string().max(50, 'El código de tipo de servicio no puede exceder los 50 caracteres').trim().nullable().optional(),
+  activityCode: z.string().max(10, 'El código de actividad no puede exceder los 10 caracteres').trim().nullable().optional(),
 });
 
 export const updateJobPositionSchema = createJobPositionSchema.partial();
@@ -45,6 +46,7 @@ export const importJobPositionsSchema = z.object({
         categoryCode: z.string().trim().optional().nullable(),
         positionCode: z.string().trim().optional().nullable(),
         serviceTypeCode: z.string().trim().optional().nullable(),
+        activityCode: z.string().trim().optional().nullable(),
       })
     )
     .min(1, 'Debe enviar al menos un puesto de trabajo para importar'),

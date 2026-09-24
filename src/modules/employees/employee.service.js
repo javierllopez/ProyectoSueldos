@@ -39,7 +39,49 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
       skip,
       take: Number(limit),
       orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
-      include: {
+      select: {
+        id: true,
+        fileNumber: true,
+        lastName: true,
+        firstName: true,
+        hireDate: true,
+        birthDate: true,
+        documentType: true,
+        documentNumber: true,
+        cuil: true,
+        gender: true,
+        street: true,
+        streetNumber: true,
+        floor: true,
+        apartment: true,
+        city: true,
+        postalCode: true,
+        province: true,
+        email: true,
+        phone: true,
+        status: true,
+        terminationDate: true,
+        terminationReason: true,
+        departmentId: true,
+        jobPositionId: true,
+        healthInsuranceId: true,
+        unionId: true,
+        mutualId: true,
+        contractModalityCode: true,
+        salaryScaleId: true,
+        workShiftId: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        payrollGroup: true,
+        isPartTime: true,
+        weeklyWorkingHours: true,
+        monthlyWorkingHours: true,
+        partTimePercentage: true,
+        basicSalary: true,
+        hourlyRate: true,
+        cbu: true,
+        bankAccountType: true,
         department: { select: { id: true, name: true, code: true } },
         jobPosition: {
           select: {
@@ -249,6 +291,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
   let assignedBasicSalary = employeeData.basicSalary !== undefined && employeeData.basicSalary !== null ? Number(employeeData.basicSalary) : 0.00;
   const modCode = employeeData.contractModalityCode ? employeeData.contractModalityCode.trim() : null;
   const isInternModality = modCode === '27' || modCode === '51';
+  const isDirectorModality = modCode === '99';
   const scaleId = employeeData.salaryScaleId ? employeeData.salaryScaleId.trim() : null;
 
   if (scaleId) {
@@ -263,6 +306,16 @@ export async function createEmployee(tenantPrisma, employeeData) {
       }
       if (!isInternModality && scale.isInternOnly) {
         const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+        err.status = 400;
+        throw err;
+      }
+      if (isDirectorModality && !scale.isDirectorOnly) {
+        const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
+        err.status = 400;
+        throw err;
+      }
+      if (!isDirectorModality && scale.isDirectorOnly) {
+        const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
         err.status = 400;
         throw err;
       }
@@ -284,13 +337,15 @@ export async function createEmployee(tenantPrisma, employeeData) {
       finalWeeklyHours = Number(ws.weeklyHours || 48.00);
       finalMonthlyHours = Number(ws.monthlyHours || 200.00);
       finalIsPartTime = finalWeeklyHours < 48;
-      finalPartTimePct = Math.min(100, Math.round((finalWeeklyHours / 48) * 10000) / 100);
+      finalPartTimePct = ws.percentage !== undefined && ws.percentage !== null
+        ? Number(ws.percentage)
+        : Math.min(100, Math.round((finalWeeklyHours / 48) * 10000) / 100);
     } else {
       assignedWorkShiftId = null;
     }
   }
 
-  const employee = await tenantPrisma.employee.create({
+  const createPayload = {
     data: {
       id: crypto.randomUUID(),
       fileNumber: employeeData.fileNumber.trim(),
@@ -355,7 +410,19 @@ export async function createEmployee(tenantPrisma, employeeData) {
         orderBy: { createdAt: 'asc' },
       },
     },
-  });
+  };
+
+  let employee;
+  try {
+    employee = await tenantPrisma.employee.create(createPayload);
+  } catch (err) {
+    if (err.code === 'P2011' || err.code === 'P2021' || err.code === 'P2022') {
+      await ensureTenantPersonnelSchema(tenantPrisma, { force: true });
+      employee = await tenantPrisma.employee.create(createPayload);
+    } else {
+      throw err;
+    }
+  }
 
   return {
     ...employee,
@@ -497,6 +564,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
 
   const targetModality = updatePayload.contractModalityCode !== undefined ? updatePayload.contractModalityCode : current.contractModalityCode;
   const isInternModality = targetModality === '27' || targetModality === '51';
+  const isDirectorModality = targetModality === '99';
 
   if (data.salaryScaleId !== undefined) {
     updatePayload.salaryScaleId = data.salaryScaleId ? data.salaryScaleId.trim() : null;
@@ -512,6 +580,16 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
         }
         if (!isInternModality && scale.isInternOnly) {
           const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+          err.status = 400;
+          throw err;
+        }
+        if (isDirectorModality && !scale.isDirectorOnly) {
+          const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
+          err.status = 400;
+          throw err;
+        }
+        if (!isDirectorModality && scale.isDirectorOnly) {
+          const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
           err.status = 400;
           throw err;
         }
@@ -533,6 +611,16 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
         err.status = 400;
         throw err;
       }
+      if (isDirectorModality && !scale.isDirectorOnly) {
+        const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), debe asignarse una nómina exclusiva para directores.');
+        err.status = 400;
+        throw err;
+      }
+      if (!isDirectorModality && scale.isDirectorOnly) {
+        const err = new Error('La nómina actualmente asignada es exclusiva para Directores / LRT (modalidad 099) y no corresponde a la nueva modalidad.');
+        err.status = 400;
+        throw err;
+      }
     }
   }
 
@@ -549,7 +637,9 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
         updatePayload.weeklyWorkingHours = wHours;
         updatePayload.monthlyWorkingHours = mHours;
         updatePayload.isPartTime = wHours < 48;
-        updatePayload.partTimePercentage = Math.min(100, Math.round((wHours / 48) * 10000) / 100);
+        updatePayload.partTimePercentage = ws.percentage !== undefined && ws.percentage !== null
+          ? Number(ws.percentage)
+          : Math.min(100, Math.round((wHours / 48) * 10000) / 100);
       }
     }
   }

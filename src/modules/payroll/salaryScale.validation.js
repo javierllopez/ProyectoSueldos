@@ -6,6 +6,9 @@ export const createSalaryScaleSchema = z.object({
   description: z.string().max(1000).nullable().optional(),
   amount: z.coerce.number().min(0, 'El sueldo básico debe ser mayor o igual a 0'),
   isInternOnly: z.boolean().optional(),
+  isDirectorOnly: z.boolean().optional(),
+}).refine((data) => !(data.isInternOnly && data.isDirectorOnly), {
+  message: 'Una nómina no puede ser simultáneamente exclusiva para pasantes y directores',
 });
 
 export const updateSalaryScaleSchema = z.object({
@@ -14,6 +17,9 @@ export const updateSalaryScaleSchema = z.object({
   description: z.string().max(1000).nullable().optional(),
   amount: z.coerce.number().min(0, 'El sueldo básico debe ser mayor o igual a 0').optional(),
   isInternOnly: z.boolean().optional(),
+  isDirectorOnly: z.boolean().optional(),
+}).refine((data) => !(data.isInternOnly && data.isDirectorOnly), {
+  message: 'Una nómina no puede ser simultáneamente exclusiva para pasantes y directores',
 });
 
 export const massScaleIncreaseSchema = z.object({

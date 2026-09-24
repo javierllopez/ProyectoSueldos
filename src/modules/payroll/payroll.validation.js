@@ -77,8 +77,15 @@ export const updateSettingsSchema = z
   })
   .partial();
 
+export const VALID_CONCEPT_PREFIXES = new Set(['GE', 'SU', 'QU', 'SA', 'VA', 'FI', 'AJ', 'GR']);
+
 export const conceptBaseSchema = z.object({
-  code: z.string().trim().min(1, 'El código es obligatorio').max(20),
+  code: z
+    .string()
+    .trim()
+    .min(1, 'El código es obligatorio')
+    .max(20)
+    .regex(/^[A-Z]{2}[0-9]{4}$/, 'El código debe tener formato de 2 letras mayúsculas seguidas de 4 dígitos (ej: SU1000, GE6001, SA1000)'),
   name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(191),
   type: z.enum(['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'AUXILIARY']),
   calculationType: z.enum(['FIXED', 'PERCENTAGE', 'FORMULA', 'MATRIX']).default('FIXED'),
@@ -86,7 +93,7 @@ export const conceptBaseSchema = z.object({
   settlementType: z.string().trim().max(50).optional(),
   scope: z.enum(['GENERAL', 'INDIVIDUAL']).default('GENERAL'),
   defaultValue: z.coerce.number().default(0.0),
-  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION']).default('CANTIDAD'),
+  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION', 'IMPORTE']).default('CANTIDAD'),
   calculationOrder: z.coerce.number().int().optional(),
   formula: z.string().trim().optional().nullable(),
   matrixData: z.string().trim().optional().nullable(),
@@ -111,11 +118,24 @@ export const conceptBaseSchema = z.object({
 
 function validateConceptCodeRange(code, type, ctx) {
   if (!code || !type) return;
-  const codeNum = parseInt(code, 10);
-  if (isNaN(codeNum)) {
+  const cleanCode = String(code).trim().toUpperCase();
+  const match = cleanCode.match(/^([A-Z]{2})([0-9]{4})$/);
+  if (!match) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'El código del concepto debe ser un número entero',
+      message: 'El código de concepto debe estar compuesto por 2 letras de prefijo y 4 dígitos (ej: SU1000, GE6001)',
+      path: ['code'],
+    });
+    return;
+  }
+
+  const prefix = match[1];
+  const codeNum = parseInt(match[2], 10);
+
+  if (!VALID_CONCEPT_PREFIXES.has(prefix)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `El prefijo "${prefix}" no es válido. Prefijos permitidos: ${Array.from(VALID_CONCEPT_PREFIXES).join(', ')}`,
       path: ['code'],
     });
     return;
@@ -125,7 +145,7 @@ function validateConceptCodeRange(code, type, ctx) {
     if (codeNum < 1000 || codeNum > 3999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Los conceptos remunerativos deben tener un código numérico entre 1000 y 3999',
+        message: 'Los conceptos remunerativos deben tener un número de 4 dígitos entre 1000 y 3999 (ej: SU1000, SA1000, VA1000)',
         path: ['code'],
       });
     }
@@ -133,7 +153,7 @@ function validateConceptCodeRange(code, type, ctx) {
     if (codeNum < 4000 || codeNum > 5999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Los conceptos no remunerativos deben tener un código numérico entre 4000 y 5999',
+        message: 'Los conceptos no remunerativos deben tener un número de 4 dígitos entre 4000 y 5999 (ej: SU4001, GE4001)',
         path: ['code'],
       });
     }
@@ -141,15 +161,15 @@ function validateConceptCodeRange(code, type, ctx) {
     if (codeNum < 6000 || codeNum > 8999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Las deducciones deben tener un código numérico entre 6000 y 8999',
+        message: 'Las deducciones deben tener un número de 4 dígitos entre 6000 y 8999 (ej: GE6001, SU6001)',
         path: ['code'],
       });
     }
   } else if (type === 'AUXILIARY') {
-    if (codeNum <= 0) {
+    if (codeNum < 9000 || codeNum > 9999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Los conceptos auxiliares deben tener un código numérico entero mayor a 0',
+        message: 'Los conceptos auxiliares deben tener un número de 4 dígitos entre 9000 y 9999 (ej: GE9001)',
         path: ['code'],
       });
     }

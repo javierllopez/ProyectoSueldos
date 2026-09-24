@@ -1,6 +1,8 @@
 import crypto from 'crypto';
-import { evaluateFormula } from './formulaEvaluator.js';
+import { evaluateFormula, evaluateSafeExpression } from './formulaEvaluator.js';
 import { hoursToDecimal } from '../../utils/timeFormat.js';
+
+export { evaluateSafeExpression } from './formulaEvaluator.js';
 
 /**
  * Convierte un número a palabras en español (para el importe neto en letras).
@@ -71,30 +73,7 @@ export function numberToSpanishWords(amount) {
   return `PESOS ${words} CON ${centsStr}/100`;
 }
 
-/**
- * Evalúa expresiones matemáticas de forma segura sin `eval()`.
- * Soporta números, +, -, *, /, paréntesis y potencias.
- */
-export function evaluateSafeExpression(expr) {
-  if (!expr || typeof expr !== 'string') return 0;
-
-  // Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
-  const normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
-
-  // Limpiar caracteres no permitidos
-  const sanitized = normalized.replace(/[^0-9+\-*/().\s]/g, '').trim();
-  if (!sanitized) return 0;
-
-  try {
-    // Parser seguro usando Function con alcance cerrado sin acceso a globales
-    const fn = new Function(`'use strict'; return (${sanitized});`);
-    const val = fn();
-    return isNaN(val) || !isFinite(val) ? 0 : Number(val);
-  } catch (err) {
-    console.warn(`Error al evaluar expresión "${expr}":`, err.message);
-    return 0;
-  }
-}
+// evaluateSafeExpression is re-exported from ./formulaEvaluator.js with LRU compilation caching
 
 /**
  * Resuelve una matriz de lookup para un concepto.
@@ -219,7 +198,7 @@ export function calculateSeniority(hireDate, periodDate) {
 export function findBasicSalaryConcept(allConcepts) {
   if (!Array.isArray(allConcepts)) return null;
   return (
-    allConcepts.find((c) => c.type === 'REMUNERATIVE' && (c.code === '1000' || c.code === '100' || c.code === '001' || c.code === 'BASICO')) ||
+    allConcepts.find((c) => c.type === 'REMUNERATIVE' && (c.code === 'SU1000' || c.code === '1000' || c.code === '100' || c.code === '001' || c.code === 'BASICO')) ||
     allConcepts.find((c) => c.type === 'REMUNERATIVE' && /b[aá]sico/i.test(c.name)) ||
     allConcepts.find((c) => c.type === 'REMUNERATIVE' && c.arcaConceptCode === '110000') ||
     allConcepts.find((c) => c.type === 'REMUNERATIVE') ||
@@ -233,11 +212,120 @@ export function findBasicSalaryConcept(allConcepts) {
 export function findInternStimulusConcept(allConcepts) {
   if (!Array.isArray(allConcepts)) return null;
   return (
-    allConcepts.find((c) => c.code === '1001') ||
+    allConcepts.find((c) => c.code === 'SU1001' || c.code === '1001') ||
     allConcepts.find((c) => c.type === 'NON_REMUNERATIVE' && /est[ií]mulo|pasant/i.test(c.name)) ||
     allConcepts.find((c) => c.arcaConceptCode === '550000') ||
     null
   );
+}
+
+/**
+ * Normalizador de cadenas para matching flexible de códigos y nombres de matrices y nóminas.
+ */
+export const normalizePayrollKey = (str) => {
+  if (!str) return '';
+  return String(str)
+    .trim()
+    .toUpperCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^A-Z0-9]/g, '_')
+    .replace(/_+/g, '_');
+};
+
+/**
+ * Pre-indexa catálogos salariales para optimización O(1) en cálculos masivos de nómina.
+ */
+export function buildPayrollIndices({ allConcepts = [], allMatrices = [], allFixedValues = [], allSalaryScales = [] } = {}) {
+  const conceptsMap = new Map();
+  for (const c of allConcepts) {
+    conceptsMap.set(String(c.code).trim(), c);
+  }
+
+  const matricesMap = new Map();
+  for (const m of allMatrices) {
+    if (m.id) matricesMap.set(m.id, m);
+    if (m.code) {
+      matricesMap.set(String(m.code).trim().toUpperCase(), m);
+      matricesMap.set(normalizePayrollKey(m.code), m);
+    }
+    if (m.name) {
+      matricesMap.set(String(m.name).trim().toUpperCase(), m);
+      matricesMap.set(normalizePayrollKey(m.name), m);
+    }
+  }
+
+  const findMatrix = (key) => {
+    if (!key) return null;
+    const clean = String(key).trim();
+    if (matricesMap.has(clean)) return matricesMap.get(clean);
+    if (matricesMap.has(clean.toUpperCase())) return matricesMap.get(clean.toUpperCase());
+    const norm = normalizePayrollKey(clean);
+    if (matricesMap.has(norm)) return matricesMap.get(norm);
+    return null;
+  };
+
+  const fixedValuesMap = new Map();
+  for (const fv of allFixedValues) {
+    const numVal = Number(fv.value !== undefined && fv.value !== null ? fv.value : 0);
+    if (fv.id) fixedValuesMap.set(fv.id, numVal);
+    if (fv.code) {
+      const codeClean = String(fv.code).trim().toUpperCase();
+      fixedValuesMap.set(codeClean, numVal);
+      fixedValuesMap.set(normalizePayrollKey(fv.code), numVal);
+    }
+    if (fv.name) {
+      const nameClean = String(fv.name).trim().toUpperCase();
+      fixedValuesMap.set(nameClean, numVal);
+      fixedValuesMap.set(normalizePayrollKey(fv.name), numVal);
+    }
+  }
+
+  const findFixedValue = (key) => {
+    if (!key) return null;
+    const clean = String(key).trim();
+    if (fixedValuesMap.has(clean)) return fixedValuesMap.get(clean);
+    if (fixedValuesMap.has(clean.toUpperCase())) return fixedValuesMap.get(clean.toUpperCase());
+    const norm = normalizePayrollKey(clean);
+    if (fixedValuesMap.has(norm)) return fixedValuesMap.get(norm);
+    return null;
+  };
+
+  const salaryScalesMap = new Map();
+  for (const s of allSalaryScales) {
+    const numVal = Number(s.amount !== undefined && s.amount !== null ? s.amount : (s.basicSalary || 0));
+    if (s.id) salaryScalesMap.set(s.id, numVal);
+    if (s.code) {
+      const codeClean = String(s.code).trim().toUpperCase();
+      salaryScalesMap.set(codeClean, numVal);
+      salaryScalesMap.set(normalizePayrollKey(s.code), numVal);
+    }
+    if (s.name) {
+      const nameClean = String(s.name).trim().toUpperCase();
+      salaryScalesMap.set(nameClean, numVal);
+      salaryScalesMap.set(normalizePayrollKey(s.name), numVal);
+    }
+  }
+
+  const findSalaryScale = (key) => {
+    if (!key) return null;
+    const clean = String(key).trim();
+    if (salaryScalesMap.has(clean)) return salaryScalesMap.get(clean);
+    if (salaryScalesMap.has(clean.toUpperCase())) return salaryScalesMap.get(clean.toUpperCase());
+    const norm = normalizePayrollKey(clean);
+    if (salaryScalesMap.has(norm)) return salaryScalesMap.get(norm);
+    return null;
+  };
+
+  return {
+    conceptsMap,
+    matricesMap,
+    fixedValuesMap,
+    salaryScalesMap,
+    findMatrix,
+    findFixedValue,
+    findSalaryScale,
+  };
 }
 
 /**
@@ -253,12 +341,15 @@ export function calculateEmployeePayroll({
   allConcepts = [], // Catálogo activo de conceptos
   allMatrices = [], // Catálogo de matrices de liquidación
   allFixedValues = [], // Catálogo de valores globales fijos (constantes)
+  allSalaryScales = [], // Catálogo de escalas salariales / nóminas de CCT
   historicalData = {}, // Historial de recibos e items previos del empleado
+  indices = null, // Pre-indexación opcional para cálculos masivos
 }) {
   const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '51';
+  const isDirector = employee.contractModalityCode === '99' || employee.salaryScale?.isDirectorOnly === true;
 
-  // Si es pasante y el período es de SAC (aguinaldo), no se liquida aguinaldo (Ley 26.427)
-  if (isIntern && (period.periodType === 'SAC_1' || period.periodType === 'SAC_2')) {
+  // Si es pasante o director bajo modalidad LRT y el período es de SAC (aguinaldo), no se liquida aguinaldo de LCT
+  if ((isIntern || isDirector) && (period.periodType === 'SAC_1' || period.periodType === 'SAC_2')) {
     return {
       items: [],
       totals: {
@@ -301,8 +392,8 @@ export function calculateEmployeePayroll({
         detractionAmount: 0,
         situationCode: employee.status === 'ACTIVE' ? '01' : '13',
         conditionCode: '01',
-        activityCode: '000',
-        contractModality: (employee.contractModalityCode || '027').padStart(3, '0'),
+        activityCode: employee.jobPosition?.activityCode || (isDirector ? '015' : '049'),
+        contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : '001'))).padStart(3, '0'),
         hasSpouse: false,
         childrenCount: 0,
         hasScvo: false,
@@ -312,13 +403,13 @@ export function calculateEmployeePayroll({
     };
   }
 
-  // Asegurar concepto 1001 en el catálogo si es pasante y no vino precargado
-  if (isIntern && !allConcepts.some((c) => c.code === '1001')) {
+  // Asegurar concepto SU1001 en el catálogo si es pasante y no vino precargado
+  if (isIntern && !allConcepts.some((c) => c.code === 'SU1001' || c.code === '1001')) {
     allConcepts = [
       ...allConcepts,
       {
         id: 'virtual-1001',
-        code: '1001',
+        code: 'SU1001',
         name: 'Asignación Estímulo Ley 26.427',
         type: 'NON_REMUNERATIVE',
         calculationType: 'FIXED',
@@ -336,77 +427,81 @@ export function calculateEmployeePayroll({
     ];
   }
 
+  // Asegurar concepto SU1002 en el catálogo si es director y no vino precargado
+  if (isDirector && !allConcepts.some((c) => c.code === 'SU1002' || c.code === '1002')) {
+    allConcepts = [
+      ...allConcepts,
+      {
+        id: 'virtual-1002',
+        code: 'SU1002',
+        name: 'Honorarios / Retribución Director S.A. (LRT Mod. 099)',
+        type: 'REMUNERATIVE',
+        calculationType: 'FIXED',
+        scope: 'GENERAL',
+        defaultValue: 0,
+        noveltyDataType: 'CANTIDAD',
+        calculationOrder: 100,
+        isPersistent: true,
+        isActive: true,
+        arcaConceptCode: '110000',
+        appliesLrtContrib: true,
+      },
+    ];
+  }
+
   const periodDate = period.paymentDate ? new Date(period.paymentDate) : new Date(period.year, period.month - 1, 28);
   const seniority = calculateSeniority(employee.hireDate, periodDate);
 
-  // Diccionario de conceptos por código
-  const conceptsMap = new Map();
-  for (const c of allConcepts) {
-    conceptsMap.set(String(c.code).trim(), c);
+  // Pre-indexación de catálogos salariales O(1)
+  let {
+    conceptsMap,
+    matricesMap,
+    fixedValuesMap,
+    salaryScalesMap,
+    findMatrix,
+    findFixedValue,
+    findSalaryScale,
+  } = indices || buildPayrollIndices({ allConcepts, allMatrices, allFixedValues, allSalaryScales });
+
+  if (isIntern && !conceptsMap.has('SU1001') && !conceptsMap.has('1001')) {
+    conceptsMap = new Map(conceptsMap);
+    conceptsMap.set('SU1001', allConcepts.find((c) => c.code === 'SU1001') || {
+      id: 'virtual-1001',
+      code: 'SU1001',
+      name: 'Asignación Estímulo Ley 26.427',
+      type: 'NON_REMUNERATIVE',
+      calculationType: 'FIXED',
+      scope: 'GENERAL',
+      defaultValue: 0,
+      noveltyDataType: 'CANTIDAD',
+      calculationOrder: 100,
+      isPersistent: true,
+      isActive: true,
+      arcaConceptCode: '550000',
+      appliesOsContrib: true,
+      appliesFsrContrib: true,
+      appliesLrtContrib: true,
+    });
   }
 
-  // Normalizador de cadenas para matching flexible de códigos y nombres
-  const normalizeMatrixKey = (str) => {
-    if (!str) return '';
-    return String(str)
-      .trim()
-      .toUpperCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^A-Z0-9]/g, '_')
-      .replace(/_+/g, '_');
-  };
-
-  // Diccionario de matrices indexadas por ID, código y nombre
-  const matricesMap = new Map();
-  for (const m of allMatrices) {
-    if (m.id) matricesMap.set(m.id, m);
-    if (m.code) {
-      matricesMap.set(String(m.code).trim().toUpperCase(), m);
-      matricesMap.set(normalizeMatrixKey(m.code), m);
-    }
-    if (m.name) {
-      matricesMap.set(String(m.name).trim().toUpperCase(), m);
-      matricesMap.set(normalizeMatrixKey(m.name), m);
-    }
+  if (isDirector && !conceptsMap.has('SU1002') && !conceptsMap.has('1002')) {
+    conceptsMap = new Map(conceptsMap);
+    conceptsMap.set('SU1002', allConcepts.find((c) => c.code === 'SU1002') || {
+      id: 'virtual-1002',
+      code: 'SU1002',
+      name: 'Honorarios / Retribución Director S.A. (LRT Mod. 099)',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      scope: 'GENERAL',
+      defaultValue: 0,
+      noveltyDataType: 'CANTIDAD',
+      calculationOrder: 100,
+      isPersistent: true,
+      isActive: true,
+      arcaConceptCode: '110000',
+      appliesLrtContrib: true,
+    });
   }
-
-  const findMatrix = (key) => {
-    if (!key) return null;
-    const clean = String(key).trim();
-    if (matricesMap.has(clean)) return matricesMap.get(clean);
-    if (matricesMap.has(clean.toUpperCase())) return matricesMap.get(clean.toUpperCase());
-    const norm = normalizeMatrixKey(clean);
-    if (matricesMap.has(norm)) return matricesMap.get(norm);
-    return null;
-  };
-
-  // Diccionario de valores globales fijos (constantes)
-  const fixedValuesMap = new Map();
-  for (const fv of allFixedValues) {
-    const numVal = Number(fv.value !== undefined && fv.value !== null ? fv.value : 0);
-    if (fv.id) fixedValuesMap.set(fv.id, numVal);
-    if (fv.code) {
-      const codeClean = String(fv.code).trim().toUpperCase();
-      fixedValuesMap.set(codeClean, numVal);
-      fixedValuesMap.set(normalizeMatrixKey(fv.code), numVal);
-    }
-    if (fv.name) {
-      const nameClean = String(fv.name).trim().toUpperCase();
-      fixedValuesMap.set(nameClean, numVal);
-      fixedValuesMap.set(normalizeMatrixKey(fv.name), numVal);
-    }
-  }
-
-  const findFixedValue = (key) => {
-    if (!key) return null;
-    const clean = String(key).trim();
-    if (fixedValuesMap.has(clean)) return fixedValuesMap.get(clean);
-    if (fixedValuesMap.has(clean.toUpperCase())) return fixedValuesMap.get(clean.toUpperCase());
-    const norm = normalizeMatrixKey(clean);
-    if (fixedValuesMap.has(norm)) return fixedValuesMap.get(norm);
-    return null;
-  };
 
   // Diccionario de novedades ingresadas
   const inputsMap = new Map();
@@ -480,10 +575,15 @@ export function calculateEmployeePayroll({
     SUELDO_BASICO: baseSalaryNominal,
     BASICO: baseSalaryNominal,
     [basicCode]: baseSalaryNominal,
+    SU1000: baseSalaryNominal,
+    SU1001: baseSalaryNominal,
+    SU1002: baseSalaryNominal,
     '1000': baseSalaryNominal,
     '1001': baseSalaryNominal,
+    '1002': baseSalaryNominal,
     ASIGNACION_ESTIMULO: baseSalaryNominal,
     ESTIMULO: baseSalaryNominal,
+    HONORARIOS_DIRECTOR: baseSalaryNominal,
     ES_JORNADA_PARCIAL: (isIntern || employee.isPartTime) ? 1 : 0,
     PORCENTAJE_JORNADA: isIntern ? 50.00 : Number(employee.partTimePercentage || 100),
     HORAS_SEMANALES: shiftWeekly,
@@ -524,17 +624,25 @@ export function calculateEmployeePayroll({
 
     // Para pasantes (Ley 26.427): la Asignación Estímulo es SIEMPRE el importe mensual total pactado en la nómina.
     // (Ausencias, licencias o eventualidades se liquidan exclusivamente mediante conceptos de novedad creados por el usuario).
-    if (isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000')) {
+    if (isIntern && (concept.code === 'SU1001' || concept.code === '1001' || concept.arcaConceptCode === '550000')) {
+      return baseSalaryNominal > 0 ? baseSalaryNominal : Number(concept.defaultValue || 0);
+    }
+
+    // Para directores bajo modalidad 099 LRT: honorarios o sueldo asignado según nómina pactada
+    if (isDirector && (concept.code === 'SU1002' || concept.code === '1002' || (concept.code === basicCode && !allConcepts.some((c) => c.code === 'SU1002')))) {
       return baseSalaryNominal > 0 ? baseSalaryNominal : Number(concept.defaultValue || 0);
     }
 
     // Si el usuario ingresó un importe fijo manual directo en la novedad o viene asignado
+    // (Salvo que el concepto sea de tipo FORMULA y use la novedad como variable de cálculo)
     if (inputOverride && inputOverride.amount !== undefined && inputOverride.amount !== null && String(inputOverride.amount).trim() !== '') {
-      return Number(inputOverride.amount);
+      if (calcType !== 'FORMULA' || concept.noveltyDataType !== 'IMPORTE') {
+        return Number(inputOverride.amount);
+      }
     }
 
     // Concepto básico estándar: siempre el valor mensual completo pactado.
-    if (concept.code === basicCode || concept.code === '1000' || concept.code === '100') {
+    if (concept.code === basicCode || concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100') {
       const baseMonthly = baseSalaryNominal > 0 ? baseSalaryNominal : Number(concept.defaultValue || 0);
       return baseMonthly;
     }
@@ -556,7 +664,7 @@ export function calculateEmployeePayroll({
         const matRes = evaluateMatrix(targetMatrix, context);
         if (matRes && matRes.isPercentage) {
           const inputVar = targetMatrix.inputConceptCode || targetMatrix.keyVariable;
-          const baseVal = Number(context[inputVar]) || context.BASICO || context[basicCode] || context['1000'] || context['100'] || 0;
+          const baseVal = Number(context[inputVar]) || context.BASICO || context[basicCode] || context.SU1000 || context['1000'] || context['100'] || 0;
           return baseVal * (Number(matRes.value) / 100);
         }
         return Number(matRes.value !== undefined ? matRes.value : matRes);
@@ -568,20 +676,24 @@ export function calculateEmployeePayroll({
       const pct = Number(concept.defaultValue || 0) / 100;
       // Si es una deducción, por defecto aplica sobre el Total Remunerativo acumulado
       if (concept.type === 'DEDUCTION') {
-        const isObraSocial = concept.code === '8002' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
+        const isObraSocial = concept.code === 'GE6003' || concept.code === '8002' || concept.code === '6003' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
         if (isObraSocial) {
           return context.BASE_OBRA_SOCIAL * pct;
         }
         return context.TOTAL_REMUNERATIVO * pct;
       }
       // Si es remunerativo o no remunerativo, aplica sobre el básico
-      const baseVal = context.BASICO || context[basicCode] || context['1000'] || context['100'] || 0;
+      const baseVal = context.BASICO || context[basicCode] || context.SU1000 || context['1000'] || context['100'] || 0;
       return baseVal * pct;
     }
 
     if (calcType === 'FORMULA' && concept.formula) {
       context.CURRENT_CONCEPT_CODE = concept.code;
       context.CURRENT_PERIOD = period;
+      context.defaultValue = Number(concept.defaultValue || 0);
+      context.VALOR_BASE = Number(concept.defaultValue || 0);
+      context.VALOR_DEFECTO = context.VALOR_BASE;
+      context.DEFECTO = context.VALOR_BASE;
       return evaluateFormula(
         concept.formula,
         context,
@@ -592,7 +704,11 @@ export function calculateEmployeePayroll({
           const matRes = evaluateMatrix(mat, ctx);
           return Number(matRes?.value !== undefined ? matRes.value : matRes) || 0;
         },
-        (fixedKey) => findFixedValue(fixedKey)
+        (fixedKey) => findFixedValue(fixedKey),
+        (scaleKey) => {
+          const s = findSalaryScale(scaleKey);
+          return s !== null && s !== undefined ? s : 0;
+        }
       );
     }
 
@@ -620,22 +736,25 @@ export function calculateEmployeePayroll({
   const applicableConcepts = allConcepts.filter((c) => isConceptApplicable(c));
   applicableConcepts.sort((a, b) => {
     // Sueldo básico siempre prioridad de cálculo 1
-    const isBasicA = a.code === basicCode || a.code === '1000';
-    const isBasicB = b.code === basicCode || b.code === '1000';
+    const isBasicA = a.code === basicCode || a.code === 'SU1000' || a.code === '1000';
+    const isBasicB = b.code === basicCode || b.code === 'SU1000' || b.code === '1000';
     if (isBasicA && !isBasicB) return -1;
     if (!isBasicA && isBasicB) return 1;
 
-    // Secuencia por código numérico ascendente
-    const numA = parseInt(a.code, 10);
-    const numB = parseInt(b.code, 10);
+    // calculationOrder explícito si difieren
+    const orderA = a.calculationOrder !== undefined && a.calculationOrder !== null ? Number(a.calculationOrder) : 100;
+    const orderB = b.calculationOrder !== undefined && b.calculationOrder !== null ? Number(b.calculationOrder) : 100;
+    if (orderA !== orderB) return orderA - orderB;
+
+    // Secuencia por código numérico de 4 dígitos ascendente
+    const numMatchA = String(a.code).match(/(\d{4})/);
+    const numMatchB = String(b.code).match(/(\d{4})/);
+    const numA = numMatchA ? parseInt(numMatchA[1], 10) : parseInt(a.code, 10);
+    const numB = numMatchB ? parseInt(numMatchB[1], 10) : parseInt(b.code, 10);
     if (!isNaN(numA) && !isNaN(numB)) {
       if (numA !== numB) return numA - numB;
     }
 
-    // Fallback a calculationOrder
-    const orderA = a.calculationOrder !== undefined && a.calculationOrder !== null ? Number(a.calculationOrder) : 100;
-    const orderB = b.calculationOrder !== undefined && b.calculationOrder !== null ? Number(b.calculationOrder) : 100;
-    if (orderA !== orderB) return orderA - orderB;
     return String(a.code).localeCompare(String(b.code));
   });
 
@@ -657,19 +776,38 @@ export function calculateEmployeePayroll({
     }
 
     const isBasic = concept.code === basicCode;
-    const isInternStimulus = isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000');
+    const isInternStimulus = isIntern && (concept.code === 'SU1001' || concept.code === '1001' || concept.arcaConceptCode === '550000');
+    const isDirectorSalary = isDirector && (concept.code === 'SU1002' || concept.code === '1002' || (isBasic && !allConcepts.some((c) => c.code === 'SU1002')));
 
-    // Si es pasante, suprimir el sueldo básico tradicional 1000 y conceptos remunerativos/auxiliares generales de convenio
-    if (isIntern && (isBasic || concept.code === '1000' || concept.code === '100' || concept.code === '001')) {
+    // Si es pasante, suprimir el sueldo básico tradicional SU1000/1000 y conceptos remunerativos/auxiliares generales de convenio
+    if (isIntern && (isBasic || concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100' || concept.code === '001')) {
       continue;
     }
     if (isIntern && (concept.type === 'REMUNERATIVE' || concept.type === 'AUXILIARY') && !manualOverride && !assignedRecord) {
       continue;
     }
 
-    // Si NO es pasante, no se liquida el concepto 1001 (salvo novedad explícita cargada al legajo)
-    if (!isIntern && (concept.code === '1001' || concept.arcaConceptCode === '550000') && !manualOverride && !assignedRecord) {
+    // Si es director, suprimir el sueldo básico tradicional cuando exista el concepto específico SU1002
+    if (isDirector && (concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100' || concept.code === '001') && allConcepts.some((c) => c.code === 'SU1002')) {
       continue;
+    }
+
+    // Si NO es director, no se liquida el concepto específico de honorarios de director (salvo novedad explícita cargada al legajo)
+    if (!isDirector && (concept.code === 'SU1002' || concept.code === '1002') && !manualOverride && !assignedRecord) {
+      continue;
+    }
+
+    // Si NO es pasante, no se liquida el concepto de pasantía (salvo novedad explícita cargada al legajo)
+    if (!isIntern && (concept.code === 'SU1001' || concept.code === '1001' || concept.arcaConceptCode === '550000') && !manualOverride && !assignedRecord) {
+      continue;
+    }
+
+    // Para directores: las deducciones automáticas de seguridad social general (SIPA, INSSJyP, OS) y sindicato no aplican (LRT 099)
+    if (isDirector && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
+      const isStatutoryDeduction =
+        concept.arcaConceptCode?.startsWith('810') ||
+        /jubilaci|sipa|inssjyp|pami|obra\s*social|sindic/i.test(concept.name);
+      if (isStatutoryDeduction) continue;
     }
 
     // Para pasantes: las deducciones automáticas de seguridad social general y sindicato no aplican (Ley 26.427)
@@ -680,9 +818,16 @@ export function calculateEmployeePayroll({
       if (isStatutoryDeduction) continue;
     }
 
-    const isUnionConcept = concept.arcaConceptCode === '810004' || /sindic/i.test(concept.name) || concept.code === '8004' || concept.code === '6005' || concept.code === '304';
-    if (concept.type === 'DEDUCTION' && isUnionConcept && (!employee.unionId || isIntern) && !inputOverride && !assignedRecord) {
+    const isUnionConcept = concept.arcaConceptCode === '810004' || /sindic/i.test(concept.name) || concept.code === 'GE6004' || concept.code === '8004' || concept.code === '6004' || concept.code === '6005' || concept.code === '304';
+    if (concept.type === 'DEDUCTION' && isUnionConcept && (!employee.unionId || isIntern || isDirector) && !inputOverride && !assignedRecord) {
       continue;
+    }
+
+    // Para directores: conceptos automáticos de convenio colectivo (fuera de convenio) no aplican si no fueron asignados
+    if (isDirector && !manualOverride && !assignedRecord) {
+      if (/presentismo|antiguedad|adicional\s*convenio|cct/i.test(concept.name) && !isDirectorSalary) {
+        continue;
+      }
     }
 
     const shouldLiquidate =
@@ -691,6 +836,7 @@ export function calculateEmployeePayroll({
       (isConceptPersistent(concept) &&
         (isBasic ||
           isInternStimulus ||
+          isDirectorSalary ||
           concept.type === 'AUXILIARY' ||
           concept.calculationType === 'MATRIX' ||
           concept.calculationType === 'FORMULA' ||
@@ -735,6 +881,23 @@ export function calculateEmployeePayroll({
       context.CANTIDAD = rawPct;
       context.UNIDADES = rawPct;
       context.PROPIO_VALOR = rawPct / 100;
+    } else if (noveltyType === 'IMPORTE') {
+      unitLabel = '$';
+      const rawAmount = (inputOverride?.amount !== undefined && inputOverride?.amount !== null && String(inputOverride.amount).trim() !== '')
+        ? Number(inputOverride.amount)
+        : (inputOverride?.units !== undefined && inputOverride?.units !== null && String(inputOverride.units).trim() !== '')
+          ? Number(inputOverride.units)
+          : Number(concept.defaultValue || 0);
+      units = 1;
+      context.IMPORTE = rawAmount;
+      context.MONTO = rawAmount;
+      context.VALOR_NOVEDAD = rawAmount;
+      context.VALOR_BASE = Number(concept.defaultValue || 0);
+      context.VALOR_DEFECTO = context.VALOR_BASE;
+      context.DEFECTO = context.VALOR_BASE;
+      context.CANTIDAD = 1;
+      context.UNIDADES = 1;
+      context.PROPIO_VALOR = rawAmount;
     } else {
       // CANTIDAD
       if (isBasic) {
@@ -765,8 +928,8 @@ export function calculateEmployeePayroll({
         conceptCode: concept.code,
         conceptName: concept.name,
         type: 'AUXILIARY',
-        units,
-        unitLabel,
+        units: noveltyType === 'IMPORTE' ? 1 : units,
+        unitLabel: noveltyType === 'IMPORTE' ? '$' : unitLabel,
         rate: null,
         baseAmount: null,
         amount: finalAmount,
@@ -783,12 +946,22 @@ export function calculateEmployeePayroll({
         if (isBasic) {
           context.BASICO = finalAmount;
           context.SUELDO_BASICO = finalAmount;
+          context.SU1000 = finalAmount;
           context['1000'] = finalAmount;
           context['100'] = finalAmount;
         }
+        if (isDirectorSalary) {
+          context.HONORARIOS_DIRECTOR = finalAmount;
+          context.SU1002 = finalAmount;
+          context['1002'] = finalAmount;
+          context.BASICO = finalAmount;
+          context.SUELDO_BASICO = finalAmount;
+        }
 
         context.TOTAL_REMUNERATIVO += finalAmount;
-        context.BASE_OBRA_SOCIAL += finalAmount;
+        if (!isDirector) {
+          context.BASE_OBRA_SOCIAL += finalAmount;
+        }
         context.TOTAL_BRUTO = Math.round((context.TOTAL_REMUNERATIVO + context.TOTAL_NO_REMUNERATIVO) * 100) / 100;
         if (finalAmount > context.MEJOR_REMUN) context.MEJOR_REMUN = finalAmount;
 
@@ -797,10 +970,10 @@ export function calculateEmployeePayroll({
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'REMUNERATIVE',
-          units,
-          unitLabel: isBasic ? 'Días' : ((concept.code === '1010' || concept.code === '101') ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : unitLabel)),
+          units: (isBasic || isDirectorSalary) ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
+          unitLabel: (isBasic || isDirectorSalary) ? 'Días' : ((concept.code === 'SU1010' || concept.code === '1010' || concept.code === '101') ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? '$' : unitLabel))),
           rate: concept.calculationType === 'PERCENTAGE' ? Number(concept.defaultValue) : null,
-          baseAmount: isBasic ? null : (context.BASICO || null),
+          baseAmount: (isBasic || isDirectorSalary) ? null : (context.BASICO || null),
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 100,
           formula: concept.formula || null,
@@ -816,6 +989,7 @@ export function calculateEmployeePayroll({
         if (isInternStimulus) {
           context.ASIGNACION_ESTIMULO = finalAmount;
           context.ESTIMULO = finalAmount;
+          context.SU1001 = finalAmount;
           context['1001'] = finalAmount;
           context.BASICO = finalAmount;
           context.SUELDO_BASICO = finalAmount;
@@ -832,8 +1006,8 @@ export function calculateEmployeePayroll({
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'NON_REMUNERATIVE',
-          units: isInternStimulus ? 30 : units,
-          unitLabel: isInternStimulus ? 'Días' : unitLabel,
+          units: isInternStimulus ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
+          unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? '$' : unitLabel),
           rate: null,
           baseAmount: null,
           amount: finalAmount,
@@ -843,7 +1017,7 @@ export function calculateEmployeePayroll({
         });
       }
     } else if (concept.type === 'DEDUCTION') {
-      const isObraSocial = concept.code === '8002' || concept.code === '6003' || concept.code === '6004' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
+      const isObraSocial = concept.code === 'GE6003' || concept.code === '8002' || concept.code === '6003' || concept.code === '6004' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
       let baseForDeduction = isObraSocial ? context.BASE_OBRA_SOCIAL : context.TOTAL_REMUNERATIVO;
 
       const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
@@ -854,7 +1028,7 @@ export function calculateEmployeePayroll({
       }
 
       let rawAmount = 0;
-      if (inputOverride?.amount !== undefined && inputOverride?.amount !== null) {
+      if (inputOverride?.amount !== undefined && inputOverride?.amount !== null && (concept.calculationType !== 'FORMULA' || concept.noveltyDataType !== 'IMPORTE')) {
         rawAmount = Number(inputOverride.amount);
       } else if (concept.calculationType === 'FORMULA' && concept.formula) {
         rawAmount = resolveConceptValue(concept, inputOverride);
@@ -876,8 +1050,8 @@ export function calculateEmployeePayroll({
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'DEDUCTION',
-          units: null,
-          unitLabel: '%',
+          units: noveltyType === 'IMPORTE' ? 1 : null,
+          unitLabel: noveltyType === 'IMPORTE' ? '$' : (concept.calculationType === 'PERCENTAGE' ? '%' : unitLabel),
           rate: concept.defaultValue ? Number(concept.defaultValue) : null,
           baseAmount: cappedBase > 0 ? cappedBase : null,
           amount: finalAmount,
@@ -911,7 +1085,12 @@ export function calculateEmployeePayroll({
   let biLrt = 0;
 
   if (hasRemuneration) {
-    if (isIntern) {
+    if (isDirector) {
+      biSipaContrib = 0.00;
+      biSipaWithDetraction = 0.00;
+      biOsContrib = 0.00;
+      biLrt = grossSalary;
+    } else if (isIntern) {
       biSipaContrib = 0.00;
       biSipaWithDetraction = 0.00;
       biOsContrib = Math.round(context.BASE_OBRA_SOCIAL * 100) / 100;
@@ -933,14 +1112,14 @@ export function calculateEmployeePayroll({
   const artFixed = Number(payrollSettings.artFixedFee || 850.00);
   const scvoFee = Number(payrollSettings.scvoFee || 650.00);
 
-  const sipaContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
-  const inssjypContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
-  const osContrib = hasRemuneration ? Math.round(biOsContrib * osRate * 100) / 100 : 0.00;
-  const fneContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
-  const aaffContrib = (!isIntern && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
+  const sipaContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
+  const inssjypContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
+  const osContrib = (!isDirector && hasRemuneration) ? Math.round(biOsContrib * osRate * 100) / 100 : 0.00;
+  const fneContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
+  const aaffContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
   const artContrib = hasRemuneration ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
   const scvoContrib = hasRemuneration ? scvoFee : 0.00;
-  const unionContrib = (!isIntern && hasRemuneration && employee.unionId) ? Math.round(totalRemunerative * 0.005 * 100) / 100 : 0.00;
+  const unionContrib = (!isIntern && !isDirector && hasRemuneration && employee.unionId) ? Math.round(totalRemunerative * 0.005 * 100) / 100 : 0.00;
 
   const totalEmployerContrib = Math.round(
     (sipaContrib + inssjypContrib + osContrib + fneContrib + aaffContrib + artContrib + scvoContrib + unionContrib) * 100
@@ -962,7 +1141,7 @@ export function calculateEmployeePayroll({
   const pctUnionAndChambers = Math.round((100.00 - currentSum) * 100) / 100;
 
   // --- PASO 7: Bases Imponibles F.931 (LSD Registro 04) ---
-  const biSipaAporte = (!isIntern && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
+  const biSipaAporte = (!isIntern && !isDirector && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
   const biInssjypAporte = biSipaAporte;
 
   const relatives = employee.relatives || [];
@@ -971,24 +1150,24 @@ export function calculateEmployeePayroll({
 
   const basisData = {
     baseImponible1: biSipaAporte,
-    baseImponible2: isIntern ? 0.00 : biSipaContrib,
-    baseImponible3: isIntern ? 0.00 : biSipaContrib,
+    baseImponible2: (isIntern || isDirector) ? 0.00 : biSipaContrib,
+    baseImponible3: (isIntern || isDirector) ? 0.00 : biSipaContrib,
     baseImponible4: biOsContrib,
     baseImponible5: biInssjypAporte,
     baseImponible6: 0.00,
     baseImponible7: 0.00,
     baseImponible8: biOsContrib,
     baseImponible9: biLrt,
-    baseImponible10: isIntern ? 0.00 : biSipaWithDetraction,
-    detractionAmount: isIntern ? 0.00 : detraction,
+    baseImponible10: (isIntern || isDirector) ? 0.00 : biSipaWithDetraction,
+    detractionAmount: (isIntern || isDirector) ? 0.00 : detraction,
     situationCode: employee.status === 'ACTIVE' ? '01' : '13',
     conditionCode: '01',
-    activityCode: '000',
-    contractModality: (employee.contractModalityCode || (isIntern ? '027' : '001')).padStart(3, '0'),
+    activityCode: employee.jobPosition?.activityCode || (isDirector ? '015' : '049'),
+    contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : '001'))).padStart(3, '0'),
     hasSpouse,
     childrenCount,
     hasScvo: true,
-    hasCct: isIntern ? false : Boolean(employee.jobPosition?.cctCode),
+    hasCct: (isIntern || isDirector) ? false : Boolean(employee.jobPosition?.cctCode),
   };
 
   // --- PASO 8: Hash SHA-256 de Trazabilidad y Firma Electrónica ---

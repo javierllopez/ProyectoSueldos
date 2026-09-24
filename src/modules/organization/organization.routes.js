@@ -103,6 +103,7 @@ router.get('/arca-categories', organizationController.listArcaCategories);
 router.get('/arca-positions', organizationController.listArcaPositions);
 router.get('/arca-service-types', organizationController.listArcaServiceTypes);
 router.get('/arca-contract-modalities', organizationController.listArcaContractModalities);
+router.get('/arca-activities', organizationController.listArcaActivities);
 
 export default router;
 

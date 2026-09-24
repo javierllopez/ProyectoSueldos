@@ -1,7 +1,7 @@
 import { evaluateFormula, resolveHistoricalMetric } from './src/modules/payroll/formulaEvaluator.js';
 import { validateConceptFormula } from './src/modules/payroll/formulaValidator.js';
 import { calculateEmployeePayroll } from './src/modules/payroll/payroll.calculator.js';
-import { generateLsdConceptsFile, generateLsdPayrollFile } from './src/modules/payroll/lsdExporter.service.js';
+import { generateLsdConceptsFile, generateLsdPayrollFile, validateLsdConsistency } from './src/modules/payroll/lsdExporter.service.js';
 
 let passedTests = 0;
 let failedTests = 0;
@@ -549,13 +549,13 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
     allFixedValues: [],
   });
 
-  const item1000 = internResult.items.find((i) => i.conceptCode === '1000');
-  const item1001 = internResult.items.find((i) => i.conceptCode === '1001');
+  const item1000 = internResult.items.find((i) => i.conceptCode === 'SU1000' || i.conceptCode === '1000');
+  const item1001 = internResult.items.find((i) => i.conceptCode === 'SU1001' || i.conceptCode === '1001');
 
-  assert(!item1000, 'Pasante NO debe liquidar concepto 1000 (Sueldo Básico)');
-  assert(item1001 !== undefined, 'Pasante DEBE liquidar concepto 1001 (Asignación Estímulo Ley 26.427)');
-  assert(item1001 && item1001.amount === 400000, `Concepto 1001 debe liquidarse completo por 400.000 (obtenido ${item1001?.amount})`);
-  assert(item1001 && item1001.type === 'NON_REMUNERATIVE', 'Concepto 1001 debe ser de tipo NON_REMUNERATIVE');
+  assert(!item1000, 'Pasante NO debe liquidar concepto 1000 / SU1000 (Sueldo Básico)');
+  assert(item1001 !== undefined, 'Pasante DEBE liquidar concepto SU1001 (Asignación Estímulo Ley 26.427)');
+  assert(item1001 && item1001.amount === 400000, `Concepto SU1001 debe liquidarse completo por 400.000 (obtenido ${item1001?.amount})`);
+  assert(item1001 && item1001.type === 'NON_REMUNERATIVE', 'Concepto SU1001 debe ser de tipo NON_REMUNERATIVE');
   assert(internResult.totals.totalRemunerative === 0, `Total remunerativo de pasante debe ser 0 (obtenido ${internResult.totals.totalRemunerative})`);
   assert(internResult.totals.totalNonRemunerative === 400000, `Total no remunerativo de pasante debe ser 400.000 (obtenido ${internResult.totals.totalNonRemunerative})`);
   assert(internResult.totals.totalDeductions === 0, `Aportes del pasante deben ser 0.00 (obtenido ${internResult.totals.totalDeductions})`);
@@ -587,7 +587,7 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
     calculationType: 'FORMULA',
     scope: 'INDIVIDUAL',
     noveltyDataType: 'CANTIDAD',
-    formula: '([1001] / 30) * [CANTIDAD]',
+    formula: '([SU1001] / 30) * [CANTIDAD]',
     calculationOrder: 200,
     arcaConceptCode: '810000',
   };
@@ -606,9 +606,9 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
   });
 
   const itemDesc = internWithNoveltyResult.items.find((i) => i.conceptCode === '4005');
-  const item1001Novelty = internWithNoveltyResult.items.find((i) => i.conceptCode === '1001');
+  const item1001Novelty = internWithNoveltyResult.items.find((i) => i.conceptCode === 'SU1001' || i.conceptCode === '1001');
 
-  assert(item1001Novelty && item1001Novelty.amount === 400000, 'Concepto 1001 permanece completo por 400.000 aún con novedades');
+  assert(item1001Novelty && item1001Novelty.amount === 400000, 'Concepto SU1001 permanece completo por 400.000 aún con novedades');
   assert(itemDesc !== undefined, 'Concepto de descuento 4005 debe liquidarse en el recibo');
   const expectedDesc = Math.round(((400000 / 30) * 5) * 100) / 100; // 66.666,67
   assertClose(itemDesc?.amount, expectedDesc, `Descuento por inasistencia de 5 días debe ser ${expectedDesc}`);
@@ -644,7 +644,7 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
     company: { cuit: '30712345678' },
   });
 
-  assert(lsdInternPayroll.includes('03204212345671001'), 'LSD debe generar Registro 03 con el concepto 1001 para el pasante');
+  assert(lsdInternPayroll.includes('0320421234567SU1001') || lsdInternPayroll.includes('03204212345671001'), 'LSD debe generar Registro 03 con el concepto SU1001 para el pasante');
   assert(lsdInternPayroll.includes('0420421234567'), 'LSD debe generar Registro 04 para el pasante');
   assert(lsdInternPayroll.includes('027'), 'LSD Registro 04 debe contener modalidad 027');
 
@@ -676,8 +676,9 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
     allFixedValues: [],
   });
 
-  const res1001 = residualResult.items.find((i) => i.conceptCode === '1001');
+  const res1001 = residualResult.items.find((i) => i.conceptCode === 'SU1001' || i.conceptCode === '1001');
   assert(res1001 && res1001.amount === 400000, `Pasante debe ignorar residuo asignado de 85.000 y liquidar 400.000 (obtenido ${res1001?.amount})`);
+  assert(residualResult.totals.totalRemunerative === 0, 'Pasante no debe computar concepto remunerativo residual');
   assert(residualResult.totals.totalRemunerative === 0, 'Pasante no debe computar concepto remunerativo residual');
 
   // ====================================================
@@ -844,6 +845,343 @@ console.log('\n--- 5. Pipeline de Liquidación con Conceptos Auxiliares y Alcanc
   const legDay = legacyResult.items.find((i) => i.conceptCode === '1025');
   // Fallback días = 30 días -> 1.200.000 / 30 = 40000
   assert(legDay && legDay.amount === 40000, `Fallback días sin jornada asignada debe ser 40000 (obtenido ${legDay?.amount})`);
+}
+
+// ----------------------------------------------------
+// 9. TOKENS DE NÓMINA [NOMINA:CODIGO], [VALOR_BASE] Y NOVEDAD [IMPORTE]
+// ----------------------------------------------------
+console.log('\n--- 9. Tokens de Nómina [NOMINA:CODIGO], [VALOR_BASE] y Novedad [IMPORTE] ---');
+
+{
+  const testSalaryScales = [
+    { id: 'scale-mucama', code: 'MUC', name: 'Mucamas y Maestranza', basicSalary: 850000, isActive: true },
+    { id: 'scale-recep', code: 'REC', name: 'Recepcionista Turno A', basicSalary: 920000, isActive: true },
+    { id: 'scale-nocode', code: null, name: 'Operario Especializado', basicSalary: 780000, isActive: true },
+  ];
+
+  const baseConcepts = [
+    {
+      id: 'c-1000',
+      code: '1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      scope: 'GENERAL',
+      calculationType: 'FIXED',
+      defaultValue: 1000000,
+      calculationOrder: 100,
+      isPersistent: true,
+    },
+  ];
+
+  // 9.1 Validador de fórmulas
+  const formulaValScaleCode = validateConceptFormula({
+    formula: '[NOMINA:MUC] * 0.15 + [VALOR_BASE]',
+    currentConceptCode: '1080',
+    type: 'REMUNERATIVE',
+    allConcepts: baseConcepts,
+    salaryScales: testSalaryScales,
+  });
+  assert(formulaValScaleCode.isValid === true, 'Fórmula con [NOMINA:MUC] y [VALOR_BASE] debe ser VÁLIDA');
+
+  const formulaValScaleName = validateConceptFormula({
+    formula: '[NOMINA:MUCAMAS_Y_MAESTRANZA] * 0.10',
+    currentConceptCode: '1081',
+    type: 'REMUNERATIVE',
+    allConcepts: baseConcepts,
+    salaryScales: testSalaryScales,
+  });
+  assert(formulaValScaleName.isValid === true, 'Fórmula con [NOMINA:NOMBRE_SANITIZADO] debe ser VÁLIDA');
+
+  const formulaValImporte = validateConceptFormula({
+    formula: '[IMPORTE] + [VALOR_BASE]',
+    currentConceptCode: '1082',
+    type: 'REMUNERATIVE',
+    allConcepts: baseConcepts,
+    salaryScales: testSalaryScales,
+  });
+  assert(formulaValImporte.isValid === true, 'Fórmula con [IMPORTE] y [VALOR_BASE] debe ser VÁLIDA');
+
+  const formulaValInvalidScale = validateConceptFormula({
+    formula: '[NOMINA:INEXISTENTE] * 1.1',
+    currentConceptCode: '1083',
+    type: 'REMUNERATIVE',
+    allConcepts: baseConcepts,
+    salaryScales: testSalaryScales,
+  });
+  assert(formulaValInvalidScale.warnings.length > 0, 'Fórmula con [NOMINA:INEXISTENTE] debe registrar advertencia');
+
+  // 9.2 Liquidación con evaluación de [NOMINA:CODIGO], [VALOR_BASE] e [IMPORTE]
+  const testSettings = {
+    sipaRate: 10.77,
+    inssjypRate: 1.58,
+    osRate: 6.00,
+    fneRate: 0.94,
+    aaffRate: 4.70,
+    artRate: 3.50,
+    artFixedFee: 850.00,
+    scvoFee: 650.00,
+    detractionBase: 7003.68,
+    ansesMinCap: 82287.12,
+    ansesMaxCap: 2674292.72,
+    standardWeeklyHours: 48,
+    standardMonthlyHours: 200,
+  };
+  const testPeriod = { year: 2026, month: 10, periodType: 'MENSUAL', settlementNumber: 1 };
+
+  const employeeWithSalaryScale = {
+    id: 'emp-scale-test',
+    fileNumber: 'L-500',
+    lastName: 'González',
+    firstName: 'Martín',
+    hireDate: new Date('2020-01-01'),
+    status: 'ACTIVE',
+    contractModalityCode: '001',
+    salaryScaleId: 'scale-recep',
+    partTimePercentage: 100,
+  };
+
+  const conceptNominaBase = {
+    id: 'c-nom-base',
+    code: '1080',
+    name: 'Plus de Función Mucama',
+    type: 'REMUNERATIVE',
+    calculationType: 'FORMULA',
+    formula: '[NOMINA:MUC] * 0.15 + [VALOR_BASE]',
+    calculationOrder: 180,
+    defaultValue: 25000,
+    isPersistent: true,
+  };
+
+  const conceptImporteNovelty = {
+    id: 'c-imp-nov',
+    code: '1090',
+    name: 'Bono Especial por Desempeño',
+    type: 'NON_REMUNERATIVE',
+    calculationType: 'FORMULA',
+    formula: 'SI([IMPORTE] > 0, [IMPORTE], [VALOR_BASE])',
+    calculationOrder: 190,
+    defaultValue: 30000,
+    noveltyDataType: 'IMPORTE',
+    isPersistent: true,
+  };
+
+  const salaryScalePayrollResult = calculateEmployeePayroll({
+    employee: employeeWithSalaryScale,
+    period: testPeriod,
+    payrollSettings: testSettings,
+    allConcepts: [
+      ...baseConcepts,
+      conceptNominaBase,
+      conceptImporteNovelty,
+    ],
+    inputItems: [
+      { conceptCode: '1090', amount: 75000, notes: 'Bono extraordinario cargado en período' },
+    ],
+    allMatrices: [],
+    allFixedValues: [],
+    allSalaryScales: testSalaryScales,
+  });
+
+  const itemPlusMucama = salaryScalePayrollResult.items.find((i) => i.conceptCode === '1080');
+  // [NOMINA:MUC] = 850000 * 0.15 = 127500 + [VALOR_BASE] (25000) = 152500
+  assert(itemPlusMucama && itemPlusMucama.amount === 152500, `Plus con [NOMINA:MUC] y [VALOR_BASE] debe ser 152500 (obtenido ${itemPlusMucama?.amount})`);
+
+  const itemBonoCargado = salaryScalePayrollResult.items.find((i) => i.conceptCode === '1090');
+  assert(itemBonoCargado && itemBonoCargado.amount === 75000, `Concepto con [IMPORTE] con novedad debe ser 75000 (obtenido ${itemBonoCargado?.amount})`);
+
+  // 9.3 Liquidación de concepto con [IMPORTE] sin novedad cargada (debe tomar [VALOR_BASE])
+  const salaryScalePayrollWithoutNovResult = calculateEmployeePayroll({
+    employee: employeeWithSalaryScale,
+    period: testPeriod,
+    payrollSettings: testSettings,
+    allConcepts: [
+      ...baseConcepts,
+      conceptNominaBase,
+      conceptImporteNovelty,
+    ],
+    inputItems: [],
+    allMatrices: [],
+    allFixedValues: [],
+    allSalaryScales: testSalaryScales,
+  });
+
+  const itemBonoSinNovedad = salaryScalePayrollWithoutNovResult.items.find((i) => i.conceptCode === '1090');
+  assert(itemBonoSinNovedad && itemBonoSinNovedad.amount === 30000, `Concepto con [IMPORTE] sin novedad debe tomar [VALOR_BASE] = 30000 (obtenido ${itemBonoSinNovedad?.amount})`);
+}
+
+// ====================================================
+// 10. Régimen de Directores S.A. y Socios Gerentes (LRT Modalidad 099)
+// ====================================================
+console.log('\n--- 10. Régimen de Directores S.A. y Socios Gerentes (LRT Modalidad 099) ---');
+
+{
+  const period = {
+    id: 'period-2026-06',
+    year: 2026,
+    month: 6,
+    periodType: 'MONTHLY',
+    settlementNumber: 1,
+  };
+
+  const allConcepts = [
+    {
+      id: 'c-1000',
+      code: '1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      scope: 'GENERAL',
+      calculationType: 'FIXED',
+      defaultValue: 1000000,
+      isPersistent: true,
+      periodType: 'ALL',
+      arcaConceptCode: '110000',
+      appliesSipaAporte: true,
+      appliesSipaContrib: true,
+    },
+    {
+      id: 'c-6001',
+      code: '6001',
+      name: 'Jubilación SIPA Ley 24.241',
+      type: 'DEDUCTION',
+      scope: 'GENERAL',
+      calculationType: 'FORMULA',
+      formula: '[TOTAL_REMUNERATIVO] * 0.11',
+      isPersistent: true,
+      periodType: 'ALL',
+      arcaConceptCode: '810000',
+    },
+  ];
+
+  const directorSalaryScale = {
+    id: 'scale-dir-1',
+    name: 'Directorio SA - Honorarios Base',
+    amount: 1500000,
+    isInternOnly: false,
+    isDirectorOnly: true,
+  };
+
+  const directorEmployee = {
+    id: 'emp-dir-1',
+    fileNumber: 'DIR-001',
+    cuil: '20223344556',
+    lastName: 'Galperín',
+    firstName: 'Marcos',
+    contractModalityCode: '99',
+    salaryScaleId: directorSalaryScale.id,
+    salaryScale: directorSalaryScale,
+    basicSalary: 1500000,
+    hireDate: new Date(2020, 0, 1),
+    isPartTime: false,
+    weeklyWorkingHours: 40,
+    monthlyWorkingHours: 160,
+    partTimePercentage: 100,
+    status: 'ACTIVE',
+    jobPosition: {
+      id: 'job-dir-1',
+      name: 'Director Titular S.A.',
+      code: 'DIR_TIT',
+      activityCode: '015',
+    },
+    assignedConcepts: [],
+  };
+
+  const directorPayrollSettings = {
+    sipaRate: 10.77,
+    inssjypRate: 1.58,
+    osRate: 6.00,
+    fneRate: 0.94,
+    aaffRate: 4.70,
+    artRate: 3.50,
+    artFixedFee: 850.00,
+    scvoFee: 650.00,
+    ansesMinCap: 82287.12,
+    ansesMaxCap: 2674292.72,
+    detractionBase: 7003.68,
+  };
+
+  const directorPayrollResult = calculateEmployeePayroll({
+    employee: directorEmployee,
+    period,
+    payrollSettings: directorPayrollSettings,
+    allConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+    allSalaryScales: [directorSalaryScale],
+  });
+
+  // Test 10.1: Conceptos liquidados
+  const dirItem1000 = directorPayrollResult.items.find((i) => i.conceptCode === '1000' || i.conceptCode === 'SU1000');
+  const dirItem1002 = directorPayrollResult.items.find((i) => i.conceptCode === 'SU1002' || i.conceptCode === '1002');
+  assert(!dirItem1000, 'Director NO debe liquidar sueldo básico ordinario SU1000/1000');
+  assert(dirItem1002, 'Director DEBE liquidar concepto SU1002 (Honorarios / Retribución Director S.A.)');
+  assert(dirItem1002 && dirItem1002.amount === 1500000, `Honorarios SU1002 deben liquidarse por 1.500.000 (obtenido ${dirItem1002?.amount})`);
+
+  // Test 10.2: Exención de deducciones personales (SIPA, INSSJyP, Obra Social, Sindicato)
+  assert(directorPayrollResult.totals.totalDeductions === 0, `Deducciones de ley del director deben ser 0.00 (obtenido ${directorPayrollResult.totals.totalDeductions})`);
+  assert(directorPayrollResult.totals.netSalary === 1500000, `Sueldo neto del director debe ser igual al bruto 1.500.000 (obtenido ${directorPayrollResult.totals.netSalary})`);
+
+  // Test 10.3: Contribuciones patronales (SIPA, INSSJyP, Obra Social, FNE, AAFF = 0; ART = activa)
+  assert(directorPayrollResult.totals.sipaContrib === 0, 'SIPA patronal del director debe ser 0');
+  assert(directorPayrollResult.totals.inssjypContrib === 0, 'INSSJyP patronal del director debe ser 0');
+  assert(directorPayrollResult.totals.osContrib === 0, 'Obra Social patronal del director debe ser 0 (a diferencia de pasantes)');
+  assert(directorPayrollResult.totals.fneContrib === 0, 'FNE patronal del director debe ser 0');
+  assert(directorPayrollResult.totals.aaffContrib === 0, 'AAFF patronal del director debe ser 0');
+  // ART: 1.500.000 * 3.5% + 850 = 52.500 + 850 = 53.350
+  assert(directorPayrollResult.totals.artContrib === 53350, `ART patronal del director debe ser 53.350 (obtenido ${directorPayrollResult.totals.artContrib})`);
+
+  // Test 10.4: Bases Imponibles F.931 (LSD Registro 04)
+  assert(directorPayrollResult.basis.baseImponible1 === 0, 'BI 1 SIPA Aportes debe ser 0');
+  assert(directorPayrollResult.basis.baseImponible2 === 0, 'BI 2 SIPA Contribuciones debe ser 0');
+  assert(directorPayrollResult.basis.baseImponible4 === 0, 'BI 4 Obra Social debe ser 0');
+  assert(directorPayrollResult.basis.baseImponible8 === 0, 'BI 8 FSR debe ser 0');
+  assert(directorPayrollResult.basis.baseImponible9 === 1500000, `BI 9 LRT debe ser 1.500.000 (obtenido ${directorPayrollResult.basis.baseImponible9})`);
+  assert(directorPayrollResult.basis.baseImponible10 === 0, 'BI 10 SIPA con detracción debe ser 0');
+  assert(directorPayrollResult.basis.contractModality === '099', `Modalidad contractual en F.931 debe ser '099' (obtenido ${directorPayrollResult.basis.contractModality})`);
+  assert(directorPayrollResult.basis.activityCode === '015', `Actividad ARCA en F.931 debe ser '015' (obtenido ${directorPayrollResult.basis.activityCode})`);
+  assert(directorPayrollResult.basis.hasCct === false, 'Director debe tener hasCct = false (fuera de convenio)');
+
+  // Test 10.5: Exclusión de período SAC
+  const sacPeriod = { year: 2026, month: 6, periodType: 'SAC_1', settlementNumber: 1 };
+  const directorSacResult = calculateEmployeePayroll({
+    employee: directorEmployee,
+    period: sacPeriod,
+    payrollSettings: directorPayrollSettings,
+    allConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+  assert(directorSacResult.items.length === 0, 'Director no debe generar items en liquidación de período SAC');
+  assert(directorSacResult.totals.netSalary === 0, 'Sueldo neto de director en período SAC debe ser 0');
+
+  // Test 10.6: Exportación a archivo plano Libro de Sueldos Digital (LSD)
+  const directorSlipMock = {
+    id: 'slip-dir-1',
+    payrollPeriodId: 'period-monthly-1',
+    employeeId: directorEmployee.id,
+    grossSalary: directorPayrollResult.totals.grossSalary,
+    netSalary: directorPayrollResult.totals.netSalary,
+    totalDeductions: directorPayrollResult.totals.totalDeductions,
+    workedDays: 30,
+    workedHours: 160,
+    employee: directorEmployee,
+    items: directorPayrollResult.items,
+    basis: directorPayrollResult.basis,
+  };
+
+  const lsdDirectorPayroll = generateLsdPayrollFile({
+    paySlips: [directorSlipMock],
+    period,
+    company: { cuit: '30712345678' },
+  });
+
+  assert(lsdDirectorPayroll.includes('0320223344556SU1002') || lsdDirectorPayroll.includes('03202233445561002'), 'LSD debe generar Registro 03 con concepto SU1002 para el director');
+  assert(lsdDirectorPayroll.includes('0420223344556'), 'LSD debe generar Registro 04 para el director');
+  assert(lsdDirectorPayroll.includes('099'), 'LSD Registro 04 debe contener modalidad 099');
+  assert(lsdDirectorPayroll.includes('015'), 'LSD Registro 04 debe contener actividad 015');
+
+  // Test 10.7: Validador de consistencia LSD
+  const lsdConsistencyResult = validateLsdConsistency({ paySlips: [directorSlipMock] });
+  assert(lsdConsistencyResult.isValid, `Validación técnica LSD para Director debe ser válida (errores: ${JSON.stringify(lsdConsistencyResult.issues)})`);
 }
 
 console.log('\n====================================================');
