@@ -2302,7 +2302,13 @@ class PayrollMethods {
         method: 'POST',
       });
 
-      showToast(`¡Liquidación completada para el colaborador! Neto: $${formatNumber(res.data.totalNet)}`);
+      if (res.data.omittedEmployeesCount > 0) {
+        this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
+        showToast('El colaborador no registra conceptos a liquidar en este período (no se generó recibo vacío).', 'warning');
+      } else {
+        this.showOmittedAlert(0, res.data.processedEmployees || 0, []);
+        showToast(`¡Liquidación completada para el colaborador! Neto: $${formatNumber(res.data.totalNet)}`);
+      }
       await this.loadSettlementView();
       const singleSelect = document.getElementById('settlement-single-emp-select');
       if (singleSelect) singleSelect.value = empId;
@@ -2409,7 +2415,15 @@ class PayrollMethods {
         body: JSON.stringify({ employeeIds }),
       });
 
-      showToast(`¡Liquidación en lote completada para ${res.data.processedEmployees} empleado(s)! Total Neto: $${formatNumber(res.data.totalNet)}`);
+      this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
+      if (res.data.omittedEmployeesCount > 0) {
+        showToast(
+          `Liquidación en lote: ${res.data.processedEmployees} recibo(s) generados. Se omitieron ${res.data.omittedEmployeesCount} legajo(s) por no registrar conceptos a liquidar.`,
+          'info'
+        );
+      } else {
+        showToast(`¡Liquidación en lote completada para ${res.data.processedEmployees} empleado(s)! Total Neto: $${formatNumber(res.data.totalNet)}`);
+      }
       await this.loadSettlementView();
     } catch (err) {
       showToast(err.message || 'Error al liquidar lote de empleados', 'danger');
@@ -2443,7 +2457,15 @@ class PayrollMethods {
         body: JSON.stringify({}),
       });
 
-      showToast(`¡Liquidación general exitosa! ${res.data.processedEmployees} colaboradores procesados. Total Neto: $${formatNumber(res.data.totalNet)}`);
+      this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
+      if (res.data.omittedEmployeesCount > 0) {
+        showToast(
+          `Liquidación completada: ${res.data.processedEmployees} recibo(s) generados. Se omitieron ${res.data.omittedEmployeesCount} legajo(s) por no registrar conceptos a liquidar en este período.`,
+          'info'
+        );
+      } else {
+        showToast(`¡Liquidación general exitosa! ${res.data.processedEmployees} colaboradores procesados. Total Neto: $${formatNumber(res.data.totalNet)}`);
+      }
       await this.loadSettlementView();
       await this.loadPayrollPeriods();
     } catch (err) {
@@ -2788,6 +2810,7 @@ class PayrollMethods {
     if (periodSelect) {
       periodSelect.addEventListener('change', () => {
         this.activePayrollPeriodId = periodSelect.value;
+        this.showOmittedAlert(0, 0, []);
         this.loadSettlementView();
       });
     }
@@ -2846,6 +2869,47 @@ class PayrollMethods {
     if (btnCalcAll) {
       btnCalcAll.addEventListener('click', () => this.calculateAllEmployees());
     }
+
+    // Botón para ver nómina de omitidos
+    const btnViewOmitted = document.getElementById('btn-view-omitted-employees');
+    if (btnViewOmitted) {
+      btnViewOmitted.addEventListener('click', () => this.showOmittedEmployeesModal());
+    }
+  }
+
+  showOmittedAlert(omittedCount, processedCount, omittedEmployees = []) {
+    this.lastOmittedEmployees = omittedEmployees || [];
+    const alertEl = document.getElementById('settlement-omitted-alert');
+    const textEl = document.getElementById('settlement-omitted-alert-text');
+    const badgeEl = document.getElementById('settlement-omitted-badge-count');
+    if (!alertEl || !textEl || !badgeEl) return;
+
+    if (omittedCount > 0) {
+      badgeEl.textContent = String(omittedCount);
+      textEl.innerHTML = `Se generaron los recibos de <strong>${processedCount}</strong> colaboradores. Se omitieron <strong>${omittedCount}</strong> colaboradores que no registraron conceptos a liquidar en este período.`;
+      alertEl.classList.remove('d-none');
+    } else {
+      alertEl.classList.add('d-none');
+    }
+  }
+
+  showOmittedEmployeesModal() {
+    const tbody = document.getElementById('omitted-employees-table-body');
+    if (!tbody) return;
+
+    if (!this.lastOmittedEmployees || this.lastOmittedEmployees.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3 text-muted">No se registran colaboradores omitidos.</td></tr>';
+    } else {
+      tbody.innerHTML = this.lastOmittedEmployees.map((o) => `
+        <tr>
+          <td><strong class="font-monospace text-primary">${escapeHtml(o.fileNumber || '-')}</strong></td>
+          <td><span class="fw-bold text-dark">${escapeHtml(o.name || '-')}</span></td>
+          <td class="text-end text-muted small">${escapeHtml(o.reason || 'Sin conceptos liquidados')}</td>
+        </tr>
+      `).join('');
+    }
+
+    getBootstrapModal(document.getElementById('modal-omitted-employees'))?.show();
   }
 
   // --- Recibos de Sueldo ---
@@ -3087,7 +3151,21 @@ class PayrollMethods {
     `;
 
     // Items table rows (EN EL RECIBO OFICIAL LEGAL NUNCA SE IMPRIMEN CONCEPTOS AUXILIARES)
-    const items = (slip.items || []).filter((it) => it.type !== 'AUXILIARY');
+    // Items table rows (EN EL RECIBO OFICIAL LEGAL NUNCA SE IMPRIMEN CONCEPTOS AUXILIARES)
+    const typePriority = {
+      REMUNERATIVE: 1,
+      NON_REMUNERATIVE: 2,
+      DEDUCTION: 3,
+    };
+    const items = (slip.items || [])
+      .filter((it) => it.type !== 'AUXILIARY')
+      .sort((a, b) => {
+        const pA = typePriority[a.type] || 99;
+        const pB = typePriority[b.type] || 99;
+        if (pA !== pB) return pA - pB;
+        return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
+      });
+
     const itemRows = items
       .map((it) => {
         const isRem = it.type === 'REMUNERATIVE';
@@ -3137,7 +3215,7 @@ class PayrollMethods {
             <div class="col-4"><strong>CUIL:</strong> ${formatCuit(emp.cuil)}</div>
             <div class="col-3"><strong>Ingreso:</strong> ${emp.hireDate ? emp.hireDate.split('T')[0] : '-'}</div>
             <div class="col-5"><strong>Puesto / Categoría:</strong> ${escapeHtml(emp.jobPosition?.name || '-')}</div>
-            <div class="col-4"><strong>CBU:</strong> <code style="font-size: 9.5px;">${escapeHtml(slip.cbu || emp.cbu || '-')}</code></div>
+            <div class="col-4"><strong>CBU:</strong> ${slip.cbu && String(slip.cbu).trim() ? `<code style="font-size: 9.5px;">${escapeHtml(slip.cbu)}</code>` : `<span class="badge bg-warning-lt text-warning fw-normal" style="font-size: 9px;">Sin CBU informado</span>`}</div>
           </div>
         </div>
       </div>
@@ -3271,9 +3349,23 @@ class PayrollMethods {
       AUXILIARY: '<span class="badge bg-purple text-white"><i class="ti ti-tools me-1"></i>Auxiliar de Cálculo</span>',
     };
 
+    const typeOrder = {
+      REMUNERATIVE: 1,
+      NON_REMUNERATIVE: 2,
+      DEDUCTION: 3,
+      AUXILIARY: 4,
+    };
+
     const sortedItems = [...items].sort((a, b) => {
-      return String(a.conceptCode).localeCompare(String(b.conceptCode));
+      const orderA = typeOrder[a.type] || 5;
+      const orderB = typeOrder[b.type] || 5;
+      if (orderA !== orderB) return orderA - orderB;
+      return String(a.conceptCode || '').localeCompare(String(b.conceptCode || ''));
     });
+
+    const cbuDisplay = emp.cbu && String(emp.cbu).trim()
+      ? `CBU: <strong class="text-dark">${escapeHtml(String(emp.cbu).trim())}</strong>${emp.bankName ? ` (${escapeHtml(emp.bankName)})` : ''}`
+      : `CBU: <span class="badge bg-warning-lt text-warning fw-normal">Sin CBU informado</span>`;
 
     const itemRows = sortedItems.map((it, idx) => {
       const isAux = it.type === 'AUXILIARY';
@@ -3303,6 +3395,20 @@ class PayrollMethods {
     }).join('');
 
     area.innerHTML = `
+      <!-- Encabezado Corporativo Exclusivo para Impresión A4 -->
+      <div class="d-none d-print-block payslip-audit-print-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <h3 class="fw-bold mb-0 text-uppercase" style="color: #2b3a8c;">${escapeHtml(comp.businessName || comp.name || 'EMPRESA')}</h3>
+            <div class="small text-muted">CUIT: <strong>${formatCuit(comp.cuit)}</strong> &bull; ${escapeHtml(comp.address || '')}</div>
+          </div>
+          <div class="text-end">
+            <div class="fw-bold fs-3 text-uppercase">AUDITORÍA Y CONTROL DE LIQUIDACIÓN</div>
+            <div class="small text-muted">Período: <strong>${escapeHtml(period.settlementName || `${period.month}/${period.year}`)}</strong> &bull; Emisión: ${new Date().toLocaleDateString('es-AR')}</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Encabezado de Auditoría -->
       <div class="card shadow-xs mb-2">
         <div class="card-body py-2 px-3">
@@ -3315,7 +3421,7 @@ class PayrollMethods {
                 <div>
                   <h4 class="mb-0 fw-bold fs-3">${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}</h4>
                   <div class="small text-muted font-monospace">
-                    Legajo: <strong>${escapeHtml(emp.fileNumber || '-')}</strong> | CUIL: <strong>${formatCuit(emp.cuil)}</strong> | ${escapeHtml(emp.jobPosition?.name || '-')}
+                    Legajo: <strong>${escapeHtml(emp.fileNumber || '-')}</strong> | CUIL: <strong>${formatCuit(emp.cuil)}</strong> | Cargo: <strong>${escapeHtml(emp.jobPosition?.name || '-')}</strong> | ${cbuDisplay}
                   </div>
                 </div>
               </div>

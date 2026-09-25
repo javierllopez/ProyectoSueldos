@@ -958,22 +958,39 @@ body {
     visibility: hidden;
   }
 
-  /* Mostrar exclusivamente la hoja de recibo */
+  /* Mostrar exclusivamente el modal de recibo/auditoría */
   #modal-view-payslip,
   #modal-view-payslip * {
     visibility: visible;
   }
 
+  /* Ocultar pestañas no activas para evitar superposición */
+  #modal-view-payslip .tab-pane:not(.active) {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  #modal-view-payslip .tab-pane.active {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+  }
+
   #modal-view-payslip .modal-dialog {
     max-width: 100% !important;
+    width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    position: static !important;
+    transform: none !important;
   }
 
   #modal-view-payslip .modal-content {
     border: none !important;
     box-shadow: none !important;
     background: transparent !important;
+    padding: 0 !important;
   }
 
   #modal-view-payslip .modal-header,
@@ -981,6 +998,13 @@ body {
     display: none !important;
   }
 
+  #modal-view-payslip .modal-body {
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* --- TAB 1: Recibo Oficial Legal (A4) --- */
   .payslip-sheet-container {
     background: transparent !important;
     padding: 0 !important;
@@ -997,6 +1021,76 @@ body {
     padding: 0 !important;
     margin: 0 !important;
     page-break-after: always;
+  }
+
+  /* --- TAB 2: Auditoría Integral de Liquidación (A4) --- */
+  #payslip-audit-area {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    max-height: none !important;
+    display: block !important;
+  }
+
+  #payslip-audit-area .table-responsive {
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  #payslip-audit-area .card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 10px !important;
+  }
+
+  #payslip-audit-area .card-header {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    padding: 6px 12px !important;
+  }
+
+  #payslip-audit-area table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  #payslip-audit-area thead {
+    display: table-header-group !important;
+  }
+
+  #payslip-audit-area tr {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  #payslip-audit-area th,
+  #payslip-audit-area td {
+    border-color: #e2e8f0 !important;
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+  }
+
+  #payslip-audit-area .badge {
+    border: 1px solid #94a3b8 !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    font-weight: 600 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .payslip-audit-print-header {
+    display: block !important;
+    border-bottom: 2px solid #2b3a8c !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 10px !important;
   }
 
   @page {

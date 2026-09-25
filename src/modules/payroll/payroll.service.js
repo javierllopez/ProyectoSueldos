@@ -325,7 +325,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
   let totalGrossPeriod = 0;
   let totalNetPeriod = 0;
   let totalEmployerCostPeriod = 0;
-  const slipResults = [];
+  const activeResults = [];
+  const omittedEmployees = [];
 
   for (const emp of employees) {
     const empNovedades = novedadesByEmp.get(emp.id) || [];
@@ -345,40 +346,75 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       },
     });
 
+    const hasCalculatedItems = Array.isArray(calculation.items) && calculation.items.length > 0;
+
+    if (!hasCalculatedItems) {
+      omittedEmployees.push({
+        employee: emp,
+        reason: 'Sin conceptos liquidados en este período',
+      });
+      continue;
+    }
+
     totalGrossPeriod += calculation.totals.grossSalary;
     totalNetPeriod += calculation.totals.netSalary;
     totalEmployerCostPeriod += calculation.totals.totalLaborCost;
 
-    slipResults.push({
+    activeResults.push({
       employee: emp,
       calculation,
+      slipId: null,
     });
   }
 
-  const empIdsToCalc = slipResults.map((r) => r.employee.id);
+  const allProcessedEmpIds = employees.map((e) => e.id);
 
   // 5. Guardar en transacción atómica optimizada
   await tenantPrisma.$transaction(async (tx) => {
-    // 5.1. Consulta masiva de recibos existentes
+    // 5.1. Consulta masiva de recibos existentes para todos los empleados del lote
     const existingSlips = await tx.paySlip.findMany({
       where: {
         payrollPeriodId: periodId,
-        employeeId: { in: empIdsToCalc },
+        employeeId: { in: allProcessedEmpIds },
       },
       select: { id: true, employeeId: true },
     });
     const existingSlipsMap = new Map(existingSlips.map((s) => [s.employeeId, s.id]));
 
-    // 5.2. Limpieza masiva de items y bases previas para recibos existentes
-    if (existingSlips.length > 0) {
-      const existingSlipIds = existingSlips.map((s) => s.id);
+    // 5.2. Eliminar recibos previos de legajos que en esta corrida quedaron sin conceptos
+    const omittedSlipsToDelete = omittedEmployees
+      .map((o) => existingSlipsMap.get(o.employee.id))
+      .filter(Boolean);
+
+    if (omittedSlipsToDelete.length > 0) {
       await Promise.all([
-        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: existingSlipIds } } }),
-        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: existingSlipIds } } }),
+        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } }),
+        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } }),
+      ]);
+      await tx.paySlip.deleteMany({ where: { id: { in: omittedSlipsToDelete } } });
+    }
+
+    // 5.3. Limpieza masiva de items y bases previas para recibos activos que se recalcularán
+    const activeSlipIdsToClean = activeResults
+      .map((r) => existingSlipsMap.get(r.employee.id))
+      .filter(Boolean);
+
+    if (activeSlipIdsToClean.length > 0) {
+      await Promise.all([
+        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } }),
+        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } }),
       ]);
     }
 
-    for (const res of slipResults) {
+    // 5.4. Crear o actualizar recibos activos
+    const typePriority = {
+      REMUNERATIVE: 1,
+      NON_REMUNERATIVE: 2,
+      DEDUCTION: 3,
+      AUXILIARY: 4,
+    };
+
+    for (const res of activeResults) {
       const { employee, calculation } = res;
       let slipId = existingSlipsMap.get(employee.id);
 
@@ -460,7 +496,7 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
 
       res.slipId = slipId;
 
-      // Crear items
+      // Ordenar items por jerarquía legal: Remunerativos -> No Remunerativos -> Deducciones -> Auxiliares
       const itemsToInsert = calculation.items.map((it) => ({
         paySlipId: slipId,
         conceptId: it.conceptId,
@@ -474,6 +510,14 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
         amount: it.amount,
         arcaConceptCode: it.arcaConceptCode,
       }));
+
+      itemsToInsert.sort((a, b) => {
+        const pA = typePriority[a.type] || 99;
+        const pB = typePriority[b.type] || 99;
+        if (pA !== pB) return pA - pB;
+        return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
+      });
+
       await tx.paySlipItem.createMany({ data: itemsToInsert });
 
       // Crear bases imponibles ARCA F.931
@@ -511,11 +555,22 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
 
   return {
     periodId,
-    processedEmployees: slipResults.length,
+    processedEmployees: activeResults.length,
+    omittedEmployeesCount: omittedEmployees.length,
+    omittedEmployees: omittedEmployees.map((o) => ({
+      id: o.employee.id,
+      fileNumber: o.employee.fileNumber,
+      fullName: `${o.employee.lastName}, ${o.employee.firstName}`,
+      department: o.employee.department?.name || '-',
+      reason: o.reason,
+    })),
+    warnings: omittedEmployees.length > 0
+      ? [`Se omitieron ${omittedEmployees.length} legajo(s) por no registrar conceptos a liquidar en este período.`]
+      : [],
     totalGross: Math.round(totalGrossPeriod * 100) / 100,
     totalNet: Math.round(totalNetPeriod * 100) / 100,
     totalEmployerCost: Math.round(totalEmployerCostPeriod * 100) / 100,
-    slips: slipResults.map((r) => ({
+    slips: activeResults.map((r) => ({
       paySlipId: r.slipId,
       employeeId: r.employee.id,
       fileNumber: r.employee.fileNumber,
@@ -627,6 +682,19 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
   });
 
   // Organizar items en bloques según normativa Decreto 407/2026 y auditoría
+  const typePriority = {
+    REMUNERATIVE: 1,
+    NON_REMUNERATIVE: 2,
+    DEDUCTION: 3,
+    AUXILIARY: 4,
+  };
+  slip.items.sort((a, b) => {
+    const pA = typePriority[a.type] || 99;
+    const pB = typePriority[b.type] || 99;
+    if (pA !== pB) return pA - pB;
+    return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
+  });
+
   const remunerativeItems = slip.items.filter((i) => i.type === 'REMUNERATIVE');
   const nonRemunerativeItems = slip.items.filter((i) => i.type === 'NON_REMUNERATIVE');
   const deductionItems = slip.items.filter((i) => i.type === 'DEDUCTION');
@@ -1669,14 +1737,27 @@ export async function calculateSingleEmployee(tenantPrisma, periodId, employeeId
     fullSlip = await tenantPrisma.paySlip.findUnique({
       where: { id: firstSlip.paySlipId },
       include: {
-        items: {
-          orderBy: { conceptCode: 'asc' },
-        },
+        items: true,
         employee: {
           include: { department: true },
         },
       },
     });
+
+    if (fullSlip?.items) {
+      const typePriority = {
+        REMUNERATIVE: 1,
+        NON_REMUNERATIVE: 2,
+        DEDUCTION: 3,
+        AUXILIARY: 4,
+      };
+      fullSlip.items.sort((a, b) => {
+        const pA = typePriority[a.type] || 99;
+        const pB = typePriority[b.type] || 99;
+        if (pA !== pB) return pA - pB;
+        return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
+      });
+    }
   }
 
   return {

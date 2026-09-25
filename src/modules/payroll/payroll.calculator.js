@@ -345,7 +345,7 @@ export function calculateEmployeePayroll({
   historicalData = {}, // Historial de recibos e items previos del empleado
   indices = null, // Pre-indexación opcional para cálculos masivos
 }) {
-  const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '51';
+  const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '51' || employee.salaryScale?.isInternOnly === true;
   const isDirector = employee.contractModalityCode === '99' || employee.salaryScale?.isDirectorOnly === true;
 
   // Si es pasante o director bajo modalidad LRT y el período es de SAC (aguinaldo), no se liquida aguinaldo de LCT
@@ -437,6 +437,7 @@ export function calculateEmployeePayroll({
         name: 'Honorarios / Retribución Director S.A. (LRT Mod. 099)',
         type: 'REMUNERATIVE',
         calculationType: 'FIXED',
+        periodType: 'MONTHLY',
         scope: 'GENERAL',
         defaultValue: 0,
         noveltyDataType: 'CANTIDAD',
@@ -779,6 +780,11 @@ export function calculateEmployeePayroll({
     const isInternStimulus = isIntern && (concept.code === 'SU1001' || concept.code === '1001' || concept.arcaConceptCode === '550000');
     const isDirectorSalary = isDirector && (concept.code === 'SU1002' || concept.code === '1002' || (isBasic && !allConcepts.some((c) => c.code === 'SU1002')));
 
+    // En períodos de vacaciones, los directores no liquidan honorarios SU1002 ni sueldos básicos
+    if (isDirector && period?.periodType === 'VACATIONS' && (concept.code === 'SU1002' || concept.code === '1002' || isBasic || isDirectorSalary)) {
+      continue;
+    }
+
     // Si es pasante, suprimir el sueldo básico tradicional SU1000/1000 y conceptos remunerativos/auxiliares generales de convenio
     if (isIntern && (isBasic || concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100' || concept.code === '001')) {
       continue;
@@ -802,19 +808,15 @@ export function calculateEmployeePayroll({
       continue;
     }
 
-    // Para directores: las deducciones automáticas de seguridad social general (SIPA, INSSJyP, OS) y sindicato no aplican (LRT 099)
-    if (isDirector && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
+    // Para directores y pasantes: las deducciones y retenciones legales (ARCA 810xxx: Jubilación, INSSJyP, Obra Social, Sindicato) no aplican
+    if ((isDirector || isIntern) && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
       const isStatutoryDeduction =
         concept.arcaConceptCode?.startsWith('810') ||
-        /jubilaci|sipa|inssjyp|pami|obra\s*social|sindic/i.test(concept.name);
-      if (isStatutoryDeduction) continue;
-    }
-
-    // Para pasantes: las deducciones automáticas de seguridad social general y sindicato no aplican (Ley 26.427)
-    if (isIntern && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
-      const isStatutoryDeduction =
-        concept.arcaConceptCode?.startsWith('810') ||
-        /jubilaci|sipa|inssjyp|pami|obra\s*social|sindic/i.test(concept.name);
+        concept.code === 'GE6001' ||
+        concept.code === 'GE6002' ||
+        concept.code === 'GE6003' ||
+        concept.code === 'GE6004' ||
+        /jubilaci|sipa|inssj?yp|pami|19\.?032|obra\s*social|sindic/i.test(concept.name);
       if (isStatutoryDeduction) continue;
     }
 
@@ -1227,8 +1229,8 @@ export function calculateEmployeePayroll({
     workedDays,
     workedHours,
     signatureHash,
-    paymentMethod: 'CBU',
-    cbu: employee.cbu || '0170001520000001234567',
-    bankName: employee.bankName || 'Banco de la Nación Argentina',
+    paymentMethod: employee.cbu && String(employee.cbu).trim() ? 'CBU' : 'EFECTIVO',
+    cbu: employee.cbu && String(employee.cbu).trim() ? String(employee.cbu).trim() : null,
+    bankName: employee.cbu && String(employee.cbu).trim() ? (employee.bankName || 'Acreditación Bancaria') : null,
   };
 }

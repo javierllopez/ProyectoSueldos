@@ -2008,6 +2008,20 @@
                         <div id="settlement-readonly-alert" class="alert alert-warning py-2 small mb-0 mt-3 d-none">
                           <i class="ti ti-lock me-1"></i> <strong>Período Cerrado:</strong> La liquidación se encuentra cerrada. No es posible re-calcular ni modificar recibos.
                         </div>
+                        <div id="settlement-omitted-alert" class="alert alert-info py-2 small mb-0 mt-3 d-none">
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                              <span class="avatar avatar-xs bg-info-lt text-info rounded"><i class="ti ti-info-circle"></i></span>
+                              <div>
+                                <strong id="settlement-omitted-alert-title">Liquidación completada:</strong>
+                                <span id="settlement-omitted-alert-text"></span>
+                              </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2" id="btn-view-omitted-employees" style="font-size: 11px;">
+                              <i class="ti ti-list-details me-1"></i> Ver Colaboradores Omitidos (<span id="settlement-omitted-badge-count">0</span>)
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -6537,6 +6551,46 @@
           <button type="button" class="btn btn-primary" id="btn-sim-go-settle">
             <i class="ti ti-calculator me-1"></i> Ir a Liquidar este Empleado
           </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE DE COLABORADORES OMITIDOS (SIN CONCEPTOS) -->
+  <div class="modal modal-blur fade" id="modal-omitted-employees" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg">
+        <div class="modal-header bg-light py-2 px-3">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-info-lt text-info rounded"><i class="ti ti-users-minus fs-2"></i></span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Colaboradores Omitidos en la Liquidación</h5>
+              <div class="text-muted small">Legajos sin conceptos a liquidar en este período</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="p-3 bg-light-subtle border-bottom small text-muted">
+            <i class="ti ti-info-circle me-1 text-primary"></i>
+            Estos colaboradores activos no registraron haber básico ni novedades liquidadas para este tipo de período (ej. vacaciones sin novedad, honorarios excluidos, etc.). Para evitar emitir recibos vacíos, no se generó recibo de sueldo.
+          </div>
+          <div class="table-responsive" style="max-height: 350px;">
+            <table class="table table-vcenter card-table table-sm table-striped mb-0">
+              <thead class="sticky-top bg-light">
+                <tr>
+                  <th style="width: 80px;">Legajo</th>
+                  <th>Colaborador</th>
+                  <th class="text-end">Motivo</th>
+                </tr>
+              </thead>
+              <tbody id="omitted-employees-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3">
+          <button type="button" class="btn btn-primary btn-sm ms-auto" data-bs-dismiss="modal">Entendido</button>
         </div>
       </div>
     </div>
