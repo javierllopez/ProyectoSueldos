@@ -329,6 +329,53 @@ export function buildPayrollIndices({ allConcepts = [], allMatrices = [], allFix
 }
 
 /**
+ * Determina el valor base (baseAmount) que realmente utiliza un concepto en su cálculo
+ * para su registro en el detalle del recibo de sueldo.
+ * Garantiza aislamiento entre modalidades contractuales (SU1000 vs SU1002 vs SU1001).
+ */
+export function resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, isInternStimulus) {
+  if (isBasic || isDirectorSalary || isInternStimulus) {
+    return null;
+  }
+
+  if (concept.calculationType === 'FORMULA' && concept.formula) {
+    const f = String(concept.formula).toUpperCase();
+    // 1. Si la fórmula referencia explícitamente al Sueldo Básico CCT [SU1000] o [1000]
+    if (f.includes('[SU1000]') || f.includes('[1000]')) {
+      const val = context.SU1000 !== undefined && context.SU1000 !== null ? Number(context.SU1000) : 0;
+      return val > 0 ? val : null;
+    }
+    // 2. Si la fórmula referencia explícitamente a Honorarios Director [SU1002] o [1002]
+    if (f.includes('[SU1002]') || f.includes('[1002]') || f.includes('[HONORARIOS_DIRECTOR]')) {
+      const val = context.SU1002 !== undefined && context.SU1002 !== null ? Number(context.SU1002) : 0;
+      return val > 0 ? val : null;
+    }
+    // 3. Si la fórmula referencia explícitamente a Asignación Estímulo Pasante [SU1001] o [1001]
+    if (f.includes('[SU1001]') || f.includes('[1001]') || f.includes('[ASIGNACION_ESTIMULO]')) {
+      const val = context.SU1001 !== undefined && context.SU1001 !== null ? Number(context.SU1001) : 0;
+      return val > 0 ? val : null;
+    }
+    // 4. Si referencia genéricamente [BASICO] o [SUELDO_BASICO]
+    if (f.includes('[BASICO]') || f.includes('[SUELDO_BASICO]') || f.includes('[SUELDO_BASICO_EMPLEADO]')) {
+      const val = context.BASICO !== undefined && context.BASICO !== null ? Number(context.BASICO) : 0;
+      return val > 0 ? val : null;
+    }
+    // 5. Si referencia algún otro concepto único entre corchetes, ej: [SU9030] o [1050]
+    const match = f.match(/\[([A-Z0-9_]{3,10})\]/);
+    if (match && context[match[1]] !== undefined) {
+      const val = Number(context[match[1]]);
+      return val > 0 ? val : null;
+    }
+  }
+
+  if (concept.calculationType === 'PERCENTAGE' || concept.calculationType === 'MATRIX') {
+    return context.BASICO !== undefined && context.BASICO !== null && Number(context.BASICO) > 0 ? Number(context.BASICO) : null;
+  }
+
+  return null;
+}
+
+/**
  * Motor central de cálculo salarial para un legajo en una liquidación.
  * Retorna todos los conceptos liquidados, subtotales, totales, deducciones,
  * contribuciones patronales, bases imponibles ARCA F.931 y porcentajes del gráfico de torta.
@@ -345,8 +392,8 @@ export function calculateEmployeePayroll({
   historicalData = {}, // Historial de recibos e items previos del empleado
   indices = null, // Pre-indexación opcional para cálculos masivos
 }) {
-  const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '51' || employee.salaryScale?.isInternOnly === true;
-  const isDirector = employee.contractModalityCode === '99' || employee.salaryScale?.isDirectorOnly === true;
+  const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '027' || employee.contractModalityCode === '51' || employee.contractModalityCode === '051' || employee.salaryScale?.isInternOnly === true;
+  const isDirector = employee.contractModalityCode === '99' || employee.contractModalityCode === '099' || employee.salaryScale?.isDirectorOnly === true;
 
   // Si es pasante o director bajo modalidad LRT y el período es de SAC (aguinaldo), no se liquida aguinaldo de LCT
   if ((isIntern || isDirector) && (period.periodType === 'SAC_1' || period.periodType === 'SAC_2')) {
@@ -572,19 +619,26 @@ export function calculateEmployeePayroll({
     HORAS_TRABAJADAS: workedHours,
     CATEGORIA: employee.jobPosition?.categoryCode || employee.jobPosition?.name || '',
     PUESTO: employee.jobPosition?.code || '',
-    SUELDO_BASICO_EMPLEADO: baseSalaryNominal,
-    SUELDO_BASICO: baseSalaryNominal,
-    BASICO: baseSalaryNominal,
-    [basicCode]: baseSalaryNominal,
-    SU1000: baseSalaryNominal,
-    SU1001: baseSalaryNominal,
-    SU1002: baseSalaryNominal,
-    '1000': baseSalaryNominal,
-    '1001': baseSalaryNominal,
-    '1002': baseSalaryNominal,
-    ASIGNACION_ESTIMULO: baseSalaryNominal,
-    ESTIMULO: baseSalaryNominal,
-    HONORARIOS_DIRECTOR: baseSalaryNominal,
+    // Aislamiento estricto de conceptos base por modalidad contractual:
+    // SU1000 (Sueldo Básico CCT): solo aplica a empleados en relación de dependencia bajo CCT/LCT
+    // SU1001 (Asignación Estímulo Ley 26.427): solo aplica a pasantes educativos
+    // SU1002 (Honorarios Director S.A. LRT Mod. 099): solo aplica a directores y socios gerentes
+    SUELDO_BASICO_EMPLEADO: (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    SUELDO_BASICO: (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    BASICO: (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    [basicCode]: (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    SU1000: (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    '1000': (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    '100': (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    '001': (!isIntern && !isDirector) ? baseSalaryNominal : 0,
+    SU1001: isIntern ? baseSalaryNominal : 0,
+    '1001': isIntern ? baseSalaryNominal : 0,
+    ASIGNACION_ESTIMULO: isIntern ? baseSalaryNominal : 0,
+    ESTIMULO: isIntern ? baseSalaryNominal : 0,
+    SU1002: isDirector ? baseSalaryNominal : 0,
+    '1002': isDirector ? baseSalaryNominal : 0,
+    HONORARIOS_DIRECTOR: isDirector ? baseSalaryNominal : 0,
+    HONORARIOS: isDirector ? baseSalaryNominal : 0,
     ES_JORNADA_PARCIAL: (isIntern || employee.isPartTime) ? 1 : 0,
     PORCENTAJE_JORNADA: isIntern ? 50.00 : Number(employee.partTimePercentage || 100),
     HORAS_SEMANALES: shiftWeekly,
@@ -793,8 +847,13 @@ export function calculateEmployeePayroll({
       continue;
     }
 
-    // Si es director, suprimir el sueldo básico tradicional cuando exista el concepto específico SU1002
-    if (isDirector && (concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100' || concept.code === '001') && allConcepts.some((c) => c.code === 'SU1002')) {
+    // Si es director, suprimir el sueldo básico tradicional SU1000/1000
+    if (isDirector && (isBasic || concept.code === 'SU1000' || concept.code === '1000' || concept.code === '100' || concept.code === '001')) {
+      continue;
+    }
+
+    // Para directores (fuera de convenio): conceptos remunerativos y auxiliares generales de CCT no aplican si no fueron asignados explícitamente
+    if (isDirector && !isDirectorSalary && (concept.type === 'REMUNERATIVE' || concept.type === 'AUXILIARY') && !manualOverride && !assignedRecord) {
       continue;
     }
 
@@ -825,9 +884,21 @@ export function calculateEmployeePayroll({
       continue;
     }
 
-    // Para directores: conceptos automáticos de convenio colectivo (fuera de convenio) no aplican si no fueron asignados
-    if (isDirector && !manualOverride && !assignedRecord) {
-      if (/presentismo|antiguedad|adicional\s*convenio|cct/i.test(concept.name) && !isDirectorSalary) {
+    // Para directores y pasantes: conceptos automáticos de convenio colectivo (Antigüedad, Presentismo, etc.) no aplican si no fueron asignados
+    if ((isDirector || isIntern) && !manualOverride && !assignedRecord) {
+      const normName = normalizePayrollKey(concept.name || '');
+      const isCctConcept =
+        normName.includes('ANTIGUEDAD') ||
+        normName.includes('PRESENTISMO') ||
+        normName.includes('CONVENIO') ||
+        normName.includes('CCT') ||
+        /presentismo|antig[uü]edad|adicional\s*convenio|cct/i.test(concept.name || '') ||
+        concept.code === 'SU1010' ||
+        concept.code === '1010' ||
+        concept.code === 'SU1020' ||
+        concept.code === '1020';
+
+      if (isCctConcept && !isDirectorSalary && !isInternStimulus) {
         continue;
       }
     }
@@ -956,8 +1027,7 @@ export function calculateEmployeePayroll({
           context.HONORARIOS_DIRECTOR = finalAmount;
           context.SU1002 = finalAmount;
           context['1002'] = finalAmount;
-          context.BASICO = finalAmount;
-          context.SUELDO_BASICO = finalAmount;
+          context.HONORARIOS = finalAmount;
         }
 
         context.TOTAL_REMUNERATIVO += finalAmount;
@@ -975,7 +1045,7 @@ export function calculateEmployeePayroll({
           units: (isBasic || isDirectorSalary) ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
           unitLabel: (isBasic || isDirectorSalary) ? 'Días' : ((concept.code === 'SU1010' || concept.code === '1010' || concept.code === '101') ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? '$' : unitLabel))),
           rate: concept.calculationType === 'PERCENTAGE' ? Number(concept.defaultValue) : null,
-          baseAmount: (isBasic || isDirectorSalary) ? null : (context.BASICO || null),
+          baseAmount: resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false),
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 100,
           formula: concept.formula || null,
@@ -993,8 +1063,6 @@ export function calculateEmployeePayroll({
           context.ESTIMULO = finalAmount;
           context.SU1001 = finalAmount;
           context['1001'] = finalAmount;
-          context.BASICO = finalAmount;
-          context.SUELDO_BASICO = finalAmount;
         }
 
         context.TOTAL_NO_REMUNERATIVO += finalAmount;
@@ -1011,7 +1079,7 @@ export function calculateEmployeePayroll({
           units: isInternStimulus ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
           unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? '$' : unitLabel),
           rate: null,
-          baseAmount: null,
+          baseAmount: resolveItemBaseAmount(concept, context, false, false, isInternStimulus),
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 150,
           formula: concept.formula || null,

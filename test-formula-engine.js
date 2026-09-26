@@ -1,6 +1,6 @@
 import { evaluateFormula, resolveHistoricalMetric } from './src/modules/payroll/formulaEvaluator.js';
-import { validateConceptFormula } from './src/modules/payroll/formulaValidator.js';
-import { calculateEmployeePayroll } from './src/modules/payroll/payroll.calculator.js';
+import { validateConceptFormula, auditFormulaCatalogConsistency } from './src/modules/payroll/formulaValidator.js';
+import { calculateEmployeePayroll, resolveItemBaseAmount } from './src/modules/payroll/payroll.calculator.js';
 import { generateLsdConceptsFile, generateLsdPayrollFile, validateLsdConsistency } from './src/modules/payroll/lsdExporter.service.js';
 
 let passedTests = 0;
@@ -1182,6 +1182,132 @@ console.log('\n--- 10. Régimen de Directores S.A. y Socios Gerentes (LRT Modali
   // Test 10.7: Validador de consistencia LSD
   const lsdConsistencyResult = validateLsdConsistency({ paySlips: [directorSlipMock] });
   assert(lsdConsistencyResult.isValid, `Validación técnica LSD para Director debe ser válida (errores: ${JSON.stringify(lsdConsistencyResult.issues)})`);
+}
+
+// ====================================================
+// 11. Aislamiento y Consistencia de Fórmulas Base (SU1000 vs SU1002 / SU1001)
+// ====================================================
+console.log('\n--- 11. Aislamiento y Consistencia de Fórmulas Base (SU1000 vs SU1002 / SU1001) ---');
+
+{
+  const consistencyPeriod = {
+    id: 'period-2026-10-cons',
+    year: 2026,
+    month: 10,
+    periodType: 'MONTHLY',
+    settlementNumber: 1,
+  };
+
+  const matrizAntig = {
+    id: 'mat-antig-test',
+    code: 'ANTIG',
+    name: 'Antigüedad 2%',
+    inputConceptCode: 'ANTIGUEDAD_ANOS',
+    matchType: 'RANGE',
+    defaultValue: 0,
+    rows: JSON.stringify([
+      { from: 0, to: 0.99, value: 0 },
+      { from: 1, to: 99, value: 10 },
+    ]),
+  };
+
+  const consistencyConcepts = [
+    {
+      id: 'c-su1000',
+      code: 'SU1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      scope: 'GENERAL',
+      calculationType: 'FIXED',
+      defaultValue: 1000000,
+      calculationOrder: 100,
+      isPersistent: true,
+      arcaConceptCode: '110000',
+    },
+    {
+      id: 'c-su1002',
+      code: 'SU1002',
+      name: 'Honorarios Director S.A.',
+      type: 'REMUNERATIVE',
+      scope: 'GENERAL',
+      calculationType: 'FIXED',
+      defaultValue: 3500000,
+      calculationOrder: 100,
+      isPersistent: true,
+      arcaConceptCode: '110000',
+    },
+    {
+      id: 'c-su1010',
+      code: 'SU1010',
+      name: 'Antigüedad (2% por año)',
+      type: 'REMUNERATIVE',
+      scope: 'GENERAL',
+      calculationType: 'FORMULA',
+      formula: '[SU1000] * [MATRIZ:ANTIG] / 100',
+      calculationOrder: 110,
+      isPersistent: true,
+      arcaConceptCode: '120000',
+    },
+  ];
+
+  // 11.1 Empleado regular: SU1010 usa SU1000 y asigna baseAmount = 1000000
+  const regularEmployee = {
+    id: 'emp-reg-cons',
+    fileNumber: 'L-100',
+    contractModalityCode: '001',
+    basicSalary: 1000000,
+    hireDate: new Date('2020-01-01'),
+    jobPosition: { categoryCode: 'A' },
+  };
+
+  const regRes = calculateEmployeePayroll({
+    employee: regularEmployee,
+    period: consistencyPeriod,
+    payrollSettings: { ansesMinCap: 80000, ansesMaxCap: 2000000 },
+    allConcepts: consistencyConcepts,
+    allMatrices: [matrizAntig],
+  });
+
+  const regSu1010 = regRes.items.find((i) => i.conceptCode === 'SU1010');
+  assert(regSu1010 !== undefined, 'Empleado estándar debe liquidar SU1010');
+  assert(regSu1010 && regSu1010.amount === 100000, 'SU1010 debe liquidar 10% sobre 1.000.000 (100.000)');
+  assert(regSu1010 && regSu1010.baseAmount === 1000000, `baseAmount de SU1010 debe ser 1.000.000 (obtenido ${regSu1010?.baseAmount})`);
+
+  // 11.2 Director (Mod. 099): SU1010 NO se liquida y jamás usa honorarios como base
+  const directorEmployee = {
+    id: 'emp-dir-cons',
+    fileNumber: '569',
+    contractModalityCode: '99',
+    basicSalary: 3500000,
+    hireDate: new Date('2011-01-01'),
+  };
+
+  const dirRes = calculateEmployeePayroll({
+    employee: directorEmployee,
+    period: consistencyPeriod,
+    payrollSettings: { ansesMinCap: 80000, ansesMaxCap: 2000000 },
+    allConcepts: consistencyConcepts,
+    allMatrices: [matrizAntig],
+  });
+
+  const dirSu1010 = dirRes.items.find((i) => i.conceptCode === 'SU1010');
+  const dirSu1002 = dirRes.items.find((i) => i.conceptCode === 'SU1002');
+  assert(!dirSu1010, 'Director NO debe liquidar SU1010 (Antigüedad CCT)');
+  assert(dirSu1002 && dirSu1002.amount === 3500000, 'Director debe liquidar SU1002 por 3.500.000');
+
+  // 11.3 Evaluación forzada de la fórmula con [SU1000] en contexto de Director evalúa a 0
+  const evalForced = evaluateFormula('[SU1000] * 10 / 100', { SU1000: 0, SU1002: 3500000 });
+  assert(evalForced === 0, `Fórmula que referencia [SU1000] en contexto de director debe evaluar a 0 (obtenido ${evalForced})`);
+
+  // 11.4 Helper resolveItemBaseAmount aísla modalidades
+  const baseReg = resolveItemBaseAmount(consistencyConcepts[2], { SU1000: 1000000, SU1002: 0 }, false, false, false);
+  const baseDir = resolveItemBaseAmount(consistencyConcepts[2], { SU1000: 0, SU1002: 3500000 }, false, false, false);
+  assert(baseReg === 1000000, `resolveItemBaseAmount debe retornar 1000000 para regular (obtenido ${baseReg})`);
+  assert(baseDir === null, `resolveItemBaseAmount debe retornar null para director (obtenido ${baseDir})`);
+
+  // 11.5 Auditoría de catálogo
+  const audit = auditFormulaCatalogConsistency({ allConcepts: consistencyConcepts, matrices: [matrizAntig] });
+  assert(audit.isValid, 'Auditoría de catálogo con SU1010 debe ser válida');
 }
 
 console.log('\n====================================================');

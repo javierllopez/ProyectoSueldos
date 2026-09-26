@@ -340,6 +340,23 @@ export function validateConceptFormula({
     }
   }
 
+  // --- 5. Control de Coherencia de Modalidad Contractual (Base Concepts) ---
+  const upperFormula = cleanFormula.toUpperCase();
+  const hasSu1000 = upperFormula.includes('[SU1000]') || upperFormula.includes('[1000]');
+  const hasSu1002 = upperFormula.includes('[SU1002]') || upperFormula.includes('[1002]') || upperFormula.includes('[HONORARIOS_DIRECTOR]');
+  const hasSu1001 = upperFormula.includes('[SU1001]') || upperFormula.includes('[1001]') || upperFormula.includes('[ASIGNACION_ESTIMULO]');
+
+  if (hasSu1000 && hasSu1002) {
+    warnings.push(
+      'La fórmula combina [SU1000] (Sueldo Básico CCT) y [SU1002] (Honorarios Director), conceptos de regímenes contractuales mutuamente excluyentes.'
+    );
+  }
+  if (hasSu1000 && hasSu1001) {
+    warnings.push(
+      'La fórmula combina [SU1000] (Sueldo Básico CCT) y [SU1001] (Asignación Estímulo Pasante), conceptos de regímenes contractuales mutuamente excluyentes.'
+    );
+  }
+
   return {
     isValid: errors.length === 0,
     errors,
@@ -347,3 +364,64 @@ export function validateConceptFormula({
     referencedConcepts,
   };
 }
+
+/**
+ * Realiza una auditoría integral de consistencia sobre todo el catálogo de conceptos de la empresa.
+ * Verifica dependencias circulares, orden cronológico de cálculo, existencia de referencias
+ * y coherencia de bases salariales para evitar inconsistencias en liquidaciones masivas.
+ * @param {object} params
+ * @param {Array} params.allConcepts - Lista completa de conceptos registrados
+ * @param {Array} params.matrices - Lista de matrices de liquidación activas
+ * @param {Array} params.fixedValues - Constantes salariales globales
+ * @param {Array} params.salaryScales - Nóminas / escalas salariales
+ * @returns {{ isValid: boolean, totalAudited: number, errorCount: number, warningCount: number, issues: Array<{ conceptCode: string, conceptName: string, errors: string[], warnings: string[] }> }}
+ */
+export function auditFormulaCatalogConsistency({
+  allConcepts = [],
+  matrices = [],
+  fixedValues = [],
+  salaryScales = [],
+} = {}) {
+  const issues = [];
+  let totalAudited = 0;
+  let totalErrors = 0;
+  let totalWarnings = 0;
+
+  for (const concept of allConcepts) {
+    if (concept.calculationType !== 'FORMULA' || !concept.formula) {
+      continue;
+    }
+
+    totalAudited++;
+    const validation = validateConceptFormula({
+      formula: concept.formula,
+      conceptCode: concept.code,
+      conceptType: concept.type,
+      calculationOrder: concept.calculationOrder,
+      allConcepts,
+      matrices,
+      fixedValues,
+      salaryScales,
+    });
+
+    if (!validation.isValid || validation.warnings.length > 0) {
+      totalErrors += validation.errors.length;
+      totalWarnings += validation.warnings.length;
+      issues.push({
+        conceptCode: concept.code,
+        conceptName: concept.name,
+        errors: validation.errors,
+        warnings: validation.warnings,
+      });
+    }
+  }
+
+  return {
+    isValid: totalErrors === 0,
+    totalAudited,
+    errorCount: totalErrors,
+    warningCount: totalWarnings,
+    issues,
+  };
+}
+
