@@ -254,6 +254,7 @@ function decimalToHours(val, defaultValue = '00:00') {
 function getConceptInputType(concept) {
   if (!concept) return 'UNITS';
   const dt = (concept.noveltyDataType || '').toUpperCase();
+  if (dt === 'CALCULADO') return 'CALCULADO';
   if (dt === 'SOLO_ASIGNACION' || dt === 'NONE' || dt === 'SIN_NOVEDAD') return 'NONE';
   if (dt === 'HORAS' || dt === 'HOURS') return 'HOURS';
   if (dt === 'PORCENTAJE' || dt === 'PERCENTAGE') return 'PERCENTAGE';
@@ -272,6 +273,10 @@ function formatNoveltyValue(concept, item) {
   const amt = item.fixedAmount !== null && item.fixedAmount !== undefined
     ? item.fixedAmount
     : (item.amount !== null && item.amount !== undefined ? item.amount : null);
+
+  if (inputType === 'CALCULADO') {
+    return '<span class="badge bg-azure-lt fw-bold px-2 py-1"><i class="ti ti-calculator me-1"></i>Calculado</span>';
+  }
 
   if (inputType === 'NONE') {
     return '<span class="badge bg-blue-lt fw-bold px-2 py-1"><i class="ti ti-check me-1"></i>Asignado (Fórmula)</span>';

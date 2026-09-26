@@ -8,6 +8,7 @@
 import { calculateEmployeePayroll, resolveItemBaseAmount } from './src/modules/payroll/payroll.calculator.js';
 import { validateConceptFormula, auditFormulaCatalogConsistency } from './src/modules/payroll/formulaValidator.js';
 import { evaluateFormula } from './src/modules/payroll/formulaEvaluator.js';
+import { createConceptSchema } from './src/modules/payroll/payroll.validation.js';
 
 let passed = 0;
 let failed = 0;
@@ -434,6 +435,100 @@ const auditReport = auditFormulaCatalogConsistency({
 });
 assert(auditReport.isValid, 'Auditoría del catálogo de conceptos debe ser VÁLIDA sin errores bloqueantes');
 assert(auditReport.totalAudited >= 3, `Debe auditar al menos 3 conceptos con fórmula (auditados: ${auditReport.totalAudited})`);
+
+// ====================================================
+// TEST 7: Conceptos Auxiliares con Código Libre y Dato de Novedad CALCULADO
+// ====================================================
+console.log('\n--- 7. Conceptos Auxiliares de Código Libre y Dato "CALCULADO" ---');
+
+// 7.1 Validación de Esquema Zod: Concepto Auxiliar con código SU1005 (fuera del antiguo rango 9000-9999)
+const auxConceptData = {
+  code: 'SU1005',
+  name: 'Base Horas Suplementarias (Auxiliar)',
+  type: 'AUXILIARY',
+  calculationType: 'FORMULA',
+  formula: '[SU1000] / 200',
+  noveltyDataType: 'CALCULADO',
+  isPersistent: true,
+  calculationOrder: 1005,
+};
+const auxZodResult = createConceptSchema.safeParse(auxConceptData);
+assert(auxZodResult.success, 'createConceptSchema debe admitir conceptos auxiliares con códigos de 4 dígitos libres (SU1005)');
+assert(auxZodResult.data?.noveltyDataType === 'CALCULADO', 'createConceptSchema debe admitir noveltyDataType = "CALCULADO"');
+
+// 7.2 Validación de Fórmula: Concepto Remunerativo SU1020 consumiendo el Auxiliar SU1005
+const allConceptsWithAux = [
+  ...allConcepts.filter((c) => c.code !== 'SU1020'),
+  {
+    id: 'c-aux-1005',
+    code: 'SU1005',
+    name: 'Base Horas Suplementarias (Auxiliar)',
+    type: 'AUXILIARY',
+    calculationType: 'FORMULA',
+    formula: '[SU1000] / 200',
+    calculationOrder: 1005,
+    noveltyDataType: 'CALCULADO',
+    isPersistent: true,
+  },
+  {
+    id: 'c-rem-1020',
+    code: 'SU1020',
+    name: 'Adicional por Productividad',
+    type: 'REMUNERATIVE',
+    calculationType: 'FORMULA',
+    formula: '[SU1005] * 20',
+    calculationOrder: 1020,
+    noveltyDataType: 'CALCULADO',
+    isPersistent: true,
+  },
+];
+
+const valRefAux = validateConceptFormula({
+  formula: '[SU1005] * 20',
+  conceptCode: 'SU1020',
+  calculationOrder: 1020,
+  allConcepts: allConceptsWithAux,
+});
+assert(valRefAux.isValid, 'SU1020 debe poder referenciar válidamente al concepto auxiliar previo [SU1005]');
+assert(valRefAux.referencedConcepts.includes('SU1005'), 'referencedConcepts debe incluir SU1005');
+
+// 7.3 Motor de Liquidación: Ejecución de cálculo con Auxiliar SU1005 y Consumidor SU1020
+// Empleado con básico de $600.000:
+// SU1005 = 600.000 / 200 = 3.000
+// SU1020 = 3.000 * 20 = 60.000
+const empReg = {
+  id: 'emp-aux-test',
+  fileNumber: 'E999',
+  basicSalary: 600000,
+  hireDate: new Date('2020-01-01'),
+  status: 'ACTIVE',
+  contractModalityCode: '001',
+  unionId: null,
+};
+
+const payrollRes = calculateEmployeePayroll({
+  employee: empReg,
+  period,
+  payrollSettings,
+  inputItems: [
+    // Simular un intento accidental de sobreescritura manual en la novedad para SU1020
+    { conceptCode: 'SU1020', amount: 999999, units: 5 },
+  ],
+  allConcepts: allConceptsWithAux,
+  allMatrices: [matrizAntig],
+});
+
+const itemAux = payrollRes.items.find((it) => it.conceptCode === 'SU1005');
+const itemProd = payrollRes.items.find((it) => it.conceptCode === 'SU1020');
+
+assert(Boolean(itemAux), 'El concepto auxiliar SU1005 debe liquidarse en items');
+assertClose(itemAux?.amount, 3000, 'SU1005 debe calcular exactamente 600.000 / 200 = 3.000');
+assert(itemAux?.type === 'AUXILIARY', 'SU1005 debe registrar tipo AUXILIARY');
+assert(itemAux?.unitLabel === 'Auto', 'SU1005 con noveltyDataType CALCULADO debe tener unitLabel "Auto"');
+
+assert(Boolean(itemProd), 'El concepto remunerativo SU1020 debe liquidarse en items');
+assertClose(itemProd?.amount, 60000, 'SU1020 con noveltyDataType CALCULADO debe ignorar el override manual de 999999 y calcular 3.000 * 20 = 60.000');
+assert(itemProd?.unitLabel === 'Auto', 'SU1020 con noveltyDataType CALCULADO debe tener unitLabel "Auto"');
 
 console.log('\n====================================================');
 console.log(`TOTAL PRUEBAS CONSISTENCIA: ${passed} superadas, ${failed} fallidas`);

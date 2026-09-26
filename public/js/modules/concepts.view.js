@@ -66,7 +66,9 @@ class ConceptsMethods {
           ? '<span class="badge bg-teal-lt"><i class="ti ti-repeat me-1"></i>Persistente</span>'
           : '<span class="badge bg-yellow-lt"><i class="ti ti-calendar-off me-1"></i>No Persistente</span>';
         const noveltyBadge = c.noveltyDataType && c.noveltyDataType !== 'CANTIDAD'
-          ? `<span class="badge bg-cyan-lt small py-0 px-1 font-monospace" style="font-size: 0.68rem;">Nov: ${escapeHtml(c.noveltyDataType)}</span>`
+          ? (c.noveltyDataType === 'CALCULADO'
+              ? '<span class="badge bg-azure-lt small py-0 px-1 font-monospace" style="font-size: 0.68rem;"><i class="ti ti-calculator me-1"></i>Calculado</span>'
+              : `<span class="badge bg-cyan-lt small py-0 px-1 font-monospace" style="font-size: 0.68rem;">Nov: ${escapeHtml(c.noveltyDataType)}</span>`)
           : '';
         const scopeBadge = (c.scope === 'INDIVIDUAL')
           ? '<span class="badge bg-purple-lt" title="Aplica solo si se asigna expresamente al empleado"><i class="ti ti-user me-1"></i>Individual</span>'

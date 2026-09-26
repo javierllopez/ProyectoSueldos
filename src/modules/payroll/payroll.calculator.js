@@ -689,9 +689,9 @@ export function calculateEmployeePayroll({
     }
 
     // Si el usuario ingresó un importe fijo manual directo en la novedad o viene asignado
-    // (Salvo que el concepto sea de tipo FORMULA y use la novedad como variable de cálculo)
+    // (Salvo que el concepto sea de tipo FORMULA y use la novedad como variable de cálculo, o sea de tipo CALCULADO)
     if (inputOverride && inputOverride.amount !== undefined && inputOverride.amount !== null && String(inputOverride.amount).trim() !== '') {
-      if (calcType !== 'FORMULA' || concept.noveltyDataType !== 'IMPORTE') {
+      if (concept.noveltyDataType !== 'CALCULADO' && (calcType !== 'FORMULA' || concept.noveltyDataType !== 'IMPORTE')) {
         return Number(inputOverride.amount);
       }
     }
@@ -911,6 +911,7 @@ export function calculateEmployeePayroll({
           isInternStimulus ||
           isDirectorSalary ||
           concept.type === 'AUXILIARY' ||
+          concept.noveltyDataType === 'CALCULADO' ||
           concept.calculationType === 'MATRIX' ||
           concept.calculationType === 'FORMULA' ||
           (concept.calculationType === 'PERCENTAGE' && Number(concept.defaultValue) > 0) ||
@@ -923,7 +924,16 @@ export function calculateEmployeePayroll({
     let units = 1;
     let unitLabel = 'Fijo';
 
-    if (noveltyType === 'SOLO_ASIGNACION') {
+    if (noveltyType === 'CALCULADO') {
+      unitLabel = 'Auto';
+      units = 1;
+      context.HORAS = 0;
+      context.CANTIDAD = 1;
+      context.UNIDADES = 1;
+      context.PORCENTAJE = 0;
+      context.PORCENTAJE_ENTERO = 0;
+      context.PROPIO_VALOR = 1;
+    } else if (noveltyType === 'SOLO_ASIGNACION') {
       unitLabel = 'Fijo';
       units = 1;
       context.HORAS = 0;
@@ -996,13 +1006,17 @@ export function calculateEmployeePayroll({
       const rawAmount = resolveConceptValue(concept, inputOverride);
       const finalAmount = Math.round(rawAmount * 100) / 100;
       context[concept.code] = finalAmount;
+      const numOnly = String(concept.code).replace(/\D/g, '');
+      if (numOnly) {
+        context[numOnly] = finalAmount;
+      }
       calculatedItems.push({
         conceptId: concept.id,
         conceptCode: concept.code,
         conceptName: concept.name,
         type: 'AUXILIARY',
-        units: noveltyType === 'IMPORTE' ? 1 : units,
-        unitLabel: noveltyType === 'IMPORTE' ? '$' : unitLabel,
+        units: (noveltyType === 'IMPORTE' || noveltyType === 'CALCULADO') ? 1 : units,
+        unitLabel: noveltyType === 'IMPORTE' ? '$' : (noveltyType === 'CALCULADO' ? 'Auto' : unitLabel),
         rate: null,
         baseAmount: null,
         amount: finalAmount,
@@ -1016,6 +1030,10 @@ export function calculateEmployeePayroll({
 
       if (finalAmount > 0 || inputOverride) {
         context[concept.code] = finalAmount;
+        const numOnly = String(concept.code).replace(/\D/g, '');
+        if (numOnly) {
+          context[numOnly] = finalAmount;
+        }
         if (isBasic) {
           context.BASICO = finalAmount;
           context.SUELDO_BASICO = finalAmount;
@@ -1043,7 +1061,7 @@ export function calculateEmployeePayroll({
           conceptName: concept.name,
           type: 'REMUNERATIVE',
           units: (isBasic || isDirectorSalary) ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
-          unitLabel: (isBasic || isDirectorSalary) ? 'Días' : ((concept.code === 'SU1010' || concept.code === '1010' || concept.code === '101') ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? '$' : unitLabel))),
+          unitLabel: (isBasic || isDirectorSalary) ? 'Días' : ((concept.code === 'SU1010' || concept.code === '1010' || concept.code === '101') ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? '$' : (noveltyType === 'CALCULADO' ? 'Auto' : unitLabel)))),
           rate: concept.calculationType === 'PERCENTAGE' ? Number(concept.defaultValue) : null,
           baseAmount: resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false),
           amount: finalAmount,
@@ -1058,6 +1076,10 @@ export function calculateEmployeePayroll({
 
       if (finalAmount !== 0 || inputOverride) {
         context[concept.code] = finalAmount;
+        const numOnly = String(concept.code).replace(/\D/g, '');
+        if (numOnly) {
+          context[numOnly] = finalAmount;
+        }
         if (isInternStimulus) {
           context.ASIGNACION_ESTIMULO = finalAmount;
           context.ESTIMULO = finalAmount;
@@ -1077,7 +1099,7 @@ export function calculateEmployeePayroll({
           conceptName: concept.name,
           type: 'NON_REMUNERATIVE',
           units: isInternStimulus ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
-          unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? '$' : unitLabel),
+          unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? '$' : (noveltyType === 'CALCULADO' ? 'Auto' : unitLabel)),
           rate: null,
           baseAmount: resolveItemBaseAmount(concept, context, false, false, isInternStimulus),
           amount: finalAmount,
@@ -1112,6 +1134,10 @@ export function calculateEmployeePayroll({
       const finalAmount = Math.round(rawAmount * 100) / 100;
       if (finalAmount > 0) {
         context[concept.code] = finalAmount;
+        const numOnly = String(concept.code).replace(/\D/g, '');
+        if (numOnly) {
+          context[numOnly] = finalAmount;
+        }
         totalDeductions += finalAmount;
         context.TOTAL_DEDUCCIONES = totalDeductions;
 

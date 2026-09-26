@@ -885,12 +885,13 @@ class PayrollMethods {
   }
 
   async fetchIndividualConcepts(isPersistent = null) {
-    let url = '/payroll/concepts?scope=INDIVIDUAL&limit=500';
+    let url = '/payroll/concepts?scope=INDIVIDUAL&limit=500&excludeCalculated=true';
     if (isPersistent !== null && isPersistent !== undefined) {
       url += `&isPersistent=${isPersistent}`;
     }
     const res = await apiRequest(url);
-    return res.data || [];
+    const list = res.data || [];
+    return list.filter((c) => (c.noveltyDataType || '').toUpperCase() !== 'CALCULADO');
   }
 
   isPeriodClosed(periodId) {

@@ -834,7 +834,7 @@ export async function updatePayrollSettings(tenantPrisma, data) {
 
 // --- CONCEPTOS ---
 
-export async function getConcepts(tenantPrisma, { search = '', page = 1, limit = 5, type, periodType, isPersistent, scope } = {}) {
+export async function getConcepts(tenantPrisma, { search = '', page = 1, limit = 5, type, periodType, isPersistent, scope, excludeCalculated } = {}) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
   const take = Math.max(1, Math.min(Number(limit) || 5, 1000));
@@ -848,6 +848,9 @@ export async function getConcepts(tenantPrisma, { search = '', page = 1, limit =
   }
   if (scope && scope !== 'ALL') {
     where.scope = scope;
+  }
+  if (excludeCalculated === true || excludeCalculated === 'true') {
+    where.noveltyDataType = { not: 'CALCULADO' };
   }
   if (search) {
     where.OR = [
@@ -918,15 +921,16 @@ export async function createConcept(tenantPrisma, data) {
 
   // Si no se proveyó orden numérico explícito, determinar orden inteligente
   if (calculationOrder === null || isNaN(calculationOrder)) {
+    const codeNum = parseInt(String(data.code).replace(/\D/g, '').slice(-4), 10);
     if (data.calculationType === 'FORMULA' && data.formula) {
       const matches = data.formula.match(/\[([A-Za-z0-9_]+)\]/g) || [];
       const refCodes = new Set(matches.map((m) => m.replace(/\[|\]/g, '').toUpperCase()));
       const maxRefOrder = allOtherConcepts
         .filter((c) => refCodes.has(String(c.code).toUpperCase()))
         .reduce((max, c) => Math.max(max, Number(c.calculationOrder) || 0), 0);
-      calculationOrder = Math.max(maxRefOrder + 10, data.type === 'DEDUCTION' ? 120 : (data.type === 'AUXILIARY' ? 25 : 50));
+      calculationOrder = Math.max(maxRefOrder + 10, (!isNaN(codeNum) && codeNum > 0) ? codeNum : (data.type === 'DEDUCTION' ? 120 : (data.type === 'AUXILIARY' ? 25 : 50)));
     } else {
-      calculationOrder = data.type === 'DEDUCTION' ? 120 : (data.type === 'AUXILIARY' ? 25 : 50);
+      calculationOrder = (!isNaN(codeNum) && codeNum > 0) ? codeNum : (data.type === 'DEDUCTION' ? 120 : (data.type === 'AUXILIARY' ? 25 : 50));
     }
   }
 

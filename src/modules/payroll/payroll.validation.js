@@ -93,7 +93,7 @@ export const conceptBaseSchema = z.object({
   settlementType: z.string().trim().max(50).optional(),
   scope: z.enum(['GENERAL', 'INDIVIDUAL']).default('GENERAL'),
   defaultValue: z.coerce.number().default(0.0),
-  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION', 'IMPORTE']).default('CANTIDAD'),
+  noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION', 'IMPORTE', 'CALCULADO', 'SIN_NOVEDAD']).default('CANTIDAD'),
   calculationOrder: z.coerce.number().int().optional(),
   formula: z.string().trim().optional().nullable(),
   matrixData: z.string().trim().optional().nullable(),
@@ -166,10 +166,12 @@ function validateConceptCodeRange(code, type, ctx) {
       });
     }
   } else if (type === 'AUXILIARY') {
-    if (codeNum < 9000 || codeNum > 9999) {
+    // Los conceptos auxiliares permiten cualquier código numérico de 4 dígitos (0001 a 9999)
+    // para poder ubicarse en cualquier orden del cálculo y ser consumidos por otros conceptos.
+    if (codeNum < 1 || codeNum > 9999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Los conceptos auxiliares deben tener un número de 4 dígitos entre 9000 y 9999 (ej: GE9001)',
+        message: 'Los conceptos auxiliares deben tener un número de 4 dígitos entre 0001 y 9999',
         path: ['code'],
       });
     }
