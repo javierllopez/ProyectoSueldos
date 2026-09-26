@@ -906,12 +906,12 @@ export function calculateEmployeePayroll({
     const shouldLiquidate =
       Boolean(manualOverride) ||
       Boolean(assignedRecord) ||
+      concept.type === 'AUXILIARY' ||
+      concept.noveltyDataType === 'CALCULADO' ||
       (isConceptPersistent(concept) &&
         (isBasic ||
           isInternStimulus ||
           isDirectorSalary ||
-          concept.type === 'AUXILIARY' ||
-          concept.noveltyDataType === 'CALCULADO' ||
           concept.calculationType === 'MATRIX' ||
           concept.calculationType === 'FORMULA' ||
           (concept.calculationType === 'PERCENTAGE' && Number(concept.defaultValue) > 0) ||
