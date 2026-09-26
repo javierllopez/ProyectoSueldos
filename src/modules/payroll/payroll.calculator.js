@@ -1028,7 +1028,7 @@ export function calculateEmployeePayroll({
       const rawAmount = resolveConceptValue(concept, inputOverride);
       const finalAmount = Math.round(rawAmount * 100) / 100;
 
-      if (finalAmount > 0 || inputOverride) {
+      if (finalAmount !== 0 || inputOverride) {
         context[concept.code] = finalAmount;
         const numOnly = String(concept.code).replace(/\D/g, '');
         if (numOnly) {
@@ -1132,7 +1132,7 @@ export function calculateEmployeePayroll({
       }
 
       const finalAmount = Math.round(rawAmount * 100) / 100;
-      if (finalAmount > 0) {
+      if (finalAmount !== 0 || inputOverride) {
         context[concept.code] = finalAmount;
         const numOnly = String(concept.code).replace(/\D/g, '');
         if (numOnly) {

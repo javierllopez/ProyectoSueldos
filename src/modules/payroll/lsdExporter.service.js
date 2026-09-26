@@ -168,7 +168,13 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       if (item.type === 'EMPLOYER_CONTRIBUTION' || item.type === 'AUXILIARY') continue; // Las contribuciones patronales van en 04, y los auxiliares son de cálculo interno
 
       const isDeduction = item.type === 'DEDUCTION';
-      const indicator = isDeduction ? 'D' : 'C';
+      const numAmount = Number(item.amount) || 0;
+      let indicator = isDeduction ? 'D' : 'C';
+      if (!isDeduction && numAmount < 0) {
+        indicator = 'D'; // Haberes negativos debitan
+      } else if (isDeduction && numAmount < 0) {
+        indicator = 'C'; // Deducciones negativas acreditan
+      }
 
       // Unidades: si es SAC proporcional 120003, en cantidad van los días; por defecto cantidad formateada
       let cantidadStr = '00000';

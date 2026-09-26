@@ -530,6 +530,44 @@ assert(Boolean(itemProd), 'El concepto remunerativo SU1020 debe liquidarse en it
 assertClose(itemProd?.amount, 60000, 'SU1020 con noveltyDataType CALCULADO debe ignorar el override manual de 999999 y calcular 3.000 * 20 = 60.000');
 assert(itemProd?.unitLabel === 'Auto', 'SU1020 con noveltyDataType CALCULADO debe tener unitLabel "Auto"');
 
+// ====================================================
+// TEST 8: Conceptos Remunerativos Negativos (Descuentos que restan de la Remuneración)
+// ====================================================
+console.log('\n--- 8. Conceptos Remunerativos Negativos (Restan en Remuneraciones) ---');
+
+const allConceptsWithNegative = [
+  ...allConceptsWithAux,
+  {
+    id: 'c-rem-1061',
+    code: 'SU1061',
+    name: 'Descuento licencias pagas',
+    type: 'REMUNERATIVE',
+    calculationType: 'FORMULA',
+    formula: '0 - [SU1020]', // Descuenta el valor de SU1020 (-60.000)
+    calculationOrder: 1061,
+    noveltyDataType: 'CALCULADO',
+    isPersistent: true,
+  },
+];
+
+const payrollResNeg = calculateEmployeePayroll({
+  employee: empReg,
+  period,
+  payrollSettings,
+  inputItems: [],
+  allConcepts: allConceptsWithNegative,
+  allMatrices: [matrizAntig],
+});
+
+const itemNeg = payrollResNeg.items.find((it) => it.conceptCode === 'SU1061');
+assert(Boolean(itemNeg), 'El concepto remunerativo negativo SU1061 DEBE liquidarse y aparecer en items');
+assertClose(itemNeg?.amount, -60000, 'SU1061 debe arrojar un valor negativo exacto de -60.000');
+assert(itemNeg?.type === 'REMUNERATIVE', 'SU1061 debe ser de tipo REMUNERATIVE');
+
+// Comprobar que reste del Total Remunerativo:
+// Básico: 600.000 + Antigüedad: 60.000 + SU1020: 60.000 + SU1061: -60.000 = 660.000
+assertClose(payrollResNeg.totals.totalRemunerative, 660000, 'El concepto remunerativo negativo debe restar del Total Remunerativo (Esperado: 660.000)');
+
 console.log('\n====================================================');
 console.log(`TOTAL PRUEBAS CONSISTENCIA: ${passed} superadas, ${failed} fallidas`);
 console.log('====================================================\n');
