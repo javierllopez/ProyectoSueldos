@@ -374,7 +374,7 @@ model Concept {
   name            String    @map("name")
   type            String    @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY
   calculationType String    @default("FIXED") @map("calculation_type") // FIXED, PERCENTAGE, FORMULA, MATRIX
-  periodType      String?   @default("ALL") @map("period_type") @db.VarChar(50)
+  periodType      String?   @default("MONTHLY") @map("period_type") @db.VarChar(50)
   scope           String    @default("GENERAL") @map("scope") @db.VarChar(20) // GENERAL, INDIVIDUAL
   defaultValue    Decimal   @default(0.00) @db.Decimal(12, 2) @map("default_value")
   noveltyDataType String    @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE, SOLO_ASIGNACION
@@ -477,6 +477,7 @@ model PayrollPeriod {
   settlementNumber Int       @default(1) @map("settlement_number")
   settlementName   String?   @db.VarChar(191) @map("settlement_name")
   settlementType   String    @default("M") @db.VarChar(5) @map("settlement_type") // M, Q
+  liquidationDate  DateTime? @map("liquidation_date")
   paymentDate      DateTime? @map("payment_date")
   paymentPlace     String?   @db.VarChar(100) @map("payment_place")
   depositDate      DateTime? @map("deposit_date")
@@ -566,6 +567,7 @@ model PaySlipItem {
   baseAmount      Decimal? @db.Decimal(12, 2) @map("base_amount")
   amount          Decimal  @db.Decimal(12, 2) @map("amount")
   arcaConceptCode String?  @db.VarChar(10) @map("arca_concept_code")
+  formulaExplanation String? @db.Text @map("formula_explanation")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 

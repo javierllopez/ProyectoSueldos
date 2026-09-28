@@ -10,6 +10,7 @@ export const createPeriodSchema = z.object({
   settlementType: z.enum(['M', 'Q']).optional().default('M'),
   startDate: z.coerce.date().optional().nullable(),
   endDate: z.coerce.date().optional().nullable(),
+  liquidationDate: z.coerce.date().optional().nullable(),
   paymentDate: z.coerce.date().optional().nullable(),
   paymentPlace: z.string().trim().max(100).optional().nullable(),
   rubricDate: z.coerce.date().optional().nullable(),
@@ -77,7 +78,7 @@ export const updateSettingsSchema = z
   })
   .partial();
 
-export const VALID_CONCEPT_PREFIXES = new Set(['GE', 'SU', 'QU', 'SA', 'VA', 'FI', 'AJ', 'GR']);
+export const VALID_CONCEPT_PREFIXES = new Set(['SU', 'QU', 'SA', 'VA', 'FI', 'AJ', 'GR']);
 
 export const conceptBaseSchema = z.object({
   code: z
@@ -85,11 +86,17 @@ export const conceptBaseSchema = z.object({
     .trim()
     .min(1, 'El código es obligatorio')
     .max(20)
-    .regex(/^[A-Z]{2}[0-9]{4}$/, 'El código debe tener formato de 2 letras mayúsculas seguidas de 4 dígitos (ej: SU1000, GE6001, SA1000)'),
+    .regex(/^[A-Z]{2}[0-9]{4}$/, 'El código debe tener formato de 2 letras mayúsculas seguidas de 4 dígitos (ej: SU1000, SU6001, SA1000)'),
   name: z.string().trim().min(2, 'El nombre debe tener al menos 2 caracteres').max(191),
   type: z.enum(['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'AUXILIARY']),
   calculationType: z.enum(['FIXED', 'PERCENTAGE', 'FORMULA', 'MATRIX']).default('FIXED'),
-  periodType: z.string().trim().max(50).optional().default('ALL'),
+  periodType: z
+    .string()
+    .trim()
+    .max(50)
+    .refine((val) => val !== 'ALL', 'El tipo de liquidación ALL o GENERAL ya no es válido')
+    .optional()
+    .default('MONTHLY'),
   settlementType: z.string().trim().max(50).optional(),
   scope: z.enum(['GENERAL', 'INDIVIDUAL']).default('GENERAL'),
   defaultValue: z.coerce.number().default(0.0),
@@ -123,7 +130,7 @@ function validateConceptCodeRange(code, type, ctx) {
   if (!match) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: 'El código de concepto debe estar compuesto por 2 letras de prefijo y 4 dígitos (ej: SU1000, GE6001)',
+      message: 'El código de concepto debe estar compuesto por 2 letras de prefijo y 4 dígitos (ej: SU1000, SU6001)',
       path: ['code'],
     });
     return;
@@ -153,7 +160,7 @@ function validateConceptCodeRange(code, type, ctx) {
     if (codeNum < 4000 || codeNum > 5999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Los conceptos no remunerativos deben tener un número de 4 dígitos entre 4000 y 5999 (ej: SU4001, GE4001)',
+        message: 'Los conceptos no remunerativos deben tener un número de 4 dígitos entre 4000 y 5999 (ej: SU4001, QU4001)',
         path: ['code'],
       });
     }
@@ -161,7 +168,7 @@ function validateConceptCodeRange(code, type, ctx) {
     if (codeNum < 6000 || codeNum > 8999) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'Las deducciones deben tener un número de 4 dígitos entre 6000 y 8999 (ej: GE6001, SU6001)',
+        message: 'Las deducciones deben tener un número de 4 dígitos entre 6000 y 8999 (ej: SU6001, SA6001)',
         path: ['code'],
       });
     }

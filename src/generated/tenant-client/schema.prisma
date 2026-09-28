@@ -374,7 +374,7 @@ model Concept {
   name             String  @map("name")
   type             String  @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY
   calculationType  String  @default("FIXED") @map("calculation_type") // FIXED, PERCENTAGE, FORMULA, MATRIX
-  periodType       String? @default("ALL") @map("period_type") @db.VarChar(50)
+  periodType       String? @default("MONTHLY") @map("period_type") @db.VarChar(50)
   scope            String  @default("GENERAL") @map("scope") @db.VarChar(20) // GENERAL, INDIVIDUAL
   defaultValue     Decimal @default(0.00) @map("default_value") @db.Decimal(12, 2)
   noveltyDataType  String  @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE, SOLO_ASIGNACION
@@ -477,6 +477,7 @@ model PayrollPeriod {
   settlementNumber  Int       @default(1) @map("settlement_number")
   settlementName    String?   @map("settlement_name") @db.VarChar(191)
   settlementType    String    @default("M") @map("settlement_type") @db.VarChar(5) // M, Q
+  liquidationDate   DateTime? @map("liquidation_date")
   paymentDate       DateTime? @map("payment_date")
   paymentPlace      String?   @map("payment_place") @db.VarChar(100)
   depositDate       DateTime? @map("deposit_date")
@@ -554,20 +555,21 @@ model PaySlip {
 }
 
 model PaySlipItem {
-  id              String   @id @default(uuid())
-  paySlipId       String   @map("pay_slip_id")
-  conceptId       String?  @map("concept_id")
-  conceptCode     String   @map("concept_code")
-  conceptName     String   @map("concept_name")
-  type            String   @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY, EMPLOYER_CONTRIBUTION
-  units           Decimal? @map("units") @db.Decimal(12, 2)
-  unitLabel       String?  @map("unit_label") @db.VarChar(20) // Días, %, Horas, Fijo
-  rate            Decimal? @map("rate") @db.Decimal(12, 2)
-  baseAmount      Decimal? @map("base_amount") @db.Decimal(12, 2)
-  amount          Decimal  @map("amount") @db.Decimal(12, 2)
-  arcaConceptCode String?  @map("arca_concept_code") @db.VarChar(10)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id                 String   @id @default(uuid())
+  paySlipId          String   @map("pay_slip_id")
+  conceptId          String?  @map("concept_id")
+  conceptCode        String   @map("concept_code")
+  conceptName        String   @map("concept_name")
+  type               String   @map("type") // REMUNERATIVE, NON_REMUNERATIVE, DEDUCTION, AUXILIARY, EMPLOYER_CONTRIBUTION
+  units              Decimal? @map("units") @db.Decimal(12, 2)
+  unitLabel          String?  @map("unit_label") @db.VarChar(20) // Días, %, Horas, Fijo
+  rate               Decimal? @map("rate") @db.Decimal(12, 2)
+  baseAmount         Decimal? @map("base_amount") @db.Decimal(12, 2)
+  amount             Decimal  @map("amount") @db.Decimal(12, 2)
+  arcaConceptCode    String?  @map("arca_concept_code") @db.VarChar(10)
+  formulaExplanation String?  @map("formula_explanation") @db.Text
+  createdAt          DateTime @default(now()) @map("created_at")
+  updatedAt          DateTime @updatedAt @map("updated_at")
 
   paySlip PaySlip @relation(fields: [paySlipId], references: [id], onDelete: Cascade)
 

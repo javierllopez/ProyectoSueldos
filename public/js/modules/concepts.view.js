@@ -45,6 +45,7 @@ class ConceptsMethods {
     const periodTypeBadges = {
       ALL: '<span class="badge bg-secondary-lt">Todas</span>',
       MONTHLY: '<span class="badge bg-azure-lt">Mensual</span>',
+      QUINCE: '<span class="badge bg-blue-lt">Quincenal</span>',
       QUINCE_1: '<span class="badge bg-blue-lt">1ra Quincena</span>',
       QUINCE_2: '<span class="badge bg-blue-lt">2da Quincena</span>',
       SAC_1: '<span class="badge bg-indigo-lt">1er SAC</span>',
@@ -135,8 +136,8 @@ class ConceptsMethods {
 
   getPrefixForPeriodType(periodType) {
     const map = {
-      ALL: 'GE',
       MONTHLY: 'SU',
+      QUINCE: 'QU',
       QUINCE_1: 'QU',
       QUINCE_2: 'QU',
       SAC: 'SA',
@@ -147,7 +148,7 @@ class ConceptsMethods {
       ADJUSTMENT: 'AJ',
       GRATIFICATION: 'GR',
     };
-    return map[periodType] || 'GE';
+    return map[periodType] || 'SU';
   }
 
   updateConceptNormalizedCode(forcePad = false) {
@@ -240,7 +241,7 @@ class ConceptsMethods {
 
     const periodTypeSelect = document.getElementById('concept-input-period-type');
     if (periodTypeSelect) {
-      periodTypeSelect.value = 'ALL';
+      periodTypeSelect.value = 'MONTHLY';
       periodTypeSelect.disabled = false;
     }
 
@@ -256,7 +257,7 @@ class ConceptsMethods {
       codeInput.value = '';
     }
     const badge = document.getElementById('concept-prefix-badge');
-    if (badge) badge.textContent = 'GE';
+    if (badge) badge.textContent = 'SU';
 
     document.getElementById('concept-input-type').value = 'REMUNERATIVE';
     const arcaSelect = document.getElementById('concept-input-arca-code');
@@ -272,7 +273,7 @@ class ConceptsMethods {
     document.getElementById('concept-matrix-box')?.classList.add('d-none');
 
     this.populateConceptModalMatrixOptions();
-    await this.populateFormulaConceptOptions();
+    await this.populateFormulaConceptOptions('', 'MONTHLY');
     this.populateFormulaFixedValuesSelect();
     this.populateFormulaSalaryScalesSelect();
     const matrixSelect = document.getElementById('concept-select-matrix');
@@ -292,7 +293,7 @@ class ConceptsMethods {
     document.getElementById('formula-live-status')?.classList.add('d-none');
 
     // Extraer prefijo y número de 4 dígitos
-    let prefix = 'GE';
+    let prefix = 'SU';
     let numPart = '';
     const codeMatch = String(c.code).match(/^([A-Z]{2})([0-9]{4})$/);
     if (codeMatch) {
@@ -305,7 +306,7 @@ class ConceptsMethods {
 
     const editPeriodTypeSelect = document.getElementById('concept-input-period-type');
     if (editPeriodTypeSelect) {
-      editPeriodTypeSelect.value = c.periodType || 'ALL';
+      editPeriodTypeSelect.value = c.periodType || 'MONTHLY';
       editPeriodTypeSelect.disabled = true;
     }
 
@@ -376,7 +377,7 @@ class ConceptsMethods {
     }
 
     this.populateConceptModalMatrixOptions();
-    await this.populateFormulaConceptOptions(c.code);
+    await this.populateFormulaConceptOptions(c.code, c.periodType);
     this.populateFormulaFixedValuesSelect();
     this.populateFormulaSalaryScalesSelect();
     const matrixSelect = document.getElementById('concept-select-matrix');
@@ -407,7 +408,7 @@ class ConceptsMethods {
 
     if (!codeVal || !/^[A-Z]{2}[0-9]{4}$/.test(codeVal)) {
       if (alertBox) {
-        alertBox.textContent = 'El código de concepto debe tener 2 letras de prefijo y 4 dígitos (Ej. SU1000, GE6001). Ingrese un número de concepto válido.';
+        alertBox.textContent = 'El código de concepto debe tener 2 letras de prefijo y 4 dígitos (Ej. SU1000, SU6001). Ingrese un número de concepto válido.';
         alertBox.classList.remove('d-none');
       }
       return;
@@ -423,7 +424,7 @@ class ConceptsMethods {
       calculationType: calcType,
       calculationOrder: numericPart,
       noveltyDataType: document.getElementById('concept-input-novelty-type')?.value || 'CANTIDAD',
-      periodType: document.getElementById('concept-input-period-type')?.value || 'ALL',
+      periodType: document.getElementById('concept-input-period-type')?.value || 'MONTHLY',
       isPersistent: document.getElementById('concept-input-is-persistent')?.value === 'true',
       defaultValue: Number(document.getElementById('concept-input-default-value').value) || 0,
       formula: calcType === 'FORMULA' ? document.getElementById('concept-input-formula').value.trim() : null,
@@ -509,9 +510,15 @@ class ConceptsMethods {
 
     if (btnInsertConcept) {
       btnInsertConcept.addEventListener('click', () => {
-        const target = conceptSelect?.value;
+        let target = conceptSelect?.value;
         const metric = metricSelect?.value || 'CURRENT';
-        if (!target) return;
+        if (!target) {
+          if (metric && metric.includes('_ORD')) {
+            target = 'TOTAL_REMUNERATIVO';
+          } else {
+            return;
+          }
+        }
 
         let token = '';
         if (metric === 'CURRENT') {
@@ -545,6 +552,14 @@ class ConceptsMethods {
     if (codeInput) {
       codeInput.addEventListener('input', (e) => {
         this.populateFormulaConceptOptions(e.target.value.trim());
+      });
+    }
+
+    const periodTypeSelect = document.getElementById('concept-input-period-type');
+    if (periodTypeSelect) {
+      periodTypeSelect.addEventListener('change', (e) => {
+        const curCode = document.getElementById('concept-input-code')?.value?.trim() || '';
+        this.populateFormulaConceptOptions(curCode, e.target.value);
       });
     }
   }
@@ -604,7 +619,7 @@ class ConceptsMethods {
     }
   }
 
-  async populateFormulaConceptOptions(currentCode = '') {
+  async populateFormulaConceptOptions(currentCode = '', periodType = '') {
     const group = document.getElementById('formula-concept-options-group');
     if (!group) return;
 
@@ -616,8 +631,21 @@ class ConceptsMethods {
       list = this.payrollConcepts || [];
     }
 
+    const pType = periodType || document.getElementById('concept-input-period-type')?.value || 'MONTHLY';
+    const targetPrefix = this.getPrefixForPeriodType(pType);
+
     const available = (list || [])
-      .filter((c) => c.code !== currentCode && c.isActive !== false && !c.deletedAt)
+      .filter((c) => {
+        if (c.code === currentCode) return false;
+        if (c.isActive === false || c.deletedAt) return false;
+
+        const cType = c.periodType || 'MONTHLY';
+        if (cType === pType) return true;
+        if (c.code && c.code.startsWith(targetPrefix)) return true;
+        if (pType === 'QUINCE' && (cType === 'QUINCE_1' || cType === 'QUINCE_2' || cType === 'QUINCE')) return true;
+        if (pType === 'SAC' && (cType === 'SAC_1' || cType === 'SAC_2' || cType === 'SAC')) return true;
+        return false;
+      })
       .sort((a, b) => {
         const numA = parseInt(String(a.code).replace(/\D/g, ''), 10) || 0;
         const numB = parseInt(String(b.code).replace(/\D/g, ''), 10) || 0;
@@ -625,7 +653,7 @@ class ConceptsMethods {
       });
 
     if (available.length === 0) {
-      group.innerHTML = '<option value="" disabled>No hay otros conceptos registrados</option>';
+      group.innerHTML = `<option value="" disabled>No hay otros conceptos para ${escapeHtml(pType)} (${escapeHtml(targetPrefix)})</option>`;
       return;
     }
 

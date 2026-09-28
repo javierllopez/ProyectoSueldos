@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { evaluateFormula, evaluateSafeExpression } from './formulaEvaluator.js';
+import { evaluateFormula, evaluateSafeExpression, substituteTokens, resolveFormulaExpression } from './formulaEvaluator.js';
 import { hoursToDecimal } from '../../utils/timeFormat.js';
 
 export { evaluateSafeExpression } from './formulaEvaluator.js';
@@ -82,12 +82,17 @@ export function numberToSpanishWords(amount) {
  */
 export function evaluateMatrix(matrixObjOrData, contextValues = {}) {
   const createMatrixResult = (val, type = 'AMOUNT') => {
-    const num = Number(val !== undefined && val !== null ? val : 0);
-    const safeNum = isNaN(num) ? 0 : num;
+    let num = Number(val !== undefined && val !== null ? val : 0);
+    let safeNum = isNaN(num) ? 0 : num;
+    const normType = String(type || 'AMOUNT').toUpperCase();
+    if (normType === 'QUANTITY') {
+      safeNum = Math.round(safeNum);
+    }
     const res = Object.assign(Object(safeNum), {
       value: safeNum,
-      valueType: String(type || 'AMOUNT').toUpperCase(),
-      isPercentage: String(type || 'AMOUNT').toUpperCase() === 'PERCENTAGE',
+      valueType: normType,
+      isPercentage: normType === 'PERCENTAGE',
+      isQuantity: normType === 'QUANTITY',
     });
     return res;
   };
@@ -497,8 +502,61 @@ export function calculateEmployeePayroll({
     ];
   }
 
-  const periodDate = period.paymentDate ? new Date(period.paymentDate) : new Date(period.year, period.month - 1, 28);
-  const seniority = calculateSeniority(employee.hireDate, periodDate);
+  // Fecha de referencia primaria: Fecha de Liquidación del período (o fallback seguro)
+  const parseSafeDate = (val) => {
+    if (!val) return null;
+    if (typeof val === 'string') {
+      const match = val.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (match) {
+        return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]), 12, 0, 0);
+      }
+    }
+    if (val instanceof Date && !isNaN(val.getTime())) {
+      if (val.getUTCHours() === 0 && val.getUTCMinutes() === 0 && val.getHours() !== 0) {
+        return new Date(val.getUTCFullYear(), val.getUTCMonth(), val.getUTCDate(), 12, 0, 0);
+      }
+      return new Date(val.getFullYear(), val.getMonth(), val.getDate(), 12, 0, 0);
+    }
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? null : new Date(d.getFullYear(), d.getMonth(), d.getDate(), 12, 0, 0);
+  };
+
+  let liquidationDate = parseSafeDate(period.liquidationDate);
+  if (!liquidationDate) {
+    if (period.periodType === 'QUINCE_1') {
+      liquidationDate = new Date(period.year, period.month - 1, 15, 12, 0, 0);
+    } else {
+      liquidationDate = period.paymentDate ? parseSafeDate(period.paymentDate) : new Date(period.year, period.month, 0, 12, 0, 0);
+    }
+  }
+  const periodDate = liquidationDate;
+  const seniority = calculateSeniority(employee.hireDate, liquidationDate);
+
+  const formatDateIso = (d) => {
+    if (!d) return '';
+    if (typeof d === 'string') {
+      const match = d.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+      if (match) return `${match[1]}-${String(match[2]).padStart(2, '0')}-${String(match[3]).padStart(2, '0')}`;
+    }
+    const dateObj = parseSafeDate(d);
+    if (!dateObj || isNaN(dateObj.getTime())) return '';
+    const yyyy = dateObj.getFullYear();
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    const dd = String(dateObj.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
+  const liqDateStr = formatDateIso(liquidationDate);
+  const liqYear = liquidationDate.getFullYear();
+  const liqMonth = liquidationDate.getMonth() + 1;
+  const isSecondSemester = liqMonth > 6;
+  const semesterStart = isSecondSemester ? `${liqYear}-07-01` : `${liqYear}-01-01`;
+  const semesterEnd = isSecondSemester ? `${liqYear}-12-31` : `${liqYear}-06-30`;
+  const hireDateStr = formatDateIso(employee.hireDate);
+  const termDateStr = formatDateIso(employee.terminationDate);
+  const paymentDateStr = formatDateIso(period.paymentDate);
+  const monthStartStr = `${liqYear}-${String(liqMonth).padStart(2, '0')}-01`;
+  const monthEndStr = formatDateIso(new Date(liqYear, liqMonth, 0));
 
   // Pre-indexación de catálogos salariales O(1)
   let {
@@ -657,6 +715,22 @@ export function calculateEmployeePayroll({
     TOTAL_BRUTO: 0,
     BASE_OBRA_SOCIAL: 0,
     MEJOR_REMUN: 0,
+    FECHA_LIQUIDACION: liqDateStr,
+    LIQUIDATION_DATE: liqDateStr,
+    FECHA_INGRESO: hireDateStr,
+    FECHA_EGRESO: termDateStr,
+    FECHA_BAJA: termDateStr,
+    FECHA_PAGO: paymentDateStr,
+    INICIO_SEMESTRE: semesterStart,
+    INICIO_SEMESTRE_1: `${liqYear}-01-01`,
+    INICIO_SEMESTRE_2: `${liqYear}-07-01`,
+    FIN_SEMESTRE: semesterEnd,
+    FIN_SEMESTRE_1: `${liqYear}-06-30`,
+    FIN_SEMESTRE_2: `${liqYear}-12-31`,
+    INICIO_MES: monthStartStr,
+    FIN_MES: monthEndStr,
+    INICIO_ANIO: `${liqYear}-01-01`,
+    FIN_ANIO: `${liqYear}-12-31`,
     CURRENT_PERIOD: period,
     inputsMap,
     assignedConceptsMap,
@@ -672,6 +746,7 @@ export function calculateEmployeePayroll({
   }
 
   const calculatedItems = [];
+  context.calculatedItems = calculatedItems;
 
   // Función interna para evaluar un concepto
   function resolveConceptValue(concept, inputOverride) {
@@ -722,6 +797,9 @@ export function calculateEmployeePayroll({
           const baseVal = Number(context[inputVar]) || context.BASICO || context[basicCode] || context.SU1000 || context['1000'] || context['100'] || 0;
           return baseVal * (Number(matRes.value) / 100);
         }
+        if (matRes && matRes.isQuantity) {
+          return Math.round(Number(matRes.value !== undefined ? matRes.value : matRes));
+        }
         return Number(matRes.value !== undefined ? matRes.value : matRes);
       }
       return Number(concept.defaultValue || 0);
@@ -731,7 +809,13 @@ export function calculateEmployeePayroll({
       const pct = Number(concept.defaultValue || 0) / 100;
       // Si es una deducción, por defecto aplica sobre el Total Remunerativo acumulado
       if (concept.type === 'DEDUCTION') {
-        const isObraSocial = concept.code === 'GE6003' || concept.code === '8002' || concept.code === '6003' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
+        const isObraSocial =
+          /^(SU|QU|SA|VA|FI|GE)6003$/.test(concept.code) ||
+          concept.code === '8002' ||
+          concept.code === '6003' ||
+          concept.code === '303' ||
+          concept.arcaConceptCode === '810002' ||
+          /obra\s*social/i.test(concept.name);
         if (isObraSocial) {
           return context.BASE_OBRA_SOCIAL * pct;
         }
@@ -770,13 +854,75 @@ export function calculateEmployeePayroll({
     return Number(concept.defaultValue || 0);
   }
 
+  // --- Helper: Resuelve la explicación de la fórmula con los valores numéricos calculados ---
+  const resolveFormulaExplanation = (concept, inputOverride, baseAmount = null) => {
+    const calcType = concept.calculationType || 'FIXED';
+    if (inputOverride?.amount !== undefined && inputOverride?.amount !== null && String(inputOverride.amount).trim() !== '' && calcType !== 'FORMULA') {
+      return `Novedad ingresada: $ ${Number(inputOverride.amount).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+    }
+    if (calcType === 'FORMULA' && concept.formula) {
+      context.CURRENT_CONCEPT_CODE = concept.code;
+      context.CURRENT_PERIOD = period;
+      context.defaultValue = Number(concept.defaultValue || 0);
+      context.VALOR_BASE = Number(concept.defaultValue || 0);
+      context.VALOR_DEFECTO = context.VALOR_BASE;
+      context.DEFECTO = context.VALOR_BASE;
+      return resolveFormulaExpression(
+        concept.formula,
+        context,
+        historicalData,
+        (matrixKey, ctx) => {
+          const mat = findMatrix(matrixKey);
+          if (!mat) return 0;
+          const matRes = evaluateMatrix(mat, ctx);
+          return Number(matRes?.value !== undefined ? matRes.value : matRes) || 0;
+        },
+        (fixedKey) => findFixedValue(fixedKey),
+        (scaleKey) => {
+          const s = findSalaryScale(scaleKey);
+          return s !== null && s !== undefined ? s : 0;
+        }
+      );
+    }
+    if (calcType === 'PERCENTAGE') {
+      const pct = Number(concept.defaultValue || 0);
+      const base = baseAmount !== null && baseAmount !== undefined ? baseAmount : (context.BASICO || context[basicCode] || 0);
+      return `${Number(base || 0).toLocaleString('es-AR', { minimumFractionDigits: 2 })} * ${pct}%`;
+    }
+    if (calcType === 'MATRIX') {
+      let targetMatrix = null;
+      if (concept.matrixId && matricesMap.has(concept.matrixId)) {
+        targetMatrix = matricesMap.get(concept.matrixId);
+      } else if (concept.matrix) {
+        targetMatrix = concept.matrix;
+      } else if (concept.matrixData) {
+        targetMatrix = concept.matrixData;
+      }
+      if (targetMatrix) {
+        const inputVar = targetMatrix.inputConceptCode || targetMatrix.keyVariable || 'DRIVER';
+        const driverVal = context[inputVar] !== undefined ? context[inputVar] : 0;
+        const matRes = evaluateMatrix(targetMatrix, context);
+        if (matRes?.isPercentage) {
+          const baseVal = Number(context[inputVar]) || context.BASICO || context[basicCode] || 0;
+          return `Matriz ${targetMatrix.code} (${inputVar}=${driverVal} -> ${matRes.value}%) * ${Number(baseVal).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+        }
+        return `Matriz ${targetMatrix.code} (${inputVar}=${driverVal} -> ${matRes?.value !== undefined ? matRes.value : 0})`;
+      }
+    }
+    return null;
+  };
+
   // --- Helper: Verifica si un concepto aplica según el tipo de liquidación del período ---
   const isConceptApplicable = (c) => {
-    const cType = c.periodType || 'ALL';
-    if (cType === 'ALL' || !cType) return true;
+    const cType = c.periodType || 'MONTHLY';
+    if (cType === 'ALL') return true;
     const pType = period?.periodType || 'MONTHLY';
     if (cType === pType) return true;
-    if (cType === 'SAC' && (pType === 'SAC_1' || pType === 'SAC_2')) return true;
+    if ((cType === 'MONTHLY' || cType === 'MENSUAL') && (pType === 'MONTHLY' || pType === 'MENSUAL')) return true;
+    if ((cType === 'SAC' || cType === 'AGUINALDO') && (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC')) return true;
+    if ((cType === 'QUINCE' || cType === 'QUINCENA') && (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE')) return true;
+    if ((cType === 'VACATIONS' || cType === 'VACACIONES') && (pType === 'VACATIONS' || pType === 'VACACIONES')) return true;
+    if ((cType === 'FINAL' || cType === 'LIQUIDACION_FINAL') && (pType === 'FINAL' || pType === 'LIQUIDACION_FINAL')) return true;
     return false;
   };
 
@@ -795,6 +941,12 @@ export function calculateEmployeePayroll({
     const isBasicB = b.code === basicCode || b.code === 'SU1000' || b.code === '1000';
     if (isBasicA && !isBasicB) return -1;
     if (!isBasicA && isBasicB) return 1;
+
+    // Conceptos de haberes (remunerativos, no remunerativos y auxiliares) deben calcularse siempre antes que las deducciones
+    const isDedA = a.type === 'DEDUCTION';
+    const isDedB = b.type === 'DEDUCTION';
+    if (!isDedA && isDedB) return -1;
+    if (isDedA && !isDedB) return 1;
 
     // calculationOrder explícito si difieren
     const orderA = a.calculationOrder !== undefined && a.calculationOrder !== null ? Number(a.calculationOrder) : 100;
@@ -871,15 +1023,22 @@ export function calculateEmployeePayroll({
     if ((isDirector || isIntern) && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
       const isStatutoryDeduction =
         concept.arcaConceptCode?.startsWith('810') ||
-        concept.code === 'GE6001' ||
-        concept.code === 'GE6002' ||
-        concept.code === 'GE6003' ||
-        concept.code === 'GE6004' ||
+        /^(SU|QU|SA|VA|FI|GE)600[1-4]$/.test(concept.code) ||
+        concept.code === '6001' ||
+        concept.code === '6002' ||
+        concept.code === '6003' ||
+        concept.code === '6004' ||
         /jubilaci|sipa|inssj?yp|pami|19\.?032|obra\s*social|sindic/i.test(concept.name);
       if (isStatutoryDeduction) continue;
     }
 
-    const isUnionConcept = concept.arcaConceptCode === '810004' || /sindic/i.test(concept.name) || concept.code === 'GE6004' || concept.code === '8004' || concept.code === '6004' || concept.code === '6005' || concept.code === '304';
+    const isUnionConcept =
+      concept.arcaConceptCode === '810004' ||
+      /sindic/i.test(concept.name) ||
+      /^(SU|QU|SA|VA|FI|GE)(6004|8004)$/.test(concept.code) ||
+      concept.code === '6004' ||
+      concept.code === '6005' ||
+      concept.code === '304';
     if (concept.type === 'DEDUCTION' && isUnionConcept && (!employee.unionId || isIntern || isDirector) && !inputOverride && !assignedRecord) {
       continue;
     }
@@ -1022,6 +1181,7 @@ export function calculateEmployeePayroll({
         amount: finalAmount,
         calculationOrder: concept.calculationOrder || 50,
         formula: concept.formula || null,
+        formulaExplanation: resolveFormulaExplanation(concept, inputOverride, null),
         arcaConceptCode: null,
       });
     } else if (concept.type === 'REMUNERATIVE') {
@@ -1067,6 +1227,7 @@ export function calculateEmployeePayroll({
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 100,
           formula: concept.formula || null,
+          formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false)),
           arcaConceptCode: concept.arcaConceptCode || '110000',
         });
       }
@@ -1105,11 +1266,18 @@ export function calculateEmployeePayroll({
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 150,
           formula: concept.formula || null,
+          formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, false, false, isInternStimulus)),
           arcaConceptCode: concept.arcaConceptCode || '550000',
         });
       }
     } else if (concept.type === 'DEDUCTION') {
-      const isObraSocial = concept.code === 'GE6003' || concept.code === '8002' || concept.code === '6003' || concept.code === '6004' || concept.code === '303' || concept.arcaConceptCode === '810002' || /obra\s*social/i.test(concept.name);
+      const isObraSocial =
+        /^(SU|QU|SA|VA|FI|GE)6003$/.test(concept.code) ||
+        concept.code === '8002' ||
+        concept.code === '6003' ||
+        concept.code === '303' ||
+        concept.arcaConceptCode === '810002' ||
+        /obra\s*social/i.test(concept.name);
       let baseForDeduction = isObraSocial ? context.BASE_OBRA_SOCIAL : context.TOTAL_REMUNERATIVO;
 
       const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
@@ -1153,6 +1321,7 @@ export function calculateEmployeePayroll({
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 200,
           formula: concept.formula || null,
+          formulaExplanation: resolveFormulaExplanation(concept, inputOverride, cappedBase > 0 ? cappedBase : baseForDeduction),
           arcaConceptCode: concept.arcaConceptCode || '810000',
         });
       }

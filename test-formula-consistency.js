@@ -159,9 +159,10 @@ const allConcepts = [
   },
   {
     id: 'c-6001',
-    code: 'GE6001',
+    code: 'SU6001',
     name: 'Jubilación SIPA Ley 24.241',
     type: 'DEDUCTION',
+    periodType: 'MONTHLY',
     scope: 'GENERAL',
     calculationType: 'FORMULA',
     formula: '[TOTAL_REMUNERATIVO] * 0.11',

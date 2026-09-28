@@ -26866,6 +26866,7 @@ export namespace Prisma {
     settlementNumber: number | null
     settlementName: string | null
     settlementType: string | null
+    liquidationDate: Date | null
     paymentDate: Date | null
     paymentPlace: string | null
     depositDate: Date | null
@@ -26888,6 +26889,7 @@ export namespace Prisma {
     settlementNumber: number | null
     settlementName: string | null
     settlementType: string | null
+    liquidationDate: Date | null
     paymentDate: Date | null
     paymentPlace: string | null
     depositDate: Date | null
@@ -26910,6 +26912,7 @@ export namespace Prisma {
     settlementNumber: number
     settlementName: number
     settlementType: number
+    liquidationDate: number
     paymentDate: number
     paymentPlace: number
     depositDate: number
@@ -26952,6 +26955,7 @@ export namespace Prisma {
     settlementNumber?: true
     settlementName?: true
     settlementType?: true
+    liquidationDate?: true
     paymentDate?: true
     paymentPlace?: true
     depositDate?: true
@@ -26974,6 +26978,7 @@ export namespace Prisma {
     settlementNumber?: true
     settlementName?: true
     settlementType?: true
+    liquidationDate?: true
     paymentDate?: true
     paymentPlace?: true
     depositDate?: true
@@ -26996,6 +27001,7 @@ export namespace Prisma {
     settlementNumber?: true
     settlementName?: true
     settlementType?: true
+    liquidationDate?: true
     paymentDate?: true
     paymentPlace?: true
     depositDate?: true
@@ -27105,6 +27111,7 @@ export namespace Prisma {
     settlementNumber: number
     settlementName: string | null
     settlementType: string
+    liquidationDate: Date | null
     paymentDate: Date | null
     paymentPlace: string | null
     depositDate: Date | null
@@ -27146,6 +27153,7 @@ export namespace Prisma {
     settlementNumber?: boolean
     settlementName?: boolean
     settlementType?: boolean
+    liquidationDate?: boolean
     paymentDate?: boolean
     paymentPlace?: boolean
     depositDate?: boolean
@@ -27173,6 +27181,7 @@ export namespace Prisma {
     settlementNumber?: boolean
     settlementName?: boolean
     settlementType?: boolean
+    liquidationDate?: boolean
     paymentDate?: boolean
     paymentPlace?: boolean
     depositDate?: boolean
@@ -27187,7 +27196,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
+  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "liquidationDate" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
   export type PayrollPeriodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
     periodNovelties?: boolean | PayrollPeriod$periodNoveltiesArgs<ExtArgs>
@@ -27208,6 +27217,7 @@ export namespace Prisma {
       settlementNumber: number
       settlementName: string | null
       settlementType: string
+      liquidationDate: Date | null
       paymentDate: Date | null
       paymentPlace: string | null
       depositDate: Date | null
@@ -27598,6 +27608,7 @@ export namespace Prisma {
     readonly settlementNumber: FieldRef<"PayrollPeriod", 'Int'>
     readonly settlementName: FieldRef<"PayrollPeriod", 'String'>
     readonly settlementType: FieldRef<"PayrollPeriod", 'String'>
+    readonly liquidationDate: FieldRef<"PayrollPeriod", 'DateTime'>
     readonly paymentDate: FieldRef<"PayrollPeriod", 'DateTime'>
     readonly paymentPlace: FieldRef<"PayrollPeriod", 'String'>
     readonly depositDate: FieldRef<"PayrollPeriod", 'DateTime'>
@@ -29518,6 +29529,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal | null
     arcaConceptCode: string | null
+    formulaExplanation: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -29535,6 +29547,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal | null
     arcaConceptCode: string | null
+    formulaExplanation: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -29552,6 +29565,7 @@ export namespace Prisma {
     baseAmount: number
     amount: number
     arcaConceptCode: number
+    formulaExplanation: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -29585,6 +29599,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    formulaExplanation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -29602,6 +29617,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    formulaExplanation?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -29619,6 +29635,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    formulaExplanation?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -29723,6 +29740,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal
     arcaConceptCode: string | null
+    formulaExplanation: string | null
     createdAt: Date
     updatedAt: Date
     _count: PaySlipItemCountAggregateOutputType | null
@@ -29759,6 +29777,7 @@ export namespace Prisma {
     baseAmount?: boolean
     amount?: boolean
     arcaConceptCode?: boolean
+    formulaExplanation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
@@ -29779,11 +29798,12 @@ export namespace Prisma {
     baseAmount?: boolean
     amount?: boolean
     arcaConceptCode?: boolean
+    formulaExplanation?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
+  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "formulaExplanation" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
   export type PaySlipItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
   }
@@ -29806,6 +29826,7 @@ export namespace Prisma {
       baseAmount: Prisma.Decimal | null
       amount: Prisma.Decimal
       arcaConceptCode: string | null
+      formulaExplanation: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["paySlipItem"]>
@@ -30190,6 +30211,7 @@ export namespace Prisma {
     readonly baseAmount: FieldRef<"PaySlipItem", 'Decimal'>
     readonly amount: FieldRef<"PaySlipItem", 'Decimal'>
     readonly arcaConceptCode: FieldRef<"PaySlipItem", 'String'>
+    readonly formulaExplanation: FieldRef<"PaySlipItem", 'String'>
     readonly createdAt: FieldRef<"PaySlipItem", 'DateTime'>
     readonly updatedAt: FieldRef<"PaySlipItem", 'DateTime'>
   }
@@ -34286,6 +34308,7 @@ export namespace Prisma {
     settlementNumber: 'settlementNumber',
     settlementName: 'settlementName',
     settlementType: 'settlementType',
+    liquidationDate: 'liquidationDate',
     paymentDate: 'paymentDate',
     paymentPlace: 'paymentPlace',
     depositDate: 'depositDate',
@@ -34359,6 +34382,7 @@ export namespace Prisma {
     baseAmount: 'baseAmount',
     amount: 'amount',
     arcaConceptCode: 'arcaConceptCode',
+    formulaExplanation: 'formulaExplanation',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -34765,7 +34789,8 @@ export namespace Prisma {
     conceptName: 'conceptName',
     type: 'type',
     unitLabel: 'unitLabel',
-    arcaConceptCode: 'arcaConceptCode'
+    arcaConceptCode: 'arcaConceptCode',
+    formulaExplanation: 'formulaExplanation'
   };
 
   export type PaySlipItemOrderByRelevanceFieldEnum = (typeof PaySlipItemOrderByRelevanceFieldEnum)[keyof typeof PaySlipItemOrderByRelevanceFieldEnum]
@@ -36909,6 +36934,7 @@ export namespace Prisma {
     settlementNumber?: IntFilter<"PayrollPeriod"> | number
     settlementName?: StringNullableFilter<"PayrollPeriod"> | string | null
     settlementType?: StringFilter<"PayrollPeriod"> | string
+    liquidationDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     paymentDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     paymentPlace?: StringNullableFilter<"PayrollPeriod"> | string | null
     depositDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
@@ -36933,6 +36959,7 @@ export namespace Prisma {
     settlementNumber?: SortOrder
     settlementName?: SortOrderInput | SortOrder
     settlementType?: SortOrder
+    liquidationDate?: SortOrderInput | SortOrder
     paymentDate?: SortOrderInput | SortOrder
     paymentPlace?: SortOrderInput | SortOrder
     depositDate?: SortOrderInput | SortOrder
@@ -36962,6 +36989,7 @@ export namespace Prisma {
     settlementNumber?: IntFilter<"PayrollPeriod"> | number
     settlementName?: StringNullableFilter<"PayrollPeriod"> | string | null
     settlementType?: StringFilter<"PayrollPeriod"> | string
+    liquidationDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     paymentDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     paymentPlace?: StringNullableFilter<"PayrollPeriod"> | string | null
     depositDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
@@ -36986,6 +37014,7 @@ export namespace Prisma {
     settlementNumber?: SortOrder
     settlementName?: SortOrderInput | SortOrder
     settlementType?: SortOrder
+    liquidationDate?: SortOrderInput | SortOrder
     paymentDate?: SortOrderInput | SortOrder
     paymentPlace?: SortOrderInput | SortOrder
     depositDate?: SortOrderInput | SortOrder
@@ -37016,6 +37045,7 @@ export namespace Prisma {
     settlementNumber?: IntWithAggregatesFilter<"PayrollPeriod"> | number
     settlementName?: StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
     settlementType?: StringWithAggregatesFilter<"PayrollPeriod"> | string
+    liquidationDate?: DateTimeNullableWithAggregatesFilter<"PayrollPeriod"> | Date | string | null
     paymentDate?: DateTimeNullableWithAggregatesFilter<"PayrollPeriod"> | Date | string | null
     paymentPlace?: StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
     depositDate?: DateTimeNullableWithAggregatesFilter<"PayrollPeriod"> | Date | string | null
@@ -37274,6 +37304,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     paySlip?: XOR<PaySlipScalarRelationFilter, PaySlipWhereInput>
@@ -37292,6 +37323,7 @@ export namespace Prisma {
     baseAmount?: SortOrderInput | SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
+    formulaExplanation?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     paySlip?: PaySlipOrderByWithRelationInput
@@ -37314,6 +37346,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     paySlip?: XOR<PaySlipScalarRelationFilter, PaySlipWhereInput>
@@ -37332,6 +37365,7 @@ export namespace Prisma {
     baseAmount?: SortOrderInput | SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
+    formulaExplanation?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PaySlipItemCountOrderByAggregateInput
@@ -37357,6 +37391,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableWithAggregatesFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalWithAggregatesFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
+    formulaExplanation?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PaySlipItem"> | Date | string
   }
@@ -40058,6 +40093,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -40082,6 +40118,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -40106,6 +40143,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40130,6 +40168,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40154,6 +40193,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -40176,6 +40216,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40198,6 +40239,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40510,6 +40552,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlip: PaySlipCreateNestedOneWithoutItemsInput
@@ -40528,6 +40571,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40544,6 +40588,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlip?: PaySlipUpdateOneRequiredWithoutItemsNestedInput
@@ -40562,6 +40607,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40579,6 +40625,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -40595,6 +40642,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -40612,6 +40660,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -42654,6 +42703,7 @@ export namespace Prisma {
     settlementNumber?: SortOrder
     settlementName?: SortOrder
     settlementType?: SortOrder
+    liquidationDate?: SortOrder
     paymentDate?: SortOrder
     paymentPlace?: SortOrder
     depositDate?: SortOrder
@@ -42685,6 +42735,7 @@ export namespace Prisma {
     settlementNumber?: SortOrder
     settlementName?: SortOrder
     settlementType?: SortOrder
+    liquidationDate?: SortOrder
     paymentDate?: SortOrder
     paymentPlace?: SortOrder
     depositDate?: SortOrder
@@ -42707,6 +42758,7 @@ export namespace Prisma {
     settlementNumber?: SortOrder
     settlementName?: SortOrder
     settlementType?: SortOrder
+    liquidationDate?: SortOrder
     paymentDate?: SortOrder
     paymentPlace?: SortOrder
     depositDate?: SortOrder
@@ -42957,6 +43009,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    formulaExplanation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42981,6 +43034,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    formulaExplanation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -42998,6 +43052,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    formulaExplanation?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -48682,6 +48737,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -48705,6 +48761,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -48840,6 +48897,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -48856,6 +48914,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -48944,6 +49003,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48967,6 +49027,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -49123,6 +49184,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
   }
@@ -49556,6 +49618,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -49579,6 +49642,7 @@ export namespace Prisma {
     settlementNumber?: number
     settlementName?: string | null
     settlementType?: string
+    liquidationDate?: Date | string | null
     paymentDate?: Date | string | null
     paymentPlace?: string | null
     depositDate?: Date | string | null
@@ -49800,6 +49864,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -49823,6 +49888,7 @@ export namespace Prisma {
     settlementNumber?: IntFieldUpdateOperationsInput | number
     settlementName?: NullableStringFieldUpdateOperationsInput | string | null
     settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
     depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52640,6 +52706,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    formulaExplanation?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -52656,6 +52723,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52672,6 +52740,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -52688,6 +52757,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

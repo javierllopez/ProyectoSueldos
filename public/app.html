@@ -5407,14 +5407,20 @@
 
             <div class="row g-3 mb-3">
               <div class="col-md-6">
+                <label class="form-label required fw-bold">Fecha de Liquidación</label>
+                <input type="date" class="form-control" id="period-input-liquidation-date" required />
+                <div class="form-hint">Fecha de referencia para antigüedad, proporcionales y fórmulas.</div>
+              </div>
+              <div class="col-md-6">
                 <label class="form-label fw-bold">Fecha de Pago</label>
                 <input type="date" class="form-control" id="period-input-payment-date" />
                 <div class="form-hint">Fecha oficial consignada en los recibos de haberes.</div>
               </div>
-              <div class="col-md-6">
-                <label class="form-label fw-bold">Lugar de Pago</label>
-                <input type="text" class="form-control" id="period-input-payment-place" placeholder="Ej. Casa Central / Transferencia CBU" value="Casa Central" />
-              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold">Lugar de Pago</label>
+              <input type="text" class="form-control" id="period-input-payment-place" placeholder="Ej. Casa Central / Transferencia CBU" value="Casa Central" />
             </div>
 
             <div class="row g-3">
@@ -5465,13 +5471,13 @@
               <div class="col-md-3">
                 <label class="form-label required fw-bold">Tipo de Liquidación</label>
                 <select class="form-select" id="concept-input-period-type" required>
-                  <option value="ALL" selected>Todas las liquidaciones (GE)</option>
-                  <option value="MONTHLY">Mensual (SU)</option>
+                  <option value="MONTHLY" selected>Mensual (SU)</option>
+                  <option value="QUINCE">Quincenal - Ambas Quincenas (QU)</option>
                   <option value="QUINCE_1">1ra Quincena (QU)</option>
                   <option value="QUINCE_2">2da Quincena (QU)</option>
+                  <option value="SAC">Ambos SAC - Aguinaldo (SA)</option>
                   <option value="SAC_1">1er SAC - Junio (SA)</option>
                   <option value="SAC_2">2do SAC - Diciembre (SA)</option>
-                  <option value="SAC">Ambos SAC - Aguinaldo (SA)</option>
                   <option value="VACATIONS">Vacaciones (VA)</option>
                   <option value="FINAL">Liquidación Final (FI)</option>
                 </select>
@@ -5485,9 +5491,9 @@
               <div class="col-md-3">
                 <div class="d-flex align-items-center justify-content-between mb-1">
                   <label class="form-label required fw-bold mb-0">Código Final</label>
-                  <span class="badge bg-purple-lt font-monospace text-uppercase px-2" id="concept-prefix-badge" title="Prefijo asignado">GE</span>
+                  <span class="badge bg-blue-lt font-monospace text-uppercase px-2" id="concept-prefix-badge" title="Prefijo asignado">SU</span>
                 </div>
-                <input type="text" class="form-control font-monospace text-uppercase fw-bold bg-light" id="concept-input-code" readonly required placeholder="GE1000" />
+                <input type="text" class="form-control font-monospace text-uppercase fw-bold bg-light" id="concept-input-code" readonly required placeholder="SU1000" />
                 <div class="form-hint" style="font-size: 0.68rem;">Normalizado AA0000</div>
               </div>
               <div class="col-md-4">
@@ -5647,6 +5653,16 @@
                           <option value="JORNADA_HORAS_MENSUALES">[JORNADA_HORAS_MENSUALES] Horas Mensuales de la Jornada Asignada</option>
                           <option value="JORNADA_DIAS_MENSUALES">[JORNADA_DIAS_MENSUALES] Días Mensuales de la Jornada Asignada</option>
                         </optgroup>
+                        <optgroup label="Fechas de Nómina y Período">
+                          <option value="FECHA_LIQUIDACION">[FECHA_LIQUIDACION] Fecha de Liquidación / Corte</option>
+                          <option value="FECHA_INGRESO">[FECHA_INGRESO] Fecha de Ingreso del Colaborador</option>
+                          <option value="INICIO_SEMESTRE">[INICIO_SEMESTRE] Inicio Semestre Actual (01/01 o 01/07)</option>
+                          <option value="INICIO_SEMESTRE_1">[INICIO_SEMESTRE_1] Inicio 1er Semestre (01/01)</option>
+                          <option value="INICIO_SEMESTRE_2">[INICIO_SEMESTRE_2] Inicio 2do Semestre (01/07)</option>
+                          <option value="FIN_SEMESTRE">[FIN_SEMESTRE] Fin Semestre Actual (30/06 o 31/12)</option>
+                          <option value="FECHA_EGRESO">[FECHA_EGRESO] Fecha de Egreso / Baja</option>
+                          <option value="FECHA_PAGO">[FECHA_PAGO] Fecha de Pago del Período</option>
+                        </optgroup>
                         <optgroup label="Conceptos de Nómina Disponibles" id="formula-concept-options-group">
                           <!-- Llenado dinámico desde app.js -->
                         </optgroup>
@@ -5659,6 +5675,31 @@
                       </label>
                       <select class="form-select form-select-sm" id="formula-select-concept-metric">
                         <option value="CURRENT" selected>Valor Período Actual [CODIGO]</option>
+                        <optgroup label="Remuneración Habitual / Ordinaria (Excluye SAC, Vacaciones y Finales)">
+                          <option value="MEJOR_12M_ORD">Mayor Remuneración Habitual 12 Meses (Base Art. 245 LCT) [MEJOR_12M_ORD:...]</option>
+                          <option value="MEJOR_12M_ANT_ORD">Mayor Remuneración Habitual 12M Ant. [MEJOR_12M_ANT_ORD:...]</option>
+                          <option value="ACUM_12M_ORD">Acumulado Habitual 12 Meses (con actual) [ACUM_12M_ORD:...]</option>
+                          <option value="ACUM_12M_ANT_ORD">Acumulado Habitual 12M Anteriores cerrados [ACUM_12M_ANT_ORD:...]</option>
+                          <option value="PROM_12M_ORD">Promedio Habitual 12 Meses (div. liq. reales) [PROM_12M_ORD:...]</option>
+                          <option value="PROM_FIJO_12M_ORD">Promedio Habitual 12 Meses (divisor fijo 12) [PROM_FIJO_12M_ORD:...]</option>
+                          <option value="PROM_12M_ANT_ORD">Promedio Habitual 12M Ant. (div. liq. reales) [PROM_12M_ANT_ORD:...]</option>
+                          <option value="PROM_FIJO_12M_ANT_ORD">Promedio Habitual 12M Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT_ORD:...]</option>
+                          <option value="MEJOR_6M_ORD">Mayor Valor Habitual 6 Meses (con actual) [MEJOR_6M_ORD:...]</option>
+                          <option value="MEJOR_6M_ANT_ORD">Mayor Valor Habitual 6M Anteriores [MEJOR_6M_ANT_ORD:...]</option>
+                          <option value="ACUM_6M_ORD">Acumulado Habitual 6 Meses (con actual) [ACUM_6M_ORD:...]</option>
+                          <option value="ACUM_6M_ANT_ORD">Acumulado Habitual 6M Anteriores cerrados [ACUM_6M_ANT_ORD:...]</option>
+                          <option value="PROM_6M_ORD">Promedio Habitual 6 Meses (div. liq. reales) [PROM_6M_ORD:...]</option>
+                          <option value="PROM_FIJO_6M_ORD">Promedio Habitual 6 Meses (divisor fijo 6) [PROM_FIJO_6M_ORD:...]</option>
+                          <option value="PROM_6M_ANT_ORD">Promedio Habitual 6M Ant. (div. liq. reales) [PROM_6M_ANT_ORD:...]</option>
+                          <option value="PROM_FIJO_6M_ANT_ORD">Promedio Habitual 6M Ant. (divisor fijo 6) [PROM_FIJO_6M_ANT_ORD:...]</option>
+                          <option value="MEJOR_SEMESTRE_ORD">Mayor Remuneración Semestre Ordinaria [MEJOR_SEMESTRE_ORD:...]</option>
+                          <option value="ACUM_SEMESTRE_ORD">Acumulado Semestre Ordinario [ACUM_SEMESTRE_ORD:...]</option>
+                          <option value="PROM_SEMESTRE_ORD">Promedio Semestre Ordinario [PROM_SEMESTRE_ORD:...]</option>
+                          <option value="ACUM_ANUAL_ORD">Acumulado Año Calendario Ordinario [ACUM_ANUAL_ORD:...]</option>
+                          <option value="PROM_ANUAL_ORD">Promedio Año Calendario Ordinario (div. liq. reales) [PROM_ANUAL_ORD:...]</option>
+                          <option value="PROM_FIJO_ANUAL_ORD">Promedio Año Calendario Ordinario (div. meses) [PROM_FIJO_ANUAL_ORD:...]</option>
+                          <option value="MEJOR_ANUAL_ORD">Mayor Remuneración Año Calendario Ordinaria [MEJOR_ANUAL_ORD:...]</option>
+                        </optgroup>
                         <optgroup label="Últimos 6 Meses (Dual)">
                           <option value="ACUM_6M">Acumulado 6 Meses (con actual) [ACUM_6M:...]</option>
                           <option value="ACUM_6M_ANT">Acumulado 6 Meses Anteriores cerrados [ACUM_6M_ANT:...]</option>
@@ -5678,6 +5719,11 @@
                           <option value="PROM_FIJO_12M_ANT">Promedio 12 Meses Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT:...]</option>
                           <option value="MEJOR_12M">Mayor Valor 12 Meses (con actual) [MEJOR_12M:...]</option>
                           <option value="MEJOR_12M_ANT">Mayor Valor 12 Meses Anteriores [MEJOR_12M_ANT:...]</option>
+                        </optgroup>
+                        <optgroup label="Semestre en Curso (Ley 23.041 SAC)">
+                          <option value="MEJOR_SEMESTRE">Mayor Remuneración del Semestre [MEJOR_SEMESTRE:...]</option>
+                          <option value="ACUM_SEMESTRE">Acumulado del Semestre [ACUM_SEMESTRE:...]</option>
+                          <option value="PROM_SEMESTRE">Promedio del Semestre [PROM_SEMESTRE:...]</option>
                         </optgroup>
                         <optgroup label="Año Calendario (Enero a hoy)">
                           <option value="ACUM_ANUAL">Acumulado Año Calendario [ACUM_ANUAL:...]</option>
@@ -5722,6 +5768,12 @@
                   <button type="button" class="btn btn-sm btn-outline-info py-0 px-2 btn-token-formula" data-token="REDONDEAR(" title="REDONDEAR(expresion, decimales)">REDONDEAR(x, dec)</button>
                   <button type="button" class="btn btn-sm btn-outline-info py-0 px-2 btn-token-formula" data-token="MIN(" title="MIN(val1, val2)">MIN(a, b)</button>
                   <button type="button" class="btn btn-sm btn-outline-info py-0 px-2 btn-token-formula" data-token="MAX(" title="MAX(val1, val2)">MAX(a, b)</button>
+                  <span class="vr mx-1"></span>
+                  <!-- Funciones de Fechas -->
+                  <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 btn-token-formula" data-token="DIF_DIAS(" title="DIF_DIAS(fecha_desde, fecha_hasta, [inclusivo])">DIF_DIAS(f1, f2)</button>
+                  <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 btn-token-formula" data-token="DIF_MESES(" title="DIF_MESES(fecha_desde, fecha_hasta)">DIF_MESES(f1, f2)</button>
+                  <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 btn-token-formula" data-token="DIF_ANIOS(" title="DIF_ANIOS(fecha_desde, fecha_hasta)">DIF_ANIOS(f1, f2)</button>
+                  <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 btn-token-formula" data-token="DIF_FECHA(" title="DIF_FECHA(fecha_desde, fecha_hasta, 'DIAS'|'MESES'|'ANIOS')">DIF_FECHA(f1, f2, u)</button>
                 </div>
 
                 <!-- CAMPO DE TEXTO DE LA FÓRMULA -->
@@ -5887,112 +5939,127 @@
   </div>
 
   <!-- MODAL: CREACIÓN Y EDICIÓN DE MATRIZ DE LIQUIDACIÓN -->
-  <div class="modal modal-blur fade" id="modal-matrix-form" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div class="modal-content shadow-lg">
-        <form id="form-payroll-matrix">
-          <input type="hidden" id="matrix-form-id">
-          <div class="modal-header border-bottom-0 pb-0">
-            <div class="d-flex align-items-center gap-2">
-              <div class="avatar avatar-sm bg-indigo-lt text-indigo rounded">
-                <i class="ti ti-table fs-2"></i>
-              </div>
+  <div class="modal modal-blur fade" id="modal-matrix-form" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document" style="max-width: 1060px;">
+      <form id="form-payroll-matrix" class="modal-content shadow-lg d-flex flex-column" style="max-height: 92vh; overflow: hidden;">
+        <input type="hidden" id="matrix-form-id">
+        <div class="modal-header border-bottom py-2 px-3 flex-shrink-0 bg-white">
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar avatar-sm bg-indigo-lt text-indigo rounded">
+              <i class="ti ti-table fs-2"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold mb-0" id="modal-matrix-form-title">Diseñador de Matriz de Liquidación</h5>
+              <div class="text-muted small" style="font-size: 0.8rem;">Configure el concepto determinante y la tabla de correspondencia de valores</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-2 px-3 flex-grow-1" style="overflow-y: auto;">
+          <div id="matrix-form-alert" class="alert alert-danger d-none mb-2 py-2"></div>
+
+          <div class="row g-2 mb-2">
+            <div class="col-lg-4 col-md-4">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center" style="height: 24px; line-height: 24px;">
+                <span>Código de Matriz <span class="text-danger">*</span></span>
+              </label>
+              <input type="text" class="form-control font-monospace text-uppercase" id="matrix-input-code" required placeholder="Ej. MAT_ANTIGUEDAD" maxlength="50" />
+              <div class="form-hint" style="font-size: 0.74rem;">Identificador único (usado en fórmulas como [MATRIZ:CODIGO]).</div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center" style="height: 24px; line-height: 24px;">
+                <span>Nombre / Denominación <span class="text-danger">*</span></span>
+              </label>
+              <input type="text" class="form-control" id="matrix-input-name" required placeholder="Ej. Escala de Adicional por Antigüedad según Años" maxlength="150" />
+              <div class="form-hint" style="font-size: 0.74rem;">Nombre descriptivo de la regla o escala salarial.</div>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-2 align-items-center">
+            <div class="col-lg-4 col-md-4">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center gap-1" style="height: 24px; line-height: 24px; white-space: nowrap;">
+                <i class="ti ti-arrow-right-circle text-primary"></i>
+                <span>Concepto Driver <span class="text-danger">*</span></span>
+                <span class="form-help ms-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="La matriz tomará el valor de este concepto para evaluar la regla">?</span>
+              </label>
+              <select class="form-select" id="matrix-input-concept" required>
+                <option value="">-- Seleccione Concepto de Entrada --</option>
+              </select>
+            </div>
+            <div class="col-lg-3 col-md-3">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center gap-1" style="height: 24px; line-height: 24px; white-space: nowrap;">
+                <i class="ti ti-arrows-split text-indigo"></i>
+                <span>Tipo Coincidencia <span class="text-danger">*</span></span>
+              </label>
+              <select class="form-select" id="matrix-input-match-type" required>
+                <option value="RANGE" selected>Por Rango (Desde - Hasta)</option>
+                <option value="EXACT">Por Valor Exacto</option>
+              </select>
+            </div>
+            <div class="col-lg-3 col-md-3">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center gap-1" style="height: 24px; line-height: 24px; white-space: nowrap;">
+                <i class="ti ti-receipt-2 text-teal"></i>
+                <span>Valor Devuelto <span class="text-danger">*</span></span>
+              </label>
+              <select class="form-select" id="matrix-input-return-type" required>
+                <option value="AMOUNT" selected>Importe ($)</option>
+                <option value="PERCENTAGE">Porcentaje (%)</option>
+                <option value="QUANTITY">Cantidad</option>
+              </select>
+            </div>
+            <div class="col-lg-2 col-md-2">
+              <label class="form-label fw-bold mb-1 d-flex align-items-center gap-1" style="height: 24px; line-height: 24px; white-space: nowrap;">
+                <i class="ti ti-adjustments-alt text-secondary"></i>
+                <span>Defecto</span>
+                <span class="form-help ms-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="Valor retornado si ninguna regla coincide">?</span>
+              </label>
+              <input type="number" step="0.01" class="form-control font-monospace" id="matrix-input-default-value" value="0.00" />
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label fw-bold mb-1" style="height: 20px; line-height: 20px;">Descripción / Observaciones (Opcional)</label>
+            <input type="text" class="form-control" id="matrix-input-description" placeholder="Ej. Escala paritaria CCT 130/75..." maxlength="255" />
+          </div>
+
+          <!-- TABLA DINÁMICA DE VALORES FIJOS -->
+          <div class="card bg-light-subtle border mb-1 d-flex flex-column" style="overflow: hidden;">
+            <div class="card-header py-2 px-3 d-flex align-items-center justify-content-between bg-white flex-shrink-0">
               <div>
-                <h5 class="modal-title fw-bold" id="modal-matrix-form-title">Diseñador de Matriz de Liquidación</h5>
-                <div class="text-muted small">Configure el concepto determinante y la tabla de correspondencia de valores fijos</div>
+                <span class="fw-bold text-indigo">
+                  <i class="ti ti-list-numbers me-1"></i> Tabla de Valores Devueltos
+                </span>
+                <span class="text-muted small ms-2" id="matrix-rows-mode-hint">Defina los tramos numéricos y el valor que devuelve la matriz</span>
               </div>
+              <button type="button" class="btn btn-sm btn-outline-indigo" id="btn-matrix-add-row">
+                <i class="ti ti-plus me-1"></i> Agregar Fila
+              </button>
             </div>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body pt-3">
-            <div id="matrix-form-alert" class="alert alert-danger d-none mb-3"></div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-4">
-                <label class="form-label required fw-bold">Código de Matriz</label>
-                <input type="text" class="form-control font-monospace text-uppercase" id="matrix-input-code" required placeholder="Ej. MAT_ANTIGUEDAD" maxlength="50" />
-                <div class="form-hint">Identificador único (usado en fórmulas como [MATRIZ:CODIGO]).</div>
-              </div>
-              <div class="col-md-8">
-                <label class="form-label required fw-bold">Nombre / Denominación</label>
-                <input type="text" class="form-control" id="matrix-input-name" required placeholder="Ej. Escala de Adicional por Antigüedad según Años" maxlength="150" />
-              </div>
+            <div class="table-responsive" style="max-height: 250px; min-height: 110px; overflow-y: auto;">
+              <table class="table table-sm table-vcenter card-table table-striped mb-0" id="table-matrix-rows">
+                <thead class="bg-light sticky-top" id="matrix-rows-thead" style="z-index: 2;">
+                  <!-- Encabezados dinámicos RANGE o EXACT -->
+                </thead>
+                <tbody id="matrix-rows-tbody">
+                  <!-- Filas dinámicas vía app.js -->
+                </tbody>
+              </table>
             </div>
-
-            <div class="row g-3 mb-3">
-              <div class="col-md-5">
-                <label class="form-label required fw-bold">
-                  <i class="ti ti-arrow-right-circle text-primary me-1"></i> Concepto Asignado de Entrada (Driver)
-                </label>
-                <select class="form-select" id="matrix-input-concept" required>
-                  <option value="">-- Seleccione el Concepto de Entrada --</option>
-                  <!-- Opciones dinámicas: Conceptos creados por el usuario + variables de legajo -->
-                </select>
-                <div class="form-hint">La matriz tomará el valor de este concepto para evaluar la regla.</div>
-              </div>
-              <div class="col-md-3">
-                <label class="form-label required fw-bold">Tipo Coincidencia</label>
-                <select class="form-select" id="matrix-input-match-type" required>
-                  <option value="RANGE" selected>Por Rango (Desde - Hasta)</option>
-                  <option value="EXACT">Por Valor Exacto</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <label class="form-label required fw-bold">Valor Devuelto</label>
-                <select class="form-select" id="matrix-input-return-type" required>
-                  <option value="AMOUNT" selected>Importe ($)</option>
-                  <option value="PERCENTAGE">Porcentaje (%)</option>
-                </select>
-              </div>
-              <div class="col-md-2">
-                <label class="form-label fw-bold">Defecto</label>
-                <input type="number" step="0.01" class="form-control font-monospace" id="matrix-input-default-value" value="0.00" />
-                <div class="form-hint">Si no coincide.</div>
-              </div>
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label fw-bold">Descripción / Observaciones (Opcional)</label>
-              <input type="text" class="form-control" id="matrix-input-description" placeholder="Ej. Escala paritaria CCT 130/75..." maxlength="255" />
-            </div>
-
-            <!-- TABLA DINÁMICA DE VALORES FIJOS -->
-            <div class="card bg-light-subtle border mb-2">
-              <div class="card-header py-2 d-flex align-items-center justify-content-between bg-white">
-                <div>
-                  <span class="fw-bold text-indigo">
-                    <i class="ti ti-list-numbers me-1"></i> Tabla de Valores Fijos Devueltos
-                  </span>
-                  <span class="text-muted small ms-2" id="matrix-rows-mode-hint">Defina los tramos numéricos y el importe que devuelve la matriz</span>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-indigo" id="btn-matrix-add-row">
-                  <i class="ti ti-plus me-1"></i> Agregar Fila
-                </button>
-              </div>
-              <div class="table-responsive" style="max-height: 280px; overflow-y: auto;">
-                <table class="table table-sm table-vcenter card-table" id="table-matrix-rows">
-                  <thead class="bg-light" id="matrix-rows-thead">
-                    <!-- Encabezados dinámicos RANGE o EXACT -->
-                  </thead>
-                  <tbody id="matrix-rows-tbody">
-                    <!-- Filas dinámicas vía app.js -->
-                  </tbody>
-                </table>
-              </div>
-              <div class="card-footer py-2 text-muted small bg-light-subtle d-flex justify-content-between align-items-center">
-                <span id="matrix-rows-footer">0 filas configuradas.</span>
-                <span class="badge bg-blue-lt">Tip: El valor devuelto será asignado directamente al concepto</span>
-              </div>
+            <div class="card-footer py-2 px-3 text-muted small bg-light-subtle d-flex justify-content-between align-items-center flex-shrink-0">
+              <span id="matrix-rows-footer">0 filas configuradas.</span>
+              <span class="badge bg-blue-lt">Tip: El valor devuelto será asignado directamente al concepto</span>
             </div>
           </div>
-          <div class="modal-footer bg-light">
-            <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="submit" id="btn-save-payroll-matrix" class="btn btn-payroll ms-auto">
-              <i class="ti ti-device-floppy me-1"></i> Guardar Matriz
-            </button>
-          </div>
-        </form>
-      </div>
+        </div>
+        <div class="modal-footer py-2 px-3 bg-light border-top flex-shrink-0 d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="ti ti-x me-1"></i> Cancelar
+          </button>
+          <button type="submit" id="btn-save-payroll-matrix" class="btn btn-payroll">
+            <i class="ti ti-device-floppy me-1"></i> Guardar Matriz
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 

@@ -45,6 +45,22 @@ export const SYSTEM_VARIABLES = new Set([
   'TOTAL_NO_REMUNERATIVO',
   'TOTAL_DEDUCCIONES',
   'TOTAL_BRUTO',
+  'FECHA_LIQUIDACION',
+  'LIQUIDATION_DATE',
+  'FECHA_INGRESO',
+  'FECHA_EGRESO',
+  'FECHA_BAJA',
+  'FECHA_PAGO',
+  'INICIO_SEMESTRE',
+  'INICIO_SEMESTRE_1',
+  'INICIO_SEMESTRE_2',
+  'FIN_SEMESTRE',
+  'FIN_SEMESTRE_1',
+  'FIN_SEMESTRE_2',
+  'INICIO_MES',
+  'FIN_MES',
+  'INICIO_ANIO',
+  'FIN_ANIO',
 ]);
 
 export const GROUP_TOTALS = new Set([
@@ -170,8 +186,8 @@ export function validateConceptFormula({
     errors.push('División por cero literal detectada (/ 0).');
   }
 
-  // --- 3. Control de Funciones Específicas (SI, TOPE_MAX, TOPE_MIN, LIMITAR) ---
-  const funcCallRegex = /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF)\s*\(/gi;
+  // --- 3. Control de Funciones Específicas (SI, TOPE_MAX, TOPE_MIN, LIMITAR, DIF_DIAS, etc.) ---
+  const funcCallRegex = /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/gi;
   let match;
   while ((match = funcCallRegex.exec(cleanFormula)) !== null) {
     const funcName = match[1].toUpperCase();
@@ -207,6 +223,12 @@ export function validateConceptFormula({
         if (!hasRelational) {
           warnings.push(`La condición en ${funcName}("${cond}") no parece contener un operador relacional (>, <, >=, <=, ==, !=).`);
         }
+      } else if (funcName === 'DIF_DIAS' && (args.length < 2 || args.length > 3)) {
+        errors.push(`La función DIF_DIAS requiere 2 o 3 argumentos: DIF_DIAS(fecha_desde, fecha_hasta, [inclusivo]). Se recibieron ${args.length}.`);
+      } else if ((funcName === 'DIF_MESES' || funcName === 'DIF_ANIOS') && args.length !== 2) {
+        errors.push(`La función ${funcName} requiere exactamente 2 argumentos: ${funcName}(fecha_desde, fecha_hasta). Se recibieron ${args.length}.`);
+      } else if ((funcName === 'DIF_FECHA' || funcName === 'DIFERENCIA_FECHAS') && (args.length < 3 || args.length > 4)) {
+        errors.push(`La función ${funcName} requiere 3 o 4 argumentos: ${funcName}(fecha_desde, fecha_hasta, unidad, [inclusivo]). Se recibieron ${args.length}.`);
       }
     }
   }
@@ -247,7 +269,7 @@ export function validateConceptFormula({
     }
 
     // 4.3. Token de Métrica Histórica: [METRICA:CODIGO] o [METRICA]
-    const histMatch = upperToken.match(/^((?:ACUM|PROM(?:_FIJO)?|MEJOR|MAYOR)_(?:6M|12M|ANUAL)(?:_ANT)?)(?::([^\]]+))?$/i);
+    const histMatch = upperToken.match(/^((?:ORD_)?(?:ACUM|PROM(?:_FIJO)?|MEJOR|MAYOR)_(?:6M|12M|ANUAL|SEMESTRE)(?:_(?:ANT|ORD|ANT_ORD|ORD_ANT))?)(?::([^\]]+))?$/i);
     if (histMatch) {
       const metricName = histMatch[1];
       const targetCode = histMatch[2] ? histMatch[2].trim().toUpperCase() : null;
@@ -258,7 +280,7 @@ export function validateConceptFormula({
           errors.push(`La métrica histórica [${metricName}:${targetCode}] hace referencia al concepto inexistente "${targetCode}".`);
         }
       }
-      // Las métricas históricas del propio concepto son legales
+      // Las métricas históricas del propio concepto o globales son legales
       continue;
     }
 

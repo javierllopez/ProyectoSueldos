@@ -98,6 +98,15 @@ export async function createPeriod(tenantPrisma, data) {
   ];
   const defaultName = data.settlementName || data.name || `${periodType === 'MONTHLY' ? 'Mensual' : periodType} - ${monthNames[month - 1]} ${year} (Liq. #${settlementNumber})`;
 
+  let liquidationDate = data.liquidationDate ? new Date(data.liquidationDate) : null;
+  if (!liquidationDate) {
+    if (periodType === 'QUINCE_1') {
+      liquidationDate = new Date(year, month - 1, 15);
+    } else {
+      liquidationDate = new Date(year, month, 0);
+    }
+  }
+
   return tenantPrisma.payrollPeriod.create({
     data: {
       year,
@@ -106,6 +115,7 @@ export async function createPeriod(tenantPrisma, data) {
       settlementNumber,
       settlementName: defaultName,
       settlementType: data.settlementType || 'M',
+      liquidationDate,
       paymentDate: data.paymentDate ? new Date(data.paymentDate) : null,
       paymentPlace: data.paymentPlace || 'Casa Central',
       rubricDate: data.rubricDate ? new Date(data.rubricDate) : null,
@@ -131,6 +141,7 @@ export async function updatePeriod(tenantPrisma, periodId, data) {
     data: {
       settlementName: data.settlementName !== undefined ? data.settlementName : period.settlementName,
       settlementType: data.settlementType !== undefined ? data.settlementType : period.settlementType,
+      liquidationDate: data.liquidationDate !== undefined ? (data.liquidationDate ? new Date(data.liquidationDate) : null) : period.liquidationDate,
       paymentDate: data.paymentDate !== undefined ? (data.paymentDate ? new Date(data.paymentDate) : null) : period.paymentDate,
       paymentPlace: data.paymentPlace !== undefined ? data.paymentPlace : period.paymentPlace,
       rubricDate: data.rubricDate !== undefined ? (data.rubricDate ? new Date(data.rubricDate) : null) : period.rubricDate,
@@ -509,6 +520,7 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
         baseAmount: it.baseAmount,
         amount: it.amount,
         arcaConceptCode: it.arcaConceptCode,
+        formulaExplanation: it.formulaExplanation || null,
       }));
 
       itemsToInsert.sort((a, b) => {

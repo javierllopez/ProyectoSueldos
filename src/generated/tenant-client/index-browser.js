@@ -454,6 +454,7 @@ exports.Prisma.PayrollPeriodScalarFieldEnum = {
   settlementNumber: 'settlementNumber',
   settlementName: 'settlementName',
   settlementType: 'settlementType',
+  liquidationDate: 'liquidationDate',
   paymentDate: 'paymentDate',
   paymentPlace: 'paymentPlace',
   depositDate: 'depositDate',
@@ -521,6 +522,7 @@ exports.Prisma.PaySlipItemScalarFieldEnum = {
   baseAmount: 'baseAmount',
   amount: 'amount',
   arcaConceptCode: 'arcaConceptCode',
+  formulaExplanation: 'formulaExplanation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -837,7 +839,8 @@ exports.Prisma.PaySlipItemOrderByRelevanceFieldEnum = {
   conceptName: 'conceptName',
   type: 'type',
   unitLabel: 'unitLabel',
-  arcaConceptCode: 'arcaConceptCode'
+  arcaConceptCode: 'arcaConceptCode',
+  formulaExplanation: 'formulaExplanation'
 };
 
 exports.Prisma.PaySlipBasisOrderByRelevanceFieldEnum = {

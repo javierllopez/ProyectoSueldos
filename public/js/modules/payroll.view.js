@@ -634,7 +634,7 @@ class PayrollMethods {
             <td><strong class="font-monospace">${monthStr}/${p.year}</strong></td>
             <td>
               <div class="fw-bold">${escapeHtml(p.settlementName || 'Liquidación')}</div>
-              <small class="text-muted">Liq. #${p.settlementNumber || 1}</small>
+              <small class="text-muted">Liq. #${p.settlementNumber || 1}${p.liquidationDate ? ` • F. Liq: ${new Date(String(p.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}` : ''}</small>
             </td>
             <td><span class="badge bg-blue-lt">${typeLabels[p.periodType] || p.periodType}</span></td>
             <td class="text-center"><span class="badge bg-purple-lt">${count}</span></td>
@@ -783,6 +783,44 @@ class PayrollMethods {
     document.getElementById('period-input-type').value = 'MONTHLY';
     document.getElementById('period-input-payment-place').value = 'Casa Central';
 
+    // Sugerir fecha de liquidación: última fecha del mes o de la quincena
+    const updateDefaultLiquidationDate = () => {
+      const year = Number(document.getElementById('period-input-year')?.value) || now.getFullYear();
+      const month = Number(document.getElementById('period-input-month')?.value) || (now.getMonth() + 1);
+      const type = document.getElementById('period-input-type')?.value || 'MONTHLY';
+
+      let liqDate;
+      if (type === 'QUINCE_1') {
+        liqDate = new Date(year, month - 1, 15);
+      } else {
+        liqDate = new Date(year, month, 0); // Último día del mes
+      }
+      const yyyy = liqDate.getFullYear();
+      const mm = String(liqDate.getMonth() + 1).padStart(2, '0');
+      const dd = String(liqDate.getDate()).padStart(2, '0');
+      const liqInput = document.getElementById('period-input-liquidation-date');
+      if (liqInput) liqInput.value = `${yyyy}-${mm}-${dd}`;
+    };
+
+    updateDefaultLiquidationDate();
+
+    const yearInput = document.getElementById('period-input-year');
+    const monthInput = document.getElementById('period-input-month');
+    const typeInput = document.getElementById('period-input-type');
+
+    if (yearInput && !yearInput.dataset.liqBound) {
+      yearInput.dataset.liqBound = 'true';
+      yearInput.addEventListener('change', updateDefaultLiquidationDate);
+    }
+    if (monthInput && !monthInput.dataset.liqBound) {
+      monthInput.dataset.liqBound = 'true';
+      monthInput.addEventListener('change', updateDefaultLiquidationDate);
+    }
+    if (typeInput && !typeInput.dataset.liqBound) {
+      typeInput.dataset.liqBound = 'true';
+      typeInput.addEventListener('change', updateDefaultLiquidationDate);
+    }
+
     // Sugerir fecha de pago: 4to día hábil del mes siguiente
     const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 5);
     document.getElementById('period-input-payment-date').value = nextMonth.toISOString().split('T')[0];
@@ -800,6 +838,7 @@ class PayrollMethods {
       month: Number(document.getElementById('period-input-month').value),
       periodType: document.getElementById('period-input-type').value,
       settlementName: document.getElementById('period-input-name').value.trim() || undefined,
+      liquidationDate: document.getElementById('period-input-liquidation-date')?.value || null,
       paymentDate: document.getElementById('period-input-payment-date').value || null,
       paymentPlace: document.getElementById('period-input-payment-place').value.trim() || null,
       depositDate: document.getElementById('period-input-deposit-date').value || null,
@@ -3375,12 +3414,154 @@ class PayrollMethods {
       const unitsStr = it.units !== null && it.units !== undefined ? String(it.units) : '-';
       const baseStr = it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : (it.rate ? `${it.rate}%` : '-');
 
+      // Texto explicativo de la fórmula resuelta (compatible con liquidaciones nuevas y anteriores)
+      let formulaExpl = it.formulaExplanation;
+      if (!formulaExpl && it.formula) {
+        let substituted = it.formula;
+        const itemMap = new Map();
+        (slip.items || []).forEach((item) => {
+          itemMap.set(String(item.conceptCode).toUpperCase(), item.amount);
+          const num = String(item.conceptCode).replace(/\D/g, '');
+          if (num) itemMap.set(num, item.amount);
+        });
+        itemMap.set('BASICO', slip.basicSalary || slip.grossSalary || 0);
+        itemMap.set('TOTAL_REMUNERATIVO', slip.remunerativeSalary || 0);
+        itemMap.set('TOTAL_BRUTO', slip.grossSalary || 0);
+        itemMap.set('CANTIDAD', it.units || 1);
+        itemMap.set('UNIDADES', it.units || 1);
+        itemMap.set('HORAS', it.units || 0);
+
+        substituted = substituted.replace(/\[([A-Z0-9_:]+)\]/gi, (match, key) => {
+          const uKey = key.toUpperCase().trim();
+          if (itemMap.has(uKey)) {
+            return String(itemMap.get(uKey));
+          }
+          return match;
+        });
+        formulaExpl = substituted;
+      } else if (!formulaExpl && it.rate && it.baseAmount) {
+        formulaExpl = `${formatMoney(it.baseAmount)} * ${it.rate}%`;
+      }
+
+      // Resolver llamadas a funciones para mostrar el valor resultante (ej: DIF_DIAS, TOPE_MAX, etc.)
+      if (formulaExpl && /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i.test(formulaExpl)) {
+        let expr = formulaExpl;
+        const fnRegex = /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i;
+        let safety = 25;
+        while (fnRegex.test(expr) && safety > 0) {
+          safety--;
+          const matches = [...expr.matchAll(/(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/gi)];
+          if (matches.length === 0) break;
+          const lastMatch = matches[matches.length - 1];
+          const fnName = lastMatch[1].toUpperCase();
+          const startIdx = lastMatch.index;
+          const openParen = startIdx + lastMatch[0].length - 1;
+
+          let depth = 1;
+          let closeParen = -1;
+          for (let i = openParen + 1; i < expr.length; i++) {
+            if (expr[i] === '(') depth++;
+            else if (expr[i] === ')') {
+              depth--;
+              if (depth === 0) {
+                closeParen = i;
+                break;
+              }
+            }
+          }
+          if (closeParen === -1) break;
+
+          const innerArgs = expr.substring(openParen + 1, closeParen).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
+          let val = 0;
+
+          if (fnName === 'DIF_DIAS') {
+            const d1 = new Date(innerArgs[0]);
+            const d2 = new Date(innerArgs[1]);
+            const inc = innerArgs[2] === 'true' || innerArgs[2] === '1' || (innerArgs[2] && innerArgs[2].toUpperCase() === 'INCLUSIVO');
+            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+              const diffMs = d2.getTime() - d1.getTime();
+              const diffDays = Math.round(diffMs / 86400000);
+              val = inc ? diffDays + 1 : diffDays;
+            }
+          } else if (fnName === 'DIF_MESES') {
+            const d1 = new Date(innerArgs[0]);
+            const d2 = new Date(innerArgs[1]);
+            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+              let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+              if (d2.getDate() < d1.getDate()) m--;
+              val = Math.max(0, m);
+            }
+          } else if (fnName === 'DIF_ANIOS') {
+            const d1 = new Date(innerArgs[0]);
+            const d2 = new Date(innerArgs[1]);
+            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+              let y = d2.getFullYear() - d1.getFullYear();
+              const mDiff = d2.getMonth() - d1.getMonth();
+              if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
+              val = Math.max(0, y);
+            }
+          } else if (fnName === 'DIF_FECHA' || fnName === 'DIFERENCIA_FECHAS') {
+            const d1 = new Date(innerArgs[0]);
+            const d2 = new Date(innerArgs[1]);
+            const unit = String(innerArgs[2] || 'DIAS').toUpperCase();
+            const inc = innerArgs[3] === 'true' || innerArgs[3] === '1';
+            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+              if (unit.startsWith('DIA') || unit === 'D') {
+                const diffDays = Math.round((d2.getTime() - d1.getTime()) / 86400000);
+                val = inc ? diffDays + 1 : diffDays;
+              } else if (unit.startsWith('MES') || unit === 'M') {
+                let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+                if (d2.getDate() < d1.getDate()) m--;
+                val = Math.max(0, m);
+              } else {
+                let y = d2.getFullYear() - d1.getFullYear();
+                const mDiff = d2.getMonth() - d1.getMonth();
+                if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
+                val = Math.max(0, y);
+              }
+            }
+          } else if (fnName === 'TOPE_MAX') {
+            val = Math.min(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
+          } else if (fnName === 'TOPE_MIN') {
+            val = Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
+          } else if (fnName === 'LIMITAR') {
+            val = Math.min(Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0), Number(innerArgs[2]) || 0);
+          } else if (fnName === 'MIN') {
+            val = Math.min(...innerArgs.map(Number));
+          } else if (fnName === 'MAX') {
+            val = Math.max(...innerArgs.map(Number));
+          } else if (fnName === 'REDONDEAR' || fnName === 'ROUND') {
+            const dec = Number(innerArgs[1]) || 2;
+            const f = Math.pow(10, dec);
+            val = Math.round((Number(innerArgs[0]) || 0) * f) / f;
+          } else if (fnName === 'ABS') {
+            val = Math.abs(Number(innerArgs[0]) || 0);
+          } else if (fnName === 'CEIL') {
+            val = Math.ceil(Number(innerArgs[0]) || 0);
+          } else if (fnName === 'FLOOR') {
+            val = Math.floor(Number(innerArgs[0]) || 0);
+          } else if (fnName === 'SI' || fnName === 'IF') {
+            val = innerArgs[1] || 0;
+          }
+
+          expr = expr.substring(0, startIdx) + String(val) + expr.substring(closeParen + 1);
+        }
+        formulaExpl = expr;
+      }
+
+      const formulaExplHtml = formulaExpl ? `
+        <div class="text-muted small font-monospace mt-1" style="font-size: 0.76rem;">
+          <i class="ti ti-math-function text-purple me-1"></i>Fórmula: <span class="badge bg-light text-dark border font-monospace px-1 py-0">${escapeHtml(formulaExpl)}</span>
+        </div>
+      ` : '';
+
       return `
         <tr class="${rowClass}">
           <td class="text-center font-monospace text-muted small py-1">${idx + 1}</td>
           <td class="font-monospace fw-bold text-primary py-1">${escapeHtml(it.conceptCode)}</td>
           <td class="py-1">
             <span class="fw-semibold text-dark text-truncate d-inline-block align-middle" style="max-width: 320px;" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
+            ${formulaExplHtml}
           </td>
           <td class="py-1">${typeBadges[it.type] || it.type}</td>
           <td class="text-center font-monospace py-1">${unitsStr}</td>
@@ -3473,40 +3654,48 @@ class PayrollMethods {
         </div>
       </div>
 
-      <!-- Bases Imponibles F.931 ARCA y Costo Laboral -->
+      <!-- Remuneraciones Imponibles F.931 ARCA y Costo Laboral -->
       <div class="row g-2">
         <div class="col-md-6">
           <div class="card shadow-xs h-100">
             <div class="card-header py-1 px-3 bg-white">
               <h5 class="card-title mb-0 small text-uppercase text-muted">
-                <i class="ti ti-building-bank me-1 text-indigo"></i> Bases Imponibles ARCA F.931
+                <i class="ti ti-building-bank me-1 text-indigo"></i> Remuneraciones Imponibles ARCA F.931
               </h5>
             </div>
             <div class="card-body py-2 px-3">
               <table class="table table-sm table-borderless mb-0 small">
                 <tr>
-                  <td class="text-muted py-0">Base 1 (SIPA Topeada):</td>
+                  <td class="text-muted py-0">Remuneración 1: Aportes Previsionales (SIPA con tope)</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible1)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted py-0">Base 2 (INSSJyP PAMI):</td>
+                  <td class="text-muted py-0">Remuneración 2: Contribuciones Previsionales e INSSJyP (SIPA sin tope)</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible2)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted py-0">Base 3 (Fondo Nac. Empleo):</td>
+                  <td class="text-muted py-0">Remuneración 3: Contribuciones FNE, Asignaciones Familiares y RENATRE</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible3)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted py-0">Base 4 (Asignaciones Familiares):</td>
+                  <td class="text-muted py-0">Remuneración 4: Aportes Obra Social y FSR (con tope)</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible4)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted py-0">Base 5 (Obra Social Patronal):</td>
+                  <td class="text-muted py-0">Remuneración 5: Aportes INSSJyP (PAMI)</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible5)}</td>
                 </tr>
                 <tr>
-                  <td class="text-muted py-0">Base 9 (LRT / Riesgos Trabajo sin tope):</td>
+                  <td class="text-muted py-0">Remuneración 8: Contribuciones Obra Social y FSR</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible8 !== undefined && basis.baseImponible8 !== null ? basis.baseImponible8 : basis.baseImponible4)}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted py-0">Remuneración 9: Ley de Riesgos del Trabajo (LRT / ART)</td>
                   <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible9)}</td>
+                </tr>
+                <tr>
+                  <td class="text-muted py-0">Remuneración 10: Contribución SIPA con Detracción (Ley 27.430 / 27.541)</td>
+                  <td class="text-end font-monospace fw-bold py-0">$ ${formatMoney(basis.baseImponible10)}</td>
                 </tr>
               </table>
             </div>

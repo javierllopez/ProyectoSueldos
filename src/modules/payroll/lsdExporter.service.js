@@ -308,6 +308,7 @@ export function validateLsdConsistency({ paySlips }) {
 
   return {
     isValid: issues.length === 0,
+    errors: issues,
     issues,
   };
 }

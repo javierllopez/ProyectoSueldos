@@ -190,7 +190,16 @@ class MatricesAndSettingsMethods {
     const matchType = document.getElementById('matrix-input-match-type')?.value || 'RANGE';
     const returnType = document.getElementById('matrix-input-return-type')?.value || 'AMOUNT';
     const isPercentage = returnType === 'PERCENTAGE';
-    const valColHeader = isPercentage ? 'Porcentaje Devuelto (%)' : 'Importe Fijo Devuelto ($)';
+    const isQuantity = returnType === 'QUANTITY';
+    const valColHeader = isPercentage
+      ? 'Porcentaje Devuelto (%)'
+      : (isQuantity ? 'Cantidad Devuelta (Entero)' : 'Importe Fijo Devuelto ($)');
+
+    const defInput = document.getElementById('matrix-input-default-value');
+    if (defInput) {
+      defInput.step = isQuantity ? '1' : '0.01';
+      defInput.placeholder = isQuantity ? '0' : '0.00';
+    }
 
     if (thead) {
       if (matchType === 'EXACT') {
@@ -204,7 +213,9 @@ class MatricesAndSettingsMethods {
         if (hint) {
           hint.textContent = isPercentage
             ? 'Defina los valores clave y el porcentaje (%) que devuelve la matriz'
-            : 'Defina los valores clave y el importe fijo ($) que devuelve la matriz';
+            : (isQuantity
+              ? 'Defina los valores clave y la cantidad entera que devuelve la matriz'
+              : 'Defina los valores clave y el importe fijo ($) que devuelve la matriz');
         }
       } else {
         thead.innerHTML = `
@@ -218,7 +229,9 @@ class MatricesAndSettingsMethods {
         if (hint) {
           hint.textContent = isPercentage
             ? 'Defina los tramos numéricos y el porcentaje (%) que devuelve la matriz'
-            : 'Defina los tramos numéricos y el importe fijo ($) que devuelve la matriz';
+            : (isQuantity
+              ? 'Defina los tramos numéricos y la cantidad entera que devuelve la matriz'
+              : 'Defina los tramos numéricos y el importe fijo ($) que devuelve la matriz');
         }
       }
     }
@@ -226,6 +239,13 @@ class MatricesAndSettingsMethods {
     if (!this.matrixFormRows || this.matrixFormRows.length === 0) {
       this.matrixFormRows = [{ from: 0, to: 1, inputValue: '', value: 0, valueType: returnType }];
     }
+
+    const valStep = isQuantity ? '1' : '0.01';
+    const valPlaceholder = isPercentage ? '15.00' : (isQuantity ? '14' : '0.00');
+    const unitPrefix = (!isPercentage && !isQuantity)
+      ? '<span class="input-group-text">$</span>'
+      : (isQuantity ? '<span class="input-group-text"><i class="ti ti-hash"></i></span>' : '');
+    const unitSuffix = isPercentage ? '<span class="input-group-text">%</span>' : '';
 
     tbody.innerHTML = this.matrixFormRows
       .map((row, idx) => {
@@ -238,9 +258,9 @@ class MatricesAndSettingsMethods {
               </td>
               <td>
                 <div class="input-group input-group-sm">
-                  ${!isPercentage ? '<span class="input-group-text">$</span>' : ''}
-                  <input type="number" step="0.01" class="form-control matrix-row-value font-monospace text-end" value="${valStr}" placeholder="${isPercentage ? '15.00' : '0.00'}" required />
-                  ${isPercentage ? '<span class="input-group-text">%</span>' : ''}
+                  ${unitPrefix}
+                  <input type="number" step="${valStep}" class="form-control matrix-row-value font-monospace text-end" value="${valStr}" placeholder="${valPlaceholder}" required />
+                  ${unitSuffix}
                 </div>
               </td>
               <td class="text-end">
@@ -263,9 +283,9 @@ class MatricesAndSettingsMethods {
               </td>
               <td>
                 <div class="input-group input-group-sm">
-                  ${!isPercentage ? '<span class="input-group-text">$</span>' : ''}
-                  <input type="number" step="0.01" class="form-control matrix-row-value font-monospace text-end" value="${valStr}" placeholder="${isPercentage ? '15.00' : '0.00'}" required />
-                  ${isPercentage ? '<span class="input-group-text">%</span>' : ''}
+                  ${unitPrefix}
+                  <input type="number" step="${valStep}" class="form-control matrix-row-value font-monospace text-end" value="${valStr}" placeholder="${valPlaceholder}" required />
+                  ${unitSuffix}
                 </div>
               </td>
               <td class="text-end">
@@ -296,6 +316,7 @@ class MatricesAndSettingsMethods {
     if (!tbody) return;
 
     const returnType = document.getElementById('matrix-input-return-type')?.value || 'AMOUNT';
+    const isQuantity = returnType === 'QUANTITY';
     const trs = tbody.querySelectorAll('tr[data-row-index]');
     const updated = [];
 
@@ -305,11 +326,17 @@ class MatricesAndSettingsMethods {
       const keyInput = tr.querySelector('.matrix-row-input');
       const valInput = tr.querySelector('.matrix-row-value');
 
+      let val = 0;
+      if (valInput && valInput.value.trim() !== '') {
+        const num = Number(valInput.value);
+        val = isQuantity ? Math.round(num) : num;
+      }
+
       updated.push({
         from: fromInput && fromInput.value.trim() !== '' ? Number(fromInput.value) : null,
         to: toInput && toInput.value.trim() !== '' ? Number(toInput.value) : null,
         inputValue: keyInput ? keyInput.value.trim() : '',
-        value: valInput && valInput.value.trim() !== '' ? Number(valInput.value) : 0,
+        value: val,
         valueType: returnType,
       });
     });
@@ -331,6 +358,12 @@ class MatricesAndSettingsMethods {
       ...(initialData || {}),
     });
     this.renderMatrixFormRows();
+    const container = document.querySelector('#modal-matrix-form .table-responsive');
+    if (container) {
+      setTimeout(() => {
+        container.scrollTop = container.scrollHeight;
+      }, 10);
+    }
   }
 
   deleteMatrixFormRow(idx) {
@@ -423,7 +456,9 @@ class MatricesAndSettingsMethods {
     const inputConceptCode = document.getElementById('matrix-input-concept').value.trim();
     const matchType = document.getElementById('matrix-input-match-type').value;
     const returnType = document.getElementById('matrix-input-return-type').value;
-    const defaultValue = Number(document.getElementById('matrix-input-default-value').value) || 0;
+    const isQuantity = returnType === 'QUANTITY';
+    const rawDef = Number(document.getElementById('matrix-input-default-value').value) || 0;
+    const defaultValue = isQuantity ? Math.round(rawDef) : rawDef;
     const description = document.getElementById('matrix-input-description').value.trim() || null;
 
     if (!code || !name || !inputConceptCode) {
@@ -442,9 +477,10 @@ class MatricesAndSettingsMethods {
       return;
     }
 
-    // Asegurar que cada fila tenga su valueType
+    // Asegurar que cada fila tenga su valueType y si es QUANTITY que sea entero
     const finalizedRows = this.matrixFormRows.map((r) => ({
       ...r,
+      value: isQuantity ? Math.round(Number(r.value) || 0) : (Number(r.value) || 0),
       valueType: returnType,
     }));
 

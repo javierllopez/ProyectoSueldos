@@ -35,14 +35,14 @@ const EXPLICIT_CODE_MAP = {
   '1020': 'SU1020',
   '1200': 'SA1000',
   '1500': 'VA1000',
-  '6001': 'GE6001',
-  '6002': 'GE6002',
-  '6003': 'GE6003',
-  '6004': 'GE6004',
-  '301': 'GE6001',
-  '302': 'GE6002',
-  '303': 'GE6003',
-  '304': 'GE6004',
+  '6001': 'SU6001',
+  '6002': 'SU6002',
+  '6003': 'SU6003',
+  '6004': 'SU6004',
+  '301': 'SU6001',
+  '302': 'SU6002',
+  '303': 'SU6003',
+  '304': 'SU6004',
 };
 
 /**
@@ -74,16 +74,15 @@ function resolvePrefixedConceptCode(concept, currentCodesSet, assignedNewCodesSe
     const pType = String(concept.periodType || '').toUpperCase();
     const cType = String(concept.type || '').toUpperCase();
 
-    let prefix = 'GE';
+    let prefix = 'SU';
     if (pType === 'MONTHLY') prefix = 'SU';
     else if (pType === 'SAC' || pType === 'SAC_1' || pType === 'SAC_2') prefix = 'SA';
     else if (pType === 'VACATIONS') prefix = 'VA';
     else if (pType === 'FINAL') prefix = 'FI';
-    else if (pType === 'QUINCE_1' || pType === 'QUINCE_2') prefix = 'QU';
+    else if (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE') prefix = 'QU';
     else {
       // pType === 'ALL' o no definido
-      if (cType === 'DEDUCTION' || cType === 'AUXILIARY') prefix = 'GE';
-      else prefix = 'SU';
+      prefix = 'SU';
     }
 
     // Extraer o generar los 4 dígitos
@@ -186,8 +185,8 @@ export async function migrateTenantConceptCodes(company) {
       else if (prefix === 'SA') updatedPeriodType = 'SAC';
       else if (prefix === 'VA') updatedPeriodType = 'VACATIONS';
       else if (prefix === 'FI') updatedPeriodType = 'FINAL';
-      else if (prefix === 'QU') updatedPeriodType = 'QUINCE_1';
-      else if (prefix === 'GE') updatedPeriodType = 'ALL';
+      else if (prefix === 'QU') updatedPeriodType = 'QUINCE';
+      else if (prefix === 'GE') updatedPeriodType = 'MONTHLY';
 
       conceptsToUpdate.push({
         id: c.id,
@@ -304,10 +303,10 @@ export async function migrateTenantConceptCodes(company) {
     '2100': 'SU2100',
     '3100': 'SU3100',
     '4001': 'SU4001',
-    '6001': 'GE6001',
-    '6002': 'GE6002',
-    '6003': 'GE6003',
-    '6004': 'GE6004',
+    '6001': 'SU6001',
+    '6002': 'SU6002',
+    '6003': 'SU6003',
+    '6004': 'SU6004',
     ...codeMapping,
   };
 

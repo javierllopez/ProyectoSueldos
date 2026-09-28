@@ -1310,6 +1310,322 @@ console.log('\n--- 11. Aislamiento y Consistencia de Fórmulas Base (SU1000 vs S
   assert(audit.isValid, 'Auditoría de catálogo con SU1010 debe ser válida');
 }
 
+// ==========================================
+// 12. PRUEBAS DE FUNCIONES Y VARIABLES DE FECHA
+// ==========================================
+console.log('\n--- 12. PRUEBAS DE FUNCIONES Y VARIABLES DE FECHA ---');
+
+// 12.1 DIF_DIAS con fechas literales (formato ISO y es-AR)
+const d1 = evaluateFormula("DIF_DIAS('2026-01-01', '2026-01-10')");
+assert(d1 === 9, `DIF_DIAS('2026-01-01', '2026-01-10') debe ser 9 (obtenido ${d1})`);
+
+const d1Inc = evaluateFormula("DIF_DIAS('2026-01-01', '2026-01-10', true)");
+assert(d1Inc === 10, `DIF_DIAS inclusivo debe ser 10 (obtenido ${d1Inc})`);
+
+const d1EsAr = evaluateFormula("DIF_DIAS('01/01/2026', '10/01/2026')");
+assert(d1EsAr === 9, `DIF_DIAS con DD/MM/YYYY debe ser 9 (obtenido ${d1EsAr})`);
+
+// 12.2 Validación de fechas invertidas / negativas (retorna 0 por acuerdo normativo)
+const dNeg = evaluateFormula("DIF_DIAS('2026-05-01', '2026-01-01')");
+assert(dNeg === 0, `DIF_DIAS con fecha desde posterior a fecha hasta debe ser 0 (obtenido ${dNeg})`);
+
+// 12.3 DIF_MESES y DIF_ANIOS
+const dMeses = evaluateFormula("DIF_MESES('2026-01-01', '2026-07-01')");
+assert(dMeses === 6, `DIF_MESES('2026-01-01', '2026-07-01') debe ser 6 (obtenido ${dMeses})`);
+
+const dMesesFrac = evaluateFormula("DIF_MESES('2026-01-15', '2026-07-01')");
+assert(dMesesFrac === 5, `DIF_MESES('2026-01-15', '2026-07-01') debe ser 5 (obtenido ${dMesesFrac})`);
+
+const dAnios = evaluateFormula("DIF_ANIOS('2020-03-01', '2026-03-01')");
+assert(dAnios === 6, `DIF_ANIOS('2020-03-01', '2026-03-01') debe ser 6 (obtenido ${dAnios})`);
+
+const dAniosIncomp = evaluateFormula("DIF_ANIOS('2020-05-01', '2026-03-01')");
+assert(dAniosIncomp === 5, `DIF_ANIOS('2020-05-01', '2026-03-01') debe ser 5 (obtenido ${dAniosIncomp})`);
+
+// 12.4 DIF_FECHA función unificada
+const dFechaDias = evaluateFormula("DIF_FECHA('2026-01-01', '2026-01-20', 'DIAS')");
+assert(dFechaDias === 19, `DIF_FECHA DIAS debe ser 19 (obtenido ${dFechaDias})`);
+
+const dFechaMeses = evaluateFormula("DIF_FECHA('2026-01-01', '2026-07-01', 'MESES')");
+assert(dFechaMeses === 6, `DIF_FECHA MESES debe ser 6 (obtenido ${dFechaMeses})`);
+
+const dFechaAnios = evaluateFormula("DIF_FECHA('2020-01-01', '2026-01-01', 'ANIOS')");
+assert(dFechaAnios === 6, `DIF_FECHA ANIOS debe ser 6 (obtenido ${dFechaAnios})`);
+
+// 12.5 Variables de contexto de liquidación y colaborador
+const dateCtx = {
+  FECHA_INGRESO: '2024-03-15',
+  FECHA_LIQUIDACION: '2026-09-30',
+  INICIO_SEMESTRE: '2026-07-01',
+  INICIO_SEMESTRE_1: '2026-01-01',
+  INICIO_SEMESTRE_2: '2026-07-01',
+  FIN_SEMESTRE: '2026-12-31',
+};
+
+const dCtxDias = evaluateFormula("DIF_DIAS([INICIO_SEMESTRE], [FECHA_LIQUIDACION])", dateCtx);
+assert(dCtxDias === 91, `DIF_DIAS de inicio de semestre (01/07) a liquidación (30/09) debe ser 91 (obtenido ${dCtxDias})`);
+
+const dCtxAnios = evaluateFormula("DIF_ANIOS([FECHA_INGRESO], [FECHA_LIQUIDACION])", dateCtx);
+assert(dCtxAnios === 2, `DIF_ANIOS de ingreso (15/03/2024) a liquidación (30/09/2026) debe ser 2 (obtenido ${dCtxAnios})`);
+
+// 12.6 Condicional comparando fechas (Cálculo real de días para SAC Proporcional)
+// Empleado que ingresó antes del semestre (antiguo): toma días desde el inicio del semestre
+const sacAntiguo = evaluateFormula(
+  "SI([FECHA_INGRESO] > [INICIO_SEMESTRE], DIF_DIAS([FECHA_INGRESO], [FECHA_LIQUIDACION], true), DIF_DIAS([INICIO_SEMESTRE], [FECHA_LIQUIDACION], true))",
+  dateCtx
+);
+assert(sacAntiguo === 92, `SAC de empleado antiguo debe computar días desde INICIO_SEMESTRE inclusive (92 días, obtenido ${sacAntiguo})`);
+
+// Empleado que ingresó durante el semestre (nuevo ingreso el 15/08/2026)
+const dateCtxNuevo = {
+  ...dateCtx,
+  FECHA_INGRESO: '2026-08-15',
+};
+const sacNuevo = evaluateFormula(
+  "SI([FECHA_INGRESO] > [INICIO_SEMESTRE], DIF_DIAS([FECHA_INGRESO], [FECHA_LIQUIDACION], true), DIF_DIAS([INICIO_SEMESTRE], [FECHA_LIQUIDACION], true))",
+  dateCtxNuevo
+);
+assert(sacNuevo === 47, `SAC de nuevo ingreso (15/08 al 30/09) debe computar 47 días trabajados inclusive (obtenido ${sacNuevo})`);
+
+// ----------------------------------------------------
+// 13. PRUEBAS DE MÉTRICAS HISTÓRICAS CON RECIBOS DEL MISMO MES Y SEMESTRE
+// ----------------------------------------------------
+console.log('\n--- 13. Métricas Históricas en Mismo Mes y Semestre (Liquidaciones Finales / SAC) ---');
+
+{
+  const finalPeriod = { id: 'period-final-1', year: 2026, month: 9, periodType: 'FINAL' };
+  const slipsHistory = [
+    // Recibo mensual ordinario previo en el MISMO mes (Septiembre 2026)
+    {
+      payrollPeriodId: 'period-monthly-sept',
+      payrollPeriod: { id: 'period-monthly-sept', year: 2026, month: 9, periodType: 'MONTHLY' },
+      remunerativeSalary: 1790000,
+      grossSalary: 1870000,
+      items: [
+        { conceptCode: 'SU1000', amount: 1500000, type: 'REMUNERATIVE' },
+        { conceptCode: 'SU1010', amount: 120000, type: 'REMUNERATIVE' },
+        { conceptCode: 'SU1020', amount: 85000, type: 'REMUNERATIVE' },
+        { conceptCode: 'SU1001', amount: 85000, type: 'REMUNERATIVE' },
+      ],
+    },
+    // Recibo de mes anterior (Agosto 2026)
+    {
+      payrollPeriodId: 'period-monthly-aug',
+      payrollPeriod: { id: 'period-monthly-aug', year: 2026, month: 8, periodType: 'MONTHLY' },
+      remunerativeSalary: 1600000,
+      grossSalary: 1680000,
+      items: [{ conceptCode: 'SU1000', amount: 1500000, type: 'REMUNERATIVE' }],
+    },
+    // Recibo de primer semestre (Mayo 2026 - No debe entrar a MEJOR_SEMESTRE del segundo semestre)
+    {
+      payrollPeriodId: 'period-monthly-may',
+      payrollPeriod: { id: 'period-monthly-may', year: 2026, month: 5, periodType: 'MONTHLY' },
+      remunerativeSalary: 2500000,
+      grossSalary: 2500000,
+      items: [{ conceptCode: 'SU1000', amount: 2500000, type: 'REMUNERATIVE' }],
+    },
+  ];
+
+  // En la liquidación final actual, TOTAL_REMUNERATIVO aún es 0
+  const finalContext = {
+    CURRENT_PERIOD: finalPeriod,
+    TOTAL_REMUNERATIVO: 0,
+    historicalData: { slips: slipsHistory },
+    FECHA_LIQUIDACION: '2026-09-18',
+    INICIO_SEMESTRE: '2026-07-01',
+  };
+
+  // 13.1 MEJOR_6M debe incluir el recibo mensual del mismo mes (1.790.000)
+  const mejor6m = resolveHistoricalMetric('MEJOR_6M', 'TOTAL_REMUNERATIVO', finalContext);
+  assert(mejor6m === 2500000, `MEJOR_6M ventana móvil de 6 meses debe tomar 2.500.000 de mayo (obtenido ${mejor6m})`);
+
+  // 13.2 MEJOR_SEMESTRE debe restringirse al segundo semestre (descartando mayo) y tomar septiembre (1.790.000)
+  const mejorSemestre = resolveHistoricalMetric('MEJOR_SEMESTRE', 'TOTAL_REMUNERATIVO', finalContext);
+  assert(mejorSemestre === 1790000, `MEJOR_SEMESTRE debe tomar 1.790.000 de septiembre descartando mayo (obtenido ${mejorSemestre})`);
+
+  // 13.3 Fórmula FI1001 evaluada como expresión completa
+  const fi1001Val = evaluateFormula('[MEJOR_SEMESTRE:TOTAL_REMUNERATIVO]', finalContext, { slips: slipsHistory });
+  assert(fi1001Val === 1790000, `FI1001 con MEJOR_SEMESTRE debe evaluar a 1.790.000 (obtenido ${fi1001Val})`);
+
+  // 13.4 Fórmula FI1010 S.A.C. Proporcional: [FI1001] * DIF_DIAS([FECHA_LIQUIDACION], [INICIO_SEMESTRE], true) / 180
+  const fiContextWithBase = {
+    ...finalContext,
+    FI1001: 1790000,
+  };
+  const fi1010Val = evaluateFormula(
+    '[FI1001] * DIF_DIAS([INICIO_SEMESTRE], [FECHA_LIQUIDACION], true) / 180',
+    fiContextWithBase,
+    { slips: slipsHistory }
+  );
+  // Días corridos del 01/07 al 18/09 inclusive = 80 días. 1.790.000 * 80 / 180 = 795555.555... -> 795555.56
+  assert(Math.abs(fi1010Val - 795555.56) < 1, `FI1010 SAC Proporcional debe dar ~795555.56 (obtenido ${fi1010Val})`);
+}
+
+// ----------------------------------------------------
+// 14. MÉTRICAS HISTÓRICAS ORDINARIAS / HABITUALES (_ORD)
+// (Exclusión estricta de SAC, Vacaciones y Liquidaciones Finales)
+// ----------------------------------------------------
+console.log('\n--- 14. Métricas Históricas Ordinarias / Habituales (_ORD) ---');
+
+{
+  // Historial con liquidaciones mixtas en el primer semestre 2026:
+  // Mes 1 (01/2026): Mensual ordinario 1.000.000
+  // Mes 2 (02/2026): Mensual ordinario 1.000.000 + Período de Vacaciones 400.000
+  // Mes 3 (03/2026): Mensual ordinario con plus vacacional incluido: Total 1.050.000 (1.000.000 ordinario + 50.000 plus VA1000)
+  // Mes 4 (04/2026): Mensual ordinario 1.100.000 + horas extras 1050 por 100.000
+  // Mes 5 (05/2026): Mensual ordinario 1.200.000
+  // Mes 6 (06/2026): Mensual ordinario 1.300.000 + Período SAC_1 por 650.000
+  const slipsHistoryOrd = [
+    // 06/2026 SAC (Debe excluirse en _ORD)
+    {
+      payrollPeriodId: 'p-sac-2026-06',
+      payrollPeriod: { year: 2026, month: 6, periodType: 'SAC_1' },
+      remunerativeSalary: 650000,
+      grossSalary: 650000,
+      items: [{ conceptCode: 'SA1000', amount: 650000, type: 'REMUNERATIVE' }],
+    },
+    // 06/2026 Mensual Ordinario (Debe incluirse en _ORD)
+    {
+      payrollPeriodId: 'p-m-2026-06',
+      payrollPeriod: { year: 2026, month: 6, periodType: 'MONTHLY' },
+      remunerativeSalary: 1300000,
+      grossSalary: 1300000,
+      items: [{ conceptCode: 'SU1000', amount: 1300000, type: 'REMUNERATIVE' }],
+    },
+    // 05/2026 Mensual Ordinario
+    {
+      payrollPeriodId: 'p-m-2026-05',
+      payrollPeriod: { year: 2026, month: 5, periodType: 'MONTHLY' },
+      remunerativeSalary: 1200000,
+      grossSalary: 1200000,
+      items: [{ conceptCode: 'SU1000', amount: 1200000, type: 'REMUNERATIVE' }],
+    },
+    // 04/2026 Mensual Ordinario con horas extras
+    {
+      payrollPeriodId: 'p-m-2026-04',
+      payrollPeriod: { year: 2026, month: 4, periodType: 'MONTHLY' },
+      remunerativeSalary: 1200000,
+      grossSalary: 1200000,
+      items: [
+        { conceptCode: 'SU1000', amount: 1100000, type: 'REMUNERATIVE' },
+        { conceptCode: '1050', amount: 100000, type: 'REMUNERATIVE' },
+      ],
+    },
+    // 03/2026 Mensual Ordinario con ítem de vacaciones VA1000 dentro del mismo recibo
+    {
+      payrollPeriodId: 'p-m-2026-03',
+      payrollPeriod: { year: 2026, month: 3, periodType: 'MONTHLY' },
+      remunerativeSalary: 1050000, // 1.000.000 sueldo + 50.000 plus vacacional
+      grossSalary: 1050000,
+      items: [
+        { conceptCode: 'SU1000', amount: 1000000, type: 'REMUNERATIVE' },
+        { conceptCode: 'VA1000', amount: 50000, type: 'REMUNERATIVE' },
+      ],
+    },
+    // 02/2026 Vacaciones separadas (Debe excluirse en _ORD)
+    {
+      payrollPeriodId: 'p-vac-2026-02',
+      payrollPeriod: { year: 2026, month: 2, periodType: 'VACATIONS' },
+      remunerativeSalary: 400000,
+      grossSalary: 400000,
+      items: [{ conceptCode: 'VA1000', amount: 400000, type: 'REMUNERATIVE' }],
+    },
+    // 02/2026 Mensual Ordinario
+    {
+      payrollPeriodId: 'p-m-2026-02',
+      payrollPeriod: { year: 2026, month: 2, periodType: 'MONTHLY' },
+      remunerativeSalary: 1000000,
+      grossSalary: 1000000,
+      items: [{ conceptCode: 'SU1000', amount: 1000000, type: 'REMUNERATIVE' }],
+    },
+    // 01/2026 Mensual Ordinario
+    {
+      payrollPeriodId: 'p-m-2026-01',
+      payrollPeriod: { year: 2026, month: 1, periodType: 'MONTHLY' },
+      remunerativeSalary: 1000000,
+      grossSalary: 1000000,
+      items: [{ conceptCode: 'SU1000', amount: 1000000, type: 'REMUNERATIVE' }],
+    },
+  ];
+
+  // Supongamos que estamos liquidando el mes 7/2026 (Mensual Ordinario) con básico 1.400.000
+  const currentPeriodM7 = { id: 'p-m-2026-07', year: 2026, month: 7, periodType: 'MONTHLY' };
+  const contextM7 = {
+    CURRENT_PERIOD: currentPeriodM7,
+    TOTAL_REMUNERATIVO: 1400000,
+    historicalData: { slips: slipsHistoryOrd },
+  };
+
+  // 14.1 ACUM_6M estándar vs ACUM_6M_ORD
+  // Meses anteriores ventana 6M (01 a 06 de 2026):
+  // Sin _ORD: suma todo incluyendo SAC (650k) y Vacaciones separadas (400k) y plus VA1000 (50k) + actual (1400k)
+  // Con _ORD: descarta SAC (650k), descarta Vacaciones separadas (400k) y descuenta plus vacacional (50k).
+  // Meses ordinarios:
+  // 07/2026 (actual): 1.400.000
+  // 06/2026: 1.300.000 (descarta 650k SAC)
+  // 05/2026: 1.200.000
+  // 04/2026: 1.200.000
+  // 03/2026: 1.000.000 (1050k - 50k VA1000)
+  // 02/2026: 1.000.000 (descarta 400k Vacaciones)
+  // Suma 6M ordinaria (con actual: meses 2, 3, 4, 5, 6, 7):
+  // 1.000.000 + 1.000.000 + 1.200.000 + 1.200.000 + 1.300.000 + 1.400.000 = 7.100.000
+  const acum6mOrd = resolveHistoricalMetric('ACUM_6M_ORD', 'TOTAL_REMUNERATIVO', contextM7);
+  assert(acum6mOrd === 7100000, `ACUM_6M_ORD debe ser 7.100.000 excluyendo SAC y Vacaciones (obtenido ${acum6mOrd})`);
+
+  // 14.2 ACUM_6M_ANT_ORD (6 meses anteriores cerrados: meses 1, 2, 3, 4, 5, 6):
+  // 1.000.000 + 1.000.000 + 1.000.000 + 1.200.000 + 1.200.000 + 1.300.000 = 6.700.000
+  const acum6mAntOrd = resolveHistoricalMetric('ACUM_6M_ANT_ORD', 'TOTAL_REMUNERATIVO', contextM7);
+  assert(acum6mAntOrd === 6700000, `ACUM_6M_ANT_ORD debe ser 6.700.000 (obtenido ${acum6mAntOrd})`);
+
+  // 14.3 MEJOR_12M_ORD (Base Art. 245 LCT / MMNyH)
+  // En los meses previos el mayor mensual fue 1.300.000 (en 06/2026 el bruto fue 1.300k + 650k = 1.950k, pero MMNyH es 1.300k, y con actual es 1.400k)
+  const mejor12mOrd = resolveHistoricalMetric('MEJOR_12M_ORD', 'TOTAL_REMUNERATIVO', contextM7);
+  assert(mejor12mOrd === 1400000, `MEJOR_12M_ORD con mes actual debe ser 1.400.000 (obtenido ${mejor12mOrd})`);
+
+  const mejor12mAntOrd = resolveHistoricalMetric('MEJOR_12M_ANT_ORD', 'TOTAL_REMUNERATIVO', contextM7);
+  assert(mejor12mAntOrd === 1300000, `MEJOR_12M_ANT_ORD sin mes actual debe ser 1.300.000 descartando los 1.950.000 con SAC (obtenido ${mejor12mAntOrd})`);
+
+  // 14.4 PROM_6M_ORD (Promedio 6 meses ordinarios con actual): 7.100.000 / 6 = 1.183.333,33
+  const prom6mOrd = resolveHistoricalMetric('PROM_6M_ORD', 'TOTAL_REMUNERATIVO', contextM7);
+  assert(Math.abs(prom6mOrd - 1183333.33) < 1, `PROM_6M_ORD debe ser 1.183.333,33 (obtenido ${prom6mOrd})`);
+
+  // 14.5 Fallback por defecto a TOTAL_REMUNERATIVO si no se especifica segundo argumento
+  const acumSinTarget = resolveHistoricalMetric('ACUM_6M_ORD', null, contextM7);
+  assert(acumSinTarget === 7100000, `ACUM_6M_ORD sin target debe inferir TOTAL_REMUNERATIVO y dar 7.100.000 (obtenido ${acumSinTarget})`);
+
+  // 14.6 Sustitución y evaluación en formulaEvaluator
+  const formulaExpr1 = '[MEJOR_12M_ORD:TOTAL_REMUNERATIVO] * 0.5';
+  const valFormula1 = evaluateFormula(formulaExpr1, contextM7, { slips: slipsHistoryOrd });
+  assert(valFormula1 === 700000, `Fórmula con [MEJOR_12M_ORD:TOTAL_REMUNERATIVO] debe ser 700.000 (obtenido ${valFormula1})`);
+
+  const formulaExpr2 = '[ACUM_6M_ORD] / 2';
+  const valFormula2 = evaluateFormula(formulaExpr2, contextM7, { slips: slipsHistoryOrd });
+  assert(valFormula2 === 3550000, `Fórmula con [ACUM_6M_ORD] directo debe ser 3.550.000 (obtenido ${valFormula2})`);
+
+  // 14.7 Validación sintáctica de fórmulas con nuevos tokens
+  const sampleConcepts = [
+    { code: 'SU1000', calculationOrder: 10, type: 'REMUNERATIVE' },
+    { code: 'SU1050', calculationOrder: 20, type: 'REMUNERATIVE' },
+    { code: 'FI1001', calculationOrder: 10, type: 'REMUNERATIVE' },
+  ];
+
+  const valRes1 = validateConceptFormula({
+    formula: '[MEJOR_12M_ORD:TOTAL_REMUNERATIVO]',
+    currentConceptCode: 'FI1001',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valRes1.isValid === true, `Fórmula con [MEJOR_12M_ORD:TOTAL_REMUNERATIVO] debe ser válida (errores: ${valRes1.errors.join(', ')})`);
+
+  const valRes2 = validateConceptFormula({
+    formula: '[PROM_6M_ORD:SU1050] + [ACUM_6M_ORD]',
+    currentConceptCode: 'SU1000',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valRes2.isValid === true, `Fórmula con [PROM_6M_ORD:SU1050] + [ACUM_6M_ORD] debe ser válida (errores: ${valRes2.errors.join(', ')})`);
+}
+
 console.log('\n====================================================');
 console.log(`RESULTADOS: ${passedTests} superadas, ${failedTests} fallidas`);
 console.log('====================================================\n');

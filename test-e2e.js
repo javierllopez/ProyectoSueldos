@@ -1058,9 +1058,10 @@ async function runTests() {
         'x-company-id': companyId,
       },
       body: JSON.stringify({
-        code: 'GE6005',
+        code: 'SU6005',
         name: 'Retención Adicional 11%',
         type: 'DEDUCTION',
+        periodType: 'MONTHLY',
         calculationType: 'PERCENTAGE',
         defaultValue: 11,
         arcaConceptCode: '810000',
