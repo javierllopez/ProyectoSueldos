@@ -378,6 +378,7 @@ model Concept {
   scope            String  @default("GENERAL") @map("scope") @db.VarChar(20) // GENERAL, INDIVIDUAL
   defaultValue     Decimal @default(0.00) @map("default_value") @db.Decimal(12, 2)
   noveltyDataType  String  @default("CANTIDAD") @map("novelty_data_type") @db.VarChar(20) // CANTIDAD, HORAS, PORCENTAJE, SOLO_ASIGNACION
+  quantitySource   String? @default("AUTO") @map("quantity_source") @db.VarChar(255)
   calculationOrder Int     @default(100) @map("calculation_order")
   formula          String? @map("formula") @db.Text
   matrixData       String? @map("matrix_data") @db.LongText
@@ -399,6 +400,9 @@ model Concept {
   appliesAaffContrib    Boolean @default(false) @map("applies_aaff_contrib")
   appliesFneContrib     Boolean @default(false) @map("applies_fne_contrib")
   appliesLrtContrib     Boolean @default(false) @map("applies_lrt_contrib")
+  appliesRegDifAporte   Boolean @default(false) @map("applies_reg_dif_aporte")
+  appliesRegEspAporte   Boolean @default(false) @map("applies_reg_esp_aporte")
+  appliesDetraccion     Boolean @default(false) @map("applies_detraccion")
   isRepeatable          Boolean @default(false) @map("is_repeatable")
 
   matrixId          String?           @map("matrix_id")

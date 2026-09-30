@@ -103,4 +103,10 @@ router.get('/lsd/concepts', payrollController.exportLsdConcepts);
 router.get('/periods/:periodId/lsd/payroll', payrollController.exportLsdPayroll);
 router.get('/periods/:periodId/lsd/validate', payrollController.validateLsd);
 
+// --- Libro de Sueldos Digital Unificado Mensual (ARCA) ---
+router.get('/lsd/monthly-periods', payrollController.getMonthlyLsdPeriods);
+router.get('/lsd/monthly/:year/:month/preview', payrollController.getMonthlyLsdPreview);
+router.get('/lsd/monthly/:year/:month/validate', payrollController.validateMonthlyLsd);
+router.get('/lsd/monthly/:year/:month/export', payrollController.exportMonthlyLsdPayroll);
+
 export default router;

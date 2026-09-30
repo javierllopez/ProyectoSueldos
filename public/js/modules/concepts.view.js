@@ -183,50 +183,142 @@ class ConceptsMethods {
   }
 
   applyArcaSubsystemsSuggestion(arcaCode) {
-    if (!arcaCode) return;
-    const isDeduction = arcaCode.startsWith('81') || arcaCode.startsWith('82');
-    const isRemunerative = arcaCode.startsWith('1');
-    const isOsOnly = arcaCode === '540000';
+    const code = String(arcaCode || '').trim();
+    const isDeduction = code.startsWith('81') || code.startsWith('82') || (parseInt(code, 10) >= 810000 && parseInt(code, 10) <= 829999);
+    const isRemunerative = code.startsWith('1') || (parseInt(code, 10) >= 110000 && parseInt(code, 10) <= 499999);
+    const isOsOnly = code === '540000';
+    const isSpecialNoRem = code === '551000';
+    const isLrtPasantias = code === '550000';
 
-    const sipa = document.getElementById('subsys-sipa');
-    const inssjyp = document.getElementById('subsys-inssjyp');
-    const os = document.getElementById('subsys-os');
-    const fsr = document.getElementById('subsys-fsr');
-    const renatre = document.getElementById('subsys-renatre');
-    const aaff = document.getElementById('subsys-aaff');
-    const fne = document.getElementById('subsys-fne');
-    const lrt = document.getElementById('subsys-lrt');
+    const state = {
+      r1: false, r2: false, r3: false, r4: false, r5: false,
+      r6: false, r7: false, r8: false, r9: false, r10: false,
+    };
 
     if (isDeduction) {
-      // Normativa ARCA LSD: Descuentos informan '0' en todos los subsistemas de Seguridad Social
-      if (sipa) sipa.checked = false;
-      if (inssjyp) inssjyp.checked = false;
-      if (os) os.checked = false;
-      if (fsr) fsr.checked = false;
-      if (renatre) renatre.checked = false;
-      if (aaff) aaff.checked = false;
-      if (fne) fne.checked = false;
-      if (lrt) lrt.checked = false;
+      // Normativa ARCA LSD: Retenciones/Descuentos informan '0' en todos los subsistemas F.931
     } else if (isRemunerative) {
-      // Remunerativos tributan para la totalidad de subsistemas generales
-      if (sipa) sipa.checked = true;
-      if (inssjyp) inssjyp.checked = true;
-      if (os) os.checked = true;
-      if (fsr) fsr.checked = true;
-      if (aaff) aaff.checked = true;
-      if (fne) fne.checked = true;
-      if (lrt) lrt.checked = true;
+      const currentCode = document.getElementById('concept-input-code')?.value?.trim();
+      if (currentCode === 'SU1002') {
+        // Honorarios Directores S.A. (Mod. 099): solo LRT
+        state.r9 = true;
+      } else {
+        // Remunerativos generales: R1, R2, R3, R4, R5, R8, R9, R10
+        state.r1 = true;
+        state.r2 = true;
+        state.r3 = true;
+        state.r4 = true;
+        state.r5 = true;
+        state.r8 = true;
+        state.r9 = true;
+        state.r10 = true;
+      }
     } else if (isOsOnly) {
       // 540000: Incremento No Remunerativo exclusivo para Obra Social y FSR
-      if (sipa) sipa.checked = false;
-      if (inssjyp) inssjyp.checked = false;
-      if (os) os.checked = true;
-      if (fsr) fsr.checked = true;
-      if (renatre) renatre.checked = false;
-      if (aaff) aaff.checked = false;
-      if (fne) fne.checked = false;
-      if (lrt) lrt.checked = false;
+      state.r4 = true;
+      state.r8 = true;
+    } else if (isSpecialNoRem) {
+      // 551000: Importes No Remunerativos Especiales c/ OS y LRT
+      state.r4 = true;
+      state.r8 = true;
+      state.r9 = true;
+    } else if (isLrtPasantias) {
+      // 550000: Incrementos No Remunerativos Generales / Pasantías c/ ART LRT
+      state.r9 = true;
     }
+
+    for (let i = 1; i <= 10; i++) {
+      const el = document.getElementById(`subsys-r${i}`);
+      if (el) el.checked = Boolean(state[`r${i}`]);
+    }
+  }
+
+  handleArcaCodeChange(arcaSelect) {
+    if (!arcaSelect) return;
+    const formId = document.getElementById('concept-form-id')?.value;
+    const newCode = arcaSelect.value;
+    const prevCode = arcaSelect.dataset.prevValue;
+
+    if (formId && prevCode !== undefined && prevCode !== newCode) {
+      const confirmReassign = window.confirm(
+        `Ha modificado el código ARCA a [${newCode || 'Sin código'}].\n\n¿Desea reasignar las bases remunerativas (R1 a R10) de acuerdo al nuevo código ARCA seleccionado?`
+      );
+      if (confirmReassign) {
+        this.applyArcaSubsystemsSuggestion(newCode);
+      }
+    } else {
+      this.applyArcaSubsystemsSuggestion(newCode);
+    }
+    arcaSelect.dataset.prevValue = newCode;
+  }
+
+  updateFormulaAccumulatorsFilter() {
+    const group = document.getElementById('formula-group-accumulators');
+    if (!group) return;
+
+    const type = document.getElementById('concept-input-type')?.value || 'REMUNERATIVE';
+    const numPart = parseInt(document.getElementById('concept-input-number')?.value?.replace(/\D/g, ''), 10) || 0;
+
+    let options = [];
+    if (type === 'REMUNERATIVE') {
+      options = [];
+    } else if (type === 'NON_REMUNERATIVE') {
+      options = [
+        { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' }
+      ];
+    } else if (type === 'DEDUCTION') {
+      options = [
+        { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' },
+        { value: 'TOTAL_NO_REMUNERATIVO', label: '[TOTAL_NO_REMUNERATIVO] Total No Remunerativo' },
+        { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' }
+      ];
+    } else if (type === 'AUXILIARY') {
+      if (numPart <= 3999) {
+        options = [];
+      } else if (numPart <= 5999) {
+        options = [
+          { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' }
+        ];
+      } else {
+        options = [
+          { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' },
+          { value: 'TOTAL_NO_REMUNERATIVO', label: '[TOTAL_NO_REMUNERATIVO] Total No Remunerativo' },
+          { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' }
+        ];
+      }
+    }
+
+    if (options.length === 0) {
+      group.innerHTML = '';
+      group.style.display = 'none';
+    } else {
+      group.style.display = '';
+      group.innerHTML = options
+        .map(o => `<option value="${o.value}">${o.label}</option>`)
+        .join('');
+    }
+  }
+
+  updateFormulaNoveltiesFilter() {
+    const group = document.getElementById('formula-group-novelties');
+    if (!group) return;
+
+    const noveltyType = document.getElementById('concept-input-novelty-type')?.value || 'CANTIDAD';
+    const noveltyMap = {
+      CANTIDAD: '<option value="CANTIDAD">[CANTIDAD] Novedad: Cantidad / Unidades</option>',
+      HORAS: '<option value="HORAS">[HORAS] Novedad: Horas (formato decimal o HH:MM)</option>',
+      PORCENTAJE: '<option value="PORCENTAJE">[PORCENTAJE] Novedad: Porcentaje (dividido 100)</option>',
+      IMPORTE: '<option value="IMPORTE">[IMPORTE] Novedad: Importe / Monto ($)</option>',
+    };
+
+    let html = '';
+    if (noveltyMap[noveltyType]) {
+      html += noveltyMap[noveltyType];
+    }
+    html += '<option value="VALOR_BASE">[VALOR_BASE] Valor Base / Defecto del Concepto</option>';
+
+    group.innerHTML = html;
+    group.style.display = '';
   }
 
   async openNewConceptModal() {
@@ -261,16 +353,29 @@ class ConceptsMethods {
 
     document.getElementById('concept-input-type').value = 'REMUNERATIVE';
     const arcaSelect = document.getElementById('concept-input-arca-code');
-    if (arcaSelect) arcaSelect.value = '110000';
+    if (arcaSelect) {
+      arcaSelect.value = '110000';
+      arcaSelect.dataset.prevValue = '110000';
+    }
     const scopeSelect = document.getElementById('concept-input-scope');
     if (scopeSelect) scopeSelect.value = 'GENERAL';
     document.getElementById('concept-input-calc-type').value = 'FORMULA';
     const noveltySelect = document.getElementById('concept-input-novelty-type');
     if (noveltySelect) noveltySelect.value = 'CANTIDAD';
+    const qtySourceSelect = document.getElementById('concept-input-quantity-source');
+    if (qtySourceSelect) qtySourceSelect.value = 'AUTO';
+    const qtyFormulaBox = document.getElementById('concept-quantity-formula-box');
+    if (qtyFormulaBox) qtyFormulaBox.classList.add('d-none');
+    const qtyFormulaInput = document.getElementById('concept-input-quantity-formula');
+    if (qtyFormulaInput) qtyFormulaInput.value = '';
     const persistentSelect = document.getElementById('concept-input-is-persistent');
     if (persistentSelect) persistentSelect.value = 'true';
     document.getElementById('concept-formula-box')?.classList.remove('d-none');
     document.getElementById('concept-matrix-box')?.classList.add('d-none');
+
+    this.applyArcaSubsystemsSuggestion('110000');
+    this.updateFormulaAccumulatorsFilter();
+    this.updateFormulaNoveltiesFilter();
 
     this.populateConceptModalMatrixOptions();
     await this.populateFormulaConceptOptions('', 'MONTHLY');
@@ -286,6 +391,8 @@ class ConceptsMethods {
 
   async openEditConceptModal(c) {
     await this.fetchAllPayrollConcepts(true);
+    const freshC = (this.allPayrollConcepts || []).find((x) => x.id === c.id) || c;
+    c = freshC;
 
     document.getElementById('concept-form-id').value = c.id;
     document.getElementById('modal-concept-form-title').textContent = `Editar Concepto: [${c.code}] ${c.name}`;
@@ -333,6 +440,20 @@ class ConceptsMethods {
     const noveltySelect = document.getElementById('concept-input-novelty-type');
     if (noveltySelect) noveltySelect.value = c.noveltyDataType || 'CANTIDAD';
 
+    const qtySourceSelect = document.getElementById('concept-input-quantity-source');
+    const qtyFormulaBox = document.getElementById('concept-quantity-formula-box');
+    const qtyFormulaInput = document.getElementById('concept-input-quantity-formula');
+    const rawQS = String(c.quantitySource || 'AUTO').trim();
+    if (rawQS.startsWith('FORMULA:') || (rawQS !== 'AUTO' && !['ANTIGUEDAD_ANOS', 'ANTIGUEDAD_MESES', 'DIAS_TRABAJADOS', 'HORAS_TRABAJADAS', 'DIAS_LICENCIA'].includes(rawQS))) {
+      if (qtySourceSelect) qtySourceSelect.value = 'FORMULA';
+      if (qtyFormulaBox) qtyFormulaBox.classList.remove('d-none');
+      if (qtyFormulaInput) qtyFormulaInput.value = rawQS.replace(/^FORMULA:\s*/i, '');
+    } else {
+      if (qtySourceSelect) qtySourceSelect.value = rawQS;
+      if (qtyFormulaBox) qtyFormulaBox.classList.add('d-none');
+      if (qtyFormulaInput) qtyFormulaInput.value = '';
+    }
+
     const editPersistentSelect = document.getElementById('concept-input-is-persistent');
     if (editPersistentSelect) {
       editPersistentSelect.value = (c.isPersistent === false || c.isPersistent === 0) ? 'false' : 'true';
@@ -348,19 +469,25 @@ class ConceptsMethods {
         arcaSelect.appendChild(customOpt);
       }
       arcaSelect.value = codeVal;
+      arcaSelect.dataset.prevValue = codeVal;
     }
     document.getElementById('concept-input-formula').value = c.formula || '';
     document.getElementById('concept-input-matrix').value = c.matrixData || '';
 
-    // Subsystem checks
-    document.getElementById('subsys-sipa').checked = Boolean(c.appliesSipaAporte);
-    document.getElementById('subsys-inssjyp').checked = Boolean(c.appliesInssjypAporte);
-    document.getElementById('subsys-os').checked = Boolean(c.appliesOsAporte);
-    document.getElementById('subsys-fsr').checked = Boolean(c.appliesFsrAporte);
-    document.getElementById('subsys-aaff').checked = Boolean(c.appliesAaffContrib);
-    document.getElementById('subsys-fne').checked = Boolean(c.appliesFneContrib);
-    document.getElementById('subsys-lrt').checked = Boolean(c.appliesLrtContrib);
-    document.getElementById('subsys-renatre').checked = Boolean(c.appliesRenatreAporte);
+    // Subsystem checks (R1..R10)
+    const r1 = document.getElementById('subsys-r1'); if (r1) r1.checked = Boolean(c.appliesSipaAporte);
+    const r2 = document.getElementById('subsys-r2'); if (r2) r2.checked = Boolean(c.appliesSipaContrib);
+    const r3 = document.getElementById('subsys-r3'); if (r3) r3.checked = Boolean(c.appliesAaffContrib || c.appliesFneContrib || c.appliesRenatreAporte || c.appliesRenatreContrib);
+    const r4 = document.getElementById('subsys-r4'); if (r4) r4.checked = Boolean(c.appliesOsAporte || c.appliesFsrAporte);
+    const r5 = document.getElementById('subsys-r5'); if (r5) r5.checked = Boolean(c.appliesInssjypAporte || c.appliesInssjypContrib);
+    const r6 = document.getElementById('subsys-r6'); if (r6) r6.checked = Boolean(c.appliesRegDifAporte);
+    const r7 = document.getElementById('subsys-r7'); if (r7) r7.checked = Boolean(c.appliesRegEspAporte);
+    const r8 = document.getElementById('subsys-r8'); if (r8) r8.checked = Boolean(c.appliesOsContrib || c.appliesFsrContrib);
+    const r9 = document.getElementById('subsys-r9'); if (r9) r9.checked = Boolean(c.appliesLrtContrib);
+    const r10 = document.getElementById('subsys-r10'); if (r10) r10.checked = Boolean(c.appliesDetraccion);
+
+    this.updateFormulaAccumulatorsFilter();
+    this.updateFormulaNoveltiesFilter();
 
     // Toggle formula vs matrix boxes
     const formulaBox = document.getElementById('concept-formula-box');
@@ -416,6 +543,14 @@ class ConceptsMethods {
 
     const numericPart = parseInt(codeVal.slice(2), 10) || 1000;
 
+    const rawQtySource = document.getElementById('concept-input-quantity-source')?.value || 'AUTO';
+    let finalQtySource = rawQtySource;
+    if (rawQtySource === 'FORMULA') {
+      let formVal = document.getElementById('concept-input-quantity-formula')?.value?.trim() || '';
+      formVal = formVal.replace(/^FORMULA:\s*/i, '').trim();
+      finalQtySource = formVal ? `FORMULA:${formVal}` : 'AUTO';
+    }
+
     const payload = {
       code: codeVal,
       name: document.getElementById('concept-input-name').value.trim(),
@@ -424,6 +559,7 @@ class ConceptsMethods {
       calculationType: calcType,
       calculationOrder: numericPart,
       noveltyDataType: document.getElementById('concept-input-novelty-type')?.value || 'CANTIDAD',
+      quantitySource: finalQtySource,
       periodType: document.getElementById('concept-input-period-type')?.value || 'MONTHLY',
       isPersistent: document.getElementById('concept-input-is-persistent')?.value === 'true',
       defaultValue: Number(document.getElementById('concept-input-default-value').value) || 0,
@@ -431,18 +567,22 @@ class ConceptsMethods {
       matrixData: calcType === 'MATRIX' ? document.getElementById('concept-input-matrix').value.trim() : null,
       matrixId: matrixId,
       arcaConceptCode: document.getElementById('concept-input-arca-code').value.trim() || null,
-      appliesSipaAporte: document.getElementById('subsys-sipa').checked,
-      appliesSipaContrib: document.getElementById('subsys-sipa').checked,
-      appliesInssjypAporte: document.getElementById('subsys-inssjyp').checked,
-      appliesInssjypContrib: document.getElementById('subsys-inssjyp').checked,
-      appliesOsAporte: document.getElementById('subsys-os').checked,
-      appliesOsContrib: document.getElementById('subsys-os').checked,
-      appliesFsrAporte: document.getElementById('subsys-fsr').checked,
-      appliesFsrContrib: document.getElementById('subsys-fsr').checked,
-      appliesAaffContrib: document.getElementById('subsys-aaff').checked,
-      appliesFneContrib: document.getElementById('subsys-fne').checked,
-      appliesLrtContrib: document.getElementById('subsys-lrt').checked,
-      appliesRenatreAporte: document.getElementById('subsys-renatre').checked,
+      appliesSipaAporte: document.getElementById('subsys-r1')?.checked || false,
+      appliesSipaContrib: document.getElementById('subsys-r2')?.checked || false,
+      appliesInssjypAporte: document.getElementById('subsys-r5')?.checked || false,
+      appliesInssjypContrib: document.getElementById('subsys-r5')?.checked || false,
+      appliesOsAporte: document.getElementById('subsys-r4')?.checked || false,
+      appliesOsContrib: document.getElementById('subsys-r8')?.checked || false,
+      appliesFsrAporte: document.getElementById('subsys-r4')?.checked || false,
+      appliesFsrContrib: document.getElementById('subsys-r8')?.checked || false,
+      appliesRenatreAporte: document.getElementById('subsys-r3')?.checked || false,
+      appliesRenatreContrib: document.getElementById('subsys-r3')?.checked || false,
+      appliesAaffContrib: document.getElementById('subsys-r3')?.checked || false,
+      appliesFneContrib: document.getElementById('subsys-r3')?.checked || false,
+      appliesLrtContrib: document.getElementById('subsys-r9')?.checked || false,
+      appliesRegDifAporte: document.getElementById('subsys-r6')?.checked || false,
+      appliesRegEspAporte: document.getElementById('subsys-r7')?.checked || false,
+      appliesDetraccion: document.getElementById('subsys-r10')?.checked || false,
     };
 
     submitBtn.disabled = true;
@@ -491,6 +631,7 @@ class ConceptsMethods {
 
   setupFormulaDesigner() {
     const btnInsertConcept = document.getElementById('btn-insert-concept-token');
+    const btnInsertMetric = document.getElementById('btn-insert-metric-token');
     const conceptSelect = document.getElementById('formula-select-concept');
     const metricSelect = document.getElementById('formula-select-concept-metric');
     const formulaInput = document.getElementById('concept-input-formula');
@@ -512,22 +653,46 @@ class ConceptsMethods {
       btnInsertConcept.addEventListener('click', () => {
         let target = conceptSelect?.value;
         const metric = metricSelect?.value || 'CURRENT';
-        if (!target) {
-          if (metric && metric.includes('_ORD')) {
-            target = 'TOTAL_REMUNERATIVO';
-          } else {
-            return;
-          }
-        }
-
-        let token = '';
-        if (metric === 'CURRENT') {
-          token = `[${target}]`;
-        } else {
-          token = `[${metric}:${target}]`;
-        }
+        if (!target) return;
+        const token = (metric === 'CURRENT') ? `[${target}]` : `[${metric}:${target}]`;
         insertTextAtCursor(token);
       });
+    }
+
+    if (btnInsertMetric) {
+      btnInsertMetric.addEventListener('click', () => {
+        const metric = metricSelect?.value || 'CURRENT';
+        let target = conceptSelect?.value;
+        if (!target) {
+          target = 'TOTAL_REMUNERATIVO';
+        }
+        const token = (metric === 'CURRENT') ? `[${target}]` : `[${metric}:${target}]`;
+        insertTextAtCursor(token);
+      });
+    }
+
+    const btnInsertMatrix = document.getElementById('btn-insert-matrix-formula');
+    if (btnInsertMatrix) {
+      btnInsertMatrix.onclick = () => {
+        const sel = document.getElementById('formula-select-matrix');
+        if (sel?.value) insertTextAtCursor(`[MATRIZ:${sel.value}]`);
+      };
+    }
+
+    const btnInsertFixed = document.getElementById('btn-insert-fixed-value-formula');
+    if (btnInsertFixed) {
+      btnInsertFixed.onclick = () => {
+        const sel = document.getElementById('formula-select-fixed-value');
+        if (sel?.value) insertTextAtCursor(`[VALOR:${sel.value}]`);
+      };
+    }
+
+    const btnInsertScale = document.getElementById('btn-insert-salary-scale-formula');
+    if (btnInsertScale) {
+      btnInsertScale.onclick = () => {
+        const sel = document.getElementById('formula-select-salary-scale');
+        if (sel?.value) insertTextAtCursor(`[NOMINA:${sel.value}]`);
+      };
     }
 
     if (tokenContainer) {

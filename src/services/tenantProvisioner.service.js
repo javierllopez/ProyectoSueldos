@@ -299,6 +299,9 @@ const TENANT_TABLE_DEFINITIONS = [
     \`applies_aaff_contrib\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`applies_fne_contrib\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`applies_lrt_contrib\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`applies_reg_dif_aporte\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`applies_reg_esp_aporte\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`applies_detraccion\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`is_repeatable\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -1411,6 +1414,37 @@ export const DEFAULT_CONCEPTS = [
     appliesLrtContrib: true,  // Cobertura ART Ley 24.557
     isRepeatable: false,
   },
+  // 1.c Honorarios / Retribución Director S.A. (Remunerativo - Directores y Socios Gerentes LRT Mod. 099)
+  {
+    code: 'SU1002',
+    name: 'Honorarios / Retribución Director S.A. (LRT Mod. 099)',
+    type: 'REMUNERATIVE',
+    calculationType: 'FIXED',
+    periodType: 'MONTHLY',
+    scope: 'GENERAL',
+    noveltyDataType: 'CANTIDAD',
+    calculationOrder: 15,
+    defaultValue: 0.00,
+    formula: null,
+    matrixData: null,
+    isPersistent: true,
+    isActive: true,
+    arcaConceptCode: '110000',
+    appliesSipaAporte: false,
+    appliesSipaContrib: false,
+    appliesInssjypAporte: false,
+    appliesInssjypContrib: false,
+    appliesOsAporte: false,
+    appliesOsContrib: false,
+    appliesFsrAporte: false,
+    appliesFsrContrib: false,
+    appliesRenatreAporte: false,
+    appliesRenatreContrib: false,
+    appliesAaffContrib: false,
+    appliesFneContrib: false,
+    appliesLrtContrib: true,  // Cobertura ART Ley 24.557 (LRT Modalidad 099)
+    isRepeatable: false,
+  },
   // 2. Sueldo Anual Complementario (SAC) (Remunerativo - Prefijo SA - Reasigna 1200)
   {
     code: 'SA1000',
@@ -1751,6 +1785,7 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       { name: 'scope', def: "VARCHAR(20) NOT NULL DEFAULT 'GENERAL'" },
       { name: 'is_persistent', def: 'BOOLEAN NOT NULL DEFAULT TRUE' },
       { name: 'novelty_data_type', def: "VARCHAR(20) NOT NULL DEFAULT 'CANTIDAD'" },
+      { name: 'quantity_source', def: "VARCHAR(255) NULL DEFAULT 'AUTO'" },
       { name: 'calculation_order', def: 'INT NOT NULL DEFAULT 100' },
       { name: 'formula', def: 'TEXT NULL' },
       { name: 'matrix_data', def: 'LONGTEXT NULL' },
@@ -1769,6 +1804,9 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       { name: 'applies_aaff_contrib', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'applies_fne_contrib', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'applies_lrt_contrib', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+      { name: 'applies_reg_dif_aporte', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+      { name: 'applies_reg_esp_aporte', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+      { name: 'applies_detraccion', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'is_repeatable', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
     ];
     const existingConceptCols = await tenantClient.$queryRawUnsafe(
@@ -1780,6 +1818,12 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
         await tenantClient.$executeRawUnsafe(`ALTER TABLE \`concepts\` ADD COLUMN \`${col.name}\` ${col.def};`);
       }
     }
+    // Asegurar que quantity_source tenga capacidad de hasta 255 caracteres para fórmulas
+    try {
+      await tenantClient.$executeRawUnsafe(
+        "ALTER TABLE `concepts` MODIFY COLUMN `quantity_source` VARCHAR(255) NULL DEFAULT 'AUTO'"
+      );
+    } catch (_) {}
 
     // 3. Columnas en payroll_periods
     const periodCols = [

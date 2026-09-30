@@ -2264,14 +2264,17 @@
                     <div class="card shadow-xs mb-3 card-payroll-accent">
                       <div class="card-body py-3">
                         <div class="row g-2 align-items-center">
-                          <div class="col-md-6">
-                            <label class="form-label small fw-bold mb-1">Liquidación a Exportar:</label>
+                          <div class="col-md-7">
+                            <label class="form-label small fw-bold mb-1">Período Mensual a Presentar (LSD - F.931):</label>
                             <select id="lsd-period-select" class="form-select">
                               <!-- Dinámico vía app.js -->
                             </select>
+                            <div class="small text-muted mt-1" id="lsd-period-helper-text">
+                              <i class="ti ti-info-circle me-1"></i> Se consolidarán automáticamente todas las liquidaciones del mes en un único archivo (.txt).
+                            </div>
                           </div>
-                          <div class="col-md-6 text-end pt-3">
-                            <button type="button" class="btn btn-outline-primary" id="btn-validate-lsd">
+                          <div class="col-md-5 text-end pt-3">
+                            <button type="button" class="btn btn-primary" id="btn-validate-lsd">
                               <i class="ti ti-checkup-list me-1"></i> Auditar Consistencia ARCA
                             </button>
                           </div>
@@ -2284,14 +2287,21 @@
                       <!-- Panel de Auditoría ARCA -->
                       <div id="lsd-validation-box" class="card shadow-xs mb-3 border-0 bg-light-subtle">
                         <div class="card-body p-3">
-                          <div class="d-flex align-items-center gap-2 mb-2">
-                            <i class="ti ti-shield-check fs-2 text-success" id="lsd-status-icon"></i>
-                            <div>
-                              <h4 class="card-title mb-0" id="lsd-status-title">Consistencia de Liquidación</h4>
-                              <div class="text-muted small" id="lsd-status-desc">Seleccione un período para auditar los 999 caracteres por registro.</div>
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                              <i class="ti ti-shield-check fs-2 text-success" id="lsd-status-icon"></i>
+                              <div>
+                                <h4 class="card-title mb-0" id="lsd-status-title">Consistencia de Liquidación</h4>
+                                <div class="text-muted small" id="lsd-status-desc">Seleccione un período para auditar los 999 caracteres por registro.</div>
+                              </div>
+                            </div>
+                            <div id="lsd-modal-launch-btn-container" class="d-none">
+                              <button type="button" class="btn btn-outline-danger btn-sm" id="btn-open-lsd-errors-modal">
+                                <i class="ti ti-list-details me-1"></i> Ver y Exportar Errores (<span id="lsd-errors-badge-count">0</span>)
+                              </button>
                             </div>
                           </div>
-                          <div id="lsd-errors-list" class="alert alert-danger py-2 small d-none mb-0"></div>
+                          <div id="lsd-errors-list" class="alert alert-danger py-2 small d-none mb-0 mt-2"></div>
                         </div>
                       </div>
 
@@ -5542,6 +5552,27 @@
 
             <div class="row g-3 mb-3">
               <div class="col-md-5">
+                <label class="form-label fw-bold">Origen de Cantidad / Unidades (Recibo y Auditoría)</label>
+                <select class="form-select" id="concept-input-quantity-source">
+                  <option value="AUTO" selected>Automático (Novedad manual / Días trabajados / Antigüedad)</option>
+                  <option value="ANTIGUEDAD_ANOS">Años de Antigüedad cumplidos</option>
+                  <option value="ANTIGUEDAD_MESES">Meses de Antigüedad</option>
+                  <option value="DIAS_TRABAJADOS">Días Trabajados en el período</option>
+                  <option value="HORAS_TRABAJADAS">Horas de Jornada / Trabajadas</option>
+                  <option value="DIAS_LICENCIA">Días de Licencia (Novedad)</option>
+                  <option value="FORMULA">Fórmula o expresión personalizada para Cantidad</option>
+                </select>
+                <div class="form-hint" style="font-size: 0.68rem;">Define qué valor mostrar en la columna "Cantidad" del recibo</div>
+              </div>
+              <div class="col-md-7 d-none" id="concept-quantity-formula-box">
+                <label class="form-label fw-bold">Expresión para Cantidad / Unidades</label>
+                <input type="text" class="form-control font-monospace" id="concept-input-quantity-formula" placeholder="Ej. [SU1020:CANTIDAD] o [SU1020:CANTIDAD] + [SU1025:CANTIDAD]" />
+                <div class="form-hint" style="font-size: 0.68rem;">Puede referenciar [CODIGO:CANTIDAD], variables del legajo o funciones numéricas</div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-5">
                 <label class="form-label fw-bold">Código ARCA (Libro de Sueldos Digital)</label>
                 <select class="form-select font-monospace" id="concept-input-arca-code">
                   <option value="">-- Sin código ARCA / No aplica (Auxiliar) --</option>
@@ -5619,125 +5650,180 @@
                   <span class="badge bg-purple-lt">Motor v2.0 - Métricas & Topes</span>
                 </div>
 
-                <!-- COMBOS DE SELECCIÓN DE CONCEPTOS Y MÉTRICAS HISTÓRICAS -->
+                <!-- COMBOS DE SELECCIÓN DISTRIBUIDOS EN 3 COLUMNAS CON BOTONES DISCRETOS "+" -->
                 <div class="p-2 bg-white rounded border mb-3 shadow-xs">
                   <div class="row g-2 align-items-end">
-                    <div class="col-md-5">
+                    <!-- Columna 1: Concepto, Total o Variable -->
+                    <div class="col-md-4">
                       <label class="form-label small fw-bold text-muted mb-1">
-                        <i class="ti ti-variable me-1 text-primary"></i>1. Concepto, Total o Variable:
+                        <i class="ti ti-variable me-1 text-primary"></i>1. Concepto o Variable:
                       </label>
-                      <select class="form-select form-select-sm" id="formula-select-concept">
-                        <optgroup label="Totales y Bases Acumuladoras">
-                          <option value="TOTAL_REMUNERATIVO">[TOTAL_REMUNERATIVO] Total Remunerativo del Período</option>
-                          <option value="TOTAL_NO_REMUNERATIVO">[TOTAL_NO_REMUNERATIVO] Total No Remunerativo del Período</option>
-                          <option value="TOTAL_DEDUCCIONES">[TOTAL_DEDUCCIONES] Total Deducciones / Retenciones</option>
-                          <option value="TOTAL_BRUTO">[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)</option>
-                        </optgroup>
-                        <optgroup label="Novedades del Empleado">
-                          <option value="CANTIDAD">[CANTIDAD] Novedad: Cantidad / Unidades</option>
-                          <option value="HORAS">[HORAS] Novedad: Horas (formato decimal o HH:MM)</option>
-                          <option value="PORCENTAJE">[PORCENTAJE] Novedad: Porcentaje (dividido 100)</option>
-                          <option value="IMPORTE">[IMPORTE] Novedad: Importe / Monto ($)</option>
-                          <option value="VALOR_BASE">[VALOR_BASE] Valor Base / Defecto del Concepto</option>
-                        </optgroup>
-                        <optgroup label="Variables del Colaborador y Jornada">
-                          <option value="SUELDO_BASICO_EMPLEADO">[SUELDO_BASICO_EMPLEADO] Sueldo Básico Nominal del Empleado</option>
-                          <option value="ANTIGUEDAD_ANOS">[ANTIGUEDAD_ANOS] Años de Antigüedad</option>
-                          <option value="ANTIGUEDAD_MESES">[ANTIGUEDAD_MESES] Meses de Antigüedad</option>
-                          <option value="VALOR_DIA">[VALOR_DIA] Valor Día Normal</option>
-                          <option value="DIAS_TRABAJADOS">[DIAS_TRABAJADOS] Días Trabajados en el Período</option>
-                          <option value="HORAS_TRABAJADAS">[HORAS_TRABAJADAS] Horas Trabajadas en el Período</option>
-                          <option value="HIJOS">[HIJOS] Cantidad de Hijos a Cargo</option>
-                          <option value="JORNADA_HORAS_DIARIAS">[JORNADA_HORAS_DIARIAS] Horas Diarias de la Jornada Asignada</option>
-                          <option value="JORNADA_HORAS_SEMANALES">[JORNADA_HORAS_SEMANALES] Horas Semanales de la Jornada Asignada</option>
-                          <option value="JORNADA_HORAS_MENSUALES">[JORNADA_HORAS_MENSUALES] Horas Mensuales de la Jornada Asignada</option>
-                          <option value="JORNADA_DIAS_MENSUALES">[JORNADA_DIAS_MENSUALES] Días Mensuales de la Jornada Asignada</option>
-                        </optgroup>
-                        <optgroup label="Fechas de Nómina y Período">
-                          <option value="FECHA_LIQUIDACION">[FECHA_LIQUIDACION] Fecha de Liquidación / Corte</option>
-                          <option value="FECHA_INGRESO">[FECHA_INGRESO] Fecha de Ingreso del Colaborador</option>
-                          <option value="INICIO_SEMESTRE">[INICIO_SEMESTRE] Inicio Semestre Actual (01/01 o 01/07)</option>
-                          <option value="INICIO_SEMESTRE_1">[INICIO_SEMESTRE_1] Inicio 1er Semestre (01/01)</option>
-                          <option value="INICIO_SEMESTRE_2">[INICIO_SEMESTRE_2] Inicio 2do Semestre (01/07)</option>
-                          <option value="FIN_SEMESTRE">[FIN_SEMESTRE] Fin Semestre Actual (30/06 o 31/12)</option>
-                          <option value="FECHA_EGRESO">[FECHA_EGRESO] Fecha de Egreso / Baja</option>
-                          <option value="FECHA_PAGO">[FECHA_PAGO] Fecha de Pago del Período</option>
-                        </optgroup>
-                        <optgroup label="Conceptos de Nómina Disponibles" id="formula-concept-options-group">
-                          <!-- Llenado dinámico desde app.js -->
-                        </optgroup>
-                      </select>
+                      <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm" id="formula-select-concept">
+                          <optgroup id="formula-group-accumulators" label="Totales y Bases Acumuladoras">
+                            <option value="TOTAL_REMUNERATIVO">[TOTAL_REMUNERATIVO] Total Remunerativo</option>
+                            <option value="TOTAL_NO_REMUNERATIVO">[TOTAL_NO_REMUNERATIVO] Total No Remunerativo</option>
+                            <option value="TOTAL_BRUTO">[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)</option>
+                          </optgroup>
+                          <optgroup id="formula-group-novelties" label="Novedades del Empleado">
+                            <option value="CANTIDAD">[CANTIDAD] Novedad: Cantidad / Unidades</option>
+                            <option value="VALOR_BASE">[VALOR_BASE] Valor Base / Defecto del Concepto</option>
+                          </optgroup>
+                          <optgroup label="Variables del Colaborador y Jornada">
+                            <option value="SUELDO_BASICO_EMPLEADO">[SUELDO_BASICO_EMPLEADO] Sueldo Básico Nominal del Empleado</option>
+                            <option value="ANTIGUEDAD_ANOS">[ANTIGUEDAD_ANOS] Años de Antigüedad</option>
+                            <option value="ANTIGUEDAD_MESES">[ANTIGUEDAD_MESES] Meses de Antigüedad</option>
+                            <option value="VALOR_DIA">[VALOR_DIA] Valor Día Normal</option>
+                            <option value="DIAS_TRABAJADOS">[DIAS_TRABAJADOS] Días Trabajados en el Período</option>
+                            <option value="HORAS_TRABAJADAS">[HORAS_TRABAJADAS] Horas Trabajadas en el Período</option>
+                            <option value="HIJOS">[HIJOS] Cantidad de Hijos a Cargo</option>
+                            <option value="JORNADA_HORAS_DIARIAS">[JORNADA_HORAS_DIARIAS] Horas Diarias de la Jornada Asignada</option>
+                            <option value="JORNADA_HORAS_SEMANALES">[JORNADA_HORAS_SEMANALES] Horas Semanales de la Jornada Asignada</option>
+                            <option value="JORNADA_HORAS_MENSUALES">[JORNADA_HORAS_MENSUALES] Horas Mensuales de la Jornada Asignada</option>
+                            <option value="JORNADA_DIAS_MENSUALES">[JORNADA_DIAS_MENSUALES] Días Mensuales de la Jornada Asignada</option>
+                          </optgroup>
+                          <optgroup label="Fechas de Nómina y Período">
+                            <option value="FECHA_LIQUIDACION">[FECHA_LIQUIDACION] Fecha de Liquidación / Corte</option>
+                            <option value="FECHA_INGRESO">[FECHA_INGRESO] Fecha de Ingreso del Colaborador</option>
+                            <option value="INICIO_SEMESTRE">[INICIO_SEMESTRE] Inicio Semestre Actual (01/01 o 01/07)</option>
+                            <option value="INICIO_SEMESTRE_1">[INICIO_SEMESTRE_1] Inicio 1er Semestre (01/01)</option>
+                            <option value="INICIO_SEMESTRE_2">[INICIO_SEMESTRE_2] Inicio 2do Semestre (01/07)</option>
+                            <option value="FIN_SEMESTRE">[FIN_SEMESTRE] Fin Semestre Actual (30/06 o 31/12)</option>
+                            <option value="FECHA_EGRESO">[FECHA_EGRESO] Fecha de Egreso / Baja</option>
+                            <option value="FECHA_PAGO">[FECHA_PAGO] Fecha de Pago del Período</option>
+                          </optgroup>
+                          <optgroup label="Conceptos de Nómina Disponibles" id="formula-concept-options-group">
+                            <!-- Llenado dinámico desde app.js -->
+                          </optgroup>
+                        </select>
+                        <button type="button" class="btn btn-outline-primary btn-sm px-2" id="btn-insert-concept-token" title="Insertar concepto/variable en la fórmula">
+                          <i class="ti ti-plus"></i>
+                        </button>
+                      </div>
                     </div>
 
-                    <div class="col-md-5">
+                    <!-- Columna 2: Métrica / Histórico -->
+                    <div class="col-md-4">
                       <label class="form-label small fw-bold text-muted mb-1">
-                        <i class="ti ti-chart-arrows-vertical me-1 text-teal"></i>2. Métrica / Acumulado Histórico:
+                        <i class="ti ti-chart-arrows-vertical me-1 text-teal"></i>2. Métrica Histórica:
                       </label>
-                      <select class="form-select form-select-sm" id="formula-select-concept-metric">
-                        <option value="CURRENT" selected>Valor Período Actual [CODIGO]</option>
-                        <optgroup label="Remuneración Habitual / Ordinaria (Excluye SAC, Vacaciones y Finales)">
-                          <option value="MEJOR_12M_ORD">Mayor Remuneración Habitual 12 Meses (Base Art. 245 LCT) [MEJOR_12M_ORD:...]</option>
-                          <option value="MEJOR_12M_ANT_ORD">Mayor Remuneración Habitual 12M Ant. [MEJOR_12M_ANT_ORD:...]</option>
-                          <option value="ACUM_12M_ORD">Acumulado Habitual 12 Meses (con actual) [ACUM_12M_ORD:...]</option>
-                          <option value="ACUM_12M_ANT_ORD">Acumulado Habitual 12M Anteriores cerrados [ACUM_12M_ANT_ORD:...]</option>
-                          <option value="PROM_12M_ORD">Promedio Habitual 12 Meses (div. liq. reales) [PROM_12M_ORD:...]</option>
-                          <option value="PROM_FIJO_12M_ORD">Promedio Habitual 12 Meses (divisor fijo 12) [PROM_FIJO_12M_ORD:...]</option>
-                          <option value="PROM_12M_ANT_ORD">Promedio Habitual 12M Ant. (div. liq. reales) [PROM_12M_ANT_ORD:...]</option>
-                          <option value="PROM_FIJO_12M_ANT_ORD">Promedio Habitual 12M Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT_ORD:...]</option>
-                          <option value="MEJOR_6M_ORD">Mayor Valor Habitual 6 Meses (con actual) [MEJOR_6M_ORD:...]</option>
-                          <option value="MEJOR_6M_ANT_ORD">Mayor Valor Habitual 6M Anteriores [MEJOR_6M_ANT_ORD:...]</option>
-                          <option value="ACUM_6M_ORD">Acumulado Habitual 6 Meses (con actual) [ACUM_6M_ORD:...]</option>
-                          <option value="ACUM_6M_ANT_ORD">Acumulado Habitual 6M Anteriores cerrados [ACUM_6M_ANT_ORD:...]</option>
-                          <option value="PROM_6M_ORD">Promedio Habitual 6 Meses (div. liq. reales) [PROM_6M_ORD:...]</option>
-                          <option value="PROM_FIJO_6M_ORD">Promedio Habitual 6 Meses (divisor fijo 6) [PROM_FIJO_6M_ORD:...]</option>
-                          <option value="PROM_6M_ANT_ORD">Promedio Habitual 6M Ant. (div. liq. reales) [PROM_6M_ANT_ORD:...]</option>
-                          <option value="PROM_FIJO_6M_ANT_ORD">Promedio Habitual 6M Ant. (divisor fijo 6) [PROM_FIJO_6M_ANT_ORD:...]</option>
-                          <option value="MEJOR_SEMESTRE_ORD">Mayor Remuneración Semestre Ordinaria [MEJOR_SEMESTRE_ORD:...]</option>
-                          <option value="ACUM_SEMESTRE_ORD">Acumulado Semestre Ordinario [ACUM_SEMESTRE_ORD:...]</option>
-                          <option value="PROM_SEMESTRE_ORD">Promedio Semestre Ordinario [PROM_SEMESTRE_ORD:...]</option>
-                          <option value="ACUM_ANUAL_ORD">Acumulado Año Calendario Ordinario [ACUM_ANUAL_ORD:...]</option>
-                          <option value="PROM_ANUAL_ORD">Promedio Año Calendario Ordinario (div. liq. reales) [PROM_ANUAL_ORD:...]</option>
-                          <option value="PROM_FIJO_ANUAL_ORD">Promedio Año Calendario Ordinario (div. meses) [PROM_FIJO_ANUAL_ORD:...]</option>
-                          <option value="MEJOR_ANUAL_ORD">Mayor Remuneración Año Calendario Ordinaria [MEJOR_ANUAL_ORD:...]</option>
-                        </optgroup>
-                        <optgroup label="Últimos 6 Meses (Dual)">
-                          <option value="ACUM_6M">Acumulado 6 Meses (con actual) [ACUM_6M:...]</option>
-                          <option value="ACUM_6M_ANT">Acumulado 6 Meses Anteriores cerrados [ACUM_6M_ANT:...]</option>
-                          <option value="PROM_6M">Promedio 6 Meses (div. liq. reales) [PROM_6M:...]</option>
-                          <option value="PROM_FIJO_6M">Promedio 6 Meses (divisor fijo 6) [PROM_FIJO_6M:...]</option>
-                          <option value="PROM_6M_ANT">Promedio 6 Meses Ant. (div. liq. reales) [PROM_6M_ANT:...]</option>
-                          <option value="PROM_FIJO_6M_ANT">Promedio 6 Meses Ant. (divisor fijo 6) [PROM_FIJO_6M_ANT:...]</option>
-                          <option value="MEJOR_6M">Mayor Valor 6 Meses (con actual) [MEJOR_6M:...]</option>
-                          <option value="MEJOR_6M_ANT">Mayor Valor 6 Meses Anteriores [MEJOR_6M_ANT:...]</option>
-                        </optgroup>
-                        <optgroup label="Últimos 12 Meses (Dual)">
-                          <option value="ACUM_12M">Acumulado 12 Meses (con actual) [ACUM_12M:...]</option>
-                          <option value="ACUM_12M_ANT">Acumulado 12 Meses Anteriores cerrados [ACUM_12M_ANT:...]</option>
-                          <option value="PROM_12M">Promedio 12 Meses (div. liq. reales) [PROM_12M:...]</option>
-                          <option value="PROM_FIJO_12M">Promedio 12 Meses (divisor fijo 12) [PROM_FIJO_12M:...]</option>
-                          <option value="PROM_12M_ANT">Promedio 12 Meses Ant. (div. liq. reales) [PROM_12M_ANT:...]</option>
-                          <option value="PROM_FIJO_12M_ANT">Promedio 12 Meses Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT:...]</option>
-                          <option value="MEJOR_12M">Mayor Valor 12 Meses (con actual) [MEJOR_12M:...]</option>
-                          <option value="MEJOR_12M_ANT">Mayor Valor 12 Meses Anteriores [MEJOR_12M_ANT:...]</option>
-                        </optgroup>
-                        <optgroup label="Semestre en Curso (Ley 23.041 SAC)">
-                          <option value="MEJOR_SEMESTRE">Mayor Remuneración del Semestre [MEJOR_SEMESTRE:...]</option>
-                          <option value="ACUM_SEMESTRE">Acumulado del Semestre [ACUM_SEMESTRE:...]</option>
-                          <option value="PROM_SEMESTRE">Promedio del Semestre [PROM_SEMESTRE:...]</option>
-                        </optgroup>
-                        <optgroup label="Año Calendario (Enero a hoy)">
-                          <option value="ACUM_ANUAL">Acumulado Año Calendario [ACUM_ANUAL:...]</option>
-                          <option value="PROM_ANUAL">Promedio Año Calendario (div. liq. reales) [PROM_ANUAL:...]</option>
-                          <option value="PROM_FIJO_ANUAL">Promedio Año Calendario (div. meses) [PROM_FIJO_ANUAL:...]</option>
-                          <option value="MEJOR_ANUAL">Mayor Valor Año Calendario [MEJOR_ANUAL:...]</option>
-                        </optgroup>
-                      </select>
+                      <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm" id="formula-select-concept-metric">
+                          <option value="CURRENT" selected>Valor Período Actual [CODIGO]</option>
+                          <optgroup label="Remuneración Habitual / Ordinaria (Excluye SAC, Vacaciones y Finales)">
+                            <option value="MEJOR_12M_ORD">Mayor Remuneración Habitual 12 Meses (Base Art. 245 LCT) [MEJOR_12M_ORD:...]</option>
+                            <option value="MEJOR_12M_ANT_ORD">Mayor Remuneración Habitual 12M Ant. [MEJOR_12M_ANT_ORD:...]</option>
+                            <option value="ACUM_12M_ORD">Acumulado Habitual 12 Meses (con actual) [ACUM_12M_ORD:...]</option>
+                            <option value="ACUM_12M_ANT_ORD">Acumulado Habitual 12M Anteriores cerrados [ACUM_12M_ANT_ORD:...]</option>
+                            <option value="PROM_12M_ORD">Promedio Habitual 12 Meses (div. liq. reales) [PROM_12M_ORD:...]</option>
+                            <option value="PROM_FIJO_12M_ORD">Promedio Habitual 12 Meses (divisor fijo 12) [PROM_FIJO_12M_ORD:...]</option>
+                            <option value="PROM_12M_ANT_ORD">Promedio Habitual 12M Ant. (div. liq. reales) [PROM_12M_ANT_ORD:...]</option>
+                            <option value="PROM_FIJO_12M_ANT_ORD">Promedio Habitual 12M Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT_ORD:...]</option>
+                            <option value="MEJOR_6M_ORD">Mayor Valor Habitual 6 Meses (con actual) [MEJOR_6M_ORD:...]</option>
+                            <option value="MEJOR_6M_ANT_ORD">Mayor Valor Habitual 6M Anteriores [MEJOR_6M_ANT_ORD:...]</option>
+                            <option value="ACUM_6M_ORD">Acumulado Habitual 6 Meses (con actual) [ACUM_6M_ORD:...]</option>
+                            <option value="ACUM_6M_ANT_ORD">Acumulado Habitual 6M Anteriores cerrados [ACUM_6M_ANT_ORD:...]</option>
+                            <option value="PROM_6M_ORD">Promedio Habitual 6 Meses (div. liq. reales) [PROM_6M_ORD:...]</option>
+                            <option value="PROM_FIJO_6M_ORD">Promedio Habitual 6 Meses (divisor fijo 6) [PROM_FIJO_6M_ORD:...]</option>
+                            <option value="PROM_6M_ANT_ORD">Promedio Habitual 6M Ant. (div. liq. reales) [PROM_6M_ANT_ORD:...]</option>
+                            <option value="PROM_FIJO_6M_ANT_ORD">Promedio Habitual 6M Ant. (divisor fijo 6) [PROM_FIJO_6M_ANT_ORD:...]</option>
+                            <option value="MEJOR_SEMESTRE_ORD">Mayor Remuneración Semestre Ordinaria [MEJOR_SEMESTRE_ORD:...]</option>
+                            <option value="ACUM_SEMESTRE_ORD">Acumulado Semestre Ordinario [ACUM_SEMESTRE_ORD:...]</option>
+                            <option value="PROM_SEMESTRE_ORD">Promedio Semestre Ordinario [PROM_SEMESTRE_ORD:...]</option>
+                            <option value="ACUM_ANUAL_ORD">Acumulado Año Calendario Ordinario [ACUM_ANUAL_ORD:...]</option>
+                            <option value="PROM_ANUAL_ORD">Promedio Año Calendario Ordinario (div. liq. reales) [PROM_ANUAL_ORD:...]</option>
+                            <option value="PROM_FIJO_ANUAL_ORD">Promedio Año Calendario Ordinario (div. meses) [PROM_FIJO_ANUAL_ORD:...]</option>
+                            <option value="MEJOR_ANUAL_ORD">Mayor Remuneración Año Calendario Ordinaria [MEJOR_ANUAL_ORD:...]</option>
+                          </optgroup>
+                          <optgroup label="Últimos 6 Meses (Dual)">
+                            <option value="ACUM_6M">Acumulado 6 Meses (con actual) [ACUM_6M:...]</option>
+                            <option value="ACUM_6M_ANT">Acumulado 6 Meses Anteriores cerrados [ACUM_6M_ANT:...]</option>
+                            <option value="PROM_6M">Promedio 6 Meses (div. liq. reales) [PROM_6M:...]</option>
+                            <option value="PROM_FIJO_6M">Promedio 6 Meses (divisor fijo 6) [PROM_FIJO_6M:...]</option>
+                            <option value="PROM_6M_ANT">Promedio 6 Meses Ant. (div. liq. reales) [PROM_6M_ANT:...]</option>
+                            <option value="PROM_FIJO_6M_ANT">Promedio 6 Meses Ant. (divisor fijo 6) [PROM_FIJO_6M_ANT:...]</option>
+                            <option value="MEJOR_6M">Mayor Valor 6 Meses (con actual) [MEJOR_6M:...]</option>
+                            <option value="MEJOR_6M_ANT">Mayor Valor 6 Meses Anteriores [MEJOR_6M_ANT:...]</option>
+                          </optgroup>
+                          <optgroup label="Últimos 12 Meses (Dual)">
+                            <option value="ACUM_12M">Acumulado 12 Meses (con actual) [ACUM_12M:...]</option>
+                            <option value="ACUM_12M_ANT">Acumulado 12 Meses Anteriores cerrados [ACUM_12M_ANT:...]</option>
+                            <option value="PROM_12M">Promedio 12 Meses (div. liq. reales) [PROM_12M:...]</option>
+                            <option value="PROM_FIJO_12M">Promedio 12 Meses (divisor fijo 12) [PROM_FIJO_12M:...]</option>
+                            <option value="PROM_12M_ANT">Promedio 12 Meses Ant. (div. liq. reales) [PROM_12M_ANT:...]</option>
+                            <option value="PROM_FIJO_12M_ANT">Promedio 12 Meses Ant. (divisor fijo 12) [PROM_FIJO_12M_ANT:...]</option>
+                            <option value="MEJOR_12M">Mayor Valor 12 Meses (con actual) [MEJOR_12M:...]</option>
+                            <option value="MEJOR_12M_ANT">Mayor Valor 12 Meses Anteriores [MEJOR_12M_ANT:...]</option>
+                          </optgroup>
+                          <optgroup label="Semestre en Curso (Ley 23.041 SAC)">
+                            <option value="MEJOR_SEMESTRE">Mayor Remuneración del Semestre [MEJOR_SEMESTRE:...]</option>
+                            <option value="ACUM_SEMESTRE">Acumulado del Semestre [ACUM_SEMESTRE:...]</option>
+                            <option value="PROM_SEMESTRE">Promedio del Semestre [PROM_SEMESTRE:...]</option>
+                          </optgroup>
+                          <optgroup label="Año Calendario (Enero a hoy)">
+                            <option value="ACUM_ANUAL">Acumulado Año Calendario [ACUM_ANUAL:...]</option>
+                            <option value="PROM_ANUAL">Promedio Año Calendario (div. liq. reales) [PROM_ANUAL:...]</option>
+                            <option value="PROM_FIJO_ANUAL">Promedio Año Calendario (div. meses) [PROM_FIJO_ANUAL:...]</option>
+                            <option value="MEJOR_ANUAL">Mayor Valor Año Calendario [MEJOR_ANUAL:...]</option>
+                          </optgroup>
+                        </select>
+                        <button type="button" class="btn btn-outline-teal btn-sm px-2" id="btn-insert-metric-token" title="Insertar métrica acumulada en la fórmula">
+                          <i class="ti ti-plus"></i>
+                        </button>
+                      </div>
                     </div>
 
-                    <div class="col-md-2">
-                      <button type="button" class="btn btn-sm btn-primary w-100" id="btn-insert-concept-token">
-                        <i class="ti ti-plus me-1"></i> Insertar
-                      </button>
+                    <!-- Columna 3: Matriz de Liquidación -->
+                    <div class="col-md-4">
+                      <label class="form-label small fw-bold text-muted mb-1">
+                        <i class="ti ti-table me-1 text-indigo"></i>3. Matriz de Liquidación:
+                      </label>
+                      <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm" id="formula-select-matrix">
+                          <option value="">-- Seleccionar Matriz --</option>
+                        </select>
+                        <button type="button" class="btn btn-outline-indigo btn-sm px-2" id="btn-insert-matrix-formula" title="Insertar matriz en la fórmula">
+                          <i class="ti ti-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Fila 2, Columna 1: Valor Fijo Global -->
+                    <div class="col-md-4">
+                      <label class="form-label small fw-bold text-muted mb-1">
+                        <i class="ti ti-pinned me-1 text-azure"></i>4. Valor Fijo Global:
+                      </label>
+                      <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm" id="formula-select-fixed-value">
+                          <option value="">-- Seleccionar Valor Fijo --</option>
+                        </select>
+                        <button type="button" class="btn btn-outline-azure btn-sm px-2" id="btn-insert-fixed-value-formula" title="Insertar valor fijo en la fórmula">
+                          <i class="ti ti-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Fila 2, Columna 2: Escala / Nómina Salarial -->
+                    <div class="col-md-4">
+                      <label class="form-label small fw-bold text-muted mb-1">
+                        <i class="ti ti-cash me-1 text-teal"></i>5. Escala Salarial (CCT):
+                      </label>
+                      <div class="input-group input-group-sm">
+                        <select class="form-select form-select-sm" id="formula-select-salary-scale">
+                          <option value="">-- Seleccionar Nómina/Escala --</option>
+                        </select>
+                        <button type="button" class="btn btn-outline-teal btn-sm px-2" id="btn-insert-salary-scale-formula" title="Insertar nómina/escala en la fórmula">
+                          <i class="ti ti-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+
+                    <!-- Fila 2, Columna 3: Tip / Guía -->
+                    <div class="col-md-4">
+                      <div class="text-muted small d-flex align-items-center h-100 pb-1" style="font-size: 0.75rem;">
+                        <i class="ti ti-info-circle text-purple fs-3 me-2 flex-shrink-0"></i>
+                        <span>Clic en <strong class="text-dark"><i class="ti ti-plus"></i></strong> para insertar el elemento seleccionado en el cursor de la fórmula.</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -5751,10 +5837,6 @@
                   <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-token-formula" data-token=" / " title="División">/</button>
                   <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-token-formula" data-token="(" title="Paréntesis apertura">(</button>
                   <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-2 btn-token-formula" data-token=")" title="Paréntesis cierre">)</button>
-                  <span class="vr mx-1"></span>
-                  <!-- Variables Base y Novedad -->
-                  <button type="button" class="btn btn-sm btn-outline-teal py-0 px-2 btn-token-formula" data-token="[VALOR_BASE]" title="Valor base por defecto configurado en el concepto">[VALOR_BASE]</button>
-                  <button type="button" class="btn btn-sm btn-outline-teal py-0 px-2 btn-token-formula" data-token="[IMPORTE]" title="Monto de la novedad cargada">[IMPORTE]</button>
                   <span class="vr mx-1"></span>
                   <!-- Topes Funcionales -->
                   <button type="button" class="btn btn-sm btn-outline-warning py-0 px-2 btn-token-formula" data-token="TOPE_MAX(" title="TOPE_MAX(expresion, maximo)">TOPE_MAX(x, max)</button>
@@ -5786,52 +5868,6 @@
                 <div id="formula-live-status" class="mt-2 p-2 rounded small bg-white border d-none">
                   <div class="d-flex align-items-center gap-2" id="formula-live-status-content">
                     <!-- Rellenado por app.js -->
-                  </div>
-                </div>
-
-                <div class="row g-2 align-items-center mt-2 pt-2 border-top">
-                  <div class="col-auto">
-                    <span class="small text-muted fw-bold"><i class="ti ti-table me-1 text-indigo"></i>Insertar Matriz:</span>
-                  </div>
-                  <div class="col">
-                    <select class="form-select form-select-sm" id="formula-select-matrix">
-                      <option value="">-- Seleccionar Matriz para insertar en la fórmula --</option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-sm btn-outline-indigo" id="btn-insert-matrix-formula">
-                      <i class="ti ti-plus me-1"></i> Insertar Token
-                    </button>
-                  </div>
-                </div>
-                <div class="row g-2 align-items-center mt-2 pt-2 border-top">
-                  <div class="col-auto">
-                    <span class="small text-muted fw-bold"><i class="ti ti-pinned me-1 text-azure"></i>Insertar Valor Fijo:</span>
-                  </div>
-                  <div class="col">
-                    <select class="form-select form-select-sm" id="formula-select-fixed-value">
-                      <option value="">-- Seleccionar Valor Fijo para insertar en la fórmula --</option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-sm btn-outline-azure" id="btn-insert-fixed-value-formula">
-                      <i class="ti ti-plus me-1"></i> Insertar Token
-                    </button>
-                  </div>
-                </div>
-                <div class="row g-2 align-items-center mt-2 pt-2 border-top">
-                  <div class="col-auto">
-                    <span class="small text-muted fw-bold"><i class="ti ti-cash me-1 text-teal"></i>Insertar Nómina:</span>
-                  </div>
-                  <div class="col">
-                    <select class="form-select form-select-sm" id="formula-select-salary-scale">
-                      <option value="">-- Seleccionar Nómina para insertar en la fórmula --</option>
-                    </select>
-                  </div>
-                  <div class="col-auto">
-                    <button type="button" class="btn btn-sm btn-outline-teal" id="btn-insert-salary-scale-formula">
-                      <i class="ti ti-plus me-1"></i> Insertar Token
-                    </button>
                   </div>
                 </div>
               </div>
@@ -5868,59 +5904,74 @@
               </div>
             </div>
 
-            <!-- ASOCIACIONES A SUBSISTEMAS ARCA (LSD 195 CHARACTERS) -->
+            <!-- BASES REMUNERATIVAS IMPONIBLES ARCA F.931 (LSD 195 CARACTERES) -->
             <div class="card bg-muted-lt border-0">
               <div class="card-body p-3">
-                <div class="fw-bold small text-muted text-uppercase mb-2">
-                  <i class="ti ti-building-bank me-1"></i> Afectación a Subsistemas de la Seguridad Social (ARCA F.931)
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <div class="fw-bold small text-muted text-uppercase">
+                    <i class="ti ti-building-bank me-1 text-primary"></i> Bases Remunerativas Imponibles (ARCA F.931 / LSD)
+                  </div>
+                  <span class="badge bg-blue-lt small">Registro 01 - Pos 168 a 186</span>
                 </div>
                 <div class="row g-2">
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-sipa" checked />
-                      <span class="form-check-label small">SIPA (Jubilación)</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r1" checked />
+                      <span class="form-check-label small"><strong>R1:</strong> Remuneración Total (SIPA Aportes)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-inssjyp" checked />
-                      <span class="form-check-label small">INSSJyP (PAMI)</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r2" checked />
+                      <span class="form-check-label small"><strong>R2:</strong> Remuneración Imponible (SIPA Contribuciones)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-os" checked />
-                      <span class="form-check-label small">Obra Social</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r3" checked />
+                      <span class="form-check-label small"><strong>R3:</strong> INSSJyP - FNE - AAFF - RENATRE</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-fsr" checked />
-                      <span class="form-check-label small">FSR / ANSSAL</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r4" checked />
+                      <span class="form-check-label small"><strong>R4:</strong> Obra Social y FSR (Aportes)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-aaff" checked />
-                      <span class="form-check-label small">Asig. Familiares</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r5" checked />
+                      <span class="form-check-label small"><strong>R5:</strong> INSSJyP (PAMI Aportes y Contribuciones)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-fne" checked />
-                      <span class="form-check-label small">FNE Empleo</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r6" />
+                      <span class="form-check-label small"><strong>R6:</strong> Regímenes Diferenciales (Aportes)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-lrt" checked />
-                      <span class="form-check-label small">LRT (Riesgos Trab.)</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r7" />
+                      <span class="form-check-label small"><strong>R7:</strong> Regímenes Especiales (Aportes)</span>
                     </label>
                   </div>
-                  <div class="col-6 col-md-3">
+                  <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
-                      <input class="form-check-input" type="checkbox" id="subsys-renatre" />
-                      <span class="form-check-label small">RENATRE Rural</span>
+                      <input class="form-check-input" type="checkbox" id="subsys-r8" checked />
+                      <span class="form-check-label small"><strong>R8:</strong> Obra Social y FSR (Contribuciones)</span>
+                    </label>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-check form-check-inline mb-0">
+                      <input class="form-check-input" type="checkbox" id="subsys-r9" checked />
+                      <span class="form-check-label small"><strong>R9:</strong> Riesgos del Trabajo (LRT - Ley 24.557)</span>
+                    </label>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-check form-check-inline mb-0">
+                      <input class="form-check-input" type="checkbox" id="subsys-r10" checked />
+                      <span class="form-check-label small"><strong>R10:</strong> Detracción y Asignaciones Extraordinarias</span>
                     </label>
                   </div>
                 </div>
@@ -6659,6 +6710,177 @@
         </div>
         <div class="modal-footer bg-light py-2 px-3">
           <button type="button" class="btn btn-primary btn-sm ms-auto" data-bs-dismiss="modal">Entendido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PRE-FORMULARIO DE AUDITORÍA Y CONSOLIDACIÓN LSD (ARCA) -->
+  <div class="modal modal-blur fade" id="modal-lsd-audit-confirm" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg card-payroll-accent">
+        <div class="modal-header bg-light py-2 px-3">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-primary-lt text-primary rounded"><i class="ti ti-calendar-event fs-2"></i></span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Liquidaciones del Período Mensual</h5>
+              <div class="text-muted small" id="modal-lsd-audit-confirm-subtitle">Detalle de liquidaciones que compondrán el archivo F.931</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3">
+          <!-- Resumen de Métricas -->
+          <div class="row g-2 mb-3">
+            <div class="col-6 col-md-3">
+              <div class="card card-sm bg-light-subtle border-0">
+                <div class="card-body p-2 text-center">
+                  <div class="text-muted small">Período</div>
+                  <div class="h3 mb-0 fw-bold font-monospace" id="modal-lsd-confirm-period">-</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card card-sm bg-light-subtle border-0">
+                <div class="card-body p-2 text-center">
+                  <div class="text-muted small">Liquidaciones</div>
+                  <div class="h3 mb-0 fw-bold text-primary" id="modal-lsd-confirm-settlements-count">0</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card card-sm bg-light-subtle border-0">
+                <div class="card-body p-2 text-center">
+                  <div class="text-muted small">Trabajadores Únicos</div>
+                  <div class="h3 mb-0 fw-bold text-purple" id="modal-lsd-confirm-employees-count">0</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="card card-sm bg-light-subtle border-0">
+                <div class="card-body p-2 text-center">
+                  <div class="text-muted small">Bruto Consolidado</div>
+                  <div class="h3 mb-0 fw-bold text-success font-monospace" id="modal-lsd-confirm-total-gross">$0,00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Banner Informativo de Estado ABIERTO / CERRADO -->
+          <div id="modal-lsd-confirm-open-warning" class="alert alert-warning py-2 px-3 small mb-3 d-none">
+            <i class="ti ti-alert-triangle me-1"></i>
+            <strong>Aviso de Etapa de Pruebas:</strong> Este período incluye liquidaciones en estado <strong>ABIERTO</strong>. Se permite continuar con la auditoría y generación, pero recuerde que para la presentación definitiva ante ARCA las liquidaciones deben estar aprobadas y concluidas.
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between mb-2">
+            <span class="fw-bold small text-muted text-uppercase">Liquidaciones Incluidas en la Presentación</span>
+            <span class="small text-muted" id="modal-lsd-confirm-payment-date-info"></span>
+          </div>
+
+          <!-- Tabla de Liquidaciones -->
+          <div class="table-responsive border rounded bg-white mb-2" style="max-height: 280px;">
+            <table class="table table-vcenter table-hover table-striped card-table table-sm mb-0">
+              <thead class="sticky-top bg-light">
+                <tr>
+                  <th style="width: 70px;">Tipo</th>
+                  <th>Liquidación / Descripción</th>
+                  <th style="width: 110px;">Fecha Pago</th>
+                  <th style="width: 80px;" class="text-center">Recibos</th>
+                  <th style="width: 120px;" class="text-end">Bruto</th>
+                  <th style="width: 90px;" class="text-center">Estado</th>
+                </tr>
+              </thead>
+              <tbody id="modal-lsd-confirm-tbody">
+              </tbody>
+            </table>
+          </div>
+          <div class="small text-muted">
+            <i class="ti ti-info-circle me-1"></i>
+            El Registro 02 tomará automáticamente la fecha de pago de la liquidación más reciente. Las Bases Imponibles del Registro 04 se acumularán con los topes de ANSES sobre la masa salarial del mes.
+          </div>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+          <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary btn-sm px-3" id="btn-confirm-execute-lsd-audit">
+            <i class="ti ti-shield-check me-1"></i> Confirmar y Auditar Consistencia ARCA
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: INCONSISTENCIAS DE AUDITORÍA ARCA (LIBRO DE SUELDOS DIGITAL) -->
+  <div class="modal modal-blur fade" id="modal-lsd-audit-errors" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg card-payroll-accent">
+        <div class="modal-header bg-light py-2 px-3">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-danger-lt text-danger rounded"><i class="ti ti-shield-alert fs-2"></i></span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Inconsistencias Detectadas en Auditoría ARCA</h5>
+              <div class="text-muted small" id="modal-lsd-audit-subtitle">Detalle de observaciones técnicas para Libro de Sueldos Digital (F.931)</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 ms-auto">
+            <button type="button" class="btn btn-outline-success btn-sm" id="btn-export-lsd-errors-excel">
+              <i class="ti ti-file-spreadsheet me-1"></i> Exportar a Excel (.xlsx)
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-3">
+          <!-- Barra de Filtros y Búsqueda -->
+          <div class="card bg-light-subtle border-0 mb-3 shadow-xs">
+            <div class="card-body p-2">
+              <div class="row g-2 align-items-center">
+                <div class="col-md-5">
+                  <div class="input-icon">
+                    <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+                    <input type="text" class="form-control form-control-sm" id="modal-lsd-audit-search" placeholder="Buscar por Legajo, CUIL, tipo o detalle..." />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <select class="form-select form-select-sm" id="modal-lsd-audit-filter-type">
+                    <option value="ALL">Todos los tipos de inconsistencia</option>
+                  </select>
+                </div>
+                <div class="col-md-3 text-md-end text-muted small">
+                  <span class="badge bg-danger-lt px-2 py-1" id="modal-lsd-audit-count">0 errores</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alerta informativa -->
+          <div class="alert alert-warning py-2 px-3 small mb-3">
+            <i class="ti ti-alert-triangle me-1"></i>
+            Las siguientes observaciones deben subsanarse en los recibos o conceptos calculados para garantizar que el archivo plano de 999 caracteres sea admitido por el validador oficial de ARCA sin rechazos.
+          </div>
+
+          <!-- Tabla de Inconsistencias -->
+          <div class="table-responsive border rounded bg-white" style="max-height: 460px;">
+            <table class="table table-vcenter table-hover table-striped card-table table-sm mb-0">
+              <thead class="sticky-top bg-light">
+                <tr>
+                  <th style="width: 50px;" class="text-center">#</th>
+                  <th style="width: 100px;">Legajo</th>
+                  <th style="width: 130px;">CUIL</th>
+                  <th style="width: 180px;">Tipo de Inconsistencia</th>
+                  <th>Detalle de la Observación</th>
+                </tr>
+              </thead>
+              <tbody id="modal-lsd-audit-tbody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+          <div class="text-muted small">
+            <i class="ti ti-info-circle me-1"></i> Puede descargar esta nómina de errores en formato Excel para auditarla fuera del sistema.
+          </div>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+          </div>
         </div>
       </div>
     </div>

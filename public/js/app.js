@@ -198,6 +198,14 @@ class AppController {
       </span>
     `;
 
+    // Actualizar Card lateral de Empresa Activa en Dashboard
+    const dashActiveName = document.getElementById('dash-active-company-name');
+    const dashActiveCuit = document.getElementById('dash-active-company-cuit');
+    const dashActiveAvatar = document.getElementById('dash-active-company-avatar');
+    if (dashActiveName) dashActiveName.textContent = this.activeCompany.name;
+    if (dashActiveCuit) dashActiveCuit.textContent = formatCuit(this.activeCompany.cuit);
+    if (dashActiveAvatar) dashActiveAvatar.textContent = (this.activeCompany.name || 'PS').substring(0, 2).toUpperCase();
+
     // Llenar dropdown
     this.companies.forEach((company) => {
       const isSelected = company.id === this.activeCompany.id;

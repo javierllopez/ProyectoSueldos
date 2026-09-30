@@ -284,6 +284,56 @@ export function validateConceptFormula({
       continue;
     }
 
+    // 4.3b. Token de Cantidad de Concepto: [CANTIDAD:CODIGO], [UNIDADES:CODIGO], [CODIGO:CANTIDAD], [CODIGO:UNIDADES]
+    const qtyMatch = upperToken.match(/^(?:(?:CANTIDAD|UNIDADES):([A-Z0-9_]+)|([A-Z0-9_]+):(CANTIDAD|UNIDADES))$/i);
+    if (qtyMatch) {
+      const targetCode = (qtyMatch[1] || qtyMatch[2]).trim().toUpperCase();
+      const referencedConcept = conceptsMap.get(targetCode);
+      if (!referencedConcept) {
+        errors.push(`El token [${rawToken}] hace referencia a la cantidad del concepto inexistente "${targetCode}".`);
+        continue;
+      }
+      referencedConcepts.push(referencedConcept.code);
+      if (targetCode === currentCode) {
+        errors.push(`El concepto [${rawToken}] no puede referenciar a su propia cantidad en la liquidación actual (referencia circular).`);
+        continue;
+      }
+      const targetNum = extractCodeNumber(referencedConcept.code);
+      const targetPrefix = extractCodePrefix(referencedConcept.code);
+      const isTargetBaseSalary = referencedConcept.code === 'SU1000' || referencedConcept.code === '1000' || /sueldo\s*b[aá]sico/i.test(referencedConcept.name);
+
+      const targetExplicitOrder = referencedConcept.calculationOrder !== undefined && referencedConcept.calculationOrder !== null ? Number(referencedConcept.calculationOrder) : null;
+      const currentExplicitOrder = calculationOrder !== undefined && calculationOrder !== null ? Number(calculationOrder) : null;
+
+      if (currentExplicitOrder !== null && targetExplicitOrder !== null && currentExplicitOrder !== targetExplicitOrder) {
+        if (targetExplicitOrder >= currentExplicitOrder) {
+          errors.push(
+            `El concepto [${rawToken}] ("${referencedConcept.name}") tiene orden de cálculo ${targetExplicitOrder}, que es posterior o igual al concepto actual (${currentExplicitOrder}). Para poder referenciar su cantidad, debe calcularse antes.`
+          );
+        }
+      } else if (currentPrefix && targetPrefix && currentPrefix === targetPrefix && !isNaN(currentNum) && !isNaN(targetNum)) {
+        if (targetNum >= currentNum) {
+          errors.push(
+            `El concepto [${rawToken}] ("${referencedConcept.name}") tiene código ${referencedConcept.code}, que es posterior o igual al concepto actual (${currentCode}). Para poder referenciar su cantidad, debe calcularse antes.`
+          );
+        }
+      } else if (!currentPrefix && !targetPrefix && !isNaN(currentNum) && !isNaN(targetNum)) {
+        if (targetNum >= currentNum) {
+          errors.push(
+            `El concepto [${rawToken}] ("${referencedConcept.name}") tiene código ${targetNum}, que es posterior o igual al concepto actual (${currentNum}). Para poder referenciar su cantidad, debe tener un código numérico estrictamente menor.`
+          );
+        }
+      } else if (!isTargetBaseSalary) {
+        const targetOrder = Number(referencedConcept.calculationOrder !== undefined ? referencedConcept.calculationOrder : 100);
+        if (targetOrder >= currentOrder) {
+          errors.push(
+            `El concepto [${rawToken}] ("${referencedConcept.name}") tiene orden de cálculo ${targetOrder}, que es posterior o igual al concepto actual (orden ${currentOrder}). Para poder referenciar su cantidad, debe calcularse antes.`
+          );
+        }
+      }
+      continue;
+    }
+
     // 4.4. Total de Grupo en el período actual
     if (GROUP_TOTALS.has(upperToken)) {
       if (effectiveType === 'REMUNERATIVE' && (upperToken === 'TOTAL_REMUNERATIVO' || upperToken === 'TOTAL_BRUTO')) {

@@ -36,6 +36,22 @@ class AdminMethods {
       activeCompNameEl.textContent = this.activeCompany ? this.activeCompany.name : 'Ninguna seleccionada';
     }
     if (planNameEl) planNameEl.textContent = this.account?.status || 'TRIAL';
+
+    // Card lateral de Empresa Activa en Dashboard
+    const dashActiveName = document.getElementById('dash-active-company-name');
+    const dashActiveCuit = document.getElementById('dash-active-company-cuit');
+    const dashActiveAvatar = document.getElementById('dash-active-company-avatar');
+
+    if (dashActiveName) {
+      dashActiveName.textContent = this.activeCompany ? this.activeCompany.name : 'Sin empresa seleccionada';
+    }
+    if (dashActiveCuit) {
+      dashActiveCuit.textContent = this.activeCompany ? formatCuit(this.activeCompany.cuit) : '-';
+    }
+    if (dashActiveAvatar && this.activeCompany) {
+      const initials = (this.activeCompany.name || 'PS').substring(0, 2).toUpperCase();
+      dashActiveAvatar.textContent = initials;
+    }
   }
 
   // --- Vista 2: ABM de Empresas ---

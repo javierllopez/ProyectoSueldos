@@ -435,6 +435,36 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
     return String(val);
   });
 
+  // 3b. Reemplazar cantidad / unidades de conceptos: [CANTIDAD:CODIGO], [UNIDADES:CODIGO], [CODIGO:CANTIDAD], [CODIGO:UNIDADES]
+  res = res.replace(/\[(?:(?:CANTIDAD|UNIDADES):([A-Z0-9_]+)|([A-Z0-9_]+):(CANTIDAD|UNIDADES))\]/gi, (match, code1, code2) => {
+    const targetCode = (code1 || code2).trim().toUpperCase();
+    if (context.conceptUnitsMap && context.conceptUnitsMap.has(targetCode)) {
+      return String(context.conceptUnitsMap.get(targetCode));
+    }
+    if (context[`${targetCode}_CANTIDAD`] !== undefined) {
+      return String(context[`${targetCode}_CANTIDAD`]);
+    }
+    if (context[`${targetCode}_UNIDADES`] !== undefined) {
+      return String(context[`${targetCode}_UNIDADES`]);
+    }
+    const numOnly = targetCode.replace(/\D/g, '');
+    if (numOnly) {
+      if (context.conceptUnitsMap && context.conceptUnitsMap.has(numOnly)) {
+        return String(context.conceptUnitsMap.get(numOnly));
+      }
+      if (context[`${numOnly}_CANTIDAD`] !== undefined) {
+        return String(context[`${numOnly}_CANTIDAD`]);
+      }
+    }
+    if (Array.isArray(context.calculatedItems)) {
+      const it = context.calculatedItems.find((i) => String(i.conceptCode).toUpperCase() === targetCode || (numOnly && String(i.conceptCode).replace(/\D/g, '') === numOnly));
+      if (it && it.units !== undefined && it.units !== null) {
+        return String(it.units);
+      }
+    }
+    return '0';
+  });
+
   // 4. Reemplazar tokens simples [CODIGO] o [VARIABLE]
   res = res.replace(/\[([A-Z0-9_]+)\]/gi, (match, token) => {
     const cleanToken = token.trim();

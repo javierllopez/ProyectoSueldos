@@ -211,9 +211,11 @@ export async function validateFormula(req, res, next) {
 export async function exportLsdConcepts(req, res, next) {
   try {
     const fileContent = await payrollService.exportLsdConcepts(req.tenantPrisma);
+    const buffer = Buffer.from(fileContent, 'latin1');
     res.setHeader('Content-Type', 'text/plain; charset=windows-1252');
     res.setHeader('Content-Disposition', 'attachment; filename="LSD_Conceptos_ARCA.txt"');
-    return res.status(200).send(fileContent);
+    res.setHeader('Content-Length', buffer.length);
+    return res.status(200).send(buffer);
   } catch (err) {
     return next(err);
   }
@@ -224,9 +226,11 @@ export async function exportLsdPayroll(req, res, next) {
     const company = req.company || {};
     const fileContent = await payrollService.exportLsdPayroll(req.tenantPrisma, req.params.periodId, company);
     const filename = `LSD_Liquidacion_${company.cuit || 'ARCA'}_${req.params.periodId.substring(0, 8)}.txt`;
+    const buffer = Buffer.from(fileContent, 'latin1');
     res.setHeader('Content-Type', 'text/plain; charset=windows-1252');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-    return res.status(200).send(fileContent);
+    res.setHeader('Content-Length', buffer.length);
+    return res.status(200).send(buffer);
   } catch (err) {
     return next(err);
   }
@@ -236,6 +240,54 @@ export async function validateLsd(req, res, next) {
   try {
     const validation = await payrollService.validateLsd(req.tenantPrisma, req.params.periodId);
     return res.status(200).json({ data: validation });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+// --- LIBRO DE SUELDOS DIGITAL UNIFICADO MENSUAL (ARCA F.931) ---
+
+export async function getMonthlyLsdPeriods(req, res, next) {
+  try {
+    const periods = await payrollService.getMonthlyLsdPeriods(req.tenantPrisma);
+    return res.status(200).json({ data: periods });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function getMonthlyLsdPreview(req, res, next) {
+  try {
+    const { year, month } = req.params;
+    const preview = await payrollService.getMonthlyLsdPreview(req.tenantPrisma, year, month);
+    return res.status(200).json({ data: preview });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function validateMonthlyLsd(req, res, next) {
+  try {
+    const { year, month } = req.params;
+    const validation = await payrollService.validateMonthlyLsd(req.tenantPrisma, year, month);
+    return res.status(200).json({ data: validation });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function exportMonthlyLsdPayroll(req, res, next) {
+  try {
+    const company = req.company || {};
+    const { year, month } = req.params;
+    const fileContent = await payrollService.exportMonthlyLsdPayroll(req.tenantPrisma, year, month, company);
+    const cuitClean = (company.cuit || 'ARCA').replace(/\D/g, '');
+    const filename = `LSD_Mensual_${cuitClean}_${year}${String(month).padStart(2, '0')}.txt`;
+    const buffer = Buffer.from(fileContent, 'latin1');
+    res.setHeader('Content-Type', 'text/plain; charset=windows-1252');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', buffer.length);
+    return res.status(200).send(buffer);
   } catch (err) {
     return next(err);
   }

@@ -101,6 +101,7 @@ export const conceptBaseSchema = z.object({
   scope: z.enum(['GENERAL', 'INDIVIDUAL']).default('GENERAL'),
   defaultValue: z.coerce.number().default(0.0),
   noveltyDataType: z.enum(['CANTIDAD', 'HORAS', 'PORCENTAJE', 'SOLO_ASIGNACION', 'IMPORTE', 'CALCULADO', 'SIN_NOVEDAD']).default('CANTIDAD'),
+  quantitySource: z.string().trim().max(255).optional().nullable(),
   calculationOrder: z.coerce.number().int().optional(),
   formula: z.string().trim().optional().nullable(),
   matrixData: z.string().trim().optional().nullable(),
@@ -119,6 +120,9 @@ export const conceptBaseSchema = z.object({
   appliesAaffContrib: z.boolean().default(false),
   appliesFneContrib: z.boolean().default(false),
   appliesLrtContrib: z.boolean().default(false),
+  appliesRegDifAporte: z.boolean().default(false),
+  appliesRegEspAporte: z.boolean().default(false),
+  appliesDetraccion: z.boolean().default(false),
   isRepeatable: z.boolean().default(false),
   isPersistent: z.boolean().default(true),
 });

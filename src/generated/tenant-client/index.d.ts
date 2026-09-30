@@ -22434,6 +22434,7 @@ export namespace Prisma {
     scope: string | null
     defaultValue: Decimal | null
     noveltyDataType: string | null
+    quantitySource: string | null
     calculationOrder: number | null
     formula: string | null
     matrixData: string | null
@@ -22453,6 +22454,9 @@ export namespace Prisma {
     appliesAaffContrib: boolean | null
     appliesFneContrib: boolean | null
     appliesLrtContrib: boolean | null
+    appliesRegDifAporte: boolean | null
+    appliesRegEspAporte: boolean | null
+    appliesDetraccion: boolean | null
     isRepeatable: boolean | null
     matrixId: string | null
     createdAt: Date | null
@@ -22470,6 +22474,7 @@ export namespace Prisma {
     scope: string | null
     defaultValue: Decimal | null
     noveltyDataType: string | null
+    quantitySource: string | null
     calculationOrder: number | null
     formula: string | null
     matrixData: string | null
@@ -22489,6 +22494,9 @@ export namespace Prisma {
     appliesAaffContrib: boolean | null
     appliesFneContrib: boolean | null
     appliesLrtContrib: boolean | null
+    appliesRegDifAporte: boolean | null
+    appliesRegEspAporte: boolean | null
+    appliesDetraccion: boolean | null
     isRepeatable: boolean | null
     matrixId: string | null
     createdAt: Date | null
@@ -22506,6 +22514,7 @@ export namespace Prisma {
     scope: number
     defaultValue: number
     noveltyDataType: number
+    quantitySource: number
     calculationOrder: number
     formula: number
     matrixData: number
@@ -22525,6 +22534,9 @@ export namespace Prisma {
     appliesAaffContrib: number
     appliesFneContrib: number
     appliesLrtContrib: number
+    appliesRegDifAporte: number
+    appliesRegEspAporte: number
+    appliesDetraccion: number
     isRepeatable: number
     matrixId: number
     createdAt: number
@@ -22554,6 +22566,7 @@ export namespace Prisma {
     scope?: true
     defaultValue?: true
     noveltyDataType?: true
+    quantitySource?: true
     calculationOrder?: true
     formula?: true
     matrixData?: true
@@ -22573,6 +22586,9 @@ export namespace Prisma {
     appliesAaffContrib?: true
     appliesFneContrib?: true
     appliesLrtContrib?: true
+    appliesRegDifAporte?: true
+    appliesRegEspAporte?: true
+    appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
     createdAt?: true
@@ -22590,6 +22606,7 @@ export namespace Prisma {
     scope?: true
     defaultValue?: true
     noveltyDataType?: true
+    quantitySource?: true
     calculationOrder?: true
     formula?: true
     matrixData?: true
@@ -22609,6 +22626,9 @@ export namespace Prisma {
     appliesAaffContrib?: true
     appliesFneContrib?: true
     appliesLrtContrib?: true
+    appliesRegDifAporte?: true
+    appliesRegEspAporte?: true
+    appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
     createdAt?: true
@@ -22626,6 +22646,7 @@ export namespace Prisma {
     scope?: true
     defaultValue?: true
     noveltyDataType?: true
+    quantitySource?: true
     calculationOrder?: true
     formula?: true
     matrixData?: true
@@ -22645,6 +22666,9 @@ export namespace Prisma {
     appliesAaffContrib?: true
     appliesFneContrib?: true
     appliesLrtContrib?: true
+    appliesRegDifAporte?: true
+    appliesRegEspAporte?: true
+    appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
     createdAt?: true
@@ -22749,6 +22773,7 @@ export namespace Prisma {
     scope: string
     defaultValue: Decimal
     noveltyDataType: string
+    quantitySource: string | null
     calculationOrder: number
     formula: string | null
     matrixData: string | null
@@ -22768,6 +22793,9 @@ export namespace Prisma {
     appliesAaffContrib: boolean
     appliesFneContrib: boolean
     appliesLrtContrib: boolean
+    appliesRegDifAporte: boolean
+    appliesRegEspAporte: boolean
+    appliesDetraccion: boolean
     isRepeatable: boolean
     matrixId: string | null
     createdAt: Date
@@ -22804,6 +22832,7 @@ export namespace Prisma {
     scope?: boolean
     defaultValue?: boolean
     noveltyDataType?: boolean
+    quantitySource?: boolean
     calculationOrder?: boolean
     formula?: boolean
     matrixData?: boolean
@@ -22823,6 +22852,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: boolean
     createdAt?: boolean
@@ -22846,6 +22878,7 @@ export namespace Prisma {
     scope?: boolean
     defaultValue?: boolean
     noveltyDataType?: boolean
+    quantitySource?: boolean
     calculationOrder?: boolean
     formula?: boolean
     matrixData?: boolean
@@ -22865,6 +22898,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: boolean
     createdAt?: boolean
@@ -22872,7 +22908,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type ConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "type" | "calculationType" | "periodType" | "scope" | "defaultValue" | "noveltyDataType" | "calculationOrder" | "formula" | "matrixData" | "isActive" | "isPersistent" | "arcaConceptCode" | "appliesSipaAporte" | "appliesSipaContrib" | "appliesInssjypAporte" | "appliesInssjypContrib" | "appliesOsAporte" | "appliesOsContrib" | "appliesFsrAporte" | "appliesFsrContrib" | "appliesRenatreAporte" | "appliesRenatreContrib" | "appliesAaffContrib" | "appliesFneContrib" | "appliesLrtContrib" | "isRepeatable" | "matrixId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["concept"]>
+  export type ConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "type" | "calculationType" | "periodType" | "scope" | "defaultValue" | "noveltyDataType" | "quantitySource" | "calculationOrder" | "formula" | "matrixData" | "isActive" | "isPersistent" | "arcaConceptCode" | "appliesSipaAporte" | "appliesSipaContrib" | "appliesInssjypAporte" | "appliesInssjypContrib" | "appliesOsAporte" | "appliesOsContrib" | "appliesFsrAporte" | "appliesFsrContrib" | "appliesRenatreAporte" | "appliesRenatreContrib" | "appliesAaffContrib" | "appliesFneContrib" | "appliesLrtContrib" | "appliesRegDifAporte" | "appliesRegEspAporte" | "appliesDetraccion" | "isRepeatable" | "matrixId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["concept"]>
   export type ConceptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     matrix?: boolean | Concept$matrixArgs<ExtArgs>
     assignedEmployees?: boolean | Concept$assignedEmployeesArgs<ExtArgs>
@@ -22897,6 +22933,7 @@ export namespace Prisma {
       scope: string
       defaultValue: Prisma.Decimal
       noveltyDataType: string
+      quantitySource: string | null
       calculationOrder: number
       formula: string | null
       matrixData: string | null
@@ -22916,6 +22953,9 @@ export namespace Prisma {
       appliesAaffContrib: boolean
       appliesFneContrib: boolean
       appliesLrtContrib: boolean
+      appliesRegDifAporte: boolean
+      appliesRegEspAporte: boolean
+      appliesDetraccion: boolean
       isRepeatable: boolean
       matrixId: string | null
       createdAt: Date
@@ -23302,6 +23342,7 @@ export namespace Prisma {
     readonly scope: FieldRef<"Concept", 'String'>
     readonly defaultValue: FieldRef<"Concept", 'Decimal'>
     readonly noveltyDataType: FieldRef<"Concept", 'String'>
+    readonly quantitySource: FieldRef<"Concept", 'String'>
     readonly calculationOrder: FieldRef<"Concept", 'Int'>
     readonly formula: FieldRef<"Concept", 'String'>
     readonly matrixData: FieldRef<"Concept", 'String'>
@@ -23321,6 +23362,9 @@ export namespace Prisma {
     readonly appliesAaffContrib: FieldRef<"Concept", 'Boolean'>
     readonly appliesFneContrib: FieldRef<"Concept", 'Boolean'>
     readonly appliesLrtContrib: FieldRef<"Concept", 'Boolean'>
+    readonly appliesRegDifAporte: FieldRef<"Concept", 'Boolean'>
+    readonly appliesRegEspAporte: FieldRef<"Concept", 'Boolean'>
+    readonly appliesDetraccion: FieldRef<"Concept", 'Boolean'>
     readonly isRepeatable: FieldRef<"Concept", 'Boolean'>
     readonly matrixId: FieldRef<"Concept", 'String'>
     readonly createdAt: FieldRef<"Concept", 'DateTime'>
@@ -34220,6 +34264,7 @@ export namespace Prisma {
     scope: 'scope',
     defaultValue: 'defaultValue',
     noveltyDataType: 'noveltyDataType',
+    quantitySource: 'quantitySource',
     calculationOrder: 'calculationOrder',
     formula: 'formula',
     matrixData: 'matrixData',
@@ -34239,6 +34284,9 @@ export namespace Prisma {
     appliesAaffContrib: 'appliesAaffContrib',
     appliesFneContrib: 'appliesFneContrib',
     appliesLrtContrib: 'appliesLrtContrib',
+    appliesRegDifAporte: 'appliesRegDifAporte',
+    appliesRegEspAporte: 'appliesRegEspAporte',
+    appliesDetraccion: 'appliesDetraccion',
     isRepeatable: 'isRepeatable',
     matrixId: 'matrixId',
     createdAt: 'createdAt',
@@ -34710,6 +34758,7 @@ export namespace Prisma {
     periodType: 'periodType',
     scope: 'scope',
     noveltyDataType: 'noveltyDataType',
+    quantitySource: 'quantitySource',
     formula: 'formula',
     matrixData: 'matrixData',
     arcaConceptCode: 'arcaConceptCode',
@@ -36467,6 +36516,7 @@ export namespace Prisma {
     scope?: StringFilter<"Concept"> | string
     defaultValue?: DecimalFilter<"Concept"> | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFilter<"Concept"> | string
+    quantitySource?: StringNullableFilter<"Concept"> | string | null
     calculationOrder?: IntFilter<"Concept"> | number
     formula?: StringNullableFilter<"Concept"> | string | null
     matrixData?: StringNullableFilter<"Concept"> | string | null
@@ -36486,6 +36536,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFilter<"Concept"> | boolean
     appliesFneContrib?: BoolFilter<"Concept"> | boolean
     appliesLrtContrib?: BoolFilter<"Concept"> | boolean
+    appliesRegDifAporte?: BoolFilter<"Concept"> | boolean
+    appliesRegEspAporte?: BoolFilter<"Concept"> | boolean
+    appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
     createdAt?: DateTimeFilter<"Concept"> | Date | string
@@ -36506,6 +36559,7 @@ export namespace Prisma {
     scope?: SortOrder
     defaultValue?: SortOrder
     noveltyDataType?: SortOrder
+    quantitySource?: SortOrderInput | SortOrder
     calculationOrder?: SortOrder
     formula?: SortOrderInput | SortOrder
     matrixData?: SortOrderInput | SortOrder
@@ -36525,6 +36579,9 @@ export namespace Prisma {
     appliesAaffContrib?: SortOrder
     appliesFneContrib?: SortOrder
     appliesLrtContrib?: SortOrder
+    appliesRegDifAporte?: SortOrder
+    appliesRegEspAporte?: SortOrder
+    appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -36549,6 +36606,7 @@ export namespace Prisma {
     scope?: StringFilter<"Concept"> | string
     defaultValue?: DecimalFilter<"Concept"> | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFilter<"Concept"> | string
+    quantitySource?: StringNullableFilter<"Concept"> | string | null
     calculationOrder?: IntFilter<"Concept"> | number
     formula?: StringNullableFilter<"Concept"> | string | null
     matrixData?: StringNullableFilter<"Concept"> | string | null
@@ -36568,6 +36626,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFilter<"Concept"> | boolean
     appliesFneContrib?: BoolFilter<"Concept"> | boolean
     appliesLrtContrib?: BoolFilter<"Concept"> | boolean
+    appliesRegDifAporte?: BoolFilter<"Concept"> | boolean
+    appliesRegEspAporte?: BoolFilter<"Concept"> | boolean
+    appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
     createdAt?: DateTimeFilter<"Concept"> | Date | string
@@ -36588,6 +36649,7 @@ export namespace Prisma {
     scope?: SortOrder
     defaultValue?: SortOrder
     noveltyDataType?: SortOrder
+    quantitySource?: SortOrderInput | SortOrder
     calculationOrder?: SortOrder
     formula?: SortOrderInput | SortOrder
     matrixData?: SortOrderInput | SortOrder
@@ -36607,6 +36669,9 @@ export namespace Prisma {
     appliesAaffContrib?: SortOrder
     appliesFneContrib?: SortOrder
     appliesLrtContrib?: SortOrder
+    appliesRegDifAporte?: SortOrder
+    appliesRegEspAporte?: SortOrder
+    appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -36632,6 +36697,7 @@ export namespace Prisma {
     scope?: StringWithAggregatesFilter<"Concept"> | string
     defaultValue?: DecimalWithAggregatesFilter<"Concept"> | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringWithAggregatesFilter<"Concept"> | string
+    quantitySource?: StringNullableWithAggregatesFilter<"Concept"> | string | null
     calculationOrder?: IntWithAggregatesFilter<"Concept"> | number
     formula?: StringNullableWithAggregatesFilter<"Concept"> | string | null
     matrixData?: StringNullableWithAggregatesFilter<"Concept"> | string | null
@@ -36651,6 +36717,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolWithAggregatesFilter<"Concept"> | boolean
     appliesFneContrib?: BoolWithAggregatesFilter<"Concept"> | boolean
     appliesLrtContrib?: BoolWithAggregatesFilter<"Concept"> | boolean
+    appliesRegDifAporte?: BoolWithAggregatesFilter<"Concept"> | boolean
+    appliesRegEspAporte?: BoolWithAggregatesFilter<"Concept"> | boolean
+    appliesDetraccion?: BoolWithAggregatesFilter<"Concept"> | boolean
     isRepeatable?: BoolWithAggregatesFilter<"Concept"> | boolean
     matrixId?: StringNullableWithAggregatesFilter<"Concept"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Concept"> | Date | string
@@ -39540,6 +39609,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -39559,6 +39629,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -39578,6 +39651,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -39597,6 +39671,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
     createdAt?: Date | string
@@ -39616,6 +39693,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39635,6 +39713,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39654,6 +39735,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39673,6 +39755,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39692,6 +39777,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -39711,6 +39797,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
     createdAt?: Date | string
@@ -39728,6 +39817,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39747,6 +39837,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -39763,6 +39856,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -39782,6 +39876,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -42357,6 +42454,7 @@ export namespace Prisma {
     scope?: SortOrder
     defaultValue?: SortOrder
     noveltyDataType?: SortOrder
+    quantitySource?: SortOrder
     calculationOrder?: SortOrder
     formula?: SortOrder
     matrixData?: SortOrder
@@ -42376,6 +42474,9 @@ export namespace Prisma {
     appliesAaffContrib?: SortOrder
     appliesFneContrib?: SortOrder
     appliesLrtContrib?: SortOrder
+    appliesRegDifAporte?: SortOrder
+    appliesRegEspAporte?: SortOrder
+    appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
     createdAt?: SortOrder
@@ -42398,6 +42499,7 @@ export namespace Prisma {
     scope?: SortOrder
     defaultValue?: SortOrder
     noveltyDataType?: SortOrder
+    quantitySource?: SortOrder
     calculationOrder?: SortOrder
     formula?: SortOrder
     matrixData?: SortOrder
@@ -42417,6 +42519,9 @@ export namespace Prisma {
     appliesAaffContrib?: SortOrder
     appliesFneContrib?: SortOrder
     appliesLrtContrib?: SortOrder
+    appliesRegDifAporte?: SortOrder
+    appliesRegEspAporte?: SortOrder
+    appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
     createdAt?: SortOrder
@@ -42434,6 +42539,7 @@ export namespace Prisma {
     scope?: SortOrder
     defaultValue?: SortOrder
     noveltyDataType?: SortOrder
+    quantitySource?: SortOrder
     calculationOrder?: SortOrder
     formula?: SortOrder
     matrixData?: SortOrder
@@ -42453,6 +42559,9 @@ export namespace Prisma {
     appliesAaffContrib?: SortOrder
     appliesFneContrib?: SortOrder
     appliesLrtContrib?: SortOrder
+    appliesRegDifAporte?: SortOrder
+    appliesRegEspAporte?: SortOrder
+    appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
     createdAt?: SortOrder
@@ -48171,6 +48280,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -48190,6 +48300,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -48208,6 +48321,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -48227,6 +48341,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
     createdAt?: Date | string
@@ -48370,6 +48487,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48389,6 +48507,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48407,6 +48528,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -48426,6 +48548,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -48444,6 +48569,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -48463,6 +48589,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -48481,6 +48610,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -48500,6 +48630,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -48547,6 +48680,7 @@ export namespace Prisma {
     scope?: StringFilter<"Concept"> | string
     defaultValue?: DecimalFilter<"Concept"> | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFilter<"Concept"> | string
+    quantitySource?: StringNullableFilter<"Concept"> | string | null
     calculationOrder?: IntFilter<"Concept"> | number
     formula?: StringNullableFilter<"Concept"> | string | null
     matrixData?: StringNullableFilter<"Concept"> | string | null
@@ -48566,6 +48700,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFilter<"Concept"> | boolean
     appliesFneContrib?: BoolFilter<"Concept"> | boolean
     appliesLrtContrib?: BoolFilter<"Concept"> | boolean
+    appliesRegDifAporte?: BoolFilter<"Concept"> | boolean
+    appliesRegEspAporte?: BoolFilter<"Concept"> | boolean
+    appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
     createdAt?: DateTimeFilter<"Concept"> | Date | string
@@ -49776,6 +49913,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -49795,6 +49933,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -49813,6 +49954,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -49832,6 +49974,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
     createdAt?: Date | string
@@ -50034,6 +50179,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50053,6 +50199,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -50071,6 +50220,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -50090,6 +50240,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52356,6 +52509,7 @@ export namespace Prisma {
     scope?: string
     defaultValue?: Decimal | DecimalJsLike | number | string
     noveltyDataType?: string
+    quantitySource?: string | null
     calculationOrder?: number
     formula?: string | null
     matrixData?: string | null
@@ -52375,6 +52529,9 @@ export namespace Prisma {
     appliesAaffContrib?: boolean
     appliesFneContrib?: boolean
     appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
     isRepeatable?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52391,6 +52548,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52410,6 +52568,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52428,6 +52589,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52447,6 +52609,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52465,6 +52630,7 @@ export namespace Prisma {
     scope?: StringFieldUpdateOperationsInput | string
     defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
     calculationOrder?: IntFieldUpdateOperationsInput | number
     formula?: NullableStringFieldUpdateOperationsInput | string | null
     matrixData?: NullableStringFieldUpdateOperationsInput | string | null
@@ -52484,6 +52650,9 @@ export namespace Prisma {
     appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
     appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
