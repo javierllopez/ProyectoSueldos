@@ -8,6 +8,7 @@ import affiliationRoutes from '../modules/affiliations/affiliation.routes.js';
 import kinshipRoutes from '../modules/kinships/kinship.routes.js';
 import claeRoutes from '../modules/clae/clae.routes.js';
 import payrollRoutes from '../modules/payroll/payroll.routes.js';
+import embargoRoutes from '../modules/embargoes/embargo.routes.js';
 
 const router = Router();
 
@@ -28,6 +29,7 @@ router.use('/users', userRoutes);
 router.use('/employees', employeeRoutes);
 router.use('/clae', claeRoutes);
 router.use('/payroll', payrollRoutes);
+router.use('/embargoes', embargoRoutes);
 router.use('/', organizationRoutes);
 router.use('/', affiliationRoutes);
 router.use('/', kinshipRoutes);

@@ -37,6 +37,10 @@ class PersonnelMethods {
       return;
     }
 
+    const persTenantName = document.getElementById('personnel-header-company-name');
+    if (persTenantName && this.activeCompany) {
+      persTenantName.textContent = this.activeCompany.name;
+    }
 
     try {
       await this.loadPersonnelAuxiliaryData();
@@ -48,7 +52,7 @@ class PersonnelMethods {
   }
 
   async loadPersonnelAuxiliaryData() {
-    // Mostrar spinners de carga en las tablas auxiliares
+    // Mostrar feedback de carga (Skeleton Pulse & Spinner) en tablas auxiliares
     const setTableLoading = (tbodyId, colspan, text, pagContainerId) => {
       const tb = document.getElementById(tbodyId);
       const pag = document.getElementById(pagContainerId);
@@ -56,9 +60,15 @@ class PersonnelMethods {
       if (tb) {
         tb.innerHTML = `
           <tr>
-            <td colspan="${colspan}" class="text-center py-5 text-muted">
-              <span class="spinner-border spinner-border-sm text-teal me-2" role="status"></span>
-              ${text}
+            <td colspan="${colspan}" class="text-center py-5">
+              <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+                <div class="spinner-border text-success" style="width: 2rem; height: 2rem; color: var(--pers-emerald-600) !important;" role="status"></div>
+                <div class="fw-bold mt-2" style="color: var(--pers-forest-900); font-family: 'Plus Jakarta Sans', sans-serif;">${escapeHtml(text)}</div>
+                <div class="w-75 mt-2">
+                  <div class="pers-skeleton-row"></div>
+                  <div class="pers-skeleton-row" style="width: 80%; margin: 8px auto;"></div>
+                </div>
+              </div>
             </td>
           </tr>
         `;
@@ -69,11 +79,11 @@ class PersonnelMethods {
     setTableLoading('job-positions-table-body', 4, 'Cargando puestos de trabajo...', 'job-positions-pagination-container');
     setTableLoading('work-shifts-table-body', 10, 'Cargando jornadas de trabajo...', 'work-shifts-pagination-container');
     setTableLoading('health-insurances-table-body', 4, 'Cargando obras sociales...', 'health-insurances-pagination-container');
-    setTableLoading('unions-table-body', 4, 'Cargando sindicatos...', 'unions-pagination-container');
-    setTableLoading('mutuals-table-body', 4, 'Cargando mutuales...', 'mutuals-pagination-container');
+    setTableLoading('unions-table-body', 5, 'Cargando sindicatos...', 'unions-pagination-container');
+    setTableLoading('mutuals-table-body', 5, 'Cargando mutuales...', 'mutuals-pagination-container');
     setTableLoading('kinships-table-body', 4, 'Cargando parentescos...', 'kinships-pagination-container');
 
-    const [deptRes, jobRes, shiftRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, actRes, profileRes, salaryScalesRes, payrollSettingsRes] = await Promise.all([
+    const [deptRes, jobRes, shiftRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, actRes, profileRes, salaryScalesRes, payrollSettingsRes, deductionConceptsRes] = await Promise.all([
       apiRequest('/departments'),
       apiRequest('/job-positions'),
       apiRequest('/work-shifts').catch(() => ({ data: [] })),
@@ -90,6 +100,7 @@ class PersonnelMethods {
       apiRequest('/companies/profile').catch(() => ({ data: null })),
       apiRequest('/payroll/salary-scales').catch(() => ({ data: [] })),
       apiRequest('/payroll/settings').catch(() => ({ data: null })),
+      apiRequest('/payroll/concepts?limit=500&type=DEDUCTION').catch(() => ({ data: [] })),
     ]);
 
     this.departments = deptRes.data || [];
@@ -107,6 +118,7 @@ class PersonnelMethods {
     this.arcaActivities = (actRes && actRes.data && actRes.data.length > 0) ? actRes.data : ARCA_T03_ACTIVITIES;
     this.salaryScales = salaryScalesRes.data || [];
     this.payrollSalaryScales = this.salaryScales;
+    this.deductionConcepts = (deductionConceptsRes && deductionConceptsRes.data && (Array.isArray(deductionConceptsRes.data) ? deductionConceptsRes.data : deductionConceptsRes.data.items)) || [];
     if (profileRes && profileRes.data) {
       this.activeCompanyProfile = profileRes.data;
     }
@@ -114,6 +126,7 @@ class PersonnelMethods {
       this.payrollSettings = payrollSettingsRes.data;
     }
     this.populateJobPositionModalSelectors();
+    this.populateAffiliationConceptSelectors();
 
     // Actualizar contadores del menú lateral
 
@@ -179,9 +192,16 @@ class PersonnelMethods {
     if (tbody) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center py-5 text-muted">
-            <span class="spinner-border spinner-border-sm text-teal me-2" role="status"></span>
-            Cargando nómina de colaboradores...
+          <td colspan="7" class="text-center py-5">
+            <div class="d-flex flex-column align-items-center justify-content-center gap-2">
+              <div class="spinner-border" style="width: 2.25rem; height: 2.25rem; color: var(--pers-emerald-600);" role="status"></div>
+              <div class="fw-bold mt-2" style="color: var(--pers-forest-900); font-family: 'Plus Jakarta Sans', sans-serif;">Cargando nómina de colaboradores...</div>
+              <div class="w-75 mt-2">
+                <div class="pers-skeleton-row"></div>
+                <div class="pers-skeleton-row" style="width: 85%; margin: 8px auto;"></div>
+                <div class="pers-skeleton-row" style="width: 70%; margin: 8px auto;"></div>
+              </div>
+            </div>
           </td>
         </tr>
       `;
@@ -247,9 +267,18 @@ class PersonnelMethods {
       if (paginationContainer) paginationContainer.classList.add('d-none');
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center py-5 text-muted">
-            <i class="ti ti-users-off fs-1 d-block mb-2 text-teal opacity-50"></i>
-            No se encontraron empleados registrados con los filtros seleccionados.
+          <td colspan="7" class="text-center p-0">
+            <div class="pers-empty-card">
+              <div class="pers-empty-icon-wrap">
+                <i class="ti ti-users-off"></i>
+              </div>
+              <div class="pers-empty-title">No se encontraron colaboradores registrados</div>
+              <div class="pers-empty-desc">No hay empleados que coincidan con los filtros seleccionados. Comienza creando un nuevo legajo o ajusta los criterios de búsqueda.</div>
+              <button type="button" class="btn-pers-primary" onclick="document.getElementById('btn-open-new-employee-modal').click()">
+                <i class="ti ti-user-plus"></i>
+                <span>Nuevo Legajo</span>
+              </button>
+            </div>
           </td>
         </tr>
       `;
@@ -303,13 +332,13 @@ class PersonnelMethods {
 
         return `
           <tr>
-            <td class="font-monospace fw-bold text-teal">${escapeHtml(emp.fileNumber || '-')}</td>
+            <td class="pers-legajo-cell">${escapeHtml(emp.fileNumber || '-')}</td>
             <td>
               <div class="d-flex align-items-center">
                 ${photoAvatarHtml}
-                <div>
-                  <div class="fw-bold text-dark">${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}</div>
-                  <small class="text-muted">${escapeHtml(emp.email || emp.phone || 'Sin contacto')}</small>
+                <div class="pers-text-truncate" style="max-width: 220px;">
+                  <div class="fw-bold text-dark text-truncate" title="${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}">${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}</div>
+                  <small class="text-muted text-truncate d-block" title="${escapeHtml(emp.email || emp.phone || 'Sin contacto')}">${escapeHtml(emp.email || emp.phone || 'Sin contacto')}</small>
                 </div>
               </div>
             </td>
@@ -318,20 +347,20 @@ class PersonnelMethods {
               <small class="text-muted font-monospace">${escapeHtml(cuitFormatted)}</small>
             </td>
             <td>
-              <div class="fw-medium text-teal">${escapeHtml(emp.department?.name || 'Sin sector')}</div>
-              <small class="text-muted">${escapeHtml(emp.jobPosition?.name || 'Sin puesto')}</small>
+              <div class="fw-medium text-teal pers-text-truncate" title="${escapeHtml(emp.department?.name || 'Sin sector')}">${escapeHtml(emp.department?.name || 'Sin sector')}</div>
+              <small class="text-muted pers-text-truncate d-block" title="${escapeHtml(emp.jobPosition?.name || 'Sin puesto')}">${escapeHtml(emp.jobPosition?.name || 'Sin puesto')}</small>
             </td>
-            <td>${hireDateFormatted}</td>
+            <td class="text-nowrap">${hireDateFormatted}</td>
             <td>${statusBadge}</td>
             <td class="text-end text-nowrap">
-              <div class="d-inline-flex gap-1">
-                <button type="button" class="btn btn-sm btn-icon btn-outline-primary btn-edit-employee" data-id="${emp.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar Ficha">
+              <div class="d-inline-flex gap-1 justify-content-end align-items-center">
+                <button type="button" class="pers-action-btn pers-action-btn-edit btn-edit-employee" data-id="${emp.id}" data-bs-toggle="tooltip" data-bs-placement="top" title="Modificar Ficha" aria-label="Modificar Ficha">
                   <i class="ti ti-edit"></i>
                 </button>
                 ${
                   emp.status === 'ACTIVE'
                     ? `
-                  <button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-delete-employee" data-id="${emp.id}" data-name="${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}" data-bs-toggle="tooltip" data-bs-placement="top" title="Dar de Baja">
+                  <button type="button" class="pers-action-btn pers-action-btn-delete btn-delete-employee" data-id="${emp.id}" data-name="${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}" data-bs-toggle="tooltip" data-bs-placement="top" title="Dar de Baja" aria-label="Dar de Baja">
                     <i class="ti ti-user-x"></i>
                   </button>
                 `
@@ -1051,7 +1080,7 @@ class PersonnelMethods {
       if (searchTerm) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="text-center py-5 text-muted">
+            <td colspan="5" class="text-center py-5 text-muted">
               <i class="ti ti-search-off fs-1 d-block mb-2 text-teal"></i>
               No se encontraron sindicatos que coincidan con "<strong>${escapeHtml(searchTerm)}</strong>".
             </td>
@@ -1060,7 +1089,7 @@ class PersonnelMethods {
       } else {
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="text-center py-5 text-muted">
+            <td colspan="5" class="text-center py-5 text-muted">
               <i class="ti ti-certificate fs-1 d-block mb-2 text-teal opacity-50"></i>
               <div class="fw-bold mb-1">No hay sindicatos registrados</div>
               <small class="d-block mb-3">Registra los convenios y entidades gremiales a las que adhiere la empresa.</small>
@@ -1102,6 +1131,27 @@ class PersonnelMethods {
           ? `<span class="badge bg-teal-lt text-teal font-monospace px-2 py-1">${escapeHtml(u.code)}</span>`
           : `<span class="badge bg-secondary-lt text-muted font-monospace px-2 py-1">S/C</span>`;
 
+        const unionConceptsList = (u.concepts && u.concepts.length > 0)
+          ? u.concepts
+          : (u.concept ? [u.concept] : []);
+
+        const conceptBadge = unionConceptsList.length > 0
+          ? (unionConceptsList.length <= 2
+              ? unionConceptsList.map((c) => `
+                  <span class="badge bg-indigo-lt text-indigo px-2 py-1 mb-1 me-1 text-wrap" title="${escapeHtml(c.name)}">
+                    <i class="ti ti-receipt-2 me-1"></i><strong>${escapeHtml(c.code)}</strong> [${escapeHtml(c.periodType || 'MENSUAL')}]
+                  </span>
+                `).join('')
+              : `
+                  <span class="badge bg-indigo-lt text-indigo px-2 py-1 mb-1 me-1" title="${escapeHtml(unionConceptsList[0].name)}">
+                    <i class="ti ti-receipt-2 me-1"></i><strong>${escapeHtml(unionConceptsList[0].code)}</strong> [${escapeHtml(unionConceptsList[0].periodType || 'MENSUAL')}]
+                  </span>
+                  <span class="badge bg-secondary-lt text-dark px-2 py-1 mb-1" title="${unionConceptsList.slice(1).map((c) => `${c.code}: ${c.name}`).join(' | ')}">
+                    +${unionConceptsList.length - 1} más
+                  </span>
+                `)
+          : `<span class="badge bg-secondary-lt text-muted px-2 py-1">Sin asignar</span>`;
+
         const empBadge =
           (u.employeeCount || 0) > 0
             ? `<button class="btn btn-sm btn-outline-teal btn-filter-union-employees py-0 px-2" data-id="${u.id}" title="Ver empleados afiliados">
@@ -1120,6 +1170,7 @@ class PersonnelMethods {
                 <span class="fw-bold text-dark">${escapeHtml(u.name)}</span>
               </div>
             </td>
+            <td>${conceptBadge}</td>
             <td class="text-center">${empBadge}</td>
             <td class="text-end">
               <div class="d-inline-flex gap-1">
@@ -1183,7 +1234,7 @@ class PersonnelMethods {
       if (searchTerm) {
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="text-center py-5 text-muted">
+            <td colspan="5" class="text-center py-5 text-muted">
               <i class="ti ti-search-off fs-1 d-block mb-2 text-teal"></i>
               No se encontraron mutuales que coincidan con "<strong>${escapeHtml(searchTerm)}</strong>".
             </td>
@@ -1192,7 +1243,7 @@ class PersonnelMethods {
       } else {
         tbody.innerHTML = `
           <tr>
-            <td colspan="4" class="text-center py-5 text-muted">
+            <td colspan="5" class="text-center py-5 text-muted">
               <i class="ti ti-heart-handshake fs-1 d-block mb-2 text-teal opacity-50"></i>
               <div class="fw-bold mb-1">No hay mutuales registradas</div>
               <small class="d-block mb-3">Registra mutuales o beneficios complementarios para el personal.</small>
@@ -1234,6 +1285,27 @@ class PersonnelMethods {
           ? `<span class="badge bg-teal-lt text-teal font-monospace px-2 py-1">${escapeHtml(m.code)}</span>`
           : `<span class="badge bg-secondary-lt text-muted font-monospace px-2 py-1">S/C</span>`;
 
+        const mutualConceptsList = (m.concepts && m.concepts.length > 0)
+          ? m.concepts
+          : (m.concept ? [m.concept] : []);
+
+        const conceptBadge = mutualConceptsList.length > 0
+          ? (mutualConceptsList.length <= 2
+              ? mutualConceptsList.map((c) => `
+                  <span class="badge bg-indigo-lt text-indigo px-2 py-1 mb-1 me-1 text-wrap" title="${escapeHtml(c.name)}">
+                    <i class="ti ti-receipt-2 me-1"></i><strong>${escapeHtml(c.code)}</strong> [${escapeHtml(c.periodType || 'MENSUAL')}]
+                  </span>
+                `).join('')
+              : `
+                  <span class="badge bg-indigo-lt text-indigo px-2 py-1 mb-1 me-1" title="${escapeHtml(mutualConceptsList[0].name)}">
+                    <i class="ti ti-receipt-2 me-1"></i><strong>${escapeHtml(mutualConceptsList[0].code)}</strong> [${escapeHtml(mutualConceptsList[0].periodType || 'MENSUAL')}]
+                  </span>
+                  <span class="badge bg-secondary-lt text-dark px-2 py-1 mb-1" title="${mutualConceptsList.slice(1).map((c) => `${c.code}: ${c.name}`).join(' | ')}">
+                    +${mutualConceptsList.length - 1} más
+                  </span>
+                `)
+          : `<span class="badge bg-secondary-lt text-muted px-2 py-1">Sin asignar</span>`;
+
         const empBadge =
           (m.employeeCount || 0) > 0
             ? `<button class="btn btn-sm btn-outline-teal btn-filter-mutual-employees py-0 px-2" data-id="${m.id}" title="Ver empleados afiliados">
@@ -1252,6 +1324,7 @@ class PersonnelMethods {
                 <span class="fw-bold text-dark">${escapeHtml(m.name)}</span>
               </div>
             </td>
+            <td>${conceptBadge}</td>
             <td class="text-center">${empBadge}</td>
             <td class="text-end">
               <div class="d-inline-flex gap-1">
@@ -1423,7 +1496,7 @@ class PersonnelMethods {
     if (this.currentEmployeeRelatives.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center py-4 text-muted">
+          <td colspan="7" class="text-center py-4 text-muted">
             <i class="ti ti-users-off fs-2 d-block mb-1 text-teal opacity-50"></i>
             No hay familiares registrados para este empleado.<br>
             <small>Haz clic en "<strong>+ Agregar Familiar</strong>" para registrar cónyuge, hijos u otras cargas familiares.</small>
@@ -1458,6 +1531,7 @@ class PersonnelMethods {
 
         const docStr = `${escapeHtml(rel.documentType || 'DNI')} ${escapeHtml(rel.documentNumber || '-')}`;
         const cuilStr = rel.cuil ? formatCuit(rel.cuil) : '<span class="text-muted">-</span>';
+        const isAdherent = Boolean(rel.isAdherent);
 
         return `
           <tr>
@@ -1472,6 +1546,11 @@ class PersonnelMethods {
             <td class="font-monospace">${docStr}</td>
             <td class="font-monospace">${cuilStr}</td>
             <td>${birthStr}${ageStr}</td>
+            <td>
+              ${isAdherent
+                ? '<span class="badge bg-purple-lt text-purple fw-bold"><i class="ti ti-shield-plus me-1"></i>Adherente OS</span>'
+                : '<span class="badge bg-light text-muted border"><i class="ti ti-shield-check me-1"></i>Titular / Primario</span>'}
+            </td>
             <td class="text-end">
               <div class="d-inline-flex gap-1">
                 <button type="button" class="btn btn-sm btn-icon btn-outline-primary btn-edit-relative" data-index="${idx}" title="Editar familiar">
@@ -2227,10 +2306,25 @@ class PersonnelMethods {
     // 1. Actualizar clases activas en la barra lateral
     const sidebarNav = document.getElementById('personnel-sidebar-nav');
     if (sidebarNav) {
-      sidebarNav.querySelectorAll('.personnel-nav-item, .personnel-sub-item').forEach((x) => {
+      sidebarNav.querySelectorAll('.pers-nav-link, .personnel-nav-item, .pers-sub-link, .personnel-sub-item').forEach((x) => {
         const target = x.getAttribute('data-bs-target') || x.getAttribute('href');
         if (target === targetSelector) {
           x.classList.add('active');
+          // Si es un sub-ítem dentro de un acordeón, asegurar que el menú padre esté desplegado
+          const submenu = x.closest('.collapse');
+          if (submenu) {
+            const parentCollapse = document.querySelector(`[data-bs-target="#${submenu.id}"]`);
+            if (parentCollapse) {
+              parentCollapse.classList.remove('collapsed');
+              parentCollapse.setAttribute('aria-expanded', 'true');
+            }
+            if (window.bootstrap?.Collapse) {
+              const inst = window.bootstrap.Collapse.getOrCreateInstance(submenu, { toggle: false });
+              inst.show();
+            } else {
+              submenu.classList.add('show');
+            }
+          }
         } else {
           x.classList.remove('active');
         }
@@ -2274,7 +2368,7 @@ class PersonnelMethods {
     const sidebarNav = document.getElementById('personnel-sidebar-nav');
     if (sidebarNav) {
       // Ítems principales (Nómina de Personal)
-      sidebarNav.querySelectorAll('.personnel-nav-item').forEach((item) => {
+      sidebarNav.querySelectorAll('.pers-nav-link, .personnel-nav-item').forEach((item) => {
         item.addEventListener('click', (e) => {
           e.preventDefault();
           const target = item.getAttribute('data-bs-target') || item.getAttribute('href');
@@ -2283,11 +2377,52 @@ class PersonnelMethods {
       });
 
       // Sub-ítems (Sectores, Puestos, Obras Sociales, Sindicatos, Mutuales)
-      sidebarNav.querySelectorAll('.personnel-sub-item').forEach((item) => {
+      sidebarNav.querySelectorAll('.pers-sub-link, .personnel-sub-item').forEach((item) => {
         item.addEventListener('click', (e) => {
           e.preventDefault();
           const target = item.getAttribute('data-bs-target') || item.getAttribute('href');
           if (target) this.switchPersonnelPane(target);
+        });
+      });
+
+      // Padres de acordeón (despliegue manual garantizado con prevención de doble toggle)
+      sidebarNav.querySelectorAll('.pers-nav-parent, .personnel-parent-item').forEach((parent) => {
+        parent.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const targetCollapseId = parent.getAttribute('data-bs-target');
+          if (targetCollapseId) {
+            const collapseEl = document.querySelector(targetCollapseId);
+            if (collapseEl) {
+              if (window.bootstrap?.Collapse) {
+                const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+                inst.toggle();
+              } else {
+                collapseEl.classList.toggle('show');
+                const isShown = collapseEl.classList.contains('show');
+                parent.classList.toggle('collapsed', !isShown);
+                parent.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+              }
+            }
+          }
+        });
+      });
+
+      // Sincronización precisa de chevron y aria-expanded mediante eventos nativos del collapse
+      sidebarNav.querySelectorAll('.collapse').forEach((collapseEl) => {
+        collapseEl.addEventListener('show.bs.collapse', () => {
+          const parent = sidebarNav.querySelector(`[data-bs-target="#${collapseEl.id}"]`);
+          if (parent) {
+            parent.classList.remove('collapsed');
+            parent.setAttribute('aria-expanded', 'true');
+          }
+        });
+        collapseEl.addEventListener('hide.bs.collapse', () => {
+          const parent = sidebarNav.querySelector(`[data-bs-target="#${collapseEl.id}"]`);
+          if (parent) {
+            parent.classList.add('collapsed');
+            parent.setAttribute('aria-expanded', 'false');
+          }
         });
       });
     }
@@ -2792,6 +2927,7 @@ class PersonnelMethods {
             documentNumber: r.documentNumber,
             cuil: r.cuil || null,
             birthDate: r.birthDate,
+            isAdherent: Boolean(r.isAdherent),
           }));
         }
 
@@ -3034,9 +3170,22 @@ class PersonnelMethods {
         return;
       }
 
+      const conceptSelectEl = document.getElementById('union-input-concept');
+      let conceptIdsVal = [];
+      if (conceptSelectEl?.tomselect) {
+        const val = conceptSelectEl.tomselect.getValue();
+        conceptIdsVal = Array.isArray(val) ? val : (val ? [val] : []);
+      } else if (conceptSelectEl) {
+        conceptIdsVal = Array.from(conceptSelectEl.selectedOptions).map((o) => o.value).filter(Boolean);
+      }
+      const applyEmployeesVal = document.getElementById('union-input-apply-employees')?.checked || false;
+
       const payload = {
         name: nameVal,
         code: codeVal || null,
+        conceptIds: conceptIdsVal,
+        conceptId: conceptIdsVal[0] || null,
+        applyToEmployees: applyEmployeesVal,
       };
 
       if (submitBtn) {
@@ -3086,9 +3235,22 @@ class PersonnelMethods {
         return;
       }
 
+      const mutConceptSelectEl = document.getElementById('mutual-input-concept');
+      let mutConceptIdsVal = [];
+      if (mutConceptSelectEl?.tomselect) {
+        const val = mutConceptSelectEl.tomselect.getValue();
+        mutConceptIdsVal = Array.isArray(val) ? val : (val ? [val] : []);
+      } else if (mutConceptSelectEl) {
+        mutConceptIdsVal = Array.from(mutConceptSelectEl.selectedOptions).map((o) => o.value).filter(Boolean);
+      }
+      const applyEmployeesVal = document.getElementById('mutual-input-apply-employees')?.checked || false;
+
       const payload = {
         name: nameVal,
         code: codeVal || null,
+        conceptIds: mutConceptIdsVal,
+        conceptId: mutConceptIdsVal[0] || null,
+        applyToEmployees: applyEmployeesVal,
       };
 
       if (submitBtn) {
@@ -3171,6 +3333,11 @@ class PersonnelMethods {
       }
     });
 
+    // Cambio de Parentesco para validar adherencia a Obra Social (Ley 23.660)
+    document.getElementById('relative-input-kinship')?.addEventListener('change', () => {
+      this.updateAdherentSwitchState();
+    });
+
     // Submit de Familiar de Empleado (Submodal)
     document.getElementById('form-employee-relative')?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -3205,6 +3372,17 @@ class PersonnelMethods {
         return;
       }
 
+      const isAdherent = Boolean(document.getElementById('relative-input-is-adherent')?.checked);
+      const selectedKin = this.kinships.find((k) => k.id === kinshipId);
+
+      if (isAdherent && this.isPrimaryFamilyKinship(selectedKin)) {
+        if (alertBox) {
+          alertBox.textContent = 'Los familiares del grupo familiar primario (cónyuge, conviviente, hijos y tutelados) poseen cobertura automática de Obra Social por Ley 23.660 y no pueden registrarse como adherentes.';
+          alertBox.classList.remove('d-none');
+        }
+        return;
+      }
+
       const relPayload = {
         kinshipId,
         lastName,
@@ -3213,9 +3391,8 @@ class PersonnelMethods {
         documentNumber,
         cuil: cuilRaw,
         birthDate,
+        isAdherent,
       };
-
-      const selectedKin = this.kinships.find((k) => k.id === kinshipId);
 
       if (submitBtn) {
         submitBtn.disabled = true;
@@ -6586,10 +6763,61 @@ class PersonnelMethods {
     });
   }
 
+  populateAffiliationConceptSelectors() {
+    const unionSelect = document.getElementById('union-input-concept');
+    const mutualSelect = document.getElementById('mutual-input-concept');
+    const concepts = this.deductionConcepts || [];
+
+    const buildOptions = () => {
+      let html = '';
+      concepts.forEach((c) => {
+        const periodLabel = c.periodType ? ` [${escapeHtml(c.periodType)}]` : ' [MENSUAL]';
+        const arcaInfo = c.arcaConceptCode ? ` (ARCA: ${escapeHtml(c.arcaConceptCode)})` : '';
+        html += `<option value="${c.id}">${escapeHtml(c.code)} - ${escapeHtml(c.name)}${periodLabel}${arcaInfo}</option>`;
+      });
+      return html;
+    };
+
+    const optionsHtml = buildOptions();
+    const tsConfig = {
+      plugins: ['remove_button'],
+      multiple: true,
+      placeholder: 'Seleccionar conceptos de descuento...',
+      maxOptions: 1000,
+      sortField: false,
+    };
+
+    if (unionSelect) {
+      if (unionSelect.tomselect) {
+        unionSelect.tomselect.destroy();
+      }
+      unionSelect.innerHTML = optionsHtml;
+      initSearchableSelect(unionSelect, tsConfig);
+    }
+    if (mutualSelect) {
+      if (mutualSelect.tomselect) {
+        mutualSelect.tomselect.destroy();
+      }
+      mutualSelect.innerHTML = optionsHtml;
+      initSearchableSelect(mutualSelect, tsConfig);
+    }
+  }
+
   // --- Sindicatos ---
   openNewUnionModal() {
     document.getElementById('form-union').reset();
     document.getElementById('union-form-id').value = '';
+    this.populateAffiliationConceptSelectors();
+    const conceptSel = document.getElementById('union-input-concept');
+    if (conceptSel?.tomselect) {
+      conceptSel.tomselect.clear();
+    } else if (conceptSel) {
+      conceptSel.value = '';
+    }
+    const applyWrap = document.getElementById('union-apply-employees-wrap');
+    if (applyWrap) applyWrap.classList.add('d-none');
+    const applyCheck = document.getElementById('union-input-apply-employees');
+    if (applyCheck) applyCheck.checked = false;
     document.getElementById('modal-union-form-title').textContent = 'Nuevo Sindicato';
     document.getElementById('union-form-alert')?.classList.add('d-none');
     const submitBtn = document.getElementById('btn-save-union');
@@ -6601,6 +6829,22 @@ class PersonnelMethods {
     document.getElementById('union-form-id').value = union.id;
     document.getElementById('union-input-name').value = union.name;
     document.getElementById('union-input-code').value = union.code || '';
+    this.populateAffiliationConceptSelectors();
+    const conceptSel = document.getElementById('union-input-concept');
+    const conceptIds = union.conceptIds && union.conceptIds.length > 0
+      ? union.conceptIds
+      : (union.conceptId ? [union.conceptId] : []);
+    if (conceptSel?.tomselect) {
+      conceptSel.tomselect.setValue(conceptIds);
+    } else if (conceptSel) {
+      Array.from(conceptSel.options).forEach((opt) => {
+        opt.selected = conceptIds.includes(opt.value);
+      });
+    }
+    const applyWrap = document.getElementById('union-apply-employees-wrap');
+    if (applyWrap) applyWrap.classList.remove('d-none');
+    const applyCheck = document.getElementById('union-input-apply-employees');
+    if (applyCheck) applyCheck.checked = false;
     document.getElementById('modal-union-form-title').textContent = `Editar Sindicato: ${union.name}`;
     document.getElementById('union-form-alert')?.classList.add('d-none');
     const submitBtn = document.getElementById('btn-save-union');
@@ -6625,6 +6869,17 @@ class PersonnelMethods {
   openNewMutualModal() {
     document.getElementById('form-mutual').reset();
     document.getElementById('mutual-form-id').value = '';
+    this.populateAffiliationConceptSelectors();
+    const conceptSel = document.getElementById('mutual-input-concept');
+    if (conceptSel?.tomselect) {
+      conceptSel.tomselect.clear();
+    } else if (conceptSel) {
+      conceptSel.value = '';
+    }
+    const applyWrap = document.getElementById('mutual-apply-employees-wrap');
+    if (applyWrap) applyWrap.classList.add('d-none');
+    const applyCheck = document.getElementById('mutual-input-apply-employees');
+    if (applyCheck) applyCheck.checked = false;
     document.getElementById('modal-mutual-form-title').textContent = 'Nueva Mutual';
     document.getElementById('mutual-form-alert')?.classList.add('d-none');
     const submitBtn = document.getElementById('btn-save-mutual');
@@ -6636,6 +6891,22 @@ class PersonnelMethods {
     document.getElementById('mutual-form-id').value = mutual.id;
     document.getElementById('mutual-input-name').value = mutual.name;
     document.getElementById('mutual-input-code').value = mutual.code || '';
+    this.populateAffiliationConceptSelectors();
+    const conceptSel = document.getElementById('mutual-input-concept');
+    const conceptIds = mutual.conceptIds && mutual.conceptIds.length > 0
+      ? mutual.conceptIds
+      : (mutual.conceptId ? [mutual.conceptId] : []);
+    if (conceptSel?.tomselect) {
+      conceptSel.tomselect.setValue(conceptIds);
+    } else if (conceptSel) {
+      Array.from(conceptSel.options).forEach((opt) => {
+        opt.selected = conceptIds.includes(opt.value);
+      });
+    }
+    const applyWrap = document.getElementById('mutual-apply-employees-wrap');
+    if (applyWrap) applyWrap.classList.remove('d-none');
+    const applyCheck = document.getElementById('mutual-input-apply-employees');
+    if (applyCheck) applyCheck.checked = false;
     document.getElementById('modal-mutual-form-title').textContent = `Editar Mutual: ${mutual.name}`;
     document.getElementById('mutual-form-alert')?.classList.add('d-none');
     const submitBtn = document.getElementById('btn-save-mutual');
@@ -6656,7 +6927,51 @@ class PersonnelMethods {
     });
   }
 
-  // --- Familiares de Empleado ---
+  // --- Familiares de Empleado y Cobertura Ley 23.660 ---
+  isPrimaryFamilyKinship(kinship) {
+    if (!kinship) return false;
+    const code = String(kinship.code || '').toUpperCase().trim();
+    const primaryCodes = ['CONYUGE', 'CONVIVIENTE', 'HIJO_MENOR_21', 'HIJO_ESTUDIANTE', 'HIJO_INCAPACITADO', 'TUTELA'];
+    if (primaryCodes.includes(code) || code.startsWith('HIJO')) return true;
+    const name = String(kinship.name || '').toLowerCase();
+    if (name.includes('cónyuge') || name.includes('conyuge') || name.includes('conviviente') || name.includes('hijo') || name.includes('tutela') || name.includes('guarda')) {
+      return true;
+    }
+    return false;
+  }
+
+  updateAdherentSwitchState() {
+    const kinSelect = document.getElementById('relative-input-kinship');
+    const adherentSwitch = document.getElementById('relative-input-is-adherent');
+    const adherentHint = document.getElementById('relative-adherent-hint');
+    if (!kinSelect || !adherentSwitch) return;
+
+    if (!kinSelect.value) {
+      adherentSwitch.checked = false;
+      adherentSwitch.disabled = true;
+      if (adherentHint) {
+        adherentHint.textContent = 'Selecciona primero el parentesco para validar si aplica como adherente.';
+      }
+      return;
+    }
+
+    const selectedKin = this.kinships.find((k) => k.id === kinSelect.value);
+    const isPrimary = this.isPrimaryFamilyKinship(selectedKin);
+
+    if (isPrimary) {
+      adherentSwitch.checked = false;
+      adherentSwitch.disabled = true;
+      if (adherentHint) {
+        adherentHint.innerHTML = '<span class="text-primary fw-medium"><i class="ti ti-info-circle me-1"></i>Grupo familiar primario: Cobertura automática s/Ley 23.660 (no cotiza como adherente).</span>';
+      }
+    } else {
+      adherentSwitch.disabled = false;
+      if (adherentHint) {
+        adherentHint.textContent = 'Aplica a familiares a cargo fuera del grupo primario (ej. padres, hermanos s/Art. 9 inc. b Ley 23.660).';
+      }
+    }
+  }
+
   openNewRelativeModal() {
     document.getElementById('form-employee-relative').reset();
     document.getElementById('employee-relative-form-index').value = '';
@@ -6664,6 +6979,12 @@ class PersonnelMethods {
     document.getElementById('modal-employee-relative-form-title').textContent = 'Agregar Familiar';
     document.getElementById('relative-form-alert')?.classList.add('d-none');
     document.getElementById('relative-input-doc-type').value = 'DNI';
+    const adherentSwitch = document.getElementById('relative-input-is-adherent');
+    if (adherentSwitch) {
+      adherentSwitch.checked = false;
+      adherentSwitch.disabled = true;
+    }
+    this.updateAdherentSwitchState();
     getBootstrapModal(document.getElementById('modal-employee-relative-form'))?.show();
   }
 
@@ -6683,6 +7004,15 @@ class PersonnelMethods {
     document.getElementById('relative-input-doc-number').value = rel.documentNumber || '';
     document.getElementById('relative-input-cuil').value = rel.cuil ? formatCuit(rel.cuil) : '';
     document.getElementById('relative-input-birth-date').value = rel.birthDate ? rel.birthDate.split('T')[0] : '';
+
+    const adherentSwitch = document.getElementById('relative-input-is-adherent');
+    if (adherentSwitch) {
+      adherentSwitch.checked = Boolean(rel.isAdherent);
+    }
+    this.updateAdherentSwitchState();
+    if (!this.isPrimaryFamilyKinship(this.kinships.find((k) => k.id === (rel.kinshipId || rel.kinship?.id)))) {
+      if (adherentSwitch) adherentSwitch.checked = Boolean(rel.isAdherent);
+    }
 
     getBootstrapModal(document.getElementById('modal-employee-relative-form'))?.show();
   }

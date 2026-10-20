@@ -1,7 +1,14 @@
-import { evaluateFormula, resolveHistoricalMetric } from './src/modules/payroll/formulaEvaluator.js';
+import { evaluateFormula, resolveHistoricalMetric, splitArguments } from './src/modules/payroll/formulaEvaluator.js';
 import { validateConceptFormula, auditFormulaCatalogConsistency } from './src/modules/payroll/formulaValidator.js';
 import { calculateEmployeePayroll, resolveItemBaseAmount } from './src/modules/payroll/payroll.calculator.js';
-import { generateLsdConceptsFile, generateLsdPayrollFile, validateLsdConsistency } from './src/modules/payroll/lsdExporter.service.js';
+import {
+  generateLsdConceptsFile,
+  generateLsdPayrollFile,
+  validateLsdConsistency,
+  generateMonthlyLsdPayrollFile,
+  validateMonthlyLsdConsistency,
+} from './src/modules/payroll/lsdExporter.service.js';
+import { isPrimaryFamilyKinship } from './src/modules/employees/employee.service.js';
 
 let passedTests = 0;
 let failedTests = 0;
@@ -1625,6 +1632,894 @@ console.log('\n--- 14. Métricas Históricas Ordinarias / Habituales (_ORD) ---'
   });
   assert(valRes2.isValid === true, `Fórmula con [PROM_6M_ORD:SU1050] + [ACUM_6M_ORD] debe ser válida (errores: ${valRes2.errors.join(', ')})`);
 }
+
+// ----------------------------------------------------
+// 15. COEFICIENTE Y PORCENTAJE DE JORNADA EN FÓRMULAS
+// ([COEFICIENTE_JORNADA], [PORCENTAJE_JORNADA], [ES_JORNADA_PARCIAL])
+// ----------------------------------------------------
+console.log('\n--- 15. Coeficiente y Porcentaje de Jornada en Fórmulas ---');
+
+{
+  // 15.1 Validación sintáctica de fórmulas con nuevos tokens
+  const sampleConcepts = [
+    { code: 'SU1000', calculationOrder: 10, type: 'REMUNERATIVE' },
+    { code: 'SU1005', calculationOrder: 20, type: 'REMUNERATIVE' },
+  ];
+
+  const valResCoef = validateConceptFormula({
+    formula: '[SU1000] * [COEFICIENTE_JORNADA]',
+    currentConceptCode: 'SU1005',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valResCoef.isValid === true, `Fórmula con [COEFICIENTE_JORNADA] debe ser válida (errores: ${valResCoef.errors.join(', ')})`);
+
+  const valResPct = validateConceptFormula({
+    formula: '[SU1000] * ([PORCENTAJE_JORNADA] / 100)',
+    currentConceptCode: 'SU1005',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valResPct.isValid === true, `Fórmula con [PORCENTAJE_JORNADA] debe ser válida (errores: ${valResPct.errors.join(', ')})`);
+
+  const valResCond = validateConceptFormula({
+    formula: 'SI([ES_JORNADA_PARCIAL] == 1, [SU1000] * [COEFICIENTE_JORNADA], [SU1000])',
+    currentConceptCode: 'SU1005',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valResCond.isValid === true, `Fórmula condicional con SI([ES_JORNADA_PARCIAL] == 1, ...) debe ser válida (errores: ${valResCond.errors.join(', ')})`);
+
+  // 15.2 Evaluación matemática aislada
+  const ctx50 = {
+    SU1000: 1000000,
+    COEFICIENTE_JORNADA: 0.5,
+    PORCENTAJE_JORNADA: 50.00,
+    ES_JORNADA_PARCIAL: 1,
+  };
+  const resCoefDirect = evaluateFormula('[SU1000] * [COEFICIENTE_JORNADA]', ctx50);
+  assert(resCoefDirect === 500000, `Evaluación [SU1000] * [COEFICIENTE_JORNADA] con 0.5 debe dar 500.000 (obtenido ${resCoefDirect})`);
+
+  const resPctDirect = evaluateFormula('[SU1000] * ([PORCENTAJE_JORNADA] / 100)', ctx50);
+  assert(resPctDirect === 500000, `Evaluación [SU1000] * ([PORCENTAJE_JORNADA] / 100) con 50 debe dar 500.000 (obtenido ${resPctDirect})`);
+
+  // 15.3 Fallback cuando solo se pasa PORCENTAJE_JORNADA en context
+  const ctxOnlyPct = {
+    SU1000: 800000,
+    PORCENTAJE_JORNADA: 75.00,
+  };
+  const resFallbackCoef = evaluateFormula('[SU1000] * [COEFICIENTE_JORNADA]', ctxOnlyPct);
+  assert(resFallbackCoef === 600000, `Fallback de [COEFICIENTE_JORNADA] desde PORCENTAJE_JORNADA 75% debe dar 600.000 (obtenido ${resFallbackCoef})`);
+
+  // 15.4 Liquidación de empleado con jornada parcial y precedencia del legajo
+  const period = {
+    id: 'p-m-2026-10',
+    year: 2026,
+    month: 10,
+    periodType: 'MONTHLY',
+    settlementType: 'M',
+    liquidationDate: '2026-10-31',
+  };
+
+  const payrollSettings = {
+    employerType: 'SERVICIOS_COMERCIO',
+    sipaRate: 10.77,
+    inssjypRate: 1.58,
+    osRate: 6.00,
+    fneRate: 0.94,
+    aaffRate: 4.70,
+    artRate: 3.50,
+    artFixedFee: 850.00,
+    scvoFee: 650.00,
+    detractionBase: 7003.68,
+    ansesMinCap: 82287.12,
+    ansesMaxCap: 2674292.72,
+  };
+
+  const conceptsJornada = [
+    {
+      id: 'c-1000',
+      code: 'SU1000',
+      name: 'Sueldo Básico Nominal CCT',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      calculationOrder: 10,
+      isPersistent: true,
+      defaultValue: 1000000,
+    },
+    {
+      id: 'c-1005',
+      code: 'SU1005',
+      name: 'Básico Proporcional Jornada Reducida',
+      type: 'REMUNERATIVE',
+      calculationType: 'FORMULA',
+      calculationOrder: 20,
+      formula: '[SU1000] * [COEFICIENTE_JORNADA]',
+      isPersistent: true,
+    },
+  ];
+
+  // Caso A: Empleado con legajo al 50% y turno al 75% -> Prevalece legajo (50%)
+  const empLegajo50 = {
+    id: 'emp-part-50',
+    fileNumber: 'P-050',
+    cuil: '20445566778',
+    lastName: 'Parcial',
+    firstName: 'Ana',
+    basicSalary: 1000000,
+    salaryScale: { amount: 1000000 },
+    hireDate: new Date(2023, 0, 1),
+    isPartTime: true,
+    partTimePercentage: 50.00,
+    workShift: {
+      id: 'ws-75',
+      name: 'Turno 75%',
+      percentage: 75.00,
+      weeklyHours: 36,
+      monthlyHours: 150,
+      dailyHours: 6,
+      monthlyDays: 25,
+    },
+    assignedConcepts: [],
+  };
+
+  const resLegajo50 = calculateEmployeePayroll({
+    employee: empLegajo50,
+    period,
+    payrollSettings,
+    allConcepts: conceptsJornada,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const itemProp50 = resLegajo50.items.find((i) => i.conceptCode === 'SU1005');
+  assert(itemProp50 && itemProp50.amount === 500000, `Debe prevalecer el legajo (50%) dando 500.000 aunque el turno tenga 75% (obtenido ${itemProp50?.amount})`);
+
+  // Caso B: Empleado con legajo sin porcentaje (null) y turno al 60% -> Fallback a turno (60%)
+  const empTurno60 = {
+    id: 'emp-part-60',
+    fileNumber: 'P-060',
+    cuil: '20445566779',
+    lastName: 'Turno',
+    firstName: 'Carlos',
+    basicSalary: 1000000,
+    salaryScale: { amount: 1000000 },
+    hireDate: new Date(2023, 0, 1),
+    isPartTime: true,
+    partTimePercentage: null,
+    workShift: {
+      id: 'ws-60',
+      name: 'Turno 60%',
+      percentage: 60.00,
+      weeklyHours: 28.8,
+      monthlyHours: 120,
+      dailyHours: 5,
+      monthlyDays: 24,
+    },
+    assignedConcepts: [],
+  };
+
+  const resTurno60 = calculateEmployeePayroll({
+    employee: empTurno60,
+    period,
+    payrollSettings,
+    allConcepts: conceptsJornada,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const itemProp60 = resTurno60.items.find((i) => i.conceptCode === 'SU1005');
+  assert(itemProp60 && itemProp60.amount === 600000, `Fallback al turno (60%) debe dar 600.000 cuando el legajo no tiene porcentaje (obtenido ${itemProp60?.amount})`);
+
+  // Caso C: Pasante educativo (Ley 26.427) -> COEFICIENTE_JORNADA = 0.50 obligatorio
+  const internEmp = {
+    id: 'emp-intern-test',
+    fileNumber: 'PAS-01',
+    cuil: '20998877665',
+    lastName: 'Pasante',
+    firstName: 'Lucía',
+    basicSalary: 400000,
+    salaryScale: { amount: 400000 },
+    hireDate: new Date(2025, 2, 1),
+    contractModalityCode: '027',
+    isPartTime: true,
+    partTimePercentage: 100, // aunque tenga 100 en legajo, por pasantía la ley impone 50%
+    assignedConcepts: [],
+  };
+
+  const conceptsInternTest = [
+    {
+      id: 'c-1001',
+      code: 'SU1001',
+      name: 'Asignación Estímulo Ley 26.427',
+      type: 'NON_REMUNERATIVE',
+      calculationType: 'FIXED',
+      calculationOrder: 20,
+      isPersistent: true,
+      defaultValue: 400000,
+    },
+    {
+      id: 'c-5000',
+      code: 'SU5000',
+      name: 'Concepto auxiliar con coeficiente de pasante',
+      type: 'NON_REMUNERATIVE',
+      calculationType: 'FORMULA',
+      calculationOrder: 30,
+      formula: '[COEFICIENTE_JORNADA] * 1000',
+      isPersistent: true,
+    },
+  ];
+
+  const resIntern = calculateEmployeePayroll({
+    employee: internEmp,
+    period,
+    payrollSettings,
+    allConcepts: conceptsInternTest,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const itemInternCoef = resIntern.items.find((i) => i.conceptCode === 'SU5000');
+  assert(itemInternCoef && itemInternCoef.amount === 500, `Pasante educativo debe tener COEFICIENTE_JORNADA = 0.50 dando 500 (obtenido ${itemInternCoef?.amount})`);
+}
+
+// ----------------------------------------------------
+// 16. OPERADORES DE COMPARACIÓN (=, >, >=, <, <=, !=) Y LÓGICA (Y, O)
+// ----------------------------------------------------
+console.log('\n--- 16. Operadores de Comparación (=, >, >=, <, <=, !=) y Lógica (Y, O) ---');
+
+{
+  // 16.1 Evaluación de operadores relacionales directos
+  assert(evaluateFormula('5 = 5') === 1, '5 = 5 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 == 5') === 1, '5 == 5 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 != 3') === 1, '5 != 3 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 != 5') === 0, '5 != 5 debe ser 0 (falso)');
+  assert(evaluateFormula('5 <> 3') === 1, '5 <> 3 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 > 3') === 1, '5 > 3 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 > 5') === 0, '5 > 5 debe ser 0 (falso)');
+  assert(evaluateFormula('5 >= 5') === 1, '5 >= 5 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 < 3') === 0, '5 < 3 debe ser 0 (falso)');
+  assert(evaluateFormula('5 <= 5') === 1, '5 <= 5 debe ser 1 (verdadero)');
+  assert(evaluateFormula('5 <= 4') === 0, '5 <= 4 debe ser 0 (falso)');
+
+  // 16.2 Aritmética Booleana Directa (Estilo Excel)
+  const ctxAntig6 = { ANTIGUEDAD_ANOS: 6, SU1000: 500000 };
+  const ctxAntig4 = { ANTIGUEDAD_ANOS: 4, SU1000: 500000 };
+  const ctxAntig12 = { ANTIGUEDAD_ANOS: 12, SU1000: 500000 };
+
+  const resBool1 = evaluateFormula('([ANTIGUEDAD_ANOS] >= 5) * 50000', ctxAntig6);
+  assert(resBool1 === 50000, `([ANTIGUEDAD_ANOS] >= 5) * 50000 con 6 años debe dar 50.000 (obtenido ${resBool1})`);
+
+  const resBool2 = evaluateFormula('([ANTIGUEDAD_ANOS] >= 5) * 50000', ctxAntig4);
+  assert(resBool2 === 0, `([ANTIGUEDAD_ANOS] >= 5) * 50000 con 4 años debe dar 0 (obtenido ${resBool2})`);
+
+  // Escalonado por tramos sumados directamente
+  const exprTramos = '([ANTIGUEDAD_ANOS] >= 5) * 20000 + ([ANTIGUEDAD_ANOS] >= 10) * 30000';
+  const resTramos = evaluateFormula(exprTramos, ctxAntig12);
+  assert(resTramos === 50000, `Bono escalonado con 12 años debe dar 50.000 (20.000 + 30.000) (obtenido ${resTramos})`);
+
+  // 16.3 Función SI con igualdad simple (=) y desigualdad (!=)
+  const resSiIgual = evaluateFormula('SI([ANTIGUEDAD_ANOS] = 6, 15000, 0)', ctxAntig6);
+  assert(resSiIgual === 15000, `SI([ANTIGUEDAD_ANOS] = 6, 15000, 0) debe dar 15.000 (obtenido ${resSiIgual})`);
+
+  const resSiDistinto = evaluateFormula('SI([ANTIGUEDAD_ANOS] != 5, 25000, 0)', ctxAntig6);
+  assert(resSiDistinto === 25000, `SI([ANTIGUEDAD_ANOS] != 5, 25000, 0) debe dar 25.000 (obtenido ${resSiDistinto})`);
+
+  // 16.4 Comparación de cadenas de texto (Strings)
+  const ctxCatMaestranza = { CATEGORIA: 'MAESTRANZA', SU1000: 600000 };
+  const ctxCatAdmin = { CATEGORIA: 'ADMINISTRATIVO', SU1000: 600000 };
+
+  const resCat1 = evaluateFormula("SI([CATEGORIA] = 'MAESTRANZA', 100000, 50000)", ctxCatMaestranza);
+  assert(resCat1 === 100000, `SI([CATEGORIA] = 'MAESTRANZA', ...) con MAESTRANZA debe dar 100.000 (obtenido ${resCat1})`);
+
+  const resCat2 = evaluateFormula("SI([CATEGORIA] = 'MAESTRANZA', 100000, 50000)", ctxCatAdmin);
+  assert(resCat2 === 50000, `SI([CATEGORIA] = 'MAESTRANZA', ...) con ADMINISTRATIVO debe dar 50.000 (obtenido ${resCat2})`);
+
+  const resCatDist = evaluateFormula("SI([CATEGORIA] != 'MAESTRANZA', 80000, 10000)", ctxCatAdmin);
+  assert(resCatDist === 80000, `SI([CATEGORIA] != 'MAESTRANZA', ...) con ADMINISTRATIVO debe dar 80.000 (obtenido ${resCatDist})`);
+
+  // 16.5 Condiciones compuestas con lógica 'Y' y 'O'
+  const resCompY1 = evaluateFormula('SI([ANTIGUEDAD_ANOS] >= 5 Y [ANTIGUEDAD_ANOS] <= 10, 70000, 10000)', ctxAntig6);
+  assert(resCompY1 === 70000, `SI con 'Y' cumplido (6 años entre 5 y 10) debe dar 70.000 (obtenido ${resCompY1})`);
+
+  const resCompY2 = evaluateFormula('SI([ANTIGUEDAD_ANOS] >= 5 Y [ANTIGUEDAD_ANOS] <= 10, 70000, 10000)', ctxAntig12);
+  assert(resCompY2 === 10000, `SI con 'Y' no cumplido (12 años) debe dar 10.000 (obtenido ${resCompY2})`);
+
+  const resCompO1 = evaluateFormula("SI([CATEGORIA] = 'MAESTRANZA' O [CATEGORIA] = 'SERVICIOS', 90000, 20000)", ctxCatMaestranza);
+  assert(resCompO1 === 90000, `SI con 'O' cumplido debe dar 90.000 (obtenido ${resCompO1})`);
+
+  const resCompO2 = evaluateFormula("SI([CATEGORIA] = 'MAESTRANZA' O [CATEGORIA] = 'SERVICIOS', 90000, 20000)", ctxCatAdmin);
+  assert(resCompO2 === 20000, `SI con 'O' no cumplido debe dar 20.000 (obtenido ${resCompO2})`);
+
+  // 16.6 Validación sintáctica en formulaValidator
+  const sampleConcepts = [
+    { code: 'SU1000', calculationOrder: 10, type: 'REMUNERATIVE' },
+    { code: 'SU1020', calculationOrder: 20, type: 'REMUNERATIVE' },
+  ];
+
+  const valOk1 = validateConceptFormula({
+    formula: '([ANTIGUEDAD_ANOS] >= 5) * 50000',
+    currentConceptCode: 'SU1020',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valOk1.isValid === true, `Fórmula con aritmética booleana debe ser VÁLIDA (errores: ${valOk1.errors.join(', ')})`);
+
+  const valOk2 = validateConceptFormula({
+    formula: "SI([CATEGORIA] = 'MAESTRANZA' Y [ANTIGUEDAD_ANOS] > 3, [SU1000] * 0.1, 0)",
+    currentConceptCode: 'SU1020',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valOk2.isValid === true, `Fórmula con SI y operador 'Y' debe ser VÁLIDA (errores: ${valOk2.errors.join(', ')})`);
+
+  const valErrorTrailing = validateConceptFormula({
+    formula: '[SU1000] >= ',
+    currentConceptCode: 'SU1020',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valErrorTrailing.isValid === false, 'Fórmula terminada en >= debe ser INVÁLIDA');
+
+  const valErrorLeading = validateConceptFormula({
+    formula: '>= [SU1000]',
+    currentConceptCode: 'SU1020',
+    type: 'REMUNERATIVE',
+    allConcepts: sampleConcepts,
+  });
+  assert(valErrorLeading.isValid === false, 'Fórmula que inicia en >= debe ser INVÁLIDA');
+}
+
+// ----------------------------------------------------
+// 17. JORNADA PARCIAL Y DIFERENCIAL DE OBRA SOCIAL EN LSD (ART. 92 TER LCT)
+// ----------------------------------------------------
+console.log('\n--- 17. Jornada Parcial y Diferencial de Obra Social en LSD (Art. 92 TER LCT) ---');
+
+{
+  const period = {
+    id: 'period-2026-10-jp',
+    year: 2026,
+    month: 10,
+    periodType: 'MONTHLY',
+    settlementNumber: 1,
+    settlementType: 'M',
+    liquidationDate: '2026-10-31',
+  };
+
+  const payrollSettings = {
+    employerType: 'SERVICIOS_COMERCIO',
+    sipaRate: 10.77,
+    inssjypRate: 1.58,
+    osRate: 6.00,
+    fneRate: 0.94,
+    aaffRate: 4.70,
+    artRate: 3.50,
+    artFixedFee: 850.00,
+    scvoFee: 650.00,
+    detractionBase: 7003.68,
+    ansesMinCap: 82287.12,
+    ansesMaxCap: 2674292.72,
+  };
+
+  const standardConcepts = [
+    {
+      id: 'c-su1000',
+      code: 'SU1000',
+      name: 'Sueldo Básico',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      defaultValue: 500000,
+      calculationOrder: 10,
+      isPersistent: true,
+      arcaConceptCode: '110000',
+    },
+    {
+      id: 'c-su6001',
+      code: 'SU6001',
+      name: 'Jubilación (11%)',
+      type: 'DEDUCTION',
+      calculationType: 'PERCENTAGE',
+      defaultValue: 11.00,
+      calculationOrder: 200,
+      isPersistent: true,
+      arcaConceptCode: '810000',
+    },
+    {
+      id: 'c-su6002',
+      code: 'SU6002',
+      name: 'Ley 19.032 INSSJyP (3%)',
+      type: 'DEDUCTION',
+      calculationType: 'PERCENTAGE',
+      defaultValue: 3.00,
+      calculationOrder: 210,
+      isPersistent: true,
+      arcaConceptCode: '810001',
+    },
+    {
+      id: 'c-su6003',
+      code: 'SU6003',
+      name: 'Obra Social (3%)',
+      type: 'DEDUCTION',
+      calculationType: 'PERCENTAGE',
+      defaultValue: 3.00,
+      calculationOrder: 220,
+      isPersistent: true,
+      arcaConceptCode: '810002',
+    },
+  ];
+
+  // 17.1 Empleado de Jornada Parcial (50% de jornada, básico devengado real $500.000)
+  const partTimeEmployee = {
+    id: 'emp-part-time-1',
+    fileNumber: 'JP-001',
+    cuil: '20334455667',
+    lastName: 'Gómez',
+    firstName: 'Martina',
+    basicSalary: 500000,
+    hireDate: new Date('2022-03-01'),
+    contractModalityCode: '001',
+    isPartTime: true,
+    partTimePercentage: 50.00,
+    jobPosition: { activityCode: '049', cctCode: '130/75' },
+  };
+
+  const ptResult = calculateEmployeePayroll({
+    employee: partTimeEmployee,
+    period,
+    payrollSettings,
+    allConcepts: standardConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  // Verificaciones de liquidación (Recibo de haberes):
+  // Bruto devengado real = 500.000
+  assert(ptResult.totals.totalRemunerative === 500000, 'Remunerativo devengado de jornada parcial debe ser 500.000');
+
+  // Obra Social 3% debe calcularse sobre base completa (500.000 / 0.5 = 1.000.000) -> $30.000
+  const osItem = ptResult.items.find((i) => i.conceptCode === 'SU6003');
+  assert(osItem && osItem.amount === 30000, `Retención Obra Social debe ser 3% sobre jornada completa ($30.000, obtenido ${osItem?.amount})`);
+
+  // SIPA patronal debe calcularse sobre 500.000 (con detracción), pero OS patronal (6%) debe calcularse sobre 1.000.000 ($60.000)
+  assert(ptResult.totals.osContrib === 60000, `Contribución patronal Obra Social debe ser 6% sobre jornada completa ($60.000, obtenido ${ptResult.totals.osContrib})`);
+
+  // Verificación de Bases Imponibles (LSD Registro 04):
+  assert(ptResult.basis.baseImponible4 === 500000, `Base Imponible 4 debe registrar la remuneración devengada real (500.000, obtenido ${ptResult.basis.baseImponible4})`);
+  assert(ptResult.basis.baseDifAporteOs === 500000, `Base Diferencial Aporte OS (pos 101-115) debe ser 500.000 (obtenido ${ptResult.basis.baseDifAporteOs})`);
+  assert(ptResult.basis.baseDifContribOs === 500000, `Base Diferencial Contribución OS (pos 116-130) debe ser 500.000 (obtenido ${ptResult.basis.baseDifContribOs})`);
+  assert(ptResult.basis.baseDifLrt === 0, `Base Diferencial LRT (pos 131-145) debe ser 0.00 (obtenido ${ptResult.basis.baseDifLrt})`);
+
+  // 17.2 Archivo Plano LSD Registro 03 y Registro 04
+  const ptSlipMock = {
+    id: 'slip-pt-1',
+    payrollPeriodId: period.id,
+    employeeId: partTimeEmployee.id,
+    grossSalary: ptResult.totals.grossSalary,
+    netSalary: ptResult.totals.netSalary,
+    totalDeductions: ptResult.totals.totalDeductions,
+    workedDays: 30,
+    workedHours: 80,
+    employee: partTimeEmployee,
+    items: ptResult.items,
+    basis: ptResult.basis,
+  };
+
+  const lsdPayroll = generateLsdPayrollFile({
+    paySlips: [ptSlipMock],
+    period,
+    company: { cuit: '30712345678' },
+  });
+
+  const lines = lsdPayroll.split('\r\n');
+  const reg03 = lines.filter((l) => l.startsWith('03'));
+  const reg04 = lines.find((l) => l.startsWith('04'));
+
+  // Reg 03 no debe contener conceptos ficticios de ajuste
+  assert(reg03.length === 4, `Registro 03 debe contener exactamente los 4 conceptos liquidados en el recibo (obtenido ${reg03.length})`);
+
+  // Reg 04 debe tener longitud exacta 370
+  assert(reg04 && reg04.length === 370, `Registro 04 debe medir exactamente 370 caracteres (obtenido ${reg04?.length})`);
+
+  // Posiciones 101-115 (Base Dif Aporte OS): índice 100 a 115 (15 caracteres)
+  // Formato: 000000050000000 (500.000,00)
+  const pos101_115 = reg04.substring(100, 115);
+  assert(pos101_115 === '000000050000000', `Posición 101-115 en Reg 04 debe ser '000000050000000' ($500.000, obtenido '${pos101_115}')`);
+
+  // Posiciones 116-130 (Base Dif Contrib OS): índice 115 a 130 (15 caracteres)
+  const pos116_130 = reg04.substring(115, 130);
+  assert(pos116_130 === '000000050000000', `Posición 116-130 en Reg 04 debe ser '000000050000000' ($500.000, obtenido '${pos116_130}')`);
+
+  // Posición 221-235 (BI 4 OS): índice 220 a 235 (15 caracteres)
+  const pos221_235 = reg04.substring(220, 235);
+  assert(pos221_235 === '000000050000000', `Posición 221-235 (BI 4) en Reg 04 debe ser '000000050000000' (obtenido '${pos221_235}')`);
+
+  // Validación de consistencia técnica LSD
+  const valResult = validateLsdConsistency({ paySlips: [ptSlipMock] });
+  assert(valResult.isValid, `Validación técnica LSD para Jornada Parcial debe ser VÁLIDA (errores: ${JSON.stringify(valResult.issues)})`);
+
+  // 17.3 Empleado de Jornada Completa (100%): Base diferencial debe ser 0.00
+  const fullTimeEmployee = {
+    id: 'emp-full-time-1',
+    fileNumber: 'FT-001',
+    cuil: '20334455668',
+    lastName: 'López',
+    firstName: 'Juan',
+    basicSalary: 1000000,
+    hireDate: new Date('2022-03-01'),
+    contractModalityCode: '001',
+    isPartTime: false,
+    partTimePercentage: 100.00,
+    jobPosition: { activityCode: '049', cctCode: '130/75' },
+  };
+
+  const ftResult = calculateEmployeePayroll({
+    employee: fullTimeEmployee,
+    period,
+    payrollSettings,
+    allConcepts: standardConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  assert(ftResult.basis.baseDifAporteOs === 0, 'Empleado a jornada completa debe tener baseDifAporteOs = 0');
+  assert(ftResult.basis.baseDifContribOs === 0, 'Empleado a jornada completa debe tener baseDifContribOs = 0');
+
+  // 17.4 Excepción explícita solicitada por el usuario: Pasante educativo (Modalidad 027)
+  // "La única excepción es el personal con pasantías: este personal se liquida como jornada completa"
+  const internEmployee = {
+    id: 'emp-intern-ex-1',
+    fileNumber: 'PAS-002',
+    cuil: '20443322119',
+    lastName: 'Estudiante',
+    firstName: 'Sofía',
+    basicSalary: 450000,
+    hireDate: new Date('2025-01-01'),
+    contractModalityCode: '027',
+    isPartTime: true,
+    partTimePercentage: 50.00,
+  };
+
+  const internResult = calculateEmployeePayroll({
+    employee: internEmployee,
+    period,
+    payrollSettings,
+    allConcepts: [
+      {
+        id: 'c-su1001',
+        code: 'SU1001',
+        name: 'Asignación Estímulo',
+        type: 'NON_REMUNERATIVE',
+        calculationType: 'FIXED',
+        defaultValue: 450000,
+        calculationOrder: 10,
+        isPersistent: true,
+        arcaConceptCode: '550000',
+      },
+    ],
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  assert(internResult.basis.baseDifAporteOs === 0, 'Pasante educativo NO debe tener base diferencial de aporte OS');
+  assert(internResult.basis.baseDifContribOs === 0, 'Pasante educativo NO debe tener base diferencial de contribución OS');
+
+  // 17.5 Exportación Mensual Unificada con Jornada Parcial
+  const monthlyLsd = generateMonthlyLsdPayrollFile({
+    paySlips: [ptSlipMock],
+    period,
+    company: { cuit: '30712345678' },
+  });
+  const mLines = monthlyLsd.split('\r\n');
+  const mReg04 = mLines.find((l) => l.startsWith('04'));
+  assert(mReg04 && mReg04.length === 370, 'Registro 04 en LSD mensual unificado debe tener 370 caracteres');
+  assert(mReg04.substring(100, 115) === '000000050000000', 'Registro 04 en LSD mensual debe contener Base Dif Aporte OS 500.000');
+
+  const valMonthly = validateMonthlyLsdConsistency({ paySlips: [ptSlipMock], company: { cuit: '30712345678' } });
+  assert(valMonthly.isValid, `Validación mensual LSD con jornada parcial debe ser VÁLIDA (errores: ${JSON.stringify(valMonthly.issues)})`);
+}
+
+// ----------------------------------------------------
+// 18. OBRA SOCIAL ARCA (810002 / 810009), ADHERENTES (LEY 23.660) Y DISCREPANCIAS LSD
+// ----------------------------------------------------
+console.log('\n--- 18. Obra Social ARCA (810002 / 810009), Adherentes Ley 23.660 y Control de Discrepancias LSD ---');
+
+{
+  // 18.1 Regla Ley 23.660: Parentesco primario vs adherente
+  assert(isPrimaryFamilyKinship({ code: 'CONYUGE' }) === true, 'Cónyuge debe ser identificado como grupo primario (cobertura automática)');
+  assert(isPrimaryFamilyKinship({ code: 'CONVIVIENTE' }) === true, 'Conviviente debe ser identificado como grupo primario');
+  assert(isPrimaryFamilyKinship({ code: 'HIJO_MENOR_21' }) === true, 'Hijo menor debe ser identificado como grupo primario');
+  assert(isPrimaryFamilyKinship({ code: 'HIJO_ESTUDIANTE' }) === true, 'Hijo estudiante debe ser identificado como grupo primario');
+  assert(isPrimaryFamilyKinship({ code: 'TUTELA' }) === true, 'Tutelado debe ser identificado como grupo primario');
+  assert(isPrimaryFamilyKinship({ code: 'PADRE_MADRE' }) === false, 'Padre/Madre NO es primario (habilitado para ser adherente)');
+  assert(isPrimaryFamilyKinship({ code: 'HERMANO' }) === false, 'Hermano NO es primario (habilitado para ser adherente)');
+  assert(isPrimaryFamilyKinship({ code: 'SUEGRO' }) === false, 'Suegro NO es primario (habilitado para ser adherente)');
+
+  // 18.2 Validación sintáctica de tokens de adherentes en fórmulas
+  const formulaAdherentes = '[BASE_OBRA_SOCIAL_COMPLETA] * 0.015 * [CANTIDAD_ADHERENTES]';
+  const valAdh = validateConceptFormula(formulaAdherentes);
+  assert(valAdh.isValid, `Fórmula con [CANTIDAD_ADHERENTES] debe ser válida (errores: ${valAdh.errors.join(', ')})`);
+
+  const formulaAliasAdh = '[BASE_OBRA_SOCIAL] * 0.015 * [ADHERENTES]';
+  const valAlias = validateConceptFormula(formulaAliasAdh);
+  assert(valAlias.isValid, `Fórmula con [ADHERENTES] debe ser válida (errores: ${valAlias.errors.join(', ')})`);
+
+  // 18.3 Evaluación del Evaluador con contexto de adherentes
+  const ctxAdh = {
+    BASE_OBRA_SOCIAL: 1000000,
+    BASE_OBRA_SOCIAL_COMPLETA: 1000000,
+    CANTIDAD_ADHERENTES: 2,
+    ADHERENTES: 2,
+  };
+  const evalRes = evaluateFormula(formulaAdherentes, ctxAdh);
+  // 1.000.000 * 0.015 * 2 = 30.000
+  assert(evalRes === 30000, `Evaluación de 2 adherentes sobre 1.000.000 al 1.5% debe dar 30.000 (obtenido ${evalRes})`);
+
+  // 18.4 Liquidación de Sueldo: Reconocimiento estricto por código ARCA (810002 y 810009)
+  // Conceptos con nombres y códigos internos personalizados (sin '6003', '8002' ni 'obra social')
+  const customConcepts = [
+    {
+      id: 'c-basic',
+      code: 'BASICO_CUSTOM',
+      name: 'Salario Base Pactado',
+      type: 'REMUNERATIVE',
+      calculationType: 'FIXED',
+      defaultValue: 1000000,
+      calculationOrder: 10,
+      arcaConceptCode: '110000',
+    },
+    {
+      id: 'c-os-titular',
+      code: 'RET_SALUD_TITULAR', // Código interno totalmente libre
+      name: 'Aporte Asistencial Ley Titular',
+      type: 'DEDUCTION',
+      calculationType: 'PERCENTAGE',
+      defaultValue: 3.00,
+      calculationOrder: 200,
+      arcaConceptCode: '810002', // ARCA 810002 Obra Social Titular
+    },
+    {
+      id: 'c-os-adherente',
+      code: 'RET_SALUD_ADHERENTES', // Código interno totalmente libre
+      name: 'Aporte Asistencial Familiar Adherente',
+      type: 'DEDUCTION',
+      calculationType: 'FORMULA',
+      defaultValue: 1.50,
+      formula: formulaAdherentes,
+      calculationOrder: 201,
+      arcaConceptCode: '810009', // ARCA 810009 Obra Social - Adherentes
+    },
+  ];
+
+  const employeeWithAdherents = {
+    id: 'emp-adh-1',
+    fileNumber: 'LEG-ADH-01',
+    cuil: '20334455667',
+    lastName: 'Gómez',
+    firstName: 'Martín',
+    hireDate: new Date('2022-01-01'),
+    basicSalary: 1000000,
+    partTimePercentage: 100,
+    isPartTime: false,
+    relatives: [
+      { id: 'rel-1', kinship: { code: 'CONYUGE', name: 'Cónyuge' }, isAdherent: false, deletedAt: null }, // Cobertura automática
+      { id: 'rel-2', kinship: { code: 'PADRE_MADRE', name: 'Madre' }, isAdherent: true, deletedAt: null }, // Adherente 1
+      { id: 'rel-3', kinship: { code: 'HERMANO', name: 'Hermano' }, isAdherent: true, deletedAt: null }, // Adherente 2
+    ],
+  };
+
+  const periodAdh = {
+    year: 2026,
+    month: 10,
+    periodType: 'MONTHLY',
+    settlementNumber: 1,
+    liquidationDate: '2026-10-31',
+    paymentDate: '2026-11-05',
+  };
+
+  const calcResult = calculateEmployeePayroll({
+    employee: employeeWithAdherents,
+    period: periodAdh,
+    payrollSettings: { ansesMinCap: 82287.12, ansesMaxCap: 2674292.72 },
+    allConcepts: customConcepts,
+    allMatrices: [],
+    allFixedValues: [],
+  });
+
+  const itemTitular = calcResult.items.find((i) => i.conceptCode === 'RET_SALUD_TITULAR');
+  const itemAdherente = calcResult.items.find((i) => i.conceptCode === 'RET_SALUD_ADHERENTES');
+
+  assert(itemTitular !== undefined, 'Concepto Titular RET_SALUD_TITULAR debe haber sido liquidado');
+  assert(itemTitular.amount === 30000, `Aporte Titular 3% de 1.000.000 debe ser 30.000 (obtenido ${itemTitular.amount})`);
+  assert(itemTitular.arcaConceptCode === '810002', 'Concepto titular debe tener código ARCA 810002');
+
+  assert(itemAdherente !== undefined, 'Concepto Adherente RET_SALUD_ADHERENTES debe haber sido liquidado');
+  assert(itemAdherente.amount === 30000, `Aporte 2 adherentes (1.5% c/u s/1.000.000) debe ser 30.000 (obtenido ${itemAdherente.amount})`);
+  assert(itemAdherente.arcaConceptCode === '810009', 'Concepto adherente debe tener código ARCA 810009');
+
+  assert(calcResult.basis.adherentsCount === 2, `basisData.adherentsCount debe ser 2 (obtenido ${calcResult.basis.adherentsCount})`);
+
+  // 18.5 Generación de Archivo LSD Registro 04: Posición 69-70 con Adherentes
+  const paySlipMock = {
+    id: 'slip-adh-1',
+    employeeId: employeeWithAdherents.id,
+    employee: employeeWithAdherents,
+    grossSalary: 1000000,
+    remunerativeSalary: 1000000,
+    nonRemunerative: 0,
+    totalDeductions: 60000,
+    netSalary: 940000,
+    paymentMethod: 'CBU',
+    workedDays: 30,
+    workedHours: 160,
+    items: calcResult.items,
+    basis: calcResult.basis,
+  };
+
+  const lsdFlat = generateLsdPayrollFile({
+    company: { cuit: '30712345678' },
+    period: periodAdh,
+    paySlips: [paySlipMock],
+  });
+
+  const lsdLines = lsdFlat.split('\r\n');
+  const reg04Line = lsdLines.find((l) => l.startsWith('04'));
+  assert(reg04Line !== undefined, 'Debe generarse Registro 04 en LSD');
+  assert(reg04Line.length === 370, `Registro 04 debe tener longitud exacta de 370 caracteres (obtenido ${reg04Line.length})`);
+
+  // Posición 69-70 (índice base 0: 68-70) debe ser '02'
+  const posAdherentes = reg04Line.substring(68, 70);
+  assert(posAdherentes === '02', `Posición 69-70 en Reg 04 debe indicar '02' adherentes (obtenido '${posAdherentes}')`);
+
+  // 18.6 Validación LSD de Consistencia: Caso Válido
+  const valResultOk = validateLsdConsistency({ paySlips: [paySlipMock] });
+  assert(valResultOk.isValid === true, `Validación LSD debe ser válida cuando aportes coinciden (errores: ${JSON.stringify(valResultOk.issues)})`);
+
+  // 18.7 Validación LSD de Consistencia: Discrepancia en Titular (810002)
+  const slipDiscrepanciaTitular = {
+    ...paySlipMock,
+    items: [
+      calcResult.items[0], // Básico 1.000.000
+      { ...itemTitular, amount: 25000 }, // Descontó 25.000 en vez de 30.000
+      itemAdherente,
+    ],
+  };
+  const valResultErrorTitular = validateLsdConsistency({ paySlips: [slipDiscrepanciaTitular] });
+  assert(valResultErrorTitular.isValid === false, 'Debe detectar discrepancia en Obra Social Titular');
+  const errTitular = valResultErrorTitular.issues.find((i) => i.type === 'ERROR_DISCREPANCIA_OBRA_SOCIAL_TITULAR');
+  assert(errTitular !== undefined, 'Debe emitir específicamente ERROR_DISCREPANCIA_OBRA_SOCIAL_TITULAR');
+
+  // 18.8 Validación LSD de Consistencia: Discrepancia en Adherentes (810009)
+  const slipDiscrepanciaAdh = {
+    ...paySlipMock,
+    items: [
+      calcResult.items[0], // Básico 1.000.000
+      itemTitular, // 30.000
+      { ...itemAdherente, amount: 15000 }, // Descontó 15.000 en vez de 30.000 (para 2 adherentes)
+    ],
+  };
+  const valResultErrorAdh = validateLsdConsistency({ paySlips: [slipDiscrepanciaAdh] });
+  assert(valResultErrorAdh.isValid === false, 'Debe detectar discrepancia en Obra Social Adherentes');
+  const errAdh = valResultErrorAdh.issues.find((i) => i.type === 'ERROR_DISCREPANCIA_OBRA_SOCIAL_ADHERENTES');
+  assert(errAdh !== undefined, 'Debe emitir específicamente ERROR_DISCREPANCIA_OBRA_SOCIAL_ADHERENTES');
+
+  // 18.9 Validación LSD de Consistencia: Retención Adherente con 0 adherentes registrados
+  const slipAdhSinRegistrar = {
+    ...paySlipMock,
+    basis: { ...calcResult.basis, adherentsCount: 0 },
+    items: [
+      calcResult.items[0],
+      itemTitular,
+      itemAdherente, // Descontó adherente pero adherentsCount = 0
+    ],
+  };
+  const valResultErrorZeroAdh = validateLsdConsistency({ paySlips: [slipAdhSinRegistrar] });
+  assert(valResultErrorZeroAdh.isValid === false, 'Debe detectar retención adherente sin adherentes registrados');
+  const errZero = valResultErrorZeroAdh.issues.find((i) => i.type === 'ERROR_ADHERENTES_SIN_REGISTRAR');
+  assert(errZero !== undefined, 'Debe emitir específicamente ERROR_ADHERENTES_SIN_REGISTRAR');
+}
+
+// ============================================================================
+// 19. EMBARGOS JUDICIALES, FÓRMULAS CON VALOR:SMVM Y SEPARADORES SIN ESPACIO
+// ============================================================================
+console.log('\n--- 19. Embargos Judiciales, Fórmulas con VALOR:SMVM y Separadores sin Espacio ---');
+
+// 19.1 splitArguments con ceros sin espacio ",0," no debe confundirse con coma decimal
+const testArgs1 = splitArguments('2054250 <= 383800,0,424375');
+assert(testArgs1.length === 3, `splitArguments debe separar exactamente 3 argumentos (obtenidos ${testArgs1.length})`);
+assert(testArgs1[0] === '2054250 <= 383800', `Primer argumento debe ser '2054250 <= 383800' (obtenido '${testArgs1[0]}')`);
+assert(testArgs1[1] === '0', `Segundo argumento debe ser '0' (obtenido '${testArgs1[1]}')`);
+assert(testArgs1[2] === '424375', `Tercer argumento debe ser '424375' (obtenido '${testArgs1[2]}')`);
+
+// 19.2 Evaluación de fórmula anidada de embargo comercial con [VALOR:SMVM] y ",0,"
+const formulaEmbargoComercial = "SI([TOTAL_REMUNERATIVO] <= [VALOR:SMVM],0,SI([TOTAL_REMUNERATIVO] <= ([VALOR:SMVM] * 2),(([TOTAL_REMUNERATIVO] - [VALOR:SMVM]) * 0.10),(([TOTAL_REMUNERATIVO] - [VALOR:SMVM]) * 0.10)+(([TOTAL_REMUNERATIVO] - ([VALOR:SMVM] * 2)) * 0.20)))";
+
+const ctxEmbargo = {
+  TOTAL_REMUNERATIVO: 2054250,
+  SMVM: 383800,
+};
+const fixedValuesMock = { SMVM: 383800 };
+
+const resEmbargo = evaluateFormula(
+  formulaEmbargoComercial,
+  ctxEmbargo,
+  {},
+  () => 0,
+  (k) => fixedValuesMock[k] || 0
+);
+assert(resEmbargo === 424375, `Fórmula de embargo comercial debe dar 424.375 (obtenido ${resEmbargo})`);
+
+// 19.3 Liquidación en nómina de concepto con alcance INDIVIDUAL asociado a embargo judicial activo
+const empEmbargoTest = {
+  id: 'emp-emb-1',
+  fileNumber: '569',
+  cuil: '27301112223',
+  lastName: 'ABALOS',
+  firstName: 'PAULA YAMILA',
+  hireDate: new Date('2020-01-01'),
+  basicSalary: 1556250,
+  partTimePercentage: 100,
+  isPartTime: false,
+  assignedConcepts: [
+    {
+      id: 'ac-1',
+      conceptId: 'c-emb-1',
+      concept: { id: 'c-emb-1', code: 'SU8001', name: 'Embargo Judicial Comercial', type: 'DEDUCTION' },
+    },
+  ],
+};
+
+const conceptsEmbargo = [
+  {
+    id: 'c-basico',
+    code: 'SU1000',
+    name: 'Sueldo Básico',
+    type: 'REMUNERATIVE',
+    calculationType: 'FIXED',
+    periodType: 'MONTHLY',
+    defaultValue: 1556250,
+    calculationOrder: 1,
+    arcaConceptCode: '110000',
+  },
+  {
+    id: 'c-emb-1',
+    code: 'SU8001',
+    name: 'Embargo Judicial Comercial',
+    type: 'DEDUCTION',
+    calculationType: 'FORMULA',
+    periodType: 'MONTHLY',
+    scope: 'INDIVIDUAL',
+    formula: formulaEmbargoComercial,
+    calculationOrder: 8001,
+    arcaConceptCode: '810012',
+  },
+];
+
+const activeEmbargoObj = {
+  id: 'emb-leg-1',
+  employeeId: empEmbargoTest.id,
+  caseTitle: 'Juicio Comercial',
+  hasCap: true,
+  totalAmount: 500000,
+  priorAccumulated: 0,
+  remainingBalance: 500000,
+  currentDeducted: 0,
+  conceptIds: new Set(['c-emb-1']),
+  conceptCodes: new Set(['SU8001']),
+};
+
+const calcWithEmbargo = calculateEmployeePayroll({
+  employee: empEmbargoTest,
+  period: { year: 2026, month: 10, periodType: 'MONTHLY' },
+  payrollSettings: {},
+  allConcepts: conceptsEmbargo,
+  allFixedValues: [{ code: 'SMVM', value: 383800 }],
+  activeEmbargoes: [activeEmbargoObj],
+});
+
+const itemEmbargoLiq = calcWithEmbargo.items.find((i) => i.conceptCode === 'SU8001');
+assert(itemEmbargoLiq !== undefined, 'El concepto SU8001 de embargo judicial DEBE liquidarse en el recibo');
+assert(itemEmbargoLiq && itemEmbargoLiq.amount === 274975, `El descuento de embargo debe ser 274.975 sobre sueldo básico de 1.556.250 (obtenido ${itemEmbargoLiq?.amount})`);
+
 
 console.log('\n====================================================');
 console.log(`RESULTADOS: ${passedTests} superadas, ${failedTests} fallidas`);

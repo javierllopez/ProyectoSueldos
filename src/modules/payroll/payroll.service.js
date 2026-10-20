@@ -14,17 +14,134 @@ import { validateConceptFormula } from './formulaValidator.js';
  * Servicio de Liquidación de Sueldos, Haberes y Libro de Sueldos Digital (ARCA)
  */
 
-// --- PERIODOS Y LIQUIDACIONES ---
+// --- PERÍODOS FISCALES (MENSUALES) ---
 
-export async function getPeriods(tenantPrisma, { search = '', page = 1, limit = 5, status, year }) {
+export async function getActiveFiscalPeriod(tenantPrisma) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  const take = Math.max(1, Math.min(Number(limit) || 5, 100));
+  return tenantPrisma.payrollFiscalPeriod.findFirst({
+    where: { status: 'OPEN' },
+    include: {
+      settlements: {
+        orderBy: { settlementNumber: 'asc' },
+        include: {
+          _count: { select: { paySlips: { where: { deletedAt: null } } } },
+        },
+      },
+    },
+  });
+}
+
+export async function listFiscalPeriods(tenantPrisma) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  return tenantPrisma.payrollFiscalPeriod.findMany({
+    orderBy: [{ year: 'desc' }, { month: 'desc' }],
+    include: {
+      settlements: {
+        orderBy: { settlementNumber: 'asc' },
+        include: {
+          _count: { select: { paySlips: { where: { deletedAt: null } } } },
+        },
+      },
+    },
+  });
+}
+
+export async function createFiscalPeriod(tenantPrisma, data) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const year = Number(data.year);
+  const month = Number(data.month);
+
+  // Regla Opción A: Solamente puede haber un período ABIERTO a la vez
+  const existingOpen = await tenantPrisma.payrollFiscalPeriod.findFirst({
+    where: { status: 'OPEN' },
+  });
+
+  if (existingOpen) {
+    const err = new Error(
+      `Ya existe un período abierto (${String(existingOpen.month).padStart(2, '0')}/${existingOpen.year}). Solamente puede haber un período abierto a la vez. Debe cerrar el período activo antes de iniciar uno nuevo.`
+    );
+    err.status = 400;
+    throw err;
+  }
+
+  // Verificar si ya existe este período
+  const existingPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
+    where: { year_month: { year, month } },
+  });
+
+  if (existingPeriod) {
+    const err = new Error(`El período ${String(month).padStart(2, '0')}/${year} ya se encuentra registrado.`);
+    err.status = 400;
+    throw err;
+  }
+
+  return tenantPrisma.payrollFiscalPeriod.create({
+    data: {
+      id: crypto.randomUUID(),
+      year,
+      month,
+      notes: data.notes ? String(data.notes).trim() : null,
+      status: 'OPEN',
+    },
+    include: {
+      settlements: true,
+    },
+  });
+}
+
+export async function closeFiscalPeriod(tenantPrisma, fiscalPeriodId) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const fiscalPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
+    where: { id: fiscalPeriodId },
+    include: { settlements: true },
+  });
+
+  if (!fiscalPeriod) {
+    const err = new Error('El período fiscal solicitado no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  if (fiscalPeriod.status === 'CLOSED') {
+    const err = new Error('El período fiscal ya se encuentra cerrado');
+    err.status = 400;
+    throw err;
+  }
+
+  // Cerrar en cascada todas las liquidaciones abiertas del período
+  await tenantPrisma.payrollPeriod.updateMany({
+    where: { fiscalPeriodId, status: { not: 'CLOSED' } },
+    data: { status: 'CLOSED', closedAt: new Date() },
+  });
+
+  return tenantPrisma.payrollFiscalPeriod.update({
+    where: { id: fiscalPeriodId },
+    data: {
+      status: 'CLOSED',
+      closedAt: new Date(),
+    },
+    include: {
+      settlements: true,
+    },
+  });
+}
+
+// --- LIQUIDACIONES INDIVIDUALES (payroll_periods) ---
+
+export async function getPeriods(tenantPrisma, { search = '', page = 1, limit = 10, status, year, fiscalPeriodId }) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const take = Math.max(1, Math.min(Number(limit) || 10, 100));
   const skip = (Math.max(1, Number(page) || 1) - 1) * take;
 
   const where = {};
   if (status) where.status = status;
   if (year) where.year = Number(year);
+  if (fiscalPeriodId) where.fiscalPeriodId = fiscalPeriodId;
   if (search) {
     where.OR = [
       { settlementName: { contains: search } },
@@ -40,6 +157,7 @@ export async function getPeriods(tenantPrisma, { search = '', page = 1, limit = 
       take,
       orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'desc' }],
       include: {
+        fiscalPeriod: true,
         _count: {
           select: { paySlips: true },
         },
@@ -67,6 +185,7 @@ export async function getPeriodById(tenantPrisma, periodId) {
   const period = await tenantPrisma.payrollPeriod.findUnique({
     where: { id: periodId },
     include: {
+      fiscalPeriod: true,
       _count: {
         select: { paySlips: true },
       },
@@ -88,13 +207,40 @@ export async function getPeriodById(tenantPrisma, periodId) {
 export async function createPeriod(tenantPrisma, data) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  const year = Number(data.year);
-  const month = Number(data.month);
+  let fiscalPeriodId = data.fiscalPeriodId;
+  let fiscalPeriod = null;
+
+  if (fiscalPeriodId) {
+    fiscalPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
+      where: { id: fiscalPeriodId },
+    });
+  } else {
+    // Si no se proveyó fiscalPeriodId, asociar al período abierto activo
+    fiscalPeriod = await tenantPrisma.payrollFiscalPeriod.findFirst({
+      where: { status: 'OPEN' },
+    });
+  }
+
+  if (!fiscalPeriod) {
+    const err = new Error('No existe ningún período fiscal abierto para dar de alta liquidaciones. Debe abrir un período primero.');
+    err.status = 400;
+    throw err;
+  }
+
+  if (fiscalPeriod.status === 'CLOSED') {
+    const err = new Error('No se pueden dar de alta liquidaciones en un período fiscal cerrado.');
+    err.status = 400;
+    throw err;
+  }
+
+  fiscalPeriodId = fiscalPeriod.id;
+  const year = fiscalPeriod.year;
+  const month = fiscalPeriod.month;
   const periodType = data.periodType || data.type || 'MONTHLY';
 
-  // Obtener el siguiente número correlativo de liquidación para el período
+  // Obtener el siguiente número correlativo de liquidación para el período fiscal
   const existingCount = await tenantPrisma.payrollPeriod.count({
-    where: { year, month, periodType },
+    where: { fiscalPeriodId },
   });
   const settlementNumber = existingCount + 1;
 
@@ -102,7 +248,16 @@ export async function createPeriod(tenantPrisma, data) {
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
-  const defaultName = data.settlementName || data.name || `${periodType === 'MONTHLY' ? 'Mensual' : periodType} - ${monthNames[month - 1]} ${year} (Liq. #${settlementNumber})`;
+  const typeNames = {
+    MONTHLY: 'Mensual',
+    QUINCE_1: '1ra Quincena',
+    QUINCE_2: '2da Quincena',
+    SAC_1: '1er SAC',
+    SAC_2: '2do SAC',
+    VACATIONS: 'Vacaciones',
+    FINAL: 'Final',
+  };
+  const defaultName = data.settlementName || data.name || `${typeNames[periodType] || periodType} - ${monthNames[month - 1]} ${year} (Liq. #${settlementNumber})`;
 
   let liquidationDate = data.liquidationDate ? new Date(data.liquidationDate) : null;
   if (!liquidationDate) {
@@ -115,12 +270,13 @@ export async function createPeriod(tenantPrisma, data) {
 
   return tenantPrisma.payrollPeriod.create({
     data: {
+      fiscalPeriodId,
       year,
       month,
       periodType,
       settlementNumber,
       settlementName: defaultName,
-      settlementType: data.settlementType || 'M',
+      settlementType: data.settlementType || (periodType.startsWith('QUINCE') ? 'Q' : 'M'),
       liquidationDate,
       paymentDate: data.paymentDate ? new Date(data.paymentDate) : null,
       paymentPlace: data.paymentPlace || 'Casa Central',
@@ -129,6 +285,9 @@ export async function createPeriod(tenantPrisma, data) {
       depositBank: data.depositBank || null,
       status: 'DRAFT',
     },
+    include: {
+      fiscalPeriod: true,
+    },
   });
 }
 
@@ -136,8 +295,8 @@ export async function updatePeriod(tenantPrisma, periodId, data) {
   await ensureTenantPayrollSchema(tenantPrisma);
   const period = await getPeriodById(tenantPrisma, periodId);
 
-  if (period.status === 'CLOSED') {
-    const err = new Error('No se puede modificar una liquidación que ha sido cerrada');
+  if (period.status === 'CLOSED' || period.fiscalPeriod?.status === 'CLOSED') {
+    const err = new Error('No se puede modificar una liquidación que pertenece a un período cerrado');
     err.status = 400;
     throw err;
   }
@@ -262,8 +421,9 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     include: { concept: true },
   });
 
-  // Mapa de novedades agrupadas por employeeId
+  // Mapa de novedades agrupadas por employeeId y mapa de días trabajados explícitos
   const novedadesByEmp = new Map();
+  const workedDaysByEmp = new Map();
 
   // 1. Poblar con novedades guardadas en BD
   for (const dn of dbNovelties) {
@@ -277,11 +437,17 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       amount: dn.amount !== null ? Number(dn.amount) : undefined,
       notes: dn.notes,
     });
+    if (dn.concept.code === 'DIAS_TRABAJADOS' && dn.units !== null) {
+      workedDaysByEmp.set(dn.employeeId, Number(dn.units));
+    }
   }
 
   // 2. Fusionar novedades adicionales enviadas en la petición si las hubiera
   for (const nov of novedades) {
     if (nov.employeeId) {
+      if (nov.workedDays !== undefined && nov.workedDays !== null) {
+        workedDaysByEmp.set(nov.employeeId, Number(nov.workedDays));
+      }
       if (!novedadesByEmp.has(nov.employeeId)) {
         novedadesByEmp.set(nov.employeeId, []);
       }
@@ -331,6 +497,100 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     historyByEmp.get(slip.employeeId).push(slip);
   }
 
+  // 3.5. Cargar embargos judiciales activos y calcular acumulados previos
+  const activeEmbargoesList = await tenantPrisma.employeeEmbargo.findMany({
+    where: {
+      employeeId: { in: empIds },
+      status: 'ACTIVE',
+    },
+    include: {
+      concepts: {
+        include: {
+          concept: {
+            select: { id: true, code: true, name: true, periodType: true },
+          },
+        },
+      },
+    },
+    orderBy: [
+      { priorityOrder: 'asc' },
+      { createdAt: 'asc' },
+    ],
+  });
+
+  const allEmbargoConceptIds = [...new Set(
+    activeEmbargoesList.flatMap((e) => (e.concepts || []).map((c) => c.conceptId))
+  )];
+
+  let priorEmbargoDeductions = [];
+  if (allEmbargoConceptIds.length > 0) {
+    priorEmbargoDeductions = await tenantPrisma.paySlipItem.findMany({
+      where: {
+        conceptId: { in: allEmbargoConceptIds },
+        paySlip: {
+          employeeId: { in: empIds },
+          payrollPeriodId: { not: periodId },
+          deletedAt: null,
+        },
+      },
+      select: {
+        conceptId: true,
+        amount: true,
+        paySlip: {
+          select: {
+            employeeId: true,
+          },
+        },
+      },
+    });
+  }
+
+  const priorDeductionsByEmpAndConcept = new Map();
+  for (const it of priorEmbargoDeductions) {
+    const eId = it.paySlip.employeeId;
+    if (!priorDeductionsByEmpAndConcept.has(eId)) {
+      priorDeductionsByEmpAndConcept.set(eId, new Map());
+    }
+    const cMap = priorDeductionsByEmpAndConcept.get(eId);
+    cMap.set(it.conceptId, (cMap.get(it.conceptId) || 0) + Number(it.amount || 0));
+  }
+
+  const embargoesByEmp = new Map();
+  for (const emb of activeEmbargoesList) {
+    if (!embargoesByEmp.has(emb.employeeId)) {
+      embargoesByEmp.set(emb.employeeId, []);
+    }
+    const empConceptMap = priorDeductionsByEmpAndConcept.get(emb.employeeId);
+    let priorAccumulated = 0;
+    const conceptIds = new Set();
+    const conceptCodes = new Set();
+    for (const c of emb.concepts || []) {
+      conceptIds.add(c.conceptId);
+      if (c.concept?.code) conceptCodes.add(c.concept.code);
+      if (empConceptMap && empConceptMap.has(c.conceptId)) {
+        priorAccumulated += empConceptMap.get(c.conceptId);
+      }
+    }
+    const totalAmount = emb.hasCap && emb.totalAmount !== null ? Number(emb.totalAmount) : null;
+    const remainingBalance = emb.hasCap && totalAmount !== null
+      ? Math.max(0, Number((totalAmount - priorAccumulated).toFixed(2)))
+      : null;
+
+    embargoesByEmp.get(emb.employeeId).push({
+      id: emb.id,
+      employeeId: emb.employeeId,
+      caseTitle: emb.caseTitle,
+      court: emb.court,
+      hasCap: emb.hasCap,
+      totalAmount,
+      priorAccumulated,
+      remainingBalance,
+      currentDeducted: 0,
+      conceptIds,
+      conceptCodes,
+    });
+  }
+
   // 4. Pre-indexar catálogos para cálculo O(1) y procesar nómina
   const payrollIndices = buildPayrollIndices({
     allConcepts,
@@ -348,6 +608,12 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
   for (const emp of employees) {
     const empNovedades = novedadesByEmp.get(emp.id) || [];
     const empHistory = historyByEmp.get(emp.id) || [];
+    const empEmbargoes = (embargoesByEmp.get(emp.id) || []).map((emb) => ({
+      ...emb,
+      conceptIds: new Set(emb.conceptIds),
+      conceptCodes: new Set(emb.conceptCodes),
+    }));
+
     const calculation = calculateEmployeePayroll({
       employee: emp,
       period,
@@ -361,6 +627,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       historicalData: {
         slips: empHistory,
       },
+      activeEmbargoes: empEmbargoes,
+      workedDaysOverride: workedDaysByEmp.has(emp.id) ? workedDaysByEmp.get(emp.id) : null,
     });
 
     const hasCalculatedItems = Array.isArray(calculation.items) && calculation.items.length > 0;
@@ -404,10 +672,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       .filter(Boolean);
 
     if (omittedSlipsToDelete.length > 0) {
-      await Promise.all([
-        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } }),
-        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } }),
-      ]);
+      await tx.paySlipItem.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } });
+      await tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: omittedSlipsToDelete } } });
       await tx.paySlip.deleteMany({ where: { id: { in: omittedSlipsToDelete } } });
     }
 
@@ -417,10 +683,8 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       .filter(Boolean);
 
     if (activeSlipIdsToClean.length > 0) {
-      await Promise.all([
-        tx.paySlipItem.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } }),
-        tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } }),
-      ]);
+      await tx.paySlipItem.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } });
+      await tx.paySlipBasis.deleteMany({ where: { paySlipId: { in: activeSlipIdsToClean } } });
     }
 
     // 5.4. Crear o actualizar recibos activos
@@ -545,6 +809,37 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
           ...calculation.basis,
         },
       });
+    }
+
+    // 5.5. Actualizar estado de embargos judiciales que hayan alcanzado su tope de deuda
+    for (const res of activeResults) {
+      const { calculation } = res;
+      if (Array.isArray(calculation.activeEmbargoes)) {
+        for (const emb of calculation.activeEmbargoes) {
+          if (emb.hasCap && emb.remainingBalance !== null && emb.remainingBalance <= 0.01) {
+            await tx.employeeEmbargo.update({
+              where: { id: emb.id },
+              data: {
+                status: 'COMPLETED',
+                endDate: period.paymentDate || new Date(),
+              },
+            });
+
+            const conceptIdList = Array.from(emb.conceptIds || []);
+            if (conceptIdList.length > 0) {
+              await tx.employeeConcept.updateMany({
+                where: {
+                  employeeId: emb.employeeId,
+                  conceptId: { in: conceptIdList },
+                },
+                data: {
+                  isActive: false,
+                },
+              });
+            }
+          }
+        }
+      }
     }
 
     // Actualizar totales generales de la liquidación con la suma de todos los recibos vigentes del período
@@ -756,6 +1051,34 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
     },
     costDistribution,
   };
+}
+
+export async function updatePaySlipWorkedDays(tenantPrisma, slipId, workedDays) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const slip = await tenantPrisma.paySlip.findUnique({
+    where: { id: slipId },
+    include: { payrollPeriod: true },
+  });
+
+  if (!slip) {
+    const err = new Error('Recibo de sueldo no encontrado');
+    err.status = 404;
+    throw err;
+  }
+
+  if (slip.payrollPeriod?.status === 'CLOSED') {
+    const err = new Error('No es posible modificar días trabajados de una liquidación cerrada legalmente');
+    err.status = 400;
+    throw err;
+  }
+
+  const days = Math.max(0, Math.min(30, Math.round(Number(workedDays) || 0)));
+
+  return tenantPrisma.paySlip.update({
+    where: { id: slipId },
+    data: { workedDays: days },
+  });
 }
 
 // --- PARÁMETROS Y ALÍCUOTAS PATRONALES ---
@@ -1005,6 +1328,7 @@ export async function createConcept(tenantPrisma, data) {
       appliesRegEspAporte: Boolean(data.appliesRegEspAporte),
       appliesDetraccion: Boolean(data.appliesDetraccion),
       isRepeatable: Boolean(data.isRepeatable),
+      isEmbargo: Boolean(data.isEmbargo),
     },
   });
 }
@@ -1099,6 +1423,7 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
       appliesRegEspAporte: data.appliesRegEspAporte !== undefined ? Boolean(data.appliesRegEspAporte) : concept.appliesRegEspAporte,
       appliesDetraccion: data.appliesDetraccion !== undefined ? Boolean(data.appliesDetraccion) : concept.appliesDetraccion,
       isRepeatable: data.isRepeatable !== undefined ? Boolean(data.isRepeatable) : concept.isRepeatable,
+      isEmbargo: data.isEmbargo !== undefined ? Boolean(data.isEmbargo) : concept.isEmbargo,
       isActive: data.isActive !== undefined ? Boolean(data.isActive) : concept.isActive,
     },
   });
@@ -1903,14 +2228,17 @@ export async function listPeriodNovelties(tenantPrisma, periodId, { employeeId, 
 export async function upsertPeriodNovelty(tenantPrisma, periodId, data) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  const period = await tenantPrisma.payrollPeriod.findUnique({ where: { id: periodId } });
+  const period = await tenantPrisma.payrollPeriod.findUnique({
+    where: { id: periodId },
+    include: { fiscalPeriod: true },
+  });
   if (!period) {
     const err = new Error('La liquidación / período solicitado no existe');
     err.status = 404;
     throw err;
   }
-  if (period.status === 'CLOSED') {
-    const err = new Error('No se pueden modificar novedades en una liquidación cerrada');
+  if (period.status === 'CLOSED' || period.fiscalPeriod?.status === 'CLOSED') {
+    const err = new Error('No se pueden modificar novedades en una liquidación o período cerrado');
     err.status = 400;
     throw err;
   }
@@ -1928,6 +2256,36 @@ export async function upsertPeriodNovelty(tenantPrisma, periodId, data) {
   }
   if (concept.isPersistent) {
     const err = new Error(`El concepto ${concept.code} (${concept.name}) es persistente. Debe gestionarse en Novedades Persistentes.`);
+    err.status = 400;
+    throw err;
+  }
+
+  // Validación estricta de compatibilidad de concepto vs liquidación
+  const pType = (period.periodType || 'MONTHLY').toUpperCase();
+  const cPeriodType = (concept.periodType || 'MONTHLY').toUpperCase();
+
+  if (pType === 'MONTHLY' && cPeriodType === 'VACATIONS') {
+    const err = new Error(`No se pueden cargar conceptos de tipo VACACIONES (${concept.code} - ${concept.name}) en una liquidación de tipo MENSUAL.`);
+    err.status = 400;
+    throw err;
+  }
+  if (pType === 'VACATIONS' && cPeriodType !== 'VACATIONS') {
+    const err = new Error(`En una liquidación de VACACIONES solo pueden cargarse conceptos del tipo VACACIONES. El concepto ${concept.code} es ${cPeriodType}.`);
+    err.status = 400;
+    throw err;
+  }
+  if (pType !== 'VACATIONS' && cPeriodType === 'VACATIONS') {
+    const err = new Error(`El concepto ${concept.code} (${concept.name}) es de tipo VACACIONES y solo puede cargarse en una liquidación de VACACIONES.`);
+    err.status = 400;
+    throw err;
+  }
+  if ((pType === 'SAC_1' || pType === 'SAC_2') && cPeriodType !== 'SAC' && cPeriodType !== 'SAC_1' && cPeriodType !== 'SAC_2' && cPeriodType !== 'MONTHLY') {
+    const err = new Error(`En una liquidación de SAC solo pueden cargarse conceptos correspondientes a SAC.`);
+    err.status = 400;
+    throw err;
+  }
+  if (pType === 'FINAL' && cPeriodType !== 'FINAL' && cPeriodType !== 'MONTHLY') {
+    const err = new Error(`El concepto ${concept.code} no corresponde a liquidaciones FINALES.`);
     err.status = 400;
     throw err;
   }
@@ -2091,5 +2449,162 @@ export async function calculateBatchEmployees(tenantPrisma, periodId, employeeId
   });
 }
 
+export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
+  await ensureTenantPayrollSchema(tenantPrisma);
 
+  const period = await tenantPrisma.payrollPeriod.findUnique({
+    where: { id: periodId },
+    include: {
+      fiscalPeriod: true,
+      _count: {
+        select: { paySlips: true },
+      },
+    },
+  });
 
+  if (!period) {
+    const err = new Error('La liquidación / período solicitado no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const company = await tenantPrisma.companyProfile.findFirst();
+
+  const [items, allConcepts] = await Promise.all([
+    tenantPrisma.paySlipItem.findMany({
+      where: {
+        paySlip: { payrollPeriodId: periodId },
+        type: { in: ['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'DISCOUNT'] },
+      },
+      include: {
+        paySlip: {
+          select: { employeeId: true },
+        },
+      },
+    }),
+    tenantPrisma.concept.findMany({
+      where: { deletedAt: null },
+      select: { code: true, calculationOrder: true, type: true },
+    }),
+  ]);
+
+  const conceptOrderMap = new Map(allConcepts.map((c) => [c.code, c.calculationOrder ?? 999]));
+
+  const conceptsMap = new Map();
+
+  for (const it of items) {
+    const code = it.conceptCode;
+    const rawType = (it.type || '').toUpperCase();
+    const normalizedType = rawType === 'DISCOUNT' ? 'DEDUCTION' : rawType;
+    const amountNum = Number(it.amount || 0);
+
+    if (!conceptsMap.has(code)) {
+      conceptsMap.set(code, {
+        code,
+        name: it.conceptName,
+        type: normalizedType,
+        calculationOrder: conceptOrderMap.get(code) ?? 999,
+        remunerativeAmount: 0,
+        nonRemunerativeAmount: 0,
+        deductionAmount: 0,
+        totalAmount: 0,
+        employeeIds: new Set(),
+        totalUnits: 0,
+        unitLabel: it.unitLabel || null,
+      });
+    }
+
+    const entry = conceptsMap.get(code);
+    if (it.paySlip?.employeeId) {
+      entry.employeeIds.add(it.paySlip.employeeId);
+    }
+    if (it.units !== null && it.units !== undefined) {
+      entry.totalUnits += Number(it.units || 0);
+    }
+
+    if (normalizedType === 'REMUNERATIVE') {
+      entry.remunerativeAmount += amountNum;
+    } else if (normalizedType === 'NON_REMUNERATIVE') {
+      entry.nonRemunerativeAmount += amountNum;
+    } else if (normalizedType === 'DEDUCTION') {
+      entry.deductionAmount += amountNum;
+    }
+    entry.totalAmount += amountNum;
+  }
+
+  const conceptsList = Array.from(conceptsMap.values()).map((c) => ({
+    code: c.code,
+    conceptCode: c.code,
+    name: c.name,
+    conceptName: c.name,
+    type: c.type,
+    calculationOrder: c.calculationOrder,
+    casesCount: c.employeeIds.size,
+    remunerativeAmount: Math.round(c.remunerativeAmount * 100) / 100,
+    remunerativeTotal: Math.round(c.remunerativeAmount * 100) / 100,
+    nonRemunerativeAmount: Math.round(c.nonRemunerativeAmount * 100) / 100,
+    nonRemunerativeTotal: Math.round(c.nonRemunerativeAmount * 100) / 100,
+    deductionAmount: Math.round(c.deductionAmount * 100) / 100,
+    deductionsTotal: Math.round(c.deductionAmount * 100) / 100,
+    totalAmount: Math.round(c.totalAmount * 100) / 100,
+    totalUnits: Math.round(c.totalUnits * 100) / 100,
+    unitLabel: c.unitLabel,
+  }));
+
+  const typeOrder = {
+    REMUNERATIVE: 1,
+    NON_REMUNERATIVE: 2,
+    DEDUCTION: 3,
+  };
+
+  conceptsList.sort((a, b) => {
+    const orderA = typeOrder[a.type] || 99;
+    const orderB = typeOrder[b.type] || 99;
+    if (orderA !== orderB) return orderA - orderB;
+    if (a.calculationOrder !== b.calculationOrder) return a.calculationOrder - b.calculationOrder;
+    return String(a.code).localeCompare(String(b.code), undefined, { numeric: true });
+  });
+
+  let totalRemunerative = 0;
+  let totalNonRemunerative = 0;
+  let totalDeductions = 0;
+
+  for (const c of conceptsList) {
+    totalRemunerative += c.remunerativeAmount;
+    totalNonRemunerative += c.nonRemunerativeAmount;
+    totalDeductions += c.deductionAmount;
+  }
+
+  totalRemunerative = Math.round(totalRemunerative * 100) / 100;
+  totalNonRemunerative = Math.round(totalNonRemunerative * 100) / 100;
+  totalDeductions = Math.round(totalDeductions * 100) / 100;
+  const totalGross = Math.round((totalRemunerative + totalNonRemunerative) * 100) / 100;
+  const totalNet = Math.round((totalGross - totalDeductions) * 100) / 100;
+
+  return {
+    period: {
+      id: period.id,
+      settlementName: period.settlementName,
+      settlementNumber: period.settlementNumber,
+      periodType: period.periodType,
+      month: period.month,
+      year: period.year,
+      status: period.status,
+      liquidationDate: period.liquidationDate,
+      paymentDate: period.paymentDate,
+      fiscalPeriod: period.fiscalPeriod,
+      totalSlips: period._count.paySlips,
+    },
+    company: company || null,
+    concepts: conceptsList,
+    totals: {
+      totalRemunerative,
+      totalNonRemunerative,
+      totalGross,
+      totalDeductions,
+      totalNet,
+      totalSlips: period._count.paySlips,
+      conceptsCount: conceptsList.length,
+    },
+  };
+}

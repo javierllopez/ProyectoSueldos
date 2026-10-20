@@ -1243,8 +1243,8 @@ async function runTests() {
     }
     console.log(`     -> ${conceptLines.length} conceptos verificados con longitud exacta de 195 caracteres.`);
 
-    // 20.10 Exportar Archivo 2 ARCA: Liquidación F.931 (999 caracteres por línea)
-    console.log(`  -> 20.10: GET /api/v1/payroll/periods/${periodId}/lsd/payroll (Archivo 2 ARCA - 999 caracteres)`);
+    // 20.10 Exportar Archivo 2 ARCA: Liquidación F.931 (longitudes oficiales ARCA: 01:35, 02:115, 03:51, 04:370)
+    console.log(`  -> 20.10: GET /api/v1/payroll/periods/${periodId}/lsd/payroll (Archivo 2 ARCA)`);
     const lsdPayrollRes = await fetch(`${baseUrl}/payroll/periods/${periodId}/lsd/payroll`, {
       headers: {
         Authorization: `Bearer ${adminToken}`,
@@ -1256,11 +1256,13 @@ async function runTests() {
     if (lsdPayrollRes.status !== 200) throw new Error('Falló exportación de liquidación ARCA');
     const payrollLines = lsdPayrollText.split('\r\n').filter((l) => l.trim().length > 0);
     for (let i = 0; i < payrollLines.length; i++) {
-      if (payrollLines[i].length !== 999) {
-        throw new Error(`Línea ${i + 1} del libro de sueldos tiene ${payrollLines[i].length} caracteres (deben ser exactamente 999)`);
+      const type = payrollLines[i].substring(0, 2);
+      const expected = type === '01' ? 35 : (type === '02' ? 115 : (type === '03' ? 51 : 370));
+      if (payrollLines[i].length !== expected) {
+        throw new Error(`Línea ${i + 1} tipo ${type} del libro de sueldos tiene ${payrollLines[i].length} caracteres (deben ser exactamente ${expected})`);
       }
     }
-    console.log(`     -> ${payrollLines.length} registros (01, 02, 03, 04) verificados con longitud exacta de 999 caracteres.`);
+    console.log(`     -> ${payrollLines.length} registros (01:35, 02:115, 03:51, 04:370) verificados con longitudes oficiales de ARCA.`);
 
     // 21. Test: Módulo de Matrices de Liquidación (Lookup Matrices y Valores Fijos)
     console.log('\n21️⃣ Test: Módulo de Matrices de Liquidación (Lookup Matrices, Asignación de Conceptos y Resolución de Valores Fijos)');
@@ -2263,7 +2265,306 @@ async function runTests() {
       throw new Error('Falló eliminación de nómina sin colaboradores asignados');
     }
 
-    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 24) PASARON EXITOSAMENTE!');
+    // =========================================================================
+    // 25. SINDICATOS Y MUTUALES CON CONCEPTO DE DESCUENTO (NOVEDAD PERSISTENTE Y PROPAGACIÓN)
+    // =========================================================================
+    console.log('\n--- 25. SINDICATOS Y MUTUALES CON CONCEPTO DE DESCUENTO (NOVEDAD PERSISTENTE Y PROPAGACIÓN) ---');
+
+    // 25.1 Crear Conceptos de Deducción (Cuota Sindical y Cuota Mutual)
+    console.log('  -> 25.1: POST /api/v1/payroll/concepts (Crear conceptos DEDUCTION para Sindicato y Mutual)');
+    const createUnionDedRes = await fetch(`${baseUrl}/payroll/concepts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        code: 'SU7001',
+        name: 'Cuota Sindical Gremial 2%',
+        type: 'DEDUCTION',
+        periodType: 'MONTHLY',
+        calculationType: 'PERCENTAGE',
+        defaultValue: 2,
+        arcaConceptCode: '310000',
+      }),
+    });
+    const unionDedJson = await createUnionDedRes.json();
+    if (createUnionDedRes.status !== 201) throw new Error('Falló creación de concepto de deducción sindical: ' + JSON.stringify(unionDedJson));
+    const unionConceptId = unionDedJson.data.id;
+
+    const createMutualDedRes = await fetch(`${baseUrl}/payroll/concepts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        code: 'SU7002',
+        name: 'Aporte Mutual Personal',
+        type: 'DEDUCTION',
+        periodType: 'MONTHLY',
+        calculationType: 'FIXED',
+        defaultValue: 5000,
+        arcaConceptCode: '320000',
+      }),
+    });
+    const mutualDedJson = await createMutualDedRes.json();
+    if (createMutualDedRes.status !== 201) throw new Error('Falló creación de concepto de deducción mutual: ' + JSON.stringify(mutualDedJson));
+    const mutualConceptId = mutualDedJson.data.id;
+
+    // 25.2 Crear Sindicato y Mutual con conceptId
+    console.log('  -> 25.2: POST /api/v1/unions y POST /api/v1/mutuals (Crear con conceptId vinculado)');
+    const createUnionRes = await fetch(`${baseUrl}/unions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        name: 'Sindicato Empleados de Comercio Test',
+        code: 'SEC-TEST',
+        conceptId: unionConceptId,
+      }),
+    });
+    const unionCreatedJson = await createUnionRes.json();
+    if (createUnionRes.status !== 201) throw new Error('Falló creación de sindicato con concepto: ' + JSON.stringify(unionCreatedJson));
+    const testUnionId = unionCreatedJson.data.id;
+    if (unionCreatedJson.data.conceptId !== unionConceptId) {
+      throw new Error(`Sindicato creado no tiene conceptId esperado: ${unionCreatedJson.data.conceptId}`);
+    }
+
+    const createMutualRes = await fetch(`${baseUrl}/mutuals`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        name: 'Mutual San Cayetano Test',
+        code: 'MUT-TEST',
+        conceptId: mutualConceptId,
+      }),
+    });
+    const mutualCreatedJson = await createMutualRes.json();
+    if (createMutualRes.status !== 201) throw new Error('Falló creación de mutual con concepto: ' + JSON.stringify(mutualCreatedJson));
+    const testMutualId = mutualCreatedJson.data.id;
+    if (mutualCreatedJson.data.conceptId !== mutualConceptId) {
+      throw new Error(`Mutual creada no tiene conceptId esperado: ${mutualCreatedJson.data.conceptId}`);
+    }
+
+    // 25.3 Asignar Sindicato y Mutual a un Colaborador y verificar novedad persistente automática
+    console.log(`  -> 25.3: PUT /api/v1/employees/${emp23Id} (Asignar sindicato y mutual)`);
+    const updateEmpAffRes = await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        unionId: testUnionId,
+        mutualId: testMutualId,
+      }),
+    });
+    if (updateEmpAffRes.status !== 200) throw new Error('Falló actualización de afiliaciones de empleado');
+
+    // Verificar novedades persistentes en /employees/:id/concepts
+    console.log(`  -> 25.4: GET /api/v1/employees/${emp23Id}/concepts (Verificar auto-asignación de novedades)`);
+    const empConceptsRes = await fetch(`${baseUrl}/employees/${emp23Id}/concepts`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const empConceptsJson = await empConceptsRes.json();
+    const assignedConcepts = empConceptsJson.data || [];
+    const hasUnionConcept = assignedConcepts.some((c) => c.conceptId === unionConceptId && c.isActive);
+    const hasMutualConcept = assignedConcepts.some((c) => c.conceptId === mutualConceptId && c.isActive);
+    console.log('     Novedad Sindical presente y activa:', hasUnionConcept);
+    console.log('     Novedad Mutual presente y activa:', hasMutualConcept);
+    if (!hasUnionConcept || !hasMutualConcept) {
+      throw new Error('No se crearon automáticamente las novedades persistentes para sindicato y/o mutual');
+    }
+
+    // 25.5 Desafiliación (Opción B: eliminación física al no haber sido liquidado en un período cerrado)
+    console.log(`  -> 25.5: PUT /api/v1/employees/${emp23Id} (Desafiliar sindicato -> Opción B eliminación física)`);
+    await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        unionId: null,
+      }),
+    });
+    const empConceptsAfterUnassignRes = await fetch(`${baseUrl}/employees/${emp23Id}/concepts`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const empConceptsAfterUnassignJson = await empConceptsAfterUnassignRes.json();
+    const unionConceptStillPresent = (empConceptsAfterUnassignJson.data || []).some((c) => c.conceptId === unionConceptId);
+    console.log('     Concepto sindical tras desafiliación (debe no existir en Opción B):', unionConceptStillPresent);
+    if (unionConceptStillPresent) {
+      throw new Error('El concepto de sindicato debería haberse eliminado físicamente según la Opción B');
+    }
+
+    // 25.6 Propagación Masiva Retroactiva (applyToEmployees: true)
+    console.log('  -> 25.6: Reafiliar empleado a sindicato sin concepto, luego actualizar sindicato con applyToEmployees: true');
+    // Desvincular concepto del sindicato
+    await fetch(`${baseUrl}/unions/${testUnionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        conceptId: null,
+      }),
+    });
+    // Afiliar empleado al sindicato (que no tiene concepto)
+    await fetch(`${baseUrl}/employees/${emp23Id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        unionId: testUnionId,
+      }),
+    });
+    // Actualizar sindicato vinculando el concepto y activando propagación masiva
+    const patchUnionPropagateRes = await fetch(`${baseUrl}/unions/${testUnionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        conceptId: unionConceptId,
+        applyToEmployees: true,
+      }),
+    });
+    const patchUnionJson = await patchUnionPropagateRes.json();
+    console.log('     Status PATCH sindicato con applyToEmployees:', patchUnionPropagateRes.status, patchUnionJson.message);
+    if (patchUnionPropagateRes.status !== 200) throw new Error('Falló actualización de sindicato con propagación masiva');
+
+    // Verificar que el empleado ahora tiene la novedad persistente asignada por propagación
+    const empConceptsPropagatedRes = await fetch(`${baseUrl}/employees/${emp23Id}/concepts`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const empConceptsPropagatedJson = await empConceptsPropagatedRes.json();
+    const hasUnionConceptPropagated = (empConceptsPropagatedJson.data || []).some((c) => c.conceptId === unionConceptId && c.isActive);
+    console.log('     Novedad sindical propagada retroactivamente:', hasUnionConceptPropagated);
+    if (!hasUnionConceptPropagated) {
+      throw new Error('La propagación masiva retroactiva no asignó el concepto a los empleados afiliados');
+    }
+
+    // 25.7 Crear segundo concepto de sindicato (ej. Cuota Sindical SAC con periodType: SAC)
+    console.log('  -> 25.7: Crear segundo concepto sindical para SAC');
+    const createUnionSacConceptRes = await fetch(`${baseUrl}/payroll/concepts`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        code: 'SU7003',
+        name: 'Cuota Sindical SAC 2%',
+        type: 'DEDUCTION',
+        calculationType: 'PERCENTAGE',
+        periodType: 'SAC',
+        scope: 'GENERAL',
+        defaultValue: 2.0,
+        arcaConceptCode: '0401',
+      }),
+    });
+    const unionSacConceptJson = await createUnionSacConceptRes.json();
+    if (createUnionSacConceptRes.status !== 201) throw new Error('Falló creación de concepto sindical SAC: ' + JSON.stringify(unionSacConceptJson));
+    const unionSacConceptId = unionSacConceptJson.data.id;
+
+    // 25.8 Actualizar sindicato con array conceptIds: [unionConceptId, unionSacConceptId] y applyToEmployees: true
+    console.log('  -> 25.8: PATCH /api/v1/unions/:id con múltiples conceptos (Mensual + SAC)');
+    const patchMultiUnionRes = await fetch(`${baseUrl}/unions/${testUnionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        conceptIds: [unionConceptId, unionSacConceptId],
+        applyToEmployees: true,
+      }),
+    });
+    const patchMultiUnionJson = await patchMultiUnionRes.json();
+    console.log('     Status PATCH múltiple conceptos:', patchMultiUnionRes.status, 'Conceptos vinculados:', patchMultiUnionJson.data?.conceptIds);
+    if (patchMultiUnionRes.status !== 200 || patchMultiUnionJson.data?.conceptIds?.length !== 2) {
+      throw new Error('Falló vinculación múltiple de conceptos en sindicato');
+    }
+
+    // 25.9 Verificar que el empleado tiene AMBOS conceptos sindicales activos
+    console.log('  -> 25.9: GET /api/v1/employees/:id/concepts (Verificar auto-asignación múltiple)');
+    const empMultiConceptsRes = await fetch(`${baseUrl}/employees/${emp23Id}/concepts`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const empMultiConceptsJson = await empMultiConceptsRes.json();
+    const empAssigned = empMultiConceptsJson.data || [];
+    const hasConcept1 = empAssigned.some((c) => c.conceptId === unionConceptId && c.isActive);
+    const hasConceptSac = empAssigned.some((c) => c.conceptId === unionSacConceptId && c.isActive);
+    console.log('     Concepto Mensual activo:', hasConcept1, '| Concepto SAC activo:', hasConceptSac);
+    if (!hasConcept1 || !hasConceptSac) {
+      throw new Error('El empleado no recibió ambos conceptos sindicales simultáneamente');
+    }
+
+    // 25.10 Desasociar uno de los conceptos del sindicato con applyToEmployees: true y verificar Opción B
+    console.log('  -> 25.10: PATCH sindicato quitando el concepto mensual, dejando sólo SAC');
+    await fetch(`${baseUrl}/unions/${testUnionId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        conceptIds: [unionSacConceptId],
+        applyToEmployees: true,
+      }),
+    });
+
+    const empAfterRemoveOneRes = await fetch(`${baseUrl}/employees/${emp23Id}/concepts`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const empAfterRemoveOneJson = await empAfterRemoveOneRes.json();
+    const empAfterAssigned = empAfterRemoveOneJson.data || [];
+    const hasRemovedStill = empAfterAssigned.some((c) => c.conceptId === unionConceptId);
+    const hasSacStill = empAfterAssigned.some((c) => c.conceptId === unionSacConceptId && c.isActive);
+    console.log('     Concepto Mensual removido físicamente (Opción B):', !hasRemovedStill, '| Concepto SAC permanece activo:', hasSacStill);
+    if (hasRemovedStill || !hasSacStill) {
+      throw new Error('Falla en desasignación selectiva según Opción B');
+    }
+
+    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 25) PASARON EXITOSAMENTE!');
   } finally {
     // 🧹 Limpieza automática de recursos temporales creados exclusivamente por el test
     if (testDbName && testDbName.startsWith('sueldos_emp_30708381256_')) {

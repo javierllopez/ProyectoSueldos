@@ -25,7 +25,11 @@ Propósito: Guía de especificaciones de diseño de registro, estructuras de arc
 
 1.3. Arquitectura de Archivos a Generar:
      - Archivo 1: Parametrización de Conceptos (Longitud fija: 195 caracteres por línea).
-     - Archivo 2: Importación de Liquidaciones de Haberes (Longitud fija: 999 caracteres por línea).
+     - Archivo 2: Importación de Liquidaciones de Haberes (Longitudes fijas según Tipo de Registro):
+         * Registro 01: 35 caracteres (Datos referenciales / Cabecera de liquidación).
+         * Registro 02: 115 caracteres (Datos generales de la liquidación del trabajador).
+         * Registro 03: 51 caracteres (Detalle de conceptos liquidados).
+         * Registro 04: 370 caracteres (Atributos laborales y Bases Imponibles F.931).
 
 ================================================================================
 2. ESTRUCTURA Y DISEÑO DE REGISTRO: PARAMETRIZACIÓN DE CONCEPTOS (195 CHARS)
@@ -66,12 +70,16 @@ Reglas de Negocio para Parametrización:
 - Remunerativos (Rango 110000 a 499999): Los subsistemas generales deben configurarse en "1", salvo Regímenes Diferenciales/Especiales que dependen del tipo de tarea.
 
 ================================================================================
-3. ESTRUCTURA Y DISEÑO DE REGISTRO: LIQUIDACIÓN DE HABERES (999 CHARS)
+3. ESTRUCTURA Y DISEÑO DE REGISTRO: LIQUIDACIÓN DE HABERES
 ================================================================================
-Archivo plano que agrupa los datos de la nómina y la liquidación mensual. Toda línea debe medir exactamente 999 caracteres.
+Archivo plano que agrupa los datos de la nómina y la liquidación mensual. Cada tipo de registro posee una longitud fija oficial estipulada por ARCA:
+- Registro 01: 35 caracteres.
+- Registro 02: 115 caracteres.
+- Registro 03: 51 caracteres.
+- Registro 04: 370 caracteres.
 
 --------------------------------------------------------------------------------
-3.1. REGISTRO TIPO 01: DATOS REFERENCIALES DE LA LIQUIDACIÓN (CABECERA DE ENVÍO)
+3.1. REGISTRO TIPO 01: DATOS REFERENCIALES DE LA LIQUIDACIÓN (CABECERA DE ENVÍO - 35 CHARS)
 --------------------------------------------------------------------------------
 POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
 --------------------------------------------------------------------------------
@@ -83,11 +91,10 @@ POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR 
 23        | 27        | 5    | Num  | Número de Liquidación             | Secuencial ascendente dentro del período (Ej. 00001).
 28        | 29        | 2    | Alfa | Días Base                         | Fijo "30".
 30        | 35        | 6    | Num  | Cantidad de Registros 04          | Cantidad exacta de registros 04 contenidos en el TXT.
-36        | 999       | 964  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-3.2. REGISTRO TIPO 02: DATOS REFERENCIALES DEL TRABAJADOR
+3.2. REGISTRO TIPO 02: DATOS REFERENCIALES DEL TRABAJADOR (115 CHARS)
 --------------------------------------------------------------------------------
 POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
 --------------------------------------------------------------------------------
@@ -100,11 +107,10 @@ POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR 
 99        | 106       | 8    | Num  | Fecha de Pago                     | Formato AAAAMMDD.
 107       | 114       | 8    | Num  | Fecha de Rúbrica                  | Formato AAAAMMDD (o ceros si no aplica).
 115       | 115       | 1    | Alfa | Forma de Pago                     | "1"=Efectivo, "2"=Cheque, "3"=CBU, "4"=Otros.
-116       | 999       | 884  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-3.3. REGISTRO TIPO 03: DETALLE DE CONCEPTOS LIQUIDADOS
+3.3. REGISTRO TIPO 03: DETALLE DE CONCEPTOS LIQUIDADOS (51 CHARS)
 --------------------------------------------------------------------------------
 POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
 --------------------------------------------------------------------------------
@@ -116,11 +122,10 @@ POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR 
 30        | 44        | 15   | Num  | Importe                           | 13 enteros + 2 decimales implícitos.
 45        | 45        | 1    | Alfa | Indicador Débito / Crédito        | "C" = Crédito (Suma) / "D" = Débito (Resta).
 46        | 51        | 6    | Num  | Período Ajuste Retroactivo        | AAAAMM si es retroactivo, caso contrario 000000.
-52        | 999       | 948  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
 --------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
-3.4. REGISTRO TIPO 04: ATRIBUTOS LABORALES Y BASES IMPONIBLES (F.931)
+3.4. REGISTRO TIPO 04: ATRIBUTOS LABORALES Y BASES IMPONIBLES (F.931 - 370 CHARS)
 --------------------------------------------------------------------------------
 POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR / REGLAS
 --------------------------------------------------------------------------------
@@ -171,7 +176,6 @@ POS DESDE | POS HASTA | LONG | TIPO | CAMPO                             | VALOR 
 326       | 340       | 15   | Num  | Base Diferencial Contrib. Seg. Soc| Base para diferencial contrib. jubilación.
 341       | 355       | 15   | Num  | Base Imponible 10                  | SIPA Contrib. Sujeta a Detracción (BI 2 - Detracción).
 356       | 370       | 15   | Num  | Importe a Detraer (Ley 27.541)    | Monto computable a detraer en la liquidación.
-371       | 999       | 629  | Alfa | Relleno                           | Espacios en blanco hasta completar 999 chars.
 --------------------------------------------------------------------------------
 
 ================================================================================

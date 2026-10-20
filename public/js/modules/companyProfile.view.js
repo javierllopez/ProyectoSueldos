@@ -45,7 +45,7 @@ class CompanyProfileMethods {
             cuitInput.classList.add('is-valid');
             if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-check text-success"></i>';
             if (cuitFeedback) {
-              cuitFeedback.className = 'valid-feedback d-block';
+              cuitFeedback.className = 'adm-form-hint text-success d-block';
               cuitFeedback.textContent = '✓ CUIT válido según algoritmo de AFIP/ARCA';
             }
           } else {
@@ -53,7 +53,7 @@ class CompanyProfileMethods {
             cuitInput.classList.add('is-invalid');
             if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-x text-danger"></i>';
             if (cuitFeedback) {
-              cuitFeedback.className = 'invalid-feedback d-block';
+              cuitFeedback.className = 'adm-form-hint text-danger d-block';
               cuitFeedback.textContent = '✗ Dígito verificador incorrecto';
             }
           }
@@ -61,7 +61,7 @@ class CompanyProfileMethods {
           cuitInput.classList.remove('is-valid', 'is-invalid');
           if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-id"></i>';
           if (cuitFeedback) {
-            cuitFeedback.className = 'form-hint';
+            cuitFeedback.className = 'adm-form-hint';
             cuitFeedback.textContent = '11 dígitos numéricos sin guiones.';
           }
         }
@@ -132,7 +132,7 @@ class CompanyProfileMethods {
 
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
-        const activeTab = document.querySelector('#company-profile-tabs .nav-link.active');
+        const activeTab = document.querySelector('#company-profile-tabs .active');
         const activeId = activeTab ? activeTab.id : tabsList[0];
         const currentIdx = tabsList.indexOf(activeId);
         if (currentIdx > 0) {
@@ -143,7 +143,7 @@ class CompanyProfileMethods {
 
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
-        const activeTab = document.querySelector('#company-profile-tabs .nav-link.active');
+        const activeTab = document.querySelector('#company-profile-tabs .active');
         const activeId = activeTab ? activeTab.id : tabsList[0];
         const currentIdx = tabsList.indexOf(activeId);
         if (currentIdx < tabsList.length - 1) {
@@ -243,7 +243,7 @@ class CompanyProfileMethods {
           showToast(err.message || 'Error al crear empresa', 'danger');
         } finally {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="ti ti-device-floppy me-2"></i> Crear y Guardar Empresa';
+          submitBtn.innerHTML = '<i class="ti ti-device-floppy"></i> Crear y Guardar Empresa';
         }
       } else {
         // Modo Edición
@@ -277,7 +277,7 @@ class CompanyProfileMethods {
           showToast(err.message || 'Error al guardar', 'danger');
         } finally {
           submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="ti ti-device-floppy me-2"></i> Guardar Cambios de la Empresa';
+          submitBtn.innerHTML = '<i class="ti ti-device-floppy"></i> Guardar Cambios de la Empresa';
         }
       }
     });

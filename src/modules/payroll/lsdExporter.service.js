@@ -1,6 +1,12 @@
 /**
  * Generador y Validador de Archivos Planos para el Libro de Sueldos Digital (LSD) - ARCA
- * Conforme a especificaciones de diseño de registro y longitudes fijas de 195 y 999 caracteres.
+ * Conforme a especificaciones de diseño de registro y longitudes fijas oficiales de ARCA:
+ * - Archivo 1: Parametrización de Conceptos (195 caracteres por línea)
+ * - Archivo 2: Liquidación de Haberes:
+ *     * Registro 01: 35 caracteres (Cabecera de liquidación / envío)
+ *     * Registro 02: 115 caracteres (Datos generales del trabajador)
+ *     * Registro 03: 51 caracteres (Detalle de conceptos liquidados)
+ *     * Registro 04: 370 caracteres (Atributos laborales y Bases Imponibles F.931)
  */
 
 // Utilidades de formateo de campos fijos
@@ -114,7 +120,7 @@ export function generateLsdConceptsFile(concepts) {
 }
 
 /**
- * Genera el Archivo 2: Importación de Liquidaciones de Haberes (999 caracteres fijos por línea).
+ * Genera el Archivo 2: Importación de Liquidaciones de Haberes (longitudes fijas ARCA: 01=35, 02=115, 03=51, 04=370).
  */
 export function generateLsdPayrollFile({ company, period, paySlips }) {
   const lines = [];
@@ -136,8 +142,7 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
     '30' + // 28-29 Días Base fijo 30
     formatNumeric(count04, 6); // 30-35 Cantidad de Registros 04
 
-  reg01 = reg01.padEnd(999, ' ');
-  if (reg01.length !== 999) throw new Error(`Registro 01 longitud inválida: ${reg01.length} (esperado 999)`);
+  if (reg01.length !== 35) throw new Error(`Registro 01 longitud inválida: ${reg01.length} (esperado 35)`);
   lines.push(reg01);
 
   // --- BLOQUE POR CADA EMPLEADO ---
@@ -152,19 +157,21 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
     const paymentDateStr = formatDate(slip.paymentDate || period.paymentDate);
     const rubricDateStr = formatDate(period.rubricDate);
 
+    const isVacationPeriod = period?.periodType === 'VACATIONS' || period?.periodType === 'VACACIONES';
+    const reg02Days = isVacationPeriod ? 0 : (slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30);
+
     let reg02 =
       '02' + // 1-2
       formatNumeric(cuilClean, 11) + // 3-13
       formatAlpha(emp.fileNumber, 10) + // 14-23
       formatAlpha(emp.department?.name || 'ADMINISTRACION', 50) + // 24-73
       formatAlpha(cbuClean, 22) + // 74-95
-      formatNumeric(slip.workedDays || 30, 3) + // 96-98 Días tope
+      formatNumeric(reg02Days, 3) + // 96-98 Días tope (000 en vacaciones)
       paymentDateStr + // 99-106
       rubricDateStr + // 107-114
       formaPago; // 115
 
-    reg02 = reg02.padEnd(999, ' ');
-    if (reg02.length !== 999) throw new Error(`Registro 02 [Legajo ${emp.fileNumber}] longitud inválida: ${reg02.length}`);
+    if (reg02.length !== 115) throw new Error(`Registro 02 [Legajo ${emp.fileNumber}] longitud inválida: ${reg02.length} (esperado 115)`);
     lines.push(reg02);
 
     // REGISTROS 03: DETALLE DE CONCEPTOS LIQUIDADOS
@@ -198,8 +205,7 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
         indicator + // 45 Indicador Débito / Crédito
         '000000'; // 46-51 Período ajuste retroactivo
 
-      reg03 = reg03.padEnd(999, ' ');
-      if (reg03.length !== 999) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length}`);
+      if (reg03.length !== 51) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length} (esperado 51)`);
       lines.push(reg03);
     }
 
@@ -228,17 +234,17 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       '00' + // 42-43 Día 2
       '00' + // 44-45 Sit 3
       '00' + // 46-47 Día 3
-      formatNumeric(slip.workedDays || 30, 2) + // 48-49 Días trabajados
+      formatNumeric(slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30, 2) + // 48-49 Días trabajados
       formatNumeric(slip.workedHours || 160, 3) + // 50-52 Horas
       '00000' + // 53-57 Adicional SS
       '00000' + // 58-62 Contribución Dif
       formatAlpha(osCode, 6) + // 63-68 Código OS
-      '00' + // 69-70 Adherentes OS
+      formatNumeric(basis.adherentsCount || emp.adherentsCount || 0, 2) + // 69-70 Adherentes OS
       formatMoney(0, 15) + // 71-85 Aporte Adic OS
       formatMoney(0, 15) + // 86-100 Contrib Adic OS
-      formatMoney(0, 15) + // 101-115 Base Dif OS
-      formatMoney(0, 15) + // 116-130 Base Dif Contrib OS
-      formatMoney(0, 15) + // 131-145 Base Dif LRT
+      formatMoney(basis.baseDifAporteOs || 0, 15) + // 101-115 Base Dif OS
+      formatMoney(basis.baseDifContribOs || 0, 15) + // 116-130 Base Dif Contrib OS
+      formatMoney(basis.baseDifLrt || 0, 15) + // 131-145 Base Dif LRT
       formatMoney(0, 15) + // 146-160 Maternidad
       formatMoney(slip.grossSalary, 15) + // 161-175 Remuneración Bruta Total
       formatMoney(basis.baseImponible1, 15) + // 176-190 BI 1 (SIPA Aportes)
@@ -255,10 +261,10 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       formatMoney(basis.baseImponible10, 15) + // 341-355 BI 10 (SIPA con Detracción)
       formatMoney(basis.detractionAmount, 15); // 356-370 Detracción Ley 27.541
 
-    reg04 = reg04.padEnd(999, ' ');
-    if (reg04.length !== 999) throw new Error(`Registro 04 [Legajo ${emp.fileNumber}] longitud inválida: ${reg04.length}`);
+    if (reg04.length !== 370) throw new Error(`Registro 04 [Legajo ${emp.fileNumber}] longitud inválida: ${reg04.length} (esperado 370)`);
     lines.push(reg04);
   }
+
 
   return lines.join('\r\n');
 }
@@ -296,7 +302,7 @@ export function validateLsdConsistency({ paySlips }) {
     }
 
     // 2. Comprobar alícuotas de aportes de ley (11% SIPA, 3% PAMI, 3% OS)
-    const sipaItem = items.find((i) => i.conceptCode === '8000' || i.arcaConceptCode === '810000');
+    const sipaItem = items.find((i) => i.conceptCode === '8000' || i.conceptCode === '6001' || i.conceptCode === 'SU6001' || i.arcaConceptCode === '810000' || /jubilac|sipa/i.test(i.conceptName || ''));
     if (sipaItem && slip.basis?.baseImponible1) {
       const expectedSipa = Math.round(Number(slip.basis.baseImponible1) * 0.11 * 100) / 100;
       const actualSipa = Math.round(Number(sipaItem.amount) * 100) / 100;
@@ -309,6 +315,56 @@ export function validateLsdConsistency({ paySlips }) {
         });
       }
     }
+
+    // Obra Social Titular (ARCA 810002) y Adherentes (ARCA 810009)
+    if (slip.basis?.baseImponible4) {
+      const baseOsTotal = Number(slip.basis.baseImponible4) + Number(slip.basis.baseDifAporteOs || 0);
+
+      // 1. Obra Social Titular (3%)
+      const osTitularItems = items.filter((i) => String(i.arcaConceptCode || '').trim() === '810002');
+      if (osTitularItems.length > 0) {
+        const expectedOsTitular = Math.round(baseOsTotal * 0.03 * 100) / 100;
+        const actualOsTitular = Math.round(osTitularItems.reduce((acc, i) => acc + Number(i.amount || 0), 0) * 100) / 100;
+        if (Math.abs(expectedOsTitular - actualOsTitular) > 0.05) {
+          issues.push({
+            legajo,
+            cuil,
+            type: 'ERROR_DISCREPANCIA_OBRA_SOCIAL_TITULAR',
+            message: `Discrepancia en retención Obra Social Titular (ARCA 810002): Descontado ($${actualOsTitular.toFixed(2)}) difiere del 3% legal ($${expectedOsTitular.toFixed(2)}) sobre Base Imponible 4 + Base Dif ($${baseOsTotal.toFixed(2)}).`,
+          });
+        }
+      }
+
+      // 2. Obra Social Adherentes (1.5% por cada adherente registrado s/Ley 23.660)
+      const osAdherenteItems = items.filter((i) => String(i.arcaConceptCode || '').trim() === '810009');
+      if (osAdherenteItems.length > 0) {
+        const actualOsAdherentes = Math.round(osAdherenteItems.reduce((acc, i) => acc + Number(i.amount || 0), 0) * 100) / 100;
+        const adherentsCount = Number(
+          slip.basis?.adherentsCount !== undefined
+            ? slip.basis.adherentsCount
+            : (slip.employee?.relatives?.filter((r) => r.isAdherent && !r.deletedAt).length || 0)
+        );
+
+        if (adherentsCount === 0) {
+          issues.push({
+            legajo,
+            cuil,
+            type: 'ERROR_ADHERENTES_SIN_REGISTRAR',
+            message: `Se liquidó retención por Adherente OS (código ARCA 810009) por $${actualOsAdherentes.toFixed(2)} pero el legajo tiene 0 familiares adherentes registrados conforme a Ley 23.660.`,
+          });
+        } else {
+          const expectedOsAdherentes = Math.round(baseOsTotal * 0.015 * adherentsCount * 100) / 100;
+          if (Math.abs(expectedOsAdherentes - actualOsAdherentes) > 0.05) {
+            issues.push({
+              legajo,
+              cuil,
+              type: 'ERROR_DISCREPANCIA_OBRA_SOCIAL_ADHERENTES',
+              message: `Discrepancia en retención Obra Social Adherentes (ARCA 810009): Descontado ($${actualOsAdherentes.toFixed(2)}) difiere del 1.5% legal por adherente ($${expectedOsAdherentes.toFixed(2)} para ${adherentsCount} adherente/s) sobre Base Imponible 4 + Base Dif ($${baseOsTotal.toFixed(2)}).`,
+            });
+          }
+        }
+      }
+    }
   }
 
   return {
@@ -319,14 +375,14 @@ export function validateLsdConsistency({ paySlips }) {
 }
 
 /**
- * Genera el Archivo Unificado Mensual del Libro de Sueldos Digital (999 caracteres fijos).
+ * Genera el Archivo Unificado Mensual del Libro de Sueldos Digital (longitudes fijas ARCA: 01=35, 02=115, 03=51, 04=370).
  * Consolida todas las liquidaciones del mes calendario (Mensual, Quincenas, SAC, Vacaciones, etc.):
- * - 1 solo Registro 01 para todo el mes (Tipo 'M', Número '00001', Días base 30, conteo exacto de 04s).
- * - 1 Registro 02 por trabajador (con la fecha de pago de la liquidación más reciente).
- * - Múltiples Registros 03 concatenando todos los conceptos de todas las liquidaciones del mes.
- * - 1 solo Registro 04 por trabajador con las Bases Imponibles 1 a 10 consolidadas y topadas a nivel mensual.
+ * - 1 solo Registro 01 para todo el mes (35 chars: Tipo 'M', Número '00001', Días base 30, conteo exacto de 04s).
+ * - 1 Registro 02 por trabajador (115 chars: con la fecha de pago de la liquidación más reciente).
+ * - Múltiples Registros 03 concatenando todos los conceptos de todas las liquidaciones del mes (51 chars c/u).
+ * - 1 solo Registro 04 por trabajador con las Bases Imponibles 1 a 10 consolidadas y topadas (370 chars).
  */
-export function generateMonthlyLsdPayrollFile({ company, year, month, settlements = [], paySlips = [], payrollSettings = {} }) {
+export function generateMonthlyLsdPayrollFile({ company, year, month, period, settlements = [], paySlips = [], payrollSettings = {} }) {
   const lines = [];
   const cuitClean = (company.cuit || '').replace(/\D/g, '');
 
@@ -341,8 +397,11 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
     slipsByEmp.get(s.employeeId).push(s);
   }
 
+  const actualYear = year || period?.year || validSlips[0]?.payrollPeriod?.year || new Date().getFullYear();
+  const actualMonth = month || period?.month || validSlips[0]?.payrollPeriod?.month || 1;
+
   const uniqueEmployeesCount = slipsByEmp.size;
-  const periodoAaaamm = `${year}${String(month).padStart(2, '0')}`;
+  const periodoAaaamm = `${actualYear}${String(actualMonth).padStart(2, '0')}`;
 
   // --- REGISTRO 01: CABECERA UNIFICADA MENSUAL ---
   let reg01 =
@@ -355,8 +414,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
     '30' + // 28-29 Días Base fijo 30
     formatNumeric(uniqueEmployeesCount, 6); // 30-35 Cantidad de Registros 04
 
-  reg01 = reg01.padEnd(999, ' ');
-  if (reg01.length !== 999) throw new Error(`Registro 01 longitud inválida: ${reg01.length} (esperado 999)`);
+  if (reg01.length !== 35) throw new Error(`Registro 01 longitud inválida: ${reg01.length} (esperado 35)`);
   lines.push(reg01);
 
   const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
@@ -409,8 +467,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
       formatDate(latestRubricDate) + // 107-114
       formaPago; // 115
 
-    reg02 = reg02.padEnd(999, ' ');
-    if (reg02.length !== 999) throw new Error(`Registro 02 [Legajo ${emp.fileNumber}] longitud inválida: ${reg02.length}`);
+    if (reg02.length !== 115) throw new Error(`Registro 02 [Legajo ${emp.fileNumber}] longitud inválida: ${reg02.length} (esperado 115)`);
     lines.push(reg02);
 
     // REGISTROS 03: DETALLE CONSOLIDADO DE TODOS LOS CONCEPTOS DEL MES
@@ -443,8 +500,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
           indicator + // 45 Indicador Débito / Crédito
           '000000'; // 46-51 Período ajuste retroactivo
 
-        reg03 = reg03.padEnd(999, ' ');
-        if (reg03.length !== 999) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length}`);
+        if (reg03.length !== 51) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length} (esperado 51)`);
         lines.push(reg03);
       }
     }
@@ -493,6 +549,28 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
     const latestBasis = empSlips[empSlips.length - 1].basis || {};
     const osCode = emp.healthInsurance?.code ? emp.healthInsurance.code.replace(/\D/g, '') : '126205';
 
+    let monthlyDifAporteOs = 0.00;
+    let monthlyDifContribOs = 0.00;
+    let monthlyDifLrt = 0.00;
+
+    if (!isIntern && !isDirector) {
+      monthlyDifAporteOs = Math.round(empSlips.reduce((sum, s) => sum + Number(s.basis?.baseDifAporteOs || 0), 0) * 100) / 100;
+      monthlyDifContribOs = Math.round(empSlips.reduce((sum, s) => sum + Number(s.basis?.baseDifContribOs || 0), 0) * 100) / 100;
+      monthlyDifLrt = Math.round(empSlips.reduce((sum, s) => sum + Number(s.basis?.baseDifLrt || 0), 0) * 100) / 100;
+
+      // Fallback si no vinieron en basis pero el empleado es de jornada parcial
+      if (monthlyDifAporteOs === 0 && (emp.isPartTime || (emp.partTimePercentage && Number(emp.partTimePercentage) < 100))) {
+        const pct = Number(emp.partTimePercentage || emp.workShift?.percentage || 100);
+        const coef = Math.round((pct / 100) * 10000) / 10000;
+        if (coef > 0 && coef < 1 && bi4 > 0) {
+          const fullTimeOs = Math.round((bi4 / coef) * 100) / 100;
+          const diff = Math.max(0, Math.round((fullTimeOs - bi4) * 100) / 100);
+          monthlyDifAporteOs = diff;
+          monthlyDifContribOs = diff;
+        }
+      }
+    }
+
     let reg04 =
       '04' + // 1-2
       formatNumeric(cuilClean, 11) + // 3-13
@@ -520,12 +598,17 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
       '00000' + // 53-57 Adicional SS
       '00000' + // 58-62 Contribución Dif
       formatAlpha(osCode, 6) + // 63-68 Código OS
-      '00' + // 69-70 Adherentes OS
+      formatNumeric(
+        latestBasis.adherentsCount !== undefined
+          ? latestBasis.adherentsCount
+          : (emp.relatives?.filter((r) => r.isAdherent && !r.deletedAt).length || 0),
+        2
+      ) + // 69-70 Adherentes OS
       formatMoney(0, 15) + // 71-85 Aporte Adic OS
       formatMoney(0, 15) + // 86-100 Contrib Adic OS
-      formatMoney(0, 15) + // 101-115 Base Dif OS
-      formatMoney(0, 15) + // 116-130 Base Dif Contrib OS
-      formatMoney(0, 15) + // 131-145 Base Dif LRT
+      formatMoney(monthlyDifAporteOs, 15) + // 101-115 Base Dif OS
+      formatMoney(monthlyDifContribOs, 15) + // 116-130 Base Dif Contrib OS
+      formatMoney(monthlyDifLrt, 15) + // 131-145 Base Dif LRT
       formatMoney(0, 15) + // 146-160 Maternidad
       formatMoney(monthlyGross, 15) + // 161-175 Remuneración Bruta Total Consolidada
       formatMoney(bi1, 15) + // 176-190 BI 1 (SIPA Aportes)
@@ -542,8 +625,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
       formatMoney(bi10, 15) + // 341-355 BI 10 (SIPA con Detracción)
       formatMoney(detractionAmount, 15); // 356-370 Detracción Ley 27.541
 
-    reg04 = reg04.padEnd(999, ' ');
-    if (reg04.length !== 999) throw new Error(`Registro 04 [Legajo ${emp.fileNumber}] longitud inválida: ${reg04.length}`);
+    if (reg04.length !== 370) throw new Error(`Registro 04 [Legajo ${emp.fileNumber}] longitud inválida: ${reg04.length} (esperado 370)`);
     lines.push(reg04);
   }
 
@@ -555,9 +637,12 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, settlement
  * Audita cuadre matemático 03 vs 04, alícuotas previsionales (11%, 3%, 3%),
  * control de tope de 30 días acumulados y formato del archivo plano.
  */
-export function validateMonthlyLsdConsistency({ year, month, settlements = [], paySlips = [], payrollSettings = {} }) {
+export function validateMonthlyLsdConsistency({ year, month, period, settlements = [], paySlips = [], payrollSettings = {} }) {
   const issues = [];
   const validSlips = paySlips.filter((s) => !s.deletedAt);
+
+  const actualYear = year || period?.year || validSlips[0]?.payrollPeriod?.year || new Date().getFullYear();
+  const actualMonth = month || period?.month || validSlips[0]?.payrollPeriod?.month || 1;
 
   const slipsByEmp = new Map();
   for (const s of validSlips) {
@@ -575,6 +660,7 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
 
   for (const [empId, empSlips] of slipsByEmp.entries()) {
     const emp = empSlips[0].employee || {};
+    const latestBasis = empSlips[empSlips.length - 1]?.basis || {};
     const legajo = emp.fileNumber || '-';
     const cuil = emp.cuil || '-';
     const cuilClean = cuil.replace(/\D/g, '');
@@ -592,11 +678,14 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
     // 2. Control de Días Trabajados Acumulados (Definición del Usuario)
     const cumulativeWorkedDays = empSlips.reduce((sum, s) => sum + (Number(s.workedDays) || 0), 0);
     if (cumulativeWorkedDays > 30) {
+      const breakdown = empSlips
+        .map((s) => `${s.payrollPeriod?.settlementName || s.payrollPeriod?.periodType || 'Liq'}: ${s.workedDays ?? 0} días`)
+        .join(', ');
       issues.push({
         legajo,
         cuil,
         type: 'ERROR_DIAS_BASE_EXCEDIDOS',
-        message: `Días trabajados acumulados (${cumulativeWorkedDays} días) superan el tope máximo legal de 30 días base para el mes ${month}/${year}.`,
+        message: `Días trabajados acumulados (${cumulativeWorkedDays} días) superan el tope máximo legal de 30 días base para el mes ${month}/${year}. Desglose: [${breakdown}]. Verifique que liquidaciones complementarias (como Liquidación Final o Vacaciones) tengan 0 días a proporcionar tope.`,
       });
     }
 
@@ -611,7 +700,8 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
     let sumConceptsNoRemun = 0;
     let totalSipaDeduction = 0;
     let totalInssjypDeduction = 0;
-    let totalOsDeduction = 0;
+    let totalOsTitularDeduction = 0;
+    let totalOsAdherentesDeduction = 0;
 
     for (const slip of empSlips) {
       for (const item of (slip.items || [])) {
@@ -624,20 +714,24 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
           sumConceptsNoRemun += amt;
         } else if (item.type === 'DEDUCTION') {
           const code = String(item.conceptCode || '');
-          const arcaCode = String(item.arcaConceptCode || '');
+          const arcaCode = String(item.arcaConceptCode || '').trim();
           const name = String(item.conceptName || '').toLowerCase();
 
           // SIPA (11%)
-          if (code === '8000' || arcaCode === '810000' || name.includes('jubilac') || name.includes('sipa')) {
+          if (code === '8000' || code === '6001' || code === 'SU6001' || arcaCode === '810000' || name.includes('jubilac') || name.includes('sipa')) {
             totalSipaDeduction += amt;
           }
           // INSSJyP / PAMI (3%)
-          else if (code === '8001' || arcaCode === '810001' || name.includes('inssjyp') || name.includes('pami') || name.includes('ley 19.032')) {
+          else if (code === '8001' || code === '6002' || code === 'SU6002' || arcaCode === '810001' || name.includes('inssjyp') || name.includes('pami') || name.includes('ley 19.032')) {
             totalInssjypDeduction += amt;
           }
-          // Obra Social (3%)
-          else if (code === '8002' || arcaCode === '810002' || (name.includes('obra social') && !name.includes('adic'))) {
-            totalOsDeduction += amt;
+          // Obra Social Titular (ARCA 810002)
+          else if (arcaCode === '810002') {
+            totalOsTitularDeduction += amt;
+          }
+          // Obra Social Adherentes (ARCA 810009)
+          else if (arcaCode === '810009') {
+            totalOsAdherentesDeduction += amt;
           }
         }
       }
@@ -661,7 +755,19 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
       const bi1 = Math.min(Math.max(monthlyRemunerative, minCap), maxCap);
       const expectedSipa = Math.round(bi1 * 0.11 * 100) / 100;
       const expectedInssjyp = Math.round(bi1 * 0.03 * 100) / 100;
-      const expectedOs = Math.round(bi1 * 0.03 * 100) / 100;
+
+      // Para Obra Social: considerar Base Diferencial en jornada parcial (Art. 92 TER)
+      let empDifAporteOs = Math.round(empSlips.reduce((sum, s) => sum + Number(s.basis?.baseDifAporteOs || 0), 0) * 100) / 100;
+      if (empDifAporteOs === 0 && (emp.isPartTime || (emp.partTimePercentage && Number(emp.partTimePercentage) < 100))) {
+        const pct = Number(emp.partTimePercentage || emp.workShift?.percentage || 100);
+        const coef = Math.round((pct / 100) * 10000) / 10000;
+        if (coef > 0 && coef < 1) {
+          const fullTime = Math.round((bi1 / coef) * 100) / 100;
+          empDifAporteOs = Math.max(0, Math.round((fullTime - bi1) * 100) / 100);
+        }
+      }
+      const bi4Total = Math.min(Math.max(bi1 + empDifAporteOs, minCap), maxCap);
+      const expectedOs = Math.round(bi4Total * 0.03 * 100) / 100;
 
       if (totalSipaDeduction > 0 && Math.abs(totalSipaDeduction - expectedSipa) > 0.10) {
         issues.push({
@@ -681,13 +787,41 @@ export function validateMonthlyLsdConsistency({ year, month, settlements = [], p
         });
       }
 
-      if (totalOsDeduction > 0 && Math.abs(totalOsDeduction - expectedOs) > 0.10) {
+      if (totalOsTitularDeduction > 0 && Math.abs(totalOsTitularDeduction - expectedOs) > 0.10) {
         issues.push({
           legajo,
           cuil,
-          type: 'ERROR_ALICUOTA_OBRA_SOCIAL',
-          message: `Retención acumulada Obra Social ($${totalOsDeduction.toFixed(2)}) difiere del 3% sobre Base Imponible 4 ($${expectedOs.toFixed(2)}).`,
+          type: 'ERROR_DISCREPANCIA_OBRA_SOCIAL_TITULAR',
+          message: `Retención acumulada Obra Social Titular (ARCA 810002) ($${totalOsTitularDeduction.toFixed(2)}) difiere del 3% legal ($${expectedOs.toFixed(2)}) sobre Base Imponible 4 + Base Dif ($${bi4Total.toFixed(2)}).`,
         });
+      }
+
+      // Control Adherentes OS (ARCA 810009)
+      const empAdherentsCount = Number(
+        latestBasis.adherentsCount !== undefined
+          ? latestBasis.adherentsCount
+          : (emp.relatives?.filter((r) => r.isAdherent && !r.deletedAt).length || 0)
+      );
+
+      if (totalOsAdherentesDeduction > 0) {
+        if (empAdherentsCount === 0) {
+          issues.push({
+            legajo,
+            cuil,
+            type: 'ERROR_ADHERENTES_SIN_REGISTRAR',
+            message: `Se liquidó retención por Adherente OS (ARCA 810009) por $${totalOsAdherentesDeduction.toFixed(2)} pero el legajo tiene 0 familiares adherentes registrados conforme a Ley 23.660.`,
+          });
+        } else {
+          const expectedOsAdherentes = Math.round(bi4Total * 0.015 * empAdherentsCount * 100) / 100;
+          if (Math.abs(totalOsAdherentesDeduction - expectedOsAdherentes) > 0.10) {
+            issues.push({
+              legajo,
+              cuil,
+              type: 'ERROR_DISCREPANCIA_OBRA_SOCIAL_ADHERENTES',
+              message: `Retención acumulada Obra Social Adherentes (ARCA 810009) ($${totalOsAdherentesDeduction.toFixed(2)}) difiere del 1.5% legal por adherente ($${expectedOsAdherentes.toFixed(2)} para ${empAdherentsCount} adherente/s) sobre Base Imponible 4 + Base Dif ($${bi4Total.toFixed(2)}).`,
+            });
+          }
+        }
       }
     }
   }

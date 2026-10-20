@@ -1,0 +1,1082 @@
+/* ==========================================================================
+   PROYECTOSUELDOS — MÓDULO DE PERSONAL & TALENTO (EMERALD TITANIUM & JADE SAGE)
+   Cumplimiento Estricto Gauntlet:
+   - Grilla Múltiplos de 4px (padding, margin, gap, border-radius)
+   - Contraste WCAG AA / AAA (> 4.5:1) con :hover y :focus-visible
+   - Áreas de Clic >= 44x44px en todo elemento interactivo
+   - Tipografía: 'Plus Jakarta Sans' y 'Inter' (4 niveles de escala)
+   - Resiliencia Inflacionaria (12 dígitos + 2 decimales, white-space: nowrap)
+   - Truncado de Nombres Extensos (text-overflow: ellipsis + tooltip)
+   - Identidad Multitenant activa visible con live pulse
+   ========================================================================== */
+
+:root {
+  /* Paleta Exclusiva de Personal: Emerald Titanium & Jade Sage */
+  --pers-forest-950: #022c22;
+  --pers-forest-900: #064e3b;
+  --pers-forest-800: #065f46;
+  --pers-forest-700: #047857;
+  --pers-emerald-600: #059669;
+  --pers-emerald-500: #10b981;
+  --pers-mint-400: #34d399;
+  --pers-mint-300: #6ee7b7;
+  --pers-mint-200: #a7f3d0;
+  --pers-mint-100: #d1fae5;
+  --pers-mint-50: #ecfdf5;
+
+  /* Neutros Slate de Alta Densidad */
+  --pers-slate-900: #0f172a;
+  --pers-slate-800: #1e293b;
+  --pers-slate-700: #334155;
+  --pers-slate-600: #475569;
+  --pers-slate-400: #94a3b8;
+  --pers-slate-300: #cbd5e1;
+  --pers-slate-200: #e2e8f0;
+  --pers-slate-100: #f1f5f9;
+  --pers-slate-50: #f8fafc;
+  --pers-white: #ffffff;
+
+  /* Bordes y Sombras */
+  --pers-border-light: #e2e8f0;
+  --pers-border-emerald: rgba(16, 185, 129, 0.28);
+  --pers-border-emerald-glow: rgba(16, 185, 129, 0.48);
+  --pers-focus-ring: rgba(16, 185, 129, 0.4);
+
+  --pers-shadow-xs: 0 1px 2px rgba(6, 78, 59, 0.05);
+  --pers-shadow-sm: 0 2px 4px rgba(6, 78, 59, 0.08);
+  --pers-shadow-md: 0 4px 12px rgba(6, 78, 59, 0.1);
+  --pers-shadow-lg: 0 8px 24px rgba(6, 78, 59, 0.14);
+  --pers-shadow-glow: 0 0 16px rgba(16, 185, 129, 0.2);
+
+  /* Sistema de Grilla de 4px */
+  --pers-space-4: 4px;
+  --pers-space-8: 8px;
+  --pers-space-12: 12px;
+  --pers-space-16: 16px;
+  --pers-space-20: 20px;
+  --pers-space-24: 24px;
+  --pers-space-32: 32px;
+  --pers-space-40: 40px;
+  --pers-space-48: 48px;
+
+  /* Radios de 4px */
+  --pers-radius-4: 4px;
+  --pers-radius-8: 8px;
+  --pers-radius-12: 12px;
+  --pers-radius-16: 16px;
+  --pers-radius-full: 9999px;
+}
+
+/* ==========================================================================
+   1. CABECERA EJECUTIVA TEMÁTICA DE PERSONAL
+   ========================================================================== */
+.pers-executive-header {
+  flex-shrink: 0 !important;
+  background: linear-gradient(135deg, var(--pers-forest-950) 0%, var(--pers-forest-900) 45%, var(--pers-forest-800) 100%);
+  color: var(--pers-white);
+  border-radius: var(--pers-radius-12);
+  padding: var(--pers-space-12) var(--pers-space-20);
+  margin-bottom: var(--pers-space-8) !important;
+  border: 1px solid var(--pers-border-emerald);
+  box-shadow: var(--pers-shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.pers-executive-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 240px;
+  background: radial-gradient(circle at 100% 50%, rgba(52, 211, 153, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.pers-header-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--pers-space-12);
+}
+
+.pers-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-16);
+}
+
+.pers-header-icon-box {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  background: linear-gradient(135deg, var(--pers-emerald-600) 0%, var(--pers-forest-700) 100%);
+  color: var(--pers-white);
+  border-radius: var(--pers-radius-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pers-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pers-space-4);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--pers-mint-200);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: var(--pers-space-4) var(--pers-space-8);
+  border-radius: var(--pers-radius-4);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pers-header-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 800;
+  color: var(--pers-white);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.pers-header-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pers-slate-300);
+  margin-top: var(--pers-space-4);
+}
+
+/* Tenant Pill Multitenant con Pulso en Vivo */
+.pers-tenant-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pers-space-8);
+  background: rgba(6, 78, 59, 0.6);
+  border: 1px solid var(--pers-border-emerald);
+  padding: var(--pers-space-8) var(--pers-space-16);
+  border-radius: var(--pers-radius-full);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pers-white);
+  backdrop-filter: blur(8px);
+  min-height: 44px;
+}
+
+.pers-pulse-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--pers-radius-full);
+  background-color: var(--pers-mint-400);
+  box-shadow: 0 0 8px var(--pers-mint-400);
+  animation: pers-pulse 2s infinite ease-in-out;
+}
+
+@keyframes pers-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.2); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* ==========================================================================
+   2. BARRA LATERAL (SIDEBAR) DE PERSONAL
+   ========================================================================== */
+.sidebar-col-container {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.pers-sidebar-card,
+.personnel-sidebar-card {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  margin-bottom: 0 !important;
+  background: var(--pers-white);
+  border: 1px solid var(--pers-border-light);
+  border-radius: var(--pers-radius-12);
+  box-shadow: var(--pers-shadow-xs);
+  overflow: hidden !important;
+}
+
+.pers-sidebar-header,
+.personnel-sidebar-header {
+  flex-shrink: 0 !important;
+  background: linear-gradient(90deg, var(--pers-mint-50) 0%, var(--pers-slate-50) 100%);
+  padding: var(--pers-space-12) var(--pers-space-16);
+  border-bottom: 1px solid var(--pers-border-light);
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-8);
+}
+
+.pers-sidebar-header-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  color: var(--pers-forest-800);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pers-nav-group,
+#personnel-sidebar-nav {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: var(--pers-space-8) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--pers-space-4) !important;
+}
+
+.pers-nav-group::-webkit-scrollbar,
+#personnel-sidebar-nav::-webkit-scrollbar {
+  width: 5px;
+}
+
+.pers-nav-group::-webkit-scrollbar-track,
+#personnel-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.pers-nav-group::-webkit-scrollbar-thumb,
+#personnel-sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--pers-slate-300);
+  border-radius: 4px;
+}
+
+.pers-nav-group::-webkit-scrollbar-thumb:hover,
+#personnel-sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--pers-emerald-600);
+}
+
+/* Ítems Principales de la Barra Lateral */
+.pers-nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-12);
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-12);
+  border-radius: var(--pers-radius-8);
+  color: var(--pers-slate-700);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.pers-nav-link:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-900);
+  border-color: var(--pers-mint-200);
+}
+
+.pers-nav-link:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+.pers-nav-link.active {
+  background: linear-gradient(135deg, var(--pers-forest-900) 0%, var(--pers-forest-800) 100%);
+  color: var(--pers-white) !important;
+  border-color: var(--pers-forest-700);
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
+}
+
+.pers-nav-link.active .pers-nav-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--pers-white);
+}
+
+.pers-nav-link.active .pers-nav-badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: var(--pers-white) !important;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.pers-nav-link.active .pers-nav-subtext {
+  color: var(--pers-mint-200);
+}
+
+.pers-nav-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: var(--pers-radius-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pers-mint-100);
+  color: var(--pers-forest-800);
+  font-size: 16px;
+  transition: all 0.15s ease;
+}
+
+.pers-nav-text-col {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.pers-nav-text {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pers-nav-subtext {
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pers-slate-400);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pers-nav-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  padding: var(--pers-space-4) var(--pers-space-8);
+  border-radius: var(--pers-radius-full);
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-800);
+  border: 1px solid var(--pers-mint-200);
+  min-width: 24px;
+  text-align: center;
+}
+
+/* Acordeón de Grupos / Submenús */
+.pers-nav-parent {
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-12);
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-12);
+  border-radius: var(--pers-radius-8);
+  color: var(--pers-slate-700);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  user-select: none;
+  transition: all 0.15s ease;
+}
+
+.pers-nav-parent:hover {
+  background: var(--pers-slate-100);
+  color: var(--pers-forest-900);
+}
+
+.pers-nav-parent:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+.pers-nav-parent .pers-chevron {
+  font-size: 14px;
+  color: var(--pers-slate-400);
+  transition: transform 0.2s ease;
+  margin-left: auto;
+}
+
+.pers-nav-parent:not(.collapsed) .pers-chevron {
+  transform: rotate(90deg);
+  color: var(--pers-forest-800);
+}
+
+.pers-submenu-wrap {
+  padding-left: var(--pers-space-16);
+  padding-top: var(--pers-space-4);
+  padding-bottom: var(--pers-space-4);
+  border-left: 2px solid var(--pers-mint-200);
+  margin-left: 24px;
+  margin-top: var(--pers-space-4);
+  margin-bottom: var(--pers-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pers-space-4);
+}
+
+.pers-sub-link {
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-8);
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-12);
+  border-radius: var(--pers-radius-8);
+  color: var(--pers-slate-600);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.pers-sub-link:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-900);
+}
+
+.pers-sub-link:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+.pers-sub-link.active {
+  background: var(--pers-mint-100);
+  color: var(--pers-forest-900) !important;
+  font-weight: 700;
+  border-left: 3px solid var(--pers-forest-700);
+}
+
+/* ==========================================================================
+   3. TARJETA DE FILTROS & BARRA DE ACCIÓN
+   ========================================================================== */
+.pers-filter-card {
+  flex-shrink: 0 !important;
+  background: var(--pers-white);
+  border: 1px solid var(--pers-border-light);
+  border-radius: var(--pers-radius-12);
+  box-shadow: var(--pers-shadow-xs);
+  padding: var(--pers-space-12) var(--pers-space-16);
+  margin-bottom: var(--pers-space-8) !important;
+  border-top: 3px solid var(--pers-emerald-600);
+}
+
+.pers-input-icon-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pers-input-icon {
+  position: absolute;
+  left: var(--pers-space-12);
+  color: var(--pers-emerald-600);
+  font-size: 18px;
+  pointer-events: none;
+}
+
+.pers-form-control {
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-12) var(--pers-space-8) 40px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  border: 1px solid var(--pers-border-light);
+  border-radius: var(--pers-radius-8);
+  color: var(--pers-slate-900);
+  background-color: var(--pers-white);
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pers-form-control:focus {
+  border-color: var(--pers-emerald-500);
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 0;
+}
+
+.pers-form-select {
+  min-height: 44px;
+  padding: var(--pers-space-8) 36px var(--pers-space-8) var(--pers-space-12);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  border: 1px solid var(--pers-border-light);
+  border-radius: var(--pers-radius-8);
+  color: var(--pers-slate-900);
+  background-color: var(--pers-white);
+  width: 100%;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.pers-form-select:focus {
+  border-color: var(--pers-emerald-500);
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 0;
+}
+
+/* ==========================================================================
+   4. BOTONERÍA PREMIUM DE PERSONAL (Áreas de Clic >= 44x44px)
+   ========================================================================== */
+.btn-pers-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pers-space-8);
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  background: linear-gradient(135deg, var(--pers-emerald-600) 0%, var(--pers-forest-700) 100%);
+  color: var(--pers-white) !important;
+  border: 1px solid var(--pers-forest-700);
+  border-radius: var(--pers-radius-8);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.2);
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+}
+
+.btn-pers-primary:hover {
+  background: linear-gradient(135deg, var(--pers-emerald-500) 0%, var(--pers-emerald-600) 100%);
+  border-color: var(--pers-emerald-600);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+}
+
+.btn-pers-primary:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+.btn-pers-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pers-space-8);
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  background: transparent;
+  color: var(--pers-forest-800) !important;
+  border: 1px solid var(--pers-emerald-600);
+  border-radius: var(--pers-radius-8);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  text-decoration: none;
+}
+
+.btn-pers-outline:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-900) !important;
+  border-color: var(--pers-forest-700);
+}
+
+.btn-pers-outline:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Botones Icono (44x44px exactos para cumplir a11y) */
+.btn-pers-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pers-radius-8);
+  border: 1px solid var(--pers-border-light);
+  background: var(--pers-white);
+  color: var(--pers-slate-700);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 18px;
+}
+
+.btn-pers-icon:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-800);
+  border-color: var(--pers-mint-200);
+}
+
+.btn-pers-icon:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+/* Botones de Acción en Tablas (44x44px con Feedback de Color) */
+.pers-action-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pers-radius-8);
+  border: 1px solid var(--pers-border-light);
+  background: var(--pers-white);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-size: 18px;
+}
+
+.pers-action-btn-edit {
+  color: var(--pers-emerald-600);
+}
+
+.pers-action-btn-edit:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-900);
+  border-color: var(--pers-mint-300);
+  transform: scale(1.05);
+}
+
+.pers-action-btn-delete {
+  color: #dc2626;
+}
+
+.pers-action-btn-delete:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+  transform: scale(1.05);
+}
+
+.pers-action-btn:focus-visible {
+  outline: 3px solid var(--pers-focus-ring);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   5. TABLAS DE DATOS DE PERSONAL (ALTA DENSIDAD Y ACCESIBILIDAD)
+   ========================================================================== */
+.pers-table-card {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  margin-bottom: 0 !important;
+  background: var(--pers-white);
+  border: 1px solid var(--pers-border-light);
+  border-radius: var(--pers-radius-12);
+  box-shadow: var(--pers-shadow-xs);
+}
+
+.pers-table-card > .table-responsive {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  margin-bottom: 0 !important;
+}
+
+.pers-table {
+  width: 100%;
+  margin-bottom: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.pers-table thead th {
+  background: var(--pers-slate-50);
+  color: var(--pers-slate-600);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--pers-space-12) var(--pers-space-16);
+  border-bottom: 1px solid var(--pers-border-light);
+  vertical-align: middle;
+}
+
+.pers-table tbody td {
+  padding: var(--pers-space-12) var(--pers-space-16);
+  border-bottom: 1px solid var(--pers-border-light);
+  vertical-align: middle;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pers-slate-800);
+  background: var(--pers-white);
+  transition: background-color 0.15s ease;
+}
+
+.pers-table tbody tr:hover td {
+  background-color: rgba(236, 253, 245, 0.45);
+}
+
+/* Células y Textos Especiales */
+.pers-legajo-cell {
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  color: var(--pers-forest-800);
+  white-space: nowrap;
+}
+
+.pers-currency-cell {
+  font-family: 'Inter', monospace;
+  font-weight: 700;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--pers-slate-900);
+}
+
+.pers-text-truncate {
+  max-width: 220px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   6. PAGINACIÓN DE ALTA ACCESIBILIDAD (Botones >= 44x44px)
+   ========================================================================== */
+.pers-pagination-footer {
+  flex-shrink: 0 !important;
+  background: var(--pers-slate-50);
+  padding: var(--pers-space-8) var(--pers-space-16);
+  border-top: 1px solid var(--pers-border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--pers-space-12);
+}
+
+.pers-pagination-list {
+  display: flex;
+  align-items: center;
+  gap: var(--pers-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pers-pagination-list .page-link {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--pers-space-8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pers-radius-8);
+  border: 1px solid var(--pers-border-light);
+  background: var(--pers-white);
+  color: var(--pers-slate-700);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pers-pagination-list .page-link:hover {
+  background: var(--pers-mint-50);
+  color: var(--pers-forest-900);
+  border-color: var(--pers-mint-200);
+}
+
+.pers-pagination-list .page-item.active .page-link {
+  background: var(--pers-forest-800);
+  border-color: var(--pers-forest-800);
+  color: var(--pers-white);
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.25);
+}
+
+.pers-pagination-list .page-item.disabled .page-link {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   7. FEEDBACK DE UI (3 ESTADOS: CARGA, ÉXITO, VACÍO/ERROR)
+   ========================================================================== */
+/* Estado 1: Esqueleto de Carga (Pulse Skeleton) */
+.pers-skeleton-row {
+  height: 20px;
+  background: linear-gradient(90deg, var(--pers-slate-100) 25%, var(--pers-mint-50) 50%, var(--pers-slate-100) 75%);
+  background-size: 200% 100%;
+  animation: pers-shimmer 1.5s infinite linear;
+  border-radius: var(--pers-radius-4);
+  margin: var(--pers-space-4) 0;
+}
+
+@keyframes pers-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Estado 3: Tarjeta de Estado Vacío (Empty State) */
+.pers-empty-card {
+  padding: var(--pers-space-48) var(--pers-space-24);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pers-empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  background: var(--pers-mint-50);
+  border: 1px solid var(--pers-mint-200);
+  border-radius: var(--pers-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pers-emerald-600);
+  font-size: 32px;
+  margin-bottom: var(--pers-space-16);
+}
+
+.pers-empty-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--pers-slate-900);
+  margin-bottom: var(--pers-space-4);
+}
+
+.pers-empty-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pers-slate-500);
+  max-width: 440px;
+  margin-bottom: var(--pers-space-20);
+}
+
+/* ==========================================================================
+   8. MODALES DE PERSONAL (ESTRUCTURA DE LEGAJO & ABMs)
+   ========================================================================== */
+.pers-modal-header {
+  background: linear-gradient(135deg, var(--pers-forest-950) 0%, var(--pers-forest-900) 100%);
+  color: var(--pers-white);
+  padding: var(--pers-space-16) var(--pers-space-24);
+  border-bottom: 1px solid var(--pers-border-emerald);
+}
+
+.pers-modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+.pers-modal-permanent-bar {
+  background: var(--pers-slate-50);
+  padding: var(--pers-space-12) var(--pers-space-24);
+  border-top: 1px solid var(--pers-border-light);
+  border-bottom: 1px solid var(--pers-border-light);
+}
+
+.pers-modal-tabs-wrap {
+  padding: var(--pers-space-8) var(--pers-space-24) 0;
+  background: var(--pers-white);
+  border-bottom: 1px solid var(--pers-border-light);
+}
+
+.pers-modal-tab-btn {
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--pers-slate-600);
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--pers-radius-8) var(--pers-radius-8) 0 0;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pers-modal-tab-btn:hover {
+  color: var(--pers-forest-800);
+  background: var(--pers-mint-50);
+}
+
+.pers-modal-tab-btn.active {
+  color: var(--pers-forest-900) !important;
+  border-bottom-color: var(--pers-emerald-600) !important;
+  background: var(--pers-white);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   9. COMPATIBILIDAD CON CLASES EXISTENTES DE PERSONAL & TABLER OVERRIDES
+   ========================================================================== */
+.btn-personnel {
+  background: linear-gradient(135deg, var(--pers-emerald-600) 0%, var(--pers-forest-700) 100%) !important;
+  border-color: var(--pers-forest-700) !important;
+  color: var(--pers-white) !important;
+  font-weight: 600 !important;
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  border-radius: var(--pers-radius-8);
+  box-shadow: 0 2px 6px rgba(6, 78, 59, 0.2);
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-personnel:hover, .btn-personnel:focus, .btn-personnel:active {
+  background: linear-gradient(135deg, var(--pers-emerald-500) 0%, var(--pers-emerald-600) 100%) !important;
+  border-color: var(--pers-emerald-600) !important;
+  color: var(--pers-white) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+}
+
+.btn-outline-personnel,
+.btn-outline-teal {
+  color: var(--pers-forest-800) !important;
+  border-color: var(--pers-emerald-600) !important;
+  background: transparent !important;
+  font-weight: 600 !important;
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  border-radius: var(--pers-radius-8);
+}
+
+.btn-outline-personnel:hover,
+.btn-outline-teal:hover {
+  background: var(--pers-mint-50) !important;
+  color: var(--pers-forest-900) !important;
+  border-color: var(--pers-forest-700) !important;
+}
+
+.text-teal {
+  color: var(--pers-forest-800) !important;
+}
+
+.bg-teal-lt {
+  background-color: var(--pers-mint-50) !important;
+  color: var(--pers-forest-800) !important;
+  border: 1px solid var(--pers-mint-200) !important;
+}
+
+.border-teal {
+  border-color: var(--pers-emerald-600) !important;
+}
+
+.nav-link.active-personnel {
+  color: var(--pers-emerald-600) !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid var(--pers-emerald-600) !important;
+}
+
+.nav-tabs-personnel {
+  border-bottom: 2px solid var(--pers-border-emerald) !important;
+  gap: var(--pers-space-4);
+}
+
+.nav-tabs-personnel .nav-link {
+  min-height: 44px;
+  padding: var(--pers-space-8) var(--pers-space-16);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--pers-slate-600);
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--pers-radius-8) var(--pers-radius-8) 0 0;
+  transition: all 0.15s ease;
+}
+
+.nav-tabs-personnel .nav-link:hover {
+  color: var(--pers-forest-900);
+  background: var(--pers-mint-50);
+}
+
+.nav-tabs-personnel .nav-link.active {
+  color: var(--pers-forest-900) !important;
+  background: var(--pers-white) !important;
+  border-color: var(--pers-border-light) var(--pers-border-light) var(--pers-white) !important;
+  border-bottom: 3px solid var(--pers-emerald-600) !important;
+  font-weight: 700;
+}
+
+/* Reglas Estrictas de Áreas de Clic >= 44x44px para todo elemento en Personal */
+#view-employees .btn,
+#view-employees .btn-sm,
+#view-employees .btn-icon,
+#view-employees .form-control,
+#view-employees .form-select,
+#view-employees .page-link {
+  min-height: 44px !important;
+  box-sizing: border-box;
+}
+
+#view-employees .btn-icon,
+#view-employees .btn-sm.btn-icon {
+  width: 44px !important;
+  min-width: 44px !important;
+  height: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#view-employees table td {
+  vertical-align: middle;
+  padding: 12px 16px;
+}
+
+#view-employees table th {
+  padding: 12px 16px;
+  background-color: var(--pers-slate-50);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+

@@ -4,7 +4,8 @@
  * liquidación en Reg 02, el tope y reporte de días trabajados > 30 en Reg 04, y el cuadre F.931.
  */
 
-import { generateMonthlyLsdPayrollFile, validateMonthlyLsdConsistency } from './src/modules/payroll/lsdExporter.service.js';
+import { generateMonthlyLsdPayrollFile, validateMonthlyLsdConsistency, generateLsdPayrollFile } from './src/modules/payroll/lsdExporter.service.js';
+import { calculateEmployeePayroll } from './src/modules/payroll/payroll.calculator.js';
 
 let passed = 0;
 let failed = 0;
@@ -159,7 +160,15 @@ const fileContent1 = generateMonthlyLsdPayrollFile({
 const lines1 = fileContent1.split('\r\n');
 
 assert(!fileContent1.endsWith('\r\n'), 'El archivo generado NO debe terminar con salto de línea sobrante');
-assert(lines1.every((l) => l.length === 999), 'Cada una de las líneas del archivo debe tener exactamente 999 caracteres');
+const isExpectedLength = (l) => {
+  const t = l.substring(0, 2);
+  if (t === '01') return l.length === 35;
+  if (t === '02') return l.length === 115;
+  if (t === '03') return l.length === 51;
+  if (t === '04') return l.length === 370;
+  return false;
+};
+assert(lines1.every(isExpectedLength), 'Cada una de las líneas del archivo debe tener exactamente su longitud oficial ARCA (01:35, 02:115, 03:51, 04:370)');
 
 // Verificar Registro 01
 const reg01_1 = lines1[0];
@@ -252,7 +261,7 @@ const reg02Exceeded = linesExceeded[1];
 const reg04Exceeded = linesExceeded.find((l) => l.startsWith('04'));
 assert(reg02Exceeded.substring(95, 98) === '030', 'En el archivo plano, Reg 02 días debe toparse en 030');
 assert(reg04Exceeded.substring(47, 49) === '30', 'En el archivo plano, Reg 04 días debe toparse en 30');
-assert(linesExceeded.every((l) => l.length === 999), 'Todas las líneas siguen manteniendo 999 bytes sin deformación');
+assert(linesExceeded.every(isExpectedLength), 'Todas las líneas siguen manteniendo sus longitudes oficiales sin deformación');
 
 // --- CASO 3: Detección de Discrepancia en Bruto (Reg 03 vs Reg 04) ---
 console.log('\n--- 3. Control de Discrepancia entre Conceptos 03 y Bruto 04 ---');
@@ -361,6 +370,208 @@ const multiReg02 = multiEmpLines.filter((l) => l.startsWith('02'));
 assert(multiReg02.length === 2, `Deben existir 2 Registros 02 (obtenido ${multiReg02.length})`);
 const multiReg04 = multiEmpLines.filter((l) => l.startsWith('04'));
 assert(multiReg04.length === 2, `Deben existir 2 Registros 04 (obtenido ${multiReg04.length})`);
+
+// --- CASO 6: Liquidación de Vacaciones con 000 en Reg 02 (Directiva del Usuario) ---
+console.log('\n--- 6. Directiva del Usuario: Vacaciones informan 000 días en Reg 02 ---');
+
+const periodVac = {
+  id: 'per-2026-09-vac',
+  year: 2026,
+  month: 9,
+  periodType: 'VACATIONS',
+  settlementNumber: 1,
+  settlementType: 'M',
+  liquidationDate: new Date('2026-09-20T00:00:00.000Z'),
+  paymentDate: new Date('2026-09-20T00:00:00.000Z'),
+  rubricDate: null,
+};
+
+const slipVac = {
+  id: 'slip-vac',
+  payrollPeriodId: periodVac.id,
+  employeeId: employee1.id,
+  employee: employee1,
+  grossSalary: 200000.00,
+  remunerativeSalary: 200000.00,
+  nonRemunerative: 0.00,
+  netSalary: 166000.00,
+  paymentMethod: 'CBU',
+  workedDays: 0, // 0 días trabajados para proporcionar tope
+  items: [
+    { conceptCode: 'VA1000', conceptName: 'Vacaciones Gozadas', type: 'REMUNERATIVE', amount: 200000.00, units: 14 },
+    { conceptCode: '8000', conceptName: 'Aporte Jubilación SIPA', type: 'DEDUCTION', amount: 22000.00, rate: 11, arcaConceptCode: '810000' },
+  ],
+  basis: {
+    baseImponible1: 200000.00,
+    baseImponible4: 200000.00,
+    baseImponible9: 200000.00,
+    situationCode: '12', // Licencia anual por vacaciones
+    conditionCode: '01',
+    activityCode: '049',
+    contractModality: '001',
+  },
+};
+
+const fileVacIndividual = generateLsdPayrollFile({
+  company: mockCompany,
+  period: periodVac,
+  paySlips: [slipVac],
+});
+
+const linesVacIndiv = fileVacIndividual.split('\r\n');
+const reg02VacIndiv = linesVacIndiv[1];
+const reg02VacDays = reg02VacIndiv.substring(95, 98);
+assert(reg02VacDays === '000', `En liquidación individual de vacaciones, Reg 02 días debe ser '000' (obtenido '${reg02VacDays}')`);
+
+// --- CASO 7: Consolidación Mensual (30 días) + Liquidación Final (0 días) = 30 días acumulados ---
+console.log('\n--- 7. Consolidación Mensual (30 días) + Liquidación Final (0 días) ---');
+
+const periodMonthly = {
+  id: 'per-2026-09-m1',
+  year: 2026,
+  month: 9,
+  periodType: 'MONTHLY',
+  settlementNumber: 1,
+  settlementType: 'M',
+  paymentDate: new Date('2026-10-05T00:00:00.000Z'),
+};
+
+const periodFinal = {
+  id: 'per-2026-09-f1',
+  year: 2026,
+  month: 9,
+  periodType: 'FINAL',
+  settlementNumber: 1,
+  settlementType: 'M',
+  paymentDate: new Date('2026-10-05T00:00:00.000Z'),
+};
+
+const slipMonthly30 = {
+  id: 'slip-m30',
+  payrollPeriodId: periodMonthly.id,
+  payrollPeriod: periodMonthly,
+  employeeId: employee1.id,
+  employee: employee1,
+  grossSalary: 1000000.00,
+  remunerativeSalary: 1000000.00,
+  nonRemunerative: 0.00,
+  netSalary: 830000.00,
+  paymentMethod: 'CBU',
+  workedDays: 30, // 30 días mensuales
+  items: [
+    { conceptCode: 'SU1000', conceptName: 'Sueldo Básico', type: 'REMUNERATIVE', amount: 1000000.00, units: 30 },
+    { conceptCode: '8000', conceptName: 'Aporte SIPA', type: 'DEDUCTION', amount: 110000.00, rate: 11, arcaConceptCode: '810000' },
+    { conceptCode: '8001', conceptName: 'Aporte INSSJyP', type: 'DEDUCTION', amount: 30000.00, rate: 3, arcaConceptCode: '810001' },
+    { conceptCode: '8002', conceptName: 'Aporte Obra Social', type: 'DEDUCTION', amount: 30000.00, rate: 3, arcaConceptCode: '810002' },
+  ],
+  basis: {
+    situationCode: '01',
+    conditionCode: '01',
+    activityCode: '049',
+    contractModality: '001',
+  },
+};
+
+const slipFinal0 = {
+  id: 'slip-f0',
+  payrollPeriodId: periodFinal.id,
+  payrollPeriod: periodFinal,
+  employeeId: employee1.id,
+  employee: employee1,
+  grossSalary: 2000000.00,
+  remunerativeSalary: 0.00,
+  nonRemunerative: 2000000.00,
+  netSalary: 2000000.00,
+  paymentMethod: 'CBU',
+  workedDays: 0, // 0 días en la final porque ya se liquidó el mes
+  items: [
+    { conceptCode: 'FI4010', conceptName: 'Indemnización Art. 245', type: 'NON_REMUNERATIVE', amount: 2000000.00, units: 1 },
+  ],
+  basis: {
+    situationCode: '01',
+    conditionCode: '01',
+    activityCode: '049',
+    contractModality: '001',
+  },
+};
+
+const auditMonthlyAndFinal = validateMonthlyLsdConsistency({
+  year: 2026,
+  month: 9,
+  settlements: [periodMonthly, periodFinal],
+  paySlips: [slipMonthly30, slipFinal0],
+  payrollSettings: mockPayrollSettings,
+});
+
+assert(auditMonthlyAndFinal.isValid === true, `Mensual (30) + Final (0) debe ser 100% VÁLIDA sin superar días base (errores: ${JSON.stringify(auditMonthlyAndFinal.errors)})`);
+const daysErrorFinal = auditMonthlyAndFinal.errors.find((e) => e.type === 'ERROR_DIAS_BASE_EXCEDIDOS');
+assert(!daysErrorFinal, 'No debe emitir ERROR_DIAS_BASE_EXCEDIDOS cuando la liquidación final tiene 0 días');
+
+const fileMonthlyAndFinal = generateMonthlyLsdPayrollFile({
+  company: mockCompany,
+  year: 2026,
+  month: 9,
+  settlements: [periodMonthly, periodFinal],
+  paySlips: [slipMonthly30, slipFinal0],
+  payrollSettings: mockPayrollSettings,
+});
+
+const linesMF = fileMonthlyAndFinal.split('\r\n');
+const reg02MF = linesMF[1];
+assert(reg02MF.substring(95, 98) === '030', `Registro 02 consolidado debe tener exactamente 030 días (obtenido ${reg02MF.substring(95, 98)})`);
+
+// --- CASO 8: Reglas de Cálculo en payroll.calculator.js ---
+console.log('\n--- 8. Motor de Cálculo: Inicialización Contextual por Tipo de Liquidación ---');
+
+const mockCalcEmployee = {
+  id: 'emp-calc-1',
+  fileNumber: 'L2000',
+  cuil: '20-11223344-5',
+  basicSalary: 1000000,
+  hireDate: new Date('2020-01-01T00:00:00.000Z'),
+  status: 'ACTIVE',
+};
+
+// 8.1. Período FINAL sin concepto de sueldo básico debe calcular workedDays = 0
+const calcFinal = calculateEmployeePayroll({
+  employee: mockCalcEmployee,
+  period: { periodType: 'FINAL', year: 2026, month: 9 },
+  payrollSettings: mockPayrollSettings,
+  inputItems: [],
+  allConcepts: [],
+});
+assert(calcFinal.workedDays === 0, `Período FINAL sin concepto de sueldo debe resultar en workedDays = 0 (obtenido ${calcFinal.workedDays})`);
+
+// 8.2. Período VACATIONS debe calcular workedDays = 0
+const calcVac = calculateEmployeePayroll({
+  employee: mockCalcEmployee,
+  period: { periodType: 'VACATIONS', year: 2026, month: 9 },
+  payrollSettings: mockPayrollSettings,
+  inputItems: [],
+  allConcepts: [],
+});
+assert(calcVac.workedDays === 0, `Período VACATIONS debe resultar en workedDays = 0 (obtenido ${calcVac.workedDays})`);
+
+// 8.3. Período MONTHLY debe calcular workedDays = 30
+const calcMonthly = calculateEmployeePayroll({
+  employee: mockCalcEmployee,
+  period: { periodType: 'MONTHLY', year: 2026, month: 9 },
+  payrollSettings: mockPayrollSettings,
+  inputItems: [],
+  allConcepts: [],
+});
+assert(calcMonthly.workedDays === 30, `Período MONTHLY ordinario debe resultar en workedDays = 30 (obtenido ${calcMonthly.workedDays})`);
+
+// 8.4. Override directo de workedDays
+const calcOverride = calculateEmployeePayroll({
+  employee: mockCalcEmployee,
+  period: { periodType: 'FINAL', year: 2026, month: 9 },
+  payrollSettings: mockPayrollSettings,
+  inputItems: [],
+  allConcepts: [],
+  workedDaysOverride: 18,
+});
+assert(calcOverride.workedDays === 18, `Override explícito de días trabajados debe respetarse (esperado 18, obtenido ${calcOverride.workedDays})`);
 
 console.log('\n================================================================');
 console.log(`RESUMEN: ${passed} superadas, ${failed} fallidas`);

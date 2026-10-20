@@ -271,18 +271,34 @@ exports.Prisma.UnionScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
+  conceptId: 'conceptId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
+};
+
+exports.Prisma.UnionConceptScalarFieldEnum = {
+  id: 'id',
+  unionId: 'unionId',
+  conceptId: 'conceptId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.MutualScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
+  conceptId: 'conceptId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
+};
+
+exports.Prisma.MutualConceptScalarFieldEnum = {
+  id: 'id',
+  mutualId: 'mutualId',
+  conceptId: 'conceptId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.EmployeeScalarFieldEnum = {
@@ -363,6 +379,7 @@ exports.Prisma.EmployeeRelativeScalarFieldEnum = {
   documentNumber: 'documentNumber',
   cuil: 'cuil',
   birthDate: 'birthDate',
+  isAdherent: 'isAdherent',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -403,6 +420,7 @@ exports.Prisma.ConceptScalarFieldEnum = {
   appliesDetraccion: 'appliesDetraccion',
   isRepeatable: 'isRepeatable',
   matrixId: 'matrixId',
+  isEmbargo: 'isEmbargo',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -450,8 +468,21 @@ exports.Prisma.PayrollFixedValueScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
+exports.Prisma.PayrollFiscalPeriodScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  month: 'month',
+  status: 'status',
+  closedAt: 'closedAt',
+  closedBy: 'closedBy',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.PayrollPeriodScalarFieldEnum = {
   id: 'id',
+  fiscalPeriodId: 'fiscalPeriodId',
   year: 'year',
   month: 'month',
   periodType: 'periodType',
@@ -545,12 +576,16 @@ exports.Prisma.PaySlipBasisScalarFieldEnum = {
   baseImponible9: 'baseImponible9',
   baseImponible10: 'baseImponible10',
   detractionAmount: 'detractionAmount',
+  baseDifAporteOs: 'baseDifAporteOs',
+  baseDifContribOs: 'baseDifContribOs',
+  baseDifLrt: 'baseDifLrt',
   situationCode: 'situationCode',
   conditionCode: 'conditionCode',
   activityCode: 'activityCode',
   contractModality: 'contractModality',
   hasSpouse: 'hasSpouse',
   childrenCount: 'childrenCount',
+  adherentsCount: 'adherentsCount',
   hasScvo: 'hasScvo',
   hasCct: 'hasCct',
   createdAt: 'createdAt',
@@ -587,6 +622,33 @@ exports.Prisma.PeriodNoveltyScalarFieldEnum = {
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmployeeEmbargoScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  caseTitle: 'caseTitle',
+  dossierNumber: 'dossierNumber',
+  court: 'court',
+  secretary: 'secretary',
+  judicialDistrict: 'judicialDistrict',
+  embargoType: 'embargoType',
+  hasCap: 'hasCap',
+  totalAmount: 'totalAmount',
+  priorityOrder: 'priorityOrder',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmployeeEmbargoConceptScalarFieldEnum = {
+  id: 'id',
+  embargoId: 'embargoId',
+  conceptId: 'conceptId',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -706,13 +768,27 @@ exports.Prisma.HealthInsuranceOrderByRelevanceFieldEnum = {
 exports.Prisma.UnionOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  code: 'code'
+  code: 'code',
+  conceptId: 'conceptId'
+};
+
+exports.Prisma.UnionConceptOrderByRelevanceFieldEnum = {
+  id: 'id',
+  unionId: 'unionId',
+  conceptId: 'conceptId'
 };
 
 exports.Prisma.MutualOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
-  code: 'code'
+  code: 'code',
+  conceptId: 'conceptId'
+};
+
+exports.Prisma.MutualConceptOrderByRelevanceFieldEnum = {
+  id: 'id',
+  mutualId: 'mutualId',
+  conceptId: 'conceptId'
 };
 
 exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
@@ -814,8 +890,16 @@ exports.Prisma.PayrollFixedValueOrderByRelevanceFieldEnum = {
   unit: 'unit'
 };
 
+exports.Prisma.PayrollFiscalPeriodOrderByRelevanceFieldEnum = {
+  id: 'id',
+  status: 'status',
+  closedBy: 'closedBy',
+  notes: 'notes'
+};
+
 exports.Prisma.PayrollPeriodOrderByRelevanceFieldEnum = {
   id: 'id',
+  fiscalPeriodId: 'fiscalPeriodId',
   periodType: 'periodType',
   settlementName: 'settlementName',
   settlementType: 'settlementType',
@@ -870,6 +954,25 @@ exports.Prisma.PeriodNoveltyOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
 
+exports.Prisma.EmployeeEmbargoOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  caseTitle: 'caseTitle',
+  dossierNumber: 'dossierNumber',
+  court: 'court',
+  secretary: 'secretary',
+  judicialDistrict: 'judicialDistrict',
+  embargoType: 'embargoType',
+  status: 'status',
+  notes: 'notes'
+};
+
+exports.Prisma.EmployeeEmbargoConceptOrderByRelevanceFieldEnum = {
+  id: 'id',
+  embargoId: 'embargoId',
+  conceptId: 'conceptId'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -885,7 +988,9 @@ exports.Prisma.ModelName = {
   WorkShiftDetail: 'WorkShiftDetail',
   HealthInsurance: 'HealthInsurance',
   Union: 'Union',
+  UnionConcept: 'UnionConcept',
   Mutual: 'Mutual',
+  MutualConcept: 'MutualConcept',
   Employee: 'Employee',
   SalaryScale: 'SalaryScale',
   Kinship: 'Kinship',
@@ -894,12 +999,15 @@ exports.Prisma.ModelName = {
   EmployeeConcept: 'EmployeeConcept',
   PayrollMatrix: 'PayrollMatrix',
   PayrollFixedValue: 'PayrollFixedValue',
+  PayrollFiscalPeriod: 'PayrollFiscalPeriod',
   PayrollPeriod: 'PayrollPeriod',
   PaySlip: 'PaySlip',
   PaySlipItem: 'PaySlipItem',
   PaySlipBasis: 'PaySlipBasis',
   PayrollSetting: 'PayrollSetting',
-  PeriodNovelty: 'PeriodNovelty'
+  PeriodNovelty: 'PeriodNovelty',
+  EmployeeEmbargo: 'EmployeeEmbargo',
+  EmployeeEmbargoConcept: 'EmployeeEmbargoConcept'
 };
 
 /**

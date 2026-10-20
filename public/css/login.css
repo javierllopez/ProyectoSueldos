@@ -1,0 +1,664 @@
+/* ==========================================================================
+   PROYECTOSUELDOS — LOGIN STYLESHEET (ELITE CORPORATE & LUXURY DARK)
+   Cumplimiento Estricto: Grilla 4px, WCAG AA (>4.5:1), Touch Targets >= 44x44px
+   ========================================================================== */
+
+:root {
+  /* Paleta Cromática Noble & Sofisticada */
+  --bg-base: #070b14;
+  --bg-surface: #0d1527;
+  --bg-surface-elevated: #131d36;
+  --bg-glass: rgba(13, 21, 39, 0.78);
+  --bg-glass-card: rgba(19, 29, 54, 0.65);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-medium: rgba(255, 255, 255, 0.16);
+  --border-focus: #3b82f6;
+
+  /* Azules de Alta Fidelidad & Acentos */
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-glow: rgba(37, 99, 235, 0.36);
+  --primary-soft: rgba(37, 99, 235, 0.12);
+
+  --emerald-400: #34d399;
+  --emerald-500: #10b981;
+  --emerald-glow: rgba(16, 185, 129, 0.28);
+  --emerald-soft: rgba(16, 185, 129, 0.12);
+
+  --rose-400: #f87171;
+  --rose-500: #ef4444;
+  --rose-soft: rgba(239, 68, 68, 0.12);
+
+  /* Escala de Neutros Slate */
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-300: #cbd5e1;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --slate-900: #0f172a;
+
+  /* Radios de Curvatura (Múltiplos de 4px) */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+}
+
+/* Reset y Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  background-color: var(--bg-base);
+  color: var(--slate-200);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Tipografía Controlada: 2 Familias & Jerarquía Exacta */
+h1, h2, h3, h4 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+
+h1 { font-size: 2rem; line-height: 1.25; }
+h2 { font-size: 1.5rem; line-height: 1.3; }
+h3 { font-size: 1.125rem; line-height: 1.4; }
+p, span, label, input, button { font-family: 'Inter', sans-serif; }
+
+/* Contenedor Principal Split-Screen */
+.login-split-layout {
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Fondo Ambiental Iluminado */
+.login-ambient-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 25%, rgba(37, 99, 235, 0.16) 0%, transparent 48%),
+    radial-gradient(circle at 85% 75%, rgba(16, 185, 129, 0.12) 0%, transparent 48%);
+  z-index: 0;
+}
+
+/* Columna Izquierda: Consola de Acceso */
+.login-form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 32px;
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.login-auth-card {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.7);
+}
+
+/* Encabezado del Formulario */
+.login-card-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-brand-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.login-brand-logo {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 16px var(--primary-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-brand-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.login-subtitle {
+  font-size: 0.875rem;
+  color: var(--slate-400);
+}
+
+/* Badge de Aislamiento Tenant Físico */
+.login-tenant-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.28);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--emerald-400);
+  margin-top: 16px;
+}
+
+.login-tenant-badge i {
+  font-size: 1rem;
+}
+
+/* Campos de Formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--slate-300);
+  margin-bottom: 8px;
+}
+
+.form-label.required::after {
+  content: " *";
+  color: var(--rose-400);
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon-left {
+  position: absolute;
+  left: 16px;
+  color: var(--slate-400);
+  font-size: 1.125rem;
+  pointer-events: none;
+}
+
+.form-input {
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  padding: 12px 16px 12px 48px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9375rem;
+  color: #ffffff;
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-input::placeholder {
+  color: var(--slate-500);
+}
+
+.form-input:hover {
+  border-color: var(--slate-500);
+  background-color: rgba(15, 23, 42, 0.95);
+}
+
+.form-input:focus {
+  border-color: var(--border-focus);
+  background-color: var(--slate-900);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* Input Password con Botón Reveal */
+.input-wrapper-password .form-input {
+  padding-right: 48px;
+}
+
+.btn-password-toggle {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  background: transparent;
+  border: none;
+  color: var(--slate-400);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  border-radius: var(--radius-xs);
+  transition: color 0.2s ease;
+}
+
+.btn-password-toggle:hover {
+  color: #ffffff;
+}
+
+.btn-password-toggle:focus-visible {
+  outline: 2px solid var(--primary);
+  color: #ffffff;
+}
+
+/* Mensajes de Alerta Accesibles */
+.alert-danger {
+  background-color: var(--rose-soft);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.32);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.alert-danger.d-none {
+  display: none !important;
+}
+
+/* Botón Principal */
+.btn-submit-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  min-height: 48px;
+  padding: 12px 24px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--primary) 0%, #1d4ed8 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--primary-glow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 4px;
+}
+
+.btn-submit-login:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -2px rgba(37, 99, 235, 0.5);
+}
+
+.btn-submit-login:focus-visible {
+  outline: 3px solid #60a5fa;
+  outline-offset: 2px;
+}
+
+.btn-submit-login:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Divisor Decorativo */
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: var(--slate-500);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border-subtle);
+}
+
+.login-divider span {
+  padding: 0 12px;
+}
+
+/* Recuadro de Acceso Demo */
+.login-demo-box {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.login-demo-hint {
+  font-size: 0.75rem;
+  color: var(--slate-400);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-demo-fill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-sm);
+  color: var(--slate-200);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-demo-fill:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border-color: var(--slate-400);
+}
+
+.btn-demo-fill:focus-visible {
+  outline: 2px solid var(--primary);
+}
+
+/* Enlaces del Footer */
+.login-card-footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--slate-400);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.login-card-footer a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 600;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 8px;
+  border-radius: var(--radius-xs);
+  transition: color 0.2s;
+}
+
+.login-card-footer a:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.login-card-footer a:focus-visible {
+  outline: 2px solid var(--primary);
+}
+
+.login-card-footer a.link-home-back {
+  color: var(--slate-400);
+  font-weight: 500;
+}
+
+.login-card-footer a.link-home-back:hover {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+/* Spinner */
+.spinner-border-sm {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spinAuth 0.75s linear infinite;
+}
+
+@keyframes spinAuth {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   COLUMNA DERECHA: SHOWCASE CORPORATIVO & VALOR DEL SISTEMA
+   ========================================================================== */
+.login-showcase-column {
+  flex: 1.15;
+  background: linear-gradient(145deg, #0a1120 0%, #070c17 100%);
+  border-left: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 56px 48px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.login-showcase-column::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.showcase-header-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(37, 99, 235, 0.15);
+  border: 1px solid rgba(37, 99, 235, 0.3);
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #93c5fd;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+}
+
+.showcase-title {
+  font-size: 2.125rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+
+.showcase-title .text-gradient-azure {
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.showcase-desc {
+  font-size: 1rem;
+  color: var(--slate-300);
+  line-height: 1.6;
+  margin-bottom: 36px;
+  max-width: 540px;
+}
+
+/* Tarjetas de Propiedades del Sistema */
+.showcase-features-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.showcase-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: var(--bg-glass-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  backdrop-filter: blur(12px);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.showcase-feature-item:hover {
+  transform: translateX(4px);
+  border-color: rgba(37, 99, 235, 0.35);
+}
+
+.showcase-icon-box {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.icon-blue-glow {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(37, 99, 235, 0.4);
+}
+
+.icon-emerald-glow {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--emerald-400);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.icon-purple-glow {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.showcase-feature-item h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.showcase-feature-item p {
+  font-size: 0.875rem;
+  color: var(--slate-300);
+  line-height: 1.5;
+}
+
+/* Barra de Garantías & Certificación */
+.showcase-trust-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.trust-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--slate-300);
+}
+
+.trust-badge-pill i {
+  color: var(--emerald-400);
+  font-size: 1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (BREAKPOINTS LIMPIOS)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .login-split-layout {
+    flex-direction: column;
+  }
+
+  .login-showcase-column {
+    display: none;
+  }
+
+  .login-form-column {
+    padding: 32px 16px;
+    max-width: 100%;
+  }
+
+  .login-auth-card {
+    padding: 32px 24px;
+  }
+}

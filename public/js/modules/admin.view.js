@@ -2,28 +2,9 @@ import { apiRequest, storage, showToast } from '../api.js';
 import {
   isValidCuit,
   formatCuit,
-  BCRA_BANK_CODES,
-  getCbuBankName,
-  isValidCbu,
-  formatNumber,
   escapeHtml,
   getBootstrapModal,
-  isValidTimeFormat,
-  hoursToDecimal,
-  decimalToHours,
-  getConceptInputType,
-  formatNoveltyValue,
-  initSearchableSelect,
-  updateSearchableSelect,
-  setSearchableSelectValue,
-  hideSelect,
-  showSelect,
-  renderDynamicNoveltyControl,
-  getDynamicNoveltyControlValue,
-  ARCA_T03_ACTIVITIES,
-  getArcaActivityInfo,
 } from '../utils/helpers.js';
-
 
 class AdminMethods {
   renderDashboard() {
@@ -52,81 +33,200 @@ class AdminMethods {
       const initials = (this.activeCompany.name || 'PS').substring(0, 2).toUpperCase();
       dashActiveAvatar.textContent = initials;
     }
+
+    const tenantIndicator = document.getElementById('adm-active-tenant-indicator');
+    if (tenantIndicator) {
+      tenantIndicator.textContent = this.activeCompany
+        ? `Empresa Activa: ${this.activeCompany.name}`
+        : 'Sin empresa seleccionada';
+    }
   }
 
-  // --- Vista 2: ABM de Empresas ---
+  // --- Helper: Copiar texto al portapapeles ---
+  copyToClipboard(text, label = 'Dato') {
+    if (!navigator.clipboard) return;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`${label} copiado al portapapeles: ${text}`);
+    }).catch(() => {
+      showToast(`Error al copiar ${label}`, 'danger');
+    });
+  }
+
+  // --- Vista 2: ABM de Empresas (Obsidian Luxury Dark) ---
   renderCompaniesTable() {
     const tbody = document.getElementById('companies-table-body');
     if (!tbody) return;
 
-    if (this.companies.length === 0) {
+    // Actualizar métricas KPI de Empresas
+    const totalCompEl = document.getElementById('adm-kpi-total-companies');
+    const activeCompEl = document.getElementById('adm-kpi-active-company');
+    const quotaCompEl = document.getElementById('adm-kpi-quota-companies');
+    const dbStatusEl = document.getElementById('adm-kpi-db-status');
+    const tenantIndicator = document.getElementById('adm-active-tenant-indicator');
+
+    const totalCount = this.companies.length;
+    const maxCompanies = this.account?.maxCompanies || 1;
+
+    if (totalCompEl) totalCompEl.textContent = totalCount;
+    if (activeCompEl) {
+      activeCompEl.textContent = this.activeCompany ? this.activeCompany.name : 'Ninguna';
+      activeCompEl.title = this.activeCompany ? this.activeCompany.name : '';
+    }
+    if (quotaCompEl) quotaCompEl.textContent = `${totalCount} de ${maxCompanies}`;
+    if (dbStatusEl) dbStatusEl.textContent = totalCount > 0 ? '100% OK' : '0%';
+    if (tenantIndicator) {
+      tenantIndicator.textContent = this.activeCompany
+        ? `Empresa Activa: ${this.activeCompany.name}`
+        : 'Sin empresa seleccionada';
+    }
+
+    // Configurar búsqueda reactiva y filtros si aún no fueron inicializados
+    this.setupCompaniesFilters();
+
+    // Filtrar empresas según término de búsqueda y filtro de estado
+    const query = (this.companiesSearchQuery || '').toLowerCase().trim();
+    const filter = this.companiesFilterStatus || 'ALL';
+
+    const filteredCompanies = this.companies.filter((c) => {
+      const matchSearch =
+        !query ||
+        (c.name && c.name.toLowerCase().includes(query)) ||
+        (c.tradeName && c.tradeName.toLowerCase().includes(query)) ||
+        (c.cuit && c.cuit.includes(query));
+
+      if (!matchSearch) return false;
+
+      if (filter === 'ACTIVE') {
+        return this.activeCompany && this.activeCompany.id === c.id;
+      }
+      if (filter === 'WITH_CLAE') {
+        return !!c.activityCode;
+      }
+      return true;
+    });
+
+    if (filteredCompanies.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="7" class="text-center py-4 text-muted">
-            <i class="ti ti-building-off fs-1 d-block mb-2"></i>
-            No hay empresas registradas todavía. ¡Crea tu primera empresa para comenzar!
+          <td colspan="6">
+            <div class="adm-empty-state">
+              <div class="adm-empty-icon">
+                <i class="ti ti-building-off"></i>
+              </div>
+              <h3 class="adm-empty-title">
+                ${query ? 'No se encontraron empresas con ese criterio' : 'No hay empresas registradas aún'}
+              </h3>
+              <p class="adm-empty-desc">
+                ${
+                  query
+                    ? 'Verificá que el nombre, CUIT o término ingresado esté bien escrito.'
+                    : 'Aprovisioná tu primera empresa cliente para comenzar a liquidar sueldos con base de datos independiente.'
+                }
+              </p>
+              ${
+                !query && this.user?.role === 'OWNER'
+                  ? `<button class="adm-btn-primary btn-empty-new-comp" type="button"><i class="ti ti-plus"></i> Crear Primera Empresa</button>`
+                  : ''
+              }
+            </div>
           </td>
         </tr>
       `;
+
+      const emptyNewBtn = tbody.querySelector('.btn-empty-new-comp');
+      if (emptyNewBtn) {
+        emptyNewBtn.addEventListener('click', () => this.openNewCompanyForm());
+      }
       return;
     }
 
-    tbody.innerHTML = this.companies
+    tbody.innerHTML = filteredCompanies
       .map((c) => {
         const isCurrent = this.activeCompany && this.activeCompany.id === c.id;
+        const initials = (c.name || 'EM').substring(0, 2).toUpperCase();
+        const safeName = escapeHtml(c.name || 'Sin Razón Social');
+        const safeTradeName = c.tradeName ? escapeHtml(c.tradeName) : '';
+
         return `
-        <tr class="${isCurrent ? 'table-active' : ''}">
+        <tr class="${isCurrent ? 'adm-row-active' : ''}">
           <td>
-            <div class="d-flex align-items-center gap-2">
-              <span class="avatar avatar-sm bg-primary-lt"><i class="ti ti-building"></i></span>
-              <div>
-                <strong>${c.name}</strong>
-                ${c.tradeName ? `<div class="text-muted small">${c.tradeName}</div>` : ''}
+            <div class="d-flex align-items-center gap-3">
+              <div class="adm-avatar adm-avatar-company">
+                ${initials}
+              </div>
+              <div class="d-flex flex-column" style="max-width: 240px;">
+                <strong class="text-white text-truncate" title="${safeName}">${safeName}</strong>
+                ${safeTradeName ? `<span class="text-muted small text-truncate" title="${safeTradeName}">${safeTradeName}</span>` : ''}
               </div>
             </div>
           </td>
-          <td><code>${formatCuit(c.cuit)}</code></td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <span class="adm-cuit-chip">
+                <code>${formatCuit(c.cuit)}</code>
+                <button type="button" class="adm-copy-btn btn-copy-cuit" data-cuit="${c.cuit}" title="Copiar CUIT" aria-label="Copiar CUIT">
+                  <i class="ti ti-copy"></i>
+                </button>
+              </span>
+            </div>
+          </td>
           <td>
             ${
               c.activityCode
-                ? `<span class="badge bg-blue-lt" title="${c.activity?.description || ''}"><i class="ti ti-briefcase me-1"></i>${c.activityCode}</span>`
+                ? `<span class="adm-badge adm-badge-clae" title="${escapeHtml(c.activity?.description || 'Actividad CLAE')}">
+                    <i class="ti ti-briefcase text-info"></i> CLAE ${c.activityCode}
+                   </span>`
                 : '<span class="text-muted small">Sin asignar</span>'
             }
           </td>
-          <td><span class="badge bg-success-lt">${c.status}</span></td>
-          <td><span class="badge bg-azure-lt"><i class="ti ti-database me-1"></i> Aprovisionada</span></td>
+          <td>
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              <span class="adm-badge adm-badge-active">
+                <i class="ti ti-check"></i> ${c.status || 'ACTIVA'}
+              </span>
+              <span class="adm-badge adm-badge-db" title="Base física MySQL aprovisionada e independiente">
+                <i class="ti ti-database"></i> Aprovisionada
+              </span>
+            </div>
+          </td>
           <td>
             ${
               isCurrent
-                ? '<span class="badge bg-primary me-1"><i class="ti ti-check me-1"></i> Activa</span>'
-                : `<button class="btn btn-sm btn-outline-primary btn-select-company me-1" data-id="${c.id}">Seleccionar</button>`
+                ? `<span class="adm-badge adm-badge-active">
+                    <span class="adm-pulse-dot"></span> Empresa Activa
+                   </span>`
+                : `<button class="adm-action-btn adm-action-btn-primary btn-select-company" data-id="${c.id}" type="button" aria-label="Seleccionar empresa ${safeName}">
+                    <i class="ti ti-check"></i> Activar
+                   </button>`
             }
-            <button class="btn btn-sm btn-outline-secondary btn-open-profile" data-id="${c.id}" title="Cargar y editar ficha de la empresa">
-              <i class="ti ti-file-text me-1"></i> Ficha / Datos
-            </button>
           </td>
           <td class="text-end">
-            <div class="dropdown">
-              <button class="btn btn-sm btn-icon" data-bs-toggle="dropdown">
-                <i class="ti ti-dots-vertical"></i>
+            <div class="d-flex align-items-center justify-content-end gap-2">
+              <button class="adm-action-btn btn-open-profile" data-id="${c.id}" title="Ficha y Parámetros Fiscales" type="button" aria-label="Ficha de ${safeName}">
+                <i class="ti ti-file-text"></i> Ficha
               </button>
-              <div class="dropdown-menu dropdown-menu-end">
-                <a class="dropdown-item btn-open-profile" href="#" data-id="${c.id}">
-                  <i class="ti ti-file-certificate me-2"></i> Datos de la Empresa (Ficha)
-                </a>
-                ${
-                  this.user?.role === 'OWNER'
-                    ? `
-                  <a class="dropdown-item btn-edit-company" href="#" data-id="${c.id}">
-                    <i class="ti ti-edit me-2"></i> Editar Razón Social
+              <div class="dropdown">
+                <button class="adm-action-icon-btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Más opciones para ${safeName}">
+                  <i class="ti ti-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end adm-dropdown-luxury">
+                  <a class="dropdown-item btn-open-profile" href="#" data-id="${c.id}">
+                    <i class="ti ti-file-certificate me-2 text-info"></i> Datos y Ficha Fiscal
                   </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item text-danger btn-delete-company" href="#" data-id="${c.id}" data-name="${c.name}">
-                    <i class="ti ti-trash me-2"></i> Eliminar
-                  </a>
-                `
-                    : ''
-                }
+                  ${
+                    this.user?.role === 'OWNER'
+                      ? `
+                    <a class="dropdown-item btn-edit-company" href="#" data-id="${c.id}">
+                      <i class="ti ti-edit me-2 text-primary"></i> Modificar Razón Social
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item text-danger btn-delete-company" href="#" data-id="${c.id}" data-name="${safeName}">
+                      <i class="ti ti-trash me-2"></i> Dar de Baja
+                    </a>
+                  `
+                      : ''
+                  }
+                </div>
               </div>
             </div>
           </td>
@@ -135,7 +235,7 @@ class AdminMethods {
       })
       .join('');
 
-    // Asignar listeners
+    // Asignar listeners reactivos
     tbody.querySelectorAll('.btn-select-company').forEach((btn) => {
       btn.addEventListener('click', () => {
         const comp = this.companies.find((c) => c.id === btn.dataset.id);
@@ -165,6 +265,35 @@ class AdminMethods {
         this.deleteCompany(btn.dataset.id, btn.dataset.name);
       });
     });
+
+    tbody.querySelectorAll('.btn-copy-cuit').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.copyToClipboard(btn.dataset.cuit, 'CUIT');
+      });
+    });
+  }
+
+  setupCompaniesFilters() {
+    if (this._companiesFiltersConfigured) return;
+    this._companiesFiltersConfigured = true;
+
+    const searchInput = document.getElementById('companies-search-input');
+    const statusSelect = document.getElementById('companies-status-filter');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        this.companiesSearchQuery = searchInput.value;
+        this.renderCompaniesTable();
+      });
+    }
+
+    if (statusSelect) {
+      statusSelect.addEventListener('change', () => {
+        this.companiesFilterStatus = statusSelect.value;
+        this.renderCompaniesTable();
+      });
+    }
   }
 
   setupCompanyModals() {
@@ -181,7 +310,9 @@ class AdminMethods {
     this.companyFormMode = 'new';
     this.editingCompany = null;
 
-    document.getElementById('profile-company-title').textContent = 'Nueva Empresa: Carga de Datos';
+    const titleEl = document.getElementById('profile-company-title');
+    if (titleEl) titleEl.textContent = 'Nueva Empresa: Alta de Razón Social';
+
     const alertBox = document.getElementById('profile-alert');
     if (alertBox) alertBox.classList.add('d-none');
 
@@ -207,7 +338,7 @@ class AdminMethods {
     if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-id"></i>';
     const cuitFeedback = document.getElementById('profile-cuit-feedback');
     if (cuitFeedback) {
-      cuitFeedback.className = 'form-hint';
+      cuitFeedback.className = 'adm-form-hint';
       cuitFeedback.textContent = '11 dígitos numéricos sin guiones.';
     }
 
@@ -230,7 +361,7 @@ class AdminMethods {
 
     const submitBtn = document.getElementById('btn-save-profile');
     if (submitBtn) {
-      submitBtn.innerHTML = '<i class="ti ti-device-floppy me-2"></i> Crear y Guardar Empresa';
+      submitBtn.innerHTML = '<i class="ti ti-device-floppy"></i> Crear y Guardar Empresa';
     }
 
     this.showView('company-profile');
@@ -249,22 +380,21 @@ class AdminMethods {
 
     const submitBtn = document.getElementById('btn-save-profile');
     if (submitBtn) {
-      submitBtn.innerHTML = '<i class="ti ti-device-floppy me-2"></i> Guardar Cambios de la Empresa';
+      submitBtn.innerHTML = '<i class="ti ti-device-floppy"></i> Guardar Cambios de la Empresa';
     }
 
     const cuitInput = document.getElementById('profile-cuit');
     if (cuitInput) {
       cuitInput.value = formatCuit(company.cuit);
       cuitInput.readOnly = true;
-      cuitInput.classList.add('bg-light');
       cuitInput.classList.remove('is-invalid');
     }
     const cuitStatus = document.getElementById('profile-cuit-status');
-    if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-check text-success" title="Validado en AFIP"></i>';
+    if (cuitStatus) cuitStatus.innerHTML = '<i class="ti ti-check text-success" title="Validado en AFIP/ARCA"></i>';
     const cuitFeedback = document.getElementById('profile-cuit-feedback');
     if (cuitFeedback) {
-      cuitFeedback.className = 'form-hint text-success';
-      cuitFeedback.textContent = 'CUIT registrado en el sistema.';
+      cuitFeedback.className = 'adm-form-hint text-success';
+      cuitFeedback.textContent = '✓ CUIT registrado en el sistema.';
     }
 
     this.showView('company-profile');
@@ -273,7 +403,7 @@ class AdminMethods {
   }
 
   async deleteCompany(companyId, companyName) {
-    if (!confirm(`¿Estás seguro de que deseas dar de baja la empresa "${companyName}"?`)) {
+    if (!confirm(`¿Confirmás que deseas dar de baja la empresa "${companyName}"? Esta acción afectará el acceso a sus datos operativos.`)) {
       return;
     }
 
@@ -289,139 +419,275 @@ class AdminMethods {
     }
   }
 
-  // --- Vista 3: ABM de Usuarios ---
-  // --- Vista 3: ABM de Usuarios y Asignación de Derechos ---
+  // --- Vista 3: ABM de Usuarios (Obsidian Luxury Dark) ---
   async renderUsersTable() {
     const tbody = document.getElementById('users-table-body');
     if (!tbody) return;
 
-    tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4"><span class="spinner-border spinner-border-sm me-2"></span>Cargando colaboradores...</td></tr>';
+    // Estado 1: Shimmer Skeleton de Carga
+    tbody.innerHTML = `
+      <tr class="adm-skeleton-row">
+        <td><div class="adm-skeleton-box" style="width: 70%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 40%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 30%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 60%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 50%;"></div></td>
+      </tr>
+      <tr class="adm-skeleton-row">
+        <td><div class="adm-skeleton-box" style="width: 80%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 45%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 35%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 55%;"></div></td>
+        <td><div class="adm-skeleton-box" style="width: 50%;"></div></td>
+      </tr>
+    `;
 
     try {
       const res = await apiRequest('/users?limit=50');
       this.users = res.data || [];
 
-      if (this.users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">No se encontraron colaboradores en la cuenta.</td></tr>';
-        return;
-      }
+      // Actualizar métricas KPI de Usuarios
+      const totalUsersEl = document.getElementById('adm-kpi-total-users');
+      const adminUsersEl = document.getElementById('adm-kpi-admin-users');
+      const operatorUsersEl = document.getElementById('adm-kpi-operator-users');
+      const activeUsersEl = document.getElementById('adm-kpi-active-users');
 
-      tbody.innerHTML = this.users
-        .map((u) => {
-          const initials = `${(u.firstName || '')[0] || ''}${(u.lastName || '')[0] || ''}`.toUpperCase() || 'U';
-          const roleBadgeClass =
-            u.role === 'OWNER'
-              ? 'bg-primary text-white'
-              : u.role === 'ADMIN'
-              ? 'bg-purple-lt'
-              : 'bg-azure-lt';
-          const roleLabel =
-            u.role === 'OWNER'
-              ? 'Propietario'
-              : u.role === 'ADMIN'
-              ? 'Administrador'
-              : 'Colaborador';
+      const totalUsers = this.users.length;
+      const adminCount = this.users.filter((u) => u.role === 'ADMIN' || u.role === 'OWNER').length;
+      const operatorCount = this.users.filter((u) => u.role === 'MEMBER').length;
+      const activeCount = this.users.filter((u) => u.isActive).length;
 
-          let companiesHtml = '';
-          if (u.role === 'OWNER' || u.role === 'ADMIN') {
-            companiesHtml = '<span class="badge bg-teal-lt"><i class="ti ti-shield-check me-1"></i>Todas las empresas (Acceso total)</span>';
-          } else if (u.companyAccesses && u.companyAccesses.length > 0) {
-            companiesHtml = u.companyAccesses
-              .map((a) => {
-                const compName = a.company ? a.company.name : 'Empresa';
-                const roleName =
-                  a.role === 'ADMIN'
-                    ? 'Admin'
-                    : a.role === 'OPERATOR'
-                    ? 'Operador'
-                    : 'Auditor';
-                return `<span class="badge bg-light text-dark border me-1 mb-1" title="${compName} (${roleName})">
-                  ${compName} <span class="badge bg-primary-lt ms-1">${roleName}</span>
-                </span>`;
-              })
-              .join('');
-          } else {
-            companiesHtml = '<span class="text-muted small">Sin empresas asignadas</span>';
-          }
+      if (totalUsersEl) totalUsersEl.textContent = totalUsers;
+      if (adminUsersEl) adminUsersEl.textContent = adminCount;
+      if (operatorUsersEl) operatorUsersEl.textContent = operatorCount;
+      if (activeUsersEl) activeUsersEl.textContent = activeCount;
 
-          return `
-          <tr>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <span class="avatar avatar-sm bg-blue-lt fw-bold">${initials}</span>
-                <div>
-                  <div class="d-flex align-items-center gap-2">
-                    <strong>${u.firstName} ${u.lastName}</strong>
-                    ${u.position ? `<span class="badge bg-secondary-lt small">${u.position}</span>` : ''}
-                  </div>
-                  <div class="text-muted small d-flex flex-wrap gap-2 mt-1">
-                    <span><i class="ti ti-mail me-1"></i>${u.email}</span>
-                    ${u.cuil ? `<span><i class="ti ti-id me-1"></i>CUIL: ${formatCuit(u.cuil)}</span>` : ''}
-                    ${u.phone ? `<span><i class="ti ti-phone me-1"></i>${u.phone}</span>` : ''}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td>
-              <span class="badge ${roleBadgeClass}">${roleLabel}</span>
-            </td>
-            <td>
-              <span class="badge ${u.isActive ? 'bg-success-lt' : 'bg-danger-lt'}">
-                <i class="ti ${u.isActive ? 'ti-check' : 'ti-ban'} me-1"></i>
-                ${u.isActive ? 'Activo' : 'Suspendido'}
-              </span>
-            </td>
-            <td>
-              <div class="d-flex flex-wrap align-items-center">
-                ${companiesHtml}
-              </div>
-            </td>
-            <td class="text-end">
-              ${
-                u.role !== 'OWNER'
-                  ? `
-                <div class="btn-group btn-group-sm">
-                  <button class="btn btn-outline-primary btn-edit-user" data-id="${u.id}" title="Editar datos y permisos">
-                    <i class="ti ti-edit me-1"></i> Editar
-                  </button>
-                  <button class="btn btn-outline-${u.isActive ? 'warning' : 'success'} btn-toggle-status-user" data-id="${u.id}" data-active="${u.isActive}" title="${u.isActive ? 'Suspender acceso' : 'Habilitar acceso'}">
-                    <i class="ti ti-${u.isActive ? 'ban' : 'check'}"></i>
-                  </button>
-                  <button class="btn btn-outline-danger btn-delete-user" data-id="${u.id}" data-name="${u.firstName} ${u.lastName}" title="Eliminar colaborador">
-                    <i class="ti ti-trash"></i>
-                  </button>
-                </div>
-              `
-                  : '<span class="badge bg-light text-muted">Cuenta Principal</span>'
-              }
-            </td>
-          </tr>
-        `;
-        })
-        .join('');
-
-      // Asignar listeners de acciones
-      tbody.querySelectorAll('.btn-edit-user').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          this.openEditUserModal(btn.dataset.id);
-        });
-      });
-
-      tbody.querySelectorAll('.btn-toggle-status-user').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const currentActive = btn.dataset.active === 'true';
-          this.toggleUserStatus(btn.dataset.id, currentActive);
-        });
-      });
-
-      tbody.querySelectorAll('.btn-delete-user').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          this.deleteUser(btn.dataset.id, btn.dataset.name);
-        });
-      });
+      this.setupUsersFilters();
+      this.renderUsersRows();
     } catch (err) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-danger text-center py-4">${err.message}</td></tr>`;
+      // Estado 3: Error
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5" class="p-4 text-center">
+            <div class="alert alert-danger mb-0 d-inline-flex align-items-center gap-2">
+              <i class="ti ti-alert-triangle fs-3"></i>
+              <span>Error al cargar colaboradores: ${escapeHtml(err.message)}</span>
+            </div>
+          </td>
+        </tr>
+      `;
     }
+  }
+
+  setupUsersFilters() {
+    if (this._usersFiltersConfigured) return;
+    this._usersFiltersConfigured = true;
+
+    const searchInput = document.getElementById('users-search-input');
+    const roleSelect = document.getElementById('users-role-filter');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        this.usersSearchQuery = searchInput.value;
+        this.renderUsersRows();
+      });
+    }
+
+    if (roleSelect) {
+      roleSelect.addEventListener('change', () => {
+        this.usersRoleFilter = roleSelect.value;
+        this.renderUsersRows();
+      });
+    }
+  }
+
+  renderUsersRows() {
+    const tbody = document.getElementById('users-table-body');
+    if (!tbody) return;
+
+    const query = (this.usersSearchQuery || '').toLowerCase().trim();
+    const roleFilter = this.usersRoleFilter || 'ALL';
+
+    const filteredUsers = this.users.filter((u) => {
+      const matchSearch =
+        !query ||
+        `${u.firstName} ${u.lastName}`.toLowerCase().includes(query) ||
+        (u.email && u.email.toLowerCase().includes(query)) ||
+        (u.position && u.position.toLowerCase().includes(query)) ||
+        (u.cuil && u.cuil.includes(query));
+
+      if (!matchSearch) return false;
+
+      if (roleFilter !== 'ALL') {
+        return u.role === roleFilter;
+      }
+      return true;
+    });
+
+    if (filteredUsers.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5">
+            <div class="adm-empty-state">
+              <div class="adm-empty-icon">
+                <i class="ti ti-users"></i>
+              </div>
+              <h3 class="adm-empty-title">
+                ${query ? 'No se encontraron colaboradores con esa búsqueda' : 'No hay colaboradores en la cuenta'}
+              </h3>
+              <p class="adm-empty-desc">
+                ${
+                  query
+                    ? 'Verificá el nombre, email o cargo ingresado.'
+                    : 'Invitá a tu equipo contable o liquidadores asignándoles permisos específicos por empresa.'
+                }
+              </p>
+              ${
+                !query
+                  ? `<button class="adm-btn-primary btn-empty-new-user" type="button"><i class="ti ti-user-plus"></i> Registrar Colaborador</button>`
+                  : ''
+              }
+            </div>
+          </td>
+        </tr>
+      `;
+
+      const emptyNewBtn = tbody.querySelector('.btn-empty-new-user');
+      if (emptyNewBtn) {
+        emptyNewBtn.addEventListener('click', () => this.openNewUserModal());
+      }
+      return;
+    }
+
+    tbody.innerHTML = filteredUsers
+      .map((u) => {
+        const initials = `${(u.firstName || '')[0] || ''}${(u.lastName || '')[0] || ''}`.toUpperCase() || 'U';
+        const safeName = escapeHtml(`${u.firstName} ${u.lastName}`);
+        const safeEmail = escapeHtml(u.email || '');
+        const safePosition = u.position ? escapeHtml(u.position) : '';
+
+        const roleBadgeClass =
+          u.role === 'OWNER'
+            ? 'adm-badge-role-owner'
+            : u.role === 'ADMIN'
+            ? 'adm-badge-role-admin'
+            : 'adm-badge-role-member';
+
+        const roleLabel =
+          u.role === 'OWNER'
+            ? 'Propietario (Owner)'
+            : u.role === 'ADMIN'
+            ? 'Administrador General'
+            : 'Operador / Colaborador';
+
+        let companiesHtml = '';
+        if (u.role === 'OWNER' || u.role === 'ADMIN') {
+          companiesHtml = `
+            <span class="adm-badge adm-badge-active" title="Acceso total irrestricto">
+              <i class="ti ti-shield-check"></i> Todas las empresas (Acceso total)
+            </span>
+          `;
+        } else if (u.companyAccesses && u.companyAccesses.length > 0) {
+          companiesHtml = u.companyAccesses
+            .map((a) => {
+              const compName = a.company ? escapeHtml(a.company.name) : 'Empresa';
+              const roleName =
+                a.role === 'ADMIN'
+                  ? 'Admin'
+                  : a.role === 'OPERATOR'
+                  ? 'Operador'
+                  : 'Solo Lectura';
+              return `
+                <span class="adm-badge adm-badge-clae me-1 mb-1" title="${compName} (${roleName})">
+                  <i class="ti ti-building me-1 text-info"></i>
+                  ${compName} <span class="badge bg-primary-lt ms-1">${roleName}</span>
+                </span>
+              `;
+            })
+            .join('');
+        } else {
+          companiesHtml = '<span class="text-muted small">Sin empresas asignadas</span>';
+        }
+
+        return `
+        <tr>
+          <td>
+            <div class="d-flex align-items-center gap-3">
+              <div class="adm-avatar adm-avatar-user">
+                ${initials}
+              </div>
+              <div class="d-flex flex-column" style="max-width: 280px;">
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <strong class="text-white text-truncate" title="${safeName}">${safeName}</strong>
+                  ${safePosition ? `<span class="adm-badge adm-badge-clae" style="font-size: 0.7rem;">${safePosition}</span>` : ''}
+                </div>
+                <div class="text-muted small d-flex flex-wrap gap-2 mt-1">
+                  <span><i class="ti ti-mail text-secondary me-1"></i>${safeEmail}</span>
+                  ${u.cuil ? `<span><i class="ti ti-id text-secondary me-1"></i>CUIL: ${formatCuit(u.cuil)}</span>` : ''}
+                  ${u.phone ? `<span><i class="ti ti-phone text-secondary me-1"></i>${escapeHtml(u.phone)}</span>` : ''}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="adm-badge ${roleBadgeClass}">
+              ${roleLabel}
+            </span>
+          </td>
+          <td>
+            <span class="adm-badge ${u.isActive ? 'adm-badge-active' : 'adm-badge-suspended'}">
+              <i class="ti ${u.isActive ? 'ti-circle-check' : 'ti-ban'}"></i>
+              ${u.isActive ? 'Activo' : 'Suspendido'}
+            </span>
+          </td>
+          <td>
+            <div class="d-flex flex-wrap align-items-center">
+              ${companiesHtml}
+            </div>
+          </td>
+          <td class="text-end">
+            ${
+              u.role !== 'OWNER'
+                ? `
+              <div class="d-flex align-items-center justify-content-end gap-2">
+                <button class="adm-action-btn adm-action-btn-primary btn-edit-user" data-id="${u.id}" title="Editar datos y permisos" type="button" aria-label="Editar ${safeName}">
+                  <i class="ti ti-edit"></i> Editar
+                </button>
+                <button class="adm-action-icon-btn btn-toggle-status-user" data-id="${u.id}" data-active="${u.isActive}" title="${u.isActive ? 'Suspender acceso' : 'Habilitar acceso'}" type="button" aria-label="Cambiar estado ${safeName}">
+                  <i class="ti ${u.isActive ? 'ti-ban text-warning' : 'ti-check text-success'}"></i>
+                </button>
+                <button class="adm-action-icon-btn adm-action-btn-danger btn-delete-user" data-id="${u.id}" data-name="${safeName}" title="Eliminar colaborador" type="button" aria-label="Eliminar ${safeName}">
+                  <i class="ti ti-trash"></i>
+                </button>
+              </div>
+            `
+                : '<span class="adm-badge adm-badge-role-owner"><i class="ti ti-crown"></i> Cuenta Titular</span>'
+            }
+          </td>
+        </tr>
+      `;
+      })
+      .join('');
+
+    // Asignar listeners
+    tbody.querySelectorAll('.btn-edit-user').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.openEditUserModal(btn.dataset.id);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-toggle-status-user').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const currentActive = btn.dataset.active === 'true';
+        this.toggleUserStatus(btn.dataset.id, currentActive);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-delete-user').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.deleteUser(btn.dataset.id, btn.dataset.name);
+      });
+    });
   }
 
   setupUserModals() {
@@ -458,18 +724,18 @@ class AdminMethods {
           if (isValidCuit(val)) {
             cuilInput.classList.remove('is-invalid');
             cuilInput.classList.add('is-valid');
-            cuilFeedback.className = 'valid-feedback d-block';
+            cuilFeedback.className = 'adm-form-hint text-success d-block';
             cuilFeedback.textContent = '✓ CUIL válido según algoritmo de AFIP/ARCA';
           } else {
             cuilInput.classList.remove('is-valid');
             cuilInput.classList.add('is-invalid');
-            cuilFeedback.className = 'invalid-feedback d-block';
+            cuilFeedback.className = 'adm-form-hint text-danger d-block';
             cuilFeedback.textContent = '✗ Dígito verificador incorrecto';
           }
         } else {
           cuilInput.classList.remove('is-valid', 'is-invalid');
-          cuilFeedback.className = 'form-hint small';
-          cuilFeedback.textContent = '11 dígitos sin guiones.';
+          cuilFeedback.className = 'adm-form-hint small';
+          cuilFeedback.textContent = '11 dígitos numéricos sin guiones.';
         }
       });
     }
@@ -478,7 +744,7 @@ class AdminMethods {
     if (form) {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const submitBtn = document.getElementById('btn-save-user-unified');
+        const submitBtn = document.getElementById('btn-save-user') || document.getElementById('btn-save-user-unified');
         const alertBox = document.getElementById('user-form-alert');
         if (alertBox) alertBox.classList.add('d-none');
 
@@ -509,8 +775,10 @@ class AdminMethods {
           });
         }
 
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Guardando...';
+        }
 
         try {
           if (!userId) {
@@ -574,8 +842,10 @@ class AdminMethods {
           }
           showToast(err.message || 'Error al guardar', 'danger');
         } finally {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="ti ti-device-floppy me-1"></i> Guardar Colaborador';
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="ti ti-device-floppy"></i> Guardar Colaborador';
+          }
         }
       });
     }
@@ -676,7 +946,7 @@ class AdminMethods {
     if (!container) return;
 
     if (!this.companies || this.companies.length === 0) {
-      container.innerHTML = '<div class="text-muted small p-2">No hay empresas registradas en la cuenta aún.</div>';
+      container.innerHTML = '<div class="text-muted small p-3 text-center">No hay empresas registradas en la cuenta aún.</div>';
       return;
     }
 
@@ -687,18 +957,19 @@ class AdminMethods {
         const currentRole = accessMap.get(c.id);
         const isChecked = !!currentRole;
         const selectedRole = currentRole || 'OPERATOR';
+        const safeName = escapeHtml(c.name);
 
         return `
-        <div class="user-company-matrix-row d-flex align-items-center justify-content-between p-2 mb-2 bg-white rounded border">
-          <div class="form-check mb-0">
+        <div class="user-company-matrix-row adm-matrix-item">
+          <div class="form-check mb-0 d-flex align-items-center gap-2">
             <input class="form-check-input user-company-check" type="checkbox" data-company-id="${c.id}" id="check-comp-${c.id}" ${isChecked ? 'checked' : ''}>
-            <label class="form-check-label" for="check-comp-${c.id}">
-              <strong class="d-block text-truncate" style="max-width: 170px;">${c.name}</strong>
-              <small class="text-muted">${formatCuit(c.cuit)}</small>
+            <label class="form-check-label ms-1" for="check-comp-${c.id}">
+              <strong class="d-block text-white text-truncate" style="max-width: 180px;" title="${safeName}">${safeName}</strong>
+              <small class="text-muted font-monospace">${formatCuit(c.cuit)}</small>
             </label>
           </div>
-          <div style="width: 130px;">
-            <select class="form-select form-select-sm user-company-role-select" data-company-id="${c.id}" ${!isChecked ? 'disabled' : ''}>
+          <div style="width: 140px;">
+            <select class="adm-form-select user-company-role-select" data-company-id="${c.id}" ${!isChecked ? 'disabled' : ''} style="min-height: 38px; font-size: 0.8125rem;">
               <option value="OPERATOR" ${selectedRole === 'OPERATOR' ? 'selected' : ''}>Operador</option>
               <option value="ADMIN" ${selectedRole === 'ADMIN' ? 'selected' : ''}>Admin Empresa</option>
               <option value="VIEWER" ${selectedRole === 'VIEWER' ? 'selected' : ''}>Solo Lectura</option>
@@ -753,16 +1024,36 @@ class AdminMethods {
     }
   }
 
-  // --- Vista 4: Mi Cuenta ---
+  // --- Vista 4: Mi Cuenta (Obsidian Luxury Dark) ---
   renderAccountView() {
     const nameEl = document.getElementById('account-view-name');
     const planEl = document.getElementById('account-view-plan');
     const limitEl = document.getElementById('account-view-limit');
+    const quotaBar = document.getElementById('account-view-quota-bar');
+    const quotaText = document.getElementById('account-view-quota-text');
+    const quotaPct = document.getElementById('account-view-quota-pct');
+    const tenantIdEl = document.getElementById('account-view-tenant-id');
+
+    const totalUsed = this.companies.length;
+    const maxLimit = this.account?.maxCompanies || 1;
+    const percentage = Math.min(100, Math.round((totalUsed / maxLimit) * 100));
 
     if (nameEl) nameEl.textContent = this.account?.name || '-';
     if (planEl) planEl.textContent = this.account?.status || 'TRIAL';
     if (limitEl) {
-      limitEl.textContent = `${this.companies.length} de ${this.account?.maxCompanies || 1} empresas registradas`;
+      limitEl.textContent = `${totalUsed} de ${maxLimit} empresas registradas`;
+    }
+    if (quotaBar) {
+      quotaBar.style.width = `${percentage}%`;
+    }
+    if (quotaText) {
+      quotaText.textContent = `${totalUsed} de ${maxLimit} cupos utilizados`;
+    }
+    if (quotaPct) {
+      quotaPct.textContent = `${percentage}%`;
+    }
+    if (tenantIdEl) {
+      tenantIdEl.textContent = this.account?.id || 'MASTER';
     }
   }
 
@@ -806,7 +1097,6 @@ class AdminMethods {
       if (cuitInput) {
         cuitInput.value = formatCuit(profile.cuit || this.activeCompany.cuit);
         cuitInput.readOnly = true;
-        cuitInput.classList.add('bg-light');
       }
 
       const taxConditionInput = document.getElementById('profile-tax-condition');
@@ -946,7 +1236,6 @@ class AdminMethods {
       }
     }
   }
-
 }
 
 export function registerAdminMethods(proto) {

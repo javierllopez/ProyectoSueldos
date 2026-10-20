@@ -79,10 +79,20 @@ export type HealthInsurance = $Result.DefaultSelection<Prisma.$HealthInsurancePa
  */
 export type Union = $Result.DefaultSelection<Prisma.$UnionPayload>
 /**
+ * Model UnionConcept
+ * 
+ */
+export type UnionConcept = $Result.DefaultSelection<Prisma.$UnionConceptPayload>
+/**
  * Model Mutual
  * 
  */
 export type Mutual = $Result.DefaultSelection<Prisma.$MutualPayload>
+/**
+ * Model MutualConcept
+ * 
+ */
+export type MutualConcept = $Result.DefaultSelection<Prisma.$MutualConceptPayload>
 /**
  * Model Employee
  * 
@@ -124,6 +134,11 @@ export type PayrollMatrix = $Result.DefaultSelection<Prisma.$PayrollMatrixPayloa
  */
 export type PayrollFixedValue = $Result.DefaultSelection<Prisma.$PayrollFixedValuePayload>
 /**
+ * Model PayrollFiscalPeriod
+ * 
+ */
+export type PayrollFiscalPeriod = $Result.DefaultSelection<Prisma.$PayrollFiscalPeriodPayload>
+/**
  * Model PayrollPeriod
  * 
  */
@@ -153,6 +168,16 @@ export type PayrollSetting = $Result.DefaultSelection<Prisma.$PayrollSettingPayl
  * 
  */
 export type PeriodNovelty = $Result.DefaultSelection<Prisma.$PeriodNoveltyPayload>
+/**
+ * Model EmployeeEmbargo
+ * 
+ */
+export type EmployeeEmbargo = $Result.DefaultSelection<Prisma.$EmployeeEmbargoPayload>
+/**
+ * Model EmployeeEmbargoConcept
+ * 
+ */
+export type EmployeeEmbargoConcept = $Result.DefaultSelection<Prisma.$EmployeeEmbargoConceptPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -403,6 +428,16 @@ export class PrismaClient<
   get union(): Prisma.UnionDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.unionConcept`: Exposes CRUD operations for the **UnionConcept** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UnionConcepts
+    * const unionConcepts = await prisma.unionConcept.findMany()
+    * ```
+    */
+  get unionConcept(): Prisma.UnionConceptDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.mutual`: Exposes CRUD operations for the **Mutual** model.
     * Example usage:
     * ```ts
@@ -411,6 +446,16 @@ export class PrismaClient<
     * ```
     */
   get mutual(): Prisma.MutualDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mutualConcept`: Exposes CRUD operations for the **MutualConcept** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MutualConcepts
+    * const mutualConcepts = await prisma.mutualConcept.findMany()
+    * ```
+    */
+  get mutualConcept(): Prisma.MutualConceptDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.employee`: Exposes CRUD operations for the **Employee** model.
@@ -493,6 +538,16 @@ export class PrismaClient<
   get payrollFixedValue(): Prisma.PayrollFixedValueDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.payrollFiscalPeriod`: Exposes CRUD operations for the **PayrollFiscalPeriod** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayrollFiscalPeriods
+    * const payrollFiscalPeriods = await prisma.payrollFiscalPeriod.findMany()
+    * ```
+    */
+  get payrollFiscalPeriod(): Prisma.PayrollFiscalPeriodDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.payrollPeriod`: Exposes CRUD operations for the **PayrollPeriod** model.
     * Example usage:
     * ```ts
@@ -551,6 +606,26 @@ export class PrismaClient<
     * ```
     */
   get periodNovelty(): Prisma.PeriodNoveltyDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeEmbargo`: Exposes CRUD operations for the **EmployeeEmbargo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeEmbargos
+    * const employeeEmbargos = await prisma.employeeEmbargo.findMany()
+    * ```
+    */
+  get employeeEmbargo(): Prisma.EmployeeEmbargoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeEmbargoConcept`: Exposes CRUD operations for the **EmployeeEmbargoConcept** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeEmbargoConcepts
+    * const employeeEmbargoConcepts = await prisma.employeeEmbargoConcept.findMany()
+    * ```
+    */
+  get employeeEmbargoConcept(): Prisma.EmployeeEmbargoConceptDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1005,7 +1080,9 @@ export namespace Prisma {
     WorkShiftDetail: 'WorkShiftDetail',
     HealthInsurance: 'HealthInsurance',
     Union: 'Union',
+    UnionConcept: 'UnionConcept',
     Mutual: 'Mutual',
+    MutualConcept: 'MutualConcept',
     Employee: 'Employee',
     SalaryScale: 'SalaryScale',
     Kinship: 'Kinship',
@@ -1014,12 +1091,15 @@ export namespace Prisma {
     EmployeeConcept: 'EmployeeConcept',
     PayrollMatrix: 'PayrollMatrix',
     PayrollFixedValue: 'PayrollFixedValue',
+    PayrollFiscalPeriod: 'PayrollFiscalPeriod',
     PayrollPeriod: 'PayrollPeriod',
     PaySlip: 'PaySlip',
     PaySlipItem: 'PaySlipItem',
     PaySlipBasis: 'PaySlipBasis',
     PayrollSetting: 'PayrollSetting',
-    PeriodNovelty: 'PeriodNovelty'
+    PeriodNovelty: 'PeriodNovelty',
+    EmployeeEmbargo: 'EmployeeEmbargo',
+    EmployeeEmbargoConcept: 'EmployeeEmbargoConcept'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1038,7 +1118,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "mutual" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1900,6 +1980,72 @@ export namespace Prisma {
           }
         }
       }
+      UnionConcept: {
+        payload: Prisma.$UnionConceptPayload<ExtArgs>
+        fields: Prisma.UnionConceptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UnionConceptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UnionConceptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          findFirst: {
+            args: Prisma.UnionConceptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UnionConceptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          findMany: {
+            args: Prisma.UnionConceptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>[]
+          }
+          create: {
+            args: Prisma.UnionConceptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          createMany: {
+            args: Prisma.UnionConceptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.UnionConceptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          update: {
+            args: Prisma.UnionConceptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          deleteMany: {
+            args: Prisma.UnionConceptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UnionConceptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.UnionConceptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UnionConceptPayload>
+          }
+          aggregate: {
+            args: Prisma.UnionConceptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUnionConcept>
+          }
+          groupBy: {
+            args: Prisma.UnionConceptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UnionConceptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UnionConceptCountArgs<ExtArgs>
+            result: $Utils.Optional<UnionConceptCountAggregateOutputType> | number
+          }
+        }
+      }
       Mutual: {
         payload: Prisma.$MutualPayload<ExtArgs>
         fields: Prisma.MutualFieldRefs
@@ -1963,6 +2109,72 @@ export namespace Prisma {
           count: {
             args: Prisma.MutualCountArgs<ExtArgs>
             result: $Utils.Optional<MutualCountAggregateOutputType> | number
+          }
+        }
+      }
+      MutualConcept: {
+        payload: Prisma.$MutualConceptPayload<ExtArgs>
+        fields: Prisma.MutualConceptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MutualConceptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MutualConceptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          findFirst: {
+            args: Prisma.MutualConceptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MutualConceptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          findMany: {
+            args: Prisma.MutualConceptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>[]
+          }
+          create: {
+            args: Prisma.MutualConceptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          createMany: {
+            args: Prisma.MutualConceptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.MutualConceptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          update: {
+            args: Prisma.MutualConceptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          deleteMany: {
+            args: Prisma.MutualConceptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MutualConceptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.MutualConceptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MutualConceptPayload>
+          }
+          aggregate: {
+            args: Prisma.MutualConceptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMutualConcept>
+          }
+          groupBy: {
+            args: Prisma.MutualConceptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MutualConceptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MutualConceptCountArgs<ExtArgs>
+            result: $Utils.Optional<MutualConceptCountAggregateOutputType> | number
           }
         }
       }
@@ -2494,6 +2706,72 @@ export namespace Prisma {
           }
         }
       }
+      PayrollFiscalPeriod: {
+        payload: Prisma.$PayrollFiscalPeriodPayload<ExtArgs>
+        fields: Prisma.PayrollFiscalPeriodFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayrollFiscalPeriodFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayrollFiscalPeriodFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          findFirst: {
+            args: Prisma.PayrollFiscalPeriodFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayrollFiscalPeriodFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          findMany: {
+            args: Prisma.PayrollFiscalPeriodFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>[]
+          }
+          create: {
+            args: Prisma.PayrollFiscalPeriodCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          createMany: {
+            args: Prisma.PayrollFiscalPeriodCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PayrollFiscalPeriodDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          update: {
+            args: Prisma.PayrollFiscalPeriodUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          deleteMany: {
+            args: Prisma.PayrollFiscalPeriodDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayrollFiscalPeriodUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PayrollFiscalPeriodUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollFiscalPeriodPayload>
+          }
+          aggregate: {
+            args: Prisma.PayrollFiscalPeriodAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayrollFiscalPeriod>
+          }
+          groupBy: {
+            args: Prisma.PayrollFiscalPeriodGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayrollFiscalPeriodGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayrollFiscalPeriodCountArgs<ExtArgs>
+            result: $Utils.Optional<PayrollFiscalPeriodCountAggregateOutputType> | number
+          }
+        }
+      }
       PayrollPeriod: {
         payload: Prisma.$PayrollPeriodPayload<ExtArgs>
         fields: Prisma.PayrollPeriodFieldRefs
@@ -2890,6 +3168,138 @@ export namespace Prisma {
           }
         }
       }
+      EmployeeEmbargo: {
+        payload: Prisma.$EmployeeEmbargoPayload<ExtArgs>
+        fields: Prisma.EmployeeEmbargoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeEmbargoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeEmbargoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeEmbargoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeEmbargoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeEmbargoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeEmbargoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeEmbargoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeEmbargoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          update: {
+            args: Prisma.EmployeeEmbargoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeEmbargoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeEmbargoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeEmbargoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeEmbargoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeEmbargo>
+          }
+          groupBy: {
+            args: Prisma.EmployeeEmbargoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeEmbargoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeEmbargoCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeEmbargoCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeEmbargoConcept: {
+        payload: Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>
+        fields: Prisma.EmployeeEmbargoConceptFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeEmbargoConceptFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeEmbargoConceptFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeEmbargoConceptFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeEmbargoConceptFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeEmbargoConceptFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeEmbargoConceptCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeEmbargoConceptCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeEmbargoConceptDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          update: {
+            args: Prisma.EmployeeEmbargoConceptUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeEmbargoConceptDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeEmbargoConceptUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeEmbargoConceptUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeEmbargoConceptPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeEmbargoConceptAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeEmbargoConcept>
+          }
+          groupBy: {
+            args: Prisma.EmployeeEmbargoConceptGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeEmbargoConceptGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeEmbargoConceptCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeEmbargoConceptCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2999,7 +3409,9 @@ export namespace Prisma {
     workShiftDetail?: WorkShiftDetailOmit
     healthInsurance?: HealthInsuranceOmit
     union?: UnionOmit
+    unionConcept?: UnionConceptOmit
     mutual?: MutualOmit
+    mutualConcept?: MutualConceptOmit
     employee?: EmployeeOmit
     salaryScale?: SalaryScaleOmit
     kinship?: KinshipOmit
@@ -3008,12 +3420,15 @@ export namespace Prisma {
     employeeConcept?: EmployeeConceptOmit
     payrollMatrix?: PayrollMatrixOmit
     payrollFixedValue?: PayrollFixedValueOmit
+    payrollFiscalPeriod?: PayrollFiscalPeriodOmit
     payrollPeriod?: PayrollPeriodOmit
     paySlip?: PaySlipOmit
     paySlipItem?: PaySlipItemOmit
     paySlipBasis?: PaySlipBasisOmit
     payrollSetting?: PayrollSettingOmit
     periodNovelty?: PeriodNoveltyOmit
+    employeeEmbargo?: EmployeeEmbargoOmit
+    employeeEmbargoConcept?: EmployeeEmbargoConceptOmit
   }
 
   /* Types for Logging */
@@ -3382,10 +3797,12 @@ export namespace Prisma {
    */
 
   export type UnionCountOutputType = {
+    unionConcepts: number
     employees: number
   }
 
   export type UnionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    unionConcepts?: boolean | UnionCountOutputTypeCountUnionConceptsArgs
     employees?: boolean | UnionCountOutputTypeCountEmployeesArgs
   }
 
@@ -3403,6 +3820,13 @@ export namespace Prisma {
   /**
    * UnionCountOutputType without action
    */
+  export type UnionCountOutputTypeCountUnionConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnionConceptWhereInput
+  }
+
+  /**
+   * UnionCountOutputType without action
+   */
   export type UnionCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeWhereInput
   }
@@ -3413,10 +3837,12 @@ export namespace Prisma {
    */
 
   export type MutualCountOutputType = {
+    mutualConcepts: number
     employees: number
   }
 
   export type MutualCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mutualConcepts?: boolean | MutualCountOutputTypeCountMutualConceptsArgs
     employees?: boolean | MutualCountOutputTypeCountEmployeesArgs
   }
 
@@ -3429,6 +3855,13 @@ export namespace Prisma {
      * Select specific fields to fetch from the MutualCountOutputType
      */
     select?: MutualCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MutualCountOutputType without action
+   */
+  export type MutualCountOutputTypeCountMutualConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MutualConceptWhereInput
   }
 
   /**
@@ -3448,6 +3881,7 @@ export namespace Prisma {
     relatives: number
     assignedConcepts: number
     periodNovelties: number
+    embargoes: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3455,6 +3889,7 @@ export namespace Prisma {
     relatives?: boolean | EmployeeCountOutputTypeCountRelativesArgs
     assignedConcepts?: boolean | EmployeeCountOutputTypeCountAssignedConceptsArgs
     periodNovelties?: boolean | EmployeeCountOutputTypeCountPeriodNoveltiesArgs
+    embargoes?: boolean | EmployeeCountOutputTypeCountEmbargoesArgs
   }
 
   // Custom InputTypes
@@ -3494,6 +3929,13 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountPeriodNoveltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PeriodNoveltyWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountEmbargoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeEmbargoWhereInput
   }
 
 
@@ -3566,11 +4008,21 @@ export namespace Prisma {
   export type ConceptCountOutputType = {
     assignedEmployees: number
     periodNovelties: number
+    embargoConcepts: number
+    unions: number
+    mutuals: number
+    unionConcepts: number
+    mutualConcepts: number
   }
 
   export type ConceptCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     assignedEmployees?: boolean | ConceptCountOutputTypeCountAssignedEmployeesArgs
     periodNovelties?: boolean | ConceptCountOutputTypeCountPeriodNoveltiesArgs
+    embargoConcepts?: boolean | ConceptCountOutputTypeCountEmbargoConceptsArgs
+    unions?: boolean | ConceptCountOutputTypeCountUnionsArgs
+    mutuals?: boolean | ConceptCountOutputTypeCountMutualsArgs
+    unionConcepts?: boolean | ConceptCountOutputTypeCountUnionConceptsArgs
+    mutualConcepts?: boolean | ConceptCountOutputTypeCountMutualConceptsArgs
   }
 
   // Custom InputTypes
@@ -3596,6 +4048,41 @@ export namespace Prisma {
    */
   export type ConceptCountOutputTypeCountPeriodNoveltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PeriodNoveltyWhereInput
+  }
+
+  /**
+   * ConceptCountOutputType without action
+   */
+  export type ConceptCountOutputTypeCountEmbargoConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeEmbargoConceptWhereInput
+  }
+
+  /**
+   * ConceptCountOutputType without action
+   */
+  export type ConceptCountOutputTypeCountUnionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnionWhereInput
+  }
+
+  /**
+   * ConceptCountOutputType without action
+   */
+  export type ConceptCountOutputTypeCountMutualsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MutualWhereInput
+  }
+
+  /**
+   * ConceptCountOutputType without action
+   */
+  export type ConceptCountOutputTypeCountUnionConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnionConceptWhereInput
+  }
+
+  /**
+   * ConceptCountOutputType without action
+   */
+  export type ConceptCountOutputTypeCountMutualConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MutualConceptWhereInput
   }
 
 
@@ -3627,6 +4114,37 @@ export namespace Prisma {
    */
   export type PayrollMatrixCountOutputTypeCountConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ConceptWhereInput
+  }
+
+
+  /**
+   * Count Type PayrollFiscalPeriodCountOutputType
+   */
+
+  export type PayrollFiscalPeriodCountOutputType = {
+    settlements: number
+  }
+
+  export type PayrollFiscalPeriodCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    settlements?: boolean | PayrollFiscalPeriodCountOutputTypeCountSettlementsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PayrollFiscalPeriodCountOutputType without action
+   */
+  export type PayrollFiscalPeriodCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriodCountOutputType
+     */
+    select?: PayrollFiscalPeriodCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PayrollFiscalPeriodCountOutputType without action
+   */
+  export type PayrollFiscalPeriodCountOutputTypeCountSettlementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayrollPeriodWhereInput
   }
 
 
@@ -3698,6 +4216,37 @@ export namespace Prisma {
    */
   export type PaySlipCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PaySlipItemWhereInput
+  }
+
+
+  /**
+   * Count Type EmployeeEmbargoCountOutputType
+   */
+
+  export type EmployeeEmbargoCountOutputType = {
+    concepts: number
+  }
+
+  export type EmployeeEmbargoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    concepts?: boolean | EmployeeEmbargoCountOutputTypeCountConceptsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EmployeeEmbargoCountOutputType without action
+   */
+  export type EmployeeEmbargoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoCountOutputType
+     */
+    select?: EmployeeEmbargoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EmployeeEmbargoCountOutputType without action
+   */
+  export type EmployeeEmbargoCountOutputTypeCountConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeEmbargoConceptWhereInput
   }
 
 
@@ -15773,6 +16322,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     code: string | null
+    conceptId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15782,6 +16332,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     code: string | null
+    conceptId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -15791,6 +16342,7 @@ export namespace Prisma {
     id: number
     name: number
     code: number
+    conceptId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -15802,6 +16354,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15811,6 +16364,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15820,6 +16374,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -15902,6 +16457,7 @@ export namespace Prisma {
     id: string
     name: string
     code: string | null
+    conceptId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -15928,9 +16484,12 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     code?: boolean
+    conceptId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    concept?: boolean | Union$conceptArgs<ExtArgs>
+    unionConcepts?: boolean | Union$unionConceptsArgs<ExtArgs>
     employees?: boolean | Union$employeesArgs<ExtArgs>
     _count?: boolean | UnionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["union"]>
@@ -15941,13 +16500,16 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     code?: boolean
+    conceptId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type UnionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["union"]>
+  export type UnionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "conceptId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["union"]>
   export type UnionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    concept?: boolean | Union$conceptArgs<ExtArgs>
+    unionConcepts?: boolean | Union$unionConceptsArgs<ExtArgs>
     employees?: boolean | Union$employeesArgs<ExtArgs>
     _count?: boolean | UnionCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -15955,12 +16517,15 @@ export namespace Prisma {
   export type $UnionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Union"
     objects: {
+      concept: Prisma.$ConceptPayload<ExtArgs> | null
+      unionConcepts: Prisma.$UnionConceptPayload<ExtArgs>[]
       employees: Prisma.$EmployeePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       code: string | null
+      conceptId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -16304,6 +16869,8 @@ export namespace Prisma {
    */
   export interface Prisma__UnionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    concept<T extends Union$conceptArgs<ExtArgs> = {}>(args?: Subset<T, Union$conceptArgs<ExtArgs>>): Prisma__ConceptClient<$Result.GetResult<Prisma.$ConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    unionConcepts<T extends Union$unionConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Union$unionConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     employees<T extends Union$employeesArgs<ExtArgs> = {}>(args?: Subset<T, Union$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -16337,6 +16904,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Union", 'String'>
     readonly name: FieldRef<"Union", 'String'>
     readonly code: FieldRef<"Union", 'String'>
+    readonly conceptId: FieldRef<"Union", 'String'>
     readonly createdAt: FieldRef<"Union", 'DateTime'>
     readonly updatedAt: FieldRef<"Union", 'DateTime'>
     readonly deletedAt: FieldRef<"Union", 'DateTime'>
@@ -16683,6 +17251,49 @@ export namespace Prisma {
   }
 
   /**
+   * Union.concept
+   */
+  export type Union$conceptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Concept
+     */
+    select?: ConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Concept
+     */
+    omit?: ConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConceptInclude<ExtArgs> | null
+    where?: ConceptWhereInput
+  }
+
+  /**
+   * Union.unionConcepts
+   */
+  export type Union$unionConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    where?: UnionConceptWhereInput
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    cursor?: UnionConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UnionConceptScalarFieldEnum | UnionConceptScalarFieldEnum[]
+  }
+
+  /**
    * Union.employees
    */
   export type Union$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -16726,6 +17337,928 @@ export namespace Prisma {
 
 
   /**
+   * Model UnionConcept
+   */
+
+  export type AggregateUnionConcept = {
+    _count: UnionConceptCountAggregateOutputType | null
+    _min: UnionConceptMinAggregateOutputType | null
+    _max: UnionConceptMaxAggregateOutputType | null
+  }
+
+  export type UnionConceptMinAggregateOutputType = {
+    id: string | null
+    unionId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type UnionConceptMaxAggregateOutputType = {
+    id: string | null
+    unionId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type UnionConceptCountAggregateOutputType = {
+    id: number
+    unionId: number
+    conceptId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type UnionConceptMinAggregateInputType = {
+    id?: true
+    unionId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type UnionConceptMaxAggregateInputType = {
+    id?: true
+    unionId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type UnionConceptCountAggregateInputType = {
+    id?: true
+    unionId?: true
+    conceptId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type UnionConceptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UnionConcept to aggregate.
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnionConcepts to fetch.
+     */
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UnionConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnionConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnionConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UnionConcepts
+    **/
+    _count?: true | UnionConceptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UnionConceptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UnionConceptMaxAggregateInputType
+  }
+
+  export type GetUnionConceptAggregateType<T extends UnionConceptAggregateArgs> = {
+        [P in keyof T & keyof AggregateUnionConcept]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUnionConcept[P]>
+      : GetScalarType<T[P], AggregateUnionConcept[P]>
+  }
+
+
+
+
+  export type UnionConceptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UnionConceptWhereInput
+    orderBy?: UnionConceptOrderByWithAggregationInput | UnionConceptOrderByWithAggregationInput[]
+    by: UnionConceptScalarFieldEnum[] | UnionConceptScalarFieldEnum
+    having?: UnionConceptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UnionConceptCountAggregateInputType | true
+    _min?: UnionConceptMinAggregateInputType
+    _max?: UnionConceptMaxAggregateInputType
+  }
+
+  export type UnionConceptGroupByOutputType = {
+    id: string
+    unionId: string
+    conceptId: string
+    createdAt: Date
+    _count: UnionConceptCountAggregateOutputType | null
+    _min: UnionConceptMinAggregateOutputType | null
+    _max: UnionConceptMaxAggregateOutputType | null
+  }
+
+  type GetUnionConceptGroupByPayload<T extends UnionConceptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UnionConceptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UnionConceptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UnionConceptGroupByOutputType[P]>
+            : GetScalarType<T[P], UnionConceptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UnionConceptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    unionId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+    union?: boolean | UnionDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["unionConcept"]>
+
+
+
+  export type UnionConceptSelectScalar = {
+    id?: boolean
+    unionId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+  }
+
+  export type UnionConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "unionId" | "conceptId" | "createdAt", ExtArgs["result"]["unionConcept"]>
+  export type UnionConceptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    union?: boolean | UnionDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }
+
+  export type $UnionConceptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UnionConcept"
+    objects: {
+      union: Prisma.$UnionPayload<ExtArgs>
+      concept: Prisma.$ConceptPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      unionId: string
+      conceptId: string
+      createdAt: Date
+    }, ExtArgs["result"]["unionConcept"]>
+    composites: {}
+  }
+
+  type UnionConceptGetPayload<S extends boolean | null | undefined | UnionConceptDefaultArgs> = $Result.GetResult<Prisma.$UnionConceptPayload, S>
+
+  type UnionConceptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UnionConceptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UnionConceptCountAggregateInputType | true
+    }
+
+  export interface UnionConceptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UnionConcept'], meta: { name: 'UnionConcept' } }
+    /**
+     * Find zero or one UnionConcept that matches the filter.
+     * @param {UnionConceptFindUniqueArgs} args - Arguments to find a UnionConcept
+     * @example
+     * // Get one UnionConcept
+     * const unionConcept = await prisma.unionConcept.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UnionConceptFindUniqueArgs>(args: SelectSubset<T, UnionConceptFindUniqueArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UnionConcept that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UnionConceptFindUniqueOrThrowArgs} args - Arguments to find a UnionConcept
+     * @example
+     * // Get one UnionConcept
+     * const unionConcept = await prisma.unionConcept.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UnionConceptFindUniqueOrThrowArgs>(args: SelectSubset<T, UnionConceptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UnionConcept that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptFindFirstArgs} args - Arguments to find a UnionConcept
+     * @example
+     * // Get one UnionConcept
+     * const unionConcept = await prisma.unionConcept.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UnionConceptFindFirstArgs>(args?: SelectSubset<T, UnionConceptFindFirstArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UnionConcept that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptFindFirstOrThrowArgs} args - Arguments to find a UnionConcept
+     * @example
+     * // Get one UnionConcept
+     * const unionConcept = await prisma.unionConcept.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UnionConceptFindFirstOrThrowArgs>(args?: SelectSubset<T, UnionConceptFindFirstOrThrowArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UnionConcepts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UnionConcepts
+     * const unionConcepts = await prisma.unionConcept.findMany()
+     * 
+     * // Get first 10 UnionConcepts
+     * const unionConcepts = await prisma.unionConcept.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const unionConceptWithIdOnly = await prisma.unionConcept.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UnionConceptFindManyArgs>(args?: SelectSubset<T, UnionConceptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UnionConcept.
+     * @param {UnionConceptCreateArgs} args - Arguments to create a UnionConcept.
+     * @example
+     * // Create one UnionConcept
+     * const UnionConcept = await prisma.unionConcept.create({
+     *   data: {
+     *     // ... data to create a UnionConcept
+     *   }
+     * })
+     * 
+     */
+    create<T extends UnionConceptCreateArgs>(args: SelectSubset<T, UnionConceptCreateArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UnionConcepts.
+     * @param {UnionConceptCreateManyArgs} args - Arguments to create many UnionConcepts.
+     * @example
+     * // Create many UnionConcepts
+     * const unionConcept = await prisma.unionConcept.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UnionConceptCreateManyArgs>(args?: SelectSubset<T, UnionConceptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UnionConcept.
+     * @param {UnionConceptDeleteArgs} args - Arguments to delete one UnionConcept.
+     * @example
+     * // Delete one UnionConcept
+     * const UnionConcept = await prisma.unionConcept.delete({
+     *   where: {
+     *     // ... filter to delete one UnionConcept
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UnionConceptDeleteArgs>(args: SelectSubset<T, UnionConceptDeleteArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UnionConcept.
+     * @param {UnionConceptUpdateArgs} args - Arguments to update one UnionConcept.
+     * @example
+     * // Update one UnionConcept
+     * const unionConcept = await prisma.unionConcept.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UnionConceptUpdateArgs>(args: SelectSubset<T, UnionConceptUpdateArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UnionConcepts.
+     * @param {UnionConceptDeleteManyArgs} args - Arguments to filter UnionConcepts to delete.
+     * @example
+     * // Delete a few UnionConcepts
+     * const { count } = await prisma.unionConcept.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UnionConceptDeleteManyArgs>(args?: SelectSubset<T, UnionConceptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UnionConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UnionConcepts
+     * const unionConcept = await prisma.unionConcept.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UnionConceptUpdateManyArgs>(args: SelectSubset<T, UnionConceptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UnionConcept.
+     * @param {UnionConceptUpsertArgs} args - Arguments to update or create a UnionConcept.
+     * @example
+     * // Update or create a UnionConcept
+     * const unionConcept = await prisma.unionConcept.upsert({
+     *   create: {
+     *     // ... data to create a UnionConcept
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UnionConcept we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UnionConceptUpsertArgs>(args: SelectSubset<T, UnionConceptUpsertArgs<ExtArgs>>): Prisma__UnionConceptClient<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UnionConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptCountArgs} args - Arguments to filter UnionConcepts to count.
+     * @example
+     * // Count the number of UnionConcepts
+     * const count = await prisma.unionConcept.count({
+     *   where: {
+     *     // ... the filter for the UnionConcepts we want to count
+     *   }
+     * })
+    **/
+    count<T extends UnionConceptCountArgs>(
+      args?: Subset<T, UnionConceptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UnionConceptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UnionConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UnionConceptAggregateArgs>(args: Subset<T, UnionConceptAggregateArgs>): Prisma.PrismaPromise<GetUnionConceptAggregateType<T>>
+
+    /**
+     * Group by UnionConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UnionConceptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UnionConceptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UnionConceptGroupByArgs['orderBy'] }
+        : { orderBy?: UnionConceptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UnionConceptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUnionConceptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UnionConcept model
+   */
+  readonly fields: UnionConceptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UnionConcept.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UnionConceptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    union<T extends UnionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UnionDefaultArgs<ExtArgs>>): Prisma__UnionClient<$Result.GetResult<Prisma.$UnionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    concept<T extends ConceptDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConceptDefaultArgs<ExtArgs>>): Prisma__ConceptClient<$Result.GetResult<Prisma.$ConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UnionConcept model
+   */
+  interface UnionConceptFieldRefs {
+    readonly id: FieldRef<"UnionConcept", 'String'>
+    readonly unionId: FieldRef<"UnionConcept", 'String'>
+    readonly conceptId: FieldRef<"UnionConcept", 'String'>
+    readonly createdAt: FieldRef<"UnionConcept", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UnionConcept findUnique
+   */
+  export type UnionConceptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which UnionConcept to fetch.
+     */
+    where: UnionConceptWhereUniqueInput
+  }
+
+  /**
+   * UnionConcept findUniqueOrThrow
+   */
+  export type UnionConceptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which UnionConcept to fetch.
+     */
+    where: UnionConceptWhereUniqueInput
+  }
+
+  /**
+   * UnionConcept findFirst
+   */
+  export type UnionConceptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which UnionConcept to fetch.
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnionConcepts to fetch.
+     */
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UnionConcepts.
+     */
+    cursor?: UnionConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnionConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnionConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UnionConcepts.
+     */
+    distinct?: UnionConceptScalarFieldEnum | UnionConceptScalarFieldEnum[]
+  }
+
+  /**
+   * UnionConcept findFirstOrThrow
+   */
+  export type UnionConceptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which UnionConcept to fetch.
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnionConcepts to fetch.
+     */
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UnionConcepts.
+     */
+    cursor?: UnionConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnionConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnionConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UnionConcepts.
+     */
+    distinct?: UnionConceptScalarFieldEnum | UnionConceptScalarFieldEnum[]
+  }
+
+  /**
+   * UnionConcept findMany
+   */
+  export type UnionConceptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which UnionConcepts to fetch.
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UnionConcepts to fetch.
+     */
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UnionConcepts.
+     */
+    cursor?: UnionConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UnionConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UnionConcepts.
+     */
+    skip?: number
+    distinct?: UnionConceptScalarFieldEnum | UnionConceptScalarFieldEnum[]
+  }
+
+  /**
+   * UnionConcept create
+   */
+  export type UnionConceptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UnionConcept.
+     */
+    data: XOR<UnionConceptCreateInput, UnionConceptUncheckedCreateInput>
+  }
+
+  /**
+   * UnionConcept createMany
+   */
+  export type UnionConceptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UnionConcepts.
+     */
+    data: UnionConceptCreateManyInput | UnionConceptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UnionConcept update
+   */
+  export type UnionConceptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UnionConcept.
+     */
+    data: XOR<UnionConceptUpdateInput, UnionConceptUncheckedUpdateInput>
+    /**
+     * Choose, which UnionConcept to update.
+     */
+    where: UnionConceptWhereUniqueInput
+  }
+
+  /**
+   * UnionConcept updateMany
+   */
+  export type UnionConceptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UnionConcepts.
+     */
+    data: XOR<UnionConceptUpdateManyMutationInput, UnionConceptUncheckedUpdateManyInput>
+    /**
+     * Filter which UnionConcepts to update
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * Limit how many UnionConcepts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UnionConcept upsert
+   */
+  export type UnionConceptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UnionConcept to update in case it exists.
+     */
+    where: UnionConceptWhereUniqueInput
+    /**
+     * In case the UnionConcept found by the `where` argument doesn't exist, create a new UnionConcept with this data.
+     */
+    create: XOR<UnionConceptCreateInput, UnionConceptUncheckedCreateInput>
+    /**
+     * In case the UnionConcept was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UnionConceptUpdateInput, UnionConceptUncheckedUpdateInput>
+  }
+
+  /**
+   * UnionConcept delete
+   */
+  export type UnionConceptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    /**
+     * Filter which UnionConcept to delete.
+     */
+    where: UnionConceptWhereUniqueInput
+  }
+
+  /**
+   * UnionConcept deleteMany
+   */
+  export type UnionConceptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UnionConcepts to delete
+     */
+    where?: UnionConceptWhereInput
+    /**
+     * Limit how many UnionConcepts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UnionConcept without action
+   */
+  export type UnionConceptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model Mutual
    */
 
@@ -16739,6 +18272,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     code: string | null
+    conceptId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -16748,6 +18282,7 @@ export namespace Prisma {
     id: string | null
     name: string | null
     code: string | null
+    conceptId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -16757,6 +18292,7 @@ export namespace Prisma {
     id: number
     name: number
     code: number
+    conceptId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -16768,6 +18304,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -16777,6 +18314,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -16786,6 +18324,7 @@ export namespace Prisma {
     id?: true
     name?: true
     code?: true
+    conceptId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -16868,6 +18407,7 @@ export namespace Prisma {
     id: string
     name: string
     code: string | null
+    conceptId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -16894,9 +18434,12 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     code?: boolean
+    conceptId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
+    concept?: boolean | Mutual$conceptArgs<ExtArgs>
+    mutualConcepts?: boolean | Mutual$mutualConceptsArgs<ExtArgs>
     employees?: boolean | Mutual$employeesArgs<ExtArgs>
     _count?: boolean | MutualCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mutual"]>
@@ -16907,13 +18450,16 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     code?: boolean
+    conceptId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type MutualOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["mutual"]>
+  export type MutualOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "conceptId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["mutual"]>
   export type MutualInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    concept?: boolean | Mutual$conceptArgs<ExtArgs>
+    mutualConcepts?: boolean | Mutual$mutualConceptsArgs<ExtArgs>
     employees?: boolean | Mutual$employeesArgs<ExtArgs>
     _count?: boolean | MutualCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -16921,12 +18467,15 @@ export namespace Prisma {
   export type $MutualPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Mutual"
     objects: {
+      concept: Prisma.$ConceptPayload<ExtArgs> | null
+      mutualConcepts: Prisma.$MutualConceptPayload<ExtArgs>[]
       employees: Prisma.$EmployeePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       name: string
       code: string | null
+      conceptId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -17270,6 +18819,8 @@ export namespace Prisma {
    */
   export interface Prisma__MutualClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    concept<T extends Mutual$conceptArgs<ExtArgs> = {}>(args?: Subset<T, Mutual$conceptArgs<ExtArgs>>): Prisma__ConceptClient<$Result.GetResult<Prisma.$ConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    mutualConcepts<T extends Mutual$mutualConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Mutual$mutualConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     employees<T extends Mutual$employeesArgs<ExtArgs> = {}>(args?: Subset<T, Mutual$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -17303,6 +18854,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Mutual", 'String'>
     readonly name: FieldRef<"Mutual", 'String'>
     readonly code: FieldRef<"Mutual", 'String'>
+    readonly conceptId: FieldRef<"Mutual", 'String'>
     readonly createdAt: FieldRef<"Mutual", 'DateTime'>
     readonly updatedAt: FieldRef<"Mutual", 'DateTime'>
     readonly deletedAt: FieldRef<"Mutual", 'DateTime'>
@@ -17649,6 +19201,49 @@ export namespace Prisma {
   }
 
   /**
+   * Mutual.concept
+   */
+  export type Mutual$conceptArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Concept
+     */
+    select?: ConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Concept
+     */
+    omit?: ConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConceptInclude<ExtArgs> | null
+    where?: ConceptWhereInput
+  }
+
+  /**
+   * Mutual.mutualConcepts
+   */
+  export type Mutual$mutualConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    where?: MutualConceptWhereInput
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    cursor?: MutualConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MutualConceptScalarFieldEnum | MutualConceptScalarFieldEnum[]
+  }
+
+  /**
    * Mutual.employees
    */
   export type Mutual$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -17688,6 +19283,928 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MutualInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MutualConcept
+   */
+
+  export type AggregateMutualConcept = {
+    _count: MutualConceptCountAggregateOutputType | null
+    _min: MutualConceptMinAggregateOutputType | null
+    _max: MutualConceptMaxAggregateOutputType | null
+  }
+
+  export type MutualConceptMinAggregateOutputType = {
+    id: string | null
+    mutualId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type MutualConceptMaxAggregateOutputType = {
+    id: string | null
+    mutualId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type MutualConceptCountAggregateOutputType = {
+    id: number
+    mutualId: number
+    conceptId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type MutualConceptMinAggregateInputType = {
+    id?: true
+    mutualId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type MutualConceptMaxAggregateInputType = {
+    id?: true
+    mutualId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type MutualConceptCountAggregateInputType = {
+    id?: true
+    mutualId?: true
+    conceptId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type MutualConceptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MutualConcept to aggregate.
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MutualConcepts to fetch.
+     */
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MutualConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MutualConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MutualConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MutualConcepts
+    **/
+    _count?: true | MutualConceptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MutualConceptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MutualConceptMaxAggregateInputType
+  }
+
+  export type GetMutualConceptAggregateType<T extends MutualConceptAggregateArgs> = {
+        [P in keyof T & keyof AggregateMutualConcept]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMutualConcept[P]>
+      : GetScalarType<T[P], AggregateMutualConcept[P]>
+  }
+
+
+
+
+  export type MutualConceptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MutualConceptWhereInput
+    orderBy?: MutualConceptOrderByWithAggregationInput | MutualConceptOrderByWithAggregationInput[]
+    by: MutualConceptScalarFieldEnum[] | MutualConceptScalarFieldEnum
+    having?: MutualConceptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MutualConceptCountAggregateInputType | true
+    _min?: MutualConceptMinAggregateInputType
+    _max?: MutualConceptMaxAggregateInputType
+  }
+
+  export type MutualConceptGroupByOutputType = {
+    id: string
+    mutualId: string
+    conceptId: string
+    createdAt: Date
+    _count: MutualConceptCountAggregateOutputType | null
+    _min: MutualConceptMinAggregateOutputType | null
+    _max: MutualConceptMaxAggregateOutputType | null
+  }
+
+  type GetMutualConceptGroupByPayload<T extends MutualConceptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MutualConceptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MutualConceptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MutualConceptGroupByOutputType[P]>
+            : GetScalarType<T[P], MutualConceptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MutualConceptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    mutualId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+    mutual?: boolean | MutualDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mutualConcept"]>
+
+
+
+  export type MutualConceptSelectScalar = {
+    id?: boolean
+    mutualId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+  }
+
+  export type MutualConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "mutualId" | "conceptId" | "createdAt", ExtArgs["result"]["mutualConcept"]>
+  export type MutualConceptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mutual?: boolean | MutualDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }
+
+  export type $MutualConceptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MutualConcept"
+    objects: {
+      mutual: Prisma.$MutualPayload<ExtArgs>
+      concept: Prisma.$ConceptPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      mutualId: string
+      conceptId: string
+      createdAt: Date
+    }, ExtArgs["result"]["mutualConcept"]>
+    composites: {}
+  }
+
+  type MutualConceptGetPayload<S extends boolean | null | undefined | MutualConceptDefaultArgs> = $Result.GetResult<Prisma.$MutualConceptPayload, S>
+
+  type MutualConceptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MutualConceptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MutualConceptCountAggregateInputType | true
+    }
+
+  export interface MutualConceptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MutualConcept'], meta: { name: 'MutualConcept' } }
+    /**
+     * Find zero or one MutualConcept that matches the filter.
+     * @param {MutualConceptFindUniqueArgs} args - Arguments to find a MutualConcept
+     * @example
+     * // Get one MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MutualConceptFindUniqueArgs>(args: SelectSubset<T, MutualConceptFindUniqueArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MutualConcept that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MutualConceptFindUniqueOrThrowArgs} args - Arguments to find a MutualConcept
+     * @example
+     * // Get one MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MutualConceptFindUniqueOrThrowArgs>(args: SelectSubset<T, MutualConceptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MutualConcept that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptFindFirstArgs} args - Arguments to find a MutualConcept
+     * @example
+     * // Get one MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MutualConceptFindFirstArgs>(args?: SelectSubset<T, MutualConceptFindFirstArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MutualConcept that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptFindFirstOrThrowArgs} args - Arguments to find a MutualConcept
+     * @example
+     * // Get one MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MutualConceptFindFirstOrThrowArgs>(args?: SelectSubset<T, MutualConceptFindFirstOrThrowArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MutualConcepts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MutualConcepts
+     * const mutualConcepts = await prisma.mutualConcept.findMany()
+     * 
+     * // Get first 10 MutualConcepts
+     * const mutualConcepts = await prisma.mutualConcept.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mutualConceptWithIdOnly = await prisma.mutualConcept.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MutualConceptFindManyArgs>(args?: SelectSubset<T, MutualConceptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MutualConcept.
+     * @param {MutualConceptCreateArgs} args - Arguments to create a MutualConcept.
+     * @example
+     * // Create one MutualConcept
+     * const MutualConcept = await prisma.mutualConcept.create({
+     *   data: {
+     *     // ... data to create a MutualConcept
+     *   }
+     * })
+     * 
+     */
+    create<T extends MutualConceptCreateArgs>(args: SelectSubset<T, MutualConceptCreateArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MutualConcepts.
+     * @param {MutualConceptCreateManyArgs} args - Arguments to create many MutualConcepts.
+     * @example
+     * // Create many MutualConcepts
+     * const mutualConcept = await prisma.mutualConcept.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MutualConceptCreateManyArgs>(args?: SelectSubset<T, MutualConceptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a MutualConcept.
+     * @param {MutualConceptDeleteArgs} args - Arguments to delete one MutualConcept.
+     * @example
+     * // Delete one MutualConcept
+     * const MutualConcept = await prisma.mutualConcept.delete({
+     *   where: {
+     *     // ... filter to delete one MutualConcept
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MutualConceptDeleteArgs>(args: SelectSubset<T, MutualConceptDeleteArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MutualConcept.
+     * @param {MutualConceptUpdateArgs} args - Arguments to update one MutualConcept.
+     * @example
+     * // Update one MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MutualConceptUpdateArgs>(args: SelectSubset<T, MutualConceptUpdateArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MutualConcepts.
+     * @param {MutualConceptDeleteManyArgs} args - Arguments to filter MutualConcepts to delete.
+     * @example
+     * // Delete a few MutualConcepts
+     * const { count } = await prisma.mutualConcept.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MutualConceptDeleteManyArgs>(args?: SelectSubset<T, MutualConceptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MutualConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MutualConcepts
+     * const mutualConcept = await prisma.mutualConcept.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MutualConceptUpdateManyArgs>(args: SelectSubset<T, MutualConceptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one MutualConcept.
+     * @param {MutualConceptUpsertArgs} args - Arguments to update or create a MutualConcept.
+     * @example
+     * // Update or create a MutualConcept
+     * const mutualConcept = await prisma.mutualConcept.upsert({
+     *   create: {
+     *     // ... data to create a MutualConcept
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MutualConcept we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MutualConceptUpsertArgs>(args: SelectSubset<T, MutualConceptUpsertArgs<ExtArgs>>): Prisma__MutualConceptClient<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MutualConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptCountArgs} args - Arguments to filter MutualConcepts to count.
+     * @example
+     * // Count the number of MutualConcepts
+     * const count = await prisma.mutualConcept.count({
+     *   where: {
+     *     // ... the filter for the MutualConcepts we want to count
+     *   }
+     * })
+    **/
+    count<T extends MutualConceptCountArgs>(
+      args?: Subset<T, MutualConceptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MutualConceptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MutualConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MutualConceptAggregateArgs>(args: Subset<T, MutualConceptAggregateArgs>): Prisma.PrismaPromise<GetMutualConceptAggregateType<T>>
+
+    /**
+     * Group by MutualConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MutualConceptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MutualConceptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MutualConceptGroupByArgs['orderBy'] }
+        : { orderBy?: MutualConceptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MutualConceptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMutualConceptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MutualConcept model
+   */
+  readonly fields: MutualConceptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MutualConcept.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MutualConceptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    mutual<T extends MutualDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MutualDefaultArgs<ExtArgs>>): Prisma__MutualClient<$Result.GetResult<Prisma.$MutualPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    concept<T extends ConceptDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConceptDefaultArgs<ExtArgs>>): Prisma__ConceptClient<$Result.GetResult<Prisma.$ConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MutualConcept model
+   */
+  interface MutualConceptFieldRefs {
+    readonly id: FieldRef<"MutualConcept", 'String'>
+    readonly mutualId: FieldRef<"MutualConcept", 'String'>
+    readonly conceptId: FieldRef<"MutualConcept", 'String'>
+    readonly createdAt: FieldRef<"MutualConcept", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MutualConcept findUnique
+   */
+  export type MutualConceptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which MutualConcept to fetch.
+     */
+    where: MutualConceptWhereUniqueInput
+  }
+
+  /**
+   * MutualConcept findUniqueOrThrow
+   */
+  export type MutualConceptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which MutualConcept to fetch.
+     */
+    where: MutualConceptWhereUniqueInput
+  }
+
+  /**
+   * MutualConcept findFirst
+   */
+  export type MutualConceptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which MutualConcept to fetch.
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MutualConcepts to fetch.
+     */
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MutualConcepts.
+     */
+    cursor?: MutualConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MutualConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MutualConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MutualConcepts.
+     */
+    distinct?: MutualConceptScalarFieldEnum | MutualConceptScalarFieldEnum[]
+  }
+
+  /**
+   * MutualConcept findFirstOrThrow
+   */
+  export type MutualConceptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which MutualConcept to fetch.
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MutualConcepts to fetch.
+     */
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MutualConcepts.
+     */
+    cursor?: MutualConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MutualConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MutualConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MutualConcepts.
+     */
+    distinct?: MutualConceptScalarFieldEnum | MutualConceptScalarFieldEnum[]
+  }
+
+  /**
+   * MutualConcept findMany
+   */
+  export type MutualConceptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which MutualConcepts to fetch.
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MutualConcepts to fetch.
+     */
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MutualConcepts.
+     */
+    cursor?: MutualConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MutualConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MutualConcepts.
+     */
+    skip?: number
+    distinct?: MutualConceptScalarFieldEnum | MutualConceptScalarFieldEnum[]
+  }
+
+  /**
+   * MutualConcept create
+   */
+  export type MutualConceptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MutualConcept.
+     */
+    data: XOR<MutualConceptCreateInput, MutualConceptUncheckedCreateInput>
+  }
+
+  /**
+   * MutualConcept createMany
+   */
+  export type MutualConceptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MutualConcepts.
+     */
+    data: MutualConceptCreateManyInput | MutualConceptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MutualConcept update
+   */
+  export type MutualConceptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MutualConcept.
+     */
+    data: XOR<MutualConceptUpdateInput, MutualConceptUncheckedUpdateInput>
+    /**
+     * Choose, which MutualConcept to update.
+     */
+    where: MutualConceptWhereUniqueInput
+  }
+
+  /**
+   * MutualConcept updateMany
+   */
+  export type MutualConceptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MutualConcepts.
+     */
+    data: XOR<MutualConceptUpdateManyMutationInput, MutualConceptUncheckedUpdateManyInput>
+    /**
+     * Filter which MutualConcepts to update
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * Limit how many MutualConcepts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MutualConcept upsert
+   */
+  export type MutualConceptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MutualConcept to update in case it exists.
+     */
+    where: MutualConceptWhereUniqueInput
+    /**
+     * In case the MutualConcept found by the `where` argument doesn't exist, create a new MutualConcept with this data.
+     */
+    create: XOR<MutualConceptCreateInput, MutualConceptUncheckedCreateInput>
+    /**
+     * In case the MutualConcept was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MutualConceptUpdateInput, MutualConceptUncheckedUpdateInput>
+  }
+
+  /**
+   * MutualConcept delete
+   */
+  export type MutualConceptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    /**
+     * Filter which MutualConcept to delete.
+     */
+    where: MutualConceptWhereUniqueInput
+  }
+
+  /**
+   * MutualConcept deleteMany
+   */
+  export type MutualConceptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MutualConcepts to delete
+     */
+    where?: MutualConceptWhereInput
+    /**
+     * Limit how many MutualConcepts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MutualConcept without action
+   */
+  export type MutualConceptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
   }
 
 
@@ -18221,6 +20738,7 @@ export namespace Prisma {
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
     periodNovelties?: boolean | Employee$periodNoveltiesArgs<ExtArgs>
+    embargoes?: boolean | Employee$embargoesArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -18286,6 +20804,7 @@ export namespace Prisma {
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
     periodNovelties?: boolean | Employee$periodNoveltiesArgs<ExtArgs>
+    embargoes?: boolean | Employee$embargoesArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -18304,6 +20823,7 @@ export namespace Prisma {
       relatives: Prisma.$EmployeeRelativePayload<ExtArgs>[]
       assignedConcepts: Prisma.$EmployeeConceptPayload<ExtArgs>[]
       periodNovelties: Prisma.$PeriodNoveltyPayload<ExtArgs>[]
+      embargoes: Prisma.$EmployeeEmbargoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18701,6 +21221,7 @@ export namespace Prisma {
     relatives<T extends Employee$relativesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$relativesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRelativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedConcepts<T extends Employee$assignedConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$assignedConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periodNovelties<T extends Employee$periodNoveltiesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$periodNoveltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PeriodNoveltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    embargoes<T extends Employee$embargoesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$embargoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19361,6 +21882,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PeriodNoveltyScalarFieldEnum | PeriodNoveltyScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.embargoes
+   */
+  export type Employee$embargoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    where?: EmployeeEmbargoWhereInput
+    orderBy?: EmployeeEmbargoOrderByWithRelationInput | EmployeeEmbargoOrderByWithRelationInput[]
+    cursor?: EmployeeEmbargoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeEmbargoScalarFieldEnum | EmployeeEmbargoScalarFieldEnum[]
   }
 
   /**
@@ -21412,6 +23957,7 @@ export namespace Prisma {
     documentNumber: string | null
     cuil: string | null
     birthDate: Date | null
+    isAdherent: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -21427,6 +23973,7 @@ export namespace Prisma {
     documentNumber: string | null
     cuil: string | null
     birthDate: Date | null
+    isAdherent: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -21442,6 +23989,7 @@ export namespace Prisma {
     documentNumber: number
     cuil: number
     birthDate: number
+    isAdherent: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -21459,6 +24007,7 @@ export namespace Prisma {
     documentNumber?: true
     cuil?: true
     birthDate?: true
+    isAdherent?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21474,6 +24023,7 @@ export namespace Prisma {
     documentNumber?: true
     cuil?: true
     birthDate?: true
+    isAdherent?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21489,6 +24039,7 @@ export namespace Prisma {
     documentNumber?: true
     cuil?: true
     birthDate?: true
+    isAdherent?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21577,6 +24128,7 @@ export namespace Prisma {
     documentNumber: string
     cuil: string | null
     birthDate: Date
+    isAdherent: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -21609,6 +24161,7 @@ export namespace Prisma {
     documentNumber?: boolean
     cuil?: boolean
     birthDate?: boolean
+    isAdherent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -21628,12 +24181,13 @@ export namespace Prisma {
     documentNumber?: boolean
     cuil?: boolean
     birthDate?: boolean
+    isAdherent?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type EmployeeRelativeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "kinshipId" | "lastName" | "firstName" | "documentType" | "documentNumber" | "cuil" | "birthDate" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeRelative"]>
+  export type EmployeeRelativeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "kinshipId" | "lastName" | "firstName" | "documentType" | "documentNumber" | "cuil" | "birthDate" | "isAdherent" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeRelative"]>
   export type EmployeeRelativeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
     kinship?: boolean | KinshipDefaultArgs<ExtArgs>
@@ -21655,6 +24209,7 @@ export namespace Prisma {
       documentNumber: string
       cuil: string | null
       birthDate: Date
+      isAdherent: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -22038,6 +24593,7 @@ export namespace Prisma {
     readonly documentNumber: FieldRef<"EmployeeRelative", 'String'>
     readonly cuil: FieldRef<"EmployeeRelative", 'String'>
     readonly birthDate: FieldRef<"EmployeeRelative", 'DateTime'>
+    readonly isAdherent: FieldRef<"EmployeeRelative", 'Boolean'>
     readonly createdAt: FieldRef<"EmployeeRelative", 'DateTime'>
     readonly updatedAt: FieldRef<"EmployeeRelative", 'DateTime'>
     readonly deletedAt: FieldRef<"EmployeeRelative", 'DateTime'>
@@ -22459,6 +25015,7 @@ export namespace Prisma {
     appliesDetraccion: boolean | null
     isRepeatable: boolean | null
     matrixId: string | null
+    isEmbargo: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -22499,6 +25056,7 @@ export namespace Prisma {
     appliesDetraccion: boolean | null
     isRepeatable: boolean | null
     matrixId: string | null
+    isEmbargo: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -22539,6 +25097,7 @@ export namespace Prisma {
     appliesDetraccion: number
     isRepeatable: number
     matrixId: number
+    isEmbargo: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -22591,6 +25150,7 @@ export namespace Prisma {
     appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
+    isEmbargo?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -22631,6 +25191,7 @@ export namespace Prisma {
     appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
+    isEmbargo?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -22671,6 +25232,7 @@ export namespace Prisma {
     appliesDetraccion?: true
     isRepeatable?: true
     matrixId?: true
+    isEmbargo?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -22798,6 +25360,7 @@ export namespace Prisma {
     appliesDetraccion: boolean
     isRepeatable: boolean
     matrixId: string | null
+    isEmbargo: boolean
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -22857,12 +25420,18 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: boolean
+    isEmbargo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
     matrix?: boolean | Concept$matrixArgs<ExtArgs>
     assignedEmployees?: boolean | Concept$assignedEmployeesArgs<ExtArgs>
     periodNovelties?: boolean | Concept$periodNoveltiesArgs<ExtArgs>
+    embargoConcepts?: boolean | Concept$embargoConceptsArgs<ExtArgs>
+    unions?: boolean | Concept$unionsArgs<ExtArgs>
+    mutuals?: boolean | Concept$mutualsArgs<ExtArgs>
+    unionConcepts?: boolean | Concept$unionConceptsArgs<ExtArgs>
+    mutualConcepts?: boolean | Concept$mutualConceptsArgs<ExtArgs>
     _count?: boolean | ConceptCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["concept"]>
 
@@ -22903,16 +25472,22 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: boolean
+    isEmbargo?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type ConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "type" | "calculationType" | "periodType" | "scope" | "defaultValue" | "noveltyDataType" | "quantitySource" | "calculationOrder" | "formula" | "matrixData" | "isActive" | "isPersistent" | "arcaConceptCode" | "appliesSipaAporte" | "appliesSipaContrib" | "appliesInssjypAporte" | "appliesInssjypContrib" | "appliesOsAporte" | "appliesOsContrib" | "appliesFsrAporte" | "appliesFsrContrib" | "appliesRenatreAporte" | "appliesRenatreContrib" | "appliesAaffContrib" | "appliesFneContrib" | "appliesLrtContrib" | "appliesRegDifAporte" | "appliesRegEspAporte" | "appliesDetraccion" | "isRepeatable" | "matrixId" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["concept"]>
+  export type ConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "type" | "calculationType" | "periodType" | "scope" | "defaultValue" | "noveltyDataType" | "quantitySource" | "calculationOrder" | "formula" | "matrixData" | "isActive" | "isPersistent" | "arcaConceptCode" | "appliesSipaAporte" | "appliesSipaContrib" | "appliesInssjypAporte" | "appliesInssjypContrib" | "appliesOsAporte" | "appliesOsContrib" | "appliesFsrAporte" | "appliesFsrContrib" | "appliesRenatreAporte" | "appliesRenatreContrib" | "appliesAaffContrib" | "appliesFneContrib" | "appliesLrtContrib" | "appliesRegDifAporte" | "appliesRegEspAporte" | "appliesDetraccion" | "isRepeatable" | "matrixId" | "isEmbargo" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["concept"]>
   export type ConceptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     matrix?: boolean | Concept$matrixArgs<ExtArgs>
     assignedEmployees?: boolean | Concept$assignedEmployeesArgs<ExtArgs>
     periodNovelties?: boolean | Concept$periodNoveltiesArgs<ExtArgs>
+    embargoConcepts?: boolean | Concept$embargoConceptsArgs<ExtArgs>
+    unions?: boolean | Concept$unionsArgs<ExtArgs>
+    mutuals?: boolean | Concept$mutualsArgs<ExtArgs>
+    unionConcepts?: boolean | Concept$unionConceptsArgs<ExtArgs>
+    mutualConcepts?: boolean | Concept$mutualConceptsArgs<ExtArgs>
     _count?: boolean | ConceptCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -22922,6 +25497,11 @@ export namespace Prisma {
       matrix: Prisma.$PayrollMatrixPayload<ExtArgs> | null
       assignedEmployees: Prisma.$EmployeeConceptPayload<ExtArgs>[]
       periodNovelties: Prisma.$PeriodNoveltyPayload<ExtArgs>[]
+      embargoConcepts: Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>[]
+      unions: Prisma.$UnionPayload<ExtArgs>[]
+      mutuals: Prisma.$MutualPayload<ExtArgs>[]
+      unionConcepts: Prisma.$UnionConceptPayload<ExtArgs>[]
+      mutualConcepts: Prisma.$MutualConceptPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -22958,6 +25538,7 @@ export namespace Prisma {
       appliesDetraccion: boolean
       isRepeatable: boolean
       matrixId: string | null
+      isEmbargo: boolean
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -23304,6 +25885,11 @@ export namespace Prisma {
     matrix<T extends Concept$matrixArgs<ExtArgs> = {}>(args?: Subset<T, Concept$matrixArgs<ExtArgs>>): Prisma__PayrollMatrixClient<$Result.GetResult<Prisma.$PayrollMatrixPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     assignedEmployees<T extends Concept$assignedEmployeesArgs<ExtArgs> = {}>(args?: Subset<T, Concept$assignedEmployeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periodNovelties<T extends Concept$periodNoveltiesArgs<ExtArgs> = {}>(args?: Subset<T, Concept$periodNoveltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PeriodNoveltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    embargoConcepts<T extends Concept$embargoConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Concept$embargoConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    unions<T extends Concept$unionsArgs<ExtArgs> = {}>(args?: Subset<T, Concept$unionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mutuals<T extends Concept$mutualsArgs<ExtArgs> = {}>(args?: Subset<T, Concept$mutualsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MutualPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    unionConcepts<T extends Concept$unionConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Concept$unionConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UnionConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mutualConcepts<T extends Concept$mutualConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Concept$mutualConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MutualConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -23367,6 +25953,7 @@ export namespace Prisma {
     readonly appliesDetraccion: FieldRef<"Concept", 'Boolean'>
     readonly isRepeatable: FieldRef<"Concept", 'Boolean'>
     readonly matrixId: FieldRef<"Concept", 'String'>
+    readonly isEmbargo: FieldRef<"Concept", 'Boolean'>
     readonly createdAt: FieldRef<"Concept", 'DateTime'>
     readonly updatedAt: FieldRef<"Concept", 'DateTime'>
     readonly deletedAt: FieldRef<"Concept", 'DateTime'>
@@ -23777,6 +26364,126 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PeriodNoveltyScalarFieldEnum | PeriodNoveltyScalarFieldEnum[]
+  }
+
+  /**
+   * Concept.embargoConcepts
+   */
+  export type Concept$embargoConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    where?: EmployeeEmbargoConceptWhereInput
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeEmbargoConceptScalarFieldEnum | EmployeeEmbargoConceptScalarFieldEnum[]
+  }
+
+  /**
+   * Concept.unions
+   */
+  export type Concept$unionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Union
+     */
+    select?: UnionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Union
+     */
+    omit?: UnionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionInclude<ExtArgs> | null
+    where?: UnionWhereInput
+    orderBy?: UnionOrderByWithRelationInput | UnionOrderByWithRelationInput[]
+    cursor?: UnionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UnionScalarFieldEnum | UnionScalarFieldEnum[]
+  }
+
+  /**
+   * Concept.mutuals
+   */
+  export type Concept$mutualsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mutual
+     */
+    select?: MutualSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Mutual
+     */
+    omit?: MutualOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualInclude<ExtArgs> | null
+    where?: MutualWhereInput
+    orderBy?: MutualOrderByWithRelationInput | MutualOrderByWithRelationInput[]
+    cursor?: MutualWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MutualScalarFieldEnum | MutualScalarFieldEnum[]
+  }
+
+  /**
+   * Concept.unionConcepts
+   */
+  export type Concept$unionConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UnionConcept
+     */
+    select?: UnionConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UnionConcept
+     */
+    omit?: UnionConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UnionConceptInclude<ExtArgs> | null
+    where?: UnionConceptWhereInput
+    orderBy?: UnionConceptOrderByWithRelationInput | UnionConceptOrderByWithRelationInput[]
+    cursor?: UnionConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UnionConceptScalarFieldEnum | UnionConceptScalarFieldEnum[]
+  }
+
+  /**
+   * Concept.mutualConcepts
+   */
+  export type Concept$mutualConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MutualConcept
+     */
+    select?: MutualConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MutualConcept
+     */
+    omit?: MutualConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MutualConceptInclude<ExtArgs> | null
+    where?: MutualConceptWhereInput
+    orderBy?: MutualConceptOrderByWithRelationInput | MutualConceptOrderByWithRelationInput[]
+    cursor?: MutualConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MutualConceptScalarFieldEnum | MutualConceptScalarFieldEnum[]
   }
 
   /**
@@ -26873,6 +29580,1043 @@ export namespace Prisma {
 
 
   /**
+   * Model PayrollFiscalPeriod
+   */
+
+  export type AggregatePayrollFiscalPeriod = {
+    _count: PayrollFiscalPeriodCountAggregateOutputType | null
+    _avg: PayrollFiscalPeriodAvgAggregateOutputType | null
+    _sum: PayrollFiscalPeriodSumAggregateOutputType | null
+    _min: PayrollFiscalPeriodMinAggregateOutputType | null
+    _max: PayrollFiscalPeriodMaxAggregateOutputType | null
+  }
+
+  export type PayrollFiscalPeriodAvgAggregateOutputType = {
+    year: number | null
+    month: number | null
+  }
+
+  export type PayrollFiscalPeriodSumAggregateOutputType = {
+    year: number | null
+    month: number | null
+  }
+
+  export type PayrollFiscalPeriodMinAggregateOutputType = {
+    id: string | null
+    year: number | null
+    month: number | null
+    status: string | null
+    closedAt: Date | null
+    closedBy: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayrollFiscalPeriodMaxAggregateOutputType = {
+    id: string | null
+    year: number | null
+    month: number | null
+    status: string | null
+    closedAt: Date | null
+    closedBy: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayrollFiscalPeriodCountAggregateOutputType = {
+    id: number
+    year: number
+    month: number
+    status: number
+    closedAt: number
+    closedBy: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PayrollFiscalPeriodAvgAggregateInputType = {
+    year?: true
+    month?: true
+  }
+
+  export type PayrollFiscalPeriodSumAggregateInputType = {
+    year?: true
+    month?: true
+  }
+
+  export type PayrollFiscalPeriodMinAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    status?: true
+    closedAt?: true
+    closedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayrollFiscalPeriodMaxAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    status?: true
+    closedAt?: true
+    closedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayrollFiscalPeriodCountAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    status?: true
+    closedAt?: true
+    closedBy?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PayrollFiscalPeriodAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollFiscalPeriod to aggregate.
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollFiscalPeriods to fetch.
+     */
+    orderBy?: PayrollFiscalPeriodOrderByWithRelationInput | PayrollFiscalPeriodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayrollFiscalPeriodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollFiscalPeriods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollFiscalPeriods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayrollFiscalPeriods
+    **/
+    _count?: true | PayrollFiscalPeriodCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PayrollFiscalPeriodAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PayrollFiscalPeriodSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayrollFiscalPeriodMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayrollFiscalPeriodMaxAggregateInputType
+  }
+
+  export type GetPayrollFiscalPeriodAggregateType<T extends PayrollFiscalPeriodAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayrollFiscalPeriod]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayrollFiscalPeriod[P]>
+      : GetScalarType<T[P], AggregatePayrollFiscalPeriod[P]>
+  }
+
+
+
+
+  export type PayrollFiscalPeriodGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayrollFiscalPeriodWhereInput
+    orderBy?: PayrollFiscalPeriodOrderByWithAggregationInput | PayrollFiscalPeriodOrderByWithAggregationInput[]
+    by: PayrollFiscalPeriodScalarFieldEnum[] | PayrollFiscalPeriodScalarFieldEnum
+    having?: PayrollFiscalPeriodScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayrollFiscalPeriodCountAggregateInputType | true
+    _avg?: PayrollFiscalPeriodAvgAggregateInputType
+    _sum?: PayrollFiscalPeriodSumAggregateInputType
+    _min?: PayrollFiscalPeriodMinAggregateInputType
+    _max?: PayrollFiscalPeriodMaxAggregateInputType
+  }
+
+  export type PayrollFiscalPeriodGroupByOutputType = {
+    id: string
+    year: number
+    month: number
+    status: string
+    closedAt: Date | null
+    closedBy: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PayrollFiscalPeriodCountAggregateOutputType | null
+    _avg: PayrollFiscalPeriodAvgAggregateOutputType | null
+    _sum: PayrollFiscalPeriodSumAggregateOutputType | null
+    _min: PayrollFiscalPeriodMinAggregateOutputType | null
+    _max: PayrollFiscalPeriodMaxAggregateOutputType | null
+  }
+
+  type GetPayrollFiscalPeriodGroupByPayload<T extends PayrollFiscalPeriodGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayrollFiscalPeriodGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayrollFiscalPeriodGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayrollFiscalPeriodGroupByOutputType[P]>
+            : GetScalarType<T[P], PayrollFiscalPeriodGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayrollFiscalPeriodSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    month?: boolean
+    status?: boolean
+    closedAt?: boolean
+    closedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    settlements?: boolean | PayrollFiscalPeriod$settlementsArgs<ExtArgs>
+    _count?: boolean | PayrollFiscalPeriodCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payrollFiscalPeriod"]>
+
+
+
+  export type PayrollFiscalPeriodSelectScalar = {
+    id?: boolean
+    year?: boolean
+    month?: boolean
+    status?: boolean
+    closedAt?: boolean
+    closedBy?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PayrollFiscalPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "month" | "status" | "closedAt" | "closedBy" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollFiscalPeriod"]>
+  export type PayrollFiscalPeriodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    settlements?: boolean | PayrollFiscalPeriod$settlementsArgs<ExtArgs>
+    _count?: boolean | PayrollFiscalPeriodCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $PayrollFiscalPeriodPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayrollFiscalPeriod"
+    objects: {
+      settlements: Prisma.$PayrollPeriodPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      year: number
+      month: number
+      status: string
+      closedAt: Date | null
+      closedBy: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["payrollFiscalPeriod"]>
+    composites: {}
+  }
+
+  type PayrollFiscalPeriodGetPayload<S extends boolean | null | undefined | PayrollFiscalPeriodDefaultArgs> = $Result.GetResult<Prisma.$PayrollFiscalPeriodPayload, S>
+
+  type PayrollFiscalPeriodCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PayrollFiscalPeriodFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PayrollFiscalPeriodCountAggregateInputType | true
+    }
+
+  export interface PayrollFiscalPeriodDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayrollFiscalPeriod'], meta: { name: 'PayrollFiscalPeriod' } }
+    /**
+     * Find zero or one PayrollFiscalPeriod that matches the filter.
+     * @param {PayrollFiscalPeriodFindUniqueArgs} args - Arguments to find a PayrollFiscalPeriod
+     * @example
+     * // Get one PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayrollFiscalPeriodFindUniqueArgs>(args: SelectSubset<T, PayrollFiscalPeriodFindUniqueArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PayrollFiscalPeriod that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PayrollFiscalPeriodFindUniqueOrThrowArgs} args - Arguments to find a PayrollFiscalPeriod
+     * @example
+     * // Get one PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayrollFiscalPeriodFindUniqueOrThrowArgs>(args: SelectSubset<T, PayrollFiscalPeriodFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollFiscalPeriod that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodFindFirstArgs} args - Arguments to find a PayrollFiscalPeriod
+     * @example
+     * // Get one PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayrollFiscalPeriodFindFirstArgs>(args?: SelectSubset<T, PayrollFiscalPeriodFindFirstArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollFiscalPeriod that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodFindFirstOrThrowArgs} args - Arguments to find a PayrollFiscalPeriod
+     * @example
+     * // Get one PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayrollFiscalPeriodFindFirstOrThrowArgs>(args?: SelectSubset<T, PayrollFiscalPeriodFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PayrollFiscalPeriods that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayrollFiscalPeriods
+     * const payrollFiscalPeriods = await prisma.payrollFiscalPeriod.findMany()
+     * 
+     * // Get first 10 PayrollFiscalPeriods
+     * const payrollFiscalPeriods = await prisma.payrollFiscalPeriod.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payrollFiscalPeriodWithIdOnly = await prisma.payrollFiscalPeriod.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayrollFiscalPeriodFindManyArgs>(args?: SelectSubset<T, PayrollFiscalPeriodFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PayrollFiscalPeriod.
+     * @param {PayrollFiscalPeriodCreateArgs} args - Arguments to create a PayrollFiscalPeriod.
+     * @example
+     * // Create one PayrollFiscalPeriod
+     * const PayrollFiscalPeriod = await prisma.payrollFiscalPeriod.create({
+     *   data: {
+     *     // ... data to create a PayrollFiscalPeriod
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayrollFiscalPeriodCreateArgs>(args: SelectSubset<T, PayrollFiscalPeriodCreateArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PayrollFiscalPeriods.
+     * @param {PayrollFiscalPeriodCreateManyArgs} args - Arguments to create many PayrollFiscalPeriods.
+     * @example
+     * // Create many PayrollFiscalPeriods
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayrollFiscalPeriodCreateManyArgs>(args?: SelectSubset<T, PayrollFiscalPeriodCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PayrollFiscalPeriod.
+     * @param {PayrollFiscalPeriodDeleteArgs} args - Arguments to delete one PayrollFiscalPeriod.
+     * @example
+     * // Delete one PayrollFiscalPeriod
+     * const PayrollFiscalPeriod = await prisma.payrollFiscalPeriod.delete({
+     *   where: {
+     *     // ... filter to delete one PayrollFiscalPeriod
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayrollFiscalPeriodDeleteArgs>(args: SelectSubset<T, PayrollFiscalPeriodDeleteArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PayrollFiscalPeriod.
+     * @param {PayrollFiscalPeriodUpdateArgs} args - Arguments to update one PayrollFiscalPeriod.
+     * @example
+     * // Update one PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayrollFiscalPeriodUpdateArgs>(args: SelectSubset<T, PayrollFiscalPeriodUpdateArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PayrollFiscalPeriods.
+     * @param {PayrollFiscalPeriodDeleteManyArgs} args - Arguments to filter PayrollFiscalPeriods to delete.
+     * @example
+     * // Delete a few PayrollFiscalPeriods
+     * const { count } = await prisma.payrollFiscalPeriod.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayrollFiscalPeriodDeleteManyArgs>(args?: SelectSubset<T, PayrollFiscalPeriodDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayrollFiscalPeriods.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayrollFiscalPeriods
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayrollFiscalPeriodUpdateManyArgs>(args: SelectSubset<T, PayrollFiscalPeriodUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PayrollFiscalPeriod.
+     * @param {PayrollFiscalPeriodUpsertArgs} args - Arguments to update or create a PayrollFiscalPeriod.
+     * @example
+     * // Update or create a PayrollFiscalPeriod
+     * const payrollFiscalPeriod = await prisma.payrollFiscalPeriod.upsert({
+     *   create: {
+     *     // ... data to create a PayrollFiscalPeriod
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayrollFiscalPeriod we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayrollFiscalPeriodUpsertArgs>(args: SelectSubset<T, PayrollFiscalPeriodUpsertArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PayrollFiscalPeriods.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodCountArgs} args - Arguments to filter PayrollFiscalPeriods to count.
+     * @example
+     * // Count the number of PayrollFiscalPeriods
+     * const count = await prisma.payrollFiscalPeriod.count({
+     *   where: {
+     *     // ... the filter for the PayrollFiscalPeriods we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayrollFiscalPeriodCountArgs>(
+      args?: Subset<T, PayrollFiscalPeriodCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayrollFiscalPeriodCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayrollFiscalPeriod.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayrollFiscalPeriodAggregateArgs>(args: Subset<T, PayrollFiscalPeriodAggregateArgs>): Prisma.PrismaPromise<GetPayrollFiscalPeriodAggregateType<T>>
+
+    /**
+     * Group by PayrollFiscalPeriod.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollFiscalPeriodGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayrollFiscalPeriodGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayrollFiscalPeriodGroupByArgs['orderBy'] }
+        : { orderBy?: PayrollFiscalPeriodGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayrollFiscalPeriodGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayrollFiscalPeriodGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayrollFiscalPeriod model
+   */
+  readonly fields: PayrollFiscalPeriodFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayrollFiscalPeriod.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayrollFiscalPeriodClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    settlements<T extends PayrollFiscalPeriod$settlementsArgs<ExtArgs> = {}>(args?: Subset<T, PayrollFiscalPeriod$settlementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayrollFiscalPeriod model
+   */
+  interface PayrollFiscalPeriodFieldRefs {
+    readonly id: FieldRef<"PayrollFiscalPeriod", 'String'>
+    readonly year: FieldRef<"PayrollFiscalPeriod", 'Int'>
+    readonly month: FieldRef<"PayrollFiscalPeriod", 'Int'>
+    readonly status: FieldRef<"PayrollFiscalPeriod", 'String'>
+    readonly closedAt: FieldRef<"PayrollFiscalPeriod", 'DateTime'>
+    readonly closedBy: FieldRef<"PayrollFiscalPeriod", 'String'>
+    readonly notes: FieldRef<"PayrollFiscalPeriod", 'String'>
+    readonly createdAt: FieldRef<"PayrollFiscalPeriod", 'DateTime'>
+    readonly updatedAt: FieldRef<"PayrollFiscalPeriod", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayrollFiscalPeriod findUnique
+   */
+  export type PayrollFiscalPeriodFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter, which PayrollFiscalPeriod to fetch.
+     */
+    where: PayrollFiscalPeriodWhereUniqueInput
+  }
+
+  /**
+   * PayrollFiscalPeriod findUniqueOrThrow
+   */
+  export type PayrollFiscalPeriodFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter, which PayrollFiscalPeriod to fetch.
+     */
+    where: PayrollFiscalPeriodWhereUniqueInput
+  }
+
+  /**
+   * PayrollFiscalPeriod findFirst
+   */
+  export type PayrollFiscalPeriodFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter, which PayrollFiscalPeriod to fetch.
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollFiscalPeriods to fetch.
+     */
+    orderBy?: PayrollFiscalPeriodOrderByWithRelationInput | PayrollFiscalPeriodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollFiscalPeriods.
+     */
+    cursor?: PayrollFiscalPeriodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollFiscalPeriods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollFiscalPeriods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollFiscalPeriods.
+     */
+    distinct?: PayrollFiscalPeriodScalarFieldEnum | PayrollFiscalPeriodScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollFiscalPeriod findFirstOrThrow
+   */
+  export type PayrollFiscalPeriodFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter, which PayrollFiscalPeriod to fetch.
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollFiscalPeriods to fetch.
+     */
+    orderBy?: PayrollFiscalPeriodOrderByWithRelationInput | PayrollFiscalPeriodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollFiscalPeriods.
+     */
+    cursor?: PayrollFiscalPeriodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollFiscalPeriods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollFiscalPeriods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollFiscalPeriods.
+     */
+    distinct?: PayrollFiscalPeriodScalarFieldEnum | PayrollFiscalPeriodScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollFiscalPeriod findMany
+   */
+  export type PayrollFiscalPeriodFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter, which PayrollFiscalPeriods to fetch.
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollFiscalPeriods to fetch.
+     */
+    orderBy?: PayrollFiscalPeriodOrderByWithRelationInput | PayrollFiscalPeriodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayrollFiscalPeriods.
+     */
+    cursor?: PayrollFiscalPeriodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollFiscalPeriods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollFiscalPeriods.
+     */
+    skip?: number
+    distinct?: PayrollFiscalPeriodScalarFieldEnum | PayrollFiscalPeriodScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollFiscalPeriod create
+   */
+  export type PayrollFiscalPeriodCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PayrollFiscalPeriod.
+     */
+    data: XOR<PayrollFiscalPeriodCreateInput, PayrollFiscalPeriodUncheckedCreateInput>
+  }
+
+  /**
+   * PayrollFiscalPeriod createMany
+   */
+  export type PayrollFiscalPeriodCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayrollFiscalPeriods.
+     */
+    data: PayrollFiscalPeriodCreateManyInput | PayrollFiscalPeriodCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayrollFiscalPeriod update
+   */
+  export type PayrollFiscalPeriodUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PayrollFiscalPeriod.
+     */
+    data: XOR<PayrollFiscalPeriodUpdateInput, PayrollFiscalPeriodUncheckedUpdateInput>
+    /**
+     * Choose, which PayrollFiscalPeriod to update.
+     */
+    where: PayrollFiscalPeriodWhereUniqueInput
+  }
+
+  /**
+   * PayrollFiscalPeriod updateMany
+   */
+  export type PayrollFiscalPeriodUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayrollFiscalPeriods.
+     */
+    data: XOR<PayrollFiscalPeriodUpdateManyMutationInput, PayrollFiscalPeriodUncheckedUpdateManyInput>
+    /**
+     * Filter which PayrollFiscalPeriods to update
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * Limit how many PayrollFiscalPeriods to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollFiscalPeriod upsert
+   */
+  export type PayrollFiscalPeriodUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PayrollFiscalPeriod to update in case it exists.
+     */
+    where: PayrollFiscalPeriodWhereUniqueInput
+    /**
+     * In case the PayrollFiscalPeriod found by the `where` argument doesn't exist, create a new PayrollFiscalPeriod with this data.
+     */
+    create: XOR<PayrollFiscalPeriodCreateInput, PayrollFiscalPeriodUncheckedCreateInput>
+    /**
+     * In case the PayrollFiscalPeriod was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayrollFiscalPeriodUpdateInput, PayrollFiscalPeriodUncheckedUpdateInput>
+  }
+
+  /**
+   * PayrollFiscalPeriod delete
+   */
+  export type PayrollFiscalPeriodDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    /**
+     * Filter which PayrollFiscalPeriod to delete.
+     */
+    where: PayrollFiscalPeriodWhereUniqueInput
+  }
+
+  /**
+   * PayrollFiscalPeriod deleteMany
+   */
+  export type PayrollFiscalPeriodDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollFiscalPeriods to delete
+     */
+    where?: PayrollFiscalPeriodWhereInput
+    /**
+     * Limit how many PayrollFiscalPeriods to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollFiscalPeriod.settlements
+   */
+  export type PayrollFiscalPeriod$settlementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollPeriod
+     */
+    select?: PayrollPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollPeriod
+     */
+    omit?: PayrollPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollPeriodInclude<ExtArgs> | null
+    where?: PayrollPeriodWhereInput
+    orderBy?: PayrollPeriodOrderByWithRelationInput | PayrollPeriodOrderByWithRelationInput[]
+    cursor?: PayrollPeriodWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PayrollPeriodScalarFieldEnum | PayrollPeriodScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollFiscalPeriod without action
+   */
+  export type PayrollFiscalPeriodDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model PayrollPeriod
    */
 
@@ -26904,6 +30648,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMinAggregateOutputType = {
     id: string | null
+    fiscalPeriodId: string | null
     year: number | null
     month: number | null
     periodType: string | null
@@ -26927,6 +30672,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMaxAggregateOutputType = {
     id: string | null
+    fiscalPeriodId: string | null
     year: number | null
     month: number | null
     periodType: string | null
@@ -26950,6 +30696,7 @@ export namespace Prisma {
 
   export type PayrollPeriodCountAggregateOutputType = {
     id: number
+    fiscalPeriodId: number
     year: number
     month: number
     periodType: number
@@ -26993,6 +30740,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMinAggregateInputType = {
     id?: true
+    fiscalPeriodId?: true
     year?: true
     month?: true
     periodType?: true
@@ -27016,6 +30764,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMaxAggregateInputType = {
     id?: true
+    fiscalPeriodId?: true
     year?: true
     month?: true
     periodType?: true
@@ -27039,6 +30788,7 @@ export namespace Prisma {
 
   export type PayrollPeriodCountAggregateInputType = {
     id?: true
+    fiscalPeriodId?: true
     year?: true
     month?: true
     periodType?: true
@@ -27149,6 +30899,7 @@ export namespace Prisma {
 
   export type PayrollPeriodGroupByOutputType = {
     id: string
+    fiscalPeriodId: string | null
     year: number
     month: number
     periodType: string
@@ -27191,6 +30942,7 @@ export namespace Prisma {
 
   export type PayrollPeriodSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    fiscalPeriodId?: boolean
     year?: boolean
     month?: boolean
     periodType?: boolean
@@ -27210,6 +30962,7 @@ export namespace Prisma {
     closedAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
     periodNovelties?: boolean | PayrollPeriod$periodNoveltiesArgs<ExtArgs>
     _count?: boolean | PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
@@ -27219,6 +30972,7 @@ export namespace Prisma {
 
   export type PayrollPeriodSelectScalar = {
     id?: boolean
+    fiscalPeriodId?: boolean
     year?: boolean
     month?: boolean
     periodType?: boolean
@@ -27240,8 +30994,9 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "liquidationDate" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
+  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fiscalPeriodId" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "liquidationDate" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
   export type PayrollPeriodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
     periodNovelties?: boolean | PayrollPeriod$periodNoveltiesArgs<ExtArgs>
     _count?: boolean | PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
@@ -27250,11 +31005,13 @@ export namespace Prisma {
   export type $PayrollPeriodPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PayrollPeriod"
     objects: {
+      fiscalPeriod: Prisma.$PayrollFiscalPeriodPayload<ExtArgs> | null
       paySlips: Prisma.$PaySlipPayload<ExtArgs>[]
       periodNovelties: Prisma.$PeriodNoveltyPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      fiscalPeriodId: string | null
       year: number
       month: number
       periodType: string
@@ -27614,6 +31371,7 @@ export namespace Prisma {
    */
   export interface Prisma__PayrollPeriodClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    fiscalPeriod<T extends PayrollPeriod$fiscalPeriodArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$fiscalPeriodArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paySlips<T extends PayrollPeriod$paySlipsArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$paySlipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaySlipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periodNovelties<T extends PayrollPeriod$periodNoveltiesArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$periodNoveltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PeriodNoveltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -27646,6 +31404,7 @@ export namespace Prisma {
    */
   interface PayrollPeriodFieldRefs {
     readonly id: FieldRef<"PayrollPeriod", 'String'>
+    readonly fiscalPeriodId: FieldRef<"PayrollPeriod", 'String'>
     readonly year: FieldRef<"PayrollPeriod", 'Int'>
     readonly month: FieldRef<"PayrollPeriod", 'Int'>
     readonly periodType: FieldRef<"PayrollPeriod", 'String'>
@@ -28005,6 +31764,25 @@ export namespace Prisma {
      * Limit how many PayrollPeriods to delete.
      */
     limit?: number
+  }
+
+  /**
+   * PayrollPeriod.fiscalPeriod
+   */
+  export type PayrollPeriod$fiscalPeriodArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollFiscalPeriod
+     */
+    select?: PayrollFiscalPeriodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollFiscalPeriod
+     */
+    omit?: PayrollFiscalPeriodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PayrollFiscalPeriodInclude<ExtArgs> | null
+    where?: PayrollFiscalPeriodWhereInput
   }
 
   /**
@@ -30643,7 +34421,11 @@ export namespace Prisma {
     baseImponible9: Decimal | null
     baseImponible10: Decimal | null
     detractionAmount: Decimal | null
+    baseDifAporteOs: Decimal | null
+    baseDifContribOs: Decimal | null
+    baseDifLrt: Decimal | null
     childrenCount: number | null
+    adherentsCount: number | null
   }
 
   export type PaySlipBasisSumAggregateOutputType = {
@@ -30658,7 +34440,11 @@ export namespace Prisma {
     baseImponible9: Decimal | null
     baseImponible10: Decimal | null
     detractionAmount: Decimal | null
+    baseDifAporteOs: Decimal | null
+    baseDifContribOs: Decimal | null
+    baseDifLrt: Decimal | null
     childrenCount: number | null
+    adherentsCount: number | null
   }
 
   export type PaySlipBasisMinAggregateOutputType = {
@@ -30675,12 +34461,16 @@ export namespace Prisma {
     baseImponible9: Decimal | null
     baseImponible10: Decimal | null
     detractionAmount: Decimal | null
+    baseDifAporteOs: Decimal | null
+    baseDifContribOs: Decimal | null
+    baseDifLrt: Decimal | null
     situationCode: string | null
     conditionCode: string | null
     activityCode: string | null
     contractModality: string | null
     hasSpouse: boolean | null
     childrenCount: number | null
+    adherentsCount: number | null
     hasScvo: boolean | null
     hasCct: boolean | null
     createdAt: Date | null
@@ -30701,12 +34491,16 @@ export namespace Prisma {
     baseImponible9: Decimal | null
     baseImponible10: Decimal | null
     detractionAmount: Decimal | null
+    baseDifAporteOs: Decimal | null
+    baseDifContribOs: Decimal | null
+    baseDifLrt: Decimal | null
     situationCode: string | null
     conditionCode: string | null
     activityCode: string | null
     contractModality: string | null
     hasSpouse: boolean | null
     childrenCount: number | null
+    adherentsCount: number | null
     hasScvo: boolean | null
     hasCct: boolean | null
     createdAt: Date | null
@@ -30727,12 +34521,16 @@ export namespace Prisma {
     baseImponible9: number
     baseImponible10: number
     detractionAmount: number
+    baseDifAporteOs: number
+    baseDifContribOs: number
+    baseDifLrt: number
     situationCode: number
     conditionCode: number
     activityCode: number
     contractModality: number
     hasSpouse: number
     childrenCount: number
+    adherentsCount: number
     hasScvo: number
     hasCct: number
     createdAt: number
@@ -30753,7 +34551,11 @@ export namespace Prisma {
     baseImponible9?: true
     baseImponible10?: true
     detractionAmount?: true
+    baseDifAporteOs?: true
+    baseDifContribOs?: true
+    baseDifLrt?: true
     childrenCount?: true
+    adherentsCount?: true
   }
 
   export type PaySlipBasisSumAggregateInputType = {
@@ -30768,7 +34570,11 @@ export namespace Prisma {
     baseImponible9?: true
     baseImponible10?: true
     detractionAmount?: true
+    baseDifAporteOs?: true
+    baseDifContribOs?: true
+    baseDifLrt?: true
     childrenCount?: true
+    adherentsCount?: true
   }
 
   export type PaySlipBasisMinAggregateInputType = {
@@ -30785,12 +34591,16 @@ export namespace Prisma {
     baseImponible9?: true
     baseImponible10?: true
     detractionAmount?: true
+    baseDifAporteOs?: true
+    baseDifContribOs?: true
+    baseDifLrt?: true
     situationCode?: true
     conditionCode?: true
     activityCode?: true
     contractModality?: true
     hasSpouse?: true
     childrenCount?: true
+    adherentsCount?: true
     hasScvo?: true
     hasCct?: true
     createdAt?: true
@@ -30811,12 +34621,16 @@ export namespace Prisma {
     baseImponible9?: true
     baseImponible10?: true
     detractionAmount?: true
+    baseDifAporteOs?: true
+    baseDifContribOs?: true
+    baseDifLrt?: true
     situationCode?: true
     conditionCode?: true
     activityCode?: true
     contractModality?: true
     hasSpouse?: true
     childrenCount?: true
+    adherentsCount?: true
     hasScvo?: true
     hasCct?: true
     createdAt?: true
@@ -30837,12 +34651,16 @@ export namespace Prisma {
     baseImponible9?: true
     baseImponible10?: true
     detractionAmount?: true
+    baseDifAporteOs?: true
+    baseDifContribOs?: true
+    baseDifLrt?: true
     situationCode?: true
     conditionCode?: true
     activityCode?: true
     contractModality?: true
     hasSpouse?: true
     childrenCount?: true
+    adherentsCount?: true
     hasScvo?: true
     hasCct?: true
     createdAt?: true
@@ -30950,12 +34768,16 @@ export namespace Prisma {
     baseImponible9: Decimal
     baseImponible10: Decimal
     detractionAmount: Decimal
+    baseDifAporteOs: Decimal
+    baseDifContribOs: Decimal
+    baseDifLrt: Decimal
     situationCode: string
     conditionCode: string
     activityCode: string
     contractModality: string
     hasSpouse: boolean
     childrenCount: number
+    adherentsCount: number
     hasScvo: boolean
     hasCct: boolean
     createdAt: Date
@@ -30995,12 +34817,16 @@ export namespace Prisma {
     baseImponible9?: boolean
     baseImponible10?: boolean
     detractionAmount?: boolean
+    baseDifAporteOs?: boolean
+    baseDifContribOs?: boolean
+    baseDifLrt?: boolean
     situationCode?: boolean
     conditionCode?: boolean
     activityCode?: boolean
     contractModality?: boolean
     hasSpouse?: boolean
     childrenCount?: boolean
+    adherentsCount?: boolean
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: boolean
@@ -31024,19 +34850,23 @@ export namespace Prisma {
     baseImponible9?: boolean
     baseImponible10?: boolean
     detractionAmount?: boolean
+    baseDifAporteOs?: boolean
+    baseDifContribOs?: boolean
+    baseDifLrt?: boolean
     situationCode?: boolean
     conditionCode?: boolean
     activityCode?: boolean
     contractModality?: boolean
     hasSpouse?: boolean
     childrenCount?: boolean
+    adherentsCount?: boolean
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaySlipBasisOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "baseImponible1" | "baseImponible2" | "baseImponible3" | "baseImponible4" | "baseImponible5" | "baseImponible6" | "baseImponible7" | "baseImponible8" | "baseImponible9" | "baseImponible10" | "detractionAmount" | "situationCode" | "conditionCode" | "activityCode" | "contractModality" | "hasSpouse" | "childrenCount" | "hasScvo" | "hasCct" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipBasis"]>
+  export type PaySlipBasisOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "baseImponible1" | "baseImponible2" | "baseImponible3" | "baseImponible4" | "baseImponible5" | "baseImponible6" | "baseImponible7" | "baseImponible8" | "baseImponible9" | "baseImponible10" | "detractionAmount" | "baseDifAporteOs" | "baseDifContribOs" | "baseDifLrt" | "situationCode" | "conditionCode" | "activityCode" | "contractModality" | "hasSpouse" | "childrenCount" | "adherentsCount" | "hasScvo" | "hasCct" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipBasis"]>
   export type PaySlipBasisInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
   }
@@ -31060,12 +34890,16 @@ export namespace Prisma {
       baseImponible9: Prisma.Decimal
       baseImponible10: Prisma.Decimal
       detractionAmount: Prisma.Decimal
+      baseDifAporteOs: Prisma.Decimal
+      baseDifContribOs: Prisma.Decimal
+      baseDifLrt: Prisma.Decimal
       situationCode: string
       conditionCode: string
       activityCode: string
       contractModality: string
       hasSpouse: boolean
       childrenCount: number
+      adherentsCount: number
       hasScvo: boolean
       hasCct: boolean
       createdAt: Date
@@ -31453,12 +35287,16 @@ export namespace Prisma {
     readonly baseImponible9: FieldRef<"PaySlipBasis", 'Decimal'>
     readonly baseImponible10: FieldRef<"PaySlipBasis", 'Decimal'>
     readonly detractionAmount: FieldRef<"PaySlipBasis", 'Decimal'>
+    readonly baseDifAporteOs: FieldRef<"PaySlipBasis", 'Decimal'>
+    readonly baseDifContribOs: FieldRef<"PaySlipBasis", 'Decimal'>
+    readonly baseDifLrt: FieldRef<"PaySlipBasis", 'Decimal'>
     readonly situationCode: FieldRef<"PaySlipBasis", 'String'>
     readonly conditionCode: FieldRef<"PaySlipBasis", 'String'>
     readonly activityCode: FieldRef<"PaySlipBasis", 'String'>
     readonly contractModality: FieldRef<"PaySlipBasis", 'String'>
     readonly hasSpouse: FieldRef<"PaySlipBasis", 'Boolean'>
     readonly childrenCount: FieldRef<"PaySlipBasis", 'Int'>
+    readonly adherentsCount: FieldRef<"PaySlipBasis", 'Int'>
     readonly hasScvo: FieldRef<"PaySlipBasis", 'Boolean'>
     readonly hasCct: FieldRef<"PaySlipBasis", 'Boolean'>
     readonly createdAt: FieldRef<"PaySlipBasis", 'DateTime'>
@@ -33940,6 +37778,2057 @@ export namespace Prisma {
 
 
   /**
+   * Model EmployeeEmbargo
+   */
+
+  export type AggregateEmployeeEmbargo = {
+    _count: EmployeeEmbargoCountAggregateOutputType | null
+    _avg: EmployeeEmbargoAvgAggregateOutputType | null
+    _sum: EmployeeEmbargoSumAggregateOutputType | null
+    _min: EmployeeEmbargoMinAggregateOutputType | null
+    _max: EmployeeEmbargoMaxAggregateOutputType | null
+  }
+
+  export type EmployeeEmbargoAvgAggregateOutputType = {
+    totalAmount: Decimal | null
+    priorityOrder: number | null
+  }
+
+  export type EmployeeEmbargoSumAggregateOutputType = {
+    totalAmount: Decimal | null
+    priorityOrder: number | null
+  }
+
+  export type EmployeeEmbargoMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    caseTitle: string | null
+    dossierNumber: string | null
+    court: string | null
+    secretary: string | null
+    judicialDistrict: string | null
+    embargoType: string | null
+    hasCap: boolean | null
+    totalAmount: Decimal | null
+    priorityOrder: number | null
+    status: string | null
+    startDate: Date | null
+    endDate: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeEmbargoMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    caseTitle: string | null
+    dossierNumber: string | null
+    court: string | null
+    secretary: string | null
+    judicialDistrict: string | null
+    embargoType: string | null
+    hasCap: boolean | null
+    totalAmount: Decimal | null
+    priorityOrder: number | null
+    status: string | null
+    startDate: Date | null
+    endDate: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeEmbargoCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    caseTitle: number
+    dossierNumber: number
+    court: number
+    secretary: number
+    judicialDistrict: number
+    embargoType: number
+    hasCap: number
+    totalAmount: number
+    priorityOrder: number
+    status: number
+    startDate: number
+    endDate: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeEmbargoAvgAggregateInputType = {
+    totalAmount?: true
+    priorityOrder?: true
+  }
+
+  export type EmployeeEmbargoSumAggregateInputType = {
+    totalAmount?: true
+    priorityOrder?: true
+  }
+
+  export type EmployeeEmbargoMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    caseTitle?: true
+    dossierNumber?: true
+    court?: true
+    secretary?: true
+    judicialDistrict?: true
+    embargoType?: true
+    hasCap?: true
+    totalAmount?: true
+    priorityOrder?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeEmbargoMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    caseTitle?: true
+    dossierNumber?: true
+    court?: true
+    secretary?: true
+    judicialDistrict?: true
+    embargoType?: true
+    hasCap?: true
+    totalAmount?: true
+    priorityOrder?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeEmbargoCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    caseTitle?: true
+    dossierNumber?: true
+    court?: true
+    secretary?: true
+    judicialDistrict?: true
+    embargoType?: true
+    hasCap?: true
+    totalAmount?: true
+    priorityOrder?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeEmbargoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeEmbargo to aggregate.
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargos to fetch.
+     */
+    orderBy?: EmployeeEmbargoOrderByWithRelationInput | EmployeeEmbargoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeEmbargoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeEmbargos
+    **/
+    _count?: true | EmployeeEmbargoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeEmbargoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeEmbargoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeEmbargoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeEmbargoMaxAggregateInputType
+  }
+
+  export type GetEmployeeEmbargoAggregateType<T extends EmployeeEmbargoAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeEmbargo]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeEmbargo[P]>
+      : GetScalarType<T[P], AggregateEmployeeEmbargo[P]>
+  }
+
+
+
+
+  export type EmployeeEmbargoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeEmbargoWhereInput
+    orderBy?: EmployeeEmbargoOrderByWithAggregationInput | EmployeeEmbargoOrderByWithAggregationInput[]
+    by: EmployeeEmbargoScalarFieldEnum[] | EmployeeEmbargoScalarFieldEnum
+    having?: EmployeeEmbargoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeEmbargoCountAggregateInputType | true
+    _avg?: EmployeeEmbargoAvgAggregateInputType
+    _sum?: EmployeeEmbargoSumAggregateInputType
+    _min?: EmployeeEmbargoMinAggregateInputType
+    _max?: EmployeeEmbargoMaxAggregateInputType
+  }
+
+  export type EmployeeEmbargoGroupByOutputType = {
+    id: string
+    employeeId: string
+    caseTitle: string
+    dossierNumber: string | null
+    court: string | null
+    secretary: string | null
+    judicialDistrict: string | null
+    embargoType: string
+    hasCap: boolean
+    totalAmount: Decimal | null
+    priorityOrder: number
+    status: string
+    startDate: Date | null
+    endDate: Date | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmployeeEmbargoCountAggregateOutputType | null
+    _avg: EmployeeEmbargoAvgAggregateOutputType | null
+    _sum: EmployeeEmbargoSumAggregateOutputType | null
+    _min: EmployeeEmbargoMinAggregateOutputType | null
+    _max: EmployeeEmbargoMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeEmbargoGroupByPayload<T extends EmployeeEmbargoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeEmbargoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeEmbargoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeEmbargoGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeEmbargoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeEmbargoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    caseTitle?: boolean
+    dossierNumber?: boolean
+    court?: boolean
+    secretary?: boolean
+    judicialDistrict?: boolean
+    embargoType?: boolean
+    hasCap?: boolean
+    totalAmount?: boolean
+    priorityOrder?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    concepts?: boolean | EmployeeEmbargo$conceptsArgs<ExtArgs>
+    _count?: boolean | EmployeeEmbargoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeEmbargo"]>
+
+
+
+  export type EmployeeEmbargoSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    caseTitle?: boolean
+    dossierNumber?: boolean
+    court?: boolean
+    secretary?: boolean
+    judicialDistrict?: boolean
+    embargoType?: boolean
+    hasCap?: boolean
+    totalAmount?: boolean
+    priorityOrder?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmployeeEmbargoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "caseTitle" | "dossierNumber" | "court" | "secretary" | "judicialDistrict" | "embargoType" | "hasCap" | "totalAmount" | "priorityOrder" | "status" | "startDate" | "endDate" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["employeeEmbargo"]>
+  export type EmployeeEmbargoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    concepts?: boolean | EmployeeEmbargo$conceptsArgs<ExtArgs>
+    _count?: boolean | EmployeeEmbargoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeEmbargoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeEmbargo"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+      concepts: Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      caseTitle: string
+      dossierNumber: string | null
+      court: string | null
+      secretary: string | null
+      judicialDistrict: string | null
+      embargoType: string
+      hasCap: boolean
+      totalAmount: Prisma.Decimal | null
+      priorityOrder: number
+      status: string
+      startDate: Date | null
+      endDate: Date | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["employeeEmbargo"]>
+    composites: {}
+  }
+
+  type EmployeeEmbargoGetPayload<S extends boolean | null | undefined | EmployeeEmbargoDefaultArgs> = $Result.GetResult<Prisma.$EmployeeEmbargoPayload, S>
+
+  type EmployeeEmbargoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeEmbargoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeEmbargoCountAggregateInputType | true
+    }
+
+  export interface EmployeeEmbargoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeEmbargo'], meta: { name: 'EmployeeEmbargo' } }
+    /**
+     * Find zero or one EmployeeEmbargo that matches the filter.
+     * @param {EmployeeEmbargoFindUniqueArgs} args - Arguments to find a EmployeeEmbargo
+     * @example
+     * // Get one EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeEmbargoFindUniqueArgs>(args: SelectSubset<T, EmployeeEmbargoFindUniqueArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeEmbargo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeEmbargoFindUniqueOrThrowArgs} args - Arguments to find a EmployeeEmbargo
+     * @example
+     * // Get one EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeEmbargoFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeEmbargoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeEmbargo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoFindFirstArgs} args - Arguments to find a EmployeeEmbargo
+     * @example
+     * // Get one EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeEmbargoFindFirstArgs>(args?: SelectSubset<T, EmployeeEmbargoFindFirstArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeEmbargo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoFindFirstOrThrowArgs} args - Arguments to find a EmployeeEmbargo
+     * @example
+     * // Get one EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeEmbargoFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeEmbargoFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeEmbargos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeEmbargos
+     * const employeeEmbargos = await prisma.employeeEmbargo.findMany()
+     * 
+     * // Get first 10 EmployeeEmbargos
+     * const employeeEmbargos = await prisma.employeeEmbargo.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeEmbargoWithIdOnly = await prisma.employeeEmbargo.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeEmbargoFindManyArgs>(args?: SelectSubset<T, EmployeeEmbargoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeEmbargo.
+     * @param {EmployeeEmbargoCreateArgs} args - Arguments to create a EmployeeEmbargo.
+     * @example
+     * // Create one EmployeeEmbargo
+     * const EmployeeEmbargo = await prisma.employeeEmbargo.create({
+     *   data: {
+     *     // ... data to create a EmployeeEmbargo
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeEmbargoCreateArgs>(args: SelectSubset<T, EmployeeEmbargoCreateArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeEmbargos.
+     * @param {EmployeeEmbargoCreateManyArgs} args - Arguments to create many EmployeeEmbargos.
+     * @example
+     * // Create many EmployeeEmbargos
+     * const employeeEmbargo = await prisma.employeeEmbargo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeEmbargoCreateManyArgs>(args?: SelectSubset<T, EmployeeEmbargoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeEmbargo.
+     * @param {EmployeeEmbargoDeleteArgs} args - Arguments to delete one EmployeeEmbargo.
+     * @example
+     * // Delete one EmployeeEmbargo
+     * const EmployeeEmbargo = await prisma.employeeEmbargo.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeEmbargo
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeEmbargoDeleteArgs>(args: SelectSubset<T, EmployeeEmbargoDeleteArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeEmbargo.
+     * @param {EmployeeEmbargoUpdateArgs} args - Arguments to update one EmployeeEmbargo.
+     * @example
+     * // Update one EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeEmbargoUpdateArgs>(args: SelectSubset<T, EmployeeEmbargoUpdateArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeEmbargos.
+     * @param {EmployeeEmbargoDeleteManyArgs} args - Arguments to filter EmployeeEmbargos to delete.
+     * @example
+     * // Delete a few EmployeeEmbargos
+     * const { count } = await prisma.employeeEmbargo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeEmbargoDeleteManyArgs>(args?: SelectSubset<T, EmployeeEmbargoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeEmbargos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeEmbargos
+     * const employeeEmbargo = await prisma.employeeEmbargo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeEmbargoUpdateManyArgs>(args: SelectSubset<T, EmployeeEmbargoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeEmbargo.
+     * @param {EmployeeEmbargoUpsertArgs} args - Arguments to update or create a EmployeeEmbargo.
+     * @example
+     * // Update or create a EmployeeEmbargo
+     * const employeeEmbargo = await prisma.employeeEmbargo.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeEmbargo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeEmbargo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeEmbargoUpsertArgs>(args: SelectSubset<T, EmployeeEmbargoUpsertArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeEmbargos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoCountArgs} args - Arguments to filter EmployeeEmbargos to count.
+     * @example
+     * // Count the number of EmployeeEmbargos
+     * const count = await prisma.employeeEmbargo.count({
+     *   where: {
+     *     // ... the filter for the EmployeeEmbargos we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeEmbargoCountArgs>(
+      args?: Subset<T, EmployeeEmbargoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeEmbargoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeEmbargo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeEmbargoAggregateArgs>(args: Subset<T, EmployeeEmbargoAggregateArgs>): Prisma.PrismaPromise<GetEmployeeEmbargoAggregateType<T>>
+
+    /**
+     * Group by EmployeeEmbargo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeEmbargoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeEmbargoGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeEmbargoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeEmbargoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeEmbargoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeEmbargo model
+   */
+  readonly fields: EmployeeEmbargoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeEmbargo.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeEmbargoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    concepts<T extends EmployeeEmbargo$conceptsArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeEmbargo$conceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeEmbargo model
+   */
+  interface EmployeeEmbargoFieldRefs {
+    readonly id: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly employeeId: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly caseTitle: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly dossierNumber: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly court: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly secretary: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly judicialDistrict: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly embargoType: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly hasCap: FieldRef<"EmployeeEmbargo", 'Boolean'>
+    readonly totalAmount: FieldRef<"EmployeeEmbargo", 'Decimal'>
+    readonly priorityOrder: FieldRef<"EmployeeEmbargo", 'Int'>
+    readonly status: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly startDate: FieldRef<"EmployeeEmbargo", 'DateTime'>
+    readonly endDate: FieldRef<"EmployeeEmbargo", 'DateTime'>
+    readonly notes: FieldRef<"EmployeeEmbargo", 'String'>
+    readonly createdAt: FieldRef<"EmployeeEmbargo", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeEmbargo", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeEmbargo findUnique
+   */
+  export type EmployeeEmbargoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargo to fetch.
+     */
+    where: EmployeeEmbargoWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargo findUniqueOrThrow
+   */
+  export type EmployeeEmbargoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargo to fetch.
+     */
+    where: EmployeeEmbargoWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargo findFirst
+   */
+  export type EmployeeEmbargoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargo to fetch.
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargos to fetch.
+     */
+    orderBy?: EmployeeEmbargoOrderByWithRelationInput | EmployeeEmbargoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeEmbargos.
+     */
+    cursor?: EmployeeEmbargoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeEmbargos.
+     */
+    distinct?: EmployeeEmbargoScalarFieldEnum | EmployeeEmbargoScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargo findFirstOrThrow
+   */
+  export type EmployeeEmbargoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargo to fetch.
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargos to fetch.
+     */
+    orderBy?: EmployeeEmbargoOrderByWithRelationInput | EmployeeEmbargoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeEmbargos.
+     */
+    cursor?: EmployeeEmbargoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeEmbargos.
+     */
+    distinct?: EmployeeEmbargoScalarFieldEnum | EmployeeEmbargoScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargo findMany
+   */
+  export type EmployeeEmbargoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargos to fetch.
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargos to fetch.
+     */
+    orderBy?: EmployeeEmbargoOrderByWithRelationInput | EmployeeEmbargoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeEmbargos.
+     */
+    cursor?: EmployeeEmbargoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargos.
+     */
+    skip?: number
+    distinct?: EmployeeEmbargoScalarFieldEnum | EmployeeEmbargoScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargo create
+   */
+  export type EmployeeEmbargoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeEmbargo.
+     */
+    data: XOR<EmployeeEmbargoCreateInput, EmployeeEmbargoUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeEmbargo createMany
+   */
+  export type EmployeeEmbargoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeEmbargos.
+     */
+    data: EmployeeEmbargoCreateManyInput | EmployeeEmbargoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeEmbargo update
+   */
+  export type EmployeeEmbargoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeEmbargo.
+     */
+    data: XOR<EmployeeEmbargoUpdateInput, EmployeeEmbargoUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeEmbargo to update.
+     */
+    where: EmployeeEmbargoWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargo updateMany
+   */
+  export type EmployeeEmbargoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeEmbargos.
+     */
+    data: XOR<EmployeeEmbargoUpdateManyMutationInput, EmployeeEmbargoUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeEmbargos to update
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * Limit how many EmployeeEmbargos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeEmbargo upsert
+   */
+  export type EmployeeEmbargoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeEmbargo to update in case it exists.
+     */
+    where: EmployeeEmbargoWhereUniqueInput
+    /**
+     * In case the EmployeeEmbargo found by the `where` argument doesn't exist, create a new EmployeeEmbargo with this data.
+     */
+    create: XOR<EmployeeEmbargoCreateInput, EmployeeEmbargoUncheckedCreateInput>
+    /**
+     * In case the EmployeeEmbargo was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeEmbargoUpdateInput, EmployeeEmbargoUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeEmbargo delete
+   */
+  export type EmployeeEmbargoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeEmbargo to delete.
+     */
+    where: EmployeeEmbargoWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargo deleteMany
+   */
+  export type EmployeeEmbargoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeEmbargos to delete
+     */
+    where?: EmployeeEmbargoWhereInput
+    /**
+     * Limit how many EmployeeEmbargos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeEmbargo.concepts
+   */
+  export type EmployeeEmbargo$conceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    where?: EmployeeEmbargoConceptWhereInput
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeEmbargoConceptScalarFieldEnum | EmployeeEmbargoConceptScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargo without action
+   */
+  export type EmployeeEmbargoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargo
+     */
+    select?: EmployeeEmbargoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargo
+     */
+    omit?: EmployeeEmbargoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeEmbargoConcept
+   */
+
+  export type AggregateEmployeeEmbargoConcept = {
+    _count: EmployeeEmbargoConceptCountAggregateOutputType | null
+    _min: EmployeeEmbargoConceptMinAggregateOutputType | null
+    _max: EmployeeEmbargoConceptMaxAggregateOutputType | null
+  }
+
+  export type EmployeeEmbargoConceptMinAggregateOutputType = {
+    id: string | null
+    embargoId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type EmployeeEmbargoConceptMaxAggregateOutputType = {
+    id: string | null
+    embargoId: string | null
+    conceptId: string | null
+    createdAt: Date | null
+  }
+
+  export type EmployeeEmbargoConceptCountAggregateOutputType = {
+    id: number
+    embargoId: number
+    conceptId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type EmployeeEmbargoConceptMinAggregateInputType = {
+    id?: true
+    embargoId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type EmployeeEmbargoConceptMaxAggregateInputType = {
+    id?: true
+    embargoId?: true
+    conceptId?: true
+    createdAt?: true
+  }
+
+  export type EmployeeEmbargoConceptCountAggregateInputType = {
+    id?: true
+    embargoId?: true
+    conceptId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type EmployeeEmbargoConceptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeEmbargoConcept to aggregate.
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargoConcepts to fetch.
+     */
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargoConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargoConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeEmbargoConcepts
+    **/
+    _count?: true | EmployeeEmbargoConceptCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeEmbargoConceptMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeEmbargoConceptMaxAggregateInputType
+  }
+
+  export type GetEmployeeEmbargoConceptAggregateType<T extends EmployeeEmbargoConceptAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeEmbargoConcept]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeEmbargoConcept[P]>
+      : GetScalarType<T[P], AggregateEmployeeEmbargoConcept[P]>
+  }
+
+
+
+
+  export type EmployeeEmbargoConceptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeEmbargoConceptWhereInput
+    orderBy?: EmployeeEmbargoConceptOrderByWithAggregationInput | EmployeeEmbargoConceptOrderByWithAggregationInput[]
+    by: EmployeeEmbargoConceptScalarFieldEnum[] | EmployeeEmbargoConceptScalarFieldEnum
+    having?: EmployeeEmbargoConceptScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeEmbargoConceptCountAggregateInputType | true
+    _min?: EmployeeEmbargoConceptMinAggregateInputType
+    _max?: EmployeeEmbargoConceptMaxAggregateInputType
+  }
+
+  export type EmployeeEmbargoConceptGroupByOutputType = {
+    id: string
+    embargoId: string
+    conceptId: string
+    createdAt: Date
+    _count: EmployeeEmbargoConceptCountAggregateOutputType | null
+    _min: EmployeeEmbargoConceptMinAggregateOutputType | null
+    _max: EmployeeEmbargoConceptMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeEmbargoConceptGroupByPayload<T extends EmployeeEmbargoConceptGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeEmbargoConceptGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeEmbargoConceptGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeEmbargoConceptGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeEmbargoConceptGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeEmbargoConceptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    embargoId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+    embargo?: boolean | EmployeeEmbargoDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeEmbargoConcept"]>
+
+
+
+  export type EmployeeEmbargoConceptSelectScalar = {
+    id?: boolean
+    embargoId?: boolean
+    conceptId?: boolean
+    createdAt?: boolean
+  }
+
+  export type EmployeeEmbargoConceptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "embargoId" | "conceptId" | "createdAt", ExtArgs["result"]["employeeEmbargoConcept"]>
+  export type EmployeeEmbargoConceptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    embargo?: boolean | EmployeeEmbargoDefaultArgs<ExtArgs>
+    concept?: boolean | ConceptDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeEmbargoConceptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeEmbargoConcept"
+    objects: {
+      embargo: Prisma.$EmployeeEmbargoPayload<ExtArgs>
+      concept: Prisma.$ConceptPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      embargoId: string
+      conceptId: string
+      createdAt: Date
+    }, ExtArgs["result"]["employeeEmbargoConcept"]>
+    composites: {}
+  }
+
+  type EmployeeEmbargoConceptGetPayload<S extends boolean | null | undefined | EmployeeEmbargoConceptDefaultArgs> = $Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload, S>
+
+  type EmployeeEmbargoConceptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeEmbargoConceptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeEmbargoConceptCountAggregateInputType | true
+    }
+
+  export interface EmployeeEmbargoConceptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeEmbargoConcept'], meta: { name: 'EmployeeEmbargoConcept' } }
+    /**
+     * Find zero or one EmployeeEmbargoConcept that matches the filter.
+     * @param {EmployeeEmbargoConceptFindUniqueArgs} args - Arguments to find a EmployeeEmbargoConcept
+     * @example
+     * // Get one EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeEmbargoConceptFindUniqueArgs>(args: SelectSubset<T, EmployeeEmbargoConceptFindUniqueArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeEmbargoConcept that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeEmbargoConceptFindUniqueOrThrowArgs} args - Arguments to find a EmployeeEmbargoConcept
+     * @example
+     * // Get one EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeEmbargoConceptFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeEmbargoConceptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeEmbargoConcept that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptFindFirstArgs} args - Arguments to find a EmployeeEmbargoConcept
+     * @example
+     * // Get one EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeEmbargoConceptFindFirstArgs>(args?: SelectSubset<T, EmployeeEmbargoConceptFindFirstArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeEmbargoConcept that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptFindFirstOrThrowArgs} args - Arguments to find a EmployeeEmbargoConcept
+     * @example
+     * // Get one EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeEmbargoConceptFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeEmbargoConceptFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeEmbargoConcepts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeEmbargoConcepts
+     * const employeeEmbargoConcepts = await prisma.employeeEmbargoConcept.findMany()
+     * 
+     * // Get first 10 EmployeeEmbargoConcepts
+     * const employeeEmbargoConcepts = await prisma.employeeEmbargoConcept.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeEmbargoConceptWithIdOnly = await prisma.employeeEmbargoConcept.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeEmbargoConceptFindManyArgs>(args?: SelectSubset<T, EmployeeEmbargoConceptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeEmbargoConcept.
+     * @param {EmployeeEmbargoConceptCreateArgs} args - Arguments to create a EmployeeEmbargoConcept.
+     * @example
+     * // Create one EmployeeEmbargoConcept
+     * const EmployeeEmbargoConcept = await prisma.employeeEmbargoConcept.create({
+     *   data: {
+     *     // ... data to create a EmployeeEmbargoConcept
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeEmbargoConceptCreateArgs>(args: SelectSubset<T, EmployeeEmbargoConceptCreateArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeEmbargoConcepts.
+     * @param {EmployeeEmbargoConceptCreateManyArgs} args - Arguments to create many EmployeeEmbargoConcepts.
+     * @example
+     * // Create many EmployeeEmbargoConcepts
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeEmbargoConceptCreateManyArgs>(args?: SelectSubset<T, EmployeeEmbargoConceptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeEmbargoConcept.
+     * @param {EmployeeEmbargoConceptDeleteArgs} args - Arguments to delete one EmployeeEmbargoConcept.
+     * @example
+     * // Delete one EmployeeEmbargoConcept
+     * const EmployeeEmbargoConcept = await prisma.employeeEmbargoConcept.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeEmbargoConcept
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeEmbargoConceptDeleteArgs>(args: SelectSubset<T, EmployeeEmbargoConceptDeleteArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeEmbargoConcept.
+     * @param {EmployeeEmbargoConceptUpdateArgs} args - Arguments to update one EmployeeEmbargoConcept.
+     * @example
+     * // Update one EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeEmbargoConceptUpdateArgs>(args: SelectSubset<T, EmployeeEmbargoConceptUpdateArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeEmbargoConcepts.
+     * @param {EmployeeEmbargoConceptDeleteManyArgs} args - Arguments to filter EmployeeEmbargoConcepts to delete.
+     * @example
+     * // Delete a few EmployeeEmbargoConcepts
+     * const { count } = await prisma.employeeEmbargoConcept.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeEmbargoConceptDeleteManyArgs>(args?: SelectSubset<T, EmployeeEmbargoConceptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeEmbargoConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeEmbargoConcepts
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeEmbargoConceptUpdateManyArgs>(args: SelectSubset<T, EmployeeEmbargoConceptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeEmbargoConcept.
+     * @param {EmployeeEmbargoConceptUpsertArgs} args - Arguments to update or create a EmployeeEmbargoConcept.
+     * @example
+     * // Update or create a EmployeeEmbargoConcept
+     * const employeeEmbargoConcept = await prisma.employeeEmbargoConcept.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeEmbargoConcept
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeEmbargoConcept we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeEmbargoConceptUpsertArgs>(args: SelectSubset<T, EmployeeEmbargoConceptUpsertArgs<ExtArgs>>): Prisma__EmployeeEmbargoConceptClient<$Result.GetResult<Prisma.$EmployeeEmbargoConceptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeEmbargoConcepts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptCountArgs} args - Arguments to filter EmployeeEmbargoConcepts to count.
+     * @example
+     * // Count the number of EmployeeEmbargoConcepts
+     * const count = await prisma.employeeEmbargoConcept.count({
+     *   where: {
+     *     // ... the filter for the EmployeeEmbargoConcepts we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeEmbargoConceptCountArgs>(
+      args?: Subset<T, EmployeeEmbargoConceptCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeEmbargoConceptCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeEmbargoConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeEmbargoConceptAggregateArgs>(args: Subset<T, EmployeeEmbargoConceptAggregateArgs>): Prisma.PrismaPromise<GetEmployeeEmbargoConceptAggregateType<T>>
+
+    /**
+     * Group by EmployeeEmbargoConcept.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeEmbargoConceptGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeEmbargoConceptGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeEmbargoConceptGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeEmbargoConceptGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeEmbargoConceptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeEmbargoConceptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeEmbargoConcept model
+   */
+  readonly fields: EmployeeEmbargoConceptFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeEmbargoConcept.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeEmbargoConceptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    embargo<T extends EmployeeEmbargoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeEmbargoDefaultArgs<ExtArgs>>): Prisma__EmployeeEmbargoClient<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    concept<T extends ConceptDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ConceptDefaultArgs<ExtArgs>>): Prisma__ConceptClient<$Result.GetResult<Prisma.$ConceptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeEmbargoConcept model
+   */
+  interface EmployeeEmbargoConceptFieldRefs {
+    readonly id: FieldRef<"EmployeeEmbargoConcept", 'String'>
+    readonly embargoId: FieldRef<"EmployeeEmbargoConcept", 'String'>
+    readonly conceptId: FieldRef<"EmployeeEmbargoConcept", 'String'>
+    readonly createdAt: FieldRef<"EmployeeEmbargoConcept", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeEmbargoConcept findUnique
+   */
+  export type EmployeeEmbargoConceptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargoConcept to fetch.
+     */
+    where: EmployeeEmbargoConceptWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargoConcept findUniqueOrThrow
+   */
+  export type EmployeeEmbargoConceptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargoConcept to fetch.
+     */
+    where: EmployeeEmbargoConceptWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargoConcept findFirst
+   */
+  export type EmployeeEmbargoConceptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargoConcept to fetch.
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargoConcepts to fetch.
+     */
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeEmbargoConcepts.
+     */
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargoConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargoConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeEmbargoConcepts.
+     */
+    distinct?: EmployeeEmbargoConceptScalarFieldEnum | EmployeeEmbargoConceptScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargoConcept findFirstOrThrow
+   */
+  export type EmployeeEmbargoConceptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargoConcept to fetch.
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargoConcepts to fetch.
+     */
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeEmbargoConcepts.
+     */
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargoConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargoConcepts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeEmbargoConcepts.
+     */
+    distinct?: EmployeeEmbargoConceptScalarFieldEnum | EmployeeEmbargoConceptScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargoConcept findMany
+   */
+  export type EmployeeEmbargoConceptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeEmbargoConcepts to fetch.
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeEmbargoConcepts to fetch.
+     */
+    orderBy?: EmployeeEmbargoConceptOrderByWithRelationInput | EmployeeEmbargoConceptOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeEmbargoConcepts.
+     */
+    cursor?: EmployeeEmbargoConceptWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeEmbargoConcepts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeEmbargoConcepts.
+     */
+    skip?: number
+    distinct?: EmployeeEmbargoConceptScalarFieldEnum | EmployeeEmbargoConceptScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeEmbargoConcept create
+   */
+  export type EmployeeEmbargoConceptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeEmbargoConcept.
+     */
+    data: XOR<EmployeeEmbargoConceptCreateInput, EmployeeEmbargoConceptUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeEmbargoConcept createMany
+   */
+  export type EmployeeEmbargoConceptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeEmbargoConcepts.
+     */
+    data: EmployeeEmbargoConceptCreateManyInput | EmployeeEmbargoConceptCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeEmbargoConcept update
+   */
+  export type EmployeeEmbargoConceptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeEmbargoConcept.
+     */
+    data: XOR<EmployeeEmbargoConceptUpdateInput, EmployeeEmbargoConceptUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeEmbargoConcept to update.
+     */
+    where: EmployeeEmbargoConceptWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargoConcept updateMany
+   */
+  export type EmployeeEmbargoConceptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeEmbargoConcepts.
+     */
+    data: XOR<EmployeeEmbargoConceptUpdateManyMutationInput, EmployeeEmbargoConceptUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeEmbargoConcepts to update
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * Limit how many EmployeeEmbargoConcepts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeEmbargoConcept upsert
+   */
+  export type EmployeeEmbargoConceptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeEmbargoConcept to update in case it exists.
+     */
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    /**
+     * In case the EmployeeEmbargoConcept found by the `where` argument doesn't exist, create a new EmployeeEmbargoConcept with this data.
+     */
+    create: XOR<EmployeeEmbargoConceptCreateInput, EmployeeEmbargoConceptUncheckedCreateInput>
+    /**
+     * In case the EmployeeEmbargoConcept was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeEmbargoConceptUpdateInput, EmployeeEmbargoConceptUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeEmbargoConcept delete
+   */
+  export type EmployeeEmbargoConceptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeEmbargoConcept to delete.
+     */
+    where: EmployeeEmbargoConceptWhereUniqueInput
+  }
+
+  /**
+   * EmployeeEmbargoConcept deleteMany
+   */
+  export type EmployeeEmbargoConceptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeEmbargoConcepts to delete
+     */
+    where?: EmployeeEmbargoConceptWhereInput
+    /**
+     * Limit how many EmployeeEmbargoConcepts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeEmbargoConcept without action
+   */
+  export type EmployeeEmbargoConceptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeEmbargoConcept
+     */
+    select?: EmployeeEmbargoConceptSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeEmbargoConcept
+     */
+    omit?: EmployeeEmbargoConceptOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeEmbargoConceptInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -34139,6 +40028,7 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     code: 'code',
+    conceptId: 'conceptId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -34147,16 +40037,37 @@ export namespace Prisma {
   export type UnionScalarFieldEnum = (typeof UnionScalarFieldEnum)[keyof typeof UnionScalarFieldEnum]
 
 
+  export const UnionConceptScalarFieldEnum: {
+    id: 'id',
+    unionId: 'unionId',
+    conceptId: 'conceptId',
+    createdAt: 'createdAt'
+  };
+
+  export type UnionConceptScalarFieldEnum = (typeof UnionConceptScalarFieldEnum)[keyof typeof UnionConceptScalarFieldEnum]
+
+
   export const MutualScalarFieldEnum: {
     id: 'id',
     name: 'name',
     code: 'code',
+    conceptId: 'conceptId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
   };
 
   export type MutualScalarFieldEnum = (typeof MutualScalarFieldEnum)[keyof typeof MutualScalarFieldEnum]
+
+
+  export const MutualConceptScalarFieldEnum: {
+    id: 'id',
+    mutualId: 'mutualId',
+    conceptId: 'conceptId',
+    createdAt: 'createdAt'
+  };
+
+  export type MutualConceptScalarFieldEnum = (typeof MutualConceptScalarFieldEnum)[keyof typeof MutualConceptScalarFieldEnum]
 
 
   export const EmployeeScalarFieldEnum: {
@@ -34246,6 +40157,7 @@ export namespace Prisma {
     documentNumber: 'documentNumber',
     cuil: 'cuil',
     birthDate: 'birthDate',
+    isAdherent: 'isAdherent',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -34289,6 +40201,7 @@ export namespace Prisma {
     appliesDetraccion: 'appliesDetraccion',
     isRepeatable: 'isRepeatable',
     matrixId: 'matrixId',
+    isEmbargo: 'isEmbargo',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -34348,8 +40261,24 @@ export namespace Prisma {
   export type PayrollFixedValueScalarFieldEnum = (typeof PayrollFixedValueScalarFieldEnum)[keyof typeof PayrollFixedValueScalarFieldEnum]
 
 
+  export const PayrollFiscalPeriodScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    month: 'month',
+    status: 'status',
+    closedAt: 'closedAt',
+    closedBy: 'closedBy',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PayrollFiscalPeriodScalarFieldEnum = (typeof PayrollFiscalPeriodScalarFieldEnum)[keyof typeof PayrollFiscalPeriodScalarFieldEnum]
+
+
   export const PayrollPeriodScalarFieldEnum: {
     id: 'id',
+    fiscalPeriodId: 'fiscalPeriodId',
     year: 'year',
     month: 'month',
     periodType: 'periodType',
@@ -34452,12 +40381,16 @@ export namespace Prisma {
     baseImponible9: 'baseImponible9',
     baseImponible10: 'baseImponible10',
     detractionAmount: 'detractionAmount',
+    baseDifAporteOs: 'baseDifAporteOs',
+    baseDifContribOs: 'baseDifContribOs',
+    baseDifLrt: 'baseDifLrt',
     situationCode: 'situationCode',
     conditionCode: 'conditionCode',
     activityCode: 'activityCode',
     contractModality: 'contractModality',
     hasSpouse: 'hasSpouse',
     childrenCount: 'childrenCount',
+    adherentsCount: 'adherentsCount',
     hasScvo: 'hasScvo',
     hasCct: 'hasCct',
     createdAt: 'createdAt',
@@ -34503,6 +40436,39 @@ export namespace Prisma {
   };
 
   export type PeriodNoveltyScalarFieldEnum = (typeof PeriodNoveltyScalarFieldEnum)[keyof typeof PeriodNoveltyScalarFieldEnum]
+
+
+  export const EmployeeEmbargoScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    caseTitle: 'caseTitle',
+    dossierNumber: 'dossierNumber',
+    court: 'court',
+    secretary: 'secretary',
+    judicialDistrict: 'judicialDistrict',
+    embargoType: 'embargoType',
+    hasCap: 'hasCap',
+    totalAmount: 'totalAmount',
+    priorityOrder: 'priorityOrder',
+    status: 'status',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmployeeEmbargoScalarFieldEnum = (typeof EmployeeEmbargoScalarFieldEnum)[keyof typeof EmployeeEmbargoScalarFieldEnum]
+
+
+  export const EmployeeEmbargoConceptScalarFieldEnum: {
+    id: 'id',
+    embargoId: 'embargoId',
+    conceptId: 'conceptId',
+    createdAt: 'createdAt'
+  };
+
+  export type EmployeeEmbargoConceptScalarFieldEnum = (typeof EmployeeEmbargoConceptScalarFieldEnum)[keyof typeof EmployeeEmbargoConceptScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -34664,19 +40630,39 @@ export namespace Prisma {
   export const UnionOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
-    code: 'code'
+    code: 'code',
+    conceptId: 'conceptId'
   };
 
   export type UnionOrderByRelevanceFieldEnum = (typeof UnionOrderByRelevanceFieldEnum)[keyof typeof UnionOrderByRelevanceFieldEnum]
 
 
+  export const UnionConceptOrderByRelevanceFieldEnum: {
+    id: 'id',
+    unionId: 'unionId',
+    conceptId: 'conceptId'
+  };
+
+  export type UnionConceptOrderByRelevanceFieldEnum = (typeof UnionConceptOrderByRelevanceFieldEnum)[keyof typeof UnionConceptOrderByRelevanceFieldEnum]
+
+
   export const MutualOrderByRelevanceFieldEnum: {
     id: 'id',
     name: 'name',
-    code: 'code'
+    code: 'code',
+    conceptId: 'conceptId'
   };
 
   export type MutualOrderByRelevanceFieldEnum = (typeof MutualOrderByRelevanceFieldEnum)[keyof typeof MutualOrderByRelevanceFieldEnum]
+
+
+  export const MutualConceptOrderByRelevanceFieldEnum: {
+    id: 'id',
+    mutualId: 'mutualId',
+    conceptId: 'conceptId'
+  };
+
+  export type MutualConceptOrderByRelevanceFieldEnum = (typeof MutualConceptOrderByRelevanceFieldEnum)[keyof typeof MutualConceptOrderByRelevanceFieldEnum]
 
 
   export const EmployeeOrderByRelevanceFieldEnum: {
@@ -34802,8 +40788,19 @@ export namespace Prisma {
   export type PayrollFixedValueOrderByRelevanceFieldEnum = (typeof PayrollFixedValueOrderByRelevanceFieldEnum)[keyof typeof PayrollFixedValueOrderByRelevanceFieldEnum]
 
 
+  export const PayrollFiscalPeriodOrderByRelevanceFieldEnum: {
+    id: 'id',
+    status: 'status',
+    closedBy: 'closedBy',
+    notes: 'notes'
+  };
+
+  export type PayrollFiscalPeriodOrderByRelevanceFieldEnum = (typeof PayrollFiscalPeriodOrderByRelevanceFieldEnum)[keyof typeof PayrollFiscalPeriodOrderByRelevanceFieldEnum]
+
+
   export const PayrollPeriodOrderByRelevanceFieldEnum: {
     id: 'id',
+    fiscalPeriodId: 'fiscalPeriodId',
     periodType: 'periodType',
     settlementName: 'settlementName',
     settlementType: 'settlementType',
@@ -34874,6 +40871,31 @@ export namespace Prisma {
   };
 
   export type PeriodNoveltyOrderByRelevanceFieldEnum = (typeof PeriodNoveltyOrderByRelevanceFieldEnum)[keyof typeof PeriodNoveltyOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeEmbargoOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    caseTitle: 'caseTitle',
+    dossierNumber: 'dossierNumber',
+    court: 'court',
+    secretary: 'secretary',
+    judicialDistrict: 'judicialDistrict',
+    embargoType: 'embargoType',
+    status: 'status',
+    notes: 'notes'
+  };
+
+  export type EmployeeEmbargoOrderByRelevanceFieldEnum = (typeof EmployeeEmbargoOrderByRelevanceFieldEnum)[keyof typeof EmployeeEmbargoOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeEmbargoConceptOrderByRelevanceFieldEnum: {
+    id: 'id',
+    embargoId: 'embargoId',
+    conceptId: 'conceptId'
+  };
+
+  export type EmployeeEmbargoConceptOrderByRelevanceFieldEnum = (typeof EmployeeEmbargoConceptOrderByRelevanceFieldEnum)[keyof typeof EmployeeEmbargoConceptOrderByRelevanceFieldEnum]
 
 
   /**
@@ -35869,9 +41891,12 @@ export namespace Prisma {
     id?: StringFilter<"Union"> | string
     name?: StringFilter<"Union"> | string
     code?: StringNullableFilter<"Union"> | string | null
+    conceptId?: StringNullableFilter<"Union"> | string | null
     createdAt?: DateTimeFilter<"Union"> | Date | string
     updatedAt?: DateTimeFilter<"Union"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Union"> | Date | string | null
+    concept?: XOR<ConceptNullableScalarRelationFilter, ConceptWhereInput> | null
+    unionConcepts?: UnionConceptListRelationFilter
     employees?: EmployeeListRelationFilter
   }
 
@@ -35879,9 +41904,12 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrderInput | SortOrder
+    conceptId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    concept?: ConceptOrderByWithRelationInput
+    unionConcepts?: UnionConceptOrderByRelationAggregateInput
     employees?: EmployeeOrderByRelationAggregateInput
     _relevance?: UnionOrderByRelevanceInput
   }
@@ -35893,9 +41921,12 @@ export namespace Prisma {
     NOT?: UnionWhereInput | UnionWhereInput[]
     name?: StringFilter<"Union"> | string
     code?: StringNullableFilter<"Union"> | string | null
+    conceptId?: StringNullableFilter<"Union"> | string | null
     createdAt?: DateTimeFilter<"Union"> | Date | string
     updatedAt?: DateTimeFilter<"Union"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Union"> | Date | string | null
+    concept?: XOR<ConceptNullableScalarRelationFilter, ConceptWhereInput> | null
+    unionConcepts?: UnionConceptListRelationFilter
     employees?: EmployeeListRelationFilter
   }, "id">
 
@@ -35903,6 +41934,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrderInput | SortOrder
+    conceptId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -35918,9 +41950,65 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Union"> | string
     name?: StringWithAggregatesFilter<"Union"> | string
     code?: StringNullableWithAggregatesFilter<"Union"> | string | null
+    conceptId?: StringNullableWithAggregatesFilter<"Union"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Union"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Union"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Union"> | Date | string | null
+  }
+
+  export type UnionConceptWhereInput = {
+    AND?: UnionConceptWhereInput | UnionConceptWhereInput[]
+    OR?: UnionConceptWhereInput[]
+    NOT?: UnionConceptWhereInput | UnionConceptWhereInput[]
+    id?: StringFilter<"UnionConcept"> | string
+    unionId?: StringFilter<"UnionConcept"> | string
+    conceptId?: StringFilter<"UnionConcept"> | string
+    createdAt?: DateTimeFilter<"UnionConcept"> | Date | string
+    union?: XOR<UnionScalarRelationFilter, UnionWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }
+
+  export type UnionConceptOrderByWithRelationInput = {
+    id?: SortOrder
+    unionId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    union?: UnionOrderByWithRelationInput
+    concept?: ConceptOrderByWithRelationInput
+    _relevance?: UnionConceptOrderByRelevanceInput
+  }
+
+  export type UnionConceptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    unionId_conceptId?: UnionConceptUnionIdConceptIdCompoundUniqueInput
+    AND?: UnionConceptWhereInput | UnionConceptWhereInput[]
+    OR?: UnionConceptWhereInput[]
+    NOT?: UnionConceptWhereInput | UnionConceptWhereInput[]
+    unionId?: StringFilter<"UnionConcept"> | string
+    conceptId?: StringFilter<"UnionConcept"> | string
+    createdAt?: DateTimeFilter<"UnionConcept"> | Date | string
+    union?: XOR<UnionScalarRelationFilter, UnionWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }, "id" | "unionId_conceptId">
+
+  export type UnionConceptOrderByWithAggregationInput = {
+    id?: SortOrder
+    unionId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    _count?: UnionConceptCountOrderByAggregateInput
+    _max?: UnionConceptMaxOrderByAggregateInput
+    _min?: UnionConceptMinOrderByAggregateInput
+  }
+
+  export type UnionConceptScalarWhereWithAggregatesInput = {
+    AND?: UnionConceptScalarWhereWithAggregatesInput | UnionConceptScalarWhereWithAggregatesInput[]
+    OR?: UnionConceptScalarWhereWithAggregatesInput[]
+    NOT?: UnionConceptScalarWhereWithAggregatesInput | UnionConceptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UnionConcept"> | string
+    unionId?: StringWithAggregatesFilter<"UnionConcept"> | string
+    conceptId?: StringWithAggregatesFilter<"UnionConcept"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"UnionConcept"> | Date | string
   }
 
   export type MutualWhereInput = {
@@ -35930,9 +42018,12 @@ export namespace Prisma {
     id?: StringFilter<"Mutual"> | string
     name?: StringFilter<"Mutual"> | string
     code?: StringNullableFilter<"Mutual"> | string | null
+    conceptId?: StringNullableFilter<"Mutual"> | string | null
     createdAt?: DateTimeFilter<"Mutual"> | Date | string
     updatedAt?: DateTimeFilter<"Mutual"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Mutual"> | Date | string | null
+    concept?: XOR<ConceptNullableScalarRelationFilter, ConceptWhereInput> | null
+    mutualConcepts?: MutualConceptListRelationFilter
     employees?: EmployeeListRelationFilter
   }
 
@@ -35940,9 +42031,12 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrderInput | SortOrder
+    conceptId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
+    concept?: ConceptOrderByWithRelationInput
+    mutualConcepts?: MutualConceptOrderByRelationAggregateInput
     employees?: EmployeeOrderByRelationAggregateInput
     _relevance?: MutualOrderByRelevanceInput
   }
@@ -35954,9 +42048,12 @@ export namespace Prisma {
     NOT?: MutualWhereInput | MutualWhereInput[]
     name?: StringFilter<"Mutual"> | string
     code?: StringNullableFilter<"Mutual"> | string | null
+    conceptId?: StringNullableFilter<"Mutual"> | string | null
     createdAt?: DateTimeFilter<"Mutual"> | Date | string
     updatedAt?: DateTimeFilter<"Mutual"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Mutual"> | Date | string | null
+    concept?: XOR<ConceptNullableScalarRelationFilter, ConceptWhereInput> | null
+    mutualConcepts?: MutualConceptListRelationFilter
     employees?: EmployeeListRelationFilter
   }, "id">
 
@@ -35964,6 +42061,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrderInput | SortOrder
+    conceptId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -35979,9 +42077,65 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Mutual"> | string
     name?: StringWithAggregatesFilter<"Mutual"> | string
     code?: StringNullableWithAggregatesFilter<"Mutual"> | string | null
+    conceptId?: StringNullableWithAggregatesFilter<"Mutual"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Mutual"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Mutual"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Mutual"> | Date | string | null
+  }
+
+  export type MutualConceptWhereInput = {
+    AND?: MutualConceptWhereInput | MutualConceptWhereInput[]
+    OR?: MutualConceptWhereInput[]
+    NOT?: MutualConceptWhereInput | MutualConceptWhereInput[]
+    id?: StringFilter<"MutualConcept"> | string
+    mutualId?: StringFilter<"MutualConcept"> | string
+    conceptId?: StringFilter<"MutualConcept"> | string
+    createdAt?: DateTimeFilter<"MutualConcept"> | Date | string
+    mutual?: XOR<MutualScalarRelationFilter, MutualWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }
+
+  export type MutualConceptOrderByWithRelationInput = {
+    id?: SortOrder
+    mutualId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    mutual?: MutualOrderByWithRelationInput
+    concept?: ConceptOrderByWithRelationInput
+    _relevance?: MutualConceptOrderByRelevanceInput
+  }
+
+  export type MutualConceptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    mutualId_conceptId?: MutualConceptMutualIdConceptIdCompoundUniqueInput
+    AND?: MutualConceptWhereInput | MutualConceptWhereInput[]
+    OR?: MutualConceptWhereInput[]
+    NOT?: MutualConceptWhereInput | MutualConceptWhereInput[]
+    mutualId?: StringFilter<"MutualConcept"> | string
+    conceptId?: StringFilter<"MutualConcept"> | string
+    createdAt?: DateTimeFilter<"MutualConcept"> | Date | string
+    mutual?: XOR<MutualScalarRelationFilter, MutualWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }, "id" | "mutualId_conceptId">
+
+  export type MutualConceptOrderByWithAggregationInput = {
+    id?: SortOrder
+    mutualId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    _count?: MutualConceptCountOrderByAggregateInput
+    _max?: MutualConceptMaxOrderByAggregateInput
+    _min?: MutualConceptMinOrderByAggregateInput
+  }
+
+  export type MutualConceptScalarWhereWithAggregatesInput = {
+    AND?: MutualConceptScalarWhereWithAggregatesInput | MutualConceptScalarWhereWithAggregatesInput[]
+    OR?: MutualConceptScalarWhereWithAggregatesInput[]
+    NOT?: MutualConceptScalarWhereWithAggregatesInput | MutualConceptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MutualConcept"> | string
+    mutualId?: StringWithAggregatesFilter<"MutualConcept"> | string
+    conceptId?: StringWithAggregatesFilter<"MutualConcept"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"MutualConcept"> | Date | string
   }
 
   export type EmployeeWhereInput = {
@@ -36043,6 +42197,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    embargoes?: EmployeeEmbargoListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -36101,6 +42256,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeOrderByRelationAggregateInput
     assignedConcepts?: EmployeeConceptOrderByRelationAggregateInput
     periodNovelties?: PeriodNoveltyOrderByRelationAggregateInput
+    embargoes?: EmployeeEmbargoOrderByRelationAggregateInput
     _relevance?: EmployeeOrderByRelevanceInput
   }
 
@@ -36163,6 +42319,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    embargoes?: EmployeeEmbargoListRelationFilter
   }, "id" | "fileNumber" | "cuil">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -36422,6 +42579,7 @@ export namespace Prisma {
     documentNumber?: StringFilter<"EmployeeRelative"> | string
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
+    isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -36439,6 +42597,7 @@ export namespace Prisma {
     documentNumber?: SortOrder
     cuil?: SortOrderInput | SortOrder
     birthDate?: SortOrder
+    isAdherent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -36460,6 +42619,7 @@ export namespace Prisma {
     documentNumber?: StringFilter<"EmployeeRelative"> | string
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
+    isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -36477,6 +42637,7 @@ export namespace Prisma {
     documentNumber?: SortOrder
     cuil?: SortOrderInput | SortOrder
     birthDate?: SortOrder
+    isAdherent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -36498,6 +42659,7 @@ export namespace Prisma {
     documentNumber?: StringWithAggregatesFilter<"EmployeeRelative"> | string
     cuil?: StringNullableWithAggregatesFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
+    isAdherent?: BoolWithAggregatesFilter<"EmployeeRelative"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"EmployeeRelative"> | Date | string | null
@@ -36541,12 +42703,18 @@ export namespace Prisma {
     appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
+    isEmbargo?: BoolFilter<"Concept"> | boolean
     createdAt?: DateTimeFilter<"Concept"> | Date | string
     updatedAt?: DateTimeFilter<"Concept"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Concept"> | Date | string | null
     matrix?: XOR<PayrollMatrixNullableScalarRelationFilter, PayrollMatrixWhereInput> | null
     assignedEmployees?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    embargoConcepts?: EmployeeEmbargoConceptListRelationFilter
+    unions?: UnionListRelationFilter
+    mutuals?: MutualListRelationFilter
+    unionConcepts?: UnionConceptListRelationFilter
+    mutualConcepts?: MutualConceptListRelationFilter
   }
 
   export type ConceptOrderByWithRelationInput = {
@@ -36584,12 +42752,18 @@ export namespace Prisma {
     appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrderInput | SortOrder
+    isEmbargo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     matrix?: PayrollMatrixOrderByWithRelationInput
     assignedEmployees?: EmployeeConceptOrderByRelationAggregateInput
     periodNovelties?: PeriodNoveltyOrderByRelationAggregateInput
+    embargoConcepts?: EmployeeEmbargoConceptOrderByRelationAggregateInput
+    unions?: UnionOrderByRelationAggregateInput
+    mutuals?: MutualOrderByRelationAggregateInput
+    unionConcepts?: UnionConceptOrderByRelationAggregateInput
+    mutualConcepts?: MutualConceptOrderByRelationAggregateInput
     _relevance?: ConceptOrderByRelevanceInput
   }
 
@@ -36631,12 +42805,18 @@ export namespace Prisma {
     appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
+    isEmbargo?: BoolFilter<"Concept"> | boolean
     createdAt?: DateTimeFilter<"Concept"> | Date | string
     updatedAt?: DateTimeFilter<"Concept"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Concept"> | Date | string | null
     matrix?: XOR<PayrollMatrixNullableScalarRelationFilter, PayrollMatrixWhereInput> | null
     assignedEmployees?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    embargoConcepts?: EmployeeEmbargoConceptListRelationFilter
+    unions?: UnionListRelationFilter
+    mutuals?: MutualListRelationFilter
+    unionConcepts?: UnionConceptListRelationFilter
+    mutualConcepts?: MutualConceptListRelationFilter
   }, "id" | "code">
 
   export type ConceptOrderByWithAggregationInput = {
@@ -36674,6 +42854,7 @@ export namespace Prisma {
     appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrderInput | SortOrder
+    isEmbargo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -36722,6 +42903,7 @@ export namespace Prisma {
     appliesDetraccion?: BoolWithAggregatesFilter<"Concept"> | boolean
     isRepeatable?: BoolWithAggregatesFilter<"Concept"> | boolean
     matrixId?: StringNullableWithAggregatesFilter<"Concept"> | string | null
+    isEmbargo?: BoolWithAggregatesFilter<"Concept"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Concept"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Concept"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Concept"> | Date | string | null
@@ -36992,11 +43174,91 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"PayrollFixedValue"> | Date | string | null
   }
 
+  export type PayrollFiscalPeriodWhereInput = {
+    AND?: PayrollFiscalPeriodWhereInput | PayrollFiscalPeriodWhereInput[]
+    OR?: PayrollFiscalPeriodWhereInput[]
+    NOT?: PayrollFiscalPeriodWhereInput | PayrollFiscalPeriodWhereInput[]
+    id?: StringFilter<"PayrollFiscalPeriod"> | string
+    year?: IntFilter<"PayrollFiscalPeriod"> | number
+    month?: IntFilter<"PayrollFiscalPeriod"> | number
+    status?: StringFilter<"PayrollFiscalPeriod"> | string
+    closedAt?: DateTimeNullableFilter<"PayrollFiscalPeriod"> | Date | string | null
+    closedBy?: StringNullableFilter<"PayrollFiscalPeriod"> | string | null
+    notes?: StringNullableFilter<"PayrollFiscalPeriod"> | string | null
+    createdAt?: DateTimeFilter<"PayrollFiscalPeriod"> | Date | string
+    updatedAt?: DateTimeFilter<"PayrollFiscalPeriod"> | Date | string
+    settlements?: PayrollPeriodListRelationFilter
+  }
+
+  export type PayrollFiscalPeriodOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    status?: SortOrder
+    closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    settlements?: PayrollPeriodOrderByRelationAggregateInput
+    _relevance?: PayrollFiscalPeriodOrderByRelevanceInput
+  }
+
+  export type PayrollFiscalPeriodWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    year_month?: PayrollFiscalPeriodYearMonthCompoundUniqueInput
+    AND?: PayrollFiscalPeriodWhereInput | PayrollFiscalPeriodWhereInput[]
+    OR?: PayrollFiscalPeriodWhereInput[]
+    NOT?: PayrollFiscalPeriodWhereInput | PayrollFiscalPeriodWhereInput[]
+    year?: IntFilter<"PayrollFiscalPeriod"> | number
+    month?: IntFilter<"PayrollFiscalPeriod"> | number
+    status?: StringFilter<"PayrollFiscalPeriod"> | string
+    closedAt?: DateTimeNullableFilter<"PayrollFiscalPeriod"> | Date | string | null
+    closedBy?: StringNullableFilter<"PayrollFiscalPeriod"> | string | null
+    notes?: StringNullableFilter<"PayrollFiscalPeriod"> | string | null
+    createdAt?: DateTimeFilter<"PayrollFiscalPeriod"> | Date | string
+    updatedAt?: DateTimeFilter<"PayrollFiscalPeriod"> | Date | string
+    settlements?: PayrollPeriodListRelationFilter
+  }, "id" | "year_month">
+
+  export type PayrollFiscalPeriodOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    status?: SortOrder
+    closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PayrollFiscalPeriodCountOrderByAggregateInput
+    _avg?: PayrollFiscalPeriodAvgOrderByAggregateInput
+    _max?: PayrollFiscalPeriodMaxOrderByAggregateInput
+    _min?: PayrollFiscalPeriodMinOrderByAggregateInput
+    _sum?: PayrollFiscalPeriodSumOrderByAggregateInput
+  }
+
+  export type PayrollFiscalPeriodScalarWhereWithAggregatesInput = {
+    AND?: PayrollFiscalPeriodScalarWhereWithAggregatesInput | PayrollFiscalPeriodScalarWhereWithAggregatesInput[]
+    OR?: PayrollFiscalPeriodScalarWhereWithAggregatesInput[]
+    NOT?: PayrollFiscalPeriodScalarWhereWithAggregatesInput | PayrollFiscalPeriodScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayrollFiscalPeriod"> | string
+    year?: IntWithAggregatesFilter<"PayrollFiscalPeriod"> | number
+    month?: IntWithAggregatesFilter<"PayrollFiscalPeriod"> | number
+    status?: StringWithAggregatesFilter<"PayrollFiscalPeriod"> | string
+    closedAt?: DateTimeNullableWithAggregatesFilter<"PayrollFiscalPeriod"> | Date | string | null
+    closedBy?: StringNullableWithAggregatesFilter<"PayrollFiscalPeriod"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PayrollFiscalPeriod"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PayrollFiscalPeriod"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PayrollFiscalPeriod"> | Date | string
+  }
+
   export type PayrollPeriodWhereInput = {
     AND?: PayrollPeriodWhereInput | PayrollPeriodWhereInput[]
     OR?: PayrollPeriodWhereInput[]
     NOT?: PayrollPeriodWhereInput | PayrollPeriodWhereInput[]
     id?: StringFilter<"PayrollPeriod"> | string
+    fiscalPeriodId?: StringNullableFilter<"PayrollPeriod"> | string | null
     year?: IntFilter<"PayrollPeriod"> | number
     month?: IntFilter<"PayrollPeriod"> | number
     periodType?: StringFilter<"PayrollPeriod"> | string
@@ -37016,12 +43278,14 @@ export namespace Prisma {
     closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
+    fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
   }
 
   export type PayrollPeriodOrderByWithRelationInput = {
     id?: SortOrder
+    fiscalPeriodId?: SortOrderInput | SortOrder
     year?: SortOrder
     month?: SortOrder
     periodType?: SortOrder
@@ -37041,6 +43305,7 @@ export namespace Prisma {
     closedAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    fiscalPeriod?: PayrollFiscalPeriodOrderByWithRelationInput
     paySlips?: PaySlipOrderByRelationAggregateInput
     periodNovelties?: PeriodNoveltyOrderByRelationAggregateInput
     _relevance?: PayrollPeriodOrderByRelevanceInput
@@ -37052,6 +43317,7 @@ export namespace Prisma {
     AND?: PayrollPeriodWhereInput | PayrollPeriodWhereInput[]
     OR?: PayrollPeriodWhereInput[]
     NOT?: PayrollPeriodWhereInput | PayrollPeriodWhereInput[]
+    fiscalPeriodId?: StringNullableFilter<"PayrollPeriod"> | string | null
     year?: IntFilter<"PayrollPeriod"> | number
     month?: IntFilter<"PayrollPeriod"> | number
     periodType?: StringFilter<"PayrollPeriod"> | string
@@ -37071,12 +43337,14 @@ export namespace Prisma {
     closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
     createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
+    fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
   }, "id" | "year_month_periodType_settlementNumber">
 
   export type PayrollPeriodOrderByWithAggregationInput = {
     id?: SortOrder
+    fiscalPeriodId?: SortOrderInput | SortOrder
     year?: SortOrder
     month?: SortOrder
     periodType?: SortOrder
@@ -37108,6 +43376,7 @@ export namespace Prisma {
     OR?: PayrollPeriodScalarWhereWithAggregatesInput[]
     NOT?: PayrollPeriodScalarWhereWithAggregatesInput | PayrollPeriodScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"PayrollPeriod"> | string
+    fiscalPeriodId?: StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
     year?: IntWithAggregatesFilter<"PayrollPeriod"> | number
     month?: IntWithAggregatesFilter<"PayrollPeriod"> | number
     periodType?: StringWithAggregatesFilter<"PayrollPeriod"> | string
@@ -37482,12 +43751,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     situationCode?: StringFilter<"PaySlipBasis"> | string
     conditionCode?: StringFilter<"PaySlipBasis"> | string
     activityCode?: StringFilter<"PaySlipBasis"> | string
     contractModality?: StringFilter<"PaySlipBasis"> | string
     hasSpouse?: BoolFilter<"PaySlipBasis"> | boolean
     childrenCount?: IntFilter<"PaySlipBasis"> | number
+    adherentsCount?: IntFilter<"PaySlipBasis"> | number
     hasScvo?: BoolFilter<"PaySlipBasis"> | boolean
     hasCct?: BoolFilter<"PaySlipBasis"> | boolean
     createdAt?: DateTimeFilter<"PaySlipBasis"> | Date | string
@@ -37509,12 +43782,16 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     situationCode?: SortOrder
     conditionCode?: SortOrder
     activityCode?: SortOrder
     contractModality?: SortOrder
     hasSpouse?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
     hasScvo?: SortOrder
     hasCct?: SortOrder
     createdAt?: SortOrder
@@ -37540,12 +43817,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     situationCode?: StringFilter<"PaySlipBasis"> | string
     conditionCode?: StringFilter<"PaySlipBasis"> | string
     activityCode?: StringFilter<"PaySlipBasis"> | string
     contractModality?: StringFilter<"PaySlipBasis"> | string
     hasSpouse?: BoolFilter<"PaySlipBasis"> | boolean
     childrenCount?: IntFilter<"PaySlipBasis"> | number
+    adherentsCount?: IntFilter<"PaySlipBasis"> | number
     hasScvo?: BoolFilter<"PaySlipBasis"> | boolean
     hasCct?: BoolFilter<"PaySlipBasis"> | boolean
     createdAt?: DateTimeFilter<"PaySlipBasis"> | Date | string
@@ -37567,12 +43848,16 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     situationCode?: SortOrder
     conditionCode?: SortOrder
     activityCode?: SortOrder
     contractModality?: SortOrder
     hasSpouse?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
     hasScvo?: SortOrder
     hasCct?: SortOrder
     createdAt?: SortOrder
@@ -37601,12 +43886,16 @@ export namespace Prisma {
     baseImponible9?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalWithAggregatesFilter<"PaySlipBasis"> | Decimal | DecimalJsLike | number | string
     situationCode?: StringWithAggregatesFilter<"PaySlipBasis"> | string
     conditionCode?: StringWithAggregatesFilter<"PaySlipBasis"> | string
     activityCode?: StringWithAggregatesFilter<"PaySlipBasis"> | string
     contractModality?: StringWithAggregatesFilter<"PaySlipBasis"> | string
     hasSpouse?: BoolWithAggregatesFilter<"PaySlipBasis"> | boolean
     childrenCount?: IntWithAggregatesFilter<"PaySlipBasis"> | number
+    adherentsCount?: IntWithAggregatesFilter<"PaySlipBasis"> | number
     hasScvo?: BoolWithAggregatesFilter<"PaySlipBasis"> | boolean
     hasCct?: BoolWithAggregatesFilter<"PaySlipBasis"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"PaySlipBasis"> | Date | string
@@ -37811,6 +44100,182 @@ export namespace Prisma {
     notes?: StringNullableWithAggregatesFilter<"PeriodNovelty"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PeriodNovelty"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PeriodNovelty"> | Date | string
+  }
+
+  export type EmployeeEmbargoWhereInput = {
+    AND?: EmployeeEmbargoWhereInput | EmployeeEmbargoWhereInput[]
+    OR?: EmployeeEmbargoWhereInput[]
+    NOT?: EmployeeEmbargoWhereInput | EmployeeEmbargoWhereInput[]
+    id?: StringFilter<"EmployeeEmbargo"> | string
+    employeeId?: StringFilter<"EmployeeEmbargo"> | string
+    caseTitle?: StringFilter<"EmployeeEmbargo"> | string
+    dossierNumber?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    court?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    secretary?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    judicialDistrict?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    embargoType?: StringFilter<"EmployeeEmbargo"> | string
+    hasCap?: BoolFilter<"EmployeeEmbargo"> | boolean
+    totalAmount?: DecimalNullableFilter<"EmployeeEmbargo"> | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFilter<"EmployeeEmbargo"> | number
+    status?: StringFilter<"EmployeeEmbargo"> | string
+    startDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    notes?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    concepts?: EmployeeEmbargoConceptListRelationFilter
+  }
+
+  export type EmployeeEmbargoOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    caseTitle?: SortOrder
+    dossierNumber?: SortOrderInput | SortOrder
+    court?: SortOrderInput | SortOrder
+    secretary?: SortOrderInput | SortOrder
+    judicialDistrict?: SortOrderInput | SortOrder
+    embargoType?: SortOrder
+    hasCap?: SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    priorityOrder?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    concepts?: EmployeeEmbargoConceptOrderByRelationAggregateInput
+    _relevance?: EmployeeEmbargoOrderByRelevanceInput
+  }
+
+  export type EmployeeEmbargoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeEmbargoWhereInput | EmployeeEmbargoWhereInput[]
+    OR?: EmployeeEmbargoWhereInput[]
+    NOT?: EmployeeEmbargoWhereInput | EmployeeEmbargoWhereInput[]
+    employeeId?: StringFilter<"EmployeeEmbargo"> | string
+    caseTitle?: StringFilter<"EmployeeEmbargo"> | string
+    dossierNumber?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    court?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    secretary?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    judicialDistrict?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    embargoType?: StringFilter<"EmployeeEmbargo"> | string
+    hasCap?: BoolFilter<"EmployeeEmbargo"> | boolean
+    totalAmount?: DecimalNullableFilter<"EmployeeEmbargo"> | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFilter<"EmployeeEmbargo"> | number
+    status?: StringFilter<"EmployeeEmbargo"> | string
+    startDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    notes?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    concepts?: EmployeeEmbargoConceptListRelationFilter
+  }, "id">
+
+  export type EmployeeEmbargoOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    caseTitle?: SortOrder
+    dossierNumber?: SortOrderInput | SortOrder
+    court?: SortOrderInput | SortOrder
+    secretary?: SortOrderInput | SortOrder
+    judicialDistrict?: SortOrderInput | SortOrder
+    embargoType?: SortOrder
+    hasCap?: SortOrder
+    totalAmount?: SortOrderInput | SortOrder
+    priorityOrder?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmployeeEmbargoCountOrderByAggregateInput
+    _avg?: EmployeeEmbargoAvgOrderByAggregateInput
+    _max?: EmployeeEmbargoMaxOrderByAggregateInput
+    _min?: EmployeeEmbargoMinOrderByAggregateInput
+    _sum?: EmployeeEmbargoSumOrderByAggregateInput
+  }
+
+  export type EmployeeEmbargoScalarWhereWithAggregatesInput = {
+    AND?: EmployeeEmbargoScalarWhereWithAggregatesInput | EmployeeEmbargoScalarWhereWithAggregatesInput[]
+    OR?: EmployeeEmbargoScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeEmbargoScalarWhereWithAggregatesInput | EmployeeEmbargoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeEmbargo"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeEmbargo"> | string
+    caseTitle?: StringWithAggregatesFilter<"EmployeeEmbargo"> | string
+    dossierNumber?: StringNullableWithAggregatesFilter<"EmployeeEmbargo"> | string | null
+    court?: StringNullableWithAggregatesFilter<"EmployeeEmbargo"> | string | null
+    secretary?: StringNullableWithAggregatesFilter<"EmployeeEmbargo"> | string | null
+    judicialDistrict?: StringNullableWithAggregatesFilter<"EmployeeEmbargo"> | string | null
+    embargoType?: StringWithAggregatesFilter<"EmployeeEmbargo"> | string
+    hasCap?: BoolWithAggregatesFilter<"EmployeeEmbargo"> | boolean
+    totalAmount?: DecimalNullableWithAggregatesFilter<"EmployeeEmbargo"> | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntWithAggregatesFilter<"EmployeeEmbargo"> | number
+    status?: StringWithAggregatesFilter<"EmployeeEmbargo"> | string
+    startDate?: DateTimeNullableWithAggregatesFilter<"EmployeeEmbargo"> | Date | string | null
+    endDate?: DateTimeNullableWithAggregatesFilter<"EmployeeEmbargo"> | Date | string | null
+    notes?: StringNullableWithAggregatesFilter<"EmployeeEmbargo"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeEmbargo"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeEmbargo"> | Date | string
+  }
+
+  export type EmployeeEmbargoConceptWhereInput = {
+    AND?: EmployeeEmbargoConceptWhereInput | EmployeeEmbargoConceptWhereInput[]
+    OR?: EmployeeEmbargoConceptWhereInput[]
+    NOT?: EmployeeEmbargoConceptWhereInput | EmployeeEmbargoConceptWhereInput[]
+    id?: StringFilter<"EmployeeEmbargoConcept"> | string
+    embargoId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    conceptId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    createdAt?: DateTimeFilter<"EmployeeEmbargoConcept"> | Date | string
+    embargo?: XOR<EmployeeEmbargoScalarRelationFilter, EmployeeEmbargoWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }
+
+  export type EmployeeEmbargoConceptOrderByWithRelationInput = {
+    id?: SortOrder
+    embargoId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    embargo?: EmployeeEmbargoOrderByWithRelationInput
+    concept?: ConceptOrderByWithRelationInput
+    _relevance?: EmployeeEmbargoConceptOrderByRelevanceInput
+  }
+
+  export type EmployeeEmbargoConceptWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    embargoId_conceptId?: EmployeeEmbargoConceptEmbargoIdConceptIdCompoundUniqueInput
+    AND?: EmployeeEmbargoConceptWhereInput | EmployeeEmbargoConceptWhereInput[]
+    OR?: EmployeeEmbargoConceptWhereInput[]
+    NOT?: EmployeeEmbargoConceptWhereInput | EmployeeEmbargoConceptWhereInput[]
+    embargoId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    conceptId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    createdAt?: DateTimeFilter<"EmployeeEmbargoConcept"> | Date | string
+    embargo?: XOR<EmployeeEmbargoScalarRelationFilter, EmployeeEmbargoWhereInput>
+    concept?: XOR<ConceptScalarRelationFilter, ConceptWhereInput>
+  }, "id" | "embargoId_conceptId">
+
+  export type EmployeeEmbargoConceptOrderByWithAggregationInput = {
+    id?: SortOrder
+    embargoId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+    _count?: EmployeeEmbargoConceptCountOrderByAggregateInput
+    _max?: EmployeeEmbargoConceptMaxOrderByAggregateInput
+    _min?: EmployeeEmbargoConceptMinOrderByAggregateInput
+  }
+
+  export type EmployeeEmbargoConceptScalarWhereWithAggregatesInput = {
+    AND?: EmployeeEmbargoConceptScalarWhereWithAggregatesInput | EmployeeEmbargoConceptScalarWhereWithAggregatesInput[]
+    OR?: EmployeeEmbargoConceptScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeEmbargoConceptScalarWhereWithAggregatesInput | EmployeeEmbargoConceptScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeEmbargoConcept"> | string
+    embargoId?: StringWithAggregatesFilter<"EmployeeEmbargoConcept"> | string
+    conceptId?: StringWithAggregatesFilter<"EmployeeEmbargoConcept"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeEmbargoConcept"> | Date | string
   }
 
   export type CompanyProfileCreateInput = {
@@ -38877,6 +45342,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutUnionsInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutUnionInput
     employees?: EmployeeCreateNestedManyWithoutUnionInput
   }
 
@@ -38884,9 +45351,11 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutUnionInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutUnionInput
   }
 
@@ -38897,6 +45366,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutUnionsNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutUnionNestedInput
     employees?: EmployeeUpdateManyWithoutUnionNestedInput
   }
 
@@ -38904,9 +45375,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutUnionNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutUnionNestedInput
   }
 
@@ -38914,6 +45387,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -38932,9 +45406,57 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UnionConceptCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    union: UnionCreateNestedOneWithoutUnionConceptsInput
+    concept: ConceptCreateNestedOneWithoutUnionConceptsInput
+  }
+
+  export type UnionConceptUncheckedCreateInput = {
+    id?: string
+    unionId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type UnionConceptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    union?: UnionUpdateOneRequiredWithoutUnionConceptsNestedInput
+    concept?: ConceptUpdateOneRequiredWithoutUnionConceptsNestedInput
+  }
+
+  export type UnionConceptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    unionId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UnionConceptCreateManyInput = {
+    id?: string
+    unionId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type UnionConceptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UnionConceptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    unionId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MutualCreateInput = {
@@ -38944,6 +45466,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutMutualsInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutMutualInput
     employees?: EmployeeCreateNestedManyWithoutMutualInput
   }
 
@@ -38951,9 +45475,11 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutMutualInput
     employees?: EmployeeUncheckedCreateNestedManyWithoutMutualInput
   }
 
@@ -38964,6 +45490,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutMutualsNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutMutualNestedInput
     employees?: EmployeeUpdateManyWithoutMutualNestedInput
   }
 
@@ -38971,9 +45499,11 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutMutualNestedInput
     employees?: EmployeeUncheckedUpdateManyWithoutMutualNestedInput
   }
 
@@ -38981,6 +45511,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -38999,9 +45530,57 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MutualConceptCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    mutual: MutualCreateNestedOneWithoutMutualConceptsInput
+    concept: ConceptCreateNestedOneWithoutMutualConceptsInput
+  }
+
+  export type MutualConceptUncheckedCreateInput = {
+    id?: string
+    mutualId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type MutualConceptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mutual?: MutualUpdateOneRequiredWithoutMutualConceptsNestedInput
+    concept?: ConceptUpdateOneRequiredWithoutMutualConceptsNestedInput
+  }
+
+  export type MutualConceptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mutualId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MutualConceptCreateManyInput = {
+    id?: string
+    mutualId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type MutualConceptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MutualConceptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mutualId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmployeeCreateInput = {
@@ -39052,6 +45631,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -39102,6 +45682,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -39152,6 +45733,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -39202,6 +45784,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -39504,6 +46087,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39521,6 +46105,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39534,6 +46119,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39551,6 +46137,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39566,6 +46153,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39579,6 +46167,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39594,6 +46183,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39633,12 +46223,18 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
     assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptUncheckedCreateInput = {
@@ -39676,11 +46272,17 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptUpdateInput = {
@@ -39717,12 +46319,18 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
     assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptUncheckedUpdateInput = {
@@ -39760,11 +46368,17 @@ export namespace Prisma {
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptCreateManyInput = {
@@ -39802,6 +46416,7 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -39841,6 +46456,7 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -39881,6 +46497,7 @@ export namespace Prisma {
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -40182,6 +46799,94 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type PayrollFiscalPeriodCreateInput = {
+    id?: string
+    year: number
+    month: number
+    status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    settlements?: PayrollPeriodCreateNestedManyWithoutFiscalPeriodInput
+  }
+
+  export type PayrollFiscalPeriodUncheckedCreateInput = {
+    id?: string
+    year: number
+    month: number
+    status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    settlements?: PayrollPeriodUncheckedCreateNestedManyWithoutFiscalPeriodInput
+  }
+
+  export type PayrollFiscalPeriodUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlements?: PayrollPeriodUpdateManyWithoutFiscalPeriodNestedInput
+  }
+
+  export type PayrollFiscalPeriodUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlements?: PayrollPeriodUncheckedUpdateManyWithoutFiscalPeriodNestedInput
+  }
+
+  export type PayrollFiscalPeriodCreateManyInput = {
+    id?: string
+    year: number
+    month: number
+    status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollFiscalPeriodUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollFiscalPeriodUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PayrollPeriodCreateInput = {
     id?: string
     year: number
@@ -40203,12 +46908,14 @@ export namespace Prisma {
     closedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateInput = {
     id?: string
+    fiscalPeriodId?: string | null
     year: number
     month: number
     periodType?: string
@@ -40253,12 +46960,14 @@ export namespace Prisma {
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
     year?: IntFieldUpdateOperationsInput | number
     month?: IntFieldUpdateOperationsInput | number
     periodType?: StringFieldUpdateOperationsInput | string
@@ -40284,6 +46993,7 @@ export namespace Prisma {
 
   export type PayrollPeriodCreateManyInput = {
     id?: string
+    fiscalPeriodId?: string | null
     year: number
     month: number
     periodType?: string
@@ -40330,6 +47040,7 @@ export namespace Prisma {
 
   export type PayrollPeriodUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
     year?: IntFieldUpdateOperationsInput | number
     month?: IntFieldUpdateOperationsInput | number
     periodType?: StringFieldUpdateOperationsInput | string
@@ -40775,12 +47486,16 @@ export namespace Prisma {
     baseImponible9?: Decimal | DecimalJsLike | number | string
     baseImponible10?: Decimal | DecimalJsLike | number | string
     detractionAmount?: Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: Decimal | DecimalJsLike | number | string
+    baseDifLrt?: Decimal | DecimalJsLike | number | string
     situationCode?: string
     conditionCode?: string
     activityCode?: string
     contractModality?: string
     hasSpouse?: boolean
     childrenCount?: number
+    adherentsCount?: number
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: Date | string
@@ -40802,12 +47517,16 @@ export namespace Prisma {
     baseImponible9?: Decimal | DecimalJsLike | number | string
     baseImponible10?: Decimal | DecimalJsLike | number | string
     detractionAmount?: Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: Decimal | DecimalJsLike | number | string
+    baseDifLrt?: Decimal | DecimalJsLike | number | string
     situationCode?: string
     conditionCode?: string
     activityCode?: string
     contractModality?: string
     hasSpouse?: boolean
     childrenCount?: number
+    adherentsCount?: number
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: Date | string
@@ -40827,12 +47546,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40854,12 +47577,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40880,12 +47607,16 @@ export namespace Prisma {
     baseImponible9?: Decimal | DecimalJsLike | number | string
     baseImponible10?: Decimal | DecimalJsLike | number | string
     detractionAmount?: Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: Decimal | DecimalJsLike | number | string
+    baseDifLrt?: Decimal | DecimalJsLike | number | string
     situationCode?: string
     conditionCode?: string
     activityCode?: string
     contractModality?: string
     hasSpouse?: boolean
     childrenCount?: number
+    adherentsCount?: number
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: Date | string
@@ -40905,12 +47636,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -40931,12 +47666,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -41162,6 +47901,196 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoCreateInput = {
+    id?: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutEmbargoesInput
+    concepts?: EmployeeEmbargoConceptCreateNestedManyWithoutEmbargoInput
+  }
+
+  export type EmployeeEmbargoUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    concepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutEmbargoInput
+  }
+
+  export type EmployeeEmbargoUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutEmbargoesNestedInput
+    concepts?: EmployeeEmbargoConceptUpdateManyWithoutEmbargoNestedInput
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutEmbargoNestedInput
+  }
+
+  export type EmployeeEmbargoCreateManyInput = {
+    id?: string
+    employeeId: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeEmbargoUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    embargo: EmployeeEmbargoCreateNestedOneWithoutConceptsInput
+    concept: ConceptCreateNestedOneWithoutEmbargoConceptsInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedCreateInput = {
+    id?: string
+    embargoId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    embargo?: EmployeeEmbargoUpdateOneRequiredWithoutConceptsNestedInput
+    concept?: ConceptUpdateOneRequiredWithoutEmbargoConceptsNestedInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    embargoId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateManyInput = {
+    id?: string
+    embargoId: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    embargoId?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -41980,6 +48909,21 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
+  export type ConceptNullableScalarRelationFilter = {
+    is?: ConceptWhereInput | null
+    isNot?: ConceptWhereInput | null
+  }
+
+  export type UnionConceptListRelationFilter = {
+    every?: UnionConceptWhereInput
+    some?: UnionConceptWhereInput
+    none?: UnionConceptWhereInput
+  }
+
+  export type UnionConceptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UnionOrderByRelevanceInput = {
     fields: UnionOrderByRelevanceFieldEnum | UnionOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -41990,6 +48934,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -41999,6 +48944,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42008,9 +48954,62 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type UnionScalarRelationFilter = {
+    is?: UnionWhereInput
+    isNot?: UnionWhereInput
+  }
+
+  export type ConceptScalarRelationFilter = {
+    is?: ConceptWhereInput
+    isNot?: ConceptWhereInput
+  }
+
+  export type UnionConceptOrderByRelevanceInput = {
+    fields: UnionConceptOrderByRelevanceFieldEnum | UnionConceptOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type UnionConceptUnionIdConceptIdCompoundUniqueInput = {
+    unionId: string
+    conceptId: string
+  }
+
+  export type UnionConceptCountOrderByAggregateInput = {
+    id?: SortOrder
+    unionId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UnionConceptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    unionId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UnionConceptMinOrderByAggregateInput = {
+    id?: SortOrder
+    unionId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MutualConceptListRelationFilter = {
+    every?: MutualConceptWhereInput
+    some?: MutualConceptWhereInput
+    none?: MutualConceptWhereInput
+  }
+
+  export type MutualConceptOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type MutualOrderByRelevanceInput = {
@@ -42023,6 +49022,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42032,6 +49032,7 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42041,9 +49042,47 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     code?: SortOrder
+    conceptId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type MutualScalarRelationFilter = {
+    is?: MutualWhereInput
+    isNot?: MutualWhereInput
+  }
+
+  export type MutualConceptOrderByRelevanceInput = {
+    fields: MutualConceptOrderByRelevanceFieldEnum | MutualConceptOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type MutualConceptMutualIdConceptIdCompoundUniqueInput = {
+    mutualId: string
+    conceptId: string
+  }
+
+  export type MutualConceptCountOrderByAggregateInput = {
+    id?: SortOrder
+    mutualId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MutualConceptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    mutualId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type MutualConceptMinOrderByAggregateInput = {
+    id?: SortOrder
+    mutualId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type DepartmentNullableScalarRelationFilter = {
@@ -42110,6 +49149,12 @@ export namespace Prisma {
     none?: PeriodNoveltyWhereInput
   }
 
+  export type EmployeeEmbargoListRelationFilter = {
+    every?: EmployeeEmbargoWhereInput
+    some?: EmployeeEmbargoWhereInput
+    none?: EmployeeEmbargoWhereInput
+  }
+
   export type PaySlipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -42123,6 +49168,10 @@ export namespace Prisma {
   }
 
   export type PeriodNoveltyOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeEmbargoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -42398,6 +49447,7 @@ export namespace Prisma {
     documentNumber?: SortOrder
     cuil?: SortOrder
     birthDate?: SortOrder
+    isAdherent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42413,6 +49463,7 @@ export namespace Prisma {
     documentNumber?: SortOrder
     cuil?: SortOrder
     birthDate?: SortOrder
+    isAdherent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42428,6 +49479,7 @@ export namespace Prisma {
     documentNumber?: SortOrder
     cuil?: SortOrder
     birthDate?: SortOrder
+    isAdherent?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42436,6 +49488,36 @@ export namespace Prisma {
   export type PayrollMatrixNullableScalarRelationFilter = {
     is?: PayrollMatrixWhereInput | null
     isNot?: PayrollMatrixWhereInput | null
+  }
+
+  export type EmployeeEmbargoConceptListRelationFilter = {
+    every?: EmployeeEmbargoConceptWhereInput
+    some?: EmployeeEmbargoConceptWhereInput
+    none?: EmployeeEmbargoConceptWhereInput
+  }
+
+  export type UnionListRelationFilter = {
+    every?: UnionWhereInput
+    some?: UnionWhereInput
+    none?: UnionWhereInput
+  }
+
+  export type MutualListRelationFilter = {
+    every?: MutualWhereInput
+    some?: MutualWhereInput
+    none?: MutualWhereInput
+  }
+
+  export type EmployeeEmbargoConceptOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UnionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MutualOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type ConceptOrderByRelevanceInput = {
@@ -42479,6 +49561,7 @@ export namespace Prisma {
     appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
+    isEmbargo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42524,6 +49607,7 @@ export namespace Prisma {
     appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
+    isEmbargo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42564,6 +49648,7 @@ export namespace Prisma {
     appliesDetraccion?: SortOrder
     isRepeatable?: SortOrder
     matrixId?: SortOrder
+    isEmbargo?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -42583,11 +49668,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type ConceptScalarRelationFilter = {
-    is?: ConceptWhereInput
-    isNot?: ConceptWhereInput
   }
 
   export type EmployeeConceptOrderByRelevanceInput = {
@@ -42791,6 +49871,78 @@ export namespace Prisma {
     value?: SortOrder
   }
 
+  export type PayrollPeriodListRelationFilter = {
+    every?: PayrollPeriodWhereInput
+    some?: PayrollPeriodWhereInput
+    none?: PayrollPeriodWhereInput
+  }
+
+  export type PayrollPeriodOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodOrderByRelevanceInput = {
+    fields: PayrollFiscalPeriodOrderByRelevanceFieldEnum | PayrollFiscalPeriodOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PayrollFiscalPeriodYearMonthCompoundUniqueInput = {
+    year: number
+    month: number
+  }
+
+  export type PayrollFiscalPeriodCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodAvgOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodSumOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+  }
+
+  export type PayrollFiscalPeriodNullableScalarRelationFilter = {
+    is?: PayrollFiscalPeriodWhereInput | null
+    isNot?: PayrollFiscalPeriodWhereInput | null
+  }
+
   export type PayrollPeriodOrderByRelevanceInput = {
     fields: PayrollPeriodOrderByRelevanceFieldEnum | PayrollPeriodOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -42806,6 +49958,7 @@ export namespace Prisma {
 
   export type PayrollPeriodCountOrderByAggregateInput = {
     id?: SortOrder
+    fiscalPeriodId?: SortOrder
     year?: SortOrder
     month?: SortOrder
     periodType?: SortOrder
@@ -42838,6 +49991,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMaxOrderByAggregateInput = {
     id?: SortOrder
+    fiscalPeriodId?: SortOrder
     year?: SortOrder
     month?: SortOrder
     periodType?: SortOrder
@@ -42861,6 +50015,7 @@ export namespace Prisma {
 
   export type PayrollPeriodMinOrderByAggregateInput = {
     id?: SortOrder
+    fiscalPeriodId?: SortOrder
     year?: SortOrder
     month?: SortOrder
     periodType?: SortOrder
@@ -43193,12 +50348,16 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     situationCode?: SortOrder
     conditionCode?: SortOrder
     activityCode?: SortOrder
     contractModality?: SortOrder
     hasSpouse?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
     hasScvo?: SortOrder
     hasCct?: SortOrder
     createdAt?: SortOrder
@@ -43217,7 +50376,11 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
   }
 
   export type PaySlipBasisMaxOrderByAggregateInput = {
@@ -43234,12 +50397,16 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     situationCode?: SortOrder
     conditionCode?: SortOrder
     activityCode?: SortOrder
     contractModality?: SortOrder
     hasSpouse?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
     hasScvo?: SortOrder
     hasCct?: SortOrder
     createdAt?: SortOrder
@@ -43260,12 +50427,16 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     situationCode?: SortOrder
     conditionCode?: SortOrder
     activityCode?: SortOrder
     contractModality?: SortOrder
     hasSpouse?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
     hasScvo?: SortOrder
     hasCct?: SortOrder
     createdAt?: SortOrder
@@ -43284,7 +50455,11 @@ export namespace Prisma {
     baseImponible9?: SortOrder
     baseImponible10?: SortOrder
     detractionAmount?: SortOrder
+    baseDifAporteOs?: SortOrder
+    baseDifContribOs?: SortOrder
+    baseDifLrt?: SortOrder
     childrenCount?: SortOrder
+    adherentsCount?: SortOrder
   }
 
   export type PayrollSettingOrderByRelevanceInput = {
@@ -43441,6 +50616,119 @@ export namespace Prisma {
   export type PeriodNoveltySumOrderByAggregateInput = {
     units?: SortOrder
     amount?: SortOrder
+  }
+
+  export type EmployeeEmbargoOrderByRelevanceInput = {
+    fields: EmployeeEmbargoOrderByRelevanceFieldEnum | EmployeeEmbargoOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeEmbargoCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    caseTitle?: SortOrder
+    dossierNumber?: SortOrder
+    court?: SortOrder
+    secretary?: SortOrder
+    judicialDistrict?: SortOrder
+    embargoType?: SortOrder
+    hasCap?: SortOrder
+    totalAmount?: SortOrder
+    priorityOrder?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeEmbargoAvgOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    priorityOrder?: SortOrder
+  }
+
+  export type EmployeeEmbargoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    caseTitle?: SortOrder
+    dossierNumber?: SortOrder
+    court?: SortOrder
+    secretary?: SortOrder
+    judicialDistrict?: SortOrder
+    embargoType?: SortOrder
+    hasCap?: SortOrder
+    totalAmount?: SortOrder
+    priorityOrder?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeEmbargoMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    caseTitle?: SortOrder
+    dossierNumber?: SortOrder
+    court?: SortOrder
+    secretary?: SortOrder
+    judicialDistrict?: SortOrder
+    embargoType?: SortOrder
+    hasCap?: SortOrder
+    totalAmount?: SortOrder
+    priorityOrder?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeEmbargoSumOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    priorityOrder?: SortOrder
+  }
+
+  export type EmployeeEmbargoScalarRelationFilter = {
+    is?: EmployeeEmbargoWhereInput
+    isNot?: EmployeeEmbargoWhereInput
+  }
+
+  export type EmployeeEmbargoConceptOrderByRelevanceInput = {
+    fields: EmployeeEmbargoConceptOrderByRelevanceFieldEnum | EmployeeEmbargoConceptOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeEmbargoConceptEmbargoIdConceptIdCompoundUniqueInput = {
+    embargoId: string
+    conceptId: string
+  }
+
+  export type EmployeeEmbargoConceptCountOrderByAggregateInput = {
+    id?: SortOrder
+    embargoId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmployeeEmbargoConceptMaxOrderByAggregateInput = {
+    id?: SortOrder
+    embargoId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EmployeeEmbargoConceptMinOrderByAggregateInput = {
+    id?: SortOrder
+    embargoId?: SortOrder
+    conceptId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -43985,6 +51273,19 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
+  export type ConceptCreateNestedOneWithoutUnionsInput = {
+    create?: XOR<ConceptCreateWithoutUnionsInput, ConceptUncheckedCreateWithoutUnionsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutUnionsInput
+    connect?: ConceptWhereUniqueInput
+  }
+
+  export type UnionConceptCreateNestedManyWithoutUnionInput = {
+    create?: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput> | UnionConceptCreateWithoutUnionInput[] | UnionConceptUncheckedCreateWithoutUnionInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutUnionInput | UnionConceptCreateOrConnectWithoutUnionInput[]
+    createMany?: UnionConceptCreateManyUnionInputEnvelope
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+  }
+
   export type EmployeeCreateNestedManyWithoutUnionInput = {
     create?: XOR<EmployeeCreateWithoutUnionInput, EmployeeUncheckedCreateWithoutUnionInput> | EmployeeCreateWithoutUnionInput[] | EmployeeUncheckedCreateWithoutUnionInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutUnionInput | EmployeeCreateOrConnectWithoutUnionInput[]
@@ -43992,11 +51293,42 @@ export namespace Prisma {
     connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
   }
 
+  export type UnionConceptUncheckedCreateNestedManyWithoutUnionInput = {
+    create?: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput> | UnionConceptCreateWithoutUnionInput[] | UnionConceptUncheckedCreateWithoutUnionInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutUnionInput | UnionConceptCreateOrConnectWithoutUnionInput[]
+    createMany?: UnionConceptCreateManyUnionInputEnvelope
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+  }
+
   export type EmployeeUncheckedCreateNestedManyWithoutUnionInput = {
     create?: XOR<EmployeeCreateWithoutUnionInput, EmployeeUncheckedCreateWithoutUnionInput> | EmployeeCreateWithoutUnionInput[] | EmployeeUncheckedCreateWithoutUnionInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutUnionInput | EmployeeCreateOrConnectWithoutUnionInput[]
     createMany?: EmployeeCreateManyUnionInputEnvelope
     connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type ConceptUpdateOneWithoutUnionsNestedInput = {
+    create?: XOR<ConceptCreateWithoutUnionsInput, ConceptUncheckedCreateWithoutUnionsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutUnionsInput
+    upsert?: ConceptUpsertWithoutUnionsInput
+    disconnect?: ConceptWhereInput | boolean
+    delete?: ConceptWhereInput | boolean
+    connect?: ConceptWhereUniqueInput
+    update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutUnionsInput, ConceptUpdateWithoutUnionsInput>, ConceptUncheckedUpdateWithoutUnionsInput>
+  }
+
+  export type UnionConceptUpdateManyWithoutUnionNestedInput = {
+    create?: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput> | UnionConceptCreateWithoutUnionInput[] | UnionConceptUncheckedCreateWithoutUnionInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutUnionInput | UnionConceptCreateOrConnectWithoutUnionInput[]
+    upsert?: UnionConceptUpsertWithWhereUniqueWithoutUnionInput | UnionConceptUpsertWithWhereUniqueWithoutUnionInput[]
+    createMany?: UnionConceptCreateManyUnionInputEnvelope
+    set?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    disconnect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    delete?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    update?: UnionConceptUpdateWithWhereUniqueWithoutUnionInput | UnionConceptUpdateWithWhereUniqueWithoutUnionInput[]
+    updateMany?: UnionConceptUpdateManyWithWhereWithoutUnionInput | UnionConceptUpdateManyWithWhereWithoutUnionInput[]
+    deleteMany?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
   }
 
   export type EmployeeUpdateManyWithoutUnionNestedInput = {
@@ -44013,6 +51345,20 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
+  export type UnionConceptUncheckedUpdateManyWithoutUnionNestedInput = {
+    create?: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput> | UnionConceptCreateWithoutUnionInput[] | UnionConceptUncheckedCreateWithoutUnionInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutUnionInput | UnionConceptCreateOrConnectWithoutUnionInput[]
+    upsert?: UnionConceptUpsertWithWhereUniqueWithoutUnionInput | UnionConceptUpsertWithWhereUniqueWithoutUnionInput[]
+    createMany?: UnionConceptCreateManyUnionInputEnvelope
+    set?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    disconnect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    delete?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    update?: UnionConceptUpdateWithWhereUniqueWithoutUnionInput | UnionConceptUpdateWithWhereUniqueWithoutUnionInput[]
+    updateMany?: UnionConceptUpdateManyWithWhereWithoutUnionInput | UnionConceptUpdateManyWithWhereWithoutUnionInput[]
+    deleteMany?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
+  }
+
   export type EmployeeUncheckedUpdateManyWithoutUnionNestedInput = {
     create?: XOR<EmployeeCreateWithoutUnionInput, EmployeeUncheckedCreateWithoutUnionInput> | EmployeeCreateWithoutUnionInput[] | EmployeeUncheckedCreateWithoutUnionInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutUnionInput | EmployeeCreateOrConnectWithoutUnionInput[]
@@ -44027,6 +51373,47 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
+  export type UnionCreateNestedOneWithoutUnionConceptsInput = {
+    create?: XOR<UnionCreateWithoutUnionConceptsInput, UnionUncheckedCreateWithoutUnionConceptsInput>
+    connectOrCreate?: UnionCreateOrConnectWithoutUnionConceptsInput
+    connect?: UnionWhereUniqueInput
+  }
+
+  export type ConceptCreateNestedOneWithoutUnionConceptsInput = {
+    create?: XOR<ConceptCreateWithoutUnionConceptsInput, ConceptUncheckedCreateWithoutUnionConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutUnionConceptsInput
+    connect?: ConceptWhereUniqueInput
+  }
+
+  export type UnionUpdateOneRequiredWithoutUnionConceptsNestedInput = {
+    create?: XOR<UnionCreateWithoutUnionConceptsInput, UnionUncheckedCreateWithoutUnionConceptsInput>
+    connectOrCreate?: UnionCreateOrConnectWithoutUnionConceptsInput
+    upsert?: UnionUpsertWithoutUnionConceptsInput
+    connect?: UnionWhereUniqueInput
+    update?: XOR<XOR<UnionUpdateToOneWithWhereWithoutUnionConceptsInput, UnionUpdateWithoutUnionConceptsInput>, UnionUncheckedUpdateWithoutUnionConceptsInput>
+  }
+
+  export type ConceptUpdateOneRequiredWithoutUnionConceptsNestedInput = {
+    create?: XOR<ConceptCreateWithoutUnionConceptsInput, ConceptUncheckedCreateWithoutUnionConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutUnionConceptsInput
+    upsert?: ConceptUpsertWithoutUnionConceptsInput
+    connect?: ConceptWhereUniqueInput
+    update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutUnionConceptsInput, ConceptUpdateWithoutUnionConceptsInput>, ConceptUncheckedUpdateWithoutUnionConceptsInput>
+  }
+
+  export type ConceptCreateNestedOneWithoutMutualsInput = {
+    create?: XOR<ConceptCreateWithoutMutualsInput, ConceptUncheckedCreateWithoutMutualsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutMutualsInput
+    connect?: ConceptWhereUniqueInput
+  }
+
+  export type MutualConceptCreateNestedManyWithoutMutualInput = {
+    create?: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput> | MutualConceptCreateWithoutMutualInput[] | MutualConceptUncheckedCreateWithoutMutualInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutMutualInput | MutualConceptCreateOrConnectWithoutMutualInput[]
+    createMany?: MutualConceptCreateManyMutualInputEnvelope
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+  }
+
   export type EmployeeCreateNestedManyWithoutMutualInput = {
     create?: XOR<EmployeeCreateWithoutMutualInput, EmployeeUncheckedCreateWithoutMutualInput> | EmployeeCreateWithoutMutualInput[] | EmployeeUncheckedCreateWithoutMutualInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutMutualInput | EmployeeCreateOrConnectWithoutMutualInput[]
@@ -44034,11 +51421,42 @@ export namespace Prisma {
     connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
   }
 
+  export type MutualConceptUncheckedCreateNestedManyWithoutMutualInput = {
+    create?: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput> | MutualConceptCreateWithoutMutualInput[] | MutualConceptUncheckedCreateWithoutMutualInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutMutualInput | MutualConceptCreateOrConnectWithoutMutualInput[]
+    createMany?: MutualConceptCreateManyMutualInputEnvelope
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+  }
+
   export type EmployeeUncheckedCreateNestedManyWithoutMutualInput = {
     create?: XOR<EmployeeCreateWithoutMutualInput, EmployeeUncheckedCreateWithoutMutualInput> | EmployeeCreateWithoutMutualInput[] | EmployeeUncheckedCreateWithoutMutualInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutMutualInput | EmployeeCreateOrConnectWithoutMutualInput[]
     createMany?: EmployeeCreateManyMutualInputEnvelope
     connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type ConceptUpdateOneWithoutMutualsNestedInput = {
+    create?: XOR<ConceptCreateWithoutMutualsInput, ConceptUncheckedCreateWithoutMutualsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutMutualsInput
+    upsert?: ConceptUpsertWithoutMutualsInput
+    disconnect?: ConceptWhereInput | boolean
+    delete?: ConceptWhereInput | boolean
+    connect?: ConceptWhereUniqueInput
+    update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutMutualsInput, ConceptUpdateWithoutMutualsInput>, ConceptUncheckedUpdateWithoutMutualsInput>
+  }
+
+  export type MutualConceptUpdateManyWithoutMutualNestedInput = {
+    create?: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput> | MutualConceptCreateWithoutMutualInput[] | MutualConceptUncheckedCreateWithoutMutualInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutMutualInput | MutualConceptCreateOrConnectWithoutMutualInput[]
+    upsert?: MutualConceptUpsertWithWhereUniqueWithoutMutualInput | MutualConceptUpsertWithWhereUniqueWithoutMutualInput[]
+    createMany?: MutualConceptCreateManyMutualInputEnvelope
+    set?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    disconnect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    delete?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    update?: MutualConceptUpdateWithWhereUniqueWithoutMutualInput | MutualConceptUpdateWithWhereUniqueWithoutMutualInput[]
+    updateMany?: MutualConceptUpdateManyWithWhereWithoutMutualInput | MutualConceptUpdateManyWithWhereWithoutMutualInput[]
+    deleteMany?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
   }
 
   export type EmployeeUpdateManyWithoutMutualNestedInput = {
@@ -44055,6 +51473,20 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
+  export type MutualConceptUncheckedUpdateManyWithoutMutualNestedInput = {
+    create?: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput> | MutualConceptCreateWithoutMutualInput[] | MutualConceptUncheckedCreateWithoutMutualInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutMutualInput | MutualConceptCreateOrConnectWithoutMutualInput[]
+    upsert?: MutualConceptUpsertWithWhereUniqueWithoutMutualInput | MutualConceptUpsertWithWhereUniqueWithoutMutualInput[]
+    createMany?: MutualConceptCreateManyMutualInputEnvelope
+    set?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    disconnect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    delete?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    update?: MutualConceptUpdateWithWhereUniqueWithoutMutualInput | MutualConceptUpdateWithWhereUniqueWithoutMutualInput[]
+    updateMany?: MutualConceptUpdateManyWithWhereWithoutMutualInput | MutualConceptUpdateManyWithWhereWithoutMutualInput[]
+    deleteMany?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
+  }
+
   export type EmployeeUncheckedUpdateManyWithoutMutualNestedInput = {
     create?: XOR<EmployeeCreateWithoutMutualInput, EmployeeUncheckedCreateWithoutMutualInput> | EmployeeCreateWithoutMutualInput[] | EmployeeUncheckedCreateWithoutMutualInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutMutualInput | EmployeeCreateOrConnectWithoutMutualInput[]
@@ -44067,6 +51499,34 @@ export namespace Prisma {
     update?: EmployeeUpdateWithWhereUniqueWithoutMutualInput | EmployeeUpdateWithWhereUniqueWithoutMutualInput[]
     updateMany?: EmployeeUpdateManyWithWhereWithoutMutualInput | EmployeeUpdateManyWithWhereWithoutMutualInput[]
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
+  }
+
+  export type MutualCreateNestedOneWithoutMutualConceptsInput = {
+    create?: XOR<MutualCreateWithoutMutualConceptsInput, MutualUncheckedCreateWithoutMutualConceptsInput>
+    connectOrCreate?: MutualCreateOrConnectWithoutMutualConceptsInput
+    connect?: MutualWhereUniqueInput
+  }
+
+  export type ConceptCreateNestedOneWithoutMutualConceptsInput = {
+    create?: XOR<ConceptCreateWithoutMutualConceptsInput, ConceptUncheckedCreateWithoutMutualConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutMutualConceptsInput
+    connect?: ConceptWhereUniqueInput
+  }
+
+  export type MutualUpdateOneRequiredWithoutMutualConceptsNestedInput = {
+    create?: XOR<MutualCreateWithoutMutualConceptsInput, MutualUncheckedCreateWithoutMutualConceptsInput>
+    connectOrCreate?: MutualCreateOrConnectWithoutMutualConceptsInput
+    upsert?: MutualUpsertWithoutMutualConceptsInput
+    connect?: MutualWhereUniqueInput
+    update?: XOR<XOR<MutualUpdateToOneWithWhereWithoutMutualConceptsInput, MutualUpdateWithoutMutualConceptsInput>, MutualUncheckedUpdateWithoutMutualConceptsInput>
+  }
+
+  export type ConceptUpdateOneRequiredWithoutMutualConceptsNestedInput = {
+    create?: XOR<ConceptCreateWithoutMutualConceptsInput, ConceptUncheckedCreateWithoutMutualConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutMutualConceptsInput
+    upsert?: ConceptUpsertWithoutMutualConceptsInput
+    connect?: ConceptWhereUniqueInput
+    update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutMutualConceptsInput, ConceptUpdateWithoutMutualConceptsInput>, ConceptUncheckedUpdateWithoutMutualConceptsInput>
   }
 
   export type DepartmentCreateNestedOneWithoutEmployeesInput = {
@@ -44145,6 +51605,13 @@ export namespace Prisma {
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
   }
 
+  export type EmployeeEmbargoCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput> | EmployeeEmbargoCreateWithoutEmployeeInput[] | EmployeeEmbargoUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutEmployeeInput | EmployeeEmbargoCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeEmbargoCreateManyEmployeeInputEnvelope
+    connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+  }
+
   export type PaySlipUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -44171,6 +51638,13 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutEmployeeInput | PeriodNoveltyCreateOrConnectWithoutEmployeeInput[]
     createMany?: PeriodNoveltyCreateManyEmployeeInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
+  }
+
+  export type EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput> | EmployeeEmbargoCreateWithoutEmployeeInput[] | EmployeeEmbargoUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutEmployeeInput | EmployeeEmbargoCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeEmbargoCreateManyEmployeeInputEnvelope
+    connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -44309,6 +51783,20 @@ export namespace Prisma {
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
   }
 
+  export type EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput> | EmployeeEmbargoCreateWithoutEmployeeInput[] | EmployeeEmbargoUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutEmployeeInput | EmployeeEmbargoCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeEmbargoUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeEmbargoUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeEmbargoCreateManyEmployeeInputEnvelope
+    set?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    delete?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    update?: EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput | EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
+  }
+
   export type PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -44363,6 +51851,20 @@ export namespace Prisma {
     update?: PeriodNoveltyUpdateWithWhereUniqueWithoutEmployeeInput | PeriodNoveltyUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: PeriodNoveltyUpdateManyWithWhereWithoutEmployeeInput | PeriodNoveltyUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput> | EmployeeEmbargoCreateWithoutEmployeeInput[] | EmployeeEmbargoUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutEmployeeInput | EmployeeEmbargoCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeEmbargoUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeEmbargoUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeEmbargoCreateManyEmployeeInputEnvelope
+    set?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    delete?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+    update?: EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput | EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedManyWithoutSalaryScaleInput = {
@@ -44497,6 +51999,41 @@ export namespace Prisma {
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
   }
 
+  export type EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput> | EmployeeEmbargoConceptCreateWithoutConceptInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput | EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyConceptInputEnvelope
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+  }
+
+  export type UnionCreateNestedManyWithoutConceptInput = {
+    create?: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput> | UnionCreateWithoutConceptInput[] | UnionUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionCreateOrConnectWithoutConceptInput | UnionCreateOrConnectWithoutConceptInput[]
+    createMany?: UnionCreateManyConceptInputEnvelope
+    connect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+  }
+
+  export type MutualCreateNestedManyWithoutConceptInput = {
+    create?: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput> | MutualCreateWithoutConceptInput[] | MutualUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualCreateOrConnectWithoutConceptInput | MutualCreateOrConnectWithoutConceptInput[]
+    createMany?: MutualCreateManyConceptInputEnvelope
+    connect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+  }
+
+  export type UnionConceptCreateNestedManyWithoutConceptInput = {
+    create?: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput> | UnionConceptCreateWithoutConceptInput[] | UnionConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutConceptInput | UnionConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: UnionConceptCreateManyConceptInputEnvelope
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+  }
+
+  export type MutualConceptCreateNestedManyWithoutConceptInput = {
+    create?: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput> | MutualConceptCreateWithoutConceptInput[] | MutualConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutConceptInput | MutualConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: MutualConceptCreateManyConceptInputEnvelope
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+  }
+
   export type EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput = {
     create?: XOR<EmployeeConceptCreateWithoutConceptInput, EmployeeConceptUncheckedCreateWithoutConceptInput> | EmployeeConceptCreateWithoutConceptInput[] | EmployeeConceptUncheckedCreateWithoutConceptInput[]
     connectOrCreate?: EmployeeConceptCreateOrConnectWithoutConceptInput | EmployeeConceptCreateOrConnectWithoutConceptInput[]
@@ -44509,6 +52046,41 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutConceptInput | PeriodNoveltyCreateOrConnectWithoutConceptInput[]
     createMany?: PeriodNoveltyCreateManyConceptInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
+  }
+
+  export type EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput> | EmployeeEmbargoConceptCreateWithoutConceptInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput | EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyConceptInputEnvelope
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+  }
+
+  export type UnionUncheckedCreateNestedManyWithoutConceptInput = {
+    create?: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput> | UnionCreateWithoutConceptInput[] | UnionUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionCreateOrConnectWithoutConceptInput | UnionCreateOrConnectWithoutConceptInput[]
+    createMany?: UnionCreateManyConceptInputEnvelope
+    connect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+  }
+
+  export type MutualUncheckedCreateNestedManyWithoutConceptInput = {
+    create?: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput> | MutualCreateWithoutConceptInput[] | MutualUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualCreateOrConnectWithoutConceptInput | MutualCreateOrConnectWithoutConceptInput[]
+    createMany?: MutualCreateManyConceptInputEnvelope
+    connect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+  }
+
+  export type UnionConceptUncheckedCreateNestedManyWithoutConceptInput = {
+    create?: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput> | UnionConceptCreateWithoutConceptInput[] | UnionConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutConceptInput | UnionConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: UnionConceptCreateManyConceptInputEnvelope
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+  }
+
+  export type MutualConceptUncheckedCreateNestedManyWithoutConceptInput = {
+    create?: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput> | MutualConceptCreateWithoutConceptInput[] | MutualConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutConceptInput | MutualConceptCreateOrConnectWithoutConceptInput[]
+    createMany?: MutualConceptCreateManyConceptInputEnvelope
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
   }
 
   export type PayrollMatrixUpdateOneWithoutConceptsNestedInput = {
@@ -44549,6 +52121,76 @@ export namespace Prisma {
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
   }
 
+  export type EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput> | EmployeeEmbargoConceptCreateWithoutConceptInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput | EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutConceptInput | EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyConceptInputEnvelope
+    set?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    delete?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    update?: EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutConceptInput | EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: EmployeeEmbargoConceptUpdateManyWithWhereWithoutConceptInput | EmployeeEmbargoConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+  }
+
+  export type UnionUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput> | UnionCreateWithoutConceptInput[] | UnionUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionCreateOrConnectWithoutConceptInput | UnionCreateOrConnectWithoutConceptInput[]
+    upsert?: UnionUpsertWithWhereUniqueWithoutConceptInput | UnionUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: UnionCreateManyConceptInputEnvelope
+    set?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    disconnect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    delete?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    connect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    update?: UnionUpdateWithWhereUniqueWithoutConceptInput | UnionUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: UnionUpdateManyWithWhereWithoutConceptInput | UnionUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: UnionScalarWhereInput | UnionScalarWhereInput[]
+  }
+
+  export type MutualUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput> | MutualCreateWithoutConceptInput[] | MutualUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualCreateOrConnectWithoutConceptInput | MutualCreateOrConnectWithoutConceptInput[]
+    upsert?: MutualUpsertWithWhereUniqueWithoutConceptInput | MutualUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: MutualCreateManyConceptInputEnvelope
+    set?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    disconnect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    delete?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    connect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    update?: MutualUpdateWithWhereUniqueWithoutConceptInput | MutualUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: MutualUpdateManyWithWhereWithoutConceptInput | MutualUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: MutualScalarWhereInput | MutualScalarWhereInput[]
+  }
+
+  export type UnionConceptUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput> | UnionConceptCreateWithoutConceptInput[] | UnionConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutConceptInput | UnionConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: UnionConceptUpsertWithWhereUniqueWithoutConceptInput | UnionConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: UnionConceptCreateManyConceptInputEnvelope
+    set?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    disconnect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    delete?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    update?: UnionConceptUpdateWithWhereUniqueWithoutConceptInput | UnionConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: UnionConceptUpdateManyWithWhereWithoutConceptInput | UnionConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
+  }
+
+  export type MutualConceptUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput> | MutualConceptCreateWithoutConceptInput[] | MutualConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutConceptInput | MutualConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: MutualConceptUpsertWithWhereUniqueWithoutConceptInput | MutualConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: MutualConceptCreateManyConceptInputEnvelope
+    set?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    disconnect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    delete?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    update?: MutualConceptUpdateWithWhereUniqueWithoutConceptInput | MutualConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: MutualConceptUpdateManyWithWhereWithoutConceptInput | MutualConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
+  }
+
   export type EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput = {
     create?: XOR<EmployeeConceptCreateWithoutConceptInput, EmployeeConceptUncheckedCreateWithoutConceptInput> | EmployeeConceptCreateWithoutConceptInput[] | EmployeeConceptUncheckedCreateWithoutConceptInput[]
     connectOrCreate?: EmployeeConceptCreateOrConnectWithoutConceptInput | EmployeeConceptCreateOrConnectWithoutConceptInput[]
@@ -44575,6 +52217,76 @@ export namespace Prisma {
     update?: PeriodNoveltyUpdateWithWhereUniqueWithoutConceptInput | PeriodNoveltyUpdateWithWhereUniqueWithoutConceptInput[]
     updateMany?: PeriodNoveltyUpdateManyWithWhereWithoutConceptInput | PeriodNoveltyUpdateManyWithWhereWithoutConceptInput[]
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput> | EmployeeEmbargoConceptCreateWithoutConceptInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput | EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutConceptInput | EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyConceptInputEnvelope
+    set?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    delete?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    update?: EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutConceptInput | EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: EmployeeEmbargoConceptUpdateManyWithWhereWithoutConceptInput | EmployeeEmbargoConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+  }
+
+  export type UnionUncheckedUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput> | UnionCreateWithoutConceptInput[] | UnionUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionCreateOrConnectWithoutConceptInput | UnionCreateOrConnectWithoutConceptInput[]
+    upsert?: UnionUpsertWithWhereUniqueWithoutConceptInput | UnionUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: UnionCreateManyConceptInputEnvelope
+    set?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    disconnect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    delete?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    connect?: UnionWhereUniqueInput | UnionWhereUniqueInput[]
+    update?: UnionUpdateWithWhereUniqueWithoutConceptInput | UnionUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: UnionUpdateManyWithWhereWithoutConceptInput | UnionUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: UnionScalarWhereInput | UnionScalarWhereInput[]
+  }
+
+  export type MutualUncheckedUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput> | MutualCreateWithoutConceptInput[] | MutualUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualCreateOrConnectWithoutConceptInput | MutualCreateOrConnectWithoutConceptInput[]
+    upsert?: MutualUpsertWithWhereUniqueWithoutConceptInput | MutualUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: MutualCreateManyConceptInputEnvelope
+    set?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    disconnect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    delete?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    connect?: MutualWhereUniqueInput | MutualWhereUniqueInput[]
+    update?: MutualUpdateWithWhereUniqueWithoutConceptInput | MutualUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: MutualUpdateManyWithWhereWithoutConceptInput | MutualUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: MutualScalarWhereInput | MutualScalarWhereInput[]
+  }
+
+  export type UnionConceptUncheckedUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput> | UnionConceptCreateWithoutConceptInput[] | UnionConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: UnionConceptCreateOrConnectWithoutConceptInput | UnionConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: UnionConceptUpsertWithWhereUniqueWithoutConceptInput | UnionConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: UnionConceptCreateManyConceptInputEnvelope
+    set?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    disconnect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    delete?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    connect?: UnionConceptWhereUniqueInput | UnionConceptWhereUniqueInput[]
+    update?: UnionConceptUpdateWithWhereUniqueWithoutConceptInput | UnionConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: UnionConceptUpdateManyWithWhereWithoutConceptInput | UnionConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
+  }
+
+  export type MutualConceptUncheckedUpdateManyWithoutConceptNestedInput = {
+    create?: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput> | MutualConceptCreateWithoutConceptInput[] | MutualConceptUncheckedCreateWithoutConceptInput[]
+    connectOrCreate?: MutualConceptCreateOrConnectWithoutConceptInput | MutualConceptCreateOrConnectWithoutConceptInput[]
+    upsert?: MutualConceptUpsertWithWhereUniqueWithoutConceptInput | MutualConceptUpsertWithWhereUniqueWithoutConceptInput[]
+    createMany?: MutualConceptCreateManyConceptInputEnvelope
+    set?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    disconnect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    delete?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    connect?: MutualConceptWhereUniqueInput | MutualConceptWhereUniqueInput[]
+    update?: MutualConceptUpdateWithWhereUniqueWithoutConceptInput | MutualConceptUpdateWithWhereUniqueWithoutConceptInput[]
+    updateMany?: MutualConceptUpdateManyWithWhereWithoutConceptInput | MutualConceptUpdateManyWithWhereWithoutConceptInput[]
+    deleteMany?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedOneWithoutAssignedConceptsInput = {
@@ -44655,6 +52367,54 @@ export namespace Prisma {
     deleteMany?: ConceptScalarWhereInput | ConceptScalarWhereInput[]
   }
 
+  export type PayrollPeriodCreateNestedManyWithoutFiscalPeriodInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput> | PayrollPeriodCreateWithoutFiscalPeriodInput[] | PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput[]
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput | PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput[]
+    createMany?: PayrollPeriodCreateManyFiscalPeriodInputEnvelope
+    connect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+  }
+
+  export type PayrollPeriodUncheckedCreateNestedManyWithoutFiscalPeriodInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput> | PayrollPeriodCreateWithoutFiscalPeriodInput[] | PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput[]
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput | PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput[]
+    createMany?: PayrollPeriodCreateManyFiscalPeriodInputEnvelope
+    connect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+  }
+
+  export type PayrollPeriodUpdateManyWithoutFiscalPeriodNestedInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput> | PayrollPeriodCreateWithoutFiscalPeriodInput[] | PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput[]
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput | PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput[]
+    upsert?: PayrollPeriodUpsertWithWhereUniqueWithoutFiscalPeriodInput | PayrollPeriodUpsertWithWhereUniqueWithoutFiscalPeriodInput[]
+    createMany?: PayrollPeriodCreateManyFiscalPeriodInputEnvelope
+    set?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    disconnect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    delete?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    connect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    update?: PayrollPeriodUpdateWithWhereUniqueWithoutFiscalPeriodInput | PayrollPeriodUpdateWithWhereUniqueWithoutFiscalPeriodInput[]
+    updateMany?: PayrollPeriodUpdateManyWithWhereWithoutFiscalPeriodInput | PayrollPeriodUpdateManyWithWhereWithoutFiscalPeriodInput[]
+    deleteMany?: PayrollPeriodScalarWhereInput | PayrollPeriodScalarWhereInput[]
+  }
+
+  export type PayrollPeriodUncheckedUpdateManyWithoutFiscalPeriodNestedInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput> | PayrollPeriodCreateWithoutFiscalPeriodInput[] | PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput[]
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput | PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput[]
+    upsert?: PayrollPeriodUpsertWithWhereUniqueWithoutFiscalPeriodInput | PayrollPeriodUpsertWithWhereUniqueWithoutFiscalPeriodInput[]
+    createMany?: PayrollPeriodCreateManyFiscalPeriodInputEnvelope
+    set?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    disconnect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    delete?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    connect?: PayrollPeriodWhereUniqueInput | PayrollPeriodWhereUniqueInput[]
+    update?: PayrollPeriodUpdateWithWhereUniqueWithoutFiscalPeriodInput | PayrollPeriodUpdateWithWhereUniqueWithoutFiscalPeriodInput[]
+    updateMany?: PayrollPeriodUpdateManyWithWhereWithoutFiscalPeriodInput | PayrollPeriodUpdateManyWithWhereWithoutFiscalPeriodInput[]
+    deleteMany?: PayrollPeriodScalarWhereInput | PayrollPeriodScalarWhereInput[]
+  }
+
+  export type PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput = {
+    create?: XOR<PayrollFiscalPeriodCreateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedCreateWithoutSettlementsInput>
+    connectOrCreate?: PayrollFiscalPeriodCreateOrConnectWithoutSettlementsInput
+    connect?: PayrollFiscalPeriodWhereUniqueInput
+  }
+
   export type PaySlipCreateNestedManyWithoutPayrollPeriodInput = {
     create?: XOR<PaySlipCreateWithoutPayrollPeriodInput, PaySlipUncheckedCreateWithoutPayrollPeriodInput> | PaySlipCreateWithoutPayrollPeriodInput[] | PaySlipUncheckedCreateWithoutPayrollPeriodInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutPayrollPeriodInput | PaySlipCreateOrConnectWithoutPayrollPeriodInput[]
@@ -44681,6 +52441,16 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutPayrollPeriodInput | PeriodNoveltyCreateOrConnectWithoutPayrollPeriodInput[]
     createMany?: PeriodNoveltyCreateManyPayrollPeriodInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
+  }
+
+  export type PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput = {
+    create?: XOR<PayrollFiscalPeriodCreateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedCreateWithoutSettlementsInput>
+    connectOrCreate?: PayrollFiscalPeriodCreateOrConnectWithoutSettlementsInput
+    upsert?: PayrollFiscalPeriodUpsertWithoutSettlementsInput
+    disconnect?: PayrollFiscalPeriodWhereInput | boolean
+    delete?: PayrollFiscalPeriodWhereInput | boolean
+    connect?: PayrollFiscalPeriodWhereUniqueInput
+    update?: XOR<XOR<PayrollFiscalPeriodUpdateToOneWithWhereWithoutSettlementsInput, PayrollFiscalPeriodUpdateWithoutSettlementsInput>, PayrollFiscalPeriodUncheckedUpdateWithoutSettlementsInput>
   }
 
   export type PaySlipUpdateManyWithoutPayrollPeriodNestedInput = {
@@ -44909,6 +52679,90 @@ export namespace Prisma {
     upsert?: ConceptUpsertWithoutPeriodNoveltiesInput
     connect?: ConceptWhereUniqueInput
     update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutPeriodNoveltiesInput, ConceptUpdateWithoutPeriodNoveltiesInput>, ConceptUncheckedUpdateWithoutPeriodNoveltiesInput>
+  }
+
+  export type EmployeeCreateNestedOneWithoutEmbargoesInput = {
+    create?: XOR<EmployeeCreateWithoutEmbargoesInput, EmployeeUncheckedCreateWithoutEmbargoesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutEmbargoesInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EmployeeEmbargoConceptCreateNestedManyWithoutEmbargoInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput> | EmployeeEmbargoConceptCreateWithoutEmbargoInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput | EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyEmbargoInputEnvelope
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+  }
+
+  export type EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutEmbargoInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput> | EmployeeEmbargoConceptCreateWithoutEmbargoInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput | EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyEmbargoInputEnvelope
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutEmbargoesNestedInput = {
+    create?: XOR<EmployeeCreateWithoutEmbargoesInput, EmployeeUncheckedCreateWithoutEmbargoesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutEmbargoesInput
+    upsert?: EmployeeUpsertWithoutEmbargoesInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutEmbargoesInput, EmployeeUpdateWithoutEmbargoesInput>, EmployeeUncheckedUpdateWithoutEmbargoesInput>
+  }
+
+  export type EmployeeEmbargoConceptUpdateManyWithoutEmbargoNestedInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput> | EmployeeEmbargoConceptCreateWithoutEmbargoInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput | EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput[]
+    upsert?: EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput | EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyEmbargoInputEnvelope
+    set?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    delete?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    update?: EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutEmbargoInput | EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutEmbargoInput[]
+    updateMany?: EmployeeEmbargoConceptUpdateManyWithWhereWithoutEmbargoInput | EmployeeEmbargoConceptUpdateManyWithWhereWithoutEmbargoInput[]
+    deleteMany?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateManyWithoutEmbargoNestedInput = {
+    create?: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput> | EmployeeEmbargoConceptCreateWithoutEmbargoInput[] | EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput[]
+    connectOrCreate?: EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput | EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput[]
+    upsert?: EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput | EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput[]
+    createMany?: EmployeeEmbargoConceptCreateManyEmbargoInputEnvelope
+    set?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    disconnect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    delete?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    connect?: EmployeeEmbargoConceptWhereUniqueInput | EmployeeEmbargoConceptWhereUniqueInput[]
+    update?: EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutEmbargoInput | EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutEmbargoInput[]
+    updateMany?: EmployeeEmbargoConceptUpdateManyWithWhereWithoutEmbargoInput | EmployeeEmbargoConceptUpdateManyWithWhereWithoutEmbargoInput[]
+    deleteMany?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+  }
+
+  export type EmployeeEmbargoCreateNestedOneWithoutConceptsInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutConceptsInput, EmployeeEmbargoUncheckedCreateWithoutConceptsInput>
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutConceptsInput
+    connect?: EmployeeEmbargoWhereUniqueInput
+  }
+
+  export type ConceptCreateNestedOneWithoutEmbargoConceptsInput = {
+    create?: XOR<ConceptCreateWithoutEmbargoConceptsInput, ConceptUncheckedCreateWithoutEmbargoConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutEmbargoConceptsInput
+    connect?: ConceptWhereUniqueInput
+  }
+
+  export type EmployeeEmbargoUpdateOneRequiredWithoutConceptsNestedInput = {
+    create?: XOR<EmployeeEmbargoCreateWithoutConceptsInput, EmployeeEmbargoUncheckedCreateWithoutConceptsInput>
+    connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutConceptsInput
+    upsert?: EmployeeEmbargoUpsertWithoutConceptsInput
+    connect?: EmployeeEmbargoWhereUniqueInput
+    update?: XOR<XOR<EmployeeEmbargoUpdateToOneWithWhereWithoutConceptsInput, EmployeeEmbargoUpdateWithoutConceptsInput>, EmployeeEmbargoUncheckedUpdateWithoutConceptsInput>
+  }
+
+  export type ConceptUpdateOneRequiredWithoutEmbargoConceptsNestedInput = {
+    create?: XOR<ConceptCreateWithoutEmbargoConceptsInput, ConceptUncheckedCreateWithoutEmbargoConceptsInput>
+    connectOrCreate?: ConceptCreateOrConnectWithoutEmbargoConceptsInput
+    upsert?: ConceptUpsertWithoutEmbargoConceptsInput
+    connect?: ConceptWhereUniqueInput
+    update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutEmbargoConceptsInput, ConceptUpdateWithoutEmbargoConceptsInput>, ConceptUncheckedUpdateWithoutEmbargoConceptsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -45217,6 +53071,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -45266,6 +53121,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -45623,6 +53479,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutContractModalityInput = {
@@ -45672,6 +53529,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutContractModalityInput = {
@@ -45841,6 +53699,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutJobPositionInput = {
@@ -45890,6 +53749,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutJobPositionInput = {
@@ -46125,6 +53985,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutWorkShiftInput = {
@@ -46174,6 +54035,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutWorkShiftInput = {
@@ -46373,6 +54235,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutHealthInsuranceInput = {
@@ -46422,6 +54285,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutHealthInsuranceInput = {
@@ -46448,6 +54312,127 @@ export namespace Prisma {
   export type EmployeeUpdateManyWithWhereWithoutHealthInsuranceInput = {
     where: EmployeeScalarWhereInput
     data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutHealthInsuranceInput>
+  }
+
+  export type ConceptCreateWithoutUnionsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
+    assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptUncheckedCreateWithoutUnionsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    matrixId?: string | null
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptCreateOrConnectWithoutUnionsInput = {
+    where: ConceptWhereUniqueInput
+    create: XOR<ConceptCreateWithoutUnionsInput, ConceptUncheckedCreateWithoutUnionsInput>
+  }
+
+  export type UnionConceptCreateWithoutUnionInput = {
+    id?: string
+    createdAt?: Date | string
+    concept: ConceptCreateNestedOneWithoutUnionConceptsInput
+  }
+
+  export type UnionConceptUncheckedCreateWithoutUnionInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type UnionConceptCreateOrConnectWithoutUnionInput = {
+    where: UnionConceptWhereUniqueInput
+    create: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput>
+  }
+
+  export type UnionConceptCreateManyUnionInputEnvelope = {
+    data: UnionConceptCreateManyUnionInput | UnionConceptCreateManyUnionInput[]
+    skipDuplicates?: boolean
   }
 
   export type EmployeeCreateWithoutUnionInput = {
@@ -46497,6 +54482,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUnionInput = {
@@ -46546,6 +54532,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUnionInput = {
@@ -46556,6 +54543,137 @@ export namespace Prisma {
   export type EmployeeCreateManyUnionInputEnvelope = {
     data: EmployeeCreateManyUnionInput | EmployeeCreateManyUnionInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ConceptUpsertWithoutUnionsInput = {
+    update: XOR<ConceptUpdateWithoutUnionsInput, ConceptUncheckedUpdateWithoutUnionsInput>
+    create: XOR<ConceptCreateWithoutUnionsInput, ConceptUncheckedCreateWithoutUnionsInput>
+    where?: ConceptWhereInput
+  }
+
+  export type ConceptUpdateToOneWithWhereWithoutUnionsInput = {
+    where?: ConceptWhereInput
+    data: XOR<ConceptUpdateWithoutUnionsInput, ConceptUncheckedUpdateWithoutUnionsInput>
+  }
+
+  export type ConceptUpdateWithoutUnionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
+    assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptUncheckedUpdateWithoutUnionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
+  }
+
+  export type UnionConceptUpsertWithWhereUniqueWithoutUnionInput = {
+    where: UnionConceptWhereUniqueInput
+    update: XOR<UnionConceptUpdateWithoutUnionInput, UnionConceptUncheckedUpdateWithoutUnionInput>
+    create: XOR<UnionConceptCreateWithoutUnionInput, UnionConceptUncheckedCreateWithoutUnionInput>
+  }
+
+  export type UnionConceptUpdateWithWhereUniqueWithoutUnionInput = {
+    where: UnionConceptWhereUniqueInput
+    data: XOR<UnionConceptUpdateWithoutUnionInput, UnionConceptUncheckedUpdateWithoutUnionInput>
+  }
+
+  export type UnionConceptUpdateManyWithWhereWithoutUnionInput = {
+    where: UnionConceptScalarWhereInput
+    data: XOR<UnionConceptUpdateManyMutationInput, UnionConceptUncheckedUpdateManyWithoutUnionInput>
+  }
+
+  export type UnionConceptScalarWhereInput = {
+    AND?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
+    OR?: UnionConceptScalarWhereInput[]
+    NOT?: UnionConceptScalarWhereInput | UnionConceptScalarWhereInput[]
+    id?: StringFilter<"UnionConcept"> | string
+    unionId?: StringFilter<"UnionConcept"> | string
+    conceptId?: StringFilter<"UnionConcept"> | string
+    createdAt?: DateTimeFilter<"UnionConcept"> | Date | string
   }
 
   export type EmployeeUpsertWithWhereUniqueWithoutUnionInput = {
@@ -46572,6 +54690,391 @@ export namespace Prisma {
   export type EmployeeUpdateManyWithWhereWithoutUnionInput = {
     where: EmployeeScalarWhereInput
     data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutUnionInput>
+  }
+
+  export type UnionCreateWithoutUnionConceptsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutUnionsInput
+    employees?: EmployeeCreateNestedManyWithoutUnionInput
+  }
+
+  export type UnionUncheckedCreateWithoutUnionConceptsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    conceptId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeUncheckedCreateNestedManyWithoutUnionInput
+  }
+
+  export type UnionCreateOrConnectWithoutUnionConceptsInput = {
+    where: UnionWhereUniqueInput
+    create: XOR<UnionCreateWithoutUnionConceptsInput, UnionUncheckedCreateWithoutUnionConceptsInput>
+  }
+
+  export type ConceptCreateWithoutUnionConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
+    assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptUncheckedCreateWithoutUnionConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    matrixId?: string | null
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptCreateOrConnectWithoutUnionConceptsInput = {
+    where: ConceptWhereUniqueInput
+    create: XOR<ConceptCreateWithoutUnionConceptsInput, ConceptUncheckedCreateWithoutUnionConceptsInput>
+  }
+
+  export type UnionUpsertWithoutUnionConceptsInput = {
+    update: XOR<UnionUpdateWithoutUnionConceptsInput, UnionUncheckedUpdateWithoutUnionConceptsInput>
+    create: XOR<UnionCreateWithoutUnionConceptsInput, UnionUncheckedCreateWithoutUnionConceptsInput>
+    where?: UnionWhereInput
+  }
+
+  export type UnionUpdateToOneWithWhereWithoutUnionConceptsInput = {
+    where?: UnionWhereInput
+    data: XOR<UnionUpdateWithoutUnionConceptsInput, UnionUncheckedUpdateWithoutUnionConceptsInput>
+  }
+
+  export type UnionUpdateWithoutUnionConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutUnionsNestedInput
+    employees?: EmployeeUpdateManyWithoutUnionNestedInput
+  }
+
+  export type UnionUncheckedUpdateWithoutUnionConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUncheckedUpdateManyWithoutUnionNestedInput
+  }
+
+  export type ConceptUpsertWithoutUnionConceptsInput = {
+    update: XOR<ConceptUpdateWithoutUnionConceptsInput, ConceptUncheckedUpdateWithoutUnionConceptsInput>
+    create: XOR<ConceptCreateWithoutUnionConceptsInput, ConceptUncheckedCreateWithoutUnionConceptsInput>
+    where?: ConceptWhereInput
+  }
+
+  export type ConceptUpdateToOneWithWhereWithoutUnionConceptsInput = {
+    where?: ConceptWhereInput
+    data: XOR<ConceptUpdateWithoutUnionConceptsInput, ConceptUncheckedUpdateWithoutUnionConceptsInput>
+  }
+
+  export type ConceptUpdateWithoutUnionConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
+    assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptUncheckedUpdateWithoutUnionConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptCreateWithoutMutualsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
+    assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptUncheckedCreateWithoutMutualsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    matrixId?: string | null
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptCreateOrConnectWithoutMutualsInput = {
+    where: ConceptWhereUniqueInput
+    create: XOR<ConceptCreateWithoutMutualsInput, ConceptUncheckedCreateWithoutMutualsInput>
+  }
+
+  export type MutualConceptCreateWithoutMutualInput = {
+    id?: string
+    createdAt?: Date | string
+    concept: ConceptCreateNestedOneWithoutMutualConceptsInput
+  }
+
+  export type MutualConceptUncheckedCreateWithoutMutualInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type MutualConceptCreateOrConnectWithoutMutualInput = {
+    where: MutualConceptWhereUniqueInput
+    create: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput>
+  }
+
+  export type MutualConceptCreateManyMutualInputEnvelope = {
+    data: MutualConceptCreateManyMutualInput | MutualConceptCreateManyMutualInput[]
+    skipDuplicates?: boolean
   }
 
   export type EmployeeCreateWithoutMutualInput = {
@@ -46621,6 +55124,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutMutualInput = {
@@ -46670,6 +55174,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutMutualInput = {
@@ -46680,6 +55185,137 @@ export namespace Prisma {
   export type EmployeeCreateManyMutualInputEnvelope = {
     data: EmployeeCreateManyMutualInput | EmployeeCreateManyMutualInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ConceptUpsertWithoutMutualsInput = {
+    update: XOR<ConceptUpdateWithoutMutualsInput, ConceptUncheckedUpdateWithoutMutualsInput>
+    create: XOR<ConceptCreateWithoutMutualsInput, ConceptUncheckedCreateWithoutMutualsInput>
+    where?: ConceptWhereInput
+  }
+
+  export type ConceptUpdateToOneWithWhereWithoutMutualsInput = {
+    where?: ConceptWhereInput
+    data: XOR<ConceptUpdateWithoutMutualsInput, ConceptUncheckedUpdateWithoutMutualsInput>
+  }
+
+  export type ConceptUpdateWithoutMutualsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
+    assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptUncheckedUpdateWithoutMutualsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
+  }
+
+  export type MutualConceptUpsertWithWhereUniqueWithoutMutualInput = {
+    where: MutualConceptWhereUniqueInput
+    update: XOR<MutualConceptUpdateWithoutMutualInput, MutualConceptUncheckedUpdateWithoutMutualInput>
+    create: XOR<MutualConceptCreateWithoutMutualInput, MutualConceptUncheckedCreateWithoutMutualInput>
+  }
+
+  export type MutualConceptUpdateWithWhereUniqueWithoutMutualInput = {
+    where: MutualConceptWhereUniqueInput
+    data: XOR<MutualConceptUpdateWithoutMutualInput, MutualConceptUncheckedUpdateWithoutMutualInput>
+  }
+
+  export type MutualConceptUpdateManyWithWhereWithoutMutualInput = {
+    where: MutualConceptScalarWhereInput
+    data: XOR<MutualConceptUpdateManyMutationInput, MutualConceptUncheckedUpdateManyWithoutMutualInput>
+  }
+
+  export type MutualConceptScalarWhereInput = {
+    AND?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
+    OR?: MutualConceptScalarWhereInput[]
+    NOT?: MutualConceptScalarWhereInput | MutualConceptScalarWhereInput[]
+    id?: StringFilter<"MutualConcept"> | string
+    mutualId?: StringFilter<"MutualConcept"> | string
+    conceptId?: StringFilter<"MutualConcept"> | string
+    createdAt?: DateTimeFilter<"MutualConcept"> | Date | string
   }
 
   export type EmployeeUpsertWithWhereUniqueWithoutMutualInput = {
@@ -46696,6 +55332,270 @@ export namespace Prisma {
   export type EmployeeUpdateManyWithWhereWithoutMutualInput = {
     where: EmployeeScalarWhereInput
     data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutMutualInput>
+  }
+
+  export type MutualCreateWithoutMutualConceptsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutMutualsInput
+    employees?: EmployeeCreateNestedManyWithoutMutualInput
+  }
+
+  export type MutualUncheckedCreateWithoutMutualConceptsInput = {
+    id?: string
+    name: string
+    code?: string | null
+    conceptId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeUncheckedCreateNestedManyWithoutMutualInput
+  }
+
+  export type MutualCreateOrConnectWithoutMutualConceptsInput = {
+    where: MutualWhereUniqueInput
+    create: XOR<MutualCreateWithoutMutualConceptsInput, MutualUncheckedCreateWithoutMutualConceptsInput>
+  }
+
+  export type ConceptCreateWithoutMutualConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
+    assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptUncheckedCreateWithoutMutualConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    matrixId?: string | null
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptCreateOrConnectWithoutMutualConceptsInput = {
+    where: ConceptWhereUniqueInput
+    create: XOR<ConceptCreateWithoutMutualConceptsInput, ConceptUncheckedCreateWithoutMutualConceptsInput>
+  }
+
+  export type MutualUpsertWithoutMutualConceptsInput = {
+    update: XOR<MutualUpdateWithoutMutualConceptsInput, MutualUncheckedUpdateWithoutMutualConceptsInput>
+    create: XOR<MutualCreateWithoutMutualConceptsInput, MutualUncheckedCreateWithoutMutualConceptsInput>
+    where?: MutualWhereInput
+  }
+
+  export type MutualUpdateToOneWithWhereWithoutMutualConceptsInput = {
+    where?: MutualWhereInput
+    data: XOR<MutualUpdateWithoutMutualConceptsInput, MutualUncheckedUpdateWithoutMutualConceptsInput>
+  }
+
+  export type MutualUpdateWithoutMutualConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutMutualsNestedInput
+    employees?: EmployeeUpdateManyWithoutMutualNestedInput
+  }
+
+  export type MutualUncheckedUpdateWithoutMutualConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUncheckedUpdateManyWithoutMutualNestedInput
+  }
+
+  export type ConceptUpsertWithoutMutualConceptsInput = {
+    update: XOR<ConceptUpdateWithoutMutualConceptsInput, ConceptUncheckedUpdateWithoutMutualConceptsInput>
+    create: XOR<ConceptCreateWithoutMutualConceptsInput, ConceptUncheckedCreateWithoutMutualConceptsInput>
+    where?: ConceptWhereInput
+  }
+
+  export type ConceptUpdateToOneWithWhereWithoutMutualConceptsInput = {
+    where?: ConceptWhereInput
+    data: XOR<ConceptUpdateWithoutMutualConceptsInput, ConceptUncheckedUpdateWithoutMutualConceptsInput>
+  }
+
+  export type ConceptUpdateWithoutMutualConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
+    assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptUncheckedUpdateWithoutMutualConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
   export type DepartmentCreateWithoutEmployeesInput = {
@@ -46784,15 +55684,19 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutUnionsInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutUnionInput
   }
 
   export type UnionUncheckedCreateWithoutEmployeesInput = {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutUnionInput
   }
 
   export type UnionCreateOrConnectWithoutEmployeesInput = {
@@ -46807,15 +55711,19 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    concept?: ConceptCreateNestedOneWithoutMutualsInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutMutualInput
   }
 
   export type MutualUncheckedCreateWithoutEmployeesInput = {
     id?: string
     name: string
     code?: string | null
+    conceptId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutMutualInput
   }
 
   export type MutualCreateOrConnectWithoutEmployeesInput = {
@@ -47022,6 +55930,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47037,6 +55946,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47117,6 +56027,56 @@ export namespace Prisma {
 
   export type PeriodNoveltyCreateManyEmployeeInputEnvelope = {
     data: PeriodNoveltyCreateManyEmployeeInput | PeriodNoveltyCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeEmbargoCreateWithoutEmployeeInput = {
+    id?: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    concepts?: EmployeeEmbargoConceptCreateNestedManyWithoutEmbargoInput
+  }
+
+  export type EmployeeEmbargoUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    concepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutEmbargoInput
+  }
+
+  export type EmployeeEmbargoCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeEmbargoWhereUniqueInput
+    create: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeEmbargoCreateManyEmployeeInputEnvelope = {
+    data: EmployeeEmbargoCreateManyEmployeeInput | EmployeeEmbargoCreateManyEmployeeInput[]
     skipDuplicates?: boolean
   }
 
@@ -47235,15 +56195,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutUnionsNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutUnionNestedInput
   }
 
   export type UnionUncheckedUpdateWithoutEmployeesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutUnionNestedInput
   }
 
   export type MutualUpsertWithoutEmployeesInput = {
@@ -47264,15 +56228,19 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    concept?: ConceptUpdateOneWithoutMutualsNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutMutualNestedInput
   }
 
   export type MutualUncheckedUpdateWithoutEmployeesInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutMutualNestedInput
   }
 
   export type ArcaContractModalityUpsertWithoutEmployeesInput = {
@@ -47480,6 +56448,7 @@ export namespace Prisma {
     documentNumber?: StringFilter<"EmployeeRelative"> | string
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
+    isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -47549,6 +56518,45 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
   }
 
+  export type EmployeeEmbargoUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeEmbargoWhereUniqueInput
+    update: XOR<EmployeeEmbargoUpdateWithoutEmployeeInput, EmployeeEmbargoUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeEmbargoCreateWithoutEmployeeInput, EmployeeEmbargoUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeEmbargoWhereUniqueInput
+    data: XOR<EmployeeEmbargoUpdateWithoutEmployeeInput, EmployeeEmbargoUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeEmbargoScalarWhereInput
+    data: XOR<EmployeeEmbargoUpdateManyMutationInput, EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeEmbargoScalarWhereInput = {
+    AND?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
+    OR?: EmployeeEmbargoScalarWhereInput[]
+    NOT?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
+    id?: StringFilter<"EmployeeEmbargo"> | string
+    employeeId?: StringFilter<"EmployeeEmbargo"> | string
+    caseTitle?: StringFilter<"EmployeeEmbargo"> | string
+    dossierNumber?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    court?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    secretary?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    judicialDistrict?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    embargoType?: StringFilter<"EmployeeEmbargo"> | string
+    hasCap?: BoolFilter<"EmployeeEmbargo"> | boolean
+    totalAmount?: DecimalNullableFilter<"EmployeeEmbargo"> | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFilter<"EmployeeEmbargo"> | number
+    status?: StringFilter<"EmployeeEmbargo"> | string
+    startDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"EmployeeEmbargo"> | Date | string | null
+    notes?: StringNullableFilter<"EmployeeEmbargo"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
+  }
+
   export type EmployeeCreateWithoutSalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -47596,6 +56604,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSalaryScaleInput = {
@@ -47645,6 +56654,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSalaryScaleInput = {
@@ -47681,6 +56691,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47696,6 +56707,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -47774,6 +56786,7 @@ export namespace Prisma {
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutRelativesInput = {
@@ -47823,6 +56836,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutRelativesInput = {
@@ -47911,6 +56925,7 @@ export namespace Prisma {
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutRelativesInput = {
@@ -47960,6 +56975,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type KinshipUpsertWithoutRelativesInput = {
@@ -48094,6 +57110,136 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EmployeeEmbargoConceptCreateWithoutConceptInput = {
+    id?: string
+    createdAt?: Date | string
+    embargo: EmployeeEmbargoCreateNestedOneWithoutConceptsInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput = {
+    id?: string
+    embargoId: string
+    createdAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateOrConnectWithoutConceptInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    create: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type EmployeeEmbargoConceptCreateManyConceptInputEnvelope = {
+    data: EmployeeEmbargoConceptCreateManyConceptInput | EmployeeEmbargoConceptCreateManyConceptInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UnionCreateWithoutConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    unionConcepts?: UnionConceptCreateNestedManyWithoutUnionInput
+    employees?: EmployeeCreateNestedManyWithoutUnionInput
+  }
+
+  export type UnionUncheckedCreateWithoutConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutUnionInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutUnionInput
+  }
+
+  export type UnionCreateOrConnectWithoutConceptInput = {
+    where: UnionWhereUniqueInput
+    create: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput>
+  }
+
+  export type UnionCreateManyConceptInputEnvelope = {
+    data: UnionCreateManyConceptInput | UnionCreateManyConceptInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MutualCreateWithoutConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutMutualInput
+    employees?: EmployeeCreateNestedManyWithoutMutualInput
+  }
+
+  export type MutualUncheckedCreateWithoutConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutMutualInput
+    employees?: EmployeeUncheckedCreateNestedManyWithoutMutualInput
+  }
+
+  export type MutualCreateOrConnectWithoutConceptInput = {
+    where: MutualWhereUniqueInput
+    create: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput>
+  }
+
+  export type MutualCreateManyConceptInputEnvelope = {
+    data: MutualCreateManyConceptInput | MutualCreateManyConceptInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UnionConceptCreateWithoutConceptInput = {
+    id?: string
+    createdAt?: Date | string
+    union: UnionCreateNestedOneWithoutUnionConceptsInput
+  }
+
+  export type UnionConceptUncheckedCreateWithoutConceptInput = {
+    id?: string
+    unionId: string
+    createdAt?: Date | string
+  }
+
+  export type UnionConceptCreateOrConnectWithoutConceptInput = {
+    where: UnionConceptWhereUniqueInput
+    create: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type UnionConceptCreateManyConceptInputEnvelope = {
+    data: UnionConceptCreateManyConceptInput | UnionConceptCreateManyConceptInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MutualConceptCreateWithoutConceptInput = {
+    id?: string
+    createdAt?: Date | string
+    mutual: MutualCreateNestedOneWithoutMutualConceptsInput
+  }
+
+  export type MutualConceptUncheckedCreateWithoutConceptInput = {
+    id?: string
+    mutualId: string
+    createdAt?: Date | string
+  }
+
+  export type MutualConceptCreateOrConnectWithoutConceptInput = {
+    where: MutualConceptWhereUniqueInput
+    create: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type MutualConceptCreateManyConceptInputEnvelope = {
+    data: MutualConceptCreateManyConceptInput | MutualConceptCreateManyConceptInput[]
+    skipDuplicates?: boolean
+  }
+
   export type PayrollMatrixUpsertWithoutConceptsInput = {
     update: XOR<PayrollMatrixUpdateWithoutConceptsInput, PayrollMatrixUncheckedUpdateWithoutConceptsInput>
     create: XOR<PayrollMatrixCreateWithoutConceptsInput, PayrollMatrixUncheckedCreateWithoutConceptsInput>
@@ -48167,6 +57313,122 @@ export namespace Prisma {
     data: XOR<PeriodNoveltyUpdateManyMutationInput, PeriodNoveltyUncheckedUpdateManyWithoutConceptInput>
   }
 
+  export type EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutConceptInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    update: XOR<EmployeeEmbargoConceptUpdateWithoutConceptInput, EmployeeEmbargoConceptUncheckedUpdateWithoutConceptInput>
+    create: XOR<EmployeeEmbargoConceptCreateWithoutConceptInput, EmployeeEmbargoConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutConceptInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    data: XOR<EmployeeEmbargoConceptUpdateWithoutConceptInput, EmployeeEmbargoConceptUncheckedUpdateWithoutConceptInput>
+  }
+
+  export type EmployeeEmbargoConceptUpdateManyWithWhereWithoutConceptInput = {
+    where: EmployeeEmbargoConceptScalarWhereInput
+    data: XOR<EmployeeEmbargoConceptUpdateManyMutationInput, EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptInput>
+  }
+
+  export type EmployeeEmbargoConceptScalarWhereInput = {
+    AND?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+    OR?: EmployeeEmbargoConceptScalarWhereInput[]
+    NOT?: EmployeeEmbargoConceptScalarWhereInput | EmployeeEmbargoConceptScalarWhereInput[]
+    id?: StringFilter<"EmployeeEmbargoConcept"> | string
+    embargoId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    conceptId?: StringFilter<"EmployeeEmbargoConcept"> | string
+    createdAt?: DateTimeFilter<"EmployeeEmbargoConcept"> | Date | string
+  }
+
+  export type UnionUpsertWithWhereUniqueWithoutConceptInput = {
+    where: UnionWhereUniqueInput
+    update: XOR<UnionUpdateWithoutConceptInput, UnionUncheckedUpdateWithoutConceptInput>
+    create: XOR<UnionCreateWithoutConceptInput, UnionUncheckedCreateWithoutConceptInput>
+  }
+
+  export type UnionUpdateWithWhereUniqueWithoutConceptInput = {
+    where: UnionWhereUniqueInput
+    data: XOR<UnionUpdateWithoutConceptInput, UnionUncheckedUpdateWithoutConceptInput>
+  }
+
+  export type UnionUpdateManyWithWhereWithoutConceptInput = {
+    where: UnionScalarWhereInput
+    data: XOR<UnionUpdateManyMutationInput, UnionUncheckedUpdateManyWithoutConceptInput>
+  }
+
+  export type UnionScalarWhereInput = {
+    AND?: UnionScalarWhereInput | UnionScalarWhereInput[]
+    OR?: UnionScalarWhereInput[]
+    NOT?: UnionScalarWhereInput | UnionScalarWhereInput[]
+    id?: StringFilter<"Union"> | string
+    name?: StringFilter<"Union"> | string
+    code?: StringNullableFilter<"Union"> | string | null
+    conceptId?: StringNullableFilter<"Union"> | string | null
+    createdAt?: DateTimeFilter<"Union"> | Date | string
+    updatedAt?: DateTimeFilter<"Union"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Union"> | Date | string | null
+  }
+
+  export type MutualUpsertWithWhereUniqueWithoutConceptInput = {
+    where: MutualWhereUniqueInput
+    update: XOR<MutualUpdateWithoutConceptInput, MutualUncheckedUpdateWithoutConceptInput>
+    create: XOR<MutualCreateWithoutConceptInput, MutualUncheckedCreateWithoutConceptInput>
+  }
+
+  export type MutualUpdateWithWhereUniqueWithoutConceptInput = {
+    where: MutualWhereUniqueInput
+    data: XOR<MutualUpdateWithoutConceptInput, MutualUncheckedUpdateWithoutConceptInput>
+  }
+
+  export type MutualUpdateManyWithWhereWithoutConceptInput = {
+    where: MutualScalarWhereInput
+    data: XOR<MutualUpdateManyMutationInput, MutualUncheckedUpdateManyWithoutConceptInput>
+  }
+
+  export type MutualScalarWhereInput = {
+    AND?: MutualScalarWhereInput | MutualScalarWhereInput[]
+    OR?: MutualScalarWhereInput[]
+    NOT?: MutualScalarWhereInput | MutualScalarWhereInput[]
+    id?: StringFilter<"Mutual"> | string
+    name?: StringFilter<"Mutual"> | string
+    code?: StringNullableFilter<"Mutual"> | string | null
+    conceptId?: StringNullableFilter<"Mutual"> | string | null
+    createdAt?: DateTimeFilter<"Mutual"> | Date | string
+    updatedAt?: DateTimeFilter<"Mutual"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"Mutual"> | Date | string | null
+  }
+
+  export type UnionConceptUpsertWithWhereUniqueWithoutConceptInput = {
+    where: UnionConceptWhereUniqueInput
+    update: XOR<UnionConceptUpdateWithoutConceptInput, UnionConceptUncheckedUpdateWithoutConceptInput>
+    create: XOR<UnionConceptCreateWithoutConceptInput, UnionConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type UnionConceptUpdateWithWhereUniqueWithoutConceptInput = {
+    where: UnionConceptWhereUniqueInput
+    data: XOR<UnionConceptUpdateWithoutConceptInput, UnionConceptUncheckedUpdateWithoutConceptInput>
+  }
+
+  export type UnionConceptUpdateManyWithWhereWithoutConceptInput = {
+    where: UnionConceptScalarWhereInput
+    data: XOR<UnionConceptUpdateManyMutationInput, UnionConceptUncheckedUpdateManyWithoutConceptInput>
+  }
+
+  export type MutualConceptUpsertWithWhereUniqueWithoutConceptInput = {
+    where: MutualConceptWhereUniqueInput
+    update: XOR<MutualConceptUpdateWithoutConceptInput, MutualConceptUncheckedUpdateWithoutConceptInput>
+    create: XOR<MutualConceptCreateWithoutConceptInput, MutualConceptUncheckedCreateWithoutConceptInput>
+  }
+
+  export type MutualConceptUpdateWithWhereUniqueWithoutConceptInput = {
+    where: MutualConceptWhereUniqueInput
+    data: XOR<MutualConceptUpdateWithoutConceptInput, MutualConceptUncheckedUpdateWithoutConceptInput>
+  }
+
+  export type MutualConceptUpdateManyWithWhereWithoutConceptInput = {
+    where: MutualConceptScalarWhereInput
+    data: XOR<MutualConceptUpdateManyMutationInput, MutualConceptUncheckedUpdateManyWithoutConceptInput>
+  }
+
   export type EmployeeCreateWithoutAssignedConceptsInput = {
     id?: string
     fileNumber: string
@@ -48214,6 +57476,7 @@ export namespace Prisma {
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAssignedConceptsInput = {
@@ -48263,6 +57526,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAssignedConceptsInput = {
@@ -48304,11 +57568,17 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptUncheckedCreateWithoutAssignedEmployeesInput = {
@@ -48346,10 +57616,16 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptCreateOrConnectWithoutAssignedEmployeesInput = {
@@ -48415,6 +57691,7 @@ export namespace Prisma {
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAssignedConceptsInput = {
@@ -48464,6 +57741,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutAssignedEmployeesInput = {
@@ -48511,11 +57789,17 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptUncheckedUpdateWithoutAssignedEmployeesInput = {
@@ -48553,10 +57837,16 @@ export namespace Prisma {
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptCreateWithoutMatrixInput = {
@@ -48593,11 +57883,17 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptUncheckedCreateWithoutMatrixInput = {
@@ -48634,11 +57930,17 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptCreateOrConnectWithoutMatrixInput = {
@@ -48705,9 +58007,142 @@ export namespace Prisma {
     appliesDetraccion?: BoolFilter<"Concept"> | boolean
     isRepeatable?: BoolFilter<"Concept"> | boolean
     matrixId?: StringNullableFilter<"Concept"> | string | null
+    isEmbargo?: BoolFilter<"Concept"> | boolean
     createdAt?: DateTimeFilter<"Concept"> | Date | string
     updatedAt?: DateTimeFilter<"Concept"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Concept"> | Date | string | null
+  }
+
+  export type PayrollPeriodCreateWithoutFiscalPeriodInput = {
+    id?: string
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+  }
+
+  export type PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput = {
+    id?: string
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  }
+
+  export type PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput = {
+    where: PayrollPeriodWhereUniqueInput
+    create: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput>
+  }
+
+  export type PayrollPeriodCreateManyFiscalPeriodInputEnvelope = {
+    data: PayrollPeriodCreateManyFiscalPeriodInput | PayrollPeriodCreateManyFiscalPeriodInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PayrollPeriodUpsertWithWhereUniqueWithoutFiscalPeriodInput = {
+    where: PayrollPeriodWhereUniqueInput
+    update: XOR<PayrollPeriodUpdateWithoutFiscalPeriodInput, PayrollPeriodUncheckedUpdateWithoutFiscalPeriodInput>
+    create: XOR<PayrollPeriodCreateWithoutFiscalPeriodInput, PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput>
+  }
+
+  export type PayrollPeriodUpdateWithWhereUniqueWithoutFiscalPeriodInput = {
+    where: PayrollPeriodWhereUniqueInput
+    data: XOR<PayrollPeriodUpdateWithoutFiscalPeriodInput, PayrollPeriodUncheckedUpdateWithoutFiscalPeriodInput>
+  }
+
+  export type PayrollPeriodUpdateManyWithWhereWithoutFiscalPeriodInput = {
+    where: PayrollPeriodScalarWhereInput
+    data: XOR<PayrollPeriodUpdateManyMutationInput, PayrollPeriodUncheckedUpdateManyWithoutFiscalPeriodInput>
+  }
+
+  export type PayrollPeriodScalarWhereInput = {
+    AND?: PayrollPeriodScalarWhereInput | PayrollPeriodScalarWhereInput[]
+    OR?: PayrollPeriodScalarWhereInput[]
+    NOT?: PayrollPeriodScalarWhereInput | PayrollPeriodScalarWhereInput[]
+    id?: StringFilter<"PayrollPeriod"> | string
+    fiscalPeriodId?: StringNullableFilter<"PayrollPeriod"> | string | null
+    year?: IntFilter<"PayrollPeriod"> | number
+    month?: IntFilter<"PayrollPeriod"> | number
+    periodType?: StringFilter<"PayrollPeriod"> | string
+    settlementNumber?: IntFilter<"PayrollPeriod"> | number
+    settlementName?: StringNullableFilter<"PayrollPeriod"> | string | null
+    settlementType?: StringFilter<"PayrollPeriod"> | string
+    liquidationDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    paymentDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    paymentPlace?: StringNullableFilter<"PayrollPeriod"> | string | null
+    depositDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    depositBank?: StringNullableFilter<"PayrollPeriod"> | string | null
+    rubricDate?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    status?: StringFilter<"PayrollPeriod"> | string
+    totalGross?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
+    closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
+    updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
+  }
+
+  export type PayrollFiscalPeriodCreateWithoutSettlementsInput = {
+    id?: string
+    year: number
+    month: number
+    status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollFiscalPeriodUncheckedCreateWithoutSettlementsInput = {
+    id?: string
+    year: number
+    month: number
+    status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollFiscalPeriodCreateOrConnectWithoutSettlementsInput = {
+    where: PayrollFiscalPeriodWhereUniqueInput
+    create: XOR<PayrollFiscalPeriodCreateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedCreateWithoutSettlementsInput>
   }
 
   export type PaySlipCreateWithoutPayrollPeriodInput = {
@@ -48834,6 +58269,41 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PayrollFiscalPeriodUpsertWithoutSettlementsInput = {
+    update: XOR<PayrollFiscalPeriodUpdateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedUpdateWithoutSettlementsInput>
+    create: XOR<PayrollFiscalPeriodCreateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedCreateWithoutSettlementsInput>
+    where?: PayrollFiscalPeriodWhereInput
+  }
+
+  export type PayrollFiscalPeriodUpdateToOneWithWhereWithoutSettlementsInput = {
+    where?: PayrollFiscalPeriodWhereInput
+    data: XOR<PayrollFiscalPeriodUpdateWithoutSettlementsInput, PayrollFiscalPeriodUncheckedUpdateWithoutSettlementsInput>
+  }
+
+  export type PayrollFiscalPeriodUpdateWithoutSettlementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollFiscalPeriodUncheckedUpdateWithoutSettlementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PaySlipUpsertWithWhereUniqueWithoutPayrollPeriodInput = {
     where: PaySlipWhereUniqueInput
     update: XOR<PaySlipUpdateWithoutPayrollPeriodInput, PaySlipUncheckedUpdateWithoutPayrollPeriodInput>
@@ -48887,11 +58357,13 @@ export namespace Prisma {
     closedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateWithoutPaySlipsInput = {
     id?: string
+    fiscalPeriodId?: string | null
     year: number
     month: number
     periodType?: string
@@ -48966,6 +58438,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPaySlipsInput = {
@@ -49015,6 +58488,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPaySlipsInput = {
@@ -49079,12 +58553,16 @@ export namespace Prisma {
     baseImponible9?: Decimal | DecimalJsLike | number | string
     baseImponible10?: Decimal | DecimalJsLike | number | string
     detractionAmount?: Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: Decimal | DecimalJsLike | number | string
+    baseDifLrt?: Decimal | DecimalJsLike | number | string
     situationCode?: string
     conditionCode?: string
     activityCode?: string
     contractModality?: string
     hasSpouse?: boolean
     childrenCount?: number
+    adherentsCount?: number
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: Date | string
@@ -49104,12 +58582,16 @@ export namespace Prisma {
     baseImponible9?: Decimal | DecimalJsLike | number | string
     baseImponible10?: Decimal | DecimalJsLike | number | string
     detractionAmount?: Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: Decimal | DecimalJsLike | number | string
+    baseDifLrt?: Decimal | DecimalJsLike | number | string
     situationCode?: string
     conditionCode?: string
     activityCode?: string
     contractModality?: string
     hasSpouse?: boolean
     childrenCount?: number
+    adherentsCount?: number
     hasScvo?: boolean
     hasCct?: boolean
     createdAt?: Date | string
@@ -49153,11 +58635,13 @@ export namespace Prisma {
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateWithoutPaySlipsInput = {
     id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
     year?: IntFieldUpdateOperationsInput | number
     month?: IntFieldUpdateOperationsInput | number
     periodType?: StringFieldUpdateOperationsInput | string
@@ -49238,6 +58722,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPaySlipsInput = {
@@ -49287,6 +58772,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PaySlipItemUpsertWithWhereUniqueWithoutPaySlipInput = {
@@ -49350,12 +58836,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49375,12 +58865,16 @@ export namespace Prisma {
     baseImponible9?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     baseImponible10?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     detractionAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifAporteOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifContribOs?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    baseDifLrt?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     situationCode?: StringFieldUpdateOperationsInput | string
     conditionCode?: StringFieldUpdateOperationsInput | string
     activityCode?: StringFieldUpdateOperationsInput | string
     contractModality?: StringFieldUpdateOperationsInput | string
     hasSpouse?: BoolFieldUpdateOperationsInput | boolean
     childrenCount?: IntFieldUpdateOperationsInput | number
+    adherentsCount?: IntFieldUpdateOperationsInput | number
     hasScvo?: BoolFieldUpdateOperationsInput | boolean
     hasCct?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -49768,11 +59262,13 @@ export namespace Prisma {
     closedAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateWithoutPeriodNoveltiesInput = {
     id?: string
+    fiscalPeriodId?: string | null
     year: number
     month: number
     periodType?: string
@@ -49847,6 +59343,7 @@ export namespace Prisma {
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -49896,6 +59393,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -49937,11 +59435,17 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
     assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -49979,10 +59483,16 @@ export namespace Prisma {
     appliesDetraccion?: boolean
     isRepeatable?: boolean
     matrixId?: string | null
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
   }
 
   export type ConceptCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -50022,11 +59532,13 @@ export namespace Prisma {
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateWithoutPeriodNoveltiesInput = {
     id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
     year?: IntFieldUpdateOperationsInput | number
     month?: IntFieldUpdateOperationsInput | number
     periodType?: StringFieldUpdateOperationsInput | string
@@ -50107,6 +59619,7 @@ export namespace Prisma {
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -50156,6 +59669,7 @@ export namespace Prisma {
     paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutPeriodNoveltiesInput = {
@@ -50203,11 +59717,17 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
     assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -50245,10 +59765,570 @@ export namespace Prisma {
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
     matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
+  }
+
+  export type EmployeeCreateWithoutEmbargoesInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutEmbargoesInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutEmbargoesInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutEmbargoesInput, EmployeeUncheckedCreateWithoutEmbargoesInput>
+  }
+
+  export type EmployeeEmbargoConceptCreateWithoutEmbargoInput = {
+    id?: string
+    createdAt?: Date | string
+    concept: ConceptCreateNestedOneWithoutEmbargoConceptsInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateOrConnectWithoutEmbargoInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    create: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput>
+  }
+
+  export type EmployeeEmbargoConceptCreateManyEmbargoInputEnvelope = {
+    data: EmployeeEmbargoConceptCreateManyEmbargoInput | EmployeeEmbargoConceptCreateManyEmbargoInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeUpsertWithoutEmbargoesInput = {
+    update: XOR<EmployeeUpdateWithoutEmbargoesInput, EmployeeUncheckedUpdateWithoutEmbargoesInput>
+    create: XOR<EmployeeCreateWithoutEmbargoesInput, EmployeeUncheckedCreateWithoutEmbargoesInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutEmbargoesInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutEmbargoesInput, EmployeeUncheckedUpdateWithoutEmbargoesInput>
+  }
+
+  export type EmployeeUpdateWithoutEmbargoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutEmbargoesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    update: XOR<EmployeeEmbargoConceptUpdateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedUpdateWithoutEmbargoInput>
+    create: XOR<EmployeeEmbargoConceptCreateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedCreateWithoutEmbargoInput>
+  }
+
+  export type EmployeeEmbargoConceptUpdateWithWhereUniqueWithoutEmbargoInput = {
+    where: EmployeeEmbargoConceptWhereUniqueInput
+    data: XOR<EmployeeEmbargoConceptUpdateWithoutEmbargoInput, EmployeeEmbargoConceptUncheckedUpdateWithoutEmbargoInput>
+  }
+
+  export type EmployeeEmbargoConceptUpdateManyWithWhereWithoutEmbargoInput = {
+    where: EmployeeEmbargoConceptScalarWhereInput
+    data: XOR<EmployeeEmbargoConceptUpdateManyMutationInput, EmployeeEmbargoConceptUncheckedUpdateManyWithoutEmbargoInput>
+  }
+
+  export type EmployeeEmbargoCreateWithoutConceptsInput = {
+    id?: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutEmbargoesInput
+  }
+
+  export type EmployeeEmbargoUncheckedCreateWithoutConceptsInput = {
+    id?: string
+    employeeId: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeEmbargoCreateOrConnectWithoutConceptsInput = {
+    where: EmployeeEmbargoWhereUniqueInput
+    create: XOR<EmployeeEmbargoCreateWithoutConceptsInput, EmployeeEmbargoUncheckedCreateWithoutConceptsInput>
+  }
+
+  export type ConceptCreateWithoutEmbargoConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    matrix?: PayrollMatrixCreateNestedOneWithoutConceptsInput
+    assignedEmployees?: EmployeeConceptCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutConceptInput
+    unions?: UnionCreateNestedManyWithoutConceptInput
+    mutuals?: MutualCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptUncheckedCreateWithoutEmbargoConceptsInput = {
+    id?: string
+    code: string
+    name: string
+    type: string
+    calculationType?: string
+    periodType?: string | null
+    scope?: string
+    defaultValue?: Decimal | DecimalJsLike | number | string
+    noveltyDataType?: string
+    quantitySource?: string | null
+    calculationOrder?: number
+    formula?: string | null
+    matrixData?: string | null
+    isActive?: boolean
+    isPersistent?: boolean
+    arcaConceptCode?: string | null
+    appliesSipaAporte?: boolean
+    appliesSipaContrib?: boolean
+    appliesInssjypAporte?: boolean
+    appliesInssjypContrib?: boolean
+    appliesOsAporte?: boolean
+    appliesOsContrib?: boolean
+    appliesFsrAporte?: boolean
+    appliesFsrContrib?: boolean
+    appliesRenatreAporte?: boolean
+    appliesRenatreContrib?: boolean
+    appliesAaffContrib?: boolean
+    appliesFneContrib?: boolean
+    appliesLrtContrib?: boolean
+    appliesRegDifAporte?: boolean
+    appliesRegEspAporte?: boolean
+    appliesDetraccion?: boolean
+    isRepeatable?: boolean
+    matrixId?: string | null
+    isEmbargo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedCreateNestedManyWithoutConceptInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutConceptInput
+    unions?: UnionUncheckedCreateNestedManyWithoutConceptInput
+    mutuals?: MutualUncheckedCreateNestedManyWithoutConceptInput
+    unionConcepts?: UnionConceptUncheckedCreateNestedManyWithoutConceptInput
+    mutualConcepts?: MutualConceptUncheckedCreateNestedManyWithoutConceptInput
+  }
+
+  export type ConceptCreateOrConnectWithoutEmbargoConceptsInput = {
+    where: ConceptWhereUniqueInput
+    create: XOR<ConceptCreateWithoutEmbargoConceptsInput, ConceptUncheckedCreateWithoutEmbargoConceptsInput>
+  }
+
+  export type EmployeeEmbargoUpsertWithoutConceptsInput = {
+    update: XOR<EmployeeEmbargoUpdateWithoutConceptsInput, EmployeeEmbargoUncheckedUpdateWithoutConceptsInput>
+    create: XOR<EmployeeEmbargoCreateWithoutConceptsInput, EmployeeEmbargoUncheckedCreateWithoutConceptsInput>
+    where?: EmployeeEmbargoWhereInput
+  }
+
+  export type EmployeeEmbargoUpdateToOneWithWhereWithoutConceptsInput = {
+    where?: EmployeeEmbargoWhereInput
+    data: XOR<EmployeeEmbargoUpdateWithoutConceptsInput, EmployeeEmbargoUncheckedUpdateWithoutConceptsInput>
+  }
+
+  export type EmployeeEmbargoUpdateWithoutConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutEmbargoesNestedInput
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateWithoutConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConceptUpsertWithoutEmbargoConceptsInput = {
+    update: XOR<ConceptUpdateWithoutEmbargoConceptsInput, ConceptUncheckedUpdateWithoutEmbargoConceptsInput>
+    create: XOR<ConceptCreateWithoutEmbargoConceptsInput, ConceptUncheckedCreateWithoutEmbargoConceptsInput>
+    where?: ConceptWhereInput
+  }
+
+  export type ConceptUpdateToOneWithWhereWithoutEmbargoConceptsInput = {
+    where?: ConceptWhereInput
+    data: XOR<ConceptUpdateWithoutEmbargoConceptsInput, ConceptUncheckedUpdateWithoutEmbargoConceptsInput>
+  }
+
+  export type ConceptUpdateWithoutEmbargoConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    matrix?: PayrollMatrixUpdateOneWithoutConceptsNestedInput
+    assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
+  }
+
+  export type ConceptUncheckedUpdateWithoutEmbargoConceptsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    calculationType?: StringFieldUpdateOperationsInput | string
+    periodType?: NullableStringFieldUpdateOperationsInput | string | null
+    scope?: StringFieldUpdateOperationsInput | string
+    defaultValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    noveltyDataType?: StringFieldUpdateOperationsInput | string
+    quantitySource?: NullableStringFieldUpdateOperationsInput | string | null
+    calculationOrder?: IntFieldUpdateOperationsInput | number
+    formula?: NullableStringFieldUpdateOperationsInput | string | null
+    matrixData?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    isPersistent?: BoolFieldUpdateOperationsInput | boolean
+    arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    appliesSipaAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesSipaContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesInssjypContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesOsContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesFsrContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRenatreContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesAaffContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesFneContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesLrtContrib?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegDifAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
+    appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
+    isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    matrixId?: NullableStringFieldUpdateOperationsInput | string | null
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
   export type EmployeeCreateManyDepartmentInput = {
@@ -50343,6 +60423,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -50392,6 +60473,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -50747,6 +60829,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutContractModalityInput = {
@@ -50796,6 +60879,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutContractModalityInput = {
@@ -50935,6 +61019,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutJobPositionInput = {
@@ -50984,6 +61069,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutJobPositionInput = {
@@ -51187,6 +61273,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutWorkShiftInput = {
@@ -51236,6 +61323,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutWorkShiftInput = {
@@ -51375,6 +61463,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutHealthInsuranceInput = {
@@ -51424,6 +61513,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutHealthInsuranceInput = {
@@ -51471,6 +61561,12 @@ export namespace Prisma {
     bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type UnionConceptCreateManyUnionInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
   export type EmployeeCreateManyUnionInput = {
     id?: string
     fileNumber: string
@@ -51514,6 +61610,24 @@ export namespace Prisma {
     hourlyRate?: Decimal | DecimalJsLike | number | string
     cbu?: string | null
     bankAccountType?: string | null
+  }
+
+  export type UnionConceptUpdateWithoutUnionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concept?: ConceptUpdateOneRequiredWithoutUnionConceptsNestedInput
+  }
+
+  export type UnionConceptUncheckedUpdateWithoutUnionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UnionConceptUncheckedUpdateManyWithoutUnionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmployeeUpdateWithoutUnionInput = {
@@ -51563,6 +61677,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUnionInput = {
@@ -51612,6 +61727,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutUnionInput = {
@@ -51659,6 +61775,12 @@ export namespace Prisma {
     bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type MutualConceptCreateManyMutualInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
   export type EmployeeCreateManyMutualInput = {
     id?: string
     fileNumber: string
@@ -51702,6 +61824,24 @@ export namespace Prisma {
     hourlyRate?: Decimal | DecimalJsLike | number | string
     cbu?: string | null
     bankAccountType?: string | null
+  }
+
+  export type MutualConceptUpdateWithoutMutualInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concept?: ConceptUpdateOneRequiredWithoutMutualConceptsNestedInput
+  }
+
+  export type MutualConceptUncheckedUpdateWithoutMutualInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MutualConceptUncheckedUpdateManyWithoutMutualInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmployeeUpdateWithoutMutualInput = {
@@ -51751,6 +61891,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutMutualInput = {
@@ -51800,6 +61941,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutMutualInput = {
@@ -51895,6 +62037,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -51919,6 +62062,25 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeEmbargoCreateManyEmployeeInput = {
+    id?: string
+    caseTitle: string
+    dossierNumber?: string | null
+    court?: string | null
+    secretary?: string | null
+    judicialDistrict?: string | null
+    embargoType?: string
+    hasCap?: boolean
+    totalAmount?: Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: number
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -52053,6 +62215,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52068,6 +62231,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52082,6 +62246,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52154,6 +62319,65 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concepts?: EmployeeEmbargoConceptUpdateManyWithoutEmbargoNestedInput
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutEmbargoNestedInput
+  }
+
+  export type EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    caseTitle?: StringFieldUpdateOperationsInput | string
+    dossierNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    court?: NullableStringFieldUpdateOperationsInput | string | null
+    secretary?: NullableStringFieldUpdateOperationsInput | string | null
+    judicialDistrict?: NullableStringFieldUpdateOperationsInput | string | null
+    embargoType?: StringFieldUpdateOperationsInput | string
+    hasCap?: BoolFieldUpdateOperationsInput | boolean
+    totalAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    priorityOrder?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -52251,6 +62475,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSalaryScaleInput = {
@@ -52300,6 +62525,7 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutSalaryScaleInput = {
@@ -52356,6 +62582,7 @@ export namespace Prisma {
     documentNumber: string
     cuil?: string | null
     birthDate: Date | string
+    isAdherent?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -52369,6 +62596,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52384,6 +62612,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52398,6 +62627,7 @@ export namespace Prisma {
     documentNumber?: StringFieldUpdateOperationsInput | string
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isAdherent?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -52425,6 +62655,42 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateManyConceptInput = {
+    id?: string
+    embargoId: string
+    createdAt?: Date | string
+  }
+
+  export type UnionCreateManyConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type MutualCreateManyConceptInput = {
+    id?: string
+    name: string
+    code?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type UnionConceptCreateManyConceptInput = {
+    id?: string
+    unionId: string
+    createdAt?: Date | string
+  }
+
+  export type MutualConceptCreateManyConceptInput = {
+    id?: string
+    mutualId: string
+    createdAt?: Date | string
   }
 
   export type EmployeeConceptUpdateWithoutConceptInput = {
@@ -52499,6 +62765,122 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EmployeeEmbargoConceptUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    embargo?: EmployeeEmbargoUpdateOneRequiredWithoutConceptsNestedInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    embargoId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    embargoId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UnionUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    unionConcepts?: UnionConceptUpdateManyWithoutUnionNestedInput
+    employees?: EmployeeUpdateManyWithoutUnionNestedInput
+  }
+
+  export type UnionUncheckedUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutUnionNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutUnionNestedInput
+  }
+
+  export type UnionUncheckedUpdateManyWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type MutualUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mutualConcepts?: MutualConceptUpdateManyWithoutMutualNestedInput
+    employees?: EmployeeUpdateManyWithoutMutualNestedInput
+  }
+
+  export type MutualUncheckedUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutMutualNestedInput
+    employees?: EmployeeUncheckedUpdateManyWithoutMutualNestedInput
+  }
+
+  export type MutualUncheckedUpdateManyWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UnionConceptUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    union?: UnionUpdateOneRequiredWithoutUnionConceptsNestedInput
+  }
+
+  export type UnionConceptUncheckedUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    unionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UnionConceptUncheckedUpdateManyWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    unionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MutualConceptUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    mutual?: MutualUpdateOneRequiredWithoutMutualConceptsNestedInput
+  }
+
+  export type MutualConceptUncheckedUpdateWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mutualId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MutualConceptUncheckedUpdateManyWithoutConceptInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    mutualId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ConceptCreateManyMatrixInput = {
     id?: string
     code: string
@@ -52533,6 +62915,7 @@ export namespace Prisma {
     appliesRegEspAporte?: boolean
     appliesDetraccion?: boolean
     isRepeatable?: boolean
+    isEmbargo?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -52572,11 +62955,17 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedEmployees?: EmployeeConceptUpdateManyWithoutConceptNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUpdateManyWithoutConceptNestedInput
+    unions?: UnionUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptUncheckedUpdateWithoutMatrixInput = {
@@ -52613,11 +63002,17 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     assignedEmployees?: EmployeeConceptUncheckedUpdateManyWithoutConceptNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutConceptNestedInput
+    embargoConcepts?: EmployeeEmbargoConceptUncheckedUpdateManyWithoutConceptNestedInput
+    unions?: UnionUncheckedUpdateManyWithoutConceptNestedInput
+    mutuals?: MutualUncheckedUpdateManyWithoutConceptNestedInput
+    unionConcepts?: UnionConceptUncheckedUpdateManyWithoutConceptNestedInput
+    mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
   export type ConceptUncheckedUpdateManyWithoutMatrixInput = {
@@ -52654,9 +63049,106 @@ export namespace Prisma {
     appliesRegEspAporte?: BoolFieldUpdateOperationsInput | boolean
     appliesDetraccion?: BoolFieldUpdateOperationsInput | boolean
     isRepeatable?: BoolFieldUpdateOperationsInput | boolean
+    isEmbargo?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PayrollPeriodCreateManyFiscalPeriodInput = {
+    id?: string
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollPeriodUpdateWithoutFiscalPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+  }
+
+  export type PayrollPeriodUncheckedUpdateWithoutFiscalPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  }
+
+  export type PayrollPeriodUncheckedUpdateManyWithoutFiscalPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaySlipCreateManyPayrollPeriodInput = {
@@ -52929,6 +63421,30 @@ export namespace Prisma {
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptCreateManyEmbargoInput = {
+    id?: string
+    conceptId: string
+    createdAt?: Date | string
+  }
+
+  export type EmployeeEmbargoConceptUpdateWithoutEmbargoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    concept?: ConceptUpdateOneRequiredWithoutEmbargoConceptsNestedInput
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateWithoutEmbargoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeEmbargoConceptUncheckedUpdateManyWithoutEmbargoInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    conceptId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -989,10 +989,43 @@ class MatricesAndSettingsMethods {
         setVal('settings-anses-max', s.ansesMaxCap);
         setVal('settings-standard-weekly-hours', s.standardWeeklyHoursFormatted || this.formatDecimalToHours(s.standardWeeklyHours, '48:00'));
         setVal('settings-standard-monthly-hours', s.standardMonthlyHoursFormatted || this.formatDecimalToHours(s.standardMonthlyHours, '200:00'));
+        this.updateSussTotalBadge();
+        this.setupPayrollSettingsLiveListeners();
       }
     } catch (err) {
       console.warn('Error al cargar parámetros patronales:', err.message);
     }
+  }
+
+  updateSussTotalBadge() {
+    const sipa = parseFloat(document.getElementById('settings-sipa-rate')?.value) || 0;
+    const inssjyp = parseFloat(document.getElementById('settings-inssjyp-rate')?.value) || 0;
+    const fne = parseFloat(document.getElementById('settings-fne-rate')?.value) || 0;
+    const aaff = parseFloat(document.getElementById('settings-aaff-rate')?.value) || 0;
+    const os = parseFloat(document.getElementById('settings-os-rate')?.value) || 0;
+    const total = (sipa + inssjyp + fne + aaff + os).toFixed(2);
+    const badge = document.getElementById('settings-suss-total-badge');
+    if (badge) {
+      badge.textContent = `Total SUSS: ${total}%`;
+    }
+  }
+
+  setupPayrollSettingsLiveListeners() {
+    if (this._payrollSettingsListenersAttached) return;
+    this._payrollSettingsListenersAttached = true;
+    const rateIds = [
+      'settings-sipa-rate',
+      'settings-inssjyp-rate',
+      'settings-fne-rate',
+      'settings-aaff-rate',
+      'settings-os-rate',
+    ];
+    rateIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', () => this.updateSussTotalBadge());
+      }
+    });
   }
 
   async savePayrollSettings() {
@@ -1026,6 +1059,7 @@ class MatricesAndSettingsMethods {
         body: JSON.stringify(payload),
       });
 
+      this.updateSussTotalBadge();
       showToast('Parámetros y alícuotas patronales actualizados con éxito');
     } catch (err) {
       if (alertBox) {

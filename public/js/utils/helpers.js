@@ -336,6 +336,22 @@ function initSearchableSelect(selectOrId, customOptions = {}) {
 
   try {
     const ts = new window.TomSelect(el, config);
+    ts.on('dropdown_open', (dropdown) => {
+      if (!dropdown) return;
+      const scrollParent = dropdown.closest('.modal-body') || dropdown.closest('.tab-pane');
+      if (scrollParent) {
+        requestAnimationFrame(() => {
+          const dropdownRect = dropdown.getBoundingClientRect();
+          const parentRect = scrollParent.getBoundingClientRect();
+          if (dropdownRect.bottom > parentRect.bottom) {
+            scrollParent.scrollBy({
+              top: dropdownRect.bottom - parentRect.bottom + 24,
+              behavior: 'smooth',
+            });
+          }
+        });
+      }
+    });
     return ts;
   } catch (err) {
     console.warn('Error al inicializar TomSelect en', el, err);

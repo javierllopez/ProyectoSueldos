@@ -530,6 +530,7 @@ class SalaryScalesMethods {
       this.renderPayrollPeriodsTable(this.payrollPeriods);
       this.renderPayrollPeriodsPagination(res.meta || { total: this.payrollPeriods.length, page: 1, totalPages: 1 });
       this.syncPayrollPeriodSelectors();
+      await this.loadActiveFiscalPeriod?.();
     } catch (err) {
       showToast(err.message || 'Error al cargar períodos de liquidación', 'danger');
     } finally {

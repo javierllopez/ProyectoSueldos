@@ -3,6 +3,22 @@ import * as payrollController from './payroll.controller.js';
 import * as salaryScaleController from './salaryScale.controller.js';
 import { validate } from '../../middlewares/validate.js';
 import {
+  createFiscalPeriodSchema,
+  createPeriodSchema,
+  calculatePeriodSchema,
+  updateSettingsSchema,
+  createConceptSchema,
+  updateConceptSchema,
+  createPayrollMatrixSchema,
+  updatePayrollMatrixSchema,
+  createPayrollFixedValueSchema,
+  updatePayrollFixedValueSchema,
+  createPeriodNoveltySchema,
+  batchPeriodNoveltiesSchema,
+  calculateBatchSchema,
+  updatePaySlipWorkedDaysSchema,
+} from './payroll.validation.js';
+import {
   createSalaryScaleSchema,
   updateSalaryScaleSchema,
   massScaleIncreaseSchema,
@@ -17,53 +33,190 @@ const router = Router();
 router.use(authenticate);
 router.use(resolveTenant);
 
-// --- Períodos / Liquidaciones ---
+// --- Períodos Fiscales (Mensuales) ---
+router.get('/fiscal-periods', payrollController.listFiscalPeriods);
+router.get('/fiscal-periods/active', payrollController.getActiveFiscalPeriod);
+router.post(
+  '/fiscal-periods',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createFiscalPeriodSchema),
+  payrollController.createFiscalPeriod
+);
+router.post(
+  '/fiscal-periods/:id/close',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.closeFiscalPeriod
+);
+
+// --- Liquidaciones Individuales ---
 router.get('/periods', payrollController.getPeriods);
-router.post('/periods', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.createPeriod);
+router.post(
+  '/periods',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createPeriodSchema),
+  payrollController.createPeriod
+);
 router.get('/periods/:id', payrollController.getPeriodById);
-router.patch('/periods/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.updatePeriod);
-router.post('/periods/:id/close', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.closePeriod);
-router.delete('/periods/:id', requireCompanyRole('ADMIN'), payrollController.deletePeriod);
+router.patch(
+  '/periods/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createPeriodSchema.partial()),
+  payrollController.updatePeriod
+);
+router.post(
+  '/periods/:id/close',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.closePeriod
+);
+router.delete(
+  '/periods/:id',
+  requireCompanyRole('ADMIN'),
+  payrollController.deletePeriod
+);
+router.get('/periods/:id/summary', payrollController.getPeriodConceptsSummary);
 
 // --- Novedades de Período (No Persistentes) ---
 router.get('/periods/:id/novelties', payrollController.getPeriodNovelties);
-router.post('/periods/:id/novelties', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.upsertPeriodNovelty);
-router.delete('/periods/:id/novelties/:noveltyId', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.deletePeriodNovelty);
-router.post('/periods/:id/novelties/batch', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.batchPeriodNovelties);
+router.post(
+  '/periods/:id/novelties',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createPeriodNoveltySchema),
+  payrollController.upsertPeriodNovelty
+);
+router.delete(
+  '/periods/:id/novelties/:noveltyId',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deletePeriodNovelty
+);
+router.post(
+  '/periods/:id/novelties/batch',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(batchPeriodNoveltiesSchema),
+  payrollController.batchPeriodNovelties
+);
 
 // --- Cálculo de Nómina / Liquidación (General, Individual y Lote) ---
-router.post('/periods/:id/calculate', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.calculatePeriod);
-router.post('/periods/:id/calculate-single/:employeeId', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.calculateSingleEmployee);
-router.post('/periods/:id/calculate-batch', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.calculateBatchEmployees);
+router.post(
+  '/periods/:id/calculate',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(calculatePeriodSchema),
+  payrollController.calculatePeriod
+);
+router.post(
+  '/periods/:id/calculate-single/:employeeId',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.calculateSingleEmployee
+);
+router.post(
+  '/periods/:id/calculate-batch',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(calculateBatchSchema),
+  payrollController.calculateBatchEmployees
+);
 
 // --- Recibos de Sueldo ---
 router.get('/periods/:periodId/slips', payrollController.getPaySlips);
 router.get('/slips/:slipId', payrollController.getPaySlipDetail);
+router.patch(
+  '/slips/:slipId/worked-days',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updatePaySlipWorkedDaysSchema),
+  payrollController.updatePaySlipWorkedDays
+);
 
 // --- Parámetros y Alícuotas Patronales ---
 router.get('/settings', payrollController.getPayrollSettings);
-router.patch('/settings', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.updatePayrollSettings);
+router.patch(
+  '/settings',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateSettingsSchema),
+  payrollController.updatePayrollSettings
+);
 
 // --- Catálogo y Fórmulas de Conceptos ---
 router.get('/concepts', payrollController.getConcepts);
-router.post('/concepts', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.createConcept);
-router.post('/concepts/validate-formula', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.validateFormula);
-router.patch('/concepts/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.updateConcept);
-router.delete('/concepts/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.deleteConcept);
+router.post(
+  '/concepts',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createConceptSchema),
+  payrollController.createConcept
+);
+router.post(
+  '/concepts/validate-formula',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.validateFormula
+);
+router.put(
+  '/concepts/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateConceptSchema),
+  payrollController.updateConcept
+);
+router.patch(
+  '/concepts/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateConceptSchema),
+  payrollController.updateConcept
+);
+router.delete(
+  '/concepts/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deleteConcept
+);
 
 // --- Matrices de Liquidación (Lookup Matrices) ---
 router.get('/matrices', payrollController.getPayrollMatrices);
-router.post('/matrices', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.createPayrollMatrix);
+router.post(
+  '/matrices',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createPayrollMatrixSchema),
+  payrollController.createPayrollMatrix
+);
 router.get('/matrices/:id', payrollController.getPayrollMatrixById);
-router.patch('/matrices/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.updatePayrollMatrix);
-router.delete('/matrices/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.deletePayrollMatrix);
+router.put(
+  '/matrices/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updatePayrollMatrixSchema),
+  payrollController.updatePayrollMatrix
+);
+router.patch(
+  '/matrices/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updatePayrollMatrixSchema),
+  payrollController.updatePayrollMatrix
+);
+router.delete(
+  '/matrices/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deletePayrollMatrix
+);
 
 // --- Valores Globales Fijos (Constantes de Liquidación) ---
 router.get('/fixed-values', payrollController.getPayrollFixedValues);
-router.post('/fixed-values', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.createPayrollFixedValue);
+router.post(
+  '/fixed-values',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createPayrollFixedValueSchema),
+  payrollController.createPayrollFixedValue
+);
 router.get('/fixed-values/:id', payrollController.getPayrollFixedValueById);
-router.patch('/fixed-values/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.updatePayrollFixedValue);
-router.delete('/fixed-values/:id', requireCompanyRole('ADMIN', 'OPERATOR'), payrollController.deletePayrollFixedValue);
+router.put(
+  '/fixed-values/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updatePayrollFixedValueSchema),
+  payrollController.updatePayrollFixedValue
+);
+router.patch(
+  '/fixed-values/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updatePayrollFixedValueSchema),
+  payrollController.updatePayrollFixedValue
+);
+router.delete(
+  '/fixed-values/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deletePayrollFixedValue
+);
 
 // --- Nóminas y Escalas Salariales (Sueldos Básicos) ---
 router.get('/salary-scales', salaryScaleController.list);
@@ -74,6 +227,12 @@ router.post(
   salaryScaleController.create
 );
 router.get('/salary-scales/:id', salaryScaleController.getById);
+router.put(
+  '/salary-scales/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateSalaryScaleSchema),
+  salaryScaleController.update
+);
 router.patch(
   '/salary-scales/:id',
   requireCompanyRole('ADMIN', 'OPERATOR'),

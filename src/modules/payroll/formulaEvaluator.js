@@ -101,6 +101,32 @@ export function splitArguments(argsStr) {
   let inQuotes = false;
   let quoteChar = '';
 
+  // Determinar si existe ';' a nivel 0 (fuera de comillas y paréntesis)
+  let hasSemicolon = false;
+  for (let i = 0; i < argsStr.length; i++) {
+    const ch = argsStr[i];
+    if (ch === "'" || ch === '"') {
+      if (!inQuotes) {
+        inQuotes = true;
+        quoteChar = ch;
+      } else if (quoteChar === ch) {
+        inQuotes = false;
+        quoteChar = '';
+      }
+    } else if (!inQuotes) {
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0 && ch === ';') {
+        hasSemicolon = true;
+        break;
+      }
+    }
+  }
+
+  depth = 0;
+  inQuotes = false;
+  quoteChar = '';
+
   for (let i = 0; i < argsStr.length; i++) {
     const ch = argsStr[i];
 
@@ -119,15 +145,12 @@ export function splitArguments(argsStr) {
       else if (ch === ')') depth--;
     }
 
-    // Separar por ';' o por ',' respetando comas decimales entre dígitos (ej: 0,25)
-    const isDecimalComma =
-      ch === ',' &&
-      i > 0 &&
-      /\d/.test(argsStr[i - 1]) &&
-      i < argsStr.length - 1 &&
-      /\d/.test(argsStr[i + 1]);
+    // Si la función utiliza ';' como separador de argumentos, ';' es el delimitador
+    // y las comas pertenecen a la expresión del argumento (ej. decimales como 10,5).
+    // Si la función NO tiene ';', la coma ',' a nivel 0 es el separador de argumentos.
+    const isSeparator = hasSemicolon ? (ch === ';') : (ch === ',');
 
-    if (!inQuotes && (ch === ';' || (ch === ',' && !isDecimalComma)) && depth === 0) {
+    if (!inQuotes && isSeparator && depth === 0) {
       args.push(current.trim());
       current = '';
     } else {
@@ -517,6 +540,42 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
       return String(Number((context.TOTAL_REMUNERATIVO || 0) + (context.TOTAL_NO_REMUNERATIVO || 0)));
     }
 
+    // Variables de jornada y coeficiente de tiempo parcial
+    if (upperToken === 'COEFICIENTE_JORNADA' || upperToken === 'PORCENTAJE_JORNADA_DECIMAL' || upperToken === 'PROPORCION_JORNADA') {
+      if (context.COEFICIENTE_JORNADA !== undefined && context.COEFICIENTE_JORNADA !== null) {
+        return String(context.COEFICIENTE_JORNADA);
+      }
+      if (context.PORCENTAJE_JORNADA !== undefined && context.PORCENTAJE_JORNADA !== null) {
+        return String(Math.round((Number(context.PORCENTAJE_JORNADA) / 100) * 10000) / 10000);
+      }
+      return '1';
+    }
+    if (upperToken === 'PORCENTAJE_JORNADA' || upperToken === 'JORNADA_PORCENTAJE') {
+      if (context.PORCENTAJE_JORNADA !== undefined && context.PORCENTAJE_JORNADA !== null) {
+        return String(context.PORCENTAJE_JORNADA);
+      }
+      if (context.COEFICIENTE_JORNADA !== undefined && context.COEFICIENTE_JORNADA !== null) {
+        return String(Math.round(Number(context.COEFICIENTE_JORNADA) * 100 * 100) / 100);
+      }
+      return '100';
+    }
+    if (upperToken === 'ES_JORNADA_PARCIAL') {
+      return String(context.ES_JORNADA_PARCIAL !== undefined ? context.ES_JORNADA_PARCIAL : 0);
+    }
+
+    // Variables de adherentes de Obra Social (Ley 23.660)
+    if (upperToken === 'CANTIDAD_ADHERENTES' || upperToken === 'ADHERENTES' || upperToken === 'ADHERENTES_OS') {
+      return String(Number(context.CANTIDAD_ADHERENTES ?? context.ADHERENTES ?? context.ADHERENTES_OS ?? 0));
+    }
+
+    // Base de Obra Social y Base Completa proyectada
+    if (upperToken === 'BASE_OBRA_SOCIAL_COMPLETA') {
+      const bComp = Number(context.BASE_OBRA_SOCIAL_COMPLETA || 0);
+      const bOs = Number(context.BASE_OBRA_SOCIAL || 0);
+      const bRemun = Number(context.TOTAL_REMUNERATIVO || 0);
+      return String(bComp > 0 ? bComp : (bOs > 0 ? bOs : bRemun));
+    }
+
     // Conceptos directos en el contexto
     if (context[cleanToken] !== undefined) return String(context[cleanToken]);
     if (context[upperToken] !== undefined) return String(context[upperToken]);
@@ -548,11 +607,17 @@ const MAX_MATH_CACHE = 1000;
 export function evaluateSafeExpression(expr) {
   if (!expr || typeof expr !== 'string') return 0;
 
-  // Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
-  const normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
+  // 1. Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
+  let normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
 
-  // Sanitizar caracteres permitidos
-  const sanitized = normalized.replace(/[^0-9+\-*/().\s]/g, '').trim();
+  // 2. Normalizar operadores relacionales a sintaxis JavaScript válida
+  normalized = normalized.replace(/<>/g, '!=');
+  normalized = normalized.replace(/==/g, '=');
+  normalized = normalized.replace(/!=/g, '!==');
+  normalized = normalized.replace(/(?<![<>!=])=(?!=)/g, '===');
+
+  // 3. Sanitizar caracteres permitidos (dígitos, operadores aritméticos, relacionales y lógicos seguros)
+  const sanitized = normalized.replace(/[^0-9+\-*/().\s=!<>&|]/g, '').trim();
   if (!sanitized) return 0;
 
   try {
@@ -565,8 +630,9 @@ export function evaluateSafeExpression(expr) {
       fn = new Function(`'use strict'; return (${sanitized});`);
       mathFunctionCache.set(sanitized, fn);
     }
-    const val = fn();
-    return isNaN(val) || !isFinite(val) ? 0 : Number(val);
+    const raw = fn();
+    const val = (typeof raw === 'boolean') ? (raw ? 1 : 0) : Number(raw);
+    return isNaN(val) || !isFinite(val) ? 0 : val;
   } catch (err) {
     return 0;
   }
@@ -574,22 +640,108 @@ export function evaluateSafeExpression(expr) {
 
 export const evaluateBasicMath = evaluateSafeExpression;
 
-/**
- * Evalúa expresiones condicionales y comparaciones (>, <, >=, <=, ==, !=).
- */
-export function evaluateCondition(condStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
-  if (!condStr || typeof condStr !== 'string') return false;
+function cleanOperandString(str) {
+  if (str === null || str === undefined) return '';
+  let s = String(str).trim();
+  if ((s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'))) {
+    s = s.slice(1, -1).trim();
+  }
+  return s;
+}
+
+function isQuotedString(str) {
+  if (!str) return false;
+  const s = str.trim();
+  return (s.startsWith("'") && s.endsWith("'")) || (s.startsWith('"') && s.endsWith('"'));
+}
+
+function splitByLogicalOp(str, opRegex) {
+  const parts = [];
+  let depth = 0;
+  let inQuotes = false;
+  let quoteChar = '';
+  let lastIdx = 0;
+
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (ch === "'" || ch === '"') {
+      if (!inQuotes) {
+        inQuotes = true;
+        quoteChar = ch;
+      } else if (quoteChar === ch) {
+        inQuotes = false;
+      }
+    } else if (!inQuotes) {
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0) {
+        const remaining = str.substring(i);
+        const match = remaining.match(opRegex);
+        if (match && remaining.startsWith(match[0])) {
+          parts.push(str.substring(lastIdx, i).trim());
+          i += match[0].length - 1;
+          lastIdx = i + 1;
+        }
+      }
+    }
+  }
+  parts.push(str.substring(lastIdx).trim());
+  return parts.filter(Boolean);
+}
+
+function evaluateSingleComparison(rawCond, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
+  if (!rawCond || typeof rawCond !== 'string') return false;
+
+  let condStr = rawCond.trim();
+  // Quitar paréntesis redundantes envolventes: ej. "([A] >= 5)" -> "[A] >= 5"
+  while (condStr.startsWith('(') && condStr.endsWith(')')) {
+    let depth = 0;
+    let balanced = true;
+    for (let i = 0; i < condStr.length - 1; i++) {
+      if (condStr[i] === '(') depth++;
+      else if (condStr[i] === ')') depth--;
+      if (depth === 0) {
+        balanced = false;
+        break;
+      }
+    }
+    if (balanced) {
+      condStr = condStr.slice(1, -1).trim();
+    } else {
+      break;
+    }
+  }
 
   const operators = ['>=', '<=', '!=', '<>', '==', '=', '>', '<'];
   let opFound = null;
   let opIndex = -1;
 
-  for (const op of operators) {
-    const idx = condStr.indexOf(op);
-    if (idx !== -1) {
-      opFound = op;
-      opIndex = idx;
-      break;
+  // Buscar operador en nivel superior (profundidad 0 de paréntesis y fuera de comillas)
+  let depth = 0;
+  let inQuotes = false;
+  let quoteChar = '';
+  for (let i = 0; i < condStr.length; i++) {
+    const ch = condStr[i];
+    if (ch === "'" || ch === '"') {
+      if (!inQuotes) {
+        inQuotes = true;
+        quoteChar = ch;
+      } else if (quoteChar === ch) {
+        inQuotes = false;
+      }
+    } else if (!inQuotes) {
+      if (ch === '(') depth++;
+      else if (ch === ')') depth--;
+      else if (depth === 0) {
+        for (const op of operators) {
+          if (condStr.startsWith(op, i)) {
+            opFound = op;
+            opIndex = i;
+            break;
+          }
+        }
+        if (opFound) break;
+      }
     }
   }
 
@@ -602,7 +754,7 @@ export function evaluateCondition(condStr, context = {}, historicalData = {}, ma
   const leftStr = condStr.substring(0, opIndex).trim();
   const rightStr = condStr.substring(opIndex + opFound.length).trim();
 
-  // Si ambos lados representan fechas válidas (literales o variables)
+  // 1. Si ambos lados representan fechas válidas (literales o variables)
   const dLeft = resolveDateValue(leftStr, context);
   const dRight = resolveDateValue(rightStr, context);
   if (dLeft && dRight) {
@@ -621,6 +773,35 @@ export function evaluateCondition(condStr, context = {}, historicalData = {}, ma
     }
   }
 
+  // 2. Comparación de cadenas de texto (literales con comillas o variables textuales)
+  const isLeftQuoted = isQuotedString(leftStr);
+  const isRightQuoted = isQuotedString(rightStr);
+  const cleanLeft = cleanOperandString(leftStr);
+  const cleanRight = cleanOperandString(rightStr);
+
+  const isLeftNum = !isNaN(Number(cleanLeft)) && cleanLeft !== '';
+  const isRightNum = !isNaN(Number(cleanRight)) && cleanRight !== '';
+
+  if (isLeftQuoted || isRightQuoted || (!isLeftNum && !isRightNum && !leftStr.includes('+') && !leftStr.includes('-') && !leftStr.includes('*') && !leftStr.includes('/'))) {
+    const resLeft = substituteTokens(cleanLeft, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+    const resRight = substituteTokens(cleanRight, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
+    const s1 = cleanOperandString(resLeft).toUpperCase();
+    const s2 = cleanOperandString(resRight).toUpperCase();
+
+    switch (opFound) {
+      case '==':
+      case '=': return s1 === s2;
+      case '!=':
+      case '<>': return s1 !== s2;
+      case '>': return s1 > s2;
+      case '<': return s1 < s2;
+      case '>=': return s1 >= s2;
+      case '<=': return s1 <= s2;
+      default: return false;
+    }
+  }
+
+  // 3. Comparación numérica / matemática
   const leftVal = evaluateFormula(leftStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
   const rightVal = evaluateFormula(rightStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
 
@@ -635,6 +816,29 @@ export function evaluateCondition(condStr, context = {}, historicalData = {}, ma
     case '<': return leftVal < rightVal;
     default: return false;
   }
+}
+
+/**
+ * Evalúa expresiones condicionales y comparaciones (>, <, >=, <=, ==, !=, =),
+ * soportando operadores lógicos en castellano (Y, O) e inglés (AND, OR).
+ */
+export function evaluateCondition(condStr, context = {}, historicalData = {}, matrixResolver = null, fixedValueResolver = null, salaryScaleResolver = null) {
+  if (!condStr || typeof condStr !== 'string') return false;
+
+  // 1. Separar por operador 'O' (OR) en nivel superior
+  const orParts = splitByLogicalOp(condStr, /^(?:\s+(?:O|OR)\s+|\|\|)/i);
+  if (orParts.length > 1) {
+    return orParts.some((orBranch) => evaluateCondition(orBranch, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver));
+  }
+
+  // 2. Separar por operador 'Y' (AND) en nivel superior
+  const andParts = splitByLogicalOp(condStr, /^(?:\s+(?:Y|AND)\s+|&&)/i);
+  if (andParts.length > 1) {
+    return andParts.every((andBranch) => evaluateCondition(andBranch, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver));
+  }
+
+  // 3. Evaluar condición individual simple
+  return evaluateSingleComparison(condStr, context, historicalData, matrixResolver, fixedValueResolver, salaryScaleResolver);
 }
 
 /**

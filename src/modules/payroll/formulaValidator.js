@@ -12,11 +12,21 @@ export const SYSTEM_VARIABLES = new Set([
   'ANTIGUEDAD_MESES',
   'DIAS_TRABAJADOS',
   'HORAS_TRABAJADAS',
+  'CATEGORIA',
+  'PUESTO',
   'SUELDO_BASICO_EMPLEADO',
   'SUELDO_BASICO',
   'BASICO',
+  'ASIGNACION_ESTIMULO',
+  'ESTIMULO',
+  'HONORARIOS_DIRECTOR',
+  'HONORARIOS',
   'ES_JORNADA_PARCIAL',
   'PORCENTAJE_JORNADA',
+  'COEFICIENTE_JORNADA',
+  'PORCENTAJE_JORNADA_DECIMAL',
+  'PROPORCION_JORNADA',
+  'JORNADA_PORCENTAJE',
   'HORAS_SEMANALES',
   'HORAS_CONTRATO',
   'HORAS_MENSUALES',
@@ -29,6 +39,10 @@ export const SYSTEM_VARIABLES = new Set([
   'GRUPO_NOMINA',
   'MEJOR_REMUN',
   'BASE_OBRA_SOCIAL',
+  'BASE_OBRA_SOCIAL_COMPLETA',
+  'CANTIDAD_ADHERENTES',
+  'ADHERENTES',
+  'ADHERENTES_OS',
   'CANTIDAD',
   'HORAS',
   'PORCENTAJE',
@@ -173,12 +187,12 @@ export function validateConceptFormula({
     }
   }
 
-  if (/[+\-*/]\s*$/.test(cleanFormula)) {
-    errors.push('La fórmula no puede terminar en un operador aritmético (+, -, *, /).');
+  if (/[+\-*/=<>!]\s*$/.test(cleanFormula)) {
+    errors.push('La fórmula no puede terminar en un operador (+, -, *, /, =, <, >, !=).');
   }
 
-  if (/^\s*[*\/]/.test(cleanFormula)) {
-    errors.push('La fórmula no puede comenzar con un operador de multiplicación o división (*, /).');
+  if (/^\s*[*\/=<>!]/.test(cleanFormula)) {
+    errors.push('La fórmula no puede comenzar con un operador de multiplicación, división o comparación (*, /, =, <, >, !=).');
   }
 
   // Detección estática de división por cero literal
@@ -217,11 +231,11 @@ export function validateConceptFormula({
       } else if ((funcName === 'SI' || funcName === 'IF') && (args.length < 2 || args.length > 3)) {
         errors.push(`La función ${funcName} requiere 3 argumentos: ${funcName}(condicion, valor_verdadero, valor_falso).`);
       } else if (funcName === 'SI' || funcName === 'IF') {
-        // Verificar que la condición tenga un comparador
+        // Verificar que la condición tenga un comparador o variable lógica
         const cond = args[0];
-        const hasRelational = /[><!=]=?|<>/i.test(cond);
+        const hasRelational = /[><!=]=?|<>|\b(?:Y|O|AND|OR)\b/i.test(cond) || SYSTEM_VARIABLES.has(cond.replace(/[\[\]]/g, '').trim().toUpperCase());
         if (!hasRelational) {
-          warnings.push(`La condición en ${funcName}("${cond}") no parece contener un operador relacional (>, <, >=, <=, ==, !=).`);
+          warnings.push(`La condición en ${funcName}("${cond}") no parece contener un operador relacional (>, <, >=, <=, =, ==, !=) ni una variable lógica.`);
         }
       } else if (funcName === 'DIF_DIAS' && (args.length < 2 || args.length > 3)) {
         errors.push(`La función DIF_DIAS requiere 2 o 3 argumentos: DIF_DIAS(fecha_desde, fecha_hasta, [inclusivo]). Se recibieron ${args.length}.`);

@@ -106,6 +106,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`category_code\` VARCHAR(50) NULL,
     \`position_code\` VARCHAR(50) NULL,
     \`service_type_code\` VARCHAR(50) NULL,
+    \`activity_code\` VARCHAR(10) NULL DEFAULT '049',
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL,
@@ -168,6 +169,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`name\` VARCHAR(191) NOT NULL,
     \`code\` VARCHAR(191) NULL,
+    \`concept_id\` VARCHAR(191) NULL,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL
@@ -177,6 +179,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`name\` VARCHAR(191) NOT NULL,
     \`code\` VARCHAR(191) NULL,
+    \`concept_id\` VARCHAR(191) NULL,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL
@@ -226,6 +229,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`mutual_id\` VARCHAR(191) NULL,
     \`contract_modality_code\` VARCHAR(50) NULL,
     \`salary_scale_id\` VARCHAR(191) NULL,
+    \`work_shift_id\` VARCHAR(191) NULL,
     \`payroll_group\` VARCHAR(50) NOT NULL DEFAULT 'MENSUAL',
     \`is_part_time\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`weekly_working_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
@@ -245,12 +249,15 @@ const TENANT_TABLE_DEFINITIONS = [
     INDEX \`employees_mutual_id_idx\` (\`mutual_id\`),
     INDEX \`employees_contract_modality_code_idx\` (\`contract_modality_code\`),
     INDEX \`employees_salary_scale_id_idx\` (\`salary_scale_id\`),
+    INDEX \`employees_work_shift_id_idx\` (\`work_shift_id\`),
     CONSTRAINT \`employees_department_id_fkey\` FOREIGN KEY (\`department_id\`) REFERENCES \`departments\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_job_position_id_fkey\` FOREIGN KEY (\`job_position_id\`) REFERENCES \`job_positions\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_health_insurance_id_fkey\` FOREIGN KEY (\`health_insurance_id\`) REFERENCES \`health_insurances\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_union_id_fkey\` FOREIGN KEY (\`union_id\`) REFERENCES \`unions\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_mutual_id_fkey\` FOREIGN KEY (\`mutual_id\`) REFERENCES \`mutuals\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT \`employees_contract_modality_code_fkey\` FOREIGN KEY (\`contract_modality_code\`) REFERENCES \`arca_contract_modalities\`(\`code\`) ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT \`employees_contract_modality_code_fkey\` FOREIGN KEY (\`contract_modality_code\`) REFERENCES \`arca_contract_modalities\`(\`code\`) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT \`employees_salary_scale_id_fkey\` FOREIGN KEY (\`salary_scale_id\` ) REFERENCES \`salary_scales\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT \`employees_work_shift_id_fkey\` FOREIGN KEY (\`work_shift_id\`) REFERENCES \`work_shifts\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
   `CREATE TABLE IF NOT EXISTS \`payroll_matrices\` (
@@ -268,6 +275,19 @@ const TENANT_TABLE_DEFINITIONS = [
     \`deleted_at\` DATETIME(3) NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
+  `CREATE TABLE IF NOT EXISTS \`payroll_fixed_values\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`code\` VARCHAR(50) NOT NULL UNIQUE,
+    \`name\` VARCHAR(150) NOT NULL,
+    \`description\` VARCHAR(255) NULL,
+    \`value\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`unit\` VARCHAR(20) NOT NULL DEFAULT '$',
+    \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
   `CREATE TABLE IF NOT EXISTS \`concepts\` (
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`code\` VARCHAR(191) NOT NULL UNIQUE,
@@ -278,6 +298,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`scope\` VARCHAR(20) NOT NULL DEFAULT 'GENERAL',
     \`default_value\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`novelty_data_type\` VARCHAR(20) NOT NULL DEFAULT 'CANTIDAD',
+    \`quantity_source\` VARCHAR(255) NULL DEFAULT 'AUTO',
     \`calculation_order\` INT NOT NULL DEFAULT 100,
     \`formula\` TEXT NULL,
     \`matrix_data\` LONGTEXT NULL,
@@ -285,6 +306,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`is_system\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
     \`is_persistent\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`is_embargo\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`arca_concept_code\` VARCHAR(10) NULL,
     \`applies_sipa_aporte\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`applies_sipa_contrib\` BOOLEAN NOT NULL DEFAULT FALSE,
@@ -308,14 +330,29 @@ const TENANT_TABLE_DEFINITIONS = [
     \`deleted_at\` DATETIME(3) NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
+  `CREATE TABLE IF NOT EXISTS \`payroll_fiscal_periods\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`year\` INT NOT NULL,
+    \`month\` INT NOT NULL,
+    \`status\` VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+    \`closed_at\` DATETIME(3) NULL,
+    \`closed_by\` VARCHAR(191) NULL,
+    \`notes\` VARCHAR(255) NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    UNIQUE KEY \`uniq_fiscal_period_year_month\` (\`year\`, \`month\`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
   `CREATE TABLE IF NOT EXISTS \`payroll_periods\` (
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`fiscal_period_id\` VARCHAR(191) NULL,
     \`year\` INT NOT NULL,
     \`month\` INT NOT NULL,
     \`period_type\` VARCHAR(191) NOT NULL DEFAULT 'MONTHLY',
     \`settlement_number\` INT NOT NULL DEFAULT 1,
     \`settlement_name\` VARCHAR(191) NULL,
     \`settlement_type\` VARCHAR(5) NOT NULL DEFAULT 'M',
+    \`liquidation_date\` DATETIME(3) NULL,
     \`payment_date\` DATETIME(3) NULL,
     \`payment_place\` VARCHAR(100) NULL,
     \`deposit_date\` DATETIME(3) NULL,
@@ -328,7 +365,9 @@ const TENANT_TABLE_DEFINITIONS = [
     \`closed_at\` DATETIME(3) NULL,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    UNIQUE KEY \`payroll_periods_unique_settlement\` (\`year\`, \`month\`, \`period_type\`, \`settlement_number\`)
+    INDEX \`payroll_periods_fiscal_period_id_idx\` (\`fiscal_period_id\`),
+    UNIQUE KEY \`payroll_periods_unique_settlement\` (\`year\`, \`month\`, \`period_type\`, \`settlement_number\`),
+    CONSTRAINT \`payroll_periods_fiscal_period_id_fkey\` FOREIGN KEY (\`fiscal_period_id\`) REFERENCES \`payroll_fiscal_periods\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
   `CREATE TABLE IF NOT EXISTS \`pay_slips\` (
@@ -410,12 +449,16 @@ const TENANT_TABLE_DEFINITIONS = [
     \`base_imponible_9\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`base_imponible_10\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`detraction_amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`base_dif_aporte_os\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`base_dif_contrib_os\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`base_dif_lrt\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`situation_code\` VARCHAR(5) NOT NULL DEFAULT '01',
     \`condition_code\` VARCHAR(5) NOT NULL DEFAULT '01',
     \`activity_code\` VARCHAR(10) NOT NULL DEFAULT '000',
     \`contract_modality\` VARCHAR(10) NOT NULL DEFAULT '001',
     \`has_spouse\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`children_count\` INT NOT NULL DEFAULT 0,
+    \`adherents_count\` INT NOT NULL DEFAULT 0,
     \`has_scvo\` BOOLEAN NOT NULL DEFAULT TRUE,
     \`has_cct\` BOOLEAN NOT NULL DEFAULT TRUE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -500,6 +543,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`document_number\` VARCHAR(20) NOT NULL,
     \`cuil\` VARCHAR(11) NULL,
     \`birth_date\` DATETIME(3) NOT NULL,
+    \`is_adherent\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     \`deleted_at\` DATETIME(3) NULL,
@@ -507,6 +551,65 @@ const TENANT_TABLE_DEFINITIONS = [
     INDEX \`employee_relatives_kinship_id_idx\` (\`kinship_id\`),
     CONSTRAINT \`employee_relatives_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT \`employee_relatives_kinship_id_fkey\` FOREIGN KEY (\`kinship_id\`) REFERENCES \`kinships\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`employee_embargoes\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`employee_id\` VARCHAR(191) NOT NULL,
+    \`case_title\` VARCHAR(255) NOT NULL,
+    \`dossier_number\` VARCHAR(100) NULL,
+    \`court\` VARCHAR(150) NULL,
+    \`secretary\` VARCHAR(150) NULL,
+    \`judicial_district\` VARCHAR(150) NULL,
+    \`embargo_type\` VARCHAR(50) NOT NULL DEFAULT 'COMERCIAL',
+    \`has_cap\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`total_amount\` DECIMAL(12, 2) NULL,
+    \`priority_order\` INT NOT NULL DEFAULT 1,
+    \`status\` VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
+    \`start_date\` DATETIME(3) NULL,
+    \`end_date\` DATETIME(3) NULL,
+    \`notes\` TEXT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    INDEX \`employee_embargoes_employee_id_idx\` (\`employee_id\`),
+    INDEX \`employee_embargoes_status_idx\` (\`status\`),
+    CONSTRAINT \`employee_embargoes_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`employee_embargo_concepts\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`embargo_id\` VARCHAR(191) NOT NULL,
+    \`concept_id\` VARCHAR(191) NOT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    UNIQUE KEY \`uniq_embargo_concept\` (\`embargo_id\`, \`concept_id\`),
+    INDEX \`employee_embargo_concepts_embargo_id_idx\` (\`embargo_id\`),
+    INDEX \`employee_embargo_concepts_concept_id_idx\` (\`concept_id\`),
+    CONSTRAINT \`employee_embargo_concepts_embargo_id_fkey\` FOREIGN KEY (\`embargo_id\`) REFERENCES \`employee_embargoes\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`employee_embargo_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`union_concepts\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`union_id\` VARCHAR(191) NOT NULL,
+    \`concept_id\` VARCHAR(191) NOT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    UNIQUE KEY \`uniq_union_concept\` (\`union_id\`, \`concept_id\`),
+    INDEX \`union_concepts_union_id_idx\` (\`union_id\`),
+    INDEX \`union_concepts_concept_id_idx\` (\`concept_id\`),
+    CONSTRAINT \`union_concepts_union_id_fkey\` FOREIGN KEY (\`union_id\`) REFERENCES \`unions\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`union_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`mutual_concepts\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`mutual_id\` VARCHAR(191) NOT NULL,
+    \`concept_id\` VARCHAR(191) NOT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    UNIQUE KEY \`uniq_mutual_concept\` (\`mutual_id\`, \`concept_id\`),
+    INDEX \`mutual_concepts_mutual_id_idx\` (\`mutual_id\`),
+    INDEX \`mutual_concepts_concept_id_idx\` (\`concept_id\`),
+    CONSTRAINT \`mutual_concepts_mutual_id_fkey\` FOREIGN KEY (\`mutual_id\`) REFERENCES \`mutuals\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`mutual_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 ];
 
@@ -524,10 +627,21 @@ export const DEFAULT_KINSHIPS = [
   { code: 'TUTELA', name: 'Menor bajo tutela o guarda legal' },
 ];
 
+let cachedHealthInsurances = null;
+let cachedArcaServiceTypes = null;
+let cachedArcaPositions = null;
+let cachedArcaActivities = null;
+let cachedArcaCcts = null;
+let cachedArcaCategories = null;
+let cachedArcaCctCategoryPositions = null;
+let cachedArcaContractModalities = null;
+
 export function getHealthInsurancesData() {
+  if (cachedHealthInsurances) return cachedHealthInsurances;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/healthInsurances.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/healthInsurances.json'), 'utf-8');
+    cachedHealthInsurances = JSON.parse(raw);
+    return cachedHealthInsurances;
   } catch (err) {
     console.warn('Aviso: no se pudo leer healthInsurances.json:', err.message);
     return [];
@@ -545,9 +659,11 @@ export const DEFAULT_HEALTH_INSURANCES = getHealthInsurancesData();
  * Funciones auxiliares para cargar catálogos oficiales de ARCA (Simplificación Registral).
  */
 export function getArcaServiceTypesData() {
+  if (cachedArcaServiceTypes) return cachedArcaServiceTypes;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaServiceTypes.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaServiceTypes.json'), 'utf-8');
+    cachedArcaServiceTypes = JSON.parse(raw);
+    return cachedArcaServiceTypes;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaServiceTypes.json:', err.message);
     return [];
@@ -555,9 +671,11 @@ export function getArcaServiceTypesData() {
 }
 
 export function getArcaPositionsData() {
+  if (cachedArcaPositions) return cachedArcaPositions;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaPositions.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaPositions.json'), 'utf-8');
+    cachedArcaPositions = JSON.parse(raw);
+    return cachedArcaPositions;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaPositions.json:', err.message);
     return [];
@@ -565,9 +683,11 @@ export function getArcaPositionsData() {
 }
 
 export function getArcaActivitiesData() {
+  if (cachedArcaActivities) return cachedArcaActivities;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaActivities.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaActivities.json'), 'utf-8');
+    cachedArcaActivities = JSON.parse(raw);
+    return cachedArcaActivities;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaActivities.json:', err.message);
     return [];
@@ -575,9 +695,11 @@ export function getArcaActivitiesData() {
 }
 
 export function getArcaCctsData() {
+  if (cachedArcaCcts) return cachedArcaCcts;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaCcts.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaCcts.json'), 'utf-8');
+    cachedArcaCcts = JSON.parse(raw);
+    return cachedArcaCcts;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaCcts.json:', err.message);
     return [];
@@ -585,9 +707,11 @@ export function getArcaCctsData() {
 }
 
 export function getArcaCategoriesData() {
+  if (cachedArcaCategories) return cachedArcaCategories;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaCategories.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaCategories.json'), 'utf-8');
+    cachedArcaCategories = JSON.parse(raw);
+    return cachedArcaCategories;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaCategories.json:', err.message);
     return [];
@@ -595,9 +719,11 @@ export function getArcaCategoriesData() {
 }
 
 export function getArcaCctCategoryPositionsData() {
+  if (cachedArcaCctCategoryPositions) return cachedArcaCctCategoryPositions;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaCctCategoryPositions.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaCctCategoryPositions.json'), 'utf-8');
+    cachedArcaCctCategoryPositions = JSON.parse(raw);
+    return cachedArcaCctCategoryPositions;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaCctCategoryPositions.json:', err.message);
     return [];
@@ -605,9 +731,11 @@ export function getArcaCctCategoryPositionsData() {
 }
 
 export function getArcaContractModalitiesData() {
+  if (cachedArcaContractModalities) return cachedArcaContractModalities;
   try {
-    const raw = fs.readFileSync(path.resolve('src/data/arcaContractModalities.json'), 'utf-8');
-    return JSON.parse(raw);
+    const raw = fs.readFileSync(path.join(import.meta.dirname, '../data/arcaContractModalities.json'), 'utf-8');
+    cachedArcaContractModalities = JSON.parse(raw);
+    return cachedArcaContractModalities;
   } catch (err) {
     console.warn('Aviso: no se pudo leer arcaContractModalities.json:', err.message);
     return [];
@@ -638,94 +766,145 @@ export async function provisionTenantDatabase({ cuit, name, activityCode = null,
     dbPort,
   });
 
-  // 3. Crear las tablas operativas de la empresa
-  for (const tableSql of TENANT_TABLE_DEFINITIONS) {
-    await tenantClient.$executeRawUnsafe(tableSql);
-  }
+  try {
+    // 3. Crear las tablas operativas de la empresa
+    for (const tableSql of TENANT_TABLE_DEFINITIONS) {
+      await tenantClient.$executeRawUnsafe(tableSql);
+    }
 
-  // 4. Registrar datos iniciales de la empresa (CompanyProfile)
-  await tenantClient.companyProfile.create({
-    data: {
+    // 4. Registrar datos iniciales de la empresa (CompanyProfile)
+    await tenantClient.companyProfile.create({
+      data: {
+        id: crypto.randomUUID(),
+        legalName: name,
+        cuit: cleanCuit,
+        activityCode: activityCode || null,
+        activityDescription: activityDescription || null,
+      },
+    });
+
+    // 5. Cargar conceptos básicos iniciales de sueldo
+    for (const concept of DEFAULT_CONCEPTS) {
+      await tenantClient.concept.create({
+        data: {
+          id: crypto.randomUUID(),
+          ...concept,
+        },
+      });
+    }
+
+    // 6. Cargar Obras Sociales predeterminadas
+    const healthInsurances = getHealthInsurancesData();
+    const hiBatch = healthInsurances.map((hi) => ({
       id: crypto.randomUUID(),
-      legalName: name,
-      cuit: cleanCuit,
-      activityCode: activityCode || null,
-      activityDescription: activityDescription || null,
-    },
-  });
+      code: hi.code,
+      name: hi.name,
+    }));
+    if (hiBatch.length > 0) {
+      await tenantClient.healthInsurance.createMany({ data: hiBatch });
+    }
 
-  // 5. Cargar conceptos básicos iniciales de sueldo
-  for (const concept of DEFAULT_CONCEPTS) {
-    await tenantClient.concept.create({
+    // 7. Cargar Parentescos predeterminados
+    for (const kin of DEFAULT_KINSHIPS) {
+      await tenantClient.kinship.create({
+        data: {
+          id: crypto.randomUUID(),
+          ...kin,
+        },
+      });
+    }
+
+    // 8. Cargar catálogos iniciales de ARCA (Simplificación Registral)
+    const ccts = getArcaCctsData();
+    if (ccts.length > 0) {
+      await tenantClient.arcaCct.createMany({ data: ccts, skipDuplicates: true });
+    }
+
+    const categories = getArcaCategoriesData();
+    if (categories.length > 0) {
+      for (let i = 0; i < categories.length; i += 1000) {
+        const chunk = categories.slice(i, i + 1000);
+        await tenantClient.arcaCategory.createMany({ data: chunk, skipDuplicates: true });
+      }
+    }
+
+    const positions = getArcaPositionsData();
+    if (positions.length > 0) {
+      await tenantClient.arcaPosition.createMany({ data: positions, skipDuplicates: true });
+    }
+
+    const serviceTypes = getArcaServiceTypesData();
+    if (serviceTypes.length > 0) {
+      await tenantClient.arcaServiceType.createMany({ data: serviceTypes, skipDuplicates: true });
+    }
+
+    const cctCategoryPositions = getArcaCctCategoryPositionsData();
+    if (cctCategoryPositions.length > 0) {
+      for (let i = 0; i < cctCategoryPositions.length; i += 1000) {
+        const chunk = cctCategoryPositions.slice(i, i + 1000).map(r => ({
+          id: crypto.randomUUID(),
+          ...r
+        }));
+        await tenantClient.arcaCctCategoryPosition.createMany({ data: chunk, skipDuplicates: true });
+      }
+    }
+
+    const contractModalities = getArcaContractModalitiesData();
+    if (contractModalities.length > 0) {
+      await tenantClient.arcaContractModality.createMany({ data: contractModalities, skipDuplicates: true });
+    }
+
+    // 9. Cargar Parámetros Patronales por Defecto
+    await tenantClient.payrollSetting.create({
       data: {
         id: crypto.randomUUID(),
-        ...concept,
+        employerType: 'SERVICIOS_COMERCIO',
+        sipaRate: 10.77,
+        inssjypRate: 1.58,
+        osRate: 6.00,
+        fneRate: 0.94,
+        aaffRate: 4.70,
+        artRate: 3.50,
+        artFixedFee: 850.00,
+        scvoFee: 650.00,
+        detractionBase: 7003.68,
+        ansesMinCap: 82287.12,
+        ansesMaxCap: 2674292.72,
+        standardWeeklyHours: 48.00,
+        standardMonthlyHours: 200.00,
       },
     });
-  }
 
-  // 6. Cargar Obras Sociales predeterminadas
-  const healthInsurances = getHealthInsurancesData();
-  const hiBatch = healthInsurances.map((hi) => ({
-    id: crypto.randomUUID(),
-    code: hi.code,
-    name: hi.name,
-  }));
-  if (hiBatch.length > 0) {
-    await tenantClient.healthInsurance.createMany({ data: hiBatch });
-  }
-
-  // 7. Cargar Parentescos predeterminados
-  for (const kin of DEFAULT_KINSHIPS) {
-    await tenantClient.kinship.create({
+    // 10. Crear Período Fiscal Inicial
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
+    await tenantClient.payrollFiscalPeriod.create({
       data: {
         id: crypto.randomUUID(),
-        ...kin,
+        year: currentYear,
+        month: currentMonth,
+        status: 'OPEN',
+        notes: `Período fiscal inicial ${currentMonth}/${currentYear}`,
       },
     });
-  }
 
-  // 8. Cargar catálogos iniciales de ARCA (Simplificación Registral)
-  const ccts = getArcaCctsData();
-  if (ccts.length > 0) {
-    await tenantClient.arcaCct.createMany({ data: ccts, skipDuplicates: true });
-  }
+    // Registrar clientes en caché de verificación para prevenir DDL en caliente
+    verifiedPayrollClients.add(tenantClient);
+    verifiedPersonnelClients.add(tenantClient);
+    verifiedProfileClients.add(tenantClient);
 
-  const categories = getArcaCategoriesData();
-  if (categories.length > 0) {
-    for (let i = 0; i < categories.length; i += 1000) {
-      const chunk = categories.slice(i, i + 1000);
-      await tenantClient.arcaCategory.createMany({ data: chunk, skipDuplicates: true });
+    return { dbName, dbHost, dbPort };
+  } catch (err) {
+    console.error(`Error durante el aprovisionamiento de ${dbName}:`, err);
+    try {
+      await prismaMaster.$executeRawUnsafe(`DROP DATABASE IF EXISTS \`${dbName}\`;`);
+      console.log(`Base de datos huérfana eliminada: ${dbName}`);
+    } catch (cleanupErr) {
+      console.warn(`No se pudo eliminar la base de datos huérfana ${dbName}:`, cleanupErr.message);
     }
+    throw err;
   }
-
-  const positions = getArcaPositionsData();
-  if (positions.length > 0) {
-    await tenantClient.arcaPosition.createMany({ data: positions, skipDuplicates: true });
-  }
-
-  const serviceTypes = getArcaServiceTypesData();
-  if (serviceTypes.length > 0) {
-    await tenantClient.arcaServiceType.createMany({ data: serviceTypes, skipDuplicates: true });
-  }
-
-  const cctCategoryPositions = getArcaCctCategoryPositionsData();
-  if (cctCategoryPositions.length > 0) {
-    for (let i = 0; i < cctCategoryPositions.length; i += 1000) {
-      const chunk = cctCategoryPositions.slice(i, i + 1000).map(r => ({
-        id: crypto.randomUUID(),
-        ...r
-      }));
-      await tenantClient.arcaCctCategoryPosition.createMany({ data: chunk, skipDuplicates: true });
-    }
-  }
-
-  const contractModalities = getArcaContractModalitiesData();
-  if (contractModalities.length > 0) {
-    await tenantClient.arcaContractModality.createMany({ data: contractModalities, skipDuplicates: true });
-  }
-
-  return { dbName, dbHost, dbPort };
 }
 
 // Caché en memoria para evitar sentencias DDL repetitivas e inspecciones de metadatos en cada request HTTP
@@ -924,22 +1103,108 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
         \`name\` VARCHAR(191) NOT NULL,
         \`code\` VARCHAR(191) NULL,
+        \`concept_id\` VARCHAR(191) NULL,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // Comprobar columna concept_id en unions
+    try {
+      const existingUnionCols = await tenantClient.$queryRawUnsafe(
+        `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND LOWER(TABLE_NAME) = 'unions'`
+      );
+      const existingUnionColSet = new Set(existingUnionCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+      if (!existingUnionColSet.has('concept_id')) {
+        await tenantClient.$executeRawUnsafe(
+          `ALTER TABLE \`unions\` ADD COLUMN \`concept_id\` VARCHAR(191) NULL;`
+        );
+      }
+    } catch (colErr) {
+      if (!colErr.message.includes('Duplicate column')) {
+        console.warn('Aviso al verificar concept_id en unions:', colErr.message);
+      }
+    }
+
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`mutuals\` (
         \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
         \`name\` VARCHAR(191) NOT NULL,
         \`code\` VARCHAR(191) NULL,
+        \`concept_id\` VARCHAR(191) NULL,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
+
+    // Comprobar columna concept_id en mutuals
+    try {
+      const existingMutualCols = await tenantClient.$queryRawUnsafe(
+        `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND LOWER(TABLE_NAME) = 'mutuals'`
+      );
+      const existingMutualColSet = new Set(existingMutualCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+      if (!existingMutualColSet.has('concept_id')) {
+        await tenantClient.$executeRawUnsafe(
+          `ALTER TABLE \`mutuals\` ADD COLUMN \`concept_id\` VARCHAR(191) NULL;`
+        );
+      }
+    } catch (colErr) {
+      if (!colErr.message.includes('Duplicate column')) {
+        console.warn('Aviso al verificar concept_id en mutuals:', colErr.message);
+      }
+    }
+
+    // Tablas intermedias N:M para conceptos múltiples en sindicatos y mutuales
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`union_concepts\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`union_id\` VARCHAR(191) NOT NULL,
+        \`concept_id\` VARCHAR(191) NOT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_union_concept\` (\`union_id\`, \`concept_id\`),
+        INDEX \`union_concepts_union_id_idx\` (\`union_id\`),
+        INDEX \`union_concepts_concept_id_idx\` (\`concept_id\`),
+        CONSTRAINT \`union_concepts_union_id_fkey\` FOREIGN KEY (\`union_id\`) REFERENCES \`unions\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`union_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`mutual_concepts\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`mutual_id\` VARCHAR(191) NOT NULL,
+        \`concept_id\` VARCHAR(191) NOT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_mutual_concept\` (\`mutual_id\`, \`concept_id\`),
+        INDEX \`mutual_concepts_mutual_id_idx\` (\`mutual_id\`),
+        INDEX \`mutual_concepts_concept_id_idx\` (\`concept_id\`),
+        CONSTRAINT \`mutual_concepts_mutual_id_fkey\` FOREIGN KEY (\`mutual_id\`) REFERENCES \`mutuals\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`mutual_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    // Migración idempotente: copiar concept_id histórico hacia tablas N:M si no están cargados
+    try {
+      await tenantClient.$executeRawUnsafe(`
+        INSERT IGNORE INTO \`union_concepts\` (\`id\`, \`union_id\`, \`concept_id\`, \`created_at\`)
+        SELECT UUID(), \`id\`, \`concept_id\`, NOW(3)
+        FROM \`unions\`
+        WHERE \`concept_id\` IS NOT NULL AND \`concept_id\` != ''
+          AND \`id\` NOT IN (SELECT \`union_id\` FROM \`union_concepts\`);
+      `);
+    } catch (_) {}
+
+    try {
+      await tenantClient.$executeRawUnsafe(`
+        INSERT IGNORE INTO \`mutual_concepts\` (\`id\`, \`mutual_id\`, \`concept_id\`, \`created_at\`)
+        SELECT UUID(), \`id\`, \`concept_id\`, NOW(3)
+        FROM \`mutuals\`
+        WHERE \`concept_id\` IS NOT NULL AND \`concept_id\` != ''
+          AND \`id\` NOT IN (SELECT \`mutual_id\` FROM \`mutual_concepts\`);
+      `);
+    } catch (_) {}
 
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`kinships\` (
@@ -1226,6 +1491,7 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         \`document_number\` VARCHAR(20) NOT NULL,
         \`cuil\` VARCHAR(11) NULL,
         \`birth_date\` DATETIME(3) NOT NULL,
+        \`is_adherent\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL,
@@ -1235,6 +1501,22 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         CONSTRAINT \`employee_relatives_kinship_id_fkey\` FOREIGN KEY (\`kinship_id\`) REFERENCES \`kinships\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
+
+    try {
+      const existingRelativeCols = await tenantClient.$queryRawUnsafe(
+        `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'employee_relatives'`
+      );
+      const existingRelativeSet = new Set(
+        existingRelativeCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase())
+      );
+      if (!existingRelativeSet.has('is_adherent')) {
+        await tenantClient.$executeRawUnsafe(
+          'ALTER TABLE `employee_relatives` ADD COLUMN `is_adherent` BOOLEAN NOT NULL DEFAULT FALSE;'
+        );
+      }
+    } catch (_) {
+      // Manejo silencioso defensivo
+    }
 
     // 6. Precargar o actualizar Obras Sociales
     const hiCatalog = getHealthInsurancesData();
@@ -1609,6 +1891,37 @@ export const DEFAULT_CONCEPTS = [
         appliesLrtContrib: false,
         isRepeatable: false,
       },
+      // Obra Social - Adherentes (1.5% c/u - Ley 23.660)
+      {
+        code: `${prefix}6009`,
+        name: 'Obra Social - Adherentes (1.5% c/u)',
+        type: 'DEDUCTION',
+        calculationType: 'FORMULA',
+        periodType,
+        scope: 'INDIVIDUAL',
+        noveltyDataType: 'IMPORTE',
+        calculationOrder: 6009,
+        defaultValue: 1.50,
+        formula: '[BASE_OBRA_SOCIAL_COMPLETA] * 0.015 * [CANTIDAD_ADHERENTES]',
+        matrixData: null,
+        isPersistent: true,
+        isActive: true,
+        arcaConceptCode: '810009',
+        appliesSipaAporte: false,
+        appliesSipaContrib: false,
+        appliesInssjypAporte: false,
+        appliesInssjypContrib: false,
+        appliesOsAporte: false,
+        appliesOsContrib: false,
+        appliesFsrAporte: false,
+        appliesFsrContrib: false,
+        appliesRenatreAporte: false,
+        appliesRenatreContrib: false,
+        appliesAaffContrib: false,
+        appliesFneContrib: false,
+        appliesLrtContrib: false,
+        isRepeatable: false,
+      },
       // Cuota Sindical (2%) - Alcance INDIVIDUAL
       {
         code: `${prefix}6004`,
@@ -1779,6 +2092,113 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // 1.3 Tablas de Embargos Judiciales Multi-Concepto
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`employee_embargoes\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`employee_id\` VARCHAR(191) NOT NULL,
+        \`case_title\` VARCHAR(255) NOT NULL,
+        \`dossier_number\` VARCHAR(100) NULL,
+        \`court\` VARCHAR(150) NULL,
+        \`secretary\` VARCHAR(150) NULL,
+        \`judicial_district\` VARCHAR(150) NULL,
+        \`embargo_type\` VARCHAR(50) NOT NULL DEFAULT 'COMERCIAL',
+        \`has_cap\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`total_amount\` DECIMAL(12, 2) NULL,
+        \`priority_order\` INT NOT NULL DEFAULT 1,
+        \`status\` VARCHAR(30) NOT NULL DEFAULT 'ACTIVE',
+        \`start_date\` DATETIME(3) NULL,
+        \`end_date\` DATETIME(3) NULL,
+        \`notes\` TEXT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        INDEX \`employee_embargoes_employee_id_idx\` (\`employee_id\`),
+        INDEX \`employee_embargoes_status_idx\` (\`status\`),
+        CONSTRAINT \`employee_embargoes_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`employee_embargo_concepts\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`embargo_id\` VARCHAR(191) NOT NULL,
+        \`concept_id\` VARCHAR(191) NOT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_embargo_concept\` (\`embargo_id\`, \`concept_id\`),
+        INDEX \`employee_embargo_concepts_embargo_id_idx\` (\`embargo_id\`),
+        INDEX \`employee_embargo_concepts_concept_id_idx\` (\`concept_id\`),
+        CONSTRAINT \`employee_embargo_concepts_embargo_id_fkey\` FOREIGN KEY (\`embargo_id\`) REFERENCES \`employee_embargoes\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`employee_embargo_concepts_concept_id_fkey\` FOREIGN KEY (\`concept_id\`) REFERENCES \`concepts\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    // 1.4 Tabla payroll_fiscal_periods (Períodos Fiscales Mensuales)
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`payroll_fiscal_periods\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`year\` INT NOT NULL,
+        \`month\` INT NOT NULL,
+        \`status\` VARCHAR(20) NOT NULL DEFAULT 'OPEN',
+        \`closed_at\` DATETIME(3) NULL,
+        \`closed_by\` VARCHAR(191) NULL,
+        \`notes\` VARCHAR(255) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_fiscal_period_year_month\` (\`year\`, \`month\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    // 1.5 Columna fiscal_period_id en payroll_periods
+    const initialPeriodCols = await tenantClient.$queryRawUnsafe(
+      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'payroll_periods'`
+    );
+    const initialPeriodSet = new Set(initialPeriodCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+    if (!initialPeriodSet.has('fiscal_period_id')) {
+      await tenantClient.$executeRawUnsafe(`ALTER TABLE \`payroll_periods\` ADD COLUMN \`fiscal_period_id\` VARCHAR(191) NULL;`);
+    }
+
+    // 1.6 Migración y Backfill inicial: Asegurar período Septiembre 2026 como único OPEN
+    try {
+      let sepFiscal = await tenantClient.payrollFiscalPeriod.findUnique({
+        where: { year_month: { year: 2026, month: 9 } },
+      });
+      if (!sepFiscal) {
+        sepFiscal = await tenantClient.payrollFiscalPeriod.create({
+          data: {
+            id: crypto.randomUUID(),
+            year: 2026,
+            month: 9,
+            status: 'OPEN',
+            notes: 'Período inicial habilitado Septiembre 2026',
+          },
+        });
+      }
+      // Vincular liquidaciones existentes de Septiembre 2026 que no tengan fiscalPeriodId
+      await tenantClient.payrollPeriod.updateMany({
+        where: {
+          year: 2026,
+          month: 9,
+          fiscalPeriodId: null,
+        },
+        data: {
+          fiscalPeriodId: sepFiscal.id,
+        },
+      });
+      // Asegurar que solo Septiembre 2026 quede OPEN
+      await tenantClient.payrollFiscalPeriod.updateMany({
+        where: {
+          NOT: { id: sepFiscal.id },
+          status: 'OPEN',
+        },
+        data: {
+          status: 'CLOSED',
+          closedAt: new Date(),
+        },
+      });
+    } catch (e) {
+      console.warn('Aviso al migrar fiscal_periods:', e.message);
+    }
+
     // 2. Columnas en concepts
     const conceptCols = [
       { name: 'period_type', def: "VARCHAR(50) NOT NULL DEFAULT 'ALL'" },
@@ -1808,6 +2228,7 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       { name: 'applies_reg_esp_aporte', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'applies_detraccion', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'is_repeatable', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
+      { name: 'is_embargo', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
     ];
     const existingConceptCols = await tenantClient.$queryRawUnsafe(
       `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'concepts'`
@@ -1904,6 +2325,23 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
     for (const col of itemCols) {
       if (!existingItemSet.has(col.name.toLowerCase())) {
         await tenantClient.$executeRawUnsafe(`ALTER TABLE \`pay_slip_items\` ADD COLUMN \`${col.name}\` ${col.def};`);
+      }
+    }
+
+    // 5b. Columnas en pay_slip_bases (Bases diferenciales LSD Art. 92 TER)
+    const basisCols = [
+      { name: 'base_dif_aporte_os', def: 'DECIMAL(12, 2) NOT NULL DEFAULT 0.00' },
+      { name: 'base_dif_contrib_os', def: 'DECIMAL(12, 2) NOT NULL DEFAULT 0.00' },
+      { name: 'base_dif_lrt', def: 'DECIMAL(12, 2) NOT NULL DEFAULT 0.00' },
+      { name: 'adherents_count', def: 'INT NOT NULL DEFAULT 0' },
+    ];
+    const existingBasisCols = await tenantClient.$queryRawUnsafe(
+      `SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'pay_slip_bases'`
+    );
+    const existingBasisSet = new Set(existingBasisCols.map((c) => (c.COLUMN_NAME || c.column_name || '').toLowerCase()));
+    for (const col of basisCols) {
+      if (!existingBasisSet.has(col.name.toLowerCase())) {
+        await tenantClient.$executeRawUnsafe(`ALTER TABLE \`pay_slip_bases\` ADD COLUMN \`${col.name}\` ${col.def};`);
       }
     }
 

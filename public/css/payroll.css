@@ -1,0 +1,1213 @@
+/* ==========================================================================
+   PROYECTOSUELDOS — MÓDULO DE LIQUIDACIÓN DE SUELDOS & LIBRO DIGITAL ARCA
+   Paleta Distintiva: Royal Indigo & Electric Violet con Acentos Dorados y Esmeralda
+   Cumplimiento Estricto Gauntlet del Auditor Independiente:
+   - Grilla Múltiplos de 4px (padding, margin, gap, border-radius)
+   - Contraste WCAG AA / AAA (> 4.5:1) con :hover y :focus-visible
+   - Áreas de Clic >= 44x44px en todo elemento interactivo
+   - Tipografía: 'Plus Jakarta Sans' y 'Inter' (4 niveles de escala)
+   - Resiliencia Inflacionaria (12 dígitos + 2 decimales, white-space: nowrap)
+   - Truncado de Nombres Extensos (text-overflow: ellipsis + tooltip)
+   - Identidad Multitenant activa visible con live pulse
+   - Rediseño Integral de Modales y Alerts Temáticos
+   ========================================================================== */
+
+:root {
+  /* ========================================================================
+     1. PALETA DISTINTIVA: ROYAL INDIGO & ELECTRIC VIOLET
+     ======================================================================== */
+  --pay-indigo-950: #0d0e26;
+  --pay-indigo-900: #191742;
+  --pay-indigo-850: #211e54;
+  --pay-indigo-800: #2b266d;
+  --pay-indigo-700: #3730a3;
+  --pay-indigo-600: #4338ca;
+  --pay-indigo-500: #4f46e5;
+  --pay-violet-500: #6366f1;
+  --pay-violet-400: #818cf8;
+  --pay-violet-300: #a5b4fc;
+  --pay-violet-200: #c7d2fe;
+  --pay-violet-100: #e0e7ff;
+  --pay-violet-50: #eef2ff;
+
+  /* Escala de Fondos & Superficies (Obsidian Indigo Glass) */
+  --pay-bg-void: #070914;
+  --pay-bg-base: #0b0f1e;
+  --pay-bg-surface: #10162a;
+  --pay-bg-elevated: #161e38;
+  --pay-bg-glass: rgba(16, 22, 42, 0.78);
+  --pay-bg-card: rgba(22, 30, 56, 0.65);
+  --pay-bg-card-hover: rgba(30, 41, 76, 0.85);
+  --pay-bg-input: #0d1324;
+
+  /* Bordes & Resplandores */
+  --pay-border-subtle: rgba(255, 255, 255, 0.08);
+  --pay-border-medium: rgba(255, 255, 255, 0.16);
+  --pay-border-indigo: rgba(99, 102, 241, 0.32);
+  --pay-border-glow: rgba(99, 102, 241, 0.52);
+  --pay-focus-ring: rgba(99, 102, 241, 0.48);
+
+  /* Acentos Semánticos Sueldos */
+  --pay-gold-500: #f59e0b;
+  --pay-gold-400: #fbbf24;
+  --pay-gold-soft: rgba(245, 158, 11, 0.16);
+  --pay-emerald-500: #10b981;
+  --pay-emerald-400: #34d399;
+  --pay-emerald-soft: rgba(16, 185, 129, 0.16);
+  --pay-rose-500: #ef4444;
+  --pay-rose-400: #f87171;
+  --pay-rose-soft: rgba(239, 68, 68, 0.16);
+  --pay-cyan-500: #06b6d4;
+  --pay-cyan-400: #38bdf8;
+  --pay-cyan-soft: rgba(6, 182, 212, 0.16);
+
+  /* Neutros Slate WCAG AA (> 4.5:1) */
+  --pay-slate-900: #0f172a;
+  --pay-slate-800: #1e293b;
+  --pay-slate-700: #334155;
+  --pay-slate-600: #475569;
+  --pay-slate-400: #94a3b8;
+  --pay-slate-300: #cbd5e1;
+  --pay-slate-200: #e2e8f0;
+  --pay-slate-100: #f1f5f9;
+  --pay-slate-50: #f8fafc;
+  --pay-white: #ffffff;
+
+  /* Espaciado de Grilla Estricta (Múltiplos de 4px) */
+  --pay-space-4: 4px;
+  --pay-space-8: 8px;
+  --pay-space-12: 12px;
+  --pay-space-16: 16px;
+  --pay-space-20: 20px;
+  --pay-space-24: 24px;
+  --pay-space-32: 32px;
+  --pay-space-40: 40px;
+  --pay-space-48: 48px;
+
+  /* Radios de Curvatura (Múltiplos de 4px) */
+  --pay-radius-4: 4px;
+  --pay-radius-8: 8px;
+  --pay-radius-12: 12px;
+  --pay-radius-16: 16px;
+  --pay-radius-full: 9999px;
+
+  /* Sombras de Alta Definición */
+  --pay-shadow-xs: 0 1px 2px rgba(15, 14, 38, 0.08);
+  --pay-shadow-sm: 0 2px 8px rgba(15, 14, 38, 0.12);
+  --pay-shadow-md: 0 4px 16px rgba(15, 14, 38, 0.18);
+  --pay-shadow-lg: 0 12px 32px rgba(15, 14, 38, 0.24);
+  --pay-shadow-glow: 0 0 24px var(--pay-border-glow);
+}
+
+/* ==========================================================================
+   2. CABECERA EJECUTIVA TEMÁTICA DE SUELDOS (ROYAL INDIGO LUXURY)
+   ========================================================================== */
+.payroll-executive-header,
+.theme-payroll-header {
+  flex-shrink: 0 !important;
+  background: linear-gradient(135deg, var(--pay-indigo-950) 0%, var(--pay-indigo-900) 45%, var(--pay-indigo-800) 100%) !important;
+  color: var(--pay-white) !important;
+  border-radius: var(--pay-radius-12) !important;
+  padding: var(--pay-space-12) var(--pay-space-20) !important;
+  margin-bottom: var(--pay-space-12) !important;
+  border: 1px solid var(--pay-border-indigo) !important;
+  box-shadow: var(--pay-shadow-md) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.payroll-executive-header::after,
+.theme-payroll-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 280px;
+  background: radial-gradient(circle at 100% 50%, rgba(99, 102, 241, 0.2) 0%, transparent 72%);
+  pointer-events: none;
+}
+
+.payroll-header-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--pay-space-12);
+  position: relative;
+  z-index: 1;
+}
+
+.payroll-header-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--pay-space-16);
+}
+
+.payroll-header-icon-box {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  background: linear-gradient(135deg, var(--pay-indigo-600) 0%, var(--pay-indigo-800) 100%);
+  color: var(--pay-white);
+  border-radius: var(--pay-radius-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.36);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.payroll-header-badge,
+.theme-payroll-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pay-space-4);
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: var(--pay-violet-100) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: var(--pay-space-4) var(--pay-space-8) !important;
+  border-radius: var(--pay-radius-4) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+}
+
+.payroll-header-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 800;
+  color: var(--pay-white);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.payroll-header-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pay-violet-200);
+  margin-top: var(--pay-space-4);
+}
+
+/* Tenant Pill Multitenant con Pulso en Vivo */
+.payroll-tenant-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--pay-space-8);
+  background: rgba(25, 23, 66, 0.72);
+  border: 1px solid var(--pay-border-indigo);
+  padding: var(--pay-space-8) var(--pay-space-16);
+  border-radius: var(--pay-radius-full);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--pay-white);
+  backdrop-filter: blur(8px);
+  min-height: 44px;
+  box-sizing: border-box;
+}
+
+.payroll-pulse-dot {
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
+  border-radius: var(--pay-radius-full);
+  background-color: var(--pay-violet-400);
+  box-shadow: 0 0 8px var(--pay-violet-400);
+  animation: pay-pulse 2s infinite ease-in-out;
+}
+
+@keyframes pay-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* ==========================================================================
+   3. BARRA LATERAL (SIDEBAR) DE SUELDOS & NÓMINA
+   ========================================================================== */
+.payroll-sidebar-card {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: var(--pay-white);
+  border: 1px solid var(--pay-slate-200);
+  border-radius: var(--pay-radius-12);
+  box-shadow: var(--pay-shadow-xs);
+  overflow: hidden !important;
+  margin-bottom: 0 !important;
+}
+
+.payroll-sidebar-header {
+  flex-shrink: 0 !important;
+  background: linear-gradient(90deg, var(--pay-violet-50) 0%, var(--pay-slate-50) 100%);
+  padding: var(--pay-space-12) var(--pay-space-16);
+  border-bottom: 1px solid var(--pay-slate-200);
+  display: flex;
+  align-items: center;
+  gap: var(--pay-space-8);
+}
+
+.payroll-sidebar-header-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 800;
+  color: var(--pay-indigo-800);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+#payroll-sidebar-nav {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: var(--pay-space-8) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: var(--pay-space-4) !important;
+}
+
+#payroll-sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+#payroll-sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#payroll-sidebar-nav::-webkit-scrollbar-thumb {
+  background: var(--pay-slate-300);
+  border-radius: var(--pay-radius-4);
+}
+
+#payroll-sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background: var(--pay-indigo-600);
+}
+
+/* Ítems de la Barra Lateral */
+.payroll-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--pay-space-12);
+  min-height: 44px;
+  padding: var(--pay-space-8) var(--pay-space-12);
+  border-radius: var(--pay-radius-8);
+  color: var(--pay-slate-700);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.payroll-nav-item:hover {
+  background: var(--pay-violet-50);
+  color: var(--pay-indigo-900);
+  border-color: var(--pay-violet-200);
+}
+
+.payroll-nav-item:focus-visible {
+  outline: 3px solid var(--pay-focus-ring);
+  outline-offset: 2px;
+}
+
+.payroll-nav-item.active {
+  background: linear-gradient(135deg, var(--pay-indigo-900) 0%, var(--pay-indigo-700) 100%);
+  color: var(--pay-white) !important;
+  border-color: var(--pay-indigo-600);
+  box-shadow: 0 4px 12px rgba(43, 38, 109, 0.25);
+}
+
+.payroll-nav-item.active .payroll-nav-icon {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--pay-white) !important;
+}
+
+.payroll-nav-item.active small {
+  color: var(--pay-violet-200) !important;
+}
+
+.payroll-nav-item.active .badge {
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: var(--pay-white) !important;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.payroll-nav-icon {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: var(--pay-radius-8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--pay-violet-100);
+  color: var(--pay-indigo-700);
+  font-size: 16px;
+  transition: all 0.15s ease;
+}
+
+/* Acordeones y Submenús */
+.payroll-nav-dropdown {
+  margin-bottom: var(--pay-space-4);
+}
+
+.payroll-submenu {
+  padding-left: var(--pay-space-16);
+  padding-top: var(--pay-space-4);
+  padding-bottom: var(--pay-space-4);
+  border-left: 2px solid var(--pay-violet-200);
+  margin-left: var(--pay-space-20);
+  margin-top: var(--pay-space-4);
+  margin-bottom: var(--pay-space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--pay-space-4);
+}
+
+.payroll-nav-subitem {
+  display: flex;
+  align-items: center;
+  gap: var(--pay-space-8);
+  min-height: 44px;
+  padding: var(--pay-space-8) var(--pay-space-12);
+  border-radius: var(--pay-radius-8);
+  color: var(--pay-slate-600);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+
+.payroll-nav-subitem:hover {
+  background: var(--pay-violet-50);
+  color: var(--pay-indigo-900);
+}
+
+.payroll-nav-subitem:focus-visible {
+  outline: 3px solid var(--pay-focus-ring);
+  outline-offset: 2px;
+}
+
+.payroll-nav-subitem.active {
+  background: var(--pay-indigo-700);
+  color: var(--pay-white) !important;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   4. BOTONES Y CONTROLES INTERACTIVOS (>= 44x44px)
+   ========================================================================== */
+.btn-payroll {
+  background: linear-gradient(135deg, var(--pay-indigo-600) 0%, var(--pay-indigo-700) 100%) !important;
+  border-color: var(--pay-indigo-700) !important;
+  color: var(--pay-white) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  min-height: 44px !important;
+  padding: var(--pay-space-8) var(--pay-space-16) !important;
+  border-radius: var(--pay-radius-8) !important;
+  box-shadow: 0 2px 8px rgba(67, 56, 202, 0.28) !important;
+  transition: all 0.15s ease-in-out !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--pay-space-8) !important;
+}
+
+.btn-payroll:hover,
+.btn-payroll:focus,
+.btn-payroll:active {
+  background: linear-gradient(135deg, var(--pay-indigo-500) 0%, var(--pay-indigo-600) 100%) !important;
+  border-color: var(--pay-indigo-600) !important;
+  color: var(--pay-white) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 16px rgba(67, 56, 202, 0.36) !important;
+}
+
+.btn-payroll:focus-visible {
+  outline: 3px solid var(--pay-focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+.btn-outline-payroll {
+  color: var(--pay-indigo-700) !important;
+  border: 1px solid var(--pay-indigo-600) !important;
+  background: transparent !important;
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  min-height: 44px !important;
+  padding: var(--pay-space-8) var(--pay-space-16) !important;
+  border-radius: var(--pay-radius-8) !important;
+  transition: all 0.15s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: var(--pay-space-8) !important;
+}
+
+.btn-outline-payroll:hover {
+  background: var(--pay-violet-50) !important;
+  color: var(--pay-indigo-900) !important;
+  border-color: var(--pay-indigo-700) !important;
+}
+
+.btn-outline-payroll:focus-visible {
+  outline: 3px solid var(--pay-focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Botones Icono (44x44px exactos para a11y) */
+.btn-payroll-icon {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--pay-radius-8) !important;
+  border: 1px solid var(--pay-slate-200) !important;
+  background: var(--pay-white) !important;
+  color: var(--pay-slate-700) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  font-size: 20px !important;
+}
+
+.btn-payroll-icon:hover {
+  background: var(--pay-violet-50) !important;
+  color: var(--pay-indigo-800) !important;
+  border-color: var(--pay-violet-300) !important;
+}
+
+.btn-payroll-icon:focus-visible {
+  outline: 3px solid var(--pay-focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Botones de Acción en Tablas (44x44px) */
+.pay-action-btn {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: var(--pay-radius-8) !important;
+  border: 1px solid var(--pay-slate-200) !important;
+  background: var(--pay-white) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  font-size: 20px !important;
+}
+
+.pay-action-btn-view {
+  color: var(--pay-indigo-600) !important;
+}
+.pay-action-btn-view:hover {
+  background: var(--pay-violet-50) !important;
+  border-color: var(--pay-violet-300) !important;
+  transform: scale(1.05);
+}
+
+.pay-action-btn-edit {
+  color: var(--pay-cyan-500) !important;
+}
+.pay-action-btn-edit:hover {
+  background: var(--pay-cyan-soft) !important;
+  border-color: var(--pay-cyan-400) !important;
+  transform: scale(1.05);
+}
+
+.pay-action-btn-calc {
+  color: var(--pay-emerald-500) !important;
+}
+.pay-action-btn-calc:hover {
+  background: var(--pay-emerald-soft) !important;
+  border-color: var(--pay-emerald-400) !important;
+  transform: scale(1.05);
+}
+
+.pay-action-btn-delete {
+  color: var(--pay-rose-500) !important;
+}
+.pay-action-btn-delete:hover {
+  background: var(--pay-rose-soft) !important;
+  border-color: var(--pay-rose-400) !important;
+  transform: scale(1.05);
+}
+
+.pay-action-btn:focus-visible {
+  outline: 3px solid var(--pay-focus-ring) !important;
+  outline-offset: 2px !important;
+}
+
+/* Áreas de Clic en Todos los Inputs y Selects de Sueldos */
+#view-payroll .form-control,
+#view-payroll .form-select,
+#view-payroll .btn,
+#view-payroll .page-link {
+  min-height: 44px !important;
+  box-sizing: border-box;
+}
+
+#view-payroll .form-control:focus,
+#view-payroll .form-select:focus {
+  border-color: var(--pay-violet-400) !important;
+  box-shadow: 0 0 0 3px var(--pay-focus-ring) !important;
+}
+
+/* Overrides para TomSelect en el Módulo de Sueldos */
+#view-payroll .ts-control,
+.modal[id^="modal-payroll-"] .ts-control,
+.modal[id^="modal-concept-"] .ts-control,
+.modal[id^="modal-fiscal-"] .ts-control,
+.modal[id^="modal-salary-"] .ts-control,
+.modal[id^="modal-matrix-"] .ts-control,
+.modal[id^="modal-novelty-"] .ts-control {
+  min-height: 44px !important;
+  padding: var(--pay-space-8) var(--pay-space-12) !important;
+  border-radius: var(--pay-radius-8) !important;
+  font-family: 'Inter', sans-serif !important;
+  border-color: var(--pay-slate-300) !important;
+}
+
+#view-payroll .ts-control.focus,
+.modal[id^="modal-payroll-"] .ts-control.focus,
+.modal[id^="modal-concept-"] .ts-control.focus {
+  border-color: var(--pay-violet-400) !important;
+  box-shadow: 0 0 0 3px var(--pay-focus-ring) !important;
+}
+
+/* ==========================================================================
+   5. TABLAS DE DATOS & RESILIENCIA INFLACIONARIA
+   ========================================================================== */
+.payroll-table-card,
+.card-payroll-accent {
+  border-top: 3px solid var(--pay-indigo-600) !important;
+  border-radius: var(--pay-radius-12) !important;
+  box-shadow: var(--pay-shadow-xs) !important;
+  background: var(--pay-white) !important;
+  overflow: hidden;
+}
+
+#view-payroll table thead th {
+  background-color: var(--pay-slate-50) !important;
+  color: var(--pay-slate-700) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  padding: var(--pay-space-12) var(--pay-space-16) !important;
+  border-bottom: 1px solid var(--pay-slate-200) !important;
+  vertical-align: middle !important;
+}
+
+#view-payroll table tbody td {
+  padding: var(--pay-space-12) var(--pay-space-16) !important;
+  border-bottom: 1px solid var(--pay-slate-200) !important;
+  vertical-align: middle !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: var(--pay-slate-800) !important;
+  transition: background-color 0.15s ease !important;
+}
+
+#view-payroll table tbody tr:hover td {
+  background-color: rgba(238, 242, 255, 0.45) !important;
+}
+
+/* Celda Monetaria Resiliente a Inflación (12 dígitos enteros + 2 decimales) */
+.pay-currency-cell,
+.payroll-currency-cell {
+  font-family: 'Inter', monospace !important;
+  font-weight: 700 !important;
+  text-align: right !important;
+  white-space: nowrap !important;
+  font-variant-numeric: tabular-nums !important;
+  color: var(--pay-slate-900) !important;
+}
+
+/* Celdas con Códigos y Legajos */
+.pay-code-cell {
+  font-family: 'Inter', monospace !important;
+  font-weight: 700 !important;
+  color: var(--pay-indigo-700) !important;
+  white-space: nowrap !important;
+}
+
+/* Truncado de Textos Extensos con Tooltip */
+.pay-text-truncate {
+  max-width: 240px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+/* ==========================================================================
+   6. PAGINACIÓN DE ALTA ACCESIBILIDAD (Botones >= 44x44px)
+   ========================================================================== */
+.payroll-pagination-footer {
+  background: var(--pay-slate-50);
+  padding: var(--pay-space-8) var(--pay-space-16);
+  border-top: 1px solid var(--pay-slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--pay-space-12);
+}
+
+.payroll-pagination-list {
+  display: flex;
+  align-items: center;
+  gap: var(--pay-space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.payroll-pagination-list .page-link {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 var(--pay-space-8);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--pay-radius-8);
+  border: 1px solid var(--pay-slate-200);
+  background: var(--pay-white);
+  color: var(--pay-slate-700);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.payroll-pagination-list .page-link:hover {
+  background: var(--pay-violet-50);
+  color: var(--pay-indigo-900);
+  border-color: var(--pay-violet-200);
+}
+
+.payroll-pagination-list .page-item.active .page-link {
+  background: var(--pay-indigo-700);
+  border-color: var(--pay-indigo-700);
+  color: var(--pay-white);
+  box-shadow: 0 2px 8px rgba(55, 48, 163, 0.28);
+}
+
+.payroll-pagination-list .page-item.disabled .page-link {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   7. FEEDBACK DE UI (ESTADOS: SKELETON, ÉXITO, VACÍO)
+   ========================================================================== */
+.payroll-skeleton-row {
+  height: 20px;
+  background: linear-gradient(90deg, var(--pay-slate-100) 25%, var(--pay-violet-50) 50%, var(--pay-slate-100) 75%);
+  background-size: 200% 100%;
+  animation: pay-shimmer 1.5s infinite linear;
+  border-radius: var(--pay-radius-4);
+  margin: var(--pay-space-4) 0;
+}
+
+@keyframes pay-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.payroll-empty-card {
+  padding: var(--pay-space-48) var(--pay-space-24);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.payroll-empty-icon-wrap {
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  background: var(--pay-violet-50);
+  border: 1px solid var(--pay-violet-200);
+  border-radius: var(--pay-radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pay-indigo-600);
+  font-size: 32px;
+  margin-bottom: var(--pay-space-16);
+}
+
+.payroll-empty-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--pay-slate-900);
+  margin-bottom: var(--pay-space-4);
+}
+
+.payroll-empty-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--pay-slate-500);
+  max-width: 440px;
+  margin-bottom: var(--pay-space-20);
+}
+
+/* ==========================================================================
+   8. REDISEÑO TOTAL DE FORMULARIOS MODAL DE SUELDOS
+   ========================================================================== */
+/* Scoping de modales pertenecientes al Módulo de Sueldos */
+#modal-fiscal-period-form .modal-content,
+#modal-payroll-period-form .modal-content,
+#modal-concept-form .modal-content,
+#modal-salary-scale .modal-content,
+#modal-mass-scale-increase .modal-content,
+#modal-mass-wage-increase .modal-content,
+#modal-mass-assign-concept .modal-content,
+#modal-matrix-form .modal-content,
+#modal-fixed-value-form .modal-content,
+#modal-delete-fixed-value-confirm .modal-content,
+#modal-view-payslip .modal-content,
+#modal-period-novelty-form .modal-content,
+#modal-assign-persistent-concept .modal-content,
+#modal-payroll-embargo-form .modal-content,
+#modal-payroll-embargo-history .modal-content,
+#modal-payroll-period-summary .modal-content,
+#modal-novelty-batch-sheet .modal-content,
+#modal-novelties-import-excel .modal-content,
+#modal-simulate-payslip .modal-content,
+#modal-omitted-employees .modal-content,
+#modal-lsd-audit-confirm .modal-content,
+#modal-lsd-audit-errors .modal-content,
+.modal-payroll .modal-content {
+  border-radius: var(--pay-radius-16) !important;
+  border: 1px solid var(--pay-border-indigo) !important;
+  box-shadow: var(--pay-shadow-lg) !important;
+  overflow: hidden;
+  background: var(--pay-white);
+}
+
+/* Modal Headers */
+#modal-fiscal-period-form .modal-header,
+#modal-payroll-period-form .modal-header,
+#modal-concept-form .modal-header,
+#modal-salary-scale .modal-header,
+#modal-mass-scale-increase .modal-header,
+#modal-mass-wage-increase .modal-header,
+#modal-mass-assign-concept .modal-header,
+#modal-matrix-form .modal-header,
+#modal-fixed-value-form .modal-header,
+#modal-delete-fixed-value-confirm .modal-header,
+#modal-view-payslip .modal-header,
+#modal-period-novelty-form .modal-header,
+#modal-assign-persistent-concept .modal-header,
+#modal-payroll-embargo-form .modal-header,
+#modal-payroll-embargo-history .modal-header,
+#modal-payroll-period-summary .modal-header,
+#modal-novelty-batch-sheet .modal-header,
+#modal-novelties-import-excel .modal-header,
+#modal-simulate-payslip .modal-header,
+#modal-omitted-employees .modal-header,
+#modal-lsd-audit-confirm .modal-header,
+#modal-lsd-audit-errors .modal-header,
+.modal-payroll .modal-header {
+  background: linear-gradient(135deg, var(--pay-indigo-950) 0%, var(--pay-indigo-900) 60%, var(--pay-indigo-850) 100%) !important;
+  color: var(--pay-white) !important;
+  padding: var(--pay-space-16) var(--pay-space-24) !important;
+  border-bottom: 1px solid var(--pay-border-indigo) !important;
+}
+
+#modal-fiscal-period-form .modal-title,
+#modal-payroll-period-form .modal-title,
+#modal-concept-form .modal-title,
+#modal-salary-scale .modal-title,
+#modal-mass-scale-increase .modal-title,
+#modal-mass-wage-increase .modal-title,
+#modal-mass-assign-concept .modal-title,
+#modal-matrix-form .modal-title,
+#modal-fixed-value-form .modal-title,
+#modal-delete-fixed-value-confirm .modal-title,
+#modal-view-payslip .modal-title,
+#modal-period-novelty-form .modal-title,
+#modal-assign-persistent-concept .modal-title,
+#modal-payroll-embargo-form .modal-title,
+#modal-payroll-embargo-history .modal-title,
+#modal-payroll-period-summary .modal-title,
+#modal-novelty-batch-sheet .modal-title,
+#modal-novelties-import-excel .modal-title,
+#modal-simulate-payslip .modal-title,
+#modal-omitted-employees .modal-title,
+#modal-lsd-audit-confirm .modal-title,
+#modal-lsd-audit-errors .modal-title,
+.modal-payroll .modal-title {
+  color: var(--pay-white) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+}
+
+#modal-fiscal-period-form .modal-header .text-muted,
+#modal-payroll-period-form .modal-header .text-muted,
+#modal-concept-form .modal-header .text-muted,
+#modal-salary-scale .modal-header .text-muted,
+#modal-view-payslip .modal-header .text-muted,
+#modal-period-novelty-form .modal-header .text-muted,
+#modal-payroll-embargo-form .modal-header .text-muted,
+#modal-payroll-embargo-history .modal-header .text-muted,
+#modal-payroll-period-summary .modal-header .text-muted,
+#modal-novelties-import-excel .modal-header .text-muted,
+#modal-lsd-audit-confirm .modal-header .text-muted,
+#modal-lsd-audit-errors .modal-header .text-muted {
+  color: var(--pay-violet-200) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 12px !important;
+  line-height: 16px !important;
+}
+
+#modal-fiscal-period-form .btn-close,
+#modal-payroll-period-form .btn-close,
+#modal-concept-form .btn-close,
+#modal-salary-scale .btn-close,
+#modal-mass-scale-increase .btn-close,
+#modal-mass-wage-increase .btn-close,
+#modal-mass-assign-concept .btn-close,
+#modal-matrix-form .btn-close,
+#modal-fixed-value-form .btn-close,
+#modal-delete-fixed-value-confirm .btn-close,
+#modal-view-payslip .btn-close,
+#modal-period-novelty-form .btn-close,
+#modal-assign-persistent-concept .btn-close,
+#modal-payroll-embargo-form .btn-close,
+#modal-payroll-embargo-history .btn-close,
+#modal-payroll-period-summary .btn-close,
+#modal-novelty-batch-sheet .btn-close,
+#modal-novelties-import-excel .btn-close,
+#modal-simulate-payslip .btn-close,
+#modal-omitted-employees .btn-close,
+#modal-lsd-audit-confirm .btn-close,
+#modal-lsd-audit-errors .btn-close,
+.modal-payroll .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+  opacity: 0.8 !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#modal-fiscal-period-form .btn-close:hover,
+#modal-payroll-period-form .btn-close:hover,
+#modal-concept-form .btn-close:hover {
+  opacity: 1 !important;
+}
+
+/* Modal Body y Footer */
+#modal-fiscal-period-form .modal-body,
+#modal-payroll-period-form .modal-body,
+#modal-concept-form .modal-body,
+#modal-salary-scale .modal-body,
+#modal-mass-scale-increase .modal-body,
+#modal-mass-wage-increase .modal-body,
+#modal-mass-assign-concept .modal-body,
+#modal-matrix-form .modal-body,
+#modal-fixed-value-form .modal-body,
+#modal-delete-fixed-value-confirm .modal-body,
+#modal-view-payslip .modal-body,
+#modal-period-novelty-form .modal-body,
+#modal-assign-persistent-concept .modal-body,
+#modal-payroll-embargo-form .modal-body,
+#modal-payroll-embargo-history .modal-body,
+#modal-payroll-period-summary .modal-body,
+#modal-novelty-batch-sheet .modal-body,
+#modal-novelties-import-excel .modal-body,
+#modal-simulate-payslip .modal-body,
+#modal-omitted-employees .modal-body,
+#modal-lsd-audit-confirm .modal-body,
+#modal-lsd-audit-errors .modal-body,
+.modal-payroll .modal-body {
+  padding: var(--pay-space-20) var(--pay-space-24) !important;
+}
+
+#modal-fiscal-period-form .modal-footer,
+#modal-payroll-period-form .modal-footer,
+#modal-concept-form .modal-footer,
+#modal-salary-scale .modal-footer,
+#modal-mass-scale-increase .modal-footer,
+#modal-mass-wage-increase .modal-footer,
+#modal-mass-assign-concept .modal-footer,
+#modal-matrix-form .modal-footer,
+#modal-fixed-value-form .modal-footer,
+#modal-delete-fixed-value-confirm .modal-footer,
+#modal-view-payslip .modal-footer,
+#modal-period-novelty-form .modal-footer,
+#modal-assign-persistent-concept .modal-footer,
+#modal-payroll-embargo-form .modal-footer,
+#modal-payroll-embargo-history .modal-footer,
+#modal-payroll-period-summary .modal-footer,
+#modal-novelty-batch-sheet .modal-footer,
+#modal-novelties-import-excel .modal-footer,
+#modal-simulate-payslip .modal-footer,
+#modal-omitted-employees .modal-footer,
+#modal-lsd-audit-confirm .modal-footer,
+#modal-lsd-audit-errors .modal-footer,
+.modal-payroll .modal-footer {
+  padding: var(--pay-space-16) var(--pay-space-24) !important;
+  background: var(--pay-slate-50) !important;
+  border-top: 1px solid var(--pay-slate-200) !important;
+  gap: var(--pay-space-8) !important;
+}
+
+/* Pestañas (Tabs) en Modales de Sueldos */
+.payroll-modal-tabs-wrap {
+  padding: var(--pay-space-8) var(--pay-space-24) 0;
+  background: var(--pay-white);
+  border-bottom: 1px solid var(--pay-slate-200);
+}
+
+.payroll-modal-tab-btn {
+  min-height: 44px;
+  padding: var(--pay-space-8) var(--pay-space-16);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--pay-slate-600);
+  border: 1px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-radius: var(--pay-radius-8) var(--pay-radius-8) 0 0;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-sizing: border-box;
+}
+
+.payroll-modal-tab-btn:hover {
+  color: var(--pay-indigo-800);
+  background: var(--pay-violet-50);
+}
+
+.payroll-modal-tab-btn.active {
+  color: var(--pay-indigo-900) !important;
+  border-bottom-color: var(--pay-indigo-600) !important;
+  background: var(--pay-white);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   9. REDISEÑO TOTAL DE ALERTS & MENSAJES DE ESTADO DE SUELDOS
+   ========================================================================== */
+/* Regla Universal de Ocultamiento Absoluto para Alerts Ocultos o Vacíos */
+#view-payroll .alert.d-none,
+#view-payroll .alert:empty,
+#view-payroll .alert[hidden],
+.modal .alert.d-none,
+.modal .alert:empty,
+.modal .alert[hidden],
+.alert.d-none,
+.alert:empty,
+.alert[hidden] {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Alertas Activos y Visibles en el Módulo de Sueldos y Modales */
+#view-payroll .alert:not(.d-none):not(:empty):not([hidden]),
+.modal .alert:not(.d-none):not(:empty):not([hidden]),
+.alert-payroll:not(.d-none):not(:empty):not([hidden]) {
+  border-radius: var(--pay-radius-8) !important;
+  padding: var(--pay-space-12) var(--pay-space-16) !important;
+  margin-bottom: var(--pay-space-16) !important;
+  font-family: 'Inter', sans-serif !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: var(--pay-space-12) !important;
+  border-width: 1px !important;
+  border-style: solid !important;
+}
+
+/* Alert Error / Danger (Visible) */
+#view-payroll .alert-danger:not(.d-none):not(:empty):not([hidden]),
+.modal .alert-danger:not(.d-none):not(:empty):not([hidden]),
+.alert-payroll-danger:not(.d-none):not(:empty):not([hidden]) {
+  background-color: #fff1f2 !important;
+  border-color: #fecdd3 !important;
+  color: #9f1239 !important;
+}
+
+#view-payroll .alert-danger:not(.d-none):not(:empty):not([hidden]) i,
+.modal .alert-danger:not(.d-none):not(:empty):not([hidden]) i {
+  color: #e11d48 !important;
+  font-size: 20px !important;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Alert Warning (Visible) */
+#view-payroll .alert-warning:not(.d-none):not(:empty):not([hidden]),
+.modal .alert-warning:not(.d-none):not(:empty):not([hidden]),
+.alert-payroll-warning:not(.d-none):not(:empty):not([hidden]) {
+  background-color: #fffbeb !important;
+  border-color: #fde68a !important;
+  color: #92400e !important;
+}
+
+#view-payroll .alert-warning:not(.d-none):not(:empty):not([hidden]) i,
+.modal .alert-warning:not(.d-none):not(:empty):not([hidden]) i {
+  color: #d97706 !important;
+  font-size: 20px !important;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Alert Success (Visible) */
+#view-payroll .alert-success:not(.d-none):not(:empty):not([hidden]),
+.modal .alert-success:not(.d-none):not(:empty):not([hidden]),
+.alert-payroll-success:not(.d-none):not(:empty):not([hidden]) {
+  background-color: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #065f46 !important;
+}
+
+#view-payroll .alert-success:not(.d-none):not(:empty):not([hidden]) i,
+.modal .alert-success:not(.d-none):not(:empty):not([hidden]) i {
+  color: #059669 !important;
+  font-size: 20px !important;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* Alert Info / Royal Indigo (Visible) */
+#view-payroll .alert-info:not(.d-none):not(:empty):not([hidden]),
+#view-payroll .alert-primary:not(.d-none):not(:empty):not([hidden]),
+.modal .alert-info:not(.d-none):not(:empty):not([hidden]),
+.alert-payroll-info:not(.d-none):not(:empty):not([hidden]) {
+  background-color: #eef2ff !important;
+  border-color: #c7d2fe !important;
+  color: #312e81 !important;
+}
+
+#view-payroll .alert-info:not(.d-none):not(:empty):not([hidden]) i,
+.modal .alert-info:not(.d-none):not(:empty):not([hidden]) i {
+  color: #4f46e5 !important;
+  font-size: 20px !important;
+  flex-shrink: 0;
+  margin-top: 0;
+}
+
+/* ==========================================================================
+   10. VISTAS ESPECIALES DE SUELDOS (RECIBOS, LSD ARCA, MATRICES)
+   ========================================================================== */
+/* Recibo de Sueldo Digital Ley 27.802 */
+.payslip-sheet-container {
+  background: var(--pay-white);
+  border: 1px solid var(--pay-slate-300);
+  border-radius: var(--pay-radius-8);
+  box-shadow: var(--pay-shadow-md);
+  padding: var(--pay-space-24);
+  font-family: 'Inter', sans-serif;
+  color: var(--pay-slate-900);
+}
+
+.payslip-legal-header {
+  border-bottom: 2px solid var(--pay-indigo-700);
+  padding-bottom: var(--pay-space-12);
+  margin-bottom: var(--pay-space-16);
+}
+
+.payslip-summary-box {
+  background: var(--pay-violet-50);
+  border: 1px solid var(--pay-violet-200);
+  border-radius: var(--pay-radius-8);
+  padding: var(--pay-space-16);
+  margin-top: var(--pay-space-16);
+}
+
+/* Libro de Sueldos Digital (LSD / F.931) Cards */
+.lsd-stat-card {
+  background: var(--pay-white);
+  border: 1px solid var(--pay-slate-200);
+  border-radius: var(--pay-radius-12);
+  padding: var(--pay-space-16);
+  box-shadow: var(--pay-shadow-xs);
+  transition: all 0.2s ease;
+}
+
+.lsd-stat-card:hover {
+  border-color: var(--pay-violet-400);
+  box-shadow: var(--pay-shadow-sm);
+}
+
+.lsd-stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 800;
+  color: var(--pay-indigo-900);
+}
+
+/* Sub-nav Link Activo de Sueldos */
+.nav-link.active-payroll {
+  color: var(--pay-violet-400) !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid var(--pay-indigo-500) !important;
+}

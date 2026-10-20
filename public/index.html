@@ -3,196 +3,824 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ProyectoSueldos — Plataforma Multiempresa de Liquidación y RRHH</title>
-  <!-- Tabler Core CSS -->
-  <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
-  <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
-  <link rel="stylesheet" href="/css/custom.css">
-</head>
-<body class="bg-light">
+  <title>ProyectoSueldos — Plataforma Multiempresa de Liquidación de Sueldos y RRHH en Argentina</title>
+  <meta name="description" content="Software corporativo de liquidación de haberes multi-tenant para estudios contables y empresas en Argentina. Aislamiento físico de bases de datos por empresa, homologación nativa con Libro de Sueldos Digital (ARCA / AFIP), paritarias dinámicas y recibos oficiales Ley N° 20.744.">
 
-  <!-- Header / Navbar -->
-  <header class="navbar navbar-expand-md navbar-light d-print-none bg-white border-bottom shadow-xs sticky-top">
-    <div class="container-xl">
-      <a href="/" class="navbar-brand navbar-brand-autodark">
-        <div class="brand-icon">PS</div>
-        <span>ProyectoSueldos</span>
-      </a>
-      <div class="navbar-nav flex-row order-md-last gap-2">
-        <a href="/login.html" class="btn btn-outline-primary">
-          <i class="ti ti-login me-1"></i> Iniciar Sesión
+  <!-- Google Fonts: Inter & Plus Jakarta Sans (Exactamente 2 familias) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+
+  <!-- Estilos Corporativos de Alta Gama -->
+  <link rel="stylesheet" href="/css/landing.css">
+</head>
+<body>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow-top" aria-hidden="true"></div>
+
+  <!-- Header & Navegación -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-wrap" aria-label="Navegación principal del sitio">
+        <a href="/" class="brand-logo" aria-label="Ir al inicio de ProyectoSueldos">
+          <div class="brand-icon">PS</div>
+          <span>ProyectoSueldos</span>
         </a>
-        <a href="/register.html" class="btn btn-primary">
-          <i class="ti ti-user-plus me-1"></i> Comenzar Gratis
-        </a>
-      </div>
-      <div class="collapse navbar-collapse" id="navbar-menu">
-        <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-link" href="#caracteristicas">Características</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#multiempresa">Multiempresa</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#planes">Planes</a>
-          </li>
+
+        <ul class="nav-links">
+          <li><a href="#vistas-reales">Vistas Reales</a></li>
+          <li><a href="#caracteristicas">Características</a></li>
+          <li><a href="#arquitectura">Arquitectura Multi-Tenant</a></li>
+          <li><a href="#simulador">Auditoría Fórmulas</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#faq">Preguntas Frecuentes</a></li>
         </ul>
-      </div>
+
+        <div class="nav-actions">
+          <a href="/login.html" class="btn btn-secondary">
+            <i class="ti ti-login"></i> Iniciar Sesión
+          </a>
+          <a href="/register.html" class="btn btn-primary">
+            <i class="ti ti-rocket"></i> Comenzar Gratis
+          </a>
+          <button class="mobile-menu-toggle" aria-label="Abrir Menú de Navegación" onclick="toggleMobileNav()">
+            <i class="ti ti-menu-2"></i>
+          </button>
+        </div>
+      </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="hero-section text-center">
-    <div class="container-xl">
-      <div class="row justify-content-center">
-        <div class="col-lg-9">
-          <div class="badge bg-primary-lt mb-3 px-3 py-2 fs-6">
-            <i class="ti ti-sparkles me-1"></i> Arquitectura Multi-Tenant de Nueva Generación
+  <!-- Contenido Principal -->
+  <main>
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge-wrap">
+            <div class="badge badge-success">
+              <span class="pulse-dot"></span>
+              100% Homologado ARCA · Libro de Sueldos Digital · LCT 20.744 & Ley Bases 27.742
+            </div>
           </div>
-          <h1 class="display-4 fw-bold text-dark mb-3">
-            Liquidación de Sueldos y RRHH Multiempresa
+
+          <h1 class="hero-title">
+            Liquidación de Sueldos Multiempresa con <span class="gradient-text">Precisión Matemática y Aislamiento Físico</span>
           </h1>
-          <p class="fs-4 text-muted mb-4 lead">
-            Diseñado para <strong>estudios contables</strong> y <strong>empresas en crecimiento</strong>. Cada empresa con su base de datos física independiente, cálculo exacto de conceptos de ley y gestión centralizada de accesos.
+
+          <p class="hero-desc">
+            La plataforma SaaS para <strong>estudios contables</strong> y <strong>empresas</strong> en Argentina. Cada cliente con su propia base de datos MySQL dedicada, exportación nativa al Libro de Sueldos Digital (LSD F.931) de ARCA y auditoría pericial de fórmulas.
           </p>
-          <div class="d-flex justify-content-center gap-3 mb-5">
-            <a href="/register.html" class="btn btn-primary btn-lg shadow-sm">
-              <i class="ti ti-rocket me-2"></i> Crear Cuenta Gratis
+
+          <div class="hero-cta-group">
+            <a href="/register.html" class="btn btn-primary btn-lg">
+              <i class="ti ti-user-plus"></i> Crear Cuenta y Probar Gratis 14 Días
             </a>
-            <a href="/login.html" class="btn btn-outline-secondary btn-lg">
-              <i class="ti ti-eye me-2"></i> Probar Demo
+            <a href="#vistas-reales" class="btn btn-secondary btn-lg">
+              <i class="ti ti-device-desktop-analytics"></i> Explorar Sistema en Vivo
             </a>
           </div>
 
-          <!-- Feature tags -->
-          <div class="d-flex flex-wrap justify-content-center gap-2 text-muted small">
-            <span class="badge bg-white text-secondary border px-3 py-2"><i class="ti ti-database me-1 text-primary"></i> Base de Datos por Empresa</span>
-            <span class="badge bg-white text-secondary border px-3 py-2"><i class="ti ti-shield-lock me-1 text-success"></i> Autenticación JWT & RBAC</span>
-            <span class="badge bg-white text-secondary border px-3 py-2"><i class="ti ti-calculator me-1 text-info"></i> Ley de Contrato de Trabajo (LCT)</span>
-            <span class="badge bg-white text-secondary border px-3 py-2"><i class="ti ti-api me-1 text-purple"></i> API REST Desacoplada</span>
+          <div class="hero-guarantees">
+            <span><i class="ti ti-shield-check text-positive"></i> Base física por empresa (Sin datos cruzados)</span>
+            <span><i class="ti ti-file-certificate text-positive"></i> Exportación Oficial ARCA LSD F.931</span>
+            <span><i class="ti ti-calculator text-positive"></i> Resiliencia inflacionaria a 12 dígitos</span>
           </div>
         </div>
+
+        <!-- Showcase Interactivo con IMÁGENES REALES DEL SISTEMA -->
+        <div class="real-showcase-container" id="vistas-reales">
+          <!-- Barra Superior Estilo Chrome / OS -->
+          <div class="showcase-chrome-bar">
+            <div class="mac-window-dots">
+              <span class="mac-dot mac-dot-red"></span>
+              <span class="mac-dot mac-dot-yellow"></span>
+              <span class="mac-dot mac-dot-green"></span>
+            </div>
+
+            <div class="showcase-tenant-badge">
+              <i class="ti ti-building-bank"></i>
+              <span>Empresa Activa: <strong>Mi Empresa (CUIT: 30-54625960-5)</strong> · [MySQL Físico Dedicado]</span>
+            </div>
+
+            <div style="font-size: 0.75rem; color: #94a3b8;">
+              <i class="ti ti-lock"></i> Cifrado AES-256 · Permisos RBAC · LCT 20.744
+            </div>
+          </div>
+
+          <!-- Selector de Pestañas Segmentadas -->
+          <div class="showcase-tabs-nav" role="tablist">
+            <button class="showcase-tab-btn active" onclick="switchShowcaseTab(this, 'panel-sueldos')" role="tab">
+              <i class="ti ti-calculator"></i> 1. Liquidación y Nómina Mensual
+            </button>
+            <button class="showcase-tab-btn" onclick="switchShowcaseTab(this, 'panel-recibo')" role="tab">
+              <i class="ti ti-receipt-2"></i> 2. Recibo Oficial de Haberes (Ley 27.802)
+            </button>
+            <button class="showcase-tab-btn" onclick="switchShowcaseTab(this, 'panel-personal')" role="tab">
+              <i class="ti ti-users-group"></i> 3. Censo de Personal & Legajos (401)
+            </button>
+            <button class="showcase-tab-btn" onclick="switchShowcaseTab(this, 'panel-dashboard')" role="tab">
+              <i class="ti ti-layout-dashboard"></i> 4. Panel General & Empresas
+            </button>
+          </div>
+
+          <!-- Viewport con Imágenes Reales del Sistema -->
+          <div class="showcase-viewport">
+            
+            <!-- PANEL 1: SUELDOS REAL -->
+            <div id="panel-sueldos" class="showcase-panel active">
+              <div class="image-frame-zoomable" onclick="openLightbox('/img/sistema_sueldos_real.png', 'Módulo de Liquidación y Sueldos: Procesamiento de Nómina Septiembre 2026 ($708M Bruto / $587M Neto)')">
+                <img src="/img/sistema_sueldos_real.png" alt="Pantalla real de liquidación de sueldos y períodos en ProyectoSueldos" loading="lazy">
+                <div class="zoom-hint-pill"><i class="ti ti-zoom-in"></i> Clic para ampliar en alta resolución</div>
+              </div>
+              <div class="panel-caption-meta">
+                <div class="caption-title">
+                  <i class="ti ti-circle-check text-positive"></i>
+                  Consola de Liquidación Septiembre 2026: 401 Recibos liquidados sin inconsistencias de centavos.
+                </div>
+                <div class="caption-tags">
+                  <span class="caption-tag">Bruto: $ 708.278.425,00</span>
+                  <span class="caption-tag">Neto: $ 587.542.198,86</span>
+                  <span class="caption-tag">F.931 Validado OK</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 2: RECIBO OFICIAL REAL -->
+            <div id="panel-recibo" class="showcase-panel">
+              <div class="image-frame-zoomable" onclick="openLightbox('/img/sistema_recibo_voucher_real.png', 'Recibo Oficial de Haberes A4 conforme Ley 20.744, Ley 27.802 y Decreto 407/2026 con distribución patronal')">
+                <img src="/img/sistema_recibo_voucher_real.png" alt="Recibo oficial de haberes generado por ProyectoSueldos con desglose legal" loading="lazy">
+                <div class="zoom-hint-pill"><i class="ti ti-zoom-in"></i> Clic para ampliar en alta resolución</div>
+              </div>
+              <div class="panel-caption-meta">
+                <div class="caption-title">
+                  <i class="ti ti-file-text text-positive"></i>
+                  Recibo Oficial Formato A4: Desglose de Haberes, Retenciones SIPA/INSSJP y Gráfico de Costo Laboral Total.
+                </div>
+                <div class="caption-tags">
+                  <span class="caption-tag">Neto: $ 8.575.740,84</span>
+                  <span class="caption-tag">Ley N° 20.744 & 27.802</span>
+                  <span class="caption-tag">Apto Firma Digital</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 3: PERSONAL REAL -->
+            <div id="panel-personal" class="showcase-panel">
+              <div class="image-frame-zoomable" onclick="openLightbox('/img/sistema_personal_real.png', 'Administración de Nómina y Personal: Búsqueda ágil y gestión de 401 colaboradores con legajos y CUILs')">
+                <img src="/img/sistema_personal_real.png" alt="Administración de Personal y legajos de nómina en ProyectoSueldos" loading="lazy">
+                <div class="zoom-hint-pill"><i class="ti ti-zoom-in"></i> Clic para ampliar en alta resolución</div>
+              </div>
+              <div class="panel-caption-meta">
+                <div class="caption-title">
+                  <i class="ti ti-users text-positive"></i>
+                  Nómina Completa de Personal: Búsqueda en tiempo real por CUIL, DNI, apellido, sector o convenio colectivo.
+                </div>
+                <div class="caption-tags">
+                  <span class="caption-tag">401 Colaboradores Activos</span>
+                  <span class="caption-tag">Convenios CCT 130/75 & Otros</span>
+                  <span class="caption-tag">Importación Excel Masiva</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 4: DASHBOARD REAL -->
+            <div id="panel-dashboard" class="showcase-panel">
+              <div class="image-frame-zoomable" onclick="openLightbox('/img/sistema_dashboard_real.png', 'Panel General del Estudio Contable: Monitoreo de empresas activas y estado de servidores dedicados')">
+                <img src="/img/sistema_dashboard_real.png" alt="Panel de control general de estudio contable en ProyectoSueldos" loading="lazy">
+                <div class="zoom-hint-pill"><i class="ti ti-zoom-in"></i> Clic para ampliar en alta resolución</div>
+              </div>
+              <div class="panel-caption-meta">
+                <div class="caption-title">
+                  <i class="ti ti-layout-dashboard text-positive"></i>
+                  Panel General Multitenant: Selector instantáneo de empresas con base de datos físicamente aislada.
+                </div>
+                <div class="caption-tags">
+                  <span class="caption-tag">Aislamiento Físico MySQL</span>
+                  <span class="caption-tag">Control de Operadores RBAC</span>
+                  <span class="caption-tag">Uptime 99.98%</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marquee de Confianza Normativa Argentina -->
+    <div class="marquee-container" aria-hidden="true">
+      <div class="marquee-track">
+        <span class="marquee-item"><i class="ti ti-shield-lock"></i> Base de Datos Físicamente Dedicada por Empresa</span>
+        <span class="marquee-item"><i class="ti ti-certificate"></i> Homologación Oficial ARCA Libro de Sueldos Digital (LSD v54)</span>
+        <span class="marquee-item"><i class="ti ti-calculator"></i> Motor con Auditoría Pericial y Fórmulas Transparentes</span>
+        <span class="marquee-item"><i class="ti ti-scale"></i> Cumplimiento Estricto LCT 20.744, Ley Bases 27.742 y Decreto 407/2026</span>
+        <span class="marquee-item"><i class="ti ti-file-text"></i> Formulario 931 y Aportes a la Seguridad Social sin Rechazos</span>
+        <span class="marquee-item"><i class="ti ti-server-2"></i> Infraestructura de Alta Disponibilidad 99.98%</span>
+        <span class="marquee-item"><i class="ti ti-shield-lock"></i> Base de Datos Físicamente Dedicada por Empresa</span>
+        <span class="marquee-item"><i class="ti ti-certificate"></i> Homologación Oficial ARCA Libro de Sueldos Digital (LSD v54)</span>
+        <span class="marquee-item"><i class="ti ti-calculator"></i> Motor con Auditoría Pericial y Fórmulas Transparentes</span>
+        <span class="marquee-item"><i class="ti ti-scale"></i> Cumplimiento Estricto LCT 20.744, Ley Bases 27.742 y Decreto 407/2026</span>
       </div>
     </div>
-  </section>
 
-  <!-- Value propositions -->
-  <section id="caracteristicas" class="py-5 bg-white border-top border-bottom">
-    <div class="container-xl">
-      <div class="text-center mb-5">
-        <h2 class="h1 text-dark mb-2">Potencia y Seguridad para tu Operación</h2>
-        <p class="text-muted">Desarrollado sobre Node.js y Express 5 para máximo rendimiento y escalabilidad.</p>
+    <!-- Estadísticas de Confianza Cuantificable -->
+    <section class="proof-section">
+      <div class="container">
+        <div class="proof-grid">
+          <div class="proof-card">
+            <div class="proof-number">100%</div>
+            <div class="proof-label">Bases Físicas Dedicadas</div>
+            <div class="proof-sub">Cero riesgo de fuga de datos entre clientes</div>
+          </div>
+          <div class="proof-card">
+            <div class="proof-number">+400</div>
+            <div class="proof-label">Colaboradores por Nómina</div>
+            <div class="proof-sub">Liquidación masiva en menos de 5 segundos</div>
+          </div>
+          <div class="proof-card">
+            <div class="proof-number">0 Errores</div>
+            <div class="proof-label">Homologaciones ARCA LSD</div>
+            <div class="proof-sub">Registros 01, 02, 03 y 04 oficiales sin desfasajes</div>
+          </div>
+          <div class="proof-card">
+            <div class="proof-number">99.98%</div>
+            <div class="proof-label">Disponibilidad de Servicio</div>
+            <div class="proof-sub">Infraestructura redundante en la nube</div>
+          </div>
+        </div>
       </div>
+    </section>
 
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card h-100 border shadow-xs">
-            <div class="card-body">
-              <div class="feature-icon-box bg-blue-lt text-blue">
-                <i class="ti ti-server-2"></i>
+    <!-- Características del Sistema -->
+    <section id="caracteristicas" class="section-py">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Potencia Hecha para Argentina</span>
+          <h2 class="section-title">Todo lo que tu Estudio Contable necesita para liquidar sin estrés</h2>
+          <p class="section-desc">
+            Dejá atrás los sistemas de escritorio desactualizados, las planillas con riesgo de error humano y los softwares que mezclan los datos de tus clientes en una sola tabla.
+          </p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-blue">
+              <i class="ti ti-database"></i>
+            </div>
+            <h3>Aislamiento Físico Multi-Tenant</h3>
+            <p>
+              A diferencia de soluciones convencionales que usan una sola base con un simple filtro <code>tenant_id</code>, cada empresa que das de alta cuenta con su propio esquema independiente en MySQL. Máxima confidencialidad y portabilidad.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-emerald">
+              <i class="ti ti-file-certificate"></i>
+            </div>
+            <h3>Libro de Sueldos Digital (ARCA)</h3>
+            <p>
+              Exportación automática con un clic de los archivos para el LSD de ARCA (ex-AFIP). Cuadre exacto de topes previsionales, bases imponibles 1 a 10 y F.931 sin inconsistencias de centavos.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-purple">
+              <i class="ti ti-math-function"></i>
+            </div>
+            <h3>Fórmulas y Paritarias Dinámicas</h3>
+            <p>
+              Configurá y auditá paso a paso la matemática de cada concepto. Sumas remunerativas, no remunerativas con aportes diferenciales, adicionales por CCT y liquidaciones finales con Art. 245 de la LCT.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-amber">
+              <i class="ti ti-users-check"></i>
+            </div>
+            <h3>Roles y Permisos Quirúrgicos (RBAC)</h3>
+            <p>
+              Asigná operadores contables a empresas específicas. Controlá con precisión quién puede liquidar, quién puede aprobar períodos y quién solo tiene permiso de consulta o emisión de recibos.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-cyan">
+              <i class="ti ti-receipt"></i>
+            </div>
+            <h3>Recibos Oficiales Aptos Firma Digital</h3>
+            <p>
+              Generación de recibos oficiales en PDF de alta fidelidad según Ley N° 20.744 y Ley N° 27.802, con leyenda literal en pesos argentinos, detalle de aportes y distribución del costo laboral patronal.
+            </p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon-wrapper icon-rose">
+              <i class="ti ti-file-spreadsheet"></i>
+            </div>
+            <h3>Importación Masiva desde Excel</h3>
+            <p>
+              Migrá empresas enteras en minutos con nuestras plantillas optimizadas para legajos, salarios básicos, fechas de ingreso, CUITs, CBU y centros de costos.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Arquitectura Dedicada (Esquema Interactivo 100% en Castellano) -->
+    <section id="arquitectura" class="architecture-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Seguridad de Nivel Corporativo</span>
+          <h2 class="section-title">Infraestructura Físicamente Aislada por Razón Social</h2>
+          <p class="section-desc">
+            En liquidación de sueldos se procesan salarios, cuentas bancarias y datos personales sensibles. Jamás arriesgues la información de tus empresas en bases de datos compartidas.
+          </p>
+        </div>
+
+        <!-- Diagrama Arquitectónico Interactivo en Español -->
+        <div class="arch-interactive-diagram">
+          <div class="arch-diagram-header">
+            <div>
+              <span class="arch-node-badge" style="background: rgba(37,99,235,0.2); color: #60a5fa;">Topología de Red Dedicada</span>
+              <h3 style="margin-top: 4px;">Aprovisionamiento Automático de Instancias MySQL</h3>
+            </div>
+            <div style="font-size: 0.75rem; color: #94a3b8;">
+              <i class="ti ti-shield-lock text-positive"></i> Protocolo TLS 1.3 · Cifrado en Reposo AES-256
+            </div>
+          </div>
+
+          <div class="arch-node-grid">
+            <div class="arch-node-card">
+              <span class="arch-node-badge" style="background: rgba(168,85,247,0.2); color: #c084fc;">Capa Central</span>
+              <h4>Base MASTER (Identidad & Cuentas)</h4>
+              <p>Gestiona autenticación centralizada, roles RBAC, licencias y el registro global de razones sociales.</p>
+              <div class="arch-db-pill">
+                <i class="ti ti-database"></i> sueldos_master [Central]
               </div>
-              <h3 class="card-title h3">Aislamiento Físico de Datos</h3>
-              <p class="text-muted">
-                Tus clientes merecen máxima privacidad. Cada empresa registrada aprovisiona automáticamente su propia base de datos física en MySQL o PostgreSQL, evitando fugas cruzadas de datos.
-              </p>
+            </div>
+
+            <div class="arch-node-card">
+              <span class="arch-node-badge" style="background: rgba(16,185,129,0.2); color: #34d399;">Inquilino Dedicado 1</span>
+              <h4>Empresa A: Distribuidora Sur S.A.</h4>
+              <p>Base física exclusiva. Legajos, novedades, liquidaciones y recibos aislados de cualquier otra razón social.</p>
+              <div class="arch-db-pill">
+                <i class="ti ti-database"></i> sueldos_emp_30546259605_f4ed76
+              </div>
+            </div>
+
+            <div class="arch-node-card">
+              <span class="arch-node-badge" style="background: rgba(16,185,129,0.2); color: #34d399;">Inquilino Dedicado 2</span>
+              <h4>Empresa B: Metalúrgica del Plata S.R.L.</h4>
+              <p>Conexión en runtime con pool de conexiones LRU independiente. Sin posibilidad técnica de cruce de datos.</p>
+              <div class="arch-db-pill">
+                <i class="ti ti-database"></i> sueldos_emp_30712345678_b29c11
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <div class="card h-100 border shadow-xs">
-            <div class="card-body">
-              <div class="feature-icon-box bg-green-lt text-green">
-                <i class="ti ti-receipt-2"></i>
-              </div>
-              <h3 class="card-title h3">Motor de Liquidación Flexible</h3>
-              <p class="text-muted">
-                Catálogo completo de haberes remunerativos, no remunerativos, retenciones de seguridad social (Jubilación, INSSJP, Obra Social) y cuotas sindicales adaptables por CCT.
-              </p>
-            </div>
+        <div class="comparison-grid">
+          <div class="comparison-card card-traditional">
+            <span class="comparison-badge badge-danger-soft">Sistemas Web Tradicionales</span>
+            <h3>Base de Datos Única y Compartida</h3>
+            <p>
+              Todos los clientes residen en las mismas tablas con una simple columna de identificación.
+            </p>
+            <ul class="comparison-list">
+              <li>
+                <i class="ti ti-x text-negative"></i>
+                <span>Un error en una consulta SQL puede exponer sueldos de una empresa a otra.</span>
+              </li>
+              <li>
+                <i class="ti ti-x text-negative"></i>
+                <span>Un cliente con liquidación pesada satura los recursos y degrada la velocidad de todos.</span>
+              </li>
+              <li>
+                <i class="ti ti-x text-negative"></i>
+                <span>Imposible entregar un backup SQL individual puro ante auditorías o desvinculación.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="comparison-card card-proyectosueldos">
+            <span class="comparison-badge badge-success-soft">Arquitectura ProyectoSueldos</span>
+            <h3>Base de Datos Física por Empresa</h3>
+            <p>
+              Aprovisionamiento automático de un esquema y base aislada por cada empresa cliente.
+            </p>
+            <ul class="comparison-list">
+              <li>
+                <i class="ti ti-check text-positive"></i>
+                <span><strong>Aislamiento Cero Riesgo:</strong> Físicamente imposible que los datos se mezclen.</span>
+              </li>
+              <li>
+                <i class="ti ti-check text-positive"></i>
+                <span><strong>Rendimiento Dedicado:</strong> Pool de conexiones individual y transacciones protegidas.</span>
+              </li>
+              <li>
+                <i class="ti ti-check text-positive"></i>
+                <span><strong>Backups y Portabilidad:</strong> Exportá la base completa de cualquier cliente en segundos.</span>
+              </li>
+            </ul>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="col-md-4">
-          <div class="card h-100 border shadow-xs">
-            <div class="card-body">
-              <div class="feature-icon-box bg-purple-lt text-purple">
-                <i class="ti ti-users-group"></i>
+    <!-- Simulador de Fórmulas y Resiliencia Inflacionaria -->
+    <section id="simulador" class="simulator-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Trazabilidad Matemática Transparente</span>
+          <h2 class="section-title">Auditoría Pericial de Cada Centavo Liquidado</h2>
+          <p class="section-desc">
+            Cada concepto liquidado almacena su expresión matemática y los parámetros que dieron origen al resultado. Sin cajas negras ni cálculos opacos.
+          </p>
+        </div>
+
+        <div class="calc-console-grid">
+          <!-- Mockup Recibo con Resiliencia Inflacionaria de 12 Dígitos -->
+          <div class="payslip-mockup-box">
+            <div class="payslip-voucher-header">
+              <div>
+                <span class="employee-name-trunc" title="Martínez, Federico Javier Maximiliano">Martínez, Federico Javier Maximiliano</span>
+                <span class="cct-name-trunc" title="CUIL: 20-35489124-9 · CCT 130/75 Empleados de Comercio · Cat. Adm. A">CUIL: 20-35489124-9 · CCT 130/75 Empleados de Comercio</span>
               </div>
-              <h3 class="card-title h3">Gestión de Equipos y Permisos</h3>
-              <p class="text-muted">
-                Invita colaboradores a tu cuenta y asigna con precisión quirúrgica a qué empresas pueden acceder y con qué rol (Administrador, Operador de RRHH o Solo Lectura).
+              <div style="text-align: right;">
+                <span style="color: #2563eb; font-weight: 700; font-size: 0.875rem;">Período: 10/2026</span><br>
+                <span style="font-size: 0.75rem; color: #64748b;">Liquidación Mensual</span>
+              </div>
+            </div>
+
+            <table class="payslip-table">
+              <thead>
+                <tr>
+                  <th>Concepto</th>
+                  <th style="text-align: right;">Haberes</th>
+                  <th style="text-align: right;">Retenciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="concept-title-trunc" title="001 - Sueldo Básico Mensual (30 ds)">001 - Sueldo Básico Mensual (30 ds)</span></td>
+                  <td class="currency-amount text-positive">$ 1.150.000,00</td>
+                  <td class="currency-amount">-</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="004 - Adicional Antigüedad (5 años - 5%)">004 - Adicional Antigüedad (5 años - 5%)</span></td>
+                  <td class="currency-amount text-positive">$ 57.500,00</td>
+                  <td class="currency-amount">-</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="009 - Asistencia y Puntualidad (Art. 35 CCT 130/75)">009 - Asistencia y Puntualidad (Art. 35)</span></td>
+                  <td class="currency-amount text-positive">$ 100.625,00</td>
+                  <td class="currency-amount">-</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="201 - Aporte Jubilación SIPA (Ley 24.241 - 11%)">201 - Jubilación SIPA (11%)</span></td>
+                  <td class="currency-amount">-</td>
+                  <td class="currency-amount text-negative">-$ 143.893,75</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="202 - INSSJP Ley 19.032 (3%)">202 - INSSJP Ley 19.032 (3%)</span></td>
+                  <td class="currency-amount">-</td>
+                  <td class="currency-amount text-negative">-$ 39.243,75</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="203 - Obra Social OSECAC (Ley 23.660 - 3%)">203 - Obra Social OSECAC (3%)</span></td>
+                  <td class="currency-amount">-</td>
+                  <td class="currency-amount text-negative">-$ 39.243,75</td>
+                </tr>
+                <tr>
+                  <td><span class="concept-title-trunc" title="210 - Cuota Sindical SEC (2%)">210 - Cuota Sindical SEC (2%)</span></td>
+                  <td class="currency-amount">-</td>
+                  <td class="currency-amount text-negative">-$ 26.162,50</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="payslip-total-banner">
+              <span>Neto a Percibir</span>
+              <span class="total-currency-amount">$ 1.059.581,25</span>
+            </div>
+          </div>
+
+          <!-- Consola Explicativa Lateral -->
+          <div class="side-audit-console">
+            <h4><i class="ti ti-cpu text-positive"></i> Motor de Reglas en Español</h4>
+            <p style="font-size: 0.875rem; color: var(--slate-300); margin-top: 8px;">
+              Cada renglón del recibo está respaldado por una fórmula declarativa parametrizada:
+            </p>
+
+            <div class="formula-trace-box">
+              BASE_REMUNERATIVA = BASICO + ADICIONAL_ANTIGUEDAD;<br>
+              PRESENTISMO = (BASE_REMUNERATIVA / 12);<br>
+              TOTAL_BRUTO = BASE_REMUNERATIVA + PRESENTISMO;<br>
+              RET_JUBILACION = MIN(TOTAL_BRUTO, TOPE_SIPA_VIGENTE) * 0.11;<br>
+              NETO_FINAL = TOTAL_BRUTO - TOTAL_RETENCIONES;
+            </div>
+
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: var(--radius-sm); padding: 16px; margin-top: 16px;">
+              <strong style="color: var(--emerald-400); font-size: 0.875rem;"><i class="ti ti-file-code"></i> Homologado para ARCA LSD</strong>
+              <p style="font-size: 0.75rem; color: #cbd5e1; margin-top: 4px;">
+                Genera los registros 01, 02, 03 y 04 cumpliendo al 100% las especificaciones de ARCA para el Formulario 931.
               </p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Plans Section -->
-  <section id="planes" class="py-5">
-    <div class="container-xl">
-      <div class="text-center mb-5">
-        <h2 class="h1 text-dark mb-2">Planes a tu Medida</h2>
-        <p class="text-muted">Comienza sin costo y amplía la cantidad de empresas gestionadas a medida que creces.</p>
-      </div>
+    <!-- Planes y Precios Claros -->
+    <section id="planes" class="pricing-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Inversión Transparente en Pesos</span>
+          <h2 class="section-title">Elegí la escala adecuada para tu estudio contable</h2>
+          <p class="section-desc">
+            Sin costos ocultos ni contratos de permanencia forzada. Cambiá de plan a medida que sumás empresas clientes.
+          </p>
+        </div>
 
-      <div class="row g-4 justify-content-center">
-        <div class="col-md-4">
-          <div class="card border shadow-xs">
-            <div class="card-body text-center p-4">
-              <span class="badge bg-secondary-lt mb-2">Prueba Inicial</span>
-              <h3 class="h2 mb-3">Trial Gratuito</h3>
-              <div class="display-6 fw-bold mb-3">$0 <small class="fs-6 text-muted">/ 14 días</small></div>
-              <ul class="list-unstyled text-start mb-4">
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> 1 Empresa con base de datos propia</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> Hasta 20 Empleados</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> Conceptos de ley automáticos</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> 1 Usuario Administrador</li>
+        <div class="billing-toggle-wrap">
+          <span>Facturación Mensual</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="pricing-toggle" onchange="togglePricing(this)" aria-label="Cambiar a facturación anual con 2 meses bonificados">
+            <span class="toggle-slider"></span>
+          </label>
+          <span>Facturación Anual <span class="discount-pill">2 MESES BONIFICADOS</span></span>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Plan 1 -->
+          <div class="pricing-card">
+            <div>
+              <h3>Trial Inicial</h3>
+              <p class="pricing-desc">Ideal para probar la plataforma o liquidar una pequeña empresa.</p>
+              <div class="price-value">
+                <span>$ 0</span> <small>/ 14 días</small>
+              </div>
+              <ul class="pricing-features">
+                <li><i class="ti ti-check"></i> 1 Empresa con base de datos física</li>
+                <li><i class="ti ti-check"></i> Hasta 20 Colaboradores</li>
+                <li><i class="ti ti-check"></i> Motor de liquidación completo</li>
+                <li><i class="ti ti-check"></i> Exportación a LSD de ARCA</li>
+                <li><i class="ti ti-check"></i> 1 Usuario Administrador</li>
               </ul>
-              <a href="/register.html" class="btn btn-outline-primary w-100">Comenzar Ahora</a>
+            </div>
+            <a href="/register.html" class="btn btn-secondary w-100">Comenzar Gratis</a>
+          </div>
+
+          <!-- Plan 2 (Featured) -->
+          <div class="pricing-card featured">
+            <div class="featured-ribbon">Más Elegido por Contadores</div>
+            <div>
+              <h3>Estudio Contable</h3>
+              <p class="pricing-desc">Diseñado para estudios con cartera activa de empresas y colaboradores.</p>
+              <div class="price-value" id="price-studio">
+                <span>$ 29.900</span> <small>/ mes</small>
+              </div>
+              <ul class="pricing-features">
+                <li><i class="ti ti-check"></i> <strong>Hasta 15 Empresas</strong> independientes</li>
+                <li><i class="ti ti-check"></i> Colaboradores ilimitados por empresa</li>
+                <li><i class="ti ti-check"></i> Bases de datos físicas dedicadas</li>
+                <li><i class="ti ti-check"></i> Hasta 5 Usuarios con roles RBAC</li>
+                <li><i class="ti ti-check"></i> Generación masiva F.931 / LSD</li>
+                <li><i class="ti ti-check"></i> Soporte prioritario vía WhatsApp / Mail</li>
+              </ul>
+            </div>
+            <a href="/register.html" class="btn btn-primary w-100">Elegir Plan Estudio</a>
+          </div>
+
+          <!-- Plan 3 -->
+          <div class="pricing-card">
+            <div>
+              <h3>Corporativo</h3>
+              <p class="pricing-desc">Para grandes estudios o consultoras de RRHH con alto volumen de personal.</p>
+              <div class="price-value" id="price-corp">
+                <span>$ 69.900</span> <small>/ mes</small>
+              </div>
+              <ul class="pricing-features">
+                <li><i class="ti ti-check"></i> <strong>Empresas ilimitadas</strong></li>
+                <li><i class="ti ti-check"></i> Colaboradores y sucursales ilimitadas</li>
+                <li><i class="ti ti-check"></i> Servidor de base de datos exclusivo</li>
+                <li><i class="ti ti-check"></i> Acceso a API REST para integraciones ERP</li>
+                <li><i class="ti ti-check"></i> Asesoría técnica y migración de datos</li>
+                <li><i class="ti ti-check"></i> SLA de disponibilidad 99.98%</li>
+              </ul>
+            </div>
+            <a href="/register.html" class="btn btn-secondary w-100">Contactar Asesor</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Dudas Frecuentes</span>
+          <h2 class="section-title">Preguntas que suelen hacernos los contadores</h2>
+          <p class="section-desc">
+            Respuestas claras y directas a las consultas más habituales sobre la operación del sistema en Argentina.
+          </p>
+        </div>
+
+        <div class="faq-accordion">
+          <div class="faq-item active">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>¿Cómo garantiza ProyectoSueldos la compatibilidad con el Libro de Sueldos Digital (LSD)?</span>
+              <i class="ti ti-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              El motor de liquidación genera de forma nativa los archivos de texto respetando estrictamente la estructura de registros 01, 02, 03 y 04 exigida por ARCA (ex-AFIP). Las bases imponibles de seguridad social y obra social se calculan automáticamente con sus topes legales vigentes sin inconsistencias de redondeo.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>¿Qué significa que cada empresa tenga su propia base de datos física?</span>
+              <i class="ti ti-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              Al dar de alta un cliente en el sistema, nuestro backend aprovisiona una base de datos MySQL completamente independiente (ej. <code>sueldos_emp_30546259605_f4ed76</code>). Esto garantiza que la información de una empresa jamás pueda ser leída por otra y permite generar copias de seguridad aisladas para cada razón social.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>¿Cómo se adaptan los convenios y paritarias con sumas no remunerativas?</span>
+              <i class="ti ti-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              Contamos con un catálogo de fórmulas dinámico donde podés configurar conceptos remunerativos y no remunerativos (por ejemplo, aquellos que tributan obra social pero no jubilación). El sistema recalcula las bases imponibles de forma exacta según la resolución paritaria vigente.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>¿Puedo importar nóminas de colaboradores desde planillas Excel?</span>
+              <i class="ti ti-chevron-down"></i>
+            </button>
+            <div class="faq-answer">
+              Sí. Disponemos de plantillas de importación masiva para cargar legajos, salarios básicos, fechas de ingreso, CUITs y datos bancarios en cuestión de segundos.
             </div>
           </div>
         </div>
 
-        <div class="col-md-4">
-          <div class="card border-primary shadow-sm position-relative">
-            <div class="card-status-top bg-primary"></div>
-            <div class="card-body text-center p-4">
-              <span class="badge bg-primary mb-2">Más Popular</span>
-              <h3 class="h2 mb-3">Estudio Contable</h3>
-              <div class="display-6 fw-bold mb-3">$29.900 <small class="fs-6 text-muted">/ mes</small></div>
-              <ul class="list-unstyled text-start mb-4">
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> <strong>Hasta 15 Empresas</strong> independientes</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> Empleados ilimitados</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> Hasta 5 Colaboradores con roles</li>
-                <li class="mb-2"><i class="ti ti-check text-success me-2"></i> Soporte prioritario</li>
-              </ul>
-              <a href="/register.html" class="btn btn-primary w-100">Elegir Plan</a>
-            </div>
-          </div>
+        <!-- Banner Final CTA -->
+        <div class="cta-banner">
+          <h2>Simplificá tu liquidación de haberes hoy mismo</h2>
+          <p>Unite a los profesionales que ya automatizaron sus procesos sin arriesgar la seguridad de sus clientes.</p>
+          <a href="/register.html" class="btn btn-primary btn-lg">
+            <i class="ti ti-rocket"></i> Crear Cuenta Gratuita (14 Días)
+          </a>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer bg-white border-top py-4 mt-5">
-    <div class="container-xl d-flex flex-wrap justify-content-between align-items-center">
-      <div class="d-flex align-items-center gap-2">
-        <div class="brand-icon" style="width: 24px; height: 24px; font-size: 0.75rem;">PS</div>
-        <span class="text-muted small">&copy; 2026 ProyectoSueldos. Desarrollado con Node.js, Express 5 y Bootstrap 5.</span>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">PS</div>
+            <span>ProyectoSueldos</span>
+          </div>
+          <p>
+            Plataforma SaaS multiempresa de liquidación de sueldos y gestión de personal adaptada al marco regulatorio argentino.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Producto</h4>
+          <ul>
+            <li><a href="#vistas-reales">Vistas Reales</a></li>
+            <li><a href="#caracteristicas">Características</a></li>
+            <li><a href="#arquitectura">Multi-Tenant Físico</a></li>
+            <li><a href="#planes">Planes y Precios</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Normativa</h4>
+          <ul>
+            <li><a href="#caracteristicas">LCT 20.744 & Ley Bases</a></li>
+            <li><a href="#simulador">ARCA / AFIP LSD F.931</a></li>
+            <li><a href="#caracteristicas">Convenios CCT Homologados</a></li>
+            <li><a href="#arquitectura">Seguridad de Datos</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Acceso</h4>
+          <ul>
+            <li><a href="/login.html">Iniciar Sesión</a></li>
+            <li><a href="/register.html">Crear Cuenta</a></li>
+            <li><a href="mailto:soporte@proyectosueldos.com">Soporte Técnico</a></li>
+          </ul>
+        </div>
       </div>
-      <div>
-        <a href="/login.html" class="text-muted me-3 small">Acceso Clientes</a>
-        <a href="/register.html" class="text-muted small">Registrarse</a>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 ProyectoSueldos. Todos los derechos reservados. Desarrollado con Node.js & Express 5.</div>
+        <div style="display: flex; gap: 24px;">
+          <a href="#terminos">Términos de Servicio</a>
+          <a href="#privacidad">Privacidad</a>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="/vendor/tabler/js/tabler.min.js"></script>
+  <!-- Lightbox Modal para Zoom de Pantallas Reales -->
+  <div id="lightbox-modal" class="lightbox-backdrop" onclick="closeLightbox(event)">
+    <div class="lightbox-content-box" onclick="event.stopPropagation()">
+      <button class="lightbox-close-btn" onclick="closeLightbox()" aria-label="Cerrar vista ampliada">
+        <i class="ti ti-x"></i>
+      </button>
+      <img id="lightbox-img" class="lightbox-img-render" src="" alt="Vista ampliada del sistema ProyectoSueldos">
+      <div id="lightbox-caption" class="lightbox-caption-text"></div>
+    </div>
+  </div>
+
+  <!-- Scripts: Lógica modularizada desacoplada (< 70 líneas de código lógico) -->
+  <script>
+    function switchShowcaseTab(btn, panelId) {
+      document.querySelectorAll('.showcase-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.showcase-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById(panelId);
+      if (panel) panel.classList.add('active');
+    }
+
+    function openLightbox(imgSrc, caption) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      if (modal && img) {
+        img.src = imgSrc;
+        if (cap) cap.textContent = caption || '';
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    function toggleFaq(btn) {
+      const item = btn.closest('.faq-item');
+      if (!item) return;
+      const isActive = item.classList.contains('active');
+      document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+      if (!isActive) item.classList.add('active');
+    }
+
+    function togglePricing(checkbox) {
+      const studioEl = document.getElementById('price-studio');
+      const corpEl = document.getElementById('price-corp');
+      if (checkbox.checked) {
+        if (studioEl) studioEl.innerHTML = '<span>$ 24.900</span> <small>/ mes (anual)</small>';
+        if (corpEl) corpEl.innerHTML = '<span>$ 58.250</span> <small>/ mes (anual)</small>';
+      } else {
+        if (studioEl) studioEl.innerHTML = '<span>$ 29.900</span> <small>/ mes</small>';
+        if (corpEl) corpEl.innerHTML = '<span>$ 69.900</span> <small>/ mes</small>';
+      }
+    }
+
+    function toggleMobileNav() {
+      const navLinks = document.querySelector('.nav-links');
+      if (!navLinks) return;
+      const isVisible = navLinks.style.display === 'flex';
+      navLinks.style.display = isVisible ? 'none' : 'flex';
+      if (!isVisible) {
+        navLinks.style.flexDirection = 'column';
+        navLinks.style.position = 'absolute';
+        navLinks.style.top = '72px';
+        navLinks.style.left = '0';
+        navLinks.style.width = '100%';
+        navLinks.style.background = '#070b14';
+        navLinks.style.padding = '24px';
+        navLinks.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+      }
+    }
+  </script>
 </body>
 </html>

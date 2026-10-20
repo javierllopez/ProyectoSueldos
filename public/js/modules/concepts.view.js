@@ -71,6 +71,9 @@ class ConceptsMethods {
               ? '<span class="badge bg-azure-lt small py-0 px-1 font-monospace" style="font-size: 0.68rem;"><i class="ti ti-calculator me-1"></i>Calculado</span>'
               : `<span class="badge bg-cyan-lt small py-0 px-1 font-monospace" style="font-size: 0.68rem;">Nov: ${escapeHtml(c.noveltyDataType)}</span>`)
           : '';
+        const embargoBadge = c.isEmbargo
+          ? '<span class="badge bg-danger-lt small py-0 px-1 font-monospace ms-1" style="font-size: 0.68rem;" title="Destinado a Embargo Judicial"><i class="ti ti-gavel me-1"></i>Embargo</span>'
+          : '';
         const scopeBadge = (c.scope === 'INDIVIDUAL')
           ? '<span class="badge bg-purple-lt" title="Aplica solo si se asigna expresamente al empleado"><i class="ti ti-user me-1"></i>Individual</span>'
           : '<span class="badge bg-azure-lt" title="Aplica a toda la nómina"><i class="ti ti-users me-1"></i>General</span>';
@@ -80,7 +83,7 @@ class ConceptsMethods {
             <td><strong class="font-monospace text-primary">${escapeHtml(c.code)}</strong></td>
             <td>
               <div class="fw-bold">${escapeHtml(c.name)}</div>
-              ${noveltyBadge}
+              ${noveltyBadge} ${embargoBadge}
             </td>
             <td>${typeBadges[c.type] || c.type}</td>
             <td>${scopeBadge}</td>
@@ -270,7 +273,9 @@ class ConceptsMethods {
       options = [
         { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' },
         { value: 'TOTAL_NO_REMUNERATIVO', label: '[TOTAL_NO_REMUNERATIVO] Total No Remunerativo' },
-        { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' }
+        { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' },
+        { value: 'BASE_OBRA_SOCIAL', label: '[BASE_OBRA_SOCIAL] Base Imponible Obra Social' },
+        { value: 'BASE_OBRA_SOCIAL_COMPLETA', label: '[BASE_OBRA_SOCIAL_COMPLETA] Base Obra Social Jornada Completa (Art. 92 TER)' }
       ];
     } else if (type === 'AUXILIARY') {
       if (numPart <= 3999) {
@@ -283,7 +288,9 @@ class ConceptsMethods {
         options = [
           { value: 'TOTAL_REMUNERATIVO', label: '[TOTAL_REMUNERATIVO] Total Remunerativo' },
           { value: 'TOTAL_NO_REMUNERATIVO', label: '[TOTAL_NO_REMUNERATIVO] Total No Remunerativo' },
-          { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' }
+          { value: 'TOTAL_BRUTO', label: '[TOTAL_BRUTO] Sueldo Bruto (Rem + No Rem)' },
+          { value: 'BASE_OBRA_SOCIAL', label: '[BASE_OBRA_SOCIAL] Base Imponible Obra Social' },
+          { value: 'BASE_OBRA_SOCIAL_COMPLETA', label: '[BASE_OBRA_SOCIAL_COMPLETA] Base Obra Social Jornada Completa (Art. 92 TER)' }
         ];
       }
     }
@@ -370,6 +377,9 @@ class ConceptsMethods {
     if (qtyFormulaInput) qtyFormulaInput.value = '';
     const persistentSelect = document.getElementById('concept-input-is-persistent');
     if (persistentSelect) persistentSelect.value = 'true';
+    const isEmbargoSwitch = document.getElementById('concept-input-is-embargo');
+    if (isEmbargoSwitch) isEmbargoSwitch.checked = false;
+    this.handleEmbargoToggle(false);
     document.getElementById('concept-formula-box')?.classList.remove('d-none');
     document.getElementById('concept-matrix-box')?.classList.add('d-none');
 
@@ -458,6 +468,11 @@ class ConceptsMethods {
     if (editPersistentSelect) {
       editPersistentSelect.value = (c.isPersistent === false || c.isPersistent === 0) ? 'false' : 'true';
     }
+    const isEmbargoSwitch = document.getElementById('concept-input-is-embargo');
+    if (isEmbargoSwitch) {
+      isEmbargoSwitch.checked = Boolean(c.isEmbargo);
+    }
+    this.handleEmbargoToggle(Boolean(c.isEmbargo));
     document.getElementById('concept-input-default-value').value = c.defaultValue || '0.00';
     const arcaSelect = document.getElementById('concept-input-arca-code');
     if (arcaSelect) {
@@ -562,6 +577,7 @@ class ConceptsMethods {
       quantitySource: finalQtySource,
       periodType: document.getElementById('concept-input-period-type')?.value || 'MONTHLY',
       isPersistent: document.getElementById('concept-input-is-persistent')?.value === 'true',
+      isEmbargo: Boolean(document.getElementById('concept-input-is-embargo')?.checked),
       defaultValue: Number(document.getElementById('concept-input-default-value').value) || 0,
       formula: calcType === 'FORMULA' ? document.getElementById('concept-input-formula').value.trim() : null,
       matrixData: calcType === 'MATRIX' ? document.getElementById('concept-input-matrix').value.trim() : null,
@@ -726,6 +742,47 @@ class ConceptsMethods {
         const curCode = document.getElementById('concept-input-code')?.value?.trim() || '';
         this.populateFormulaConceptOptions(curCode, e.target.value);
       });
+    }
+
+    const isEmbargoSwitch = document.getElementById('concept-input-is-embargo');
+    if (isEmbargoSwitch) {
+      isEmbargoSwitch.addEventListener('change', (e) => {
+        this.handleEmbargoToggle(e.target.checked);
+      });
+    }
+  }
+
+  handleEmbargoToggle(isEmbargo) {
+    const typeSelect = document.getElementById('concept-input-type');
+    const scopeSelect = document.getElementById('concept-input-scope');
+    const arcaSelect = document.getElementById('concept-input-arca-code');
+    const persistentSelect = document.getElementById('concept-input-is-persistent');
+
+    if (isEmbargo) {
+      if (typeSelect) {
+        typeSelect.value = 'DEDUCTION';
+        typeSelect.disabled = true;
+      }
+      if (scopeSelect) {
+        scopeSelect.value = 'INDIVIDUAL';
+        scopeSelect.disabled = true;
+      }
+      if (arcaSelect) {
+        arcaSelect.value = '810012'; // [810012] Embargos Judiciales
+        arcaSelect.dataset.prevValue = '810012';
+      }
+      if (persistentSelect) {
+        persistentSelect.value = 'true';
+      }
+      // Desmarcar subsistemas SUSS para retención judicial
+      ['subsys-r1', 'subsys-r2', 'subsys-r3', 'subsys-r4', 'subsys-r5', 'subsys-r6', 'subsys-r7', 'subsys-r8', 'subsys-r9', 'subsys-r10'].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.checked = false;
+      });
+      this.updateConceptNormalizedCode();
+    } else {
+      if (typeSelect) typeSelect.disabled = false;
+      if (scopeSelect) scopeSelect.disabled = false;
     }
   }
 

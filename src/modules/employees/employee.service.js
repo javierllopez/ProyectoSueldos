@@ -177,6 +177,188 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
 }
 
 /**
+ * Sincroniza novedades persistentes de deducción sindical y mutual cuando cambia la afiliación del empleado.
+ */
+export async function syncAffiliationConcepts(tenantPrisma, employeeId, { unionId, mutualId, previousUnionId, previousMutualId } = {}) {
+  // 1. Sincronizar Sindicato
+  if (previousUnionId !== undefined && previousUnionId !== unionId) {
+    if (previousUnionId) {
+      const prevUnion = await tenantPrisma.union.findUnique({
+        where: { id: previousUnionId },
+        include: { unionConcepts: true },
+      });
+      const prevConceptIds = (prevUnion?.unionConcepts && prevUnion.unionConcepts.length > 0)
+        ? prevUnion.unionConcepts.map((uc) => uc.conceptId)
+        : (prevUnion?.conceptId ? [prevUnion.conceptId] : []);
+
+      let nextConceptIds = [];
+      if (unionId) {
+        const nextUnion = await tenantPrisma.union.findUnique({
+          where: { id: unionId },
+          include: { unionConcepts: true },
+        });
+        nextConceptIds = (nextUnion?.unionConcepts && nextUnion.unionConcepts.length > 0)
+          ? nextUnion.unionConcepts.map((uc) => uc.conceptId)
+          : (nextUnion?.conceptId ? [nextUnion.conceptId] : []);
+      }
+
+      const conceptsToRemove = prevConceptIds.filter((cid) => !nextConceptIds.includes(cid));
+
+      for (const oldConceptId of conceptsToRemove) {
+        // Opción B: Eliminar físicamente si aún no fue liquidado en período cerrado
+        const inClosedPaySlip = await tenantPrisma.paySlipItem.findFirst({
+          where: {
+            conceptId: oldConceptId,
+            paySlip: {
+              employeeId,
+              status: { in: ['ISSUED', 'SIGNED'] },
+              payrollPeriod: { status: 'CLOSED' },
+            },
+          },
+        });
+        if (!inClosedPaySlip) {
+          await tenantPrisma.employeeConcept.deleteMany({
+            where: { employeeId, conceptId: oldConceptId },
+          });
+        } else {
+          await tenantPrisma.employeeConcept.updateMany({
+            where: { employeeId, conceptId: oldConceptId },
+            data: { isActive: false },
+          });
+        }
+      }
+    }
+  }
+
+  if (unionId) {
+    const currentUnion = await tenantPrisma.union.findFirst({
+      where: { id: unionId, deletedAt: null },
+      include: { unionConcepts: true },
+    });
+    const unionConceptIds = (currentUnion?.unionConcepts && currentUnion.unionConcepts.length > 0)
+      ? currentUnion.unionConcepts.map((uc) => uc.conceptId)
+      : (currentUnion?.conceptId ? [currentUnion.conceptId] : []);
+
+    for (const conceptId of unionConceptIds) {
+      const existing = await tenantPrisma.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId,
+            conceptId,
+          },
+        },
+      });
+      if (!existing) {
+        await tenantPrisma.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId,
+            conceptId,
+            amount: null,
+            units: null,
+            notes: `Afiliación a ${currentUnion.name}`,
+            isActive: true,
+          },
+        });
+      } else if (!existing.isActive) {
+        await tenantPrisma.employeeConcept.update({
+          where: { id: existing.id },
+          data: { isActive: true },
+        });
+      }
+    }
+  }
+
+  // 2. Sincronizar Mutual
+  if (previousMutualId !== undefined && previousMutualId !== mutualId) {
+    if (previousMutualId) {
+      const prevMutual = await tenantPrisma.mutual.findUnique({
+        where: { id: previousMutualId },
+        include: { mutualConcepts: true },
+      });
+      const prevConceptIds = (prevMutual?.mutualConcepts && prevMutual.mutualConcepts.length > 0)
+        ? prevMutual.mutualConcepts.map((mc) => mc.conceptId)
+        : (prevMutual?.conceptId ? [prevMutual.conceptId] : []);
+
+      let nextConceptIds = [];
+      if (mutualId) {
+        const nextMutual = await tenantPrisma.mutual.findUnique({
+          where: { id: mutualId },
+          include: { mutualConcepts: true },
+        });
+        nextConceptIds = (nextMutual?.mutualConcepts && nextMutual.mutualConcepts.length > 0)
+          ? nextMutual.mutualConcepts.map((mc) => mc.conceptId)
+          : (nextMutual?.conceptId ? [nextMutual.conceptId] : []);
+      }
+
+      const conceptsToRemove = prevConceptIds.filter((cid) => !nextConceptIds.includes(cid));
+
+      for (const oldConceptId of conceptsToRemove) {
+        const inClosedPaySlip = await tenantPrisma.paySlipItem.findFirst({
+          where: {
+            conceptId: oldConceptId,
+            paySlip: {
+              employeeId,
+              status: { in: ['ISSUED', 'SIGNED'] },
+              payrollPeriod: { status: 'CLOSED' },
+            },
+          },
+        });
+        if (!inClosedPaySlip) {
+          await tenantPrisma.employeeConcept.deleteMany({
+            where: { employeeId, conceptId: oldConceptId },
+          });
+        } else {
+          await tenantPrisma.employeeConcept.updateMany({
+            where: { employeeId, conceptId: oldConceptId },
+            data: { isActive: false },
+          });
+        }
+      }
+    }
+  }
+
+  if (mutualId) {
+    const currentMutual = await tenantPrisma.mutual.findFirst({
+      where: { id: mutualId, deletedAt: null },
+      include: { mutualConcepts: true },
+    });
+    const mutualConceptIds = (currentMutual?.mutualConcepts && currentMutual.mutualConcepts.length > 0)
+      ? currentMutual.mutualConcepts.map((mc) => mc.conceptId)
+      : (currentMutual?.conceptId ? [currentMutual.conceptId] : []);
+
+    for (const conceptId of mutualConceptIds) {
+      const existing = await tenantPrisma.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId,
+            conceptId,
+          },
+        },
+      });
+      if (!existing) {
+        await tenantPrisma.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId,
+            conceptId,
+            amount: null,
+            units: null,
+            notes: `Afiliación a ${currentMutual.name}`,
+            isActive: true,
+          },
+        });
+      } else if (!existing.isActive) {
+        await tenantPrisma.employeeConcept.update({
+          where: { id: existing.id },
+          data: { isActive: true },
+        });
+      }
+    }
+  }
+}
+
+/**
  * Da de alta un nuevo empleado en la base de datos de la empresa activa.
  */
 export async function createEmployee(tenantPrisma, employeeData) {
@@ -284,6 +466,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
             documentNumber: r.documentNumber.trim(),
             cuil: r.cuil ? r.cuil.replace(/\D/g, '') : null,
             birthDate: new Date(r.birthDate),
+            isAdherent: Boolean(r.isAdherent),
           })),
         }
       : undefined;
@@ -422,6 +605,21 @@ export async function createEmployee(tenantPrisma, employeeData) {
     } else {
       throw err;
     }
+  }
+
+  if (employee.unionId || employee.mutualId) {
+    await syncAffiliationConcepts(tenantPrisma, employee.id, {
+      unionId: employee.unionId,
+      mutualId: employee.mutualId,
+    });
+    employee.assignedConcepts = await tenantPrisma.employeeConcept.findMany({
+      where: {
+        employeeId: employee.id,
+        concept: { deletedAt: null },
+      },
+      include: { concept: true },
+      orderBy: { createdAt: 'asc' },
+    });
   }
 
   return {
@@ -696,6 +894,23 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       },
     },
   });
+
+  if (data.unionId !== undefined || data.mutualId !== undefined) {
+    await syncAffiliationConcepts(tenantPrisma, employeeId, {
+      unionId: updatePayload.unionId !== undefined ? updatePayload.unionId : current.unionId,
+      mutualId: updatePayload.mutualId !== undefined ? updatePayload.mutualId : current.mutualId,
+      previousUnionId: current.unionId,
+      previousMutualId: current.mutualId,
+    });
+    employee.assignedConcepts = await tenantPrisma.employeeConcept.findMany({
+      where: {
+        employeeId,
+        concept: { deletedAt: null },
+      },
+      include: { concept: true },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
 
   return {
     ...employee,
@@ -1087,13 +1302,22 @@ export async function importEmployees(tenantPrisma, employees) {
 
   // Inserción en transacción
   if (toCreate.length > 0) {
-    await tenantPrisma.$transaction(
+    const createdEmployees = await tenantPrisma.$transaction(
       toCreate.map((emp) =>
         tenantPrisma.employee.create({
           data: emp,
         })
       )
     );
+
+    for (const emp of createdEmployees) {
+      if (emp.unionId || emp.mutualId) {
+        await syncAffiliationConcepts(tenantPrisma, emp.id, {
+          unionId: emp.unionId,
+          mutualId: emp.mutualId,
+        });
+      }
+    }
   }
 
   return {
@@ -1129,6 +1353,27 @@ export async function listRelatives(tenantPrisma, employeeId) {
   });
 }
 
+export const PRIMARY_KINSHIP_CODES = new Set([
+  'CONYUGE',
+  'CONVIVIENTE',
+  'HIJO_MENOR_21',
+  'HIJO_ESTUDIANTE',
+  'HIJO_INCAPACITADO',
+  'TUTELA',
+]);
+
+export function isPrimaryFamilyKinship(kinship) {
+  if (!kinship) return false;
+  const code = String(kinship.code || '').toUpperCase().trim();
+  if (PRIMARY_KINSHIP_CODES.has(code)) return true;
+  if (code.startsWith('HIJO')) return true;
+  const name = String(kinship.name || '').toLowerCase();
+  if (name.includes('cónyuge') || name.includes('conyuge') || name.includes('conviviente') || name.includes('hijo') || name.includes('tutela') || name.includes('guarda')) {
+    return true;
+  }
+  return false;
+}
+
 /**
  * Agrega un familiar a un empleado.
  */
@@ -1146,6 +1391,13 @@ export async function createRelative(tenantPrisma, employeeId, data) {
     throw error;
   }
 
+  const isAdherent = Boolean(data.isAdherent);
+  if (isAdherent && isPrimaryFamilyKinship(kinship)) {
+    const error = new Error('Los familiares del grupo familiar primario (cónyuge, conviviente, hijos y tutelados) poseen cobertura automática de Obra Social conforme al Art. 9 Ley 23.660 y no pueden registrarse como adherentes adicionales.');
+    error.status = 400;
+    throw error;
+  }
+
   const cleanCuil = data.cuil ? data.cuil.replace(/\D/g, '') : null;
 
   return tenantPrisma.employeeRelative.create({
@@ -1159,6 +1411,7 @@ export async function createRelative(tenantPrisma, employeeId, data) {
       documentNumber: data.documentNumber.trim(),
       cuil: cleanCuil || null,
       birthDate: new Date(data.birthDate),
+      isAdherent,
     },
     include: {
       kinship: true,
@@ -1174,6 +1427,7 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
 
   const existing = await tenantPrisma.employeeRelative.findFirst({
     where: { id: relativeId, deletedAt: null },
+    include: { kinship: true },
   });
   if (!existing) {
     const error = new Error('Familiar no encontrado');
@@ -1181,6 +1435,7 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
     throw error;
   }
 
+  let targetKinship = existing.kinship;
   if (data.kinshipId) {
     const kinship = await tenantPrisma.kinship.findFirst({
       where: { id: data.kinshipId, deletedAt: null },
@@ -1190,6 +1445,14 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
       error.status = 400;
       throw error;
     }
+    targetKinship = kinship;
+  }
+
+  const willBeAdherent = data.isAdherent !== undefined ? Boolean(data.isAdherent) : Boolean(existing.isAdherent);
+  if (willBeAdherent && isPrimaryFamilyKinship(targetKinship)) {
+    const error = new Error('Los familiares del grupo familiar primario (cónyuge, conviviente, hijos y tutelados) poseen cobertura automática de Obra Social conforme al Art. 9 Ley 23.660 y no pueden registrarse como adherentes adicionales.');
+    error.status = 400;
+    throw error;
   }
 
   const updateData = {};
@@ -1200,6 +1463,7 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
   if (data.documentNumber !== undefined) updateData.documentNumber = data.documentNumber.trim();
   if (data.cuil !== undefined) updateData.cuil = data.cuil ? data.cuil.replace(/\D/g, '') : null;
   if (data.birthDate !== undefined) updateData.birthDate = new Date(data.birthDate);
+  if (data.isAdherent !== undefined) updateData.isAdherent = willBeAdherent;
 
   return tenantPrisma.employeeRelative.update({
     where: { id: relativeId },

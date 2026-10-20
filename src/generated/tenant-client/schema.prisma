@@ -216,26 +216,64 @@ model Union {
   id        String    @id @default(uuid())
   name      String    @map("name")
   code      String?   @map("code")
+  conceptId String?   @map("concept_id")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  employees Employee[]
+  concept       Concept?       @relation("UnionDeductionConcept", fields: [conceptId], references: [id], onDelete: SetNull)
+  unionConcepts UnionConcept[]
+  employees     Employee[]
 
+  @@index([conceptId])
   @@map("unions")
+}
+
+model UnionConcept {
+  id        String   @id @default(uuid())
+  unionId   String   @map("union_id")
+  conceptId String   @map("concept_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  union   Union   @relation(fields: [unionId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([unionId, conceptId], map: "uniq_union_concept")
+  @@index([unionId])
+  @@index([conceptId])
+  @@map("union_concepts")
 }
 
 model Mutual {
   id        String    @id @default(uuid())
   name      String    @map("name")
   code      String?   @map("code")
+  conceptId String?   @map("concept_id")
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  employees Employee[]
+  concept        Concept?        @relation("MutualDeductionConcept", fields: [conceptId], references: [id], onDelete: SetNull)
+  mutualConcepts MutualConcept[]
+  employees      Employee[]
 
+  @@index([conceptId])
   @@map("mutuals")
+}
+
+model MutualConcept {
+  id        String   @id @default(uuid())
+  mutualId  String   @map("mutual_id")
+  conceptId String   @map("concept_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  mutual  Mutual  @relation(fields: [mutualId], references: [id], onDelete: Cascade)
+  concept Concept @relation(fields: [conceptId], references: [id], onDelete: Cascade)
+
+  @@unique([mutualId, conceptId], map: "uniq_mutual_concept")
+  @@index([mutualId])
+  @@index([conceptId])
+  @@map("mutual_concepts")
 }
 
 model Employee {
@@ -304,6 +342,7 @@ model Employee {
   relatives        EmployeeRelative[]
   assignedConcepts EmployeeConcept[]
   periodNovelties  PeriodNovelty[]
+  embargoes        EmployeeEmbargo[]
 
   @@index([departmentId])
   @@index([jobPositionId])
@@ -356,6 +395,7 @@ model EmployeeRelative {
   documentNumber String    @map("document_number")
   cuil           String?   @map("cuil") @db.VarChar(11)
   birthDate      DateTime  @map("birth_date")
+  isAdherent     Boolean   @default(false) @map("is_adherent")
   createdAt      DateTime  @default(now()) @map("created_at")
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
@@ -405,10 +445,16 @@ model Concept {
   appliesDetraccion     Boolean @default(false) @map("applies_detraccion")
   isRepeatable          Boolean @default(false) @map("is_repeatable")
 
-  matrixId          String?           @map("matrix_id")
-  matrix            PayrollMatrix?    @relation(fields: [matrixId], references: [id])
+  matrixId          String?                  @map("matrix_id")
+  matrix            PayrollMatrix?           @relation(fields: [matrixId], references: [id])
   assignedEmployees EmployeeConcept[]
   periodNovelties   PeriodNovelty[]
+  embargoConcepts   EmployeeEmbargoConcept[]
+  unions            Union[]                  @relation("UnionDeductionConcept")
+  mutuals           Mutual[]                 @relation("MutualDeductionConcept")
+  unionConcepts     UnionConcept[]
+  mutualConcepts    MutualConcept[]
+  isEmbargo         Boolean                  @default(false) @map("is_embargo")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -473,8 +519,26 @@ model PayrollFixedValue {
   @@map("payroll_fixed_values")
 }
 
+model PayrollFiscalPeriod {
+  id        String    @id @default(uuid())
+  year      Int       @map("year")
+  month     Int       @map("month")
+  status    String    @default("OPEN") @map("status") // OPEN, CLOSED
+  closedAt  DateTime? @map("closed_at")
+  closedBy  String?   @map("closed_by")
+  notes     String?   @map("notes") @db.VarChar(255)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  settlements PayrollPeriod[]
+
+  @@unique([year, month], map: "uniq_fiscal_period_year_month")
+  @@map("payroll_fiscal_periods")
+}
+
 model PayrollPeriod {
   id                String    @id @default(uuid())
+  fiscalPeriodId    String?   @map("fiscal_period_id")
   year              Int       @map("year")
   month             Int       @map("month")
   periodType        String    @default("MONTHLY") @map("period_type") // MONTHLY, QUINCE_1, QUINCE_2, SAC_1, SAC_2, VACATIONS, FINAL
@@ -495,10 +559,12 @@ model PayrollPeriod {
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
 
+  fiscalPeriod    PayrollFiscalPeriod? @relation(fields: [fiscalPeriodId], references: [id], onDelete: Cascade)
   paySlips        PaySlip[]
   periodNovelties PeriodNovelty[]
 
   @@unique([year, month, periodType, settlementNumber])
+  @@index([fiscalPeriodId])
   @@map("payroll_periods")
 }
 
@@ -598,6 +664,11 @@ model PaySlipBasis {
   baseImponible10  Decimal @default(0.00) @map("base_imponible_10") @db.Decimal(12, 2) // SIPA Contrib c/Detracción
   detractionAmount Decimal @default(0.00) @map("detraction_amount") @db.Decimal(12, 2) // Detracción Ley 27.541
 
+  // Bases Diferenciales ARCA (Jornada Parcial Art. 92 TER LCT / Regímenes especiales)
+  baseDifAporteOs  Decimal @default(0.00) @map("base_dif_aporte_os") @db.Decimal(12, 2) // Posición 101-115 LSD
+  baseDifContribOs Decimal @default(0.00) @map("base_dif_contrib_os") @db.Decimal(12, 2) // Posición 116-130 LSD
+  baseDifLrt       Decimal @default(0.00) @map("base_dif_lrt") @db.Decimal(12, 2) // Posición 131-145 LSD
+
   // Atributos de revista
   situationCode    String  @default("01") @map("situation_code") @db.VarChar(5)
   conditionCode    String  @default("01") @map("condition_code") @db.VarChar(5)
@@ -605,6 +676,7 @@ model PaySlipBasis {
   contractModality String  @default("001") @map("contract_modality") @db.VarChar(10)
   hasSpouse        Boolean @default(false) @map("has_spouse")
   childrenCount    Int     @default(0) @map("children_count")
+  adherentsCount   Int     @default(0) @map("adherents_count")
   hasScvo          Boolean @default(true) @map("has_scvo")
   hasCct           Boolean @default(true) @map("has_cct")
 
@@ -667,4 +739,48 @@ model PeriodNovelty {
   @@index([employeeId])
   @@index([conceptId])
   @@map("period_novelties")
+}
+
+model EmployeeEmbargo {
+  id               String    @id @default(uuid())
+  employeeId       String    @map("employee_id")
+  caseTitle        String    @map("case_title")
+  dossierNumber    String?   @map("dossier_number")
+  court            String?   @map("court")
+  secretary        String?   @map("secretary")
+  judicialDistrict String?   @map("judicial_district")
+  embargoType      String    @default("COMERCIAL") @map("embargo_type") // COMERCIAL, ALIMENTARIO, IMPOSITIVO, OTRO
+  hasCap           Boolean   @default(true) @map("has_cap")
+  totalAmount      Decimal?  @map("total_amount") @db.Decimal(12, 2)
+  priorityOrder    Int       @default(1) @map("priority_order")
+  status           String    @default("ACTIVE") @map("status") // ACTIVE, COMPLETED, SUSPENDED, CANCELLED
+  startDate        DateTime? @map("start_date")
+  endDate          DateTime? @map("end_date")
+  notes            String?   @map("notes") @db.Text
+
+  employee Employee                 @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  concepts EmployeeEmbargoConcept[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([employeeId])
+  @@index([status])
+  @@map("employee_embargoes")
+}
+
+model EmployeeEmbargoConcept {
+  id        String @id @default(uuid())
+  embargoId String @map("embargo_id")
+  conceptId String @map("concept_id")
+
+  embargo EmployeeEmbargo @relation(fields: [embargoId], references: [id], onDelete: Cascade)
+  concept Concept         @relation(fields: [conceptId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([embargoId, conceptId], map: "uniq_embargo_concept")
+  @@index([embargoId])
+  @@index([conceptId])
+  @@map("employee_embargo_concepts")
 }

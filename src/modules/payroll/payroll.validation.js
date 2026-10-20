@@ -1,8 +1,15 @@
 import { z } from 'zod';
 
-export const createPeriodSchema = z.object({
+export const createFiscalPeriodSchema = z.object({
   year: z.coerce.number().int().min(2000).max(2100),
   month: z.coerce.number().int().min(1).max(12),
+  notes: z.string().trim().max(255).optional().nullable(),
+});
+
+export const createPeriodSchema = z.object({
+  fiscalPeriodId: z.string().optional().nullable(),
+  year: z.coerce.number().int().min(2000).max(2100).optional(),
+  month: z.coerce.number().int().min(1).max(12).optional(),
   periodType: z.enum(['MONTHLY', 'QUINCE_1', 'QUINCE_2', 'SAC_1', 'SAC_2', 'VACATIONS', 'FINAL']).optional(),
   type: z.enum(['MONTHLY', 'QUINCE_1', 'QUINCE_2', 'SAC_1', 'SAC_2', 'VACATIONS', 'FINAL']).optional(),
   settlementName: z.string().trim().max(191).optional().nullable(),
@@ -125,6 +132,7 @@ export const conceptBaseSchema = z.object({
   appliesDetraccion: z.boolean().default(false),
   isRepeatable: z.boolean().default(false),
   isPersistent: z.boolean().default(true),
+  isEmbargo: z.boolean().default(false),
 });
 
 function validateConceptCodeRange(code, type, ctx) {
@@ -264,4 +272,8 @@ export const batchPeriodNoveltiesSchema = z.object({
 
 export const calculateBatchSchema = z.object({
   employeeIds: z.array(z.string().min(1)).min(1, 'Debe seleccionar al menos un colaborador'),
+});
+
+export const updatePaySlipWorkedDaysSchema = z.object({
+  workedDays: z.coerce.number().int().min(0, 'Los días no pueden ser negativos').max(30, 'Los días no pueden superar 30'),
 });

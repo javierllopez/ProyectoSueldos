@@ -396,6 +396,8 @@ export function calculateEmployeePayroll({
   allSalaryScales = [], // Catálogo de escalas salariales / nóminas de CCT
   historicalData = {}, // Historial de recibos e items previos del empleado
   indices = null, // Pre-indexación opcional para cálculos masivos
+  activeEmbargoes = [], // Embargos judiciales activos del empleado con control de topes y acumulados
+  workedDaysOverride = null, // Override directo de días trabajados / días para proporcionar tope (Reg 02)
 }) {
   const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '027' || employee.contractModalityCode === '51' || employee.contractModalityCode === '051' || employee.salaryScale?.isInternOnly === true;
   const isDirector = employee.contractModalityCode === '99' || employee.contractModalityCode === '099' || employee.salaryScale?.isDirectorOnly === true;
@@ -442,12 +444,16 @@ export function calculateEmployeePayroll({
         baseImponible9: 0,
         baseImponible10: 0,
         detractionAmount: 0,
+        baseDifAporteOs: 0,
+        baseDifContribOs: 0,
+        baseDifLrt: 0,
         situationCode: employee.status === 'ACTIVE' ? '01' : '13',
         conditionCode: '01',
         activityCode: employee.jobPosition?.activityCode || (isDirector ? '015' : '049'),
         contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : '001'))).padStart(3, '0'),
         hasSpouse: false,
         childrenCount: 0,
+        adherentsCount: 0,
         hasScvo: false,
         hasCct: false,
       },
@@ -638,16 +644,58 @@ export function calculateEmployeePayroll({
     }
   }
 
-  // Días y horas liquidadas (por defecto 30 días base)
+  // Días y horas liquidadas según tipo de período y situación previsional
   let workedDays = 30;
-  const defaultHours = isIntern ? 80 : (employee.isPartTime ? 80 : 160);
-  let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours;
+  const pType = period?.periodType || 'MONTHLY';
 
-  // Si se ingresó explícitamente en conceptos o novedades
-  const basicInput = inputsMap.get(basicCode) || inputsMap.get('1000') || inputsMap.get('100');
-  if (basicInput && basicInput.units !== undefined && basicInput.units !== null && Number(basicInput.units) > 0) {
+  if (pType === 'FINAL' || pType === 'LIQUIDACION_FINAL') {
+    // Por defecto 0 días si es liquidación final indemnizatoria y no se liquidan días laborados del mes
+    workedDays = 0;
+  } else if (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC' || pType === 'AGUINALDO') {
+    // El SAC no proporciona tope mensual ordinario en Reg 02
+    workedDays = 0;
+  } else if (pType === 'VACATIONS' || pType === 'VACACIONES') {
+    // Por directiva del usuario: en vacaciones informar 000 en Reg 02
+    workedDays = 0;
+  } else if (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE') {
+    workedDays = 15;
+  } else {
+    // MONTHLY / MENSUAL
+    workedDays = 30;
+    // Si ingresó en el mes corriente, calcular días proporcionales desde su alta
+    if (hireDateStr && hireDateStr >= monthStartStr && hireDateStr <= monthEndStr) {
+      const hireD = parseSafeDate(employee.hireDate);
+      if (hireD) {
+        workedDays = Math.max(1, Math.min(30, 30 - hireD.getDate() + 1));
+      }
+    }
+  }
+
+  // Si se ingresó explícitamente en conceptos o novedades de sueldo básico (ej: SU1000, 1000, FI1000, QU1000)
+  const basicInput =
+    inputsMap.get(basicCode) ||
+    inputsMap.get('1000') ||
+    inputsMap.get('SU1000') ||
+    inputsMap.get('FI1000') ||
+    inputsMap.get('QU1000') ||
+    inputsMap.get('100');
+  if (basicInput && basicInput.units !== undefined && basicInput.units !== null && !isNaN(Number(basicInput.units)) && Number(basicInput.units) > 0) {
     workedDays = Number(basicInput.units);
   }
+
+  // Novedad explícita del sistema para días trabajados / a proporcionar tope
+  const diasSysInput = inputsMap.get('DIAS_TRABAJADOS') || inputsMap.get('DIAS_BASE') || inputsMap.get('DIAS');
+  if (diasSysInput && diasSysInput.units !== undefined && diasSysInput.units !== null && !isNaN(Number(diasSysInput.units))) {
+    workedDays = Math.max(0, Math.min(30, Number(diasSysInput.units)));
+  }
+
+  // Override directo enviado en los parámetros de cálculo
+  if (workedDaysOverride !== undefined && workedDaysOverride !== null && !isNaN(Number(workedDaysOverride))) {
+    workedDays = Math.max(0, Math.min(30, Math.round(Number(workedDaysOverride))));
+  }
+
+  const defaultHours = isIntern ? 80 : (employee.isPartTime ? 80 : 160);
+  let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours;
 
   const baseSalaryNominal = Number(
     employee.salaryScale?.amount !== undefined && employee.salaryScale?.amount !== null
@@ -668,6 +716,23 @@ export function calculateEmployeePayroll({
   const shiftDays = employee.workShift?.monthlyDays
     ? Number(employee.workShift.monthlyDays)
     : (isIntern ? 20.00 : 30.00);
+
+  // Determinación de porcentaje y coeficiente de jornada (prioridad estricta del legajo sobre el turno)
+  const legajoPctRaw = employee.partTimePercentage;
+  const legajoPct = (legajoPctRaw !== undefined && legajoPctRaw !== null && String(legajoPctRaw).trim() !== '')
+    ? Number(legajoPctRaw)
+    : (employee.workShift?.percentage !== undefined && employee.workShift?.percentage !== null
+        ? Number(employee.workShift.percentage)
+        : 100.00);
+  const effectivePartTimePct = isIntern ? 50.00 : legajoPct;
+  const jornadaCoef = Math.round((effectivePartTimePct / 100) * 10000) / 10000;
+  const isPartTimeBool = Boolean(isIntern || employee.isPartTime || effectivePartTimePct < 100);
+  const isPartTimeWorker = !isIntern && !isDirector && Boolean(employee.isPartTime || effectivePartTimePct < 100 || (jornadaCoef > 0 && jornadaCoef < 1));
+
+  // Conteo de familiares y adherentes a Obra Social (Ley 23.660)
+  const relatives = Array.isArray(employee.relatives) ? employee.relatives : [];
+  const activeRelatives = relatives.filter((r) => !r.deletedAt);
+  const adherentsCount = activeRelatives.filter((r) => Boolean(r.isAdherent)).length;
 
   // Contexto de valores para resolución de fórmulas
   const context = {
@@ -697,8 +762,12 @@ export function calculateEmployeePayroll({
     '1002': isDirector ? baseSalaryNominal : 0,
     HONORARIOS_DIRECTOR: isDirector ? baseSalaryNominal : 0,
     HONORARIOS: isDirector ? baseSalaryNominal : 0,
-    ES_JORNADA_PARCIAL: (isIntern || employee.isPartTime) ? 1 : 0,
-    PORCENTAJE_JORNADA: isIntern ? 50.00 : Number(employee.partTimePercentage || 100),
+    ES_JORNADA_PARCIAL: isPartTimeBool ? 1 : 0,
+    PORCENTAJE_JORNADA: effectivePartTimePct,
+    COEFICIENTE_JORNADA: jornadaCoef,
+    PORCENTAJE_JORNADA_DECIMAL: jornadaCoef,
+    PROPORCION_JORNADA: jornadaCoef,
+    JORNADA_PORCENTAJE: effectivePartTimePct,
     HORAS_SEMANALES: shiftWeekly,
     HORAS_CONTRATO: shiftMonthly,
     HORAS_MENSUALES: shiftMonthly,
@@ -714,6 +783,10 @@ export function calculateEmployeePayroll({
     TOTAL_DEDUCCIONES: 0,
     TOTAL_BRUTO: 0,
     BASE_OBRA_SOCIAL: 0,
+    BASE_OBRA_SOCIAL_COMPLETA: 0,
+    CANTIDAD_ADHERENTES: adherentsCount,
+    ADHERENTES: adherentsCount,
+    ADHERENTES_OS: adherentsCount,
     MEJOR_REMUN: 0,
     FECHA_LIQUIDACION: liqDateStr,
     LIQUIDATION_DATE: liqDateStr,
@@ -810,15 +883,13 @@ export function calculateEmployeePayroll({
       const pct = Number(concept.defaultValue || 0) / 100;
       // Si es una deducción, por defecto aplica sobre el Total Remunerativo acumulado
       if (concept.type === 'DEDUCTION') {
-        const isObraSocial =
-          /^(SU|QU|SA|VA|FI|GE)6003$/.test(concept.code) ||
-          concept.code === '8002' ||
-          concept.code === '6003' ||
-          concept.code === '303' ||
-          concept.arcaConceptCode === '810002' ||
-          /obra\s*social/i.test(concept.name);
-        if (isObraSocial) {
+        const isArcaOsTitular = String(concept.arcaConceptCode || '').trim() === '810002';
+        const isArcaOsAdherente = String(concept.arcaConceptCode || '').trim() === '810009';
+        if (isArcaOsTitular) {
           return context.BASE_OBRA_SOCIAL * pct;
+        }
+        if (isArcaOsAdherente) {
+          return context.BASE_OBRA_SOCIAL * pct * (context.CANTIDAD_ADHERENTES || 0);
         }
         return context.TOTAL_REMUNERATIVO * pct;
       }
@@ -977,9 +1048,14 @@ export function calculateEmployeePayroll({
       notes: assignedRecord.notes,
     } : null);
 
-    // Conceptos con alcance INDIVIDUAL: solo aplican si fueron asignados explícitamente en novedades o conceptos fijos del legajo
+    // Identificar si el concepto está asociado a un embargo judicial activo del empleado
+    const linkedEmbargo = Array.isArray(activeEmbargoes)
+      ? activeEmbargoes.find((emb) => emb.conceptIds?.has(concept.id) || emb.conceptCodes?.has(concept.code))
+      : null;
+
+    // Conceptos con alcance INDIVIDUAL: aplican si fueron asignados en novedades, conceptos fijos del legajo o embargos judiciales activos
     const isIndividualScope = String(concept.scope || '').toUpperCase() === 'INDIVIDUAL';
-    if (isIndividualScope && !manualOverride && !assignedRecord) {
+    if (isIndividualScope && !manualOverride && !assignedRecord && !linkedEmbargo) {
       continue;
     }
 
@@ -1066,6 +1142,7 @@ export function calculateEmployeePayroll({
     const shouldLiquidate =
       Boolean(manualOverride) ||
       Boolean(assignedRecord) ||
+      Boolean(linkedEmbargo) ||
       concept.type === 'AUXILIARY' ||
       concept.noveltyDataType === 'CALCULADO' ||
       (isConceptPersistent(concept) &&
@@ -1172,6 +1249,12 @@ export function calculateEmployeePayroll({
         units = 1;
         unitLabel = 'Fijo';
       }
+    }
+
+    // Poblar variables de contexto para embargos judiciales si aplica
+    if (linkedEmbargo) {
+      context.SALDO_EMBARGO = linkedEmbargo.hasCap ? (linkedEmbargo.remainingBalance ?? 0) : 999999999;
+      context.TOPE_EMBARGO = linkedEmbargo.hasCap ? (linkedEmbargo.totalAmount ?? 0) : 999999999;
     }
 
     // Poblar variables de contexto para la novedad
@@ -1309,14 +1392,13 @@ export function calculateEmployeePayroll({
         });
       }
     } else if (concept.type === 'DEDUCTION') {
-      const isObraSocial =
-        /^(SU|QU|SA|VA|FI|GE)6003$/.test(concept.code) ||
-        concept.code === '8002' ||
-        concept.code === '6003' ||
-        concept.code === '303' ||
-        concept.arcaConceptCode === '810002' ||
-        /obra\s*social/i.test(concept.name);
+      const isArcaOsTitular = String(concept.arcaConceptCode || '').trim() === '810002';
+      const isArcaOsAdherente = String(concept.arcaConceptCode || '').trim() === '810009';
+      const isObraSocial = isArcaOsTitular || isArcaOsAdherente;
       let baseForDeduction = isObraSocial ? context.BASE_OBRA_SOCIAL : context.TOTAL_REMUNERATIVO;
+      if (isObraSocial && isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
+        baseForDeduction = Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100;
+      }
 
       const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
       const maxCap = Number(payrollSettings.ansesMaxCap || 2674292.72);
@@ -1325,6 +1407,11 @@ export function calculateEmployeePayroll({
         cappedBase = Math.min(Math.max(baseForDeduction, minCap), maxCap);
       }
 
+      // Base Obra Social Jornada Completa disponible para tokens de fórmulas
+      context.BASE_OBRA_SOCIAL_COMPLETA = (isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0)
+        ? Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100
+        : context.BASE_OBRA_SOCIAL;
+
       let rawAmount = 0;
       if (inputOverride?.amount !== undefined && inputOverride?.amount !== null && (concept.calculationType !== 'FORMULA' || concept.noveltyDataType !== 'IMPORTE')) {
         rawAmount = Number(inputOverride.amount);
@@ -1332,12 +1419,37 @@ export function calculateEmployeePayroll({
         rawAmount = resolveConceptValue(concept, inputOverride);
       } else if (concept.calculationType === 'PERCENTAGE') {
         const pct = Number(concept.defaultValue || 0) / 100;
-        rawAmount = (cappedBase > 0 ? cappedBase : baseForDeduction) * pct;
+        if (isArcaOsAdherente) {
+          rawAmount = (cappedBase > 0 ? cappedBase : baseForDeduction) * pct * (context.CANTIDAD_ADHERENTES || 0);
+        } else {
+          rawAmount = (cappedBase > 0 ? cappedBase : baseForDeduction) * pct;
+        }
       } else {
         rawAmount = resolveConceptValue(concept, inputOverride);
       }
 
-      const finalAmount = Math.round(rawAmount * 100) / 100;
+      let finalAmount = Math.round(rawAmount * 100) / 100;
+
+      // Integración con Embargos Judiciales: control de topes y acumulación
+      if (linkedEmbargo) {
+        if (linkedEmbargo.hasCap) {
+          if (linkedEmbargo.remainingBalance <= 0) {
+            finalAmount = 0;
+          } else if (finalAmount > linkedEmbargo.remainingBalance) {
+            finalAmount = Math.round(linkedEmbargo.remainingBalance * 100) / 100;
+          }
+          linkedEmbargo.remainingBalance = Math.max(0, Math.round((linkedEmbargo.remainingBalance - finalAmount) * 100) / 100);
+          linkedEmbargo.currentDeducted = Math.round(((linkedEmbargo.currentDeducted || 0) + finalAmount) * 100) / 100;
+        } else {
+          linkedEmbargo.currentDeducted = Math.round(((linkedEmbargo.currentDeducted || 0) + finalAmount) * 100) / 100;
+        }
+      }
+
+      // Si el embargo ya alcanzó el tope y el descuento resultante es 0, no generar línea de descuento vacía
+      if (linkedEmbargo && finalAmount <= 0) {
+        continue;
+      }
+
       if (finalAmount !== 0 || inputOverride) {
         context[concept.code] = finalAmount;
         const numOnly = String(concept.code).replace(/\D/g, '');
@@ -1346,6 +1458,14 @@ export function calculateEmployeePayroll({
         }
         totalDeductions += finalAmount;
         context.TOTAL_DEDUCCIONES = totalDeductions;
+
+        let explanation = resolveFormulaExplanation(concept, inputOverride, cappedBase > 0 ? cappedBase : baseForDeduction);
+        if (linkedEmbargo) {
+          const balanceMsg = linkedEmbargo.hasCap
+            ? ` | Saldo rest.: $${linkedEmbargo.remainingBalance.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`
+            : ' | Cuota alimentaria (sin tope)';
+          explanation = `Embargo "${linkedEmbargo.caseTitle}" (${linkedEmbargo.court})${balanceMsg}`;
+        }
 
         calculatedItems.push({
           conceptId: concept.id,
@@ -1359,8 +1479,8 @@ export function calculateEmployeePayroll({
           amount: finalAmount,
           calculationOrder: concept.calculationOrder || 200,
           formula: concept.formula || null,
-          formulaExplanation: resolveFormulaExplanation(concept, inputOverride, cappedBase > 0 ? cappedBase : baseForDeduction),
-          arcaConceptCode: concept.arcaConceptCode || '810000',
+          formulaExplanation: explanation,
+          arcaConceptCode: concept.arcaConceptCode || '810012',
         });
       }
     }
@@ -1406,6 +1526,13 @@ export function calculateEmployeePayroll({
     }
   }
 
+  // Base diferencial de Obra Social para jornada parcial (Art. 92 TER LCT / LSD Posición 101-130)
+  let diffOs = 0.00;
+  if (isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
+    const fullTimeOs = Math.min(Math.max(Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100, minCap), maxCap);
+    diffOs = Math.max(0, Math.round((fullTimeOs - biOsContrib) * 100) / 100);
+  }
+
   const sipaRate = Number(payrollSettings.sipaRate || 10.77) / 100;
   const inssjypRate = Number(payrollSettings.inssjypRate || 1.58) / 100;
   const osRate = Number(payrollSettings.osRate || 6.00) / 100;
@@ -1417,7 +1544,10 @@ export function calculateEmployeePayroll({
 
   const sipaContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
   const inssjypContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
-  const osContrib = (!isDirector && hasRemuneration) ? Math.round(biOsContrib * osRate * 100) / 100 : 0.00;
+  const biOsContribTotal = (!isDirector && hasRemuneration)
+    ? (isPartTimeWorker ? Math.min(Math.max(context.BASE_OBRA_SOCIAL + diffOs, minCap), maxCap) : biOsContrib)
+    : 0.00;
+  const osContrib = (!isDirector && hasRemuneration) ? Math.round(biOsContribTotal * osRate * 100) / 100 : 0.00;
   const fneContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
   const aaffContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
   const artContrib = hasRemuneration ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
@@ -1433,23 +1563,22 @@ export function calculateEmployeePayroll({
 
   // --- PASO 6: Distribución Porcentual del Costo Laboral Total (100%) (Bloque 5) ---
   const clt = totalLaborCost > 0 ? totalLaborCost : 1;
-  const pctNetSalary = Math.round((netSalary / clt) * 10000) / 100;
-  const pctEmployeeDeductions = Math.round((totalDeductions / clt) * 10000) / 100;
-  const pctSocialSecurityContrib = Math.round(((sipaContrib + inssjypContrib + fneContrib + aaffContrib) / clt) * 10000) / 100;
-  const pctHealthContrib = Math.round((osContrib / clt) * 10000) / 100;
-  const pctArtAndInsurance = Math.round(((artContrib + scvoContrib) / clt) * 10000) / 100;
+  const pctNetSalary = Math.max(-999.99, Math.min(999.99, Math.round((netSalary / clt) * 10000) / 100));
+  const pctEmployeeDeductions = Math.max(0, Math.min(999.99, Math.round((totalDeductions / clt) * 10000) / 100));
+  const pctSocialSecurityContrib = Math.max(0, Math.min(999.99, Math.round(((sipaContrib + inssjypContrib + fneContrib + aaffContrib) / clt) * 10000) / 100));
+  const pctHealthContrib = Math.max(0, Math.min(999.99, Math.round((osContrib / clt) * 10000) / 100));
+  const pctArtAndInsurance = Math.max(0, Math.min(999.99, Math.round(((artContrib + scvoContrib) / clt) * 10000) / 100));
 
   // Ajuste de redondeo para que la suma sea exactamente 100.00%
   const currentSum = pctNetSalary + pctEmployeeDeductions + pctSocialSecurityContrib + pctHealthContrib + pctArtAndInsurance;
-  const pctUnionAndChambers = Math.round((100.00 - currentSum) * 100) / 100;
+  const pctUnionAndChambers = Math.max(0, Math.min(999.99, Math.round((100.00 - currentSum) * 100) / 100));
 
   // --- PASO 7: Bases Imponibles F.931 (LSD Registro 04) ---
   const biSipaAporte = (!isIntern && !isDirector && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
   const biInssjypAporte = biSipaAporte;
 
-  const relatives = employee.relatives || [];
-  const hasSpouse = relatives.some((r) => r.kinship?.code === 'CONYUGE' || r.kinship?.code === 'CONVIVIENTE');
-  const childrenCount = relatives.filter((r) => String(r.kinship?.code || '').startsWith('HIJO')).length;
+  const hasSpouse = activeRelatives.some((r) => r.kinship?.code === 'CONYUGE' || r.kinship?.code === 'CONVIVIENTE');
+  const childrenCount = activeRelatives.filter((r) => String(r.kinship?.code || '').startsWith('HIJO')).length;
 
   const basisData = {
     baseImponible1: biSipaAporte,
@@ -1463,12 +1592,16 @@ export function calculateEmployeePayroll({
     baseImponible9: biLrt,
     baseImponible10: (isIntern || isDirector) ? 0.00 : biSipaWithDetraction,
     detractionAmount: (isIntern || isDirector) ? 0.00 : detraction,
+    baseDifAporteOs: isPartTimeWorker ? diffOs : 0.00,
+    baseDifContribOs: isPartTimeWorker ? diffOs : 0.00,
+    baseDifLrt: 0.00,
     situationCode: employee.status === 'ACTIVE' ? '01' : '13',
     conditionCode: '01',
     activityCode: employee.jobPosition?.activityCode || (isDirector ? '015' : '049'),
     contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : '001'))).padStart(3, '0'),
     hasSpouse,
     childrenCount,
+    adherentsCount,
     hasScvo: true,
     hasCct: (isIntern || isDirector) ? false : Boolean(employee.jobPosition?.cctCode),
   };
@@ -1530,6 +1663,7 @@ export function calculateEmployeePayroll({
     workedDays,
     workedHours,
     signatureHash,
+    activeEmbargoes,
     paymentMethod: employee.cbu && String(employee.cbu).trim() ? 'CBU' : 'EFECTIVO',
     cbu: employee.cbu && String(employee.cbu).trim() ? String(employee.cbu).trim() : null,
     bankName: employee.cbu && String(employee.cbu).trim() ? (employee.bankName || 'Acreditación Bancaria') : null,

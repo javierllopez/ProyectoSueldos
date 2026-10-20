@@ -88,6 +88,7 @@ export const createEmployeeSchema = z.object({
         { message: 'El CUIL del familiar no es válido' }
       ),
       birthDate: z.coerce.date({ required_error: 'La fecha de nacimiento es obligatoria', invalid_type_error: 'Fecha de nacimiento inválida' }),
+      isAdherent: z.boolean().default(false),
     })
   ).optional(),
 });
@@ -146,6 +147,7 @@ export const createRelativeSchema = z.object({
     { message: 'El CUIL del familiar no es válido' }
   ),
   birthDate: z.coerce.date({ required_error: 'La fecha de nacimiento es obligatoria', invalid_type_error: 'Fecha de nacimiento inválida' }),
+  isAdherent: z.boolean().default(false),
 });
 
 export const updateRelativeSchema = createRelativeSchema.partial();

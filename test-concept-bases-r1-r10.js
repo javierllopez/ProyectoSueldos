@@ -216,11 +216,11 @@ console.log('\n--- 4. Filtro de Totales y Bases Acumuladoras ---');
 function simulateAccumulatorsFilter(type, numPart) {
   if (type === 'REMUNERATIVE') return [];
   if (type === 'NON_REMUNERATIVE') return ['TOTAL_REMUNERATIVO'];
-  if (type === 'DEDUCTION') return ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO'];
+  if (type === 'DEDUCTION') return ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO', 'BASE_OBRA_SOCIAL', 'BASE_OBRA_SOCIAL_COMPLETA'];
   if (type === 'AUXILIARY') {
     if (numPart <= 3999) return [];
     if (numPart <= 5999) return ['TOTAL_REMUNERATIVO'];
-    return ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO'];
+    return ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO', 'BASE_OBRA_SOCIAL', 'BASE_OBRA_SOCIAL_COMPLETA'];
   }
   return [];
 }
@@ -231,8 +231,8 @@ console.log('  ✓ REMUNERATIVE: Ningún acumulador visible');
 assert.deepStrictEqual(simulateAccumulatorsFilter('NON_REMUNERATIVE', 4000), ['TOTAL_REMUNERATIVO']);
 console.log('  ✓ NON_REMUNERATIVE: Solo [TOTAL_REMUNERATIVO]');
 
-assert.deepStrictEqual(simulateAccumulatorsFilter('DEDUCTION', 6000), ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO']);
-console.log('  ✓ DEDUCTION: [TOTAL_REMUNERATIVO], [TOTAL_NO_REMUNERATIVO], [TOTAL_BRUTO]');
+assert.deepStrictEqual(simulateAccumulatorsFilter('DEDUCTION', 6000), ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO', 'BASE_OBRA_SOCIAL', 'BASE_OBRA_SOCIAL_COMPLETA']);
+console.log('  ✓ DEDUCTION: [TOTAL_REMUNERATIVO], [TOTAL_NO_REMUNERATIVO], [TOTAL_BRUTO], [BASE_OBRA_SOCIAL], [BASE_OBRA_SOCIAL_COMPLETA]');
 
 assert.deepStrictEqual(simulateAccumulatorsFilter('AUXILIARY', 2500), []);
 console.log('  ✓ AUXILIARY <= 3999: Ningún acumulador visible');
@@ -240,8 +240,8 @@ console.log('  ✓ AUXILIARY <= 3999: Ningún acumulador visible');
 assert.deepStrictEqual(simulateAccumulatorsFilter('AUXILIARY', 4500), ['TOTAL_REMUNERATIVO']);
 console.log('  ✓ AUXILIARY 4000..5999: Solo [TOTAL_REMUNERATIVO]');
 
-assert.deepStrictEqual(simulateAccumulatorsFilter('AUXILIARY', 6500), ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO']);
-console.log('  ✓ AUXILIARY >= 6000: [TOTAL_REMUNERATIVO], [TOTAL_NO_REMUNERATIVO], [TOTAL_BRUTO]');
+assert.deepStrictEqual(simulateAccumulatorsFilter('AUXILIARY', 6500), ['TOTAL_REMUNERATIVO', 'TOTAL_NO_REMUNERATIVO', 'TOTAL_BRUTO', 'BASE_OBRA_SOCIAL', 'BASE_OBRA_SOCIAL_COMPLETA']);
+console.log('  ✓ AUXILIARY >= 6000: [TOTAL_REMUNERATIVO], [TOTAL_NO_REMUNERATIVO], [TOTAL_BRUTO], [BASE_OBRA_SOCIAL], [BASE_OBRA_SOCIAL_COMPLETA]');
 
 // --- 5. Filtro de Novedades del Empleado ---
 console.log('\n--- 5. Filtro de Novedades del Empleado ---');

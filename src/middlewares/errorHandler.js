@@ -78,9 +78,13 @@ export default function errorHandler(err, req, res, next) {
     });
   }
 
-  // Errores de negocio personalizados (con status explícito)
+  // Errores de negocio personalizados (con status explícito) o internos
   const status = err.status || (res.statusCode >= 400 ? res.statusCode : 500);
-  const message = err.status ? err.message : (status === 500 ? (err.message || 'Error interno del servidor') : err.message);
+  const message = err.status
+    ? err.message
+    : (status >= 500 && env.NODE_ENV !== 'development'
+        ? 'Error interno del servidor'
+        : (err.message || 'Error interno del servidor'));
 
   if (status >= 500 && env.NODE_ENV !== 'test') {
     console.error('💥 Error no manejado:', err);

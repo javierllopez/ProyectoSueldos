@@ -16,6 +16,9 @@ export const createUnionSchema = z.object({
     .max(191, 'El nombre no puede exceder los 191 caracteres')
     .trim(),
   code: z.string().max(50, 'El código no puede exceder los 50 caracteres').trim().nullable().optional(),
+  conceptId: z.string().trim().nullable().optional().or(z.literal('')),
+  conceptIds: z.array(z.string().trim()).nullable().optional(),
+  applyToEmployees: z.boolean().optional(),
 });
 
 export const updateUnionSchema = createUnionSchema.partial();
@@ -26,6 +29,9 @@ export const createMutualSchema = z.object({
     .max(191, 'El nombre no puede exceder los 191 caracteres')
     .trim(),
   code: z.string().max(50, 'El código no puede exceder los 50 caracteres').trim().nullable().optional(),
+  conceptId: z.string().trim().nullable().optional().or(z.literal('')),
+  conceptIds: z.array(z.string().trim()).nullable().optional(),
+  applyToEmployees: z.boolean().optional(),
 });
 
 export const updateMutualSchema = createMutualSchema.partial();

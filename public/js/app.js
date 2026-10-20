@@ -6,11 +6,12 @@ import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 // Submódulos desacoplados de vistas
 import { registerAdminMethods } from './modules/admin.view.js';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
-import { registerPersonnelMethods } from './modules/personnel.view.js';
+import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.3';
 import { registerPayrollMethods } from './modules/payroll.view.js';
 import { registerSalaryScalesMethods } from './modules/salaryScales.view.js';
 import { registerConceptsMethods } from './modules/concepts.view.js';
 import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';
+import { registerEmbargoesMethods } from './modules/embargoes.view.js';
 
 export { ARCA_T03_ACTIVITIES, getArcaActivityInfo };
 
@@ -202,9 +203,20 @@ class AppController {
     const dashActiveName = document.getElementById('dash-active-company-name');
     const dashActiveCuit = document.getElementById('dash-active-company-cuit');
     const dashActiveAvatar = document.getElementById('dash-active-company-avatar');
+    const statActiveComp = document.getElementById('stat-active-company');
     if (dashActiveName) dashActiveName.textContent = this.activeCompany.name;
     if (dashActiveCuit) dashActiveCuit.textContent = formatCuit(this.activeCompany.cuit);
     if (dashActiveAvatar) dashActiveAvatar.textContent = (this.activeCompany.name || 'PS').substring(0, 2).toUpperCase();
+    if (statActiveComp) statActiveComp.textContent = this.activeCompany.name;
+    const admTenantIndicator = document.getElementById('adm-active-tenant-indicator');
+    if (admTenantIndicator) admTenantIndicator.textContent = `Empresa Activa: ${this.activeCompany.name}`;
+    const admKpiActive = document.getElementById('adm-kpi-active-company');
+    if (admKpiActive) admKpiActive.textContent = this.activeCompany.name;
+    const payTenantName = document.getElementById('payroll-header-company-name');
+    if (payTenantName) payTenantName.textContent = this.activeCompany.name;
+    document.querySelectorAll('.payroll-active-company-name-sync').forEach((el) => {
+      el.textContent = this.activeCompany.name;
+    });
 
     // Llenar dropdown
     this.companies.forEach((company) => {
@@ -280,11 +292,13 @@ class AppController {
 
     // Actualizar clases activas en navegación
     document.querySelectorAll('[data-view-target]').forEach((link) => {
-      link.classList.remove('active', 'active-personnel');
+      link.classList.remove('active', 'active-personnel', 'active-payroll');
       if (link.getAttribute('data-view-target') === viewName) {
         link.classList.add('active');
         if (viewName === 'employees') {
           link.classList.add('active-personnel');
+        } else if (viewName === 'payroll') {
+          link.classList.add('active-payroll');
         }
       }
     });
@@ -337,6 +351,7 @@ registerPayrollMethods(AppController.prototype);
 registerSalaryScalesMethods(AppController.prototype);
 registerConceptsMethods(AppController.prototype);
 registerMatricesAndSettingsMethods(AppController.prototype);
+registerEmbargoesMethods(AppController.prototype);
 
 export { AppController };
 

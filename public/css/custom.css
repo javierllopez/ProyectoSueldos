@@ -510,9 +510,14 @@ body {
 #modal-employee-form .modal-body {
   flex: 1 1 auto;
   overflow-y: auto;
-  min-height: 0;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
+  min-height: min(500px, 60vh);
+  padding-top: 0.85rem;
+  padding-bottom: 2rem;
+}
+
+#tab-pane-emp-job {
+  min-height: 420px;
+  padding-bottom: 140px;
 }
 
 #modal-employee-form .modal-footer {
@@ -597,225 +602,13 @@ body {
 }
 
 /* ==========================================================================
-   MÓDULO DE LIQUIDACIÓN DE SUELDOS (PALETA ROYAL INDIGO / DEEP VIOLET)
+   MÓDULO DE LIQUIDACIÓN DE SUELDOS & LIBRO DIGITAL ARCA
+   Definiciones maestras consolidadas en /css/payroll.css
    ========================================================================== */
 
-:root {
-  --payroll-indigo: #4263eb;
-  --payroll-indigo-dark: #364fc7;
-  --payroll-indigo-light: #edf2ff;
-  --payroll-indigo-border: #bac8ff;
-  --payroll-indigo-hover: #3b5bdb;
-}
 
-.theme-payroll-header {
-  background: linear-gradient(135deg, #2b3a8c 0%, #3b5bdb 60%, #4263eb 100%);
-  border-radius: 10px;
-  padding: 0.9rem 1.4rem;
-  color: #ffffff;
-  box-shadow: 0 4px 14px rgba(59, 91, 219, 0.25);
-}
+/* Reglas de navegación, sidebar, tablas y controles de Sueldos consolidadas en /css/payroll.css */
 
-.theme-payroll-badge {
-  background: rgba(255, 255, 255, 0.2) !important;
-  color: #ffffff !important;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  padding: 0.35rem 0.6rem;
-  border-radius: 4px;
-}
-
-.btn-payroll {
-  background-color: #4263eb;
-  border-color: #4263eb;
-  color: #ffffff;
-  font-weight: 600;
-  transition: all 0.15s ease-in-out;
-}
-
-.btn-payroll:hover,
-.btn-payroll:focus {
-  background-color: #364fc7;
-  border-color: #364fc7;
-  color: #ffffff;
-  box-shadow: 0 3px 10px rgba(66, 99, 235, 0.35);
-}
-
-.btn-outline-payroll {
-  border-color: #4263eb;
-  color: #4263eb;
-  background: transparent;
-  font-weight: 600;
-}
-
-.btn-outline-payroll:hover {
-  background-color: #4263eb;
-  color: #ffffff;
-}
-
-.card-payroll-accent {
-  border-top: 3px solid #4263eb;
-}
-
-/* Sidebar de Liquidaciones */
-.payroll-sidebar-card {
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1px solid rgba(98, 105, 118, 0.16);
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.payroll-sidebar-header {
-  padding: 0.85rem 1rem;
-  background: #f8fafc;
-  border-bottom: 1px solid rgba(98, 105, 118, 0.12);
-}
-
-.payroll-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.7rem 1rem;
-  color: #495057;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-decoration: none;
-  border-left: 3px solid transparent;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.payroll-nav-item:hover {
-  background: #edf2ff;
-  color: #364fc7;
-  border-left-color: #748ffc;
-}
-
-.payroll-nav-item.active {
-  background: #edf2ff;
-  color: #364fc7;
-  border-left-color: #4263eb;
-}
-
-.payroll-nav-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e7edff;
-  color: #4263eb;
-  font-size: 1.15rem;
-  flex-shrink: 0;
-  transition: all 0.15s ease;
-}
-
-.payroll-nav-item.active .payroll-nav-icon {
-  background: #4263eb;
-  color: #ffffff;
-  box-shadow: 0 2px 6px rgba(66, 99, 235, 0.35);
-}
-
-/* Submenú de Conceptos y Matrices */
-.payroll-nav-dropdown {
-  position: relative;
-}
-
-.payroll-nav-dropdown .payroll-nav-item[aria-expanded="false"] .submenu-caret {
-  transform: rotate(-90deg);
-}
-
-.payroll-nav-dropdown .payroll-nav-item[aria-expanded="true"] .submenu-caret {
-  transform: rotate(0deg);
-}
-
-.payroll-submenu {
-  background: #fbfcfe;
-  border-left: 2px dashed #dbe4ff;
-  margin-left: 2rem;
-  padding: 0.25rem 0.5rem 0.4rem 0.25rem;
-}
-
-.payroll-nav-subitem {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.42rem 0.75rem;
-  color: #495057;
-  font-size: 0.815rem;
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: 6px;
-  margin-bottom: 2px;
-  transition: all 0.15s ease;
-  cursor: pointer;
-}
-
-.payroll-nav-subitem:hover {
-  background: #edf2ff;
-  color: #364fc7;
-}
-
-.payroll-nav-subitem.active {
-  background: #4263eb;
-  color: #ffffff;
-  font-weight: 600;
-  box-shadow: 0 2px 6px rgba(66, 99, 235, 0.28);
-}
-
-.payroll-nav-subitem.active .badge {
-  background: rgba(255, 255, 255, 0.25) !important;
-  color: #ffffff !important;
-}
-
-/* Grilla / Matriz Interactiva de Novedades */
-.table-novedades th {
-  background-color: #f8fafc;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 0.5rem 0.6rem;
-  vertical-align: middle;
-}
-
-.table-novedades td {
-  padding: 0.4rem 0.5rem;
-  vertical-align: middle;
-}
-
-.table-novedades input.form-control-sm {
-  font-size: 0.84rem;
-  padding: 0.25rem 0.45rem;
-  border-color: #d0d7de;
-}
-
-.table-novedades input.form-control-sm:focus {
-  border-color: #4263eb;
-  box-shadow: 0 0 0 0.18rem rgba(66, 99, 235, 0.18);
-}
-
-/* Diseñador de Fórmulas */
-.btn-token-formula {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.55rem;
-  border-radius: 4px;
-  font-family: var(--tblr-font-monospace);
-  font-weight: 600;
-  background-color: #edf2ff;
-  border: 1px solid #bac8ff;
-  color: #364fc7;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.btn-token-formula:hover {
-  background-color: #4263eb;
-  color: #ffffff;
-  border-color: #4263eb;
-}
 
 /* ==========================================================================
    RECIBO DE HABERES OFICIAL (OPCIÓN A - HOJA VECTORIAL A4 PORTRAIT)
@@ -1608,7 +1401,7 @@ body {
     overflow-y: auto !important;
   }
 
-  /* Pantalla de Alícuotas Patronales (pane-payroll-settings) */
+  /* Pantalla de Alícuotas Patronales (pane-payroll-settings) - Diseño Compacto */
   #pane-payroll-settings form {
     flex: 1 1 0 !important;
     min-height: 0 !important;
@@ -1642,6 +1435,43 @@ body {
   #pane-payroll-settings .card-footer {
     flex-shrink: 0 !important;
     background-color: #ffffff !important;
+  }
+
+  .payroll-settings-section {
+    background: #ffffff;
+    border: 1px solid rgba(98, 105, 118, 0.16);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .payroll-settings-section:hover {
+    border-color: rgba(66, 99, 235, 0.25);
+  }
+
+  .payroll-settings-table th {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #64748b;
+    font-weight: 600;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .payroll-settings-table td {
+    padding: 0.32rem 0.5rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .payroll-sub-hint {
+    font-size: 0.68rem;
+    color: #828a96;
+    line-height: 1.2;
+    margin-top: 0.2rem;
   }
 
   /* Pantalla de Perfil de Empresa (view-company-profile) */
@@ -1710,6 +1540,30 @@ body {
 * {
   scrollbar-width: thin;
   scrollbar-color: rgba(140, 155, 175, 0.35) transparent;
+}
+
+/* Barra de filtros de liquidaciones: tamaño normal, compacto y sin flex-grow desproporcionado */
+.payroll-filter-bar,
+.payroll-filter-bar.card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  min-height: auto !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.payroll-filter-bar .card-body {
+  padding-top: 0.45rem !important;
+  padding-bottom: 0.45rem !important;
+}
+
+/* Salvaguarda universal de alertas vacíos u ocultos para todo el sistema */
+.alert.d-none,
+.alert:empty,
+.alert[hidden] {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
 }
 
 

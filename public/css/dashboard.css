@@ -1,0 +1,759 @@
+/* ==========================================================================
+   PROYECTOSUELDOS — DASHBOARD (INICIO) LUXURY DARK STYLESHEET
+   Cumplimiento Estricto: Grilla 4px, WCAG AA (>4.5:1), Touch Targets >= 44x44px
+   Tipografía: 2 Familias ('Plus Jakarta Sans' y 'Inter')
+   ========================================================================== */
+
+:root {
+  --dash-bg-void: #070b14;
+  --dash-bg-base: #0a1020;
+  --dash-bg-surface: #0e172c;
+  --dash-bg-elevated: #13203c;
+  --dash-bg-glass: rgba(14, 23, 44, 0.75);
+  --dash-bg-card: rgba(19, 32, 60, 0.65);
+  --dash-bg-card-hover: rgba(26, 44, 82, 0.85);
+
+  --dash-border-subtle: rgba(255, 255, 255, 0.08);
+  --dash-border-medium: rgba(255, 255, 255, 0.16);
+  --dash-border-focus: #3b82f6;
+
+  --dash-primary: #2563eb;
+  --dash-primary-hover: #1d4ed8;
+  --dash-primary-glow: rgba(37, 99, 235, 0.36);
+  --dash-primary-soft: rgba(37, 99, 235, 0.14);
+
+  --dash-emerald-400: #34d399;
+  --dash-emerald-500: #10b981;
+  --dash-emerald-glow: rgba(16, 185, 129, 0.28);
+  --dash-emerald-soft: rgba(16, 185, 129, 0.14);
+
+  --dash-purple-400: #c084fc;
+  --dash-purple-soft: rgba(168, 85, 247, 0.14);
+
+  --dash-sky-400: #38bdf8;
+  --dash-sky-soft: rgba(56, 189, 248, 0.14);
+
+  --dash-amber-400: #fbbf24;
+  --dash-amber-soft: rgba(251, 191, 36, 0.14);
+
+  --dash-slate-100: #f1f5f9;
+  --dash-slate-200: #e2e8f0;
+  --dash-slate-300: #cbd5e1;
+  --dash-slate-400: #94a3b8;
+  --dash-slate-500: #64748b;
+  --dash-slate-800: #1e293b;
+
+  --dash-radius-xs: 4px;
+  --dash-radius-sm: 8px;
+  --dash-radius-md: 16px;
+  --dash-radius-lg: 24px;
+  --dash-radius-full: 9999px;
+}
+
+/* ==========================================================================
+   ESTILOS DE BARRA SUPERIOR (HEADER & SUB-NAV EN MODO LANDING LUXURY)
+   ========================================================================== */
+.header-luxury-dark {
+  background-color: var(--dash-bg-void) !important;
+  border-bottom: 1px solid var(--dash-border-subtle) !important;
+  color: #ffffff !important;
+}
+
+.header-luxury-dark .navbar-brand {
+  color: #ffffff !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  min-height: 44px;
+}
+
+.header-luxury-dark .brand-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  background: linear-gradient(135deg, var(--dash-primary) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border-radius: var(--dash-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  box-shadow: 0 4px 12px var(--dash-primary-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Selector de Empresa Activa Dark Glass */
+.company-selector-btn-luxury {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid var(--dash-border-medium) !important;
+  color: #ffffff !important;
+  min-height: 44px !important;
+  padding: 8px 16px !important;
+  border-radius: var(--dash-radius-sm) !important;
+  backdrop-filter: blur(12px);
+  transition: all 0.2s ease;
+}
+
+.company-selector-btn-luxury:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.company-selector-btn-luxury:focus-visible {
+  outline: 2px solid var(--dash-sky-400) !important;
+}
+
+/* Sub-Navbar de Módulos (Inicio, Personal, Sueldos) */
+.subnav-luxury-dark {
+  background-color: #090f1d !important;
+  border-bottom: 1px solid var(--dash-border-subtle) !important;
+}
+
+.subnav-luxury-dark .nav-link {
+  min-height: 44px;
+  padding: 10px 20px !important;
+  color: var(--dash-slate-300) !important;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  border-radius: var(--dash-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.subnav-luxury-dark .nav-link:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.subnav-luxury-dark .nav-link.active {
+  color: #ffffff !important;
+  background-color: var(--dash-primary) !important;
+  box-shadow: 0 4px 16px var(--dash-primary-glow);
+}
+
+.subnav-luxury-dark .nav-link:focus-visible {
+  outline: 2px solid var(--dash-sky-400);
+}
+
+/* ==========================================================================
+   VISTA DE INICIO / DASHBOARD (ELITE DARK LUXURY)
+   ========================================================================== */
+#view-dashboard.app-view:not(.d-none) {
+  background-color: var(--dash-bg-void) !important;
+  color: var(--dash-slate-200);
+  position: relative;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+}
+
+#view-dashboard .dash-scroll-container {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding: 24px 8px 64px 8px !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+#view-dashboard .dash-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+#view-dashboard .dash-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: var(--dash-radius-full);
+}
+
+/* Resplandor Ambiental */
+#view-dashboard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1100px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.16) 0%, rgba(16, 185, 129, 0.08) 36%, transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dash-content-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+/* Encabezado Principal / Saludo Ejecutivo */
+.dash-executive-header {
+  background: var(--dash-bg-glass);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-lg);
+  padding: 32px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 48px -12px rgba(0, 0, 0, 0.6);
+  margin-bottom: 32px;
+}
+
+.dash-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.dash-welcome-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+.dash-welcome-subtitle {
+  font-size: 0.9375rem;
+  color: var(--dash-slate-400);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dash-account-pill {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Badge de Tenant Físico en Header */
+.dash-tenant-live-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+  padding: 8px 16px;
+  border-radius: var(--dash-radius-full);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--dash-emerald-400);
+}
+
+.dash-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--dash-emerald-400);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  animation: dashPulse 2s infinite;
+}
+
+@keyframes dashPulse {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ==========================================================================
+   METRIC STATS CARDS (GRILLA DE 4 COLUMNAS)
+   ========================================================================== */
+.dash-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.dash-metric-card {
+  background: var(--dash-bg-card);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-md);
+  padding: 24px;
+  backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.dash-metric-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(37, 99, 235, 0.4);
+  background: var(--dash-bg-card-hover);
+}
+
+.dash-metric-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  border-radius: var(--dash-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.metric-icon-blue {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(37, 99, 235, 0.4);
+}
+
+.metric-icon-emerald {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--dash-emerald-400);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.metric-icon-sky {
+  background: rgba(56, 189, 248, 0.2);
+  color: var(--dash-sky-400);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.dash-metric-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dash-slate-400);
+  margin-bottom: 4px;
+}
+
+.dash-metric-val {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+}
+
+/* ==========================================================================
+   ORGANIZACIÓN DE ACCESOS DIRECTOS (ARQUITECTURA DE MÓDULOS)
+   ========================================================================== */
+.dash-main-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 32px;
+}
+
+/* Columna Izquierda: Pilares Operativos & Módulos */
+.dash-modules-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.dash-section-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.dash-section-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dash-section-title i {
+  color: var(--dash-primary);
+}
+
+/* Tarjetas Destacadas de Operación Primaria (Sueldos & Personal) */
+.dash-primary-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.dash-primary-feature-card {
+  background: var(--dash-bg-card);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-md);
+  padding: 28px 24px;
+  backdrop-filter: blur(16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-primary-feature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: transparent;
+  transition: background 0.25s ease;
+}
+
+.card-theme-payroll:hover::before {
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+}
+
+.card-theme-personnel:hover::before {
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+.dash-primary-feature-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.24);
+  background: var(--dash-bg-card-hover);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+}
+
+.dash-primary-feature-card:focus-visible {
+  outline: 3px solid var(--dash-sky-400);
+}
+
+.dash-card-icon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dash-module-avatar {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: var(--dash-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.375rem;
+}
+
+.avatar-payroll {
+  background: rgba(37, 99, 235, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(37, 99, 235, 0.4);
+}
+
+.avatar-personnel {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--dash-emerald-400);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.dash-module-badge {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: var(--dash-radius-full);
+}
+
+.badge-payroll {
+  background: rgba(37, 99, 235, 0.16);
+  color: #93c5fd;
+  border: 1px solid rgba(37, 99, 235, 0.32);
+}
+
+.badge-personnel {
+  background: rgba(16, 185, 129, 0.16);
+  color: var(--dash-emerald-400);
+  border: 1px solid rgba(16, 185, 129, 0.32);
+}
+
+.dash-card-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.dash-card-desc {
+  font-size: 0.875rem;
+  color: var(--dash-slate-300);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.dash-feature-bullet-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.dash-feature-bullet-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--dash-slate-300);
+}
+
+.dash-feature-bullet-list li i {
+  color: var(--dash-emerald-400);
+  font-size: 0.9375rem;
+}
+
+.dash-card-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: var(--dash-radius-sm);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-action-payroll {
+  background: linear-gradient(135deg, var(--dash-primary) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--dash-primary-glow);
+}
+
+.btn-action-payroll:hover {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.btn-action-personnel {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 12px var(--dash-emerald-glow);
+}
+
+.btn-action-personnel:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+}
+
+/* Accesos Directos Secundarios (Empresas, Usuarios, Cuentas) */
+.dash-secondary-shortcuts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.dash-shortcut-card {
+  background: var(--dash-bg-card);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-sm);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  backdrop-filter: blur(12px);
+  min-height: 64px;
+  transition: all 0.2s ease;
+}
+
+.dash-shortcut-card:hover {
+  transform: translateX(4px);
+  border-color: rgba(37, 99, 235, 0.4);
+  background: var(--dash-bg-card-hover);
+}
+
+.dash-shortcut-card:focus-visible {
+  outline: 2px solid var(--dash-sky-400);
+}
+
+.dash-shortcut-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--dash-radius-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.icon-purple { background: var(--dash-purple-soft); color: var(--dash-purple-400); border: 1px solid rgba(168, 85, 247, 0.3); }
+.icon-amber { background: var(--dash-amber-soft); color: var(--dash-amber-400); border: 1px solid rgba(251, 191, 36, 0.3); }
+.icon-blue { background: var(--dash-primary-soft); color: #60a5fa; border: 1px solid rgba(37, 99, 235, 0.3); }
+
+.dash-shortcut-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.dash-shortcut-desc {
+  font-size: 0.75rem;
+  color: var(--dash-slate-400);
+}
+
+/* ==========================================================================
+   COLUMNA DERECHA: CONSOLA DE EMPRESA ACTIVA & EQUIPO
+   ========================================================================== */
+.dash-sidebar-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dash-sidebar-card {
+  background: var(--dash-bg-card);
+  border: 1px solid var(--dash-border-subtle);
+  border-radius: var(--dash-radius-md);
+  padding: 28px 24px;
+  backdrop-filter: blur(16px);
+}
+
+.dash-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--dash-border-subtle);
+}
+
+.dash-sidebar-header h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.dash-active-tenant-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dash-company-avatar {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  border-radius: var(--dash-radius-sm);
+  background: linear-gradient(135deg, var(--dash-primary) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 12px var(--dash-primary-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dash-company-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.dash-company-cuit {
+  font-size: 0.8125rem;
+  color: var(--dash-slate-400);
+  font-family: monospace;
+}
+
+.dash-sidebar-card p {
+  font-size: 0.875rem;
+  color: var(--dash-slate-300);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.btn-sidebar-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 20px;
+  border-radius: var(--dash-radius-sm);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--dash-border-medium);
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sidebar-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-sidebar-action:focus-visible {
+  outline: 2px solid var(--dash-sky-400);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (BREAKPOINTS LIMPIOS)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .dash-main-layout { grid-template-columns: 1fr; }
+  .dash-metrics-grid { grid-template-columns: 1fr; }
+  .dash-primary-cards-grid { grid-template-columns: 1fr; }
+  .dash-secondary-shortcuts-grid { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   DESBLOQUEO DE SCROLL FLUIDO PARA VISTA INICIO
+   ========================================================================== */
+#view-dashboard.app-view:not(.d-none) {
+  overflow-y: auto !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  height: auto !important;
+  max-height: calc(100vh - 128px) !important;
+  padding-bottom: 64px !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+}
+
+#view-dashboard.app-view:not(.d-none)::-webkit-scrollbar {
+  width: 6px;
+}
+
+#view-dashboard.app-view:not(.d-none)::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: var(--dash-radius-full);
+}

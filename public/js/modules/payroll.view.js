@@ -60,6 +60,8 @@ class PayrollMethods {
           this.loadNovPersEmp();
         } else if (targetPaneId === '#pane-nov-pers-con') {
           this.loadNovPersCon();
+        } else if (targetPaneId === '#pane-payroll-embargoes') {
+          this.loadEmbargoes();
         } else if (targetPaneId === '#pane-nov-nopers-emp') {
           this.syncPayrollPeriodSelectors();
           this.loadNovNoPersEmp();
@@ -98,6 +100,13 @@ class PayrollMethods {
       this.showView('companies');
       return;
     }
+
+    const payrollTenantName = document.getElementById('payroll-header-company-name');
+    if (payrollTenantName) payrollTenantName.textContent = this.activeCompany.name;
+    document.querySelectorAll('.payroll-active-company-name-sync').forEach((el) => {
+      el.textContent = this.activeCompany.name;
+    });
+
     await this.loadPayrollPeriods();
     await this.loadPayrollSalaryScales();
     await this.loadPayrollConcepts();
@@ -107,6 +116,20 @@ class PayrollMethods {
   }
 
   setupPayrollModals() {
+    this.setupEmbargoModals?.();
+
+    // --- Fiscal Period Modal ---
+    const newFiscalPeriodBtn = document.getElementById('btn-new-fiscal-period');
+    if (newFiscalPeriodBtn) newFiscalPeriodBtn.addEventListener('click', () => this.openNewFiscalPeriodModal());
+
+    const formFiscalPeriod = document.getElementById('form-fiscal-period');
+    if (formFiscalPeriod) {
+      formFiscalPeriod.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.saveFiscalPeriod();
+      });
+    }
+
     // --- Period Modal ---
     const newPeriodBtnHeader = document.getElementById('btn-new-period-header');
     const newPeriodBtn = document.getElementById('btn-open-new-period-modal');
@@ -244,6 +267,16 @@ class PayrollMethods {
     const filterTypeLsdAudit = document.getElementById('modal-lsd-audit-filter-type');
     if (filterTypeLsdAudit) {
       filterTypeLsdAudit.addEventListener('change', () => this.renderLsdAuditErrorsTable());
+    }
+
+    // --- Period Summary Modal Handlers ---
+    const btnExportPeriodSummaryExcel = document.getElementById('btn-export-period-summary-excel');
+    if (btnExportPeriodSummaryExcel) {
+      btnExportPeriodSummaryExcel.addEventListener('click', () => this.exportPeriodSummaryExcel());
+    }
+    const btnPrintPeriodSummaryPdf = document.getElementById('btn-print-period-summary-pdf');
+    if (btnPrintPeriodSummaryPdf) {
+      btnPrintPeriodSummaryPdf.addEventListener('click', () => this.printPeriodSummaryPdf());
     }
 
     // --- Concepts Handlers ---
@@ -657,15 +690,12 @@ class PayrollMethods {
                 <button type="button" class="btn btn-outline-success btn-view-period-slips" data-id="${p.id}" title="Ver recibos generados">
                   <i class="ti ti-receipt-2"></i>
                 </button>
-                <button type="button" class="btn btn-outline-purple btn-export-period-lsd" data-id="${p.id}" title="Exportar Libro Digital ARCA">
-                  <i class="ti ti-file-certificate"></i>
+                <button type="button" class="btn btn-outline-info btn-summary-period" data-id="${p.id}" title="Informe Resumen de Liquidación">
+                  <i class="ti ti-file-analytics"></i>
                 </button>
                 ${
                   !isClosed
                     ? `
-                  <button type="button" class="btn btn-outline-secondary btn-close-period" data-id="${p.id}" data-name="${escapeHtml(p.settlementName)}" title="Cerrar liquidación">
-                    <i class="ti ti-lock"></i>
-                  </button>
                   <button type="button" class="btn btn-outline-danger btn-del-period" data-id="${p.id}" data-name="${escapeHtml(p.settlementName)}" title="Eliminar liquidación">
                     <i class="ti ti-trash"></i>
                   </button>
@@ -708,20 +738,9 @@ class PayrollMethods {
       });
     });
 
-    tbody.querySelectorAll('.btn-export-period-lsd').forEach((btn) => {
-      btn.addEventListener('click', async () => {
-        const periodId = btn.dataset.id;
-        const period = this.payrollPeriods.find((p) => p.id === periodId);
-        document.getElementById('side-payroll-lsd')?.click();
-        const periodKey = period ? `${period.year}-${String(period.month).padStart(2, '0')}` : null;
-        await this.loadLsdMonthlyPeriods(periodKey);
-        this.openLsdAuditConfirmModal();
-      });
-    });
-
-    tbody.querySelectorAll('.btn-close-period').forEach((btn) => {
+    tbody.querySelectorAll('.btn-summary-period').forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.confirmClosePeriod(btn.dataset.id, btn.dataset.name);
+        this.openPeriodSummaryModal(btn.dataset.id);
       });
     });
 
@@ -776,6 +795,113 @@ class PayrollMethods {
     });
   }
 
+  async loadActiveFiscalPeriod() {
+    try {
+      const res = await apiRequest('/payroll/fiscal-periods/active');
+      const active = res.data;
+      this.activeFiscalPeriod = active;
+
+      const titleEl = document.getElementById('active-fiscal-period-title');
+      const subtitleEl = document.getElementById('active-fiscal-period-subtitle');
+      const countBadge = document.getElementById('payroll-active-settlements-badge');
+
+      const monthNames = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+
+      if (active) {
+        const monthName = monthNames[active.month - 1] || `Mes ${active.month}`;
+        if (titleEl) titleEl.textContent = `${monthName} ${active.year}`;
+        const settsCount = active.settlements?.length || 0;
+        if (subtitleEl) {
+          subtitleEl.innerHTML = `<i class="ti ti-info-circle me-1"></i> Período abierto para modificaciones y altas. <strong>${settsCount} liquidación(es)</strong> registradas.`;
+        }
+        if (countBadge) countBadge.textContent = `${settsCount} liquidación(es)`;
+      } else {
+        if (titleEl) titleEl.textContent = 'Sin período abierto';
+        if (subtitleEl) {
+          subtitleEl.innerHTML = `<span class="text-danger"><i class="ti ti-alert-triangle me-1"></i> No hay ningún período abierto. Haga clic en "+ Nuevo Período" para habilitar uno.</span>`;
+        }
+        if (countBadge) countBadge.textContent = '0 liquidaciones';
+      }
+    } catch (err) {
+      console.warn('Error al cargar período fiscal activo:', err);
+    }
+  }
+
+  openNewFiscalPeriodModal() {
+    const form = document.getElementById('form-fiscal-period');
+    form?.reset();
+    const alertBox = document.getElementById('fiscal-period-form-alert');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    if (this.activeFiscalPeriod) {
+      const monthNames = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+      ];
+      const activeName = `${monthNames[this.activeFiscalPeriod.month - 1]} ${this.activeFiscalPeriod.year}`;
+      if (alertBox) {
+        alertBox.innerHTML = `
+          <div class="d-flex align-items-start gap-2 text-start">
+            <i class="ti ti-lock fs-3 flex-shrink-0 mt-1"></i>
+            <div>
+              <strong>Atención:</strong> Ya existe un período abierto (<strong>${activeName}</strong>). Solamente puede haber un período abierto a la vez. No podrá habilitar un nuevo período hasta que el actual sea cerrado.
+            </div>
+          </div>`;
+        alertBox.classList.remove('d-none');
+      }
+      const submitBtn = document.getElementById('btn-save-fiscal-period');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.title = 'Ya existe un período abierto activo';
+      }
+    } else {
+      const submitBtn = document.getElementById('btn-save-fiscal-period');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.title = '';
+      }
+    }
+
+    getBootstrapModal(document.getElementById('modal-fiscal-period-form'))?.show();
+  }
+
+  async saveFiscalPeriod() {
+    const submitBtn = document.getElementById('btn-save-fiscal-period');
+    const alertBox = document.getElementById('fiscal-period-form-alert');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    const year = Number(document.getElementById('fiscal-period-input-year')?.value);
+    const month = Number(document.getElementById('fiscal-period-input-month')?.value);
+    const notes = document.getElementById('fiscal-period-input-notes')?.value?.trim() || null;
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Habilitando...';
+
+    try {
+      await apiRequest('/payroll/fiscal-periods', {
+        method: 'POST',
+        body: JSON.stringify({ year, month, notes }),
+      });
+
+      showToast('Período fiscal habilitado exitosamente');
+      getBootstrapModal(document.getElementById('modal-fiscal-period-form'))?.hide();
+      await this.loadActiveFiscalPeriod();
+      await this.loadPayrollPeriods();
+    } catch (err) {
+      if (alertBox) {
+        alertBox.textContent = err.message || 'Error al habilitar el período fiscal';
+        alertBox.classList.remove('d-none');
+      }
+      showToast(err.message, 'danger');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="ti ti-check me-1"></i> Habilitar Período';
+    }
+  }
+
   openNewPeriodModal() {
     const form = document.getElementById('form-payroll-period');
     form?.reset();
@@ -783,23 +909,46 @@ class PayrollMethods {
     document.getElementById('modal-payroll-period-title').textContent = 'Nueva Liquidación de Sueldos';
     document.getElementById('payroll-period-form-alert')?.classList.add('d-none');
 
-    const now = new Date();
-    document.getElementById('period-input-year').value = now.getFullYear();
-    document.getElementById('period-input-month').value = now.getMonth() + 1;
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    if (!this.activeFiscalPeriod) {
+      showToast('No existe ningún período abierto para dar de alta liquidaciones. Debe habilitar un período primero.', 'warning');
+      this.openNewFiscalPeriodModal();
+      return;
+    }
+
+    const active = this.activeFiscalPeriod;
+    const fiscalIdInput = document.getElementById('period-input-fiscal-id');
+    if (fiscalIdInput) fiscalIdInput.value = active.id;
+
+    const yearInput = document.getElementById('period-input-year');
+    const monthInput = document.getElementById('period-input-month');
+    if (yearInput) {
+      yearInput.value = active.year;
+      yearInput.readOnly = true;
+    }
+    if (monthInput) {
+      monthInput.value = active.month;
+      monthInput.disabled = true;
+    }
+
+    const fiscalLabel = document.getElementById('period-form-fiscal-label');
+    if (fiscalLabel) fiscalLabel.textContent = `${monthNames[active.month - 1]} ${active.year}`;
+
     document.getElementById('period-input-type').value = 'MONTHLY';
     document.getElementById('period-input-payment-place').value = 'Casa Central';
 
-    // Sugerir fecha de liquidación: última fecha del mes o de la quincena
+    // Sugerir fecha de liquidación: última fecha del mes o de la quincena dentro del período abierto
     const updateDefaultLiquidationDate = () => {
-      const year = Number(document.getElementById('period-input-year')?.value) || now.getFullYear();
-      const month = Number(document.getElementById('period-input-month')?.value) || (now.getMonth() + 1);
       const type = document.getElementById('period-input-type')?.value || 'MONTHLY';
-
       let liqDate;
       if (type === 'QUINCE_1') {
-        liqDate = new Date(year, month - 1, 15);
+        liqDate = new Date(active.year, active.month - 1, 15);
       } else {
-        liqDate = new Date(year, month, 0); // Último día del mes
+        liqDate = new Date(active.year, active.month, 0); // Último día del mes
       }
       const yyyy = liqDate.getFullYear();
       const mm = String(liqDate.getMonth() + 1).padStart(2, '0');
@@ -810,26 +959,18 @@ class PayrollMethods {
 
     updateDefaultLiquidationDate();
 
-    const yearInput = document.getElementById('period-input-year');
-    const monthInput = document.getElementById('period-input-month');
     const typeInput = document.getElementById('period-input-type');
-
-    if (yearInput && !yearInput.dataset.liqBound) {
-      yearInput.dataset.liqBound = 'true';
-      yearInput.addEventListener('change', updateDefaultLiquidationDate);
-    }
-    if (monthInput && !monthInput.dataset.liqBound) {
-      monthInput.dataset.liqBound = 'true';
-      monthInput.addEventListener('change', updateDefaultLiquidationDate);
-    }
     if (typeInput && !typeInput.dataset.liqBound) {
       typeInput.dataset.liqBound = 'true';
       typeInput.addEventListener('change', updateDefaultLiquidationDate);
     }
 
-    // Sugerir fecha de pago: 4to día hábil del mes siguiente
-    const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, 5);
-    document.getElementById('period-input-payment-date').value = nextMonth.toISOString().split('T')[0];
+    // Sugerir fecha de pago: 4to día hábil del mes siguiente al del período activo
+    const nextPayDate = new Date(active.year, active.month, 5);
+    const yyyyPay = nextPayDate.getFullYear();
+    const mmPay = String(nextPayDate.getMonth() + 1).padStart(2, '0');
+    const ddPay = String(nextPayDate.getDate()).padStart(2, '0');
+    document.getElementById('period-input-payment-date').value = `${yyyyPay}-${mmPay}-${ddPay}`;
 
     getBootstrapModal(document.getElementById('modal-payroll-period-form'))?.show();
   }
@@ -839,9 +980,14 @@ class PayrollMethods {
     const alertBox = document.getElementById('payroll-period-form-alert');
     if (alertBox) alertBox.classList.add('d-none');
 
+    const fiscalPeriodId = document.getElementById('period-input-fiscal-id')?.value || this.activeFiscalPeriod?.id || null;
+    const year = Number(document.getElementById('period-input-year').value) || this.activeFiscalPeriod?.year;
+    const month = Number(document.getElementById('period-input-month').value) || this.activeFiscalPeriod?.month;
+
     const payload = {
-      year: Number(document.getElementById('period-input-year').value),
-      month: Number(document.getElementById('period-input-month').value),
+      fiscalPeriodId,
+      year,
+      month,
       periodType: document.getElementById('period-input-type').value,
       settlementName: document.getElementById('period-input-name').value.trim() || undefined,
       liquidationDate: document.getElementById('period-input-liquidation-date')?.value || null,
@@ -867,6 +1013,7 @@ class PayrollMethods {
 
       showToast('Liquidación creada exitosamente');
       getBootstrapModal(document.getElementById('modal-payroll-period-form'))?.hide();
+      await this.loadActiveFiscalPeriod();
       await this.loadPayrollPeriods();
       this.syncPayrollPeriodSelectors(this.activePayrollPeriodId);
     } catch (err) {
@@ -929,14 +1076,45 @@ class PayrollMethods {
     return emps;
   }
 
-  async fetchIndividualConcepts(isPersistent = null) {
+  async fetchIndividualConcepts(isPersistent = null, targetPeriodType = null) {
     let url = '/payroll/concepts?scope=INDIVIDUAL&limit=500&excludeCalculated=true';
     if (isPersistent !== null && isPersistent !== undefined) {
       url += `&isPersistent=${isPersistent}`;
     }
     const res = await apiRequest(url);
-    const list = res.data || [];
-    return list.filter((c) => (c.noveltyDataType || '').toUpperCase() !== 'CALCULADO');
+    let list = res.data || [];
+    list = list.filter((c) => (c.noveltyDataType || '').toUpperCase() !== 'CALCULADO');
+
+    if (targetPeriodType) {
+      const pType = String(targetPeriodType).toUpperCase();
+      if (pType === 'MONTHLY') {
+        // En liquidación MENSUAL no se permiten conceptos de vacaciones
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          const cCode = String(c.code || '').toUpperCase();
+          return cPeriodType !== 'VACATIONS' && !cCode.startsWith('VA');
+        });
+      } else if (pType === 'VACATIONS') {
+        // En liquidación de VACACIONES solo se permiten conceptos de vacaciones
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          const cCode = String(c.code || '').toUpperCase();
+          return cPeriodType === 'VACATIONS' || cCode.startsWith('VA');
+        });
+      } else if (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC') {
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          return cPeriodType === 'SAC' || cPeriodType === 'SAC_1' || cPeriodType === 'SAC_2' || cPeriodType === 'MONTHLY';
+        });
+      } else if (pType === 'FINAL') {
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          return cPeriodType === 'FINAL' || cPeriodType === 'MONTHLY';
+        });
+      }
+    }
+
+    return list;
   }
 
   isPeriodClosed(periodId) {
@@ -1512,8 +1690,11 @@ class PayrollMethods {
     const roAlert = document.getElementById('nov-nopers-con-readonly-alert');
     if (roAlert) roAlert.classList.toggle('d-none', !isClosed);
 
+    const periodObj = (this.payrollPeriods || []).find((p) => p.id === periodId);
+    const targetPeriodType = periodObj?.periodType || 'MONTHLY';
+
     const conSelect = document.getElementById('nov-nopers-con-select');
-    const concepts = await this.fetchIndividualConcepts(false);
+    const concepts = await this.fetchIndividualConcepts(false, targetPeriodType);
     if (conSelect) {
       const currentCon = conSelect.value;
       const optsHtml = '<option value="">Seleccione un concepto...</option>' +
@@ -1521,7 +1702,7 @@ class PayrollMethods {
 
       updateSearchableSelect(conSelect, optsHtml, currentCon);
 
-      if (currentCon && periodId) {
+      if (currentCon && periodId && concepts.some((c) => c.id === currentCon)) {
         await this.refreshNovNoPersConTable(periodId, currentCon);
       } else {
         this.clearNovNoPersConView();
@@ -1563,8 +1744,10 @@ class PayrollMethods {
     if (spinner) spinner.classList.remove('d-none');
 
     try {
+      const periodObj = (this.payrollPeriods || []).find((p) => p.id === periodId);
+      const targetPeriodType = periodObj?.periodType || 'MONTHLY';
       if (!this.novNoPersConSelectedConcept || this.novNoPersConSelectedConcept.id !== conceptId) {
-        const concepts = await this.fetchIndividualConcepts(false);
+        const concepts = await this.fetchIndividualConcepts(false, targetPeriodType);
         this.novNoPersConSelectedConcept = concepts.find((c) => c.id === conceptId) || null;
       }
 
@@ -1698,7 +1881,8 @@ class PayrollMethods {
     const conSelect = document.getElementById('period-novelty-concept-select');
     const conStatic = document.getElementById('period-novelty-concept-static');
     const targetConId = conceptId || novelty?.conceptId || document.getElementById('nov-nopers-con-select')?.value;
-    const nonPersConcepts = await this.fetchIndividualConcepts(false);
+    const targetPeriodType = periodObj?.periodType || 'MONTHLY';
+    const nonPersConcepts = await this.fetchIndividualConcepts(false, targetPeriodType);
 
     if (targetConId) {
       const con = nonPersConcepts.find((c) => c.id === targetConId) || novelty?.concept;
@@ -1756,9 +1940,9 @@ class PayrollMethods {
       return;
     }
 
-    const concepts = await this.fetchIndividualConcepts(false);
-    const concept = concepts.find((c) => c.id === conceptId);
     const period = this.payrollPeriods.find((p) => p.id === periodId);
+    const concepts = await this.fetchIndividualConcepts(false, period?.periodType);
+    const concept = concepts.find((c) => c.id === conceptId);
 
     this.batchSheetConcept = concept;
     this.batchSheetPeriod = period;
@@ -1944,9 +2128,9 @@ class PayrollMethods {
       return;
     }
 
-    const concepts = await this.fetchIndividualConcepts(false);
-    const concept = concepts.find((c) => c.id === conceptId);
     const period = this.payrollPeriods.find((p) => p.id === periodId);
+    const concepts = await this.fetchIndividualConcepts(false, period?.periodType);
+    const concept = concepts.find((c) => c.id === conceptId);
 
     this.excelImportConcept = concept;
     this.excelImportPeriod = period;
@@ -2676,9 +2860,9 @@ class PayrollMethods {
     const perSelectCon = document.getElementById('nov-nopers-con-period-select');
     const conSelect = document.getElementById('nov-nopers-con-select');
     if (perSelectCon) {
-      perSelectCon.addEventListener('change', () => {
+      perSelectCon.addEventListener('change', async () => {
         this.activePayrollPeriodId = perSelectCon.value;
-        this.refreshNovNoPersConTable(perSelectCon.value, conSelect?.value);
+        await this.loadNovNoPersCon();
       });
     }
     if (conSelect) {
@@ -2698,7 +2882,9 @@ class PayrollMethods {
     const modalConSelect = document.getElementById('period-novelty-concept-select');
     if (modalConSelect) {
       modalConSelect.addEventListener('change', async () => {
-        const concepts = await this.fetchIndividualConcepts(false);
+        const periodId = document.getElementById('period-novelty-period-id')?.value;
+        const periodObj = (this.payrollPeriods || []).find((p) => p.id === periodId);
+        const concepts = await this.fetchIndividualConcepts(false, periodObj?.periodType);
         const c = concepts.find((x) => x.id === modalConSelect.value);
         if (c) {
           this.updatePeriodNoveltyModalHint(c);
@@ -3054,6 +3240,9 @@ class PayrollMethods {
             <td class="text-end font-monospace">
               <div class="fw-semibold text-dark" style="font-size: 0.85rem;">$ ${bruto}</div>
               <small class="text-danger d-block" style="font-size: 0.73rem;">-$ ${retenciones}</small>
+              <span class="badge bg-secondary-lt px-1 py-0 mt-1" style="font-size: 0.68rem;" title="Días trabajados para Registro 02 (LSD ARCA)">
+                <i class="ti ti-calendar me-1"></i>${s.workedDays !== undefined && s.workedDays !== null ? s.workedDays : 30}d
+              </span>
             </td>
             <td class="text-end font-monospace">
               <div class="fw-bold text-success fs-3" style="letter-spacing: -0.02em;">$ ${neto}</div>
@@ -3278,7 +3467,12 @@ class PayrollMethods {
       <div class="payslip-box" style="min-height: 180px;">
         <div class="payslip-box-header">
           <span>DETALLE DE HABERES Y DEDUCCIONES</span>
-          <span>DÍAS TRABAJADOS: ${slip.workedDays || 30}</span>
+          <span class="d-inline-flex align-items-center gap-1">
+            DÍAS TRABAJADOS (REG 02): <strong class="badge bg-secondary-lt fw-bold px-2 py-1">${slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30}</strong>
+            <button type="button" class="btn btn-sm btn-icon btn-ghost-secondary p-0 ms-1 btn-edit-slip-days" data-id="${slip.id}" data-days="${slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30}" title="Modificar días trabajados para Registro 02 (LSD ARCA)">
+              <i class="ti ti-pencil" style="font-size: 13px;"></i>
+            </button>
+          </span>
         </div>
         <div class="p-0">
           <table class="payslip-table-items">
@@ -3382,6 +3576,33 @@ class PayrollMethods {
         HASH DE INTEGRIDAD (SHA-256): ${slip.signatureHash || 'SEC-VALID-PAYROLL-HASH'} &bull; EMISIÓN ELECTRÓNICA VÁLIDA
       </div>
     `;
+
+    // Handler para editar días trabajados de forma directa desde el recibo
+    area.querySelectorAll('.btn-edit-slip-days').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const currentDays = btn.dataset.days || '30';
+        const newDaysStr = window.prompt('Ingrese la cantidad de días trabajados a informar en el Registro 02 para este recibo (0 a 30):', currentDays);
+        if (newDaysStr === null) return;
+        const parsed = parseInt(newDaysStr, 10);
+        if (isNaN(parsed) || parsed < 0 || parsed > 30) {
+          showToast('Debe ingresar un número entero válido entre 0 y 30 días.', 'warning');
+          return;
+        }
+        try {
+          await apiRequest(`/payroll/slips/${btn.dataset.id}/worked-days`, {
+            method: 'PATCH',
+            body: { workedDays: parsed },
+          });
+          showToast(`Días trabajados actualizados a ${parsed} días exitosamente`, 'success');
+          await this.openPayslipModal(btn.dataset.id, 'OFFICIAL');
+          const sel = document.getElementById('slips-period-select');
+          if (sel?.value) this.loadPayrollSlips(sel.value);
+        } catch (err) {
+          showToast(err.message || 'Error al actualizar días trabajados', 'danger');
+        }
+      });
+    });
   }
 
   renderPayslipAudit(data) {
@@ -4156,7 +4377,7 @@ class PayrollMethods {
     const [year, month] = periodKey.split('-');
 
     try {
-      showToast('Generando Libro de Sueldos Digital ARCA (999 chars)...');
+      showToast('Generando archivo Libro de Sueldos Digital (ARCA)...');
       const token = storage.getToken();
       const companyId = storage.getActiveCompanyId();
 
@@ -4224,6 +4445,526 @@ class PayrollMethods {
     }
   }
 
+  // ==========================================================================
+  // INFORME RESUMEN DE LIQUIDACIÓN (TOTALES POR CONCEPTO Y CONTROL CONTABLE)
+  // ==========================================================================
+
+  async openPeriodSummaryModal(periodId) {
+    const modalEl = document.getElementById('modal-payroll-period-summary');
+    const tableBody = document.getElementById('period-summary-table-body');
+    if (!modalEl) return;
+
+    if (tableBody) {
+      tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando resumen de liquidación...</td></tr>';
+    }
+
+    const modal = window.bootstrap?.Modal ? window.bootstrap.Modal.getOrCreateInstance(modalEl) : null;
+    if (modal) modal.show();
+
+    try {
+      const res = await apiRequest(`/payroll/periods/${periodId}/summary`);
+      const summaryData = res.data || res;
+      this.activePeriodSummaryData = summaryData;
+
+      const { period, totals, concepts } = summaryData;
+
+      // Actualizar cabecera
+      const titleEl = document.getElementById('modal-period-summary-title');
+      if (titleEl) {
+        titleEl.textContent = `Resumen: ${period.settlementName || 'Liquidación'}`;
+      }
+      const subtitleEl = document.getElementById('modal-period-summary-subtitle');
+      if (subtitleEl) {
+        const typeLabels = {
+          MONTHLY: 'Mensual Normal',
+          FIRST_FORTNIGHT: '1ra Quincena',
+          SECOND_FORTNIGHT: '2da Quincena',
+          SAC: 'S.A.C. (Aguinaldo)',
+          VACATIONS: 'Vacaciones Adelantadas',
+          FINAL: 'Liquidación Final',
+          SPECIAL: 'Liquidación Especial / Ajuste',
+        };
+        const pType = typeLabels[period.periodType] || period.periodType;
+        const pDate = period.liquidationDate ? ` • F. Liq: ${new Date(String(period.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}` : '';
+        subtitleEl.textContent = `Período ${period.month}/${period.year} • Liq. #${period.settlementNumber || 1} • Tipo: ${pType}${pDate}`;
+      }
+
+      // Tarjetas de totales
+      const remEl = document.getElementById('summary-total-remunerative');
+      if (remEl) remEl.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
+
+      const nremEl = document.getElementById('summary-total-non-remunerative');
+      if (nremEl) nremEl.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
+
+      const dedEl = document.getElementById('summary-total-deductions');
+      if (dedEl) dedEl.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
+
+      const netEl = document.getElementById('summary-total-net');
+      if (netEl) netEl.textContent = `$ ${formatNumber(totals.totalNet)}`;
+
+      // Filas de la tabla
+      if (tableBody) {
+        if (!concepts || concepts.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No se registran conceptos liquidados en esta liquidación.</td></tr>';
+        } else {
+          tableBody.innerHTML = concepts
+            .map((c) => {
+              let badgeClass = 'bg-secondary-lt';
+              let typeLabel = 'Desconocido';
+              if (c.type === 'REMUNERATIVE') {
+                badgeClass = 'bg-primary-lt text-primary';
+                typeLabel = 'REM';
+              } else if (c.type === 'NON_REMUNERATIVE') {
+                badgeClass = 'bg-teal-lt text-teal';
+                typeLabel = 'NO REM';
+              } else if (c.type === 'DEDUCTION' || c.type === 'DISCOUNT') {
+                badgeClass = 'bg-danger-lt text-danger';
+                typeLabel = 'DED';
+              }
+
+              const code = c.conceptCode || c.code || '';
+              const name = c.conceptName || c.name || '';
+              const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
+              const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
+              const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+
+              const remStr = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
+              const nremStr = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
+              const dedStr = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
+
+              return `
+                <tr>
+                  <td>
+                    <span class="badge ${badgeClass} font-monospace me-1">${typeLabel}</span>
+                    <span class="font-monospace fw-bold">${escapeHtml(code)}</span>
+                  </td>
+                  <td>
+                    <div class="text-truncate fw-medium" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
+                  </td>
+                  <td class="text-center font-monospace">
+                    <span class="badge bg-light text-dark fw-bold">${c.casesCount || 0}</span>
+                  </td>
+                  <td class="text-end font-monospace text-nowrap">${remStr}</td>
+                  <td class="text-end font-monospace text-nowrap">${nremStr}</td>
+                  <td class="text-end font-monospace text-danger text-nowrap">${dedStr}</td>
+                </tr>
+              `;
+            })
+            .join('');
+        }
+      }
+
+      // Totales en pie de tabla
+      const footCases = document.getElementById('summary-foot-cases');
+      if (footCases) footCases.textContent = `${totals.totalEmployeesCount || period.totalEmployees || '-'}`;
+
+      const footRem = document.getElementById('summary-foot-rem');
+      if (footRem) footRem.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
+
+      const footNrem = document.getElementById('summary-foot-nrem');
+      if (footNrem) footNrem.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
+
+      const footDed = document.getElementById('summary-foot-ded');
+      if (footDed) footDed.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
+
+      const footInfo = document.getElementById('modal-period-summary-footinfo');
+      if (footInfo) {
+        footInfo.innerHTML = `<i class="ti ti-check text-success me-1"></i> Total Bruto: <strong>$ ${formatNumber(totals.totalGross)}</strong> • Neto Total a Pagar: <strong>$ ${formatNumber(totals.totalNet)}</strong> • ${concepts.length} conceptos agrupados por naturaleza`;
+      }
+    } catch (err) {
+      console.error('Error al cargar resumen de liquidación:', err);
+      showToast(err.message || 'Error al obtener el resumen de liquidación', 'danger');
+      if (tableBody) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error: ${escapeHtml(err.message || 'No se pudo cargar el resumen')}</td></tr>`;
+      }
+    }
+  }
+
+  exportPeriodSummaryExcel() {
+    if (!this.activePeriodSummaryData || !this.activePeriodSummaryData.period) {
+      showToast('No hay datos cargados de resumen para exportar', 'warning');
+      return;
+    }
+
+    if (!window.XLSX) {
+      showToast('La biblioteca Excel (SheetJS) no se encuentra disponible', 'danger');
+      return;
+    }
+
+    const { period, totals, concepts } = this.activePeriodSummaryData;
+    const company = this.activeCompany || {};
+
+    const rows = [
+      ['RESUMEN DE LIQUIDACIÓN DE HABERES — TOTALES POR CONCEPTO'],
+      ['Empresa:', company.legalName || 'Empresa', 'CUIT:', company.cuit || ''],
+      ['Liquidación:', period.settlementName || 'Liquidación', 'Período:', `${period.month}/${period.year}`, 'Liq. N°:', period.settlementNumber || 1],
+      ['Fecha de Emisión:', `${new Date().toLocaleDateString('es-AR')} ${new Date().toLocaleTimeString('es-AR')}`],
+      [],
+      ['Código', 'Naturaleza', 'Concepto / Denominación', 'Cant. Casos', 'Remunerativo ($)', 'No Remunerativo ($)', 'Deducciones ($)'],
+    ];
+
+    concepts.forEach((c) => {
+      let natLabel = 'Deducción';
+      if (c.type === 'REMUNERATIVE') natLabel = 'Remunerativo';
+      else if (c.type === 'NON_REMUNERATIVE') natLabel = 'No Remunerativo';
+
+      const code = c.conceptCode || c.code || '';
+      const name = c.conceptName || c.name || '';
+      const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
+      const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
+      const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+
+      rows.push([
+        code,
+        natLabel,
+        name,
+        c.casesCount || 0,
+        remVal,
+        nremVal,
+        dedVal,
+      ]);
+    });
+
+    rows.push([]);
+    rows.push([
+      'TOTALES CONSOLIDADOS',
+      '',
+      '',
+      totals.totalEmployeesCount || period.totalEmployees || 0,
+      Number(totals.totalRemunerative || 0),
+      Number(totals.totalNonRemunerative || 0),
+      Number(totals.totalDeductions || 0),
+    ]);
+    rows.push([
+      'NETO TOTAL A PAGAR',
+      '',
+      '',
+      '',
+      '',
+      '',
+      Number(totals.totalNet || 0),
+    ]);
+
+    const ws = window.XLSX.utils.aoa_to_sheet(rows);
+
+    // Ajustar anchos de columnas
+    ws['!cols'] = [
+      { wch: 12 }, // Código
+      { wch: 18 }, // Naturaleza
+      { wch: 40 }, // Concepto
+      { wch: 14 }, // Casos
+      { wch: 20 }, // Remunerativo
+      { wch: 20 }, // No Remunerativo
+      { wch: 20 }, // Deducciones
+    ];
+
+    const wb = window.XLSX.utils.book_new();
+    window.XLSX.utils.book_append_sheet(wb, ws, 'Resumen Liquidación');
+
+    const cleanName = (period.settlementName || 'Liquidacion').replace(/[^a-zA-Z0-9_-]/g, '_');
+    const fileName = `Resumen_${cleanName}_${period.year}_${String(period.month).padStart(2, '0')}.xlsx`;
+    window.XLSX.writeFile(wb, fileName);
+    showToast(`Planilla Excel descargada: ${fileName}`, 'success');
+  }
+
+  printPeriodSummaryPdf() {
+    if (!this.activePeriodSummaryData || !this.activePeriodSummaryData.period) {
+      showToast('No hay datos cargados de resumen para imprimir', 'warning');
+      return;
+    }
+
+    const { period, totals, concepts } = this.activePeriodSummaryData;
+    const company = this.activeCompany || {};
+
+    const typeLabels = {
+      MONTHLY: 'Mensual Normal',
+      FIRST_FORTNIGHT: '1ra Quincena',
+      SECOND_FORTNIGHT: '2da Quincena',
+      SAC: 'S.A.C. (Aguinaldo)',
+      VACATIONS: 'Vacaciones Adelantadas',
+      FINAL: 'Liquidación Final',
+      SPECIAL: 'Liquidación Especial / Ajuste',
+    };
+    const pTypeStr = typeLabels[period.periodType] || period.periodType;
+    const liqDateStr = period.liquidationDate
+      ? new Date(String(period.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')
+      : '-';
+
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) {
+      showToast('El navegador bloqueó la ventana emergente. Por favor habilite las ventanas emergentes.', 'danger');
+      return;
+    }
+
+    const rowsHtml = concepts && concepts.length > 0
+      ? concepts.map((c) => {
+          let natBadge = '<span style="color: #666;">DED</span>';
+          if (c.type === 'REMUNERATIVE') natBadge = '<strong style="color: #0054a6;">REM</strong>';
+          else if (c.type === 'NON_REMUNERATIVE') natBadge = '<strong style="color: #0ca678;">NO REM</strong>';
+
+          const code = c.conceptCode || c.code || '';
+          const name = c.conceptName || c.name || '';
+          const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
+          const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
+          const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+
+          const rem = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
+          const nrem = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
+          const ded = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
+
+          return `
+            <tr>
+              <td style="font-family: monospace; font-weight: bold;">${escapeHtml(code)}</td>
+              <td style="text-align: center; font-size: 7.5pt;">${natBadge}</td>
+              <td>${escapeHtml(name)}</td>
+              <td style="text-align: center; font-family: monospace;">${c.casesCount || 0}</td>
+              <td style="text-align: right; font-family: monospace; white-space: nowrap;">${rem}</td>
+              <td style="text-align: right; font-family: monospace; white-space: nowrap;">${nrem}</td>
+              <td style="text-align: right; font-family: monospace; color: #dc3545; white-space: nowrap;">${ded}</td>
+            </tr>
+          `;
+        }).join('')
+      : '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #666;">No hay conceptos registrados.</td></tr>';
+
+    const printHtml = `
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="utf-8">
+        <title>Resumen de Liquidación — ${escapeHtml(period.settlementName || 'Liquidación')}</title>
+        <style>
+          @page {
+            size: A4 portrait;
+            margin: 12mm 15mm;
+          }
+          body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #222;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+            font-size: 10pt;
+            line-height: 1.35;
+          }
+          .header-box {
+            border-bottom: 2px solid #0054a6;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+          }
+          .title {
+            font-size: 14pt;
+            font-weight: 800;
+            color: #0054a6;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          .subtitle {
+            font-size: 9pt;
+            color: #555;
+            margin: 2px 0 0 0;
+          }
+          .meta-box {
+            text-align: right;
+            font-size: 8.5pt;
+            color: #666;
+          }
+          .section-card {
+            border: 1px solid #d0d7de;
+            border-radius: 4px;
+            background: #f8fafc;
+            padding: 9px 14px;
+            margin-bottom: 12px;
+          }
+          .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 16px;
+            font-size: 9pt;
+          }
+          .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            text-align: center;
+            background: #eef2f6;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+          }
+          .stat-label {
+            font-size: 7pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #555;
+            margin-bottom: 2px;
+          }
+          .stat-val {
+            font-size: 11pt;
+            font-weight: 800;
+            font-family: monospace;
+          }
+          table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 8.5pt;
+            margin-top: 6px;
+          }
+          th {
+            background-color: #0054a6;
+            color: #fff;
+            padding: 6px 8px;
+            text-align: left;
+            font-size: 7.5pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid #0054a6;
+          }
+          td {
+            padding: 4.5px 8px;
+            border: 1px solid #e1e4e8;
+            vertical-align: middle;
+          }
+          tr:nth-child(even) td {
+            background-color: #f9fbfd;
+          }
+          tfoot td {
+            background-color: #f1f5f9 !important;
+            border-top: 2px solid #0054a6 !important;
+            font-weight: bold;
+          }
+          .footer-box {
+            margin-top: 25px;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 8pt;
+            color: #666;
+          }
+          .signatures-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+            text-align: center;
+          }
+          .signature-line {
+            border-top: 1px solid #333;
+            padding-top: 4px;
+            font-size: 8pt;
+            font-weight: bold;
+          }
+          @media print {
+            body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header-box">
+          <div>
+            <h1 class="title">Resumen de Liquidación de Haberes</h1>
+            <div class="subtitle">Totales por Concepto • Cuadre Contable y Libro de Sueldos Digital (Ley 20.744)</div>
+          </div>
+          <div class="meta-box">
+            <div><strong>Emisión:</strong> ${new Date().toLocaleDateString('es-AR')} ${new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</div>
+            <div><strong>Usuario:</strong> Sistema ProyectoSueldos</div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="grid-2">
+            <div>
+              <strong>Razón Social:</strong> ${escapeHtml(company.legalName || 'Empresa')}<br>
+              <strong>CUIT:</strong> ${escapeHtml(company.cuit || '-')}<br>
+              <strong>Domicilio:</strong> ${escapeHtml(company.address || '-')}
+            </div>
+            <div>
+              <strong>Liquidación:</strong> ${escapeHtml(period.settlementName || 'Liquidación')} (#${period.settlementNumber || 1})<br>
+              <strong>Período:</strong> ${period.month}/${period.year} • Tipo: ${escapeHtml(pTypeStr)}<br>
+              <strong>Fecha de Pago / Liq.:</strong> ${liqDateStr} • Colaboradores: ${totals.totalEmployeesCount || period.totalEmployees || '-'}
+            </div>
+          </div>
+        </div>
+
+        <div class="grid-4">
+          <div>
+            <div class="stat-label">TOTAL REMUNERATIVO</div>
+            <div class="stat-val" style="color: #0054a6;">$ ${formatNumber(totals.totalRemunerative)}</div>
+          </div>
+          <div>
+            <div class="stat-label">TOTAL NO REMUNERATIVO</div>
+            <div class="stat-val" style="color: #0ca678;">$ ${formatNumber(totals.totalNonRemunerative)}</div>
+          </div>
+          <div>
+            <div class="stat-label">TOTAL DEDUCCIONES</div>
+            <div class="stat-val" style="color: #dc3545;">$ ${formatNumber(totals.totalDeductions)}</div>
+          </div>
+          <div>
+            <div class="stat-label">NETO TOTAL A PAGAR</div>
+            <div class="stat-val" style="color: #198754;">$ ${formatNumber(totals.totalNet)}</div>
+          </div>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 10%;">Código</th>
+              <th style="width: 8%; text-align: center;">Tipo</th>
+              <th style="width: 38%;">Concepto / Denominación</th>
+              <th style="width: 8%; text-align: center;">Casos</th>
+              <th style="width: 12%; text-align: right;">Remunerativo ($)</th>
+              <th style="width: 12%; text-align: right;">No Remunerativo ($)</th>
+              <th style="width: 12%; text-align: right;">Deducciones ($)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" style="text-transform: uppercase;">TOTALES CONSOLIDADOS</td>
+              <td style="text-align: center; font-family: monospace;">${totals.totalEmployeesCount || period.totalEmployees || '-'}</td>
+              <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalRemunerative)}</td>
+              <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalNonRemunerative)}</td>
+              <td style="text-align: right; font-family: monospace; color: #dc3545;">$ ${formatNumber(totals.totalDeductions)}</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div class="signatures-grid">
+          <div>
+            <div class="signature-line">Confeccionó / Liquidó</div>
+            <span style="font-size: 7.5pt; color: #666;">Responsable de Nómina</span>
+          </div>
+          <div>
+            <div class="signature-line">Revisó / Auditoría Contable</div>
+            <span style="font-size: 7.5pt; color: #666;">Control de Haberes</span>
+          </div>
+          <div>
+            <div class="signature-line">Aprobó / Dirección</div>
+            <span style="font-size: 7.5pt; color: #666;">Gerencia RRHH / Finanzas</span>
+          </div>
+        </div>
+
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 300);
+          };
+        </script>
+      </body>
+      </html>
+    `;
+
+    printWindow.document.open();
+    printWindow.document.write(printHtml);
+    printWindow.document.close();
+  }
 }
 
 export function registerPayrollMethods(proto) {
