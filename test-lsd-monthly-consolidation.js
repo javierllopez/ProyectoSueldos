@@ -186,6 +186,8 @@ assert(reg02_1.startsWith('02'), 'La segunda línea debe ser Registro 02');
 // Fecha de pago en pos 99-106 (index 98 a 106): La fecha de la 2da quincena es 2026-10-05 -> '20261005'
 const paymentDateReg02 = reg02_1.substring(98, 106);
 assert(paymentDateReg02 === '20261005', `Registro 02 debe tomar la fecha de pago más reciente (20261005, obtenido ${paymentDateReg02})`);
+const rubricDateReg02 = reg02_1.substring(106, 114);
+assert(rubricDateReg02 === '20260930', `Registro 02 fecha de rúbrica informada debe ser AAAAMMDD (20260930, obtenido "${rubricDateReg02}")`);
 const daysReg02 = reg02_1.substring(95, 98);
 assert(daysReg02 === '030', `Días en Registro 02 consolidados deben ser 30 (obtenido ${daysReg02})`);
 
@@ -197,6 +199,12 @@ assert(reg03Lines.length === 9, `Deben generarse 9 Registros 03 concatenando amb
 const reg04Lines = lines1.filter((l) => l.startsWith('04'));
 assert(reg04Lines.length === 1, `Debe generarse exactamente 1 Registro 04 consolidado para el mes (obtenido ${reg04Lines.length})`);
 const reg04_1 = reg04Lines[0];
+
+// Días y Horas en Registro 04 (pos 48-49 y pos 50-52): Excluyentes según ARCA LSD
+const daysReg04 = reg04_1.substring(47, 49);
+const hoursReg04 = reg04_1.substring(49, 52);
+assert(daysReg04 === '30', `Días en Registro 04 deben ser 30 (obtenido ${daysReg04})`);
+assert(hoursReg04 === '000', `Horas en Registro 04 deben ser 000 para mensualizado para no informar días y horas simultáneamente (obtenido ${hoursReg04})`);
 
 // Bruto Total en pos 161-175: 500.000 + 600.000 = 1.100.000 -> 000000110000000 (con 2 decimales)
 const brutoStr = reg04_1.substring(160, 175);
@@ -422,6 +430,11 @@ const linesVacIndiv = fileVacIndividual.split('\r\n');
 const reg02VacIndiv = linesVacIndiv[1];
 const reg02VacDays = reg02VacIndiv.substring(95, 98);
 assert(reg02VacDays === '000', `En liquidación individual de vacaciones, Reg 02 días debe ser '000' (obtenido '${reg02VacDays}')`);
+const reg02VacRubric = reg02VacIndiv.substring(106, 114);
+assert(reg02VacRubric === '        ', `Fecha de rúbrica nula debe exportarse como 8 espacios en blanco (obtenido '${reg02VacRubric}')`);
+const reg04VacIndiv = linesVacIndiv.find((l) => l.startsWith('04'));
+assert(reg04VacIndiv.substring(47, 49) === '00', 'En vacaciones sin días laborados, Reg 04 días debe ser 00');
+assert(reg04VacIndiv.substring(49, 52) === '000', 'En vacaciones sin horas laboradas, Reg 04 horas debe ser 000');
 
 // --- CASO 7: Consolidación Mensual (30 días) + Liquidación Final (0 días) = 30 días acumulados ---
 console.log('\n--- 7. Consolidación Mensual (30 días) + Liquidación Final (0 días) ---');
@@ -572,6 +585,88 @@ const calcOverride = calculateEmployeePayroll({
   workedDaysOverride: 18,
 });
 assert(calcOverride.workedDays === 18, `Override explícito de días trabajados debe respetarse (esperado 18, obtenido ${calcOverride.workedDays})`);
+
+// --- CASO 9: Directiva ARCA LSD - Trabajador por Hora vs Mensualizado y Fecha de Rúbrica Vacía ---
+console.log('\n--- 9. Directiva ARCA LSD: Exclusión de Días/Horas y Rúbrica Optativa ---');
+
+const empHourly = {
+  id: 'emp-hourly-1',
+  fileNumber: 'L3001',
+  cuil: '20-99887766-4',
+  basicSalary: 0,
+  hourlyRate: 5000,
+  payrollGroup: 'HORAS',
+  department: { name: 'PRODUCCION' },
+};
+
+const periodHourly = {
+  id: 'per-hourly-1',
+  year: 2026,
+  month: 9,
+  periodType: 'MONTHLY',
+  settlementNumber: 1,
+  settlementType: 'M',
+  paymentDate: new Date('2026-10-05T00:00:00.000Z'),
+  rubricDate: null,
+};
+
+const slipHourly = {
+  id: 'slip-hourly-1',
+  payrollPeriodId: periodHourly.id,
+  employeeId: empHourly.id,
+  employee: empHourly,
+  grossSalary: 800000.00,
+  remunerativeSalary: 800000.00,
+  nonRemunerative: 0.00,
+  netSalary: 664000.00,
+  paymentMethod: 'CBU',
+  workedDays: 0,
+  workedHours: 160,
+  items: [
+    { conceptCode: 'HO1000', conceptName: 'Horas Trabajadas', type: 'REMUNERATIVE', amount: 800000.00, units: 160 },
+    { conceptCode: '8000', conceptName: 'Aporte SIPA', type: 'DEDUCTION', amount: 88000.00, rate: 11, arcaConceptCode: '810000' },
+  ],
+  basis: {
+    baseImponible1: 800000.00,
+    baseImponible2: 800000.00,
+    baseImponible3: 800000.00,
+    baseImponible4: 800000.00,
+    baseImponible5: 800000.00,
+    baseImponible8: 800000.00,
+    baseImponible9: 800000.00,
+    baseImponible10: 792996.32,
+    detractionAmount: 7003.68,
+  },
+};
+
+const fileHourly = generateMonthlyLsdPayrollFile({
+  company: mockCompany,
+  year: 2026,
+  month: 9,
+  settlements: [periodHourly],
+  paySlips: [slipHourly],
+  payrollSettings: mockPayrollSettings,
+});
+
+const linesHourly = fileHourly.split('\r\n');
+const reg02Hourly = linesHourly[1];
+const reg04Hourly = linesHourly.find((l) => l.startsWith('04'));
+
+// Rúbrica en Reg 02: 8 espacios en blanco cuando es null
+assert(reg02Hourly.substring(106, 114) === '        ', `Empleado sin rúbrica debe tener 8 espacios en pos 107-114 (obtenido "${reg02Hourly.substring(106, 114)}")`);
+
+// Días y Horas en Reg 04: Trabajador por hora debe tener días = '00' y horas = '160'
+assert(reg04Hourly.substring(47, 49) === '00', `Trabajador por hora debe informar días = '00' (obtenido "${reg04Hourly.substring(47, 49)}")`);
+assert(reg04Hourly.substring(49, 52) === '160', `Trabajador por hora debe informar horas = '160' (obtenido "${reg04Hourly.substring(49, 52)}")`);
+
+// Verificar que NINGUNA línea 04 de todos los archivos generados tenga días > 0 y horas > 0 simultáneamente
+for (const line of [...lines1, ...linesHourly, ...linesVacIndiv]) {
+  if (line.startsWith('04')) {
+    const d = Number(line.substring(47, 49));
+    const h = Number(line.substring(49, 52));
+    assert(!(d > 0 && h > 0), `Línea 04 cumple exclusividad ARCA: informa días (${d}) u horas (${h}), nunca ambos`);
+  }
+}
 
 console.log('\n================================================================');
 console.log(`RESUMEN: ${passed} superadas, ${failed} fallidas`);

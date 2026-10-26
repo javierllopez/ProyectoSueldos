@@ -1503,6 +1503,7 @@ export function calculateEmployeePayroll({
 
   // Base Imponible SIPA Contribuciones (Sin tope máximo)
   let biSipaContrib = 0;
+  let effectiveDetraction = 0;
   let biSipaWithDetraction = 0;
   let biOsContrib = 0;
   let biLrt = 0;
@@ -1510,17 +1511,32 @@ export function calculateEmployeePayroll({
   if (hasRemuneration) {
     if (isDirector) {
       biSipaContrib = 0.00;
+      effectiveDetraction = 0.00;
       biSipaWithDetraction = 0.00;
       biOsContrib = 0.00;
       biLrt = grossSalary;
     } else if (isIntern) {
       biSipaContrib = 0.00;
+      effectiveDetraction = 0.00;
       biSipaWithDetraction = 0.00;
       biOsContrib = Math.round(context.BASE_OBRA_SOCIAL * 100) / 100;
       biLrt = grossSalary;
     } else {
       biSipaContrib = Math.max(totalRemunerative, minCap);
-      biSipaWithDetraction = Math.max(biSipaContrib - detraction, minCap);
+
+      // Detracción legalmente proporcionada a jornada reducida y días trabajados (Ley 27.430 / Ley 27.541 / Dec. 99/2019)
+      let maxAllowedDetraction = detraction;
+      const isModality002 = employee.contractModalityCode === '002' || employee.contractModalityCode === '2';
+      if (isPartTimeWorker || isModality002 || (effectivePartTimePct > 0 && effectivePartTimePct < 100)) {
+        const ptPct = (effectivePartTimePct > 0 && effectivePartTimePct < 100) ? effectivePartTimePct : 67;
+        maxAllowedDetraction = Math.round(detraction * (ptPct / 100) * 100) / 100;
+      }
+      if (workedDays > 0 && workedDays < 30 && period?.periodType !== 'VACATIONS') {
+        maxAllowedDetraction = Math.round(maxAllowedDetraction * (workedDays / 30) * 100) / 100;
+      }
+
+      effectiveDetraction = Math.min(maxAllowedDetraction, biSipaContrib);
+      biSipaWithDetraction = Math.max(0, Math.round((biSipaContrib - effectiveDetraction) * 100) / 100);
       biOsContrib = Math.min(Math.max(context.BASE_OBRA_SOCIAL, minCap), maxCap);
       biLrt = grossSalary;
     }
@@ -1591,14 +1607,14 @@ export function calculateEmployeePayroll({
     baseImponible8: biOsContrib,
     baseImponible9: biLrt,
     baseImponible10: (isIntern || isDirector) ? 0.00 : biSipaWithDetraction,
-    detractionAmount: (isIntern || isDirector) ? 0.00 : detraction,
+    detractionAmount: (isIntern || isDirector) ? 0.00 : effectiveDetraction,
     baseDifAporteOs: isPartTimeWorker ? diffOs : 0.00,
     baseDifContribOs: isPartTimeWorker ? diffOs : 0.00,
     baseDifLrt: 0.00,
     situationCode: employee.status === 'ACTIVE' ? '01' : '13',
     conditionCode: '01',
     activityCode: employee.jobPosition?.activityCode || (isDirector ? '015' : '049'),
-    contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : '001'))).padStart(3, '0'),
+    contractModality: (employee.contractModalityCode || (isDirector ? '099' : (isIntern ? '027' : (isPartTimeWorker ? '002' : '001')))).padStart(3, '0'),
     hasSpouse,
     childrenCount,
     adherentsCount,

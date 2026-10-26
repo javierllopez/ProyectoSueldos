@@ -56,6 +56,148 @@ function formatDate(dateVal) {
 }
 
 /**
+ * Formatea la fecha de rúbrica para el Registro 02 del LSD según especificación ARCA:
+ * - Es un dato optativo (8 caracteres).
+ * - Si se informa: formato numérico AAAAMMDD.
+ * - Si NO se informa (null, vacío o no definida): debe completarse estrictamente con 8 espacios en blanco ('        ') y NO con ceros ('00000000'), para evitar el error 'Fecha de rúbrica inválida'.
+ */
+function formatRubricDate(dateVal) {
+  if (!dateVal) return '        ';
+  if (typeof dateVal === 'string') {
+    const trimmed = dateVal.trim();
+    if (!trimmed || trimmed === '00000000') return '        ';
+    if (/^\d{4}-\d{2}-\d{2}/.test(trimmed)) {
+      return trimmed.substring(0, 10).replace(/-/g, '');
+    }
+    if (/^\d{8}$/.test(trimmed)) {
+      return trimmed;
+    }
+  }
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return '        ';
+  const year = d.getUTCFullYear();
+  const month = String(d.getUTCMonth() + 1).padStart(2, '0');
+  const day = String(d.getUTCDate()).padStart(2, '0');
+  return `${year}${month}${day}`;
+}
+
+/**
+ * Obtiene el código oficial de localidad / jurisdicción de ARCA (Tabla T04) de 2 caracteres numéricos ('01' a '24').
+ * Prohíbe terminantemente el uso de '00' para evitar el rechazo oficial 'codigo de localidad invalido'.
+ */
+export function getArcaLocalityCode(province, city) {
+  const norm = (str) =>
+    (str || '')
+      .toString()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toUpperCase()
+      .trim();
+
+  const prov = norm(province);
+  const cty = norm(city);
+
+  if (prov.includes('CIUDAD AUTONOMA') || prov.includes('CABA') || prov.includes('CAPITAL FEDERAL') || cty === 'CABA') {
+    return '01';
+  }
+  if (
+    prov.includes('BUENOS AIRES') ||
+    prov === 'BS AS' ||
+    prov === 'PBA' ||
+    prov.includes('BSAS') ||
+    cty.includes('LOMAS DEL MIRADOR') ||
+    cty.includes('LA MATANZA') ||
+    cty.includes('SAN JUSTO') ||
+    cty.includes('VILLA LUZURIAGA') ||
+    cty.includes('RAMOS MEJIA') ||
+    cty.includes('MORON') ||
+    cty.includes('QUILMES') ||
+    cty.includes('LA PLATA')
+  ) {
+    return '02';
+  }
+  if (prov.includes('CATAMARCA')) return '03';
+  if (prov.includes('CORDOBA')) return '04';
+  if (prov.includes('CORRIENTES')) return '05';
+  if (prov.includes('CHACO')) return '06';
+  if (prov.includes('CHUBUT')) return '07';
+  if (prov.includes('ENTRE RIOS')) return '08';
+  if (prov.includes('FORMOSA')) return '09';
+  if (prov.includes('JUJUY')) return '10';
+  if (prov.includes('LA PAMPA')) return '11';
+  if (prov.includes('LA RIOJA')) return '12';
+  if (prov.includes('MENDOZA')) return '13';
+  if (prov.includes('MISIONES')) return '14';
+  if (prov.includes('NEUQUEN')) return '15';
+  if (prov.includes('RIO NEGRO')) return '16';
+  if (prov.includes('SALTA')) return '17';
+  if (prov.includes('SAN JUAN')) return '18';
+  if (prov.includes('SAN LUIS')) return '19';
+  if (prov.includes('SANTA CRUZ')) return '20';
+  if (prov.includes('SANTA FE')) return '21';
+  if (prov.includes('SANTIAGO DEL ESTERO')) return '22';
+  if (prov.includes('TUCUMAN')) return '23';
+  if (prov.includes('TIERRA DEL FUEGO') || prov.includes('ANTARTIDA')) return '24';
+
+  // Fallback seguro: '02' (Provincia de Buenos Aires) o '01' si CABA, nunca '00'
+  return '02';
+}
+
+/**
+ * Calcula el importe máximo permitido a detraer conforme a la Ley 27.430, sustituida por Ley 27.541
+ * y reglamentada por el Art. 4 del Decreto 99/2019:
+ * - Para contratos a tiempo completo: hasta $7.003,68 mensuales (o detractionBase configurada).
+ * - Para contratos a tiempo parcial (Art. 92 TER LCT, Modalidad 002, jornada reducida < 100%):
+ *   la detracción se proporciona estrictamente en función de las horas pactadas.
+ *   Para una jornada de 2/3 (67% = 32 hs semanales), el tope legal es exactamente $4.692,47 ($7.003,68 * 0.67).
+ * - Para períodos con días trabajados inferiores a 30 (en liquidaciones ordinarias proporcionales):
+ *   se proporciona en función de (días_trabajados / 30).
+ * - No puede exceder la Base Imponible 2 (SIPA Contribuciones).
+ */
+export function calculateMaxAllowedDetraction({
+  detractionBase = 7003.68,
+  isPartTime = false,
+  partTimePercentage = 100,
+  contractModality = '001',
+  workedDays = 30,
+  isVacationPeriod = false,
+  bi2 = Infinity,
+} = {}) {
+  const base = Number(detractionBase) || 7003.68;
+  const modStr = String(contractModality || '').trim();
+  const isPartTimeModality = modStr === '002' || modStr === '2';
+  const rawPct = partTimePercentage !== undefined && partTimePercentage !== null && String(partTimePercentage).trim() !== ''
+    ? Number(partTimePercentage)
+    : 100;
+  const isPt = Boolean(isPartTime || isPartTimeModality || (rawPct > 0 && rawPct < 100));
+
+  let ptRatio = 1.0;
+  if (isPt) {
+    if (rawPct > 0 && rawPct < 100) {
+      ptRatio = rawPct / 100;
+    } else if (isPartTimeModality) {
+      ptRatio = 0.67; // 2/3 de jornada máxima LCT Art. 92 TER -> 4.692,47
+    }
+  }
+
+  // 1. Proporcional a la jornada reducida
+  let detraction = Math.round(base * ptRatio * 100) / 100;
+
+  // 2. Proporcional a días trabajados si son menos de 30 y no es período exclusivo de vacaciones
+  const days = Number(workedDays) || 0;
+  if (days > 0 && days < 30 && !isVacationPeriod) {
+    detraction = Math.round(detraction * (days / 30) * 100) / 100;
+  }
+
+  // 3. No puede superar Base 2 ni ser negativa
+  if (bi2 !== undefined && bi2 !== null && bi2 !== Infinity) {
+    detraction = Math.min(detraction, Math.max(0, Number(bi2)));
+  }
+
+  return Math.max(0, Math.round(detraction * 100) / 100);
+}
+
+/**
  * Genera el Archivo 1: Parametrización de Conceptos (195 caracteres fijos por línea).
  */
 export function generateLsdConceptsFile(concepts) {
@@ -122,9 +264,9 @@ export function generateLsdConceptsFile(concepts) {
 /**
  * Genera el Archivo 2: Importación de Liquidaciones de Haberes (longitudes fijas ARCA: 01=35, 02=115, 03=51, 04=370).
  */
-export function generateLsdPayrollFile({ company, period, paySlips }) {
+export function generateLsdPayrollFile({ company, period, paySlips, payrollSettings = {} }) {
   const lines = [];
-  const cuitClean = (company.cuit || '').replace(/\D/g, '');
+  const cuitClean = (company?.cuit || '').replace(/\D/g, '');
 
   const count04 = paySlips.length;
   const periodoAaaamm = `${period.year}${String(period.month).padStart(2, '0')}`;
@@ -154,8 +296,9 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
     // REGISTRO 02: DATOS REFERENCIALES DEL TRABAJADOR
     const formaPago = slip.paymentMethod === 'CBU' ? '3' : (slip.paymentMethod === 'CHEQUE' ? '2' : '1');
     const cbuClean = (emp.cbu || slip.cbu || '').replace(/\D/g, '');
-    const paymentDateStr = formatDate(slip.paymentDate || period.paymentDate);
-    const rubricDateStr = formatDate(period.rubricDate);
+    const fallbackPaymentDate = slip.paymentDate || period.paymentDate || period.liquidationDate || (period.year && period.month ? new Date(period.year, period.month, 0) : new Date());
+    const paymentDateStr = formatDate(fallbackPaymentDate);
+    const rubricDateStr = formatRubricDate(period.rubricDate);
 
     const isVacationPeriod = period?.periodType === 'VACATIONS' || period?.periodType === 'VACACIONES';
     const reg02Days = isVacationPeriod ? 0 : (slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30);
@@ -212,6 +355,41 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
     // REGISTRO 04: ATRIBUTOS LABORALES Y BASES IMPONIBLES (F.931)
     const osCode = emp.healthInsurance?.code ? emp.healthInsurance.code.replace(/\D/g, '') : '126205';
 
+    // Días y Horas trabajadas (excluyentes según especificación ARCA LSD Registro 04):
+    // No se puede informar cantidad de días (> 0) y cantidad de horas (> 0) simultáneamente.
+    const isHourly = ['HORAS', 'POR_HORA', 'HORARIO'].includes(String(emp.payrollGroup || '').toUpperCase().trim());
+    const rawDays = slip.workedDays !== undefined && slip.workedDays !== null ? Number(slip.workedDays) : 30;
+    const rawHours = Number(slip.workedHours || 0);
+
+    let reg04Days = 0;
+    let reg04Hours = 0;
+
+    if (isHourly) {
+      reg04Days = 0;
+      reg04Hours = Math.max(0, Math.round(rawHours));
+    } else {
+      reg04Days = Math.min(Math.max(0, Math.round(rawDays)), 30);
+      reg04Hours = 0;
+    }
+
+    const locCode = getArcaLocalityCode(emp.province || company?.province, emp.city || company?.city);
+
+    const detractionBase = Number(payrollSettings?.detractionBase || 7003.68);
+    const maxAllowedDetr = calculateMaxAllowedDetraction({
+      detractionBase,
+      isPartTime: emp.isPartTime,
+      partTimePercentage: emp.partTimePercentage,
+      contractModality: basis.contractModality,
+      workedDays: reg04Days,
+      isVacationPeriod: period?.periodType === 'VACATIONS',
+      bi2: basis.baseImponible2,
+    });
+    const actualDetraction = Math.min(
+      basis.detractionAmount !== undefined && basis.detractionAmount !== null ? Number(basis.detractionAmount) : maxAllowedDetr,
+      maxAllowedDetr
+    );
+    const actualBi10 = Math.max(0, Math.round(((Number(basis.baseImponible2) || 0) - actualDetraction) * 100) / 100);
+
     let reg04 =
       '04' + // 1-2
       formatNumeric(cuilClean, 11) + // 3-13
@@ -227,15 +405,15 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       formatAlpha(basis.activityCode || '049', 3) + // 26-28
       formatAlpha(basis.contractModality ? String(basis.contractModality).padStart(3, '0') : '001', 3) + // 29-31
       '00' + // 32-33 Siniestrado
-      '00' + // 34-35 Localidad
+      formatAlpha(locCode, 2) + // 34-35 Localidad (Tabla T04: 01 a 24, nunca 00)
       formatAlpha(basis.situationCode || '01', 2) + // 36-37 Sit 1
       '01' + // 38-39 Día inicio 1
       '00' + // 40-41 Sit 2
       '00' + // 42-43 Día 2
       '00' + // 44-45 Sit 3
       '00' + // 46-47 Día 3
-      formatNumeric(slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30, 2) + // 48-49 Días trabajados
-      formatNumeric(slip.workedHours || 160, 3) + // 50-52 Horas
+      formatNumeric(reg04Days, 2) + // 48-49 Días trabajados (excluyente con horas)
+      formatNumeric(reg04Hours, 3) + // 50-52 Horas (excluyente con días)
       '00000' + // 53-57 Adicional SS
       '00000' + // 58-62 Contribución Dif
       formatAlpha(osCode, 6) + // 63-68 Código OS
@@ -258,13 +436,12 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
       formatMoney(basis.baseImponible9, 15) + // 296-310 BI 9 (LRT)
       formatMoney(0, 15) + // 311-325 Base Dif SS
       formatMoney(0, 15) + // 326-340 Base Dif Contrib SS
-      formatMoney(basis.baseImponible10, 15) + // 341-355 BI 10 (SIPA con Detracción)
-      formatMoney(basis.detractionAmount, 15); // 356-370 Detracción Ley 27.541
+      formatMoney(actualBi10, 15) + // 341-355 BI 10 (SIPA con Detracción)
+      formatMoney(actualDetraction, 15); // 356-370 Detracción Ley 27.541
 
     if (reg04.length !== 370) throw new Error(`Registro 04 [Legajo ${emp.fileNumber}] longitud inválida: ${reg04.length} (esperado 370)`);
     lines.push(reg04);
   }
-
 
   return lines.join('\r\n');
 }
@@ -272,14 +449,39 @@ export function generateLsdPayrollFile({ company, period, paySlips }) {
 /**
  * Validador de consistencia matemática y técnica antes de exportar a ARCA.
  */
-export function validateLsdConsistency({ paySlips }) {
+export function validateLsdConsistency({ paySlips, payrollSettings = {}, company = {}, settlements = [] }) {
   const issues = [];
+  const detractionBase = Number(payrollSettings?.detractionBase || 7003.68);
 
   for (const slip of paySlips) {
-    const legajo = slip.employee?.fileNumber || '-';
-    const cuil = slip.employee?.cuil || '-';
+    const emp = slip.employee || {};
+    const basis = slip.basis || {};
+    const legajo = emp.fileNumber || '-';
+    const cuil = emp.cuil || '-';
+    const cuilClean = cuil.replace(/\D/g, '');
 
-    // 1. Remunerativos sumados vs Remuneración Bruta declarada en Registro 04
+    // 0. Control de formato de CUIL (11 dígitos numéricos sin guiones)
+    if (!cuilClean || cuilClean.length !== 11) {
+      issues.push({
+        legajo,
+        cuil,
+        type: 'ERROR_CUIL_INVALIDO',
+        message: `El CUIL "${cuil}" no cumple con el formato requerido por ARCA (11 dígitos numéricos sin guiones).`,
+      });
+    }
+
+    // 1. Control de Localidad / Jurisdicción oficial ARCA (Tabla T04)
+    const locCode = getArcaLocalityCode(emp.province || company?.province, emp.city || company?.city);
+    if (!locCode || locCode === '00' || !/^(0[1-9]|1[0-9]|2[0-4])$/.test(locCode)) {
+      issues.push({
+        legajo,
+        cuil,
+        type: 'ERROR_LOCALIDAD_INVALIDA',
+        message: `Código de localidad "${locCode}" inválido. ARCA requiere código numérico de 2 dígitos entre '01' y '24' (Tabla T04).`,
+      });
+    }
+
+    // 2. Remunerativos sumados vs Remuneración Bruta declarada en Registro 04
     const items = slip.items || [];
     const sumRemun = items
       .filter((i) => i.type === 'REMUNERATIVE')
@@ -301,26 +503,83 @@ export function validateLsdConsistency({ paySlips }) {
       });
     }
 
-    // 2. Comprobar alícuotas de aportes de ley (11% SIPA, 3% PAMI, 3% OS)
+    // 3. Control de Tope de Detracción (Ley 27.430 / Ley 27.541 / Dec. 99/2019)
+    const workedDaysVal = Number(slip.workedDays !== undefined && slip.workedDays !== null ? slip.workedDays : 30);
+    const maxAllowedDetr = calculateMaxAllowedDetraction({
+      detractionBase,
+      isPartTime: emp.isPartTime,
+      partTimePercentage: emp.partTimePercentage,
+      contractModality: basis.contractModality,
+      workedDays: workedDaysVal,
+      isVacationPeriod: slip.payrollPeriod?.periodType === 'VACATIONS',
+      bi2: basis.baseImponible2,
+    });
+
+    if (basis.detractionAmount !== undefined && basis.detractionAmount !== null) {
+      const reportedDetraction = Math.round(Number(basis.detractionAmount) * 100) / 100;
+      if (reportedDetraction > maxAllowedDetr + 0.05) {
+        issues.push({
+          legajo,
+          cuil,
+          type: 'ERROR_DETRACCION_EXCEDIDA',
+          message: `El importe a detraer ($${reportedDetraction.toFixed(2)}) supera el tope máximo legal permitido ($${maxAllowedDetr.toFixed(2)}) establecido por la Ley 27.430 / Ley 27.541 para su modalidad contractual y jornada reducida.`,
+        });
+      }
+    }
+
+    // 4. Control de Consistencia de Base Imponible 10 (BI 10 = BI 2 - Detracción)
+    if (basis.baseImponible2 !== undefined && basis.baseImponible2 !== null) {
+      const bi2Val = Number(basis.baseImponible2 || 0);
+      const detrVal = Number(basis.detractionAmount || 0);
+      const expectedBi10 = Math.max(0, Math.round((bi2Val - detrVal) * 100) / 100);
+      const actualBi10 = Math.round(Number(basis.baseImponible10 || 0) * 100) / 100;
+
+      if (Math.abs(expectedBi10 - actualBi10) > 0.05) {
+        issues.push({
+          legajo,
+          cuil,
+          type: 'ERROR_BASE_IMPONIBLE_10',
+          message: `Discrepancia en Base Imponible 10: La BI 10 declarada ($${actualBi10.toFixed(2)}) difiere de la calculada ($${expectedBi10.toFixed(2)}) a partir de Base Imponible 2 ($${bi2Val.toFixed(2)}) menos la detracción ($${detrVal.toFixed(2)}).`,
+        });
+      }
+    }
+
+    // 5. Comprobar alícuotas de aportes de ley (11% SIPA, 3% PAMI, 3% OS)
     const sipaItem = items.find((i) => i.conceptCode === '8000' || i.conceptCode === '6001' || i.conceptCode === 'SU6001' || i.arcaConceptCode === '810000' || /jubilac|sipa/i.test(i.conceptName || ''));
-    if (sipaItem && slip.basis?.baseImponible1) {
-      const expectedSipa = Math.round(Number(slip.basis.baseImponible1) * 0.11 * 100) / 100;
+    if (sipaItem && basis.baseImponible1) {
+      const expectedSipa = Math.round(Number(basis.baseImponible1) * 0.11 * 100) / 100;
       const actualSipa = Math.round(Number(sipaItem.amount) * 100) / 100;
       if (Math.abs(expectedSipa - actualSipa) > 0.05) {
         issues.push({
           legajo,
           cuil,
           type: 'ERROR_ALICUOTA_SIPA',
-          message: `Aporte SIPA ($${actualSipa}) no concuerda con 11% de BI 1 ($${expectedSipa})`,
+          message: `Aporte SIPA ($${actualSipa.toFixed(2)}) no concuerda con 11% de BI 1 ($${expectedSipa.toFixed(2)})`,
+        });
+      }
+    }
+
+    // INSSJyP / PAMI (3% sobre BI 5)
+    const inssjypItem = items.find((i) => i.conceptCode === '8001' || i.conceptCode === '6002' || i.conceptCode === 'SU6002' || i.arcaConceptCode === '810001' || /inssjyp|pami|ley 19\.032/i.test(i.conceptName || ''));
+    if (inssjypItem && (basis.baseImponible5 || basis.baseImponible1)) {
+      const bi5Val = Number(basis.baseImponible5 || basis.baseImponible1);
+      const expectedInssjyp = Math.round(bi5Val * 0.03 * 100) / 100;
+      const actualInssjyp = Math.round(Number(inssjypItem.amount) * 100) / 100;
+      if (Math.abs(expectedInssjyp - actualInssjyp) > 0.05) {
+        issues.push({
+          legajo,
+          cuil,
+          type: 'ERROR_ALICUOTA_INSSJYP',
+          message: `Aporte INSSJyP/PAMI ($${actualInssjyp.toFixed(2)}) no concuerda con 3% de BI 5 ($${expectedInssjyp.toFixed(2)})`,
         });
       }
     }
 
     // Obra Social Titular (ARCA 810002) y Adherentes (ARCA 810009)
-    if (slip.basis?.baseImponible4) {
-      const baseOsTotal = Number(slip.basis.baseImponible4) + Number(slip.basis.baseDifAporteOs || 0);
+    if (basis.baseImponible4) {
+      const baseOsTotal = Number(basis.baseImponible4) + Number(basis.baseDifAporteOs || 0);
 
-      // 1. Obra Social Titular (3%)
+      // Obra Social Titular (3%)
       const osTitularItems = items.filter((i) => String(i.arcaConceptCode || '').trim() === '810002');
       if (osTitularItems.length > 0) {
         const expectedOsTitular = Math.round(baseOsTotal * 0.03 * 100) / 100;
@@ -335,14 +594,14 @@ export function validateLsdConsistency({ paySlips }) {
         }
       }
 
-      // 2. Obra Social Adherentes (1.5% por cada adherente registrado s/Ley 23.660)
+      // Obra Social Adherentes (1.5% por cada adherente registrado s/Ley 23.660)
       const osAdherenteItems = items.filter((i) => String(i.arcaConceptCode || '').trim() === '810009');
       if (osAdherenteItems.length > 0) {
         const actualOsAdherentes = Math.round(osAdherenteItems.reduce((acc, i) => acc + Number(i.amount || 0), 0) * 100) / 100;
         const adherentsCount = Number(
-          slip.basis?.adherentsCount !== undefined
-            ? slip.basis.adherentsCount
-            : (slip.employee?.relatives?.filter((r) => r.isAdherent && !r.deletedAt).length || 0)
+          basis.adherentsCount !== undefined
+            ? basis.adherentsCount
+            : (emp.relatives?.filter((r) => r.isAdherent && !r.deletedAt).length || 0)
         );
 
         if (adherentsCount === 0) {
@@ -367,9 +626,23 @@ export function validateLsdConsistency({ paySlips }) {
     }
   }
 
+  // 6. Advertencia de Multi-Liquidación / Liquidaciones intermedias
+  if (settlements && settlements.length > 1) {
+    issues.push({
+      legajo: 'TODOS',
+      cuil: 'TODOS',
+      type: 'ADVERTENCIA_MULTI_LIQUIDACION',
+      message: `El mes posee ${settlements.length} liquidaciones registradas. ARCA acumula automáticamente los conceptos de todas las liquidaciones del mes. Se recomienda validar y exportar la "Liquidación Mensual Unificada" para garantizar el cuadre de topes y bases imponibles del F.931.`,
+    });
+  }
+
+  const errors = issues.filter((i) => i.type.startsWith('ERROR'));
+  const warnings = issues.filter((i) => i.type.startsWith('ADVERTENCIA') || i.type.startsWith('WARN'));
+
   return {
-    isValid: issues.length === 0,
-    errors: issues,
+    isValid: errors.length === 0,
+    errors,
+    warnings,
     issues,
   };
 }
@@ -464,7 +737,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
       formatAlpha(cbuClean, 22) + // 74-95
       formatNumeric(Math.min(cumulativeWorkedDays, 30), 3) + // 96-98 Días tope legal 30
       formatDate(latestPaymentDate) + // 99-106 Fecha de pago de la liquidación más reciente
-      formatDate(latestRubricDate) + // 107-114
+      formatRubricDate(latestRubricDate) + // 107-114 Fecha de rúbrica (8 espacios si es nula/vacía)
       formaPago; // 115
 
     if (reg02.length !== 115) throw new Error(`Registro 02 [Legajo ${emp.fileNumber}] longitud inválida: ${reg02.length} (esperado 115)`);
@@ -512,6 +785,13 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
     const isIntern = Boolean(emp.salaryScale?.isInternOnly || emp.contractModalityCode === '027');
     const isDirector = Boolean(emp.salaryScale?.isDirectorOnly || emp.contractModalityCode === '099');
 
+    // Tratamiento de tope vacacional independiente (ARCA LSD 4.2 C):
+    const vacationDays = empSlips
+      .filter((s) => s.payrollPeriod?.periodType === 'VACATIONS' || s.payrollPeriod?.settlementName?.toLowerCase().includes('vacac'))
+      .reduce((sum, s) => sum + (Number(s.workedDays) || 0), 0);
+    const vacationCap = vacationDays > 0 ? Math.round(((maxCap / 30) * vacationDays) * 100) / 100 : 0;
+    const effectiveMaxCap = maxCap + vacationCap;
+
     let bi1 = 0.00;
     let bi2 = 0.00;
     let bi3 = 0.00;
@@ -525,22 +805,32 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
     let detractionAmount = 0.00;
 
     if (isIntern) {
-      bi4 = Math.min(Math.max(monthlyRemunerative, minCap), maxCap);
+      bi4 = Math.min(Math.max(monthlyRemunerative, minCap), effectiveMaxCap);
       bi8 = bi4;
       bi9 = monthlyGross;
     } else if (isDirector) {
       bi9 = monthlyGross;
     } else {
       if (monthlyRemunerative > 0) {
-        bi1 = Math.min(Math.max(monthlyRemunerative, minCap), maxCap);
+        bi1 = Math.min(Math.max(monthlyRemunerative, minCap), effectiveMaxCap);
         bi2 = Math.max(monthlyRemunerative, minCap);
         bi3 = bi2;
-        bi4 = Math.min(Math.max(monthlyRemunerative, minCap), maxCap);
+        bi4 = Math.min(Math.max(monthlyRemunerative, minCap), effectiveMaxCap);
         bi5 = bi1;
         bi8 = bi4;
         bi9 = monthlyGross;
-        bi10 = Math.max(bi2 - detractionBase, minCap);
-        detractionAmount = detractionBase;
+
+        const latestBasisRef = empSlips[empSlips.length - 1].basis || {};
+        const maxAllowedDetr = calculateMaxAllowedDetraction({
+          detractionBase,
+          isPartTime: emp.isPartTime,
+          partTimePercentage: emp.partTimePercentage,
+          contractModality: latestBasisRef.contractModality,
+          workedDays: Math.min(Math.max(0, Math.round(cumulativeWorkedDays)), 30),
+          bi2,
+        });
+        detractionAmount = maxAllowedDetr;
+        bi10 = Math.max(0, Math.round((bi2 - detractionAmount) * 100) / 100);
       } else {
         bi9 = monthlyGross;
       }
@@ -571,6 +861,23 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
       }
     }
 
+    // Días y Horas trabajadas consolidadas (excluyentes según diseño oficial ARCA LSD Registro 04):
+    // No se puede informar cantidad de días (> 0) y cantidad de horas (> 0) de manera simultánea.
+    const isHourly = ['HORAS', 'POR_HORA', 'HORARIO'].includes(String(emp.payrollGroup || '').toUpperCase().trim());
+
+    let reg04Days = 0;
+    let reg04Hours = 0;
+
+    if (isHourly) {
+      reg04Days = 0;
+      reg04Hours = Math.max(0, Math.round(cumulativeWorkedHours));
+    } else {
+      reg04Days = Math.min(Math.max(0, Math.round(cumulativeWorkedDays)), 30);
+      reg04Hours = 0;
+    }
+
+    const locCode = getArcaLocalityCode(emp.province || company?.province, emp.city || company?.city);
+
     let reg04 =
       '04' + // 1-2
       formatNumeric(cuilClean, 11) + // 3-13
@@ -586,15 +893,15 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
       formatAlpha(latestBasis.activityCode || (isDirector ? '015' : '049'), 3) + // 26-28
       formatAlpha(latestBasis.contractModality ? String(latestBasis.contractModality).padStart(3, '0') : (isDirector ? '099' : (isIntern ? '027' : '001')), 3) + // 29-31
       '00' + // 32-33 Siniestrado
-      '00' + // 34-35 Localidad
+      formatAlpha(locCode, 2) + // 34-35 Localidad (Tabla T04: 01 a 24, nunca 00)
       formatAlpha(latestBasis.situationCode || '01', 2) + // 36-37 Sit 1
       '01' + // 38-39 Día inicio 1
       '00' + // 40-41 Sit 2
       '00' + // 42-43 Día 2
       '00' + // 44-45 Sit 3
       '00' + // 46-47 Día 3
-      formatNumeric(Math.min(cumulativeWorkedDays, 30), 2) + // 48-49 Días trabajados (máx 30)
-      formatNumeric(cumulativeWorkedHours || 160, 3) + // 50-52 Horas
+      formatNumeric(reg04Days, 2) + // 48-49 Días trabajados (máx 30) (excluyente con horas)
+      formatNumeric(reg04Hours, 3) + // 50-52 Horas (excluyente con días)
       '00000' + // 53-57 Adicional SS
       '00000' + // 58-62 Contribución Dif
       formatAlpha(osCode, 6) + // 63-68 Código OS
@@ -635,9 +942,9 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
 /**
  * Validador de consistencia ARCA a nivel de período mensual consolidado.
  * Audita cuadre matemático 03 vs 04, alícuotas previsionales (11%, 3%, 3%),
- * control de tope de 30 días acumulados y formato del archivo plano.
+ * control de tope de 30 días acumulados, códigos de localidad ARCA y formato del archivo plano.
  */
-export function validateMonthlyLsdConsistency({ year, month, period, settlements = [], paySlips = [], payrollSettings = {} }) {
+export function validateMonthlyLsdConsistency({ year, month, period, settlements = [], paySlips = [], payrollSettings = {}, company = {} }) {
   const issues = [];
   const validSlips = paySlips.filter((s) => !s.deletedAt);
 
@@ -654,6 +961,7 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
 
   const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
   const maxCap = Number(payrollSettings.ansesMaxCap || 2674292.72);
+  const detractionBase = Number(payrollSettings.detractionBase || 7003.68);
 
   let totalGrossAll = 0;
   let totalRemunAll = 0;
@@ -672,6 +980,17 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
         cuil,
         type: 'ERROR_CUIL_INVALIDO',
         message: `El CUIL "${cuil}" no cumple con el formato requerido por ARCA (11 dígitos numéricos sin guiones).`,
+      });
+    }
+
+    // 1b. Control de Localidad / Jurisdicción oficial ARCA (Tabla T04)
+    const locCode = getArcaLocalityCode(emp.province || company?.province, emp.city || company?.city);
+    if (!locCode || locCode === '00' || !/^(0[1-9]|1[0-9]|2[0-4])$/.test(locCode)) {
+      issues.push({
+        legajo,
+        cuil,
+        type: 'ERROR_LOCALIDAD_INVALIDA',
+        message: `Código de localidad "${locCode}" inválido. ARCA requiere código numérico de 2 dígitos entre '01' y '24' (Tabla T04).`,
       });
     }
 
@@ -747,12 +1066,58 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
       });
     }
 
+    // 3b. Control de Tope de Detracción (Ley 27.430 / Ley 27.541)
+    const consolidatedDays = Math.min(Math.max(0, Math.round(cumulativeWorkedDays)), 30);
+    const maxAllowedDetr = calculateMaxAllowedDetraction({
+      detractionBase,
+      isPartTime: emp.isPartTime,
+      partTimePercentage: emp.partTimePercentage,
+      contractModality: latestBasis.contractModality,
+      workedDays: consolidatedDays,
+      bi2: Math.max(monthlyRemunerative, minCap),
+    });
+
+    if (latestBasis.detractionAmount !== undefined && latestBasis.detractionAmount !== null) {
+      const repDetr = Math.round(Number(latestBasis.detractionAmount) * 100) / 100;
+      if (repDetr > maxAllowedDetr + 0.05) {
+        issues.push({
+          legajo,
+          cuil,
+          type: 'ERROR_DETRACCION_EXCEDIDA',
+          message: `El importe a detraer ($${repDetr.toFixed(2)}) supera el tope máximo legal permitido ($${maxAllowedDetr.toFixed(2)}) establecido por la Ley 27.430 / Ley 27.541 para su jornada reducida y modalidad contractual.`,
+        });
+      }
+    }
+
+    // 3c. Control de Base Imponible 10
+    if (latestBasis.baseImponible2 !== undefined && latestBasis.baseImponible2 !== null && latestBasis.detractionAmount !== undefined && latestBasis.detractionAmount !== null) {
+      const bi2Val = Number(latestBasis.baseImponible2 || 0);
+      const detrVal = Number(latestBasis.detractionAmount || 0);
+      const expectedBi10 = Math.max(0, Math.round((bi2Val - detrVal) * 100) / 100);
+      const actualBi10 = Math.round(Number(latestBasis.baseImponible10 || 0) * 100) / 100;
+      if (Math.abs(expectedBi10 - actualBi10) > 0.05) {
+        issues.push({
+          legajo,
+          cuil,
+          type: 'ERROR_BASE_IMPONIBLE_10',
+          message: `Discrepancia en Base Imponible 10: La BI 10 declarada ($${actualBi10.toFixed(2)}) difiere de la calculada ($${expectedBi10.toFixed(2)}) a partir de Base Imponible 2 ($${bi2Val.toFixed(2)}) menos la detracción ($${detrVal.toFixed(2)}).`,
+        });
+      }
+    }
+
     // 4. Control de Aportes de Ley sobre Bases Imponibles Unificadas
     const isIntern = Boolean(emp.salaryScale?.isInternOnly || emp.contractModalityCode === '027');
     const isDirector = Boolean(emp.salaryScale?.isDirectorOnly || emp.contractModalityCode === '099');
 
     if (!isIntern && !isDirector && monthlyRemunerative > 0) {
-      const bi1 = Math.min(Math.max(monthlyRemunerative, minCap), maxCap);
+      // Considerar tope vacacional si aplica
+      const vacationDaysEmp = empSlips
+        .filter((s) => s.payrollPeriod?.periodType === 'VACATIONS' || s.payrollPeriod?.settlementName?.toLowerCase().includes('vacac'))
+        .reduce((sum, s) => sum + (Number(s.workedDays) || 0), 0);
+      const vacationCapEmp = vacationDaysEmp > 0 ? Math.round(((maxCap / 30) * vacationDaysEmp) * 100) / 100 : 0;
+      const effectiveMaxCapEmp = maxCap + vacationCapEmp;
+
+      const bi1 = Math.min(Math.max(monthlyRemunerative, minCap), effectiveMaxCapEmp);
       const expectedSipa = Math.round(bi1 * 0.11 * 100) / 100;
       const expectedInssjyp = Math.round(bi1 * 0.03 * 100) / 100;
 
@@ -766,7 +1131,7 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
           empDifAporteOs = Math.max(0, Math.round((fullTime - bi1) * 100) / 100);
         }
       }
-      const bi4Total = Math.min(Math.max(bi1 + empDifAporteOs, minCap), maxCap);
+      const bi4Total = Math.min(Math.max(bi1 + empDifAporteOs, minCap), effectiveMaxCapEmp);
       const expectedOs = Math.round(bi4Total * 0.03 * 100) / 100;
 
       if (totalSipaDeduction > 0 && Math.abs(totalSipaDeduction - expectedSipa) > 0.10) {
@@ -826,13 +1191,17 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
     }
   }
 
+  const errors = issues.filter((i) => i.type.startsWith('ERROR'));
+  const warnings = issues.filter((i) => i.type.startsWith('ADVERTENCIA') || i.type.startsWith('WARN'));
+
   return {
-    isValid: issues.length === 0,
+    isValid: errors.length === 0,
     period: `${year}-${String(month).padStart(2, '0')}`,
     totalSettlements: settlements.length,
     totalEmployees: slipsByEmp.size,
     totalIssues: issues.length,
-    errors: issues,
+    errors,
+    warnings,
     issues,
     summary: {
       totalGross: Math.round(totalGrossAll * 100) / 100,
