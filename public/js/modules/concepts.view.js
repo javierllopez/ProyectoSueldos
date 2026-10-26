@@ -23,6 +23,7 @@ import {
   ARCA_T03_ACTIVITIES,
   getArcaActivityInfo,
 } from '../utils/helpers.js';
+import { ARCA_CONCEPT_PROFILES, getArcaProfile } from '../utils/arcaProfiles.js';
 
 
 class ConceptsMethods {
@@ -185,73 +186,82 @@ class ConceptsMethods {
     this.populateFormulaConceptOptions(codeInput.value);
   }
 
-  applyArcaSubsystemsSuggestion(arcaCode) {
+  applyArcaSubsystemsSuggestion(arcaCode, options = {}) {
     const code = String(arcaCode || '').trim();
-    const isDeduction = code.startsWith('81') || code.startsWith('82') || (parseInt(code, 10) >= 810000 && parseInt(code, 10) <= 829999);
-    const isRemunerative = code.startsWith('1') || (parseInt(code, 10) >= 110000 && parseInt(code, 10) <= 499999);
-    const isOsOnly = code === '540000';
-    const isSpecialNoRem = code === '551000';
-    const isLrtPasantias = code === '550000';
-
-    const state = {
-      r1: false, r2: false, r3: false, r4: false, r5: false,
-      r6: false, r7: false, r8: false, r9: false, r10: false,
-    };
-
-    if (isDeduction) {
-      // Normativa ARCA LSD: Retenciones/Descuentos informan '0' en todos los subsistemas F.931
-    } else if (isRemunerative) {
-      const currentCode = document.getElementById('concept-input-code')?.value?.trim();
-      if (currentCode === 'SU1002') {
-        // Honorarios Directores S.A. (Mod. 099): solo LRT
-        state.r9 = true;
-      } else {
-        // Remunerativos generales: R1, R2, R3, R4, R5, R8, R9, R10
-        state.r1 = true;
-        state.r2 = true;
-        state.r3 = true;
-        state.r4 = true;
-        state.r5 = true;
-        state.r8 = true;
-        state.r9 = true;
-        state.r10 = true;
-      }
-    } else if (isOsOnly) {
-      // 540000: Incremento No Remunerativo exclusivo para Obra Social y FSR
-      state.r4 = true;
-      state.r8 = true;
-    } else if (isSpecialNoRem) {
-      // 551000: Importes No Remunerativos Especiales c/ OS y LRT
-      state.r4 = true;
-      state.r8 = true;
-      state.r9 = true;
-    } else if (isLrtPasantias) {
-      // 550000: Incrementos No Remunerativos Generales / Pasantías c/ ART LRT
-      state.r9 = true;
-    }
+    const currentConceptCode = document.getElementById('concept-input-code')?.value?.trim() || '';
+    const profile = getArcaProfile(code, currentConceptCode);
 
     for (let i = 1; i <= 10; i++) {
       const el = document.getElementById(`subsys-r${i}`);
-      if (el) el.checked = Boolean(state[`r${i}`]);
+      if (el) {
+        el.checked = Boolean(profile.subsystems[`r${i}`]);
+        el.disabled = Boolean(profile.lockSubsystems);
+      }
+    }
+
+    // Sincronizar automáticamente el Tipo de Haber
+    if (options.syncType !== false && profile.type) {
+      const typeSelect = document.getElementById('concept-input-type');
+      if (typeSelect && typeSelect.value !== profile.type) {
+        typeSelect.value = profile.type;
+        this.updateFormulaAccumulatorsFilter();
+      }
+    }
+
+    this.updateArcaSubsystemsUiState(code, profile);
+  }
+
+  updateArcaSubsystemsUiState(arcaCode, profile = null) {
+    const code = String(arcaCode || '').trim();
+    const currentConceptCode = document.getElementById('concept-input-code')?.value?.trim() || '';
+    const prof = profile || getArcaProfile(code, currentConceptCode);
+
+    const badge = document.getElementById('arca-subsystems-badge');
+    const hint = document.getElementById('arca-subsystems-hint');
+
+    if (badge) {
+      if (code) {
+        badge.classList.remove('d-none');
+        const typeLabels = {
+          REMUNERATIVE: 'Remunerativo',
+          NON_REMUNERATIVE: 'No Remunerativo',
+          DEDUCTION: 'Retención / Deducción',
+          AUXILIARY: 'Auxiliar',
+        };
+        badge.textContent = `ARCA [${code}]: ${typeLabels[prof.type] || prof.type}`;
+        badge.className = `badge font-monospace small ${prof.type === 'REMUNERATIVE' ? 'bg-green-lt text-green' : (prof.type === 'DEDUCTION' ? 'bg-danger-lt text-danger' : 'bg-blue-lt text-blue')}`;
+      } else {
+        badge.classList.add('d-none');
+      }
+    }
+
+    if (hint) {
+      if (code && prof.description) {
+        hint.classList.remove('d-none');
+        hint.innerHTML = `<i class="ti ti-info-circle me-1"></i>${escapeHtml(prof.description)}`;
+      } else {
+        hint.classList.add('d-none');
+      }
+    }
+
+    // Si es retención/deducción (o profile.lockSubsystems), deshabilitar casillas R1..R10
+    if (prof.lockSubsystems) {
+      for (let i = 1; i <= 10; i++) {
+        const el = document.getElementById(`subsys-r${i}`);
+        if (el) el.disabled = true;
+      }
+    } else {
+      for (let i = 1; i <= 10; i++) {
+        const el = document.getElementById(`subsys-r${i}`);
+        if (el) el.disabled = false;
+      }
     }
   }
 
   handleArcaCodeChange(arcaSelect) {
     if (!arcaSelect) return;
-    const formId = document.getElementById('concept-form-id')?.value;
     const newCode = arcaSelect.value;
-    const prevCode = arcaSelect.dataset.prevValue;
-
-    if (formId && prevCode !== undefined && prevCode !== newCode) {
-      const confirmReassign = window.confirm(
-        `Ha modificado el código ARCA a [${newCode || 'Sin código'}].\n\n¿Desea reasignar las bases remunerativas (R1 a R10) de acuerdo al nuevo código ARCA seleccionado?`
-      );
-      if (confirmReassign) {
-        this.applyArcaSubsystemsSuggestion(newCode);
-      }
-    } else {
-      this.applyArcaSubsystemsSuggestion(newCode);
-    }
+    this.applyArcaSubsystemsSuggestion(newCode);
     arcaSelect.dataset.prevValue = newCode;
   }
 
@@ -501,6 +511,8 @@ class ConceptsMethods {
     const r9 = document.getElementById('subsys-r9'); if (r9) r9.checked = Boolean(c.appliesLrtContrib);
     const r10 = document.getElementById('subsys-r10'); if (r10) r10.checked = Boolean(c.appliesDetraccion);
 
+    this.updateArcaSubsystemsUiState(c.arcaConceptCode);
+
     this.updateFormulaAccumulatorsFilter();
     this.updateFormulaNoveltiesFilter();
 
@@ -600,6 +612,27 @@ class ConceptsMethods {
       appliesRegEspAporte: document.getElementById('subsys-r7')?.checked || false,
       appliesDetraccion: document.getElementById('subsys-r10')?.checked || false,
     };
+
+    // Regla estricta ARCA LSD: Retenciones/Descuentos (810000..829999 o tipo DEDUCTION)
+    // tienen prohibido informar '1' en subsistemas F.931 (pos. 168 a 186)
+    if (payload.type === 'DEDUCTION' || (payload.arcaConceptCode && String(payload.arcaConceptCode).startsWith('8'))) {
+      payload.appliesSipaAporte = false;
+      payload.appliesSipaContrib = false;
+      payload.appliesInssjypAporte = false;
+      payload.appliesInssjypContrib = false;
+      payload.appliesOsAporte = false;
+      payload.appliesOsContrib = false;
+      payload.appliesFsrAporte = false;
+      payload.appliesFsrContrib = false;
+      payload.appliesRenatreAporte = false;
+      payload.appliesRenatreContrib = false;
+      payload.appliesAaffContrib = false;
+      payload.appliesFneContrib = false;
+      payload.appliesLrtContrib = false;
+      payload.appliesRegDifAporte = false;
+      payload.appliesRegEspAporte = false;
+      payload.appliesDetraccion = false;
+    }
 
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Guardando...';
@@ -748,6 +781,16 @@ class ConceptsMethods {
     if (isEmbargoSwitch) {
       isEmbargoSwitch.addEventListener('change', (e) => {
         this.handleEmbargoToggle(e.target.checked);
+      });
+    }
+
+    const btnResetArca = document.getElementById('btn-reset-arca-subsystems');
+    if (btnResetArca) {
+      btnResetArca.addEventListener('click', () => {
+        const arcaSelect = document.getElementById('concept-input-arca-code');
+        const code = arcaSelect?.value;
+        this.applyArcaSubsystemsSuggestion(code);
+        showToast('Bases remunerativas restablecidas según código ARCA', 'info');
       });
     }
   }

@@ -30,67 +30,133 @@ class PayrollMethods {
   // MÓDULO DE LIQUIDACIÓN DE SUELDOS & LIBRO DE SUELDOS DIGITAL (ARCA)
   // ==========================================================================
 
-  setupPayrollNavigation() {
-    const navLinks = document.querySelectorAll('#payroll-sidebar-nav .payroll-nav-item:not([data-bs-toggle="collapse"]), #payroll-sidebar-nav .payroll-nav-subitem');
-    navLinks.forEach((item) => {
-      item.addEventListener('click', (e) => {
-        e.preventDefault();
-        navLinks.forEach((i) => i.classList.remove('active'));
-        document.querySelectorAll('#payroll-sidebar-nav .payroll-nav-item').forEach((i) => i.classList.remove('active'));
-        item.classList.add('active');
+  switchPayrollPane(targetPaneId) {
+    if (!targetPaneId) return;
+    const cleanId = targetPaneId.startsWith('#') ? targetPaneId : `#${targetPaneId}`;
 
-        // Si es un sub-ítem, mantener activo visualmente el menú padre
-        const parentDropdown = item.closest('.payroll-nav-dropdown');
-        if (parentDropdown) {
-          const parentBtn = parentDropdown.querySelector('.payroll-nav-item');
-          if (parentBtn) parentBtn.classList.add('active');
+    // 1. Limpiar estados activos de todos los ítems y sub-ítems
+    const allNavLinks = document.querySelectorAll(
+      '#payroll-sidebar-nav .payroll-nav-item, #payroll-sidebar-nav .payroll-nav-subitem'
+    );
+    allNavLinks.forEach((i) => i.classList.remove('active'));
+
+    // 2. Activar el ítem seleccionado
+    const activeItem = document.querySelector(
+      `#payroll-sidebar-nav a[href="${cleanId}"], #payroll-sidebar-nav a[data-bs-target="${cleanId}"]`
+    );
+    if (activeItem) {
+      activeItem.classList.add('active');
+
+      // Si es un sub-ítem, mantener activo visualmente el menú padre y abrir su acordeón si está cerrado
+      const parentDropdown = activeItem.closest('.payroll-nav-dropdown');
+      if (parentDropdown) {
+        const parentBtn = parentDropdown.querySelector('.payroll-nav-item');
+        if (parentBtn) {
+          parentBtn.classList.add('active');
+          parentBtn.setAttribute('aria-expanded', 'true');
         }
 
-        const targetPaneId = item.getAttribute('href');
-        document.querySelectorAll('#payroll-tab-content > .tab-pane').forEach((p) => {
-          p.classList.remove('show', 'active');
-        });
-        const targetPane = document.querySelector(targetPaneId);
-        if (targetPane) targetPane.classList.add('show', 'active');
-
-        // Cargar datos según el panel activado
-        if (targetPaneId === '#pane-payroll-periods') {
-          this.loadPayrollPeriods();
-        } else if (targetPaneId === '#pane-nov-pers-emp') {
-          this.loadNovPersEmp();
-        } else if (targetPaneId === '#pane-nov-pers-con') {
-          this.loadNovPersCon();
-        } else if (targetPaneId === '#pane-payroll-embargoes') {
-          this.loadEmbargoes();
-        } else if (targetPaneId === '#pane-nov-nopers-emp') {
-          this.syncPayrollPeriodSelectors();
-          this.loadNovNoPersEmp();
-        } else if (targetPaneId === '#pane-nov-nopers-con') {
-          this.syncPayrollPeriodSelectors();
-          this.loadNovNoPersCon();
-        } else if (targetPaneId === '#pane-payroll-settlement') {
-          this.syncPayrollPeriodSelectors();
-          this.loadSettlementView();
-        } else if (targetPaneId === '#pane-payroll-slips') {
-          this.syncPayrollPeriodSelectors();
-          const periodSelect = document.getElementById('slips-period-select');
-          if (periodSelect && periodSelect.value) {
-            this.loadPayrollSlips(periodSelect.value);
+        const collapseSubmenu = parentDropdown.querySelector('.collapse');
+        if (collapseSubmenu && !collapseSubmenu.classList.contains('show')) {
+          if (window.bootstrap?.Collapse) {
+            const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseSubmenu, { toggle: false });
+            inst.show();
+          } else {
+            collapseSubmenu.classList.add('show');
           }
-        } else if (targetPaneId === '#pane-payroll-lsd') {
-          this.loadLsdMonthlyPeriods();
-        } else if (targetPaneId === '#pane-payroll-concepts') {
-          this.loadPayrollConcepts();
-        } else if (targetPaneId === '#pane-payroll-matrices') {
-          this.loadPayrollMatrices();
-        } else if (targetPaneId === '#pane-payroll-fixed-values') {
-          this.loadPayrollFixedValues();
-        } else if (targetPaneId === '#pane-payroll-salary-scales') {
-          this.loadPayrollSalaryScales();
-        } else if (targetPaneId === '#pane-payroll-settings') {
-          this.loadPayrollSettings();
         }
-      });
+      }
+    }
+
+    // 3. Conmutar visualmente los paneles en #payroll-tab-content
+    const tabPanes = document.querySelectorAll('#payroll-tab-content > .tab-pane');
+    tabPanes.forEach((p) => {
+      p.classList.remove('show', 'active');
+    });
+    const targetPane = document.querySelector(cleanId);
+    if (targetPane) {
+      targetPane.classList.add('show', 'active');
+    }
+
+    // 4. Cargar datos específicos del panel activado
+    if (cleanId === '#pane-payroll-periods') {
+      this.loadPayrollPeriods();
+    } else if (cleanId === '#pane-nov-pers-emp') {
+      this.loadNovPersEmp();
+    } else if (cleanId === '#pane-nov-pers-con') {
+      this.loadNovPersCon();
+    } else if (cleanId === '#pane-payroll-embargoes') {
+      this.loadEmbargoes();
+    } else if (cleanId === '#pane-nov-nopers-emp') {
+      this.syncPayrollPeriodSelectors();
+      this.loadNovNoPersEmp();
+    } else if (cleanId === '#pane-nov-nopers-con') {
+      this.syncPayrollPeriodSelectors();
+      this.loadNovNoPersCon();
+    } else if (cleanId === '#pane-payroll-settlement') {
+      this.syncPayrollPeriodSelectors();
+      this.loadSettlementView();
+    } else if (cleanId === '#pane-payroll-slips') {
+      this.syncPayrollPeriodSelectors();
+      const periodSelect = document.getElementById('slips-period-select');
+      if (periodSelect && periodSelect.value) {
+        this.loadPayrollSlips(periodSelect.value);
+      }
+    } else if (cleanId === '#pane-payroll-lsd') {
+      this.loadLsdMonthlyPeriods();
+    } else if (cleanId === '#pane-payroll-concepts') {
+      this.loadPayrollConcepts();
+    } else if (cleanId === '#pane-payroll-matrices') {
+      this.loadPayrollMatrices();
+    } else if (cleanId === '#pane-payroll-fixed-values') {
+      this.loadPayrollFixedValues();
+    } else if (cleanId === '#pane-payroll-salary-scales') {
+      this.loadPayrollSalaryScales();
+    } else if (cleanId === '#pane-payroll-settings') {
+      this.loadPayrollSettings();
+    } else if (cleanId === '#pane-payroll-income-tax') {
+      this.renderIncomeTaxView();
+    }
+  }
+
+  setupPayrollNavigation() {
+    const navLinks = document.querySelectorAll(
+      '#payroll-sidebar-nav .payroll-nav-item:not([data-bs-toggle="collapse"]), #payroll-sidebar-nav .payroll-nav-subitem'
+    );
+    navLinks.forEach((item) => {
+      item.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        const targetPaneId = item.getAttribute('href') || item.getAttribute('data-bs-target');
+        if (targetPaneId) {
+          this.switchPayrollPane(targetPaneId);
+        }
+      };
+    });
+
+    // Soporte para desplegar y colapsar acordeones de submenús de forma robusta
+    const dropdownToggles = document.querySelectorAll('#payroll-sidebar-nav .payroll-nav-item[data-bs-toggle="collapse"]');
+    dropdownToggles.forEach((btn) => {
+      btn.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        const targetId = btn.getAttribute('data-bs-target') || btn.getAttribute('href');
+        if (targetId) {
+          const collapseEl = document.querySelector(targetId);
+          if (collapseEl) {
+            if (window.bootstrap?.Collapse) {
+              const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
+              inst.toggle();
+            } else {
+              collapseEl.classList.toggle('show');
+            }
+            const isShown = collapseEl.classList.contains('show');
+            btn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+          }
+        }
+      };
     });
   }
 
@@ -106,6 +172,14 @@ class PayrollMethods {
     document.querySelectorAll('.payroll-active-company-name-sync').forEach((el) => {
       el.textContent = this.activeCompany.name;
     });
+
+    this.setupPayrollNavigation();
+
+    // Asegurar que haya un panel activo visible si ninguno lo está
+    const activePane = document.querySelector('#payroll-tab-content > .tab-pane.active');
+    if (!activePane) {
+      this.switchPayrollPane('#pane-payroll-periods');
+    }
 
     await this.loadPayrollPeriods();
     await this.loadPayrollSalaryScales();
@@ -209,7 +283,7 @@ class PayrollMethods {
     }
     const btnBatchPrint = document.getElementById('btn-export-slips-batch');
     if (btnBatchPrint) {
-      btnBatchPrint.addEventListener('click', () => window.print());
+      btnBatchPrint.addEventListener('click', () => this.printBatchSlips());
     }
 
     // --- Print Modal Button ---
@@ -365,14 +439,29 @@ class PayrollMethods {
       conceptTypeSelect.addEventListener('change', () => {
         const arcaSelect = document.getElementById('concept-input-arca-code');
         const formId = document.getElementById('concept-form-id')?.value;
-        if (arcaSelect && !formId) {
+        if (arcaSelect) {
           const t = conceptTypeSelect.value;
-          if (t === 'REMUNERATIVE') arcaSelect.value = '110000';
-          else if (t === 'NON_REMUNERATIVE') arcaSelect.value = '550000';
-          else if (t === 'DEDUCTION') arcaSelect.value = '810000';
-          else if (t === 'AUXILIARY') arcaSelect.value = '';
-          arcaSelect.dataset.prevValue = arcaSelect.value;
-          this.applyArcaSubsystemsSuggestion(arcaSelect.value);
+          const currentArca = arcaSelect.value;
+          const isCurrentRem = currentArca && (currentArca.startsWith('1') || (parseInt(currentArca, 10) >= 110000 && parseInt(currentArca, 10) <= 499999));
+          const isCurrentNonRem = currentArca && (currentArca.startsWith('5') || (parseInt(currentArca, 10) >= 510000 && parseInt(currentArca, 10) <= 799999));
+          const isCurrentDed = currentArca && (currentArca.startsWith('8') || (parseInt(currentArca, 10) >= 810000 && parseInt(currentArca, 10) <= 899999));
+
+          let shouldChangeArca = !formId;
+          if (formId) {
+            if (t === 'REMUNERATIVE' && !isCurrentRem) shouldChangeArca = true;
+            else if (t === 'NON_REMUNERATIVE' && !isCurrentNonRem) shouldChangeArca = true;
+            else if (t === 'DEDUCTION' && !isCurrentDed) shouldChangeArca = true;
+            else if (t === 'AUXILIARY' && currentArca) shouldChangeArca = true;
+          }
+
+          if (shouldChangeArca) {
+            if (t === 'REMUNERATIVE') arcaSelect.value = '110000';
+            else if (t === 'NON_REMUNERATIVE') arcaSelect.value = '550000';
+            else if (t === 'DEDUCTION') arcaSelect.value = '810000';
+            else if (t === 'AUXILIARY') arcaSelect.value = '';
+            arcaSelect.dataset.prevValue = arcaSelect.value;
+            this.applyArcaSubsystemsSuggestion(arcaSelect.value, { syncType: false });
+          }
         }
         this.updateFormulaAccumulatorsFilter();
       });
@@ -972,6 +1061,9 @@ class PayrollMethods {
     const ddPay = String(nextPayDate.getDate()).padStart(2, '0');
     document.getElementById('period-input-payment-date').value = `${yyyyPay}-${mmPay}-${ddPay}`;
 
+    const rubricInput = document.getElementById('period-input-rubric-date');
+    if (rubricInput) rubricInput.value = '';
+
     getBootstrapModal(document.getElementById('modal-payroll-period-form'))?.show();
   }
 
@@ -995,6 +1087,7 @@ class PayrollMethods {
       paymentPlace: document.getElementById('period-input-payment-place').value.trim() || null,
       depositDate: document.getElementById('period-input-deposit-date').value || null,
       depositBank: document.getElementById('period-input-deposit-bank').value.trim() || null,
+      rubricDate: document.getElementById('period-input-rubric-date')?.value || null,
     };
 
     submitBtn.disabled = true;
@@ -2542,7 +2635,8 @@ class PayrollMethods {
 
       if (res.data.omittedEmployeesCount > 0) {
         this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
-        showToast('El colaborador no registra conceptos a liquidar en este período (no se generó recibo vacío).', 'warning');
+        this.showOmittedEmployeesModal();
+        showToast('El colaborador no originó ningún concepto en este período. No se generó liquidación vacía.', 'warning');
       } else {
         this.showOmittedAlert(0, res.data.processedEmployees || 0, []);
         showToast(`¡Liquidación completada para el colaborador! Neto: $${formatNumber(res.data.totalNet)}`);
@@ -2655,6 +2749,7 @@ class PayrollMethods {
 
       this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
       if (res.data.omittedEmployeesCount > 0) {
+        this.showOmittedEmployeesModal();
         showToast(
           `Liquidación en lote: ${res.data.processedEmployees} recibo(s) generados. Se omitieron ${res.data.omittedEmployeesCount} legajo(s) por no registrar conceptos a liquidar.`,
           'info'
@@ -2671,6 +2766,43 @@ class PayrollMethods {
     }
   }
 
+  confirmGeneralSettlement(period) {
+    return new Promise((resolve) => {
+      const modalEl = document.getElementById('modal-confirm-general-settlement');
+      if (!modalEl) {
+        resolve(confirm(`¿Iniciar Liquidación General de toda la nómina para "${period?.settlementName || ''}"? Este proceso calculará o actualizará los recibos de todos los empleados activos.`));
+        return;
+      }
+
+      const periodNameEl = document.getElementById('modal-confirm-settlement-period-name');
+      if (periodNameEl) {
+        periodNameEl.textContent = `Liquidación: "${period?.settlementName || 'Período seleccionado'}"`;
+      }
+
+      const confirmBtn = document.getElementById('btn-confirm-general-settlement-action');
+      const bsModal = getBootstrapModal(modalEl);
+
+      let resolved = false;
+
+      const handleConfirm = () => {
+        resolved = true;
+        bsModal?.hide();
+        resolve(true);
+      };
+
+      const handleHidden = () => {
+        modalEl.removeEventListener('hidden.bs.modal', handleHidden);
+        confirmBtn?.removeEventListener('click', handleConfirm);
+        if (!resolved) resolve(false);
+      };
+
+      confirmBtn?.addEventListener('click', handleConfirm, { once: true });
+      modalEl.addEventListener('hidden.bs.modal', handleHidden, { once: true });
+
+      bsModal?.show();
+    });
+  }
+
   async calculateAllEmployees() {
     const periodId = document.getElementById('settlement-period-select')?.value;
     if (!periodId) {
@@ -2679,7 +2811,8 @@ class PayrollMethods {
     }
 
     const period = this.payrollPeriods.find((p) => p.id === periodId);
-    if (!confirm(`¿Iniciar Liquidación General de toda la nómina para "${period?.settlementName || ''}"? Este proceso calculará o actualizará los recibos de todos los empleados activos.`)) {
+    const confirmed = await this.confirmGeneralSettlement(period);
+    if (!confirmed) {
       return;
     }
 
@@ -2697,6 +2830,7 @@ class PayrollMethods {
 
       this.showOmittedAlert(res.data.omittedEmployeesCount || 0, res.data.processedEmployees || 0, res.data.omittedEmployees || []);
       if (res.data.omittedEmployeesCount > 0) {
+        this.showOmittedEmployeesModal();
         showToast(
           `Liquidación completada: ${res.data.processedEmployees} recibo(s) generados. Se omitieron ${res.data.omittedEmployeesCount} legajo(s) por no registrar conceptos a liquidar en este período.`,
           'info'
@@ -2712,6 +2846,68 @@ class PayrollMethods {
       btn.disabled = false;
       btn.innerHTML = '<i class="ti ti-calculator me-2"></i> Iniciar Liquidación General';
       progressBar?.classList.add('d-none');
+    }
+  }
+
+  async printBatchSlips() {
+    const periodId = document.getElementById('slips-period-select')?.value;
+    if (!periodId) {
+      showToast('Seleccione una liquidación para imprimir', 'warning');
+      return;
+    }
+
+    const deptFilter = document.getElementById('slips-department-filter')?.value;
+    const searchVal = document.getElementById('slips-search-input')?.value;
+
+    const btn = document.getElementById('btn-export-slips-batch');
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Preparando lote...';
+    }
+
+    const printContainer = document.getElementById('batch-payslip-print-container');
+
+    try {
+      const params = new URLSearchParams();
+      if (deptFilter && deptFilter !== 'ALL') params.append('departmentId', deptFilter);
+      if (searchVal && String(searchVal).trim()) params.append('search', searchVal.trim());
+
+      const res = await apiRequest(`/payroll/periods/${periodId}/slips-batch-print?${params.toString()}`);
+      const { company, period, slips } = res.data || {};
+
+      if (!slips || slips.length === 0) {
+        showToast('No hay recibos disponibles para imprimir con los filtros seleccionados', 'warning');
+        return;
+      }
+
+      if (printContainer) {
+        printContainer.innerHTML = slips.map((slip) => `
+          <div class="payslip-sheet-print">
+            ${this.generatePayslipHtml({ slip, company, period })}
+          </div>
+        `).join('');
+      }
+
+      document.body.classList.add('batch-printing');
+
+      setTimeout(() => {
+        window.print();
+        setTimeout(() => {
+          document.body.classList.remove('batch-printing');
+          if (printContainer) printContainer.innerHTML = '';
+        }, 500);
+      }, 250);
+
+    } catch (err) {
+      showToast(err.message || 'Error al preparar la impresión del lote de recibos', 'danger');
+      document.body.classList.remove('batch-printing');
+      if (printContainer) printContainer.innerHTML = '';
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
     }
   }
 
@@ -3138,12 +3334,13 @@ class PayrollMethods {
     if (!tbody) return;
 
     if (!this.lastOmittedEmployees || this.lastOmittedEmployees.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="text-center py-3 text-muted">No se registran colaboradores omitidos.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="text-center py-3 text-muted">No se registran colaboradores omitidos.</td></tr>';
     } else {
       tbody.innerHTML = this.lastOmittedEmployees.map((o) => `
         <tr>
           <td><strong class="font-monospace text-primary">${escapeHtml(o.fileNumber || '-')}</strong></td>
-          <td><span class="fw-bold text-dark">${escapeHtml(o.name || '-')}</span></td>
+          <td><span class="fw-bold text-dark">${escapeHtml(o.fullName || o.name || '-')}</span></td>
+          <td><span class="badge bg-secondary-lt text-secondary">${escapeHtml(o.department || '-')}</span></td>
           <td class="text-end text-muted small">${escapeHtml(o.reason || 'Sin conceptos liquidados')}</td>
         </tr>
       `).join('');
@@ -3341,10 +3538,7 @@ class PayrollMethods {
     }
   }
 
-  renderPayslipVector(data) {
-    const area = document.getElementById('printable-payslip-area');
-    if (!area) return;
-
+  generatePayslipHtml(data) {
     const slip = data.slip || data;
     const emp = slip.employee || {};
     const comp = data.company || this.activeCompany || {};
@@ -3394,7 +3588,6 @@ class PayrollMethods {
     `;
 
     // Items table rows (EN EL RECIBO OFICIAL LEGAL NUNCA SE IMPRIMEN CONCEPTOS AUXILIARES)
-    // Items table rows (EN EL RECIBO OFICIAL LEGAL NUNCA SE IMPRIMEN CONCEPTOS AUXILIARES)
     const typePriority = {
       REMUNERATIVE: 1,
       NON_REMUNERATIVE: 2,
@@ -3429,7 +3622,7 @@ class PayrollMethods {
       })
       .join('');
 
-    area.innerHTML = `
+    return `
       <!-- BLOQUE 1: ENCABEZADO OFICIAL LEY 27.802 & DECRETO 407/2026 -->
       <div class="payslip-box">
         <div class="payslip-box-header">
@@ -3576,6 +3769,13 @@ class PayrollMethods {
         HASH DE INTEGRIDAD (SHA-256): ${slip.signatureHash || 'SEC-VALID-PAYROLL-HASH'} &bull; EMISIÓN ELECTRÓNICA VÁLIDA
       </div>
     `;
+  }
+
+  renderPayslipVector(data) {
+    const area = document.getElementById('printable-payslip-area');
+    if (!area) return;
+
+    area.innerHTML = this.generatePayslipHtml(data);
 
     // Handler para editar días trabajados de forma directa desde el recibo
     area.querySelectorAll('.btn-edit-slip-days').forEach((btn) => {

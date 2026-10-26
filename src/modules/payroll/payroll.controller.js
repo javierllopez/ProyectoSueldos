@@ -93,6 +93,11 @@ export async function getPaySlips(req, res) {
   return res.status(200).json(result);
 }
 
+export async function getBatchPaySlipsForPrint(req, res) {
+  const result = await payrollService.getBatchPaySlipsForPrint(req.tenantPrisma, req.params.periodId, req.query);
+  return res.status(200).json({ data: result });
+}
+
 export async function getPaySlipDetail(req, res) {
   const result = await payrollService.getPaySlipDetail(req.tenantPrisma, req.params.slipId);
   return res.status(200).json({ data: result });

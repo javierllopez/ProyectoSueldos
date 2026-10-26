@@ -631,9 +631,12 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       workedDaysOverride: workedDaysByEmp.has(emp.id) ? workedDaysByEmp.get(emp.id) : null,
     });
 
-    const hasCalculatedItems = Array.isArray(calculation.items) && calculation.items.length > 0;
+    const validConcepts = (calculation.items || []).filter(
+      (it) => it.type !== 'AUXILIARY' && Number(it.amount || 0) !== 0
+    );
+    const hasValidConcepts = validConcepts.length > 0;
 
-    if (!hasCalculatedItems) {
+    if (!hasValidConcepts) {
       omittedEmployees.push({
         employee: emp,
         reason: 'Sin conceptos liquidados en este período',
@@ -852,13 +855,17 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       },
     });
 
+    const activeSlipsCount = await tx.paySlip.count({
+      where: { payrollPeriodId: periodId, deletedAt: null },
+    });
+
     await tx.payrollPeriod.update({
       where: { id: periodId },
       data: {
         totalGross: periodTotals._sum.grossSalary || 0,
         totalNet: periodTotals._sum.netSalary || 0,
         totalEmployerCost: periodTotals._sum.totalLaborCost || 0,
-        status: 'CALCULATED',
+        status: activeSlipsCount > 0 ? 'CALCULATED' : 'OPEN',
       },
     });
   }, {
@@ -949,6 +956,95 @@ export async function getPaySlips(tenantPrisma, periodId, { search = '', page = 
       limit: take,
       totalPages: Math.ceil(total / take) || 1,
     },
+  };
+}
+
+export async function getBatchPaySlipsForPrint(tenantPrisma, periodId, { departmentId, search } = {}) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const period = await tenantPrisma.payrollPeriod.findUnique({
+    where: { id: periodId },
+  });
+
+  if (!period) {
+    const err = new Error('La liquidación solicitada no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const companyProfile = await tenantPrisma.companyProfile.findFirst({
+    where: { deletedAt: null },
+  });
+
+  const where = {
+    payrollPeriodId: periodId,
+    deletedAt: null,
+  };
+
+  if (departmentId && departmentId !== 'ALL') {
+    where.employee = { departmentId };
+  }
+
+  if (search && String(search).trim()) {
+    const term = String(search).trim();
+    where.employee = {
+      ...(where.employee || {}),
+      OR: [
+        { fileNumber: { contains: term } },
+        { lastName: { contains: term } },
+        { firstName: { contains: term } },
+        { cuil: { contains: term } },
+      ],
+    };
+  }
+
+  const slips = await tenantPrisma.paySlip.findMany({
+    where,
+    orderBy: { employee: { lastName: 'asc' } },
+    include: {
+      payrollPeriod: true,
+      basis: true,
+      items: {
+        orderBy: { conceptCode: 'asc' },
+      },
+      employee: {
+        include: {
+          department: true,
+          jobPosition: {
+            include: {
+              cct: true,
+              category: true,
+            },
+          },
+          healthInsurance: true,
+          union: true,
+        },
+      },
+    },
+  });
+
+  const typePriority = {
+    REMUNERATIVE: 1,
+    NON_REMUNERATIVE: 2,
+    DEDUCTION: 3,
+    AUXILIARY: 4,
+  };
+
+  for (const s of slips) {
+    if (Array.isArray(s.items)) {
+      s.items.sort((a, b) => {
+        const pA = typePriority[a.type] || 99;
+        const pB = typePriority[b.type] || 99;
+        if (pA !== pB) return pA - pB;
+        return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
+      });
+    }
+  }
+
+  return {
+    period,
+    company: companyProfile,
+    slips,
   };
 }
 
@@ -1499,6 +1595,11 @@ export async function exportLsdPayroll(tenantPrisma, periodId, company) {
   await ensureTenantPayrollSchema(tenantPrisma);
   const period = await getPeriodById(tenantPrisma, periodId);
 
+  let companyProfile = company;
+  if (!companyProfile?.cuit) {
+    companyProfile = (await tenantPrisma.companyProfile.findFirst({ where: { deletedAt: null } })) || company || {};
+  }
+
   const paySlips = await tenantPrisma.paySlip.findMany({
     where: { payrollPeriodId: periodId, deletedAt: null },
     include: {
@@ -1507,6 +1608,8 @@ export async function exportLsdPayroll(tenantPrisma, periodId, company) {
           department: true,
           jobPosition: true,
           healthInsurance: true,
+          salaryScale: true,
+          relatives: { where: { deletedAt: null }, include: { kinship: true } },
         },
       },
       items: { orderBy: { conceptCode: 'asc' } },
@@ -1521,7 +1624,14 @@ export async function exportLsdPayroll(tenantPrisma, periodId, company) {
     throw err;
   }
 
-  return generateLsdPayrollFile({ company, period, paySlips });
+  const payrollSettings = await getPayrollSettings(tenantPrisma);
+
+  return generateLsdPayrollFile({
+    company: companyProfile,
+    period,
+    paySlips,
+    payrollSettings,
+  });
 }
 
 export async function validateLsd(tenantPrisma, periodId) {
@@ -1531,13 +1641,34 @@ export async function validateLsd(tenantPrisma, periodId) {
   const paySlips = await tenantPrisma.paySlip.findMany({
     where: { payrollPeriodId: periodId, deletedAt: null },
     include: {
-      employee: true,
+      employee: {
+        include: {
+          department: true,
+          jobPosition: true,
+          healthInsurance: true,
+          salaryScale: true,
+          relatives: { where: { deletedAt: null }, include: { kinship: true } },
+        },
+      },
       items: true,
       basis: true,
     },
+    orderBy: { employee: { fileNumber: 'asc' } },
   });
 
-  return validateLsdConsistency({ paySlips });
+  const payrollSettings = await getPayrollSettings(tenantPrisma);
+  const companyProfile = await tenantPrisma.companyProfile.findFirst({ where: { deletedAt: null } });
+
+  const settlements = await tenantPrisma.payrollPeriod.findMany({
+    where: { year: period.year, month: period.month },
+  });
+
+  return validateLsdConsistency({
+    paySlips,
+    payrollSettings,
+    company: companyProfile || {},
+    settlements,
+  });
 }
 
 export async function getMonthlyLsdPeriods(tenantPrisma) {
@@ -1743,6 +1874,7 @@ export async function validateMonthlyLsd(tenantPrisma, year, month) {
           jobPosition: true,
           healthInsurance: true,
           salaryScale: true,
+          relatives: { where: { deletedAt: null }, include: { kinship: true } },
         },
       },
       items: true,
@@ -1752,6 +1884,7 @@ export async function validateMonthlyLsd(tenantPrisma, year, month) {
   });
 
   const payrollSettings = await getPayrollSettings(tenantPrisma);
+  const companyProfile = await tenantPrisma.companyProfile.findFirst({ where: { deletedAt: null } });
 
   return validateMonthlyLsdConsistency({
     year: numYear,
@@ -1759,6 +1892,7 @@ export async function validateMonthlyLsd(tenantPrisma, year, month) {
     settlements,
     paySlips,
     payrollSettings,
+    company: companyProfile || {},
   });
 }
 

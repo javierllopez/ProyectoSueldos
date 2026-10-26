@@ -191,6 +191,14 @@ function formatNumber(val, decimals = 2) {
 }
 if (typeof window !== 'undefined') window.formatNumber = formatNumber;
 
+// Formateador de moneda en pesos argentinos: $ 1.234,56
+function formatCurrency(val) {
+  const num = Number(val !== undefined && val !== null ? val : 0);
+  if (isNaN(num)) return '$ 0,00';
+  return '$ ' + formatNumber(num, 2);
+}
+if (typeof window !== 'undefined') window.formatCurrency = formatCurrency;
+
 // Sanitizador seguro para interpolación en templates HTML
 function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -615,6 +623,7 @@ export {
   getCbuBankName,
   isValidCbu,
   formatNumber,
+  formatCurrency,
   escapeHtml,
   getBootstrapModal,
   isValidTimeFormat,

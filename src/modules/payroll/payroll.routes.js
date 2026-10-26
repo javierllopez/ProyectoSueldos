@@ -116,6 +116,7 @@ router.post(
 
 // --- Recibos de Sueldo ---
 router.get('/periods/:periodId/slips', payrollController.getPaySlips);
+router.get('/periods/:periodId/slips-batch-print', payrollController.getBatchPaySlipsForPrint);
 router.get('/slips/:slipId', payrollController.getPaySlipDetail);
 router.patch(
   '/slips/:slipId/worked-days',
