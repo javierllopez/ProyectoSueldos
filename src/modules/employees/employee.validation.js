@@ -89,6 +89,13 @@ export const createEmployeeSchema = z.object({
       ),
       birthDate: z.coerce.date({ required_error: 'La fecha de nacimiento es obligatoria', invalid_type_error: 'Fecha de nacimiento inválida' }),
       isAdherent: z.boolean().default(false),
+      appliesIncomeTax: z.boolean().default(false),
+      incomeTaxDeductionType: z.enum(['SPOUSE', 'CHILD', 'DISABLED_CHILD']).nullable().optional(),
+      deductionPercentage: z.coerce.number().min(0).max(100).default(100.00),
+      isDisability: z.boolean().default(false),
+      hasNoIncomeOrBelowMni: z.boolean().default(true),
+      validFromMonth: z.coerce.number().int().min(1).max(12).default(1),
+      validToMonth: z.coerce.number().int().min(1).max(12).default(12),
     })
   ).optional(),
 });
@@ -148,6 +155,13 @@ export const createRelativeSchema = z.object({
   ),
   birthDate: z.coerce.date({ required_error: 'La fecha de nacimiento es obligatoria', invalid_type_error: 'Fecha de nacimiento inválida' }),
   isAdherent: z.boolean().default(false),
+  appliesIncomeTax: z.boolean().default(false),
+  incomeTaxDeductionType: z.enum(['SPOUSE', 'CHILD', 'DISABLED_CHILD']).nullable().optional(),
+  deductionPercentage: z.coerce.number().min(0).max(100).default(100.00),
+  isDisability: z.boolean().default(false),
+  hasNoIncomeOrBelowMni: z.boolean().default(true),
+  validFromMonth: z.coerce.number().int().min(1).max(12).default(1),
+  validToMonth: z.coerce.number().int().min(1).max(12).default(12),
 });
 
 export const updateRelativeSchema = createRelativeSchema.partial();

@@ -178,6 +178,51 @@ export type EmployeeEmbargo = $Result.DefaultSelection<Prisma.$EmployeeEmbargoPa
  * 
  */
 export type EmployeeEmbargoConcept = $Result.DefaultSelection<Prisma.$EmployeeEmbargoConceptPayload>
+/**
+ * Model IncomeTaxTable
+ * 
+ */
+export type IncomeTaxTable = $Result.DefaultSelection<Prisma.$IncomeTaxTablePayload>
+/**
+ * Model IncomeTaxScale
+ * 
+ */
+export type IncomeTaxScale = $Result.DefaultSelection<Prisma.$IncomeTaxScalePayload>
+/**
+ * Model IncomeTaxGeneralDeductionLimit
+ * 
+ */
+export type IncomeTaxGeneralDeductionLimit = $Result.DefaultSelection<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+/**
+ * Model EmployeeIncomeTaxDeduction
+ * 
+ */
+export type EmployeeIncomeTaxDeduction = $Result.DefaultSelection<Prisma.$EmployeeIncomeTaxDeductionPayload>
+/**
+ * Model EmployeeOtherIncome
+ * 
+ */
+export type EmployeeOtherIncome = $Result.DefaultSelection<Prisma.$EmployeeOtherIncomePayload>
+/**
+ * Model EmployeeIncomeTaxPaymentOnAccount
+ * 
+ */
+export type EmployeeIncomeTaxPaymentOnAccount = $Result.DefaultSelection<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+/**
+ * Model SiradigImport
+ * 
+ */
+export type SiradigImport = $Result.DefaultSelection<Prisma.$SiradigImportPayload>
+/**
+ * Model IncomeTaxSettlement
+ * 
+ */
+export type IncomeTaxSettlement = $Result.DefaultSelection<Prisma.$IncomeTaxSettlementPayload>
+/**
+ * Model IncomeTaxSettlementDetail
+ * 
+ */
+export type IncomeTaxSettlementDetail = $Result.DefaultSelection<Prisma.$IncomeTaxSettlementDetailPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -626,6 +671,96 @@ export class PrismaClient<
     * ```
     */
   get employeeEmbargoConcept(): Prisma.EmployeeEmbargoConceptDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incomeTaxTable`: Exposes CRUD operations for the **IncomeTaxTable** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncomeTaxTables
+    * const incomeTaxTables = await prisma.incomeTaxTable.findMany()
+    * ```
+    */
+  get incomeTaxTable(): Prisma.IncomeTaxTableDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incomeTaxScale`: Exposes CRUD operations for the **IncomeTaxScale** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncomeTaxScales
+    * const incomeTaxScales = await prisma.incomeTaxScale.findMany()
+    * ```
+    */
+  get incomeTaxScale(): Prisma.IncomeTaxScaleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incomeTaxGeneralDeductionLimit`: Exposes CRUD operations for the **IncomeTaxGeneralDeductionLimit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncomeTaxGeneralDeductionLimits
+    * const incomeTaxGeneralDeductionLimits = await prisma.incomeTaxGeneralDeductionLimit.findMany()
+    * ```
+    */
+  get incomeTaxGeneralDeductionLimit(): Prisma.IncomeTaxGeneralDeductionLimitDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeIncomeTaxDeduction`: Exposes CRUD operations for the **EmployeeIncomeTaxDeduction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeIncomeTaxDeductions
+    * const employeeIncomeTaxDeductions = await prisma.employeeIncomeTaxDeduction.findMany()
+    * ```
+    */
+  get employeeIncomeTaxDeduction(): Prisma.EmployeeIncomeTaxDeductionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeOtherIncome`: Exposes CRUD operations for the **EmployeeOtherIncome** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeOtherIncomes
+    * const employeeOtherIncomes = await prisma.employeeOtherIncome.findMany()
+    * ```
+    */
+  get employeeOtherIncome(): Prisma.EmployeeOtherIncomeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeIncomeTaxPaymentOnAccount`: Exposes CRUD operations for the **EmployeeIncomeTaxPaymentOnAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeIncomeTaxPaymentOnAccounts
+    * const employeeIncomeTaxPaymentOnAccounts = await prisma.employeeIncomeTaxPaymentOnAccount.findMany()
+    * ```
+    */
+  get employeeIncomeTaxPaymentOnAccount(): Prisma.EmployeeIncomeTaxPaymentOnAccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.siradigImport`: Exposes CRUD operations for the **SiradigImport** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SiradigImports
+    * const siradigImports = await prisma.siradigImport.findMany()
+    * ```
+    */
+  get siradigImport(): Prisma.SiradigImportDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incomeTaxSettlement`: Exposes CRUD operations for the **IncomeTaxSettlement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncomeTaxSettlements
+    * const incomeTaxSettlements = await prisma.incomeTaxSettlement.findMany()
+    * ```
+    */
+  get incomeTaxSettlement(): Prisma.IncomeTaxSettlementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incomeTaxSettlementDetail`: Exposes CRUD operations for the **IncomeTaxSettlementDetail** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncomeTaxSettlementDetails
+    * const incomeTaxSettlementDetails = await prisma.incomeTaxSettlementDetail.findMany()
+    * ```
+    */
+  get incomeTaxSettlementDetail(): Prisma.IncomeTaxSettlementDetailDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1099,7 +1234,16 @@ export namespace Prisma {
     PayrollSetting: 'PayrollSetting',
     PeriodNovelty: 'PeriodNovelty',
     EmployeeEmbargo: 'EmployeeEmbargo',
-    EmployeeEmbargoConcept: 'EmployeeEmbargoConcept'
+    EmployeeEmbargoConcept: 'EmployeeEmbargoConcept',
+    IncomeTaxTable: 'IncomeTaxTable',
+    IncomeTaxScale: 'IncomeTaxScale',
+    IncomeTaxGeneralDeductionLimit: 'IncomeTaxGeneralDeductionLimit',
+    EmployeeIncomeTaxDeduction: 'EmployeeIncomeTaxDeduction',
+    EmployeeOtherIncome: 'EmployeeOtherIncome',
+    EmployeeIncomeTaxPaymentOnAccount: 'EmployeeIncomeTaxPaymentOnAccount',
+    SiradigImport: 'SiradigImport',
+    IncomeTaxSettlement: 'IncomeTaxSettlement',
+    IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1118,7 +1262,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3300,6 +3444,600 @@ export namespace Prisma {
           }
         }
       }
+      IncomeTaxTable: {
+        payload: Prisma.$IncomeTaxTablePayload<ExtArgs>
+        fields: Prisma.IncomeTaxTableFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeTaxTableFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeTaxTableFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeTaxTableFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeTaxTableFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          findMany: {
+            args: Prisma.IncomeTaxTableFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>[]
+          }
+          create: {
+            args: Prisma.IncomeTaxTableCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          createMany: {
+            args: Prisma.IncomeTaxTableCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncomeTaxTableDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          update: {
+            args: Prisma.IncomeTaxTableUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeTaxTableDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeTaxTableUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncomeTaxTableUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxTablePayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeTaxTableAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncomeTaxTable>
+          }
+          groupBy: {
+            args: Prisma.IncomeTaxTableGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxTableGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeTaxTableCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxTableCountAggregateOutputType> | number
+          }
+        }
+      }
+      IncomeTaxScale: {
+        payload: Prisma.$IncomeTaxScalePayload<ExtArgs>
+        fields: Prisma.IncomeTaxScaleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeTaxScaleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeTaxScaleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeTaxScaleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeTaxScaleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          findMany: {
+            args: Prisma.IncomeTaxScaleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>[]
+          }
+          create: {
+            args: Prisma.IncomeTaxScaleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          createMany: {
+            args: Prisma.IncomeTaxScaleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncomeTaxScaleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          update: {
+            args: Prisma.IncomeTaxScaleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeTaxScaleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeTaxScaleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncomeTaxScaleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxScalePayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeTaxScaleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncomeTaxScale>
+          }
+          groupBy: {
+            args: Prisma.IncomeTaxScaleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxScaleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeTaxScaleCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxScaleCountAggregateOutputType> | number
+          }
+        }
+      }
+      IncomeTaxGeneralDeductionLimit: {
+        payload: Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>
+        fields: Prisma.IncomeTaxGeneralDeductionLimitFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          findMany: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>[]
+          }
+          create: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          createMany: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          update: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncomeTaxGeneralDeductionLimit>
+          }
+          groupBy: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxGeneralDeductionLimitGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeTaxGeneralDeductionLimitCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxGeneralDeductionLimitCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeIncomeTaxDeduction: {
+        payload: Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>
+        fields: Prisma.EmployeeIncomeTaxDeductionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeIncomeTaxDeductionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeIncomeTaxDeductionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeIncomeTaxDeductionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeIncomeTaxDeductionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeIncomeTaxDeductionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeIncomeTaxDeductionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeIncomeTaxDeductionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeIncomeTaxDeductionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          update: {
+            args: Prisma.EmployeeIncomeTaxDeductionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeIncomeTaxDeductionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeIncomeTaxDeductionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeIncomeTaxDeductionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxDeductionPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeIncomeTaxDeductionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeIncomeTaxDeduction>
+          }
+          groupBy: {
+            args: Prisma.EmployeeIncomeTaxDeductionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncomeTaxDeductionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeIncomeTaxDeductionCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncomeTaxDeductionCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeOtherIncome: {
+        payload: Prisma.$EmployeeOtherIncomePayload<ExtArgs>
+        fields: Prisma.EmployeeOtherIncomeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeOtherIncomeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeOtherIncomeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeOtherIncomeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeOtherIncomeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeOtherIncomeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeOtherIncomeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeOtherIncomeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeOtherIncomeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          update: {
+            args: Prisma.EmployeeOtherIncomeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeOtherIncomeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeOtherIncomeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeOtherIncomeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeOtherIncomePayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeOtherIncomeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeOtherIncome>
+          }
+          groupBy: {
+            args: Prisma.EmployeeOtherIncomeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeOtherIncomeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeOtherIncomeCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeOtherIncomeCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeIncomeTaxPaymentOnAccount: {
+        payload: Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>
+        fields: Prisma.EmployeeIncomeTaxPaymentOnAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          update: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeIncomeTaxPaymentOnAccount>
+          }
+          groupBy: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncomeTaxPaymentOnAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeIncomeTaxPaymentOnAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncomeTaxPaymentOnAccountCountAggregateOutputType> | number
+          }
+        }
+      }
+      SiradigImport: {
+        payload: Prisma.$SiradigImportPayload<ExtArgs>
+        fields: Prisma.SiradigImportFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SiradigImportFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SiradigImportFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          findFirst: {
+            args: Prisma.SiradigImportFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SiradigImportFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          findMany: {
+            args: Prisma.SiradigImportFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>[]
+          }
+          create: {
+            args: Prisma.SiradigImportCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          createMany: {
+            args: Prisma.SiradigImportCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SiradigImportDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          update: {
+            args: Prisma.SiradigImportUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          deleteMany: {
+            args: Prisma.SiradigImportDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SiradigImportUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SiradigImportUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SiradigImportPayload>
+          }
+          aggregate: {
+            args: Prisma.SiradigImportAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSiradigImport>
+          }
+          groupBy: {
+            args: Prisma.SiradigImportGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SiradigImportGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SiradigImportCountArgs<ExtArgs>
+            result: $Utils.Optional<SiradigImportCountAggregateOutputType> | number
+          }
+        }
+      }
+      IncomeTaxSettlement: {
+        payload: Prisma.$IncomeTaxSettlementPayload<ExtArgs>
+        fields: Prisma.IncomeTaxSettlementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeTaxSettlementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeTaxSettlementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeTaxSettlementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeTaxSettlementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          findMany: {
+            args: Prisma.IncomeTaxSettlementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>[]
+          }
+          create: {
+            args: Prisma.IncomeTaxSettlementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          createMany: {
+            args: Prisma.IncomeTaxSettlementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncomeTaxSettlementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          update: {
+            args: Prisma.IncomeTaxSettlementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeTaxSettlementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeTaxSettlementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncomeTaxSettlementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementPayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeTaxSettlementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncomeTaxSettlement>
+          }
+          groupBy: {
+            args: Prisma.IncomeTaxSettlementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxSettlementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeTaxSettlementCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxSettlementCountAggregateOutputType> | number
+          }
+        }
+      }
+      IncomeTaxSettlementDetail: {
+        payload: Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>
+        fields: Prisma.IncomeTaxSettlementDetailFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncomeTaxSettlementDetailFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncomeTaxSettlementDetailFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          findFirst: {
+            args: Prisma.IncomeTaxSettlementDetailFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncomeTaxSettlementDetailFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          findMany: {
+            args: Prisma.IncomeTaxSettlementDetailFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>[]
+          }
+          create: {
+            args: Prisma.IncomeTaxSettlementDetailCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          createMany: {
+            args: Prisma.IncomeTaxSettlementDetailCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncomeTaxSettlementDetailDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          update: {
+            args: Prisma.IncomeTaxSettlementDetailUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          deleteMany: {
+            args: Prisma.IncomeTaxSettlementDetailDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncomeTaxSettlementDetailUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncomeTaxSettlementDetailUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncomeTaxSettlementDetailPayload>
+          }
+          aggregate: {
+            args: Prisma.IncomeTaxSettlementDetailAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncomeTaxSettlementDetail>
+          }
+          groupBy: {
+            args: Prisma.IncomeTaxSettlementDetailGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxSettlementDetailGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncomeTaxSettlementDetailCountArgs<ExtArgs>
+            result: $Utils.Optional<IncomeTaxSettlementDetailCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -3429,6 +4167,15 @@ export namespace Prisma {
     periodNovelty?: PeriodNoveltyOmit
     employeeEmbargo?: EmployeeEmbargoOmit
     employeeEmbargoConcept?: EmployeeEmbargoConceptOmit
+    incomeTaxTable?: IncomeTaxTableOmit
+    incomeTaxScale?: IncomeTaxScaleOmit
+    incomeTaxGeneralDeductionLimit?: IncomeTaxGeneralDeductionLimitOmit
+    employeeIncomeTaxDeduction?: EmployeeIncomeTaxDeductionOmit
+    employeeOtherIncome?: EmployeeOtherIncomeOmit
+    employeeIncomeTaxPaymentOnAccount?: EmployeeIncomeTaxPaymentOnAccountOmit
+    siradigImport?: SiradigImportOmit
+    incomeTaxSettlement?: IncomeTaxSettlementOmit
+    incomeTaxSettlementDetail?: IncomeTaxSettlementDetailOmit
   }
 
   /* Types for Logging */
@@ -3882,6 +4629,10 @@ export namespace Prisma {
     assignedConcepts: number
     periodNovelties: number
     embargoes: number
+    incomeTaxDeductions: number
+    otherIncomes: number
+    incomeTaxPaymentsOnAccount: number
+    incomeTaxSettlementDetails: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3890,6 +4641,10 @@ export namespace Prisma {
     assignedConcepts?: boolean | EmployeeCountOutputTypeCountAssignedConceptsArgs
     periodNovelties?: boolean | EmployeeCountOutputTypeCountPeriodNoveltiesArgs
     embargoes?: boolean | EmployeeCountOutputTypeCountEmbargoesArgs
+    incomeTaxDeductions?: boolean | EmployeeCountOutputTypeCountIncomeTaxDeductionsArgs
+    otherIncomes?: boolean | EmployeeCountOutputTypeCountOtherIncomesArgs
+    incomeTaxPaymentsOnAccount?: boolean | EmployeeCountOutputTypeCountIncomeTaxPaymentsOnAccountArgs
+    incomeTaxSettlementDetails?: boolean | EmployeeCountOutputTypeCountIncomeTaxSettlementDetailsArgs
   }
 
   // Custom InputTypes
@@ -3936,6 +4691,34 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountEmbargoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeEmbargoWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountIncomeTaxDeductionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncomeTaxDeductionWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountOtherIncomesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeOtherIncomeWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountIncomeTaxPaymentsOnAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountIncomeTaxSettlementDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxSettlementDetailWhereInput
   }
 
 
@@ -4247,6 +5030,37 @@ export namespace Prisma {
    */
   export type EmployeeEmbargoCountOutputTypeCountConceptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeEmbargoConceptWhereInput
+  }
+
+
+  /**
+   * Count Type IncomeTaxSettlementCountOutputType
+   */
+
+  export type IncomeTaxSettlementCountOutputType = {
+    details: number
+  }
+
+  export type IncomeTaxSettlementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | IncomeTaxSettlementCountOutputTypeCountDetailsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxSettlementCountOutputType without action
+   */
+  export type IncomeTaxSettlementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementCountOutputType
+     */
+    select?: IncomeTaxSettlementCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * IncomeTaxSettlementCountOutputType without action
+   */
+  export type IncomeTaxSettlementCountOutputTypeCountDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxSettlementDetailWhereInput
   }
 
 
@@ -20739,6 +21553,10 @@ export namespace Prisma {
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
     periodNovelties?: boolean | Employee$periodNoveltiesArgs<ExtArgs>
     embargoes?: boolean | Employee$embargoesArgs<ExtArgs>
+    incomeTaxDeductions?: boolean | Employee$incomeTaxDeductionsArgs<ExtArgs>
+    otherIncomes?: boolean | Employee$otherIncomesArgs<ExtArgs>
+    incomeTaxPaymentsOnAccount?: boolean | Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>
+    incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -20805,6 +21623,10 @@ export namespace Prisma {
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
     periodNovelties?: boolean | Employee$periodNoveltiesArgs<ExtArgs>
     embargoes?: boolean | Employee$embargoesArgs<ExtArgs>
+    incomeTaxDeductions?: boolean | Employee$incomeTaxDeductionsArgs<ExtArgs>
+    otherIncomes?: boolean | Employee$otherIncomesArgs<ExtArgs>
+    incomeTaxPaymentsOnAccount?: boolean | Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>
+    incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -20824,6 +21646,10 @@ export namespace Prisma {
       assignedConcepts: Prisma.$EmployeeConceptPayload<ExtArgs>[]
       periodNovelties: Prisma.$PeriodNoveltyPayload<ExtArgs>[]
       embargoes: Prisma.$EmployeeEmbargoPayload<ExtArgs>[]
+      incomeTaxDeductions: Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>[]
+      otherIncomes: Prisma.$EmployeeOtherIncomePayload<ExtArgs>[]
+      incomeTaxPaymentsOnAccount: Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>[]
+      incomeTaxSettlementDetails: Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21222,6 +22048,10 @@ export namespace Prisma {
     assignedConcepts<T extends Employee$assignedConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$assignedConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periodNovelties<T extends Employee$periodNoveltiesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$periodNoveltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PeriodNoveltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     embargoes<T extends Employee$embargoesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$embargoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeEmbargoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incomeTaxDeductions<T extends Employee$incomeTaxDeductionsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxDeductionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    otherIncomes<T extends Employee$otherIncomesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$otherIncomesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incomeTaxPaymentsOnAccount<T extends Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incomeTaxSettlementDetails<T extends Employee$incomeTaxSettlementDetailsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxSettlementDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21906,6 +22736,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EmployeeEmbargoScalarFieldEnum | EmployeeEmbargoScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.incomeTaxDeductions
+   */
+  export type Employee$incomeTaxDeductionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithRelationInput | EmployeeIncomeTaxDeductionOrderByWithRelationInput[]
+    cursor?: EmployeeIncomeTaxDeductionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeIncomeTaxDeductionScalarFieldEnum | EmployeeIncomeTaxDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.otherIncomes
+   */
+  export type Employee$otherIncomesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    where?: EmployeeOtherIncomeWhereInput
+    orderBy?: EmployeeOtherIncomeOrderByWithRelationInput | EmployeeOtherIncomeOrderByWithRelationInput[]
+    cursor?: EmployeeOtherIncomeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeOtherIncomeScalarFieldEnum | EmployeeOtherIncomeScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.incomeTaxPaymentsOnAccount
+   */
+  export type Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput[]
+    cursor?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum | EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.incomeTaxSettlementDetails
+   */
+  export type Employee$incomeTaxSettlementDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    where?: IncomeTaxSettlementDetailWhereInput
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncomeTaxSettlementDetailScalarFieldEnum | IncomeTaxSettlementDetailScalarFieldEnum[]
   }
 
   /**
@@ -23943,8 +24869,22 @@ export namespace Prisma {
 
   export type AggregateEmployeeRelative = {
     _count: EmployeeRelativeCountAggregateOutputType | null
+    _avg: EmployeeRelativeAvgAggregateOutputType | null
+    _sum: EmployeeRelativeSumAggregateOutputType | null
     _min: EmployeeRelativeMinAggregateOutputType | null
     _max: EmployeeRelativeMaxAggregateOutputType | null
+  }
+
+  export type EmployeeRelativeAvgAggregateOutputType = {
+    deductionPercentage: Decimal | null
+    validFromMonth: number | null
+    validToMonth: number | null
+  }
+
+  export type EmployeeRelativeSumAggregateOutputType = {
+    deductionPercentage: Decimal | null
+    validFromMonth: number | null
+    validToMonth: number | null
   }
 
   export type EmployeeRelativeMinAggregateOutputType = {
@@ -23958,6 +24898,13 @@ export namespace Prisma {
     cuil: string | null
     birthDate: Date | null
     isAdherent: boolean | null
+    appliesIncomeTax: boolean | null
+    incomeTaxDeductionType: string | null
+    deductionPercentage: Decimal | null
+    isDisability: boolean | null
+    hasNoIncomeOrBelowMni: boolean | null
+    validFromMonth: number | null
+    validToMonth: number | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -23974,6 +24921,13 @@ export namespace Prisma {
     cuil: string | null
     birthDate: Date | null
     isAdherent: boolean | null
+    appliesIncomeTax: boolean | null
+    incomeTaxDeductionType: string | null
+    deductionPercentage: Decimal | null
+    isDisability: boolean | null
+    hasNoIncomeOrBelowMni: boolean | null
+    validFromMonth: number | null
+    validToMonth: number | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -23990,12 +24944,31 @@ export namespace Prisma {
     cuil: number
     birthDate: number
     isAdherent: number
+    appliesIncomeTax: number
+    incomeTaxDeductionType: number
+    deductionPercentage: number
+    isDisability: number
+    hasNoIncomeOrBelowMni: number
+    validFromMonth: number
+    validToMonth: number
     createdAt: number
     updatedAt: number
     deletedAt: number
     _all: number
   }
 
+
+  export type EmployeeRelativeAvgAggregateInputType = {
+    deductionPercentage?: true
+    validFromMonth?: true
+    validToMonth?: true
+  }
+
+  export type EmployeeRelativeSumAggregateInputType = {
+    deductionPercentage?: true
+    validFromMonth?: true
+    validToMonth?: true
+  }
 
   export type EmployeeRelativeMinAggregateInputType = {
     id?: true
@@ -24008,6 +24981,13 @@ export namespace Prisma {
     cuil?: true
     birthDate?: true
     isAdherent?: true
+    appliesIncomeTax?: true
+    incomeTaxDeductionType?: true
+    deductionPercentage?: true
+    isDisability?: true
+    hasNoIncomeOrBelowMni?: true
+    validFromMonth?: true
+    validToMonth?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -24024,6 +25004,13 @@ export namespace Prisma {
     cuil?: true
     birthDate?: true
     isAdherent?: true
+    appliesIncomeTax?: true
+    incomeTaxDeductionType?: true
+    deductionPercentage?: true
+    isDisability?: true
+    hasNoIncomeOrBelowMni?: true
+    validFromMonth?: true
+    validToMonth?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -24040,6 +25027,13 @@ export namespace Prisma {
     cuil?: true
     birthDate?: true
     isAdherent?: true
+    appliesIncomeTax?: true
+    incomeTaxDeductionType?: true
+    deductionPercentage?: true
+    isDisability?: true
+    hasNoIncomeOrBelowMni?: true
+    validFromMonth?: true
+    validToMonth?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -24084,6 +25078,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeRelativeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeRelativeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: EmployeeRelativeMinAggregateInputType
@@ -24114,6 +25120,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: EmployeeRelativeCountAggregateInputType | true
+    _avg?: EmployeeRelativeAvgAggregateInputType
+    _sum?: EmployeeRelativeSumAggregateInputType
     _min?: EmployeeRelativeMinAggregateInputType
     _max?: EmployeeRelativeMaxAggregateInputType
   }
@@ -24129,10 +25137,19 @@ export namespace Prisma {
     cuil: string | null
     birthDate: Date
     isAdherent: boolean
+    appliesIncomeTax: boolean
+    incomeTaxDeductionType: string | null
+    deductionPercentage: Decimal
+    isDisability: boolean
+    hasNoIncomeOrBelowMni: boolean
+    validFromMonth: number | null
+    validToMonth: number | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
     _count: EmployeeRelativeCountAggregateOutputType | null
+    _avg: EmployeeRelativeAvgAggregateOutputType | null
+    _sum: EmployeeRelativeSumAggregateOutputType | null
     _min: EmployeeRelativeMinAggregateOutputType | null
     _max: EmployeeRelativeMaxAggregateOutputType | null
   }
@@ -24162,6 +25179,13 @@ export namespace Prisma {
     cuil?: boolean
     birthDate?: boolean
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: boolean
+    deductionPercentage?: boolean
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: boolean
+    validToMonth?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -24182,12 +25206,19 @@ export namespace Prisma {
     cuil?: boolean
     birthDate?: boolean
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: boolean
+    deductionPercentage?: boolean
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: boolean
+    validToMonth?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type EmployeeRelativeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "kinshipId" | "lastName" | "firstName" | "documentType" | "documentNumber" | "cuil" | "birthDate" | "isAdherent" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeRelative"]>
+  export type EmployeeRelativeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "kinshipId" | "lastName" | "firstName" | "documentType" | "documentNumber" | "cuil" | "birthDate" | "isAdherent" | "appliesIncomeTax" | "incomeTaxDeductionType" | "deductionPercentage" | "isDisability" | "hasNoIncomeOrBelowMni" | "validFromMonth" | "validToMonth" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeRelative"]>
   export type EmployeeRelativeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
     kinship?: boolean | KinshipDefaultArgs<ExtArgs>
@@ -24210,6 +25241,13 @@ export namespace Prisma {
       cuil: string | null
       birthDate: Date
       isAdherent: boolean
+      appliesIncomeTax: boolean
+      incomeTaxDeductionType: string | null
+      deductionPercentage: Prisma.Decimal
+      isDisability: boolean
+      hasNoIncomeOrBelowMni: boolean
+      validFromMonth: number | null
+      validToMonth: number | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -24594,6 +25632,13 @@ export namespace Prisma {
     readonly cuil: FieldRef<"EmployeeRelative", 'String'>
     readonly birthDate: FieldRef<"EmployeeRelative", 'DateTime'>
     readonly isAdherent: FieldRef<"EmployeeRelative", 'Boolean'>
+    readonly appliesIncomeTax: FieldRef<"EmployeeRelative", 'Boolean'>
+    readonly incomeTaxDeductionType: FieldRef<"EmployeeRelative", 'String'>
+    readonly deductionPercentage: FieldRef<"EmployeeRelative", 'Decimal'>
+    readonly isDisability: FieldRef<"EmployeeRelative", 'Boolean'>
+    readonly hasNoIncomeOrBelowMni: FieldRef<"EmployeeRelative", 'Boolean'>
+    readonly validFromMonth: FieldRef<"EmployeeRelative", 'Int'>
+    readonly validToMonth: FieldRef<"EmployeeRelative", 'Int'>
     readonly createdAt: FieldRef<"EmployeeRelative", 'DateTime'>
     readonly updatedAt: FieldRef<"EmployeeRelative", 'DateTime'>
     readonly deletedAt: FieldRef<"EmployeeRelative", 'DateTime'>
@@ -39829,6 +40874,9538 @@ export namespace Prisma {
 
 
   /**
+   * Model IncomeTaxTable
+   */
+
+  export type AggregateIncomeTaxTable = {
+    _count: IncomeTaxTableCountAggregateOutputType | null
+    _avg: IncomeTaxTableAvgAggregateOutputType | null
+    _sum: IncomeTaxTableSumAggregateOutputType | null
+    _min: IncomeTaxTableMinAggregateOutputType | null
+    _max: IncomeTaxTableMaxAggregateOutputType | null
+  }
+
+  export type IncomeTaxTableAvgAggregateOutputType = {
+    year: number | null
+    semester: number | null
+    month: number | null
+    nonTaxableMinimum: Decimal | null
+    specialDeduction: Decimal | null
+    spouseDeduction: Decimal | null
+    childDeduction: Decimal | null
+    disabledChildDeduction: Decimal | null
+    specialDeductionNewProf: Decimal | null
+  }
+
+  export type IncomeTaxTableSumAggregateOutputType = {
+    year: number | null
+    semester: number | null
+    month: number | null
+    nonTaxableMinimum: Decimal | null
+    specialDeduction: Decimal | null
+    spouseDeduction: Decimal | null
+    childDeduction: Decimal | null
+    disabledChildDeduction: Decimal | null
+    specialDeductionNewProf: Decimal | null
+  }
+
+  export type IncomeTaxTableMinAggregateOutputType = {
+    id: string | null
+    year: number | null
+    semester: number | null
+    month: number | null
+    description: string | null
+    nonTaxableMinimum: Decimal | null
+    specialDeduction: Decimal | null
+    spouseDeduction: Decimal | null
+    childDeduction: Decimal | null
+    disabledChildDeduction: Decimal | null
+    specialDeductionNewProf: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxTableMaxAggregateOutputType = {
+    id: string | null
+    year: number | null
+    semester: number | null
+    month: number | null
+    description: string | null
+    nonTaxableMinimum: Decimal | null
+    specialDeduction: Decimal | null
+    spouseDeduction: Decimal | null
+    childDeduction: Decimal | null
+    disabledChildDeduction: Decimal | null
+    specialDeductionNewProf: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxTableCountAggregateOutputType = {
+    id: number
+    year: number
+    semester: number
+    month: number
+    description: number
+    nonTaxableMinimum: number
+    specialDeduction: number
+    spouseDeduction: number
+    childDeduction: number
+    disabledChildDeduction: number
+    specialDeductionNewProf: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IncomeTaxTableAvgAggregateInputType = {
+    year?: true
+    semester?: true
+    month?: true
+    nonTaxableMinimum?: true
+    specialDeduction?: true
+    spouseDeduction?: true
+    childDeduction?: true
+    disabledChildDeduction?: true
+    specialDeductionNewProf?: true
+  }
+
+  export type IncomeTaxTableSumAggregateInputType = {
+    year?: true
+    semester?: true
+    month?: true
+    nonTaxableMinimum?: true
+    specialDeduction?: true
+    spouseDeduction?: true
+    childDeduction?: true
+    disabledChildDeduction?: true
+    specialDeductionNewProf?: true
+  }
+
+  export type IncomeTaxTableMinAggregateInputType = {
+    id?: true
+    year?: true
+    semester?: true
+    month?: true
+    description?: true
+    nonTaxableMinimum?: true
+    specialDeduction?: true
+    spouseDeduction?: true
+    childDeduction?: true
+    disabledChildDeduction?: true
+    specialDeductionNewProf?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxTableMaxAggregateInputType = {
+    id?: true
+    year?: true
+    semester?: true
+    month?: true
+    description?: true
+    nonTaxableMinimum?: true
+    specialDeduction?: true
+    spouseDeduction?: true
+    childDeduction?: true
+    disabledChildDeduction?: true
+    specialDeductionNewProf?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxTableCountAggregateInputType = {
+    id?: true
+    year?: true
+    semester?: true
+    month?: true
+    description?: true
+    nonTaxableMinimum?: true
+    specialDeduction?: true
+    spouseDeduction?: true
+    childDeduction?: true
+    disabledChildDeduction?: true
+    specialDeductionNewProf?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IncomeTaxTableAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxTable to aggregate.
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxTables to fetch.
+     */
+    orderBy?: IncomeTaxTableOrderByWithRelationInput | IncomeTaxTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeTaxTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncomeTaxTables
+    **/
+    _count?: true | IncomeTaxTableCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeTaxTableAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeTaxTableSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeTaxTableMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeTaxTableMaxAggregateInputType
+  }
+
+  export type GetIncomeTaxTableAggregateType<T extends IncomeTaxTableAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncomeTaxTable]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncomeTaxTable[P]>
+      : GetScalarType<T[P], AggregateIncomeTaxTable[P]>
+  }
+
+
+
+
+  export type IncomeTaxTableGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxTableWhereInput
+    orderBy?: IncomeTaxTableOrderByWithAggregationInput | IncomeTaxTableOrderByWithAggregationInput[]
+    by: IncomeTaxTableScalarFieldEnum[] | IncomeTaxTableScalarFieldEnum
+    having?: IncomeTaxTableScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeTaxTableCountAggregateInputType | true
+    _avg?: IncomeTaxTableAvgAggregateInputType
+    _sum?: IncomeTaxTableSumAggregateInputType
+    _min?: IncomeTaxTableMinAggregateInputType
+    _max?: IncomeTaxTableMaxAggregateInputType
+  }
+
+  export type IncomeTaxTableGroupByOutputType = {
+    id: string
+    year: number
+    semester: number | null
+    month: number
+    description: string | null
+    nonTaxableMinimum: Decimal
+    specialDeduction: Decimal
+    spouseDeduction: Decimal
+    childDeduction: Decimal
+    disabledChildDeduction: Decimal
+    specialDeductionNewProf: Decimal | null
+    createdAt: Date
+    updatedAt: Date
+    _count: IncomeTaxTableCountAggregateOutputType | null
+    _avg: IncomeTaxTableAvgAggregateOutputType | null
+    _sum: IncomeTaxTableSumAggregateOutputType | null
+    _min: IncomeTaxTableMinAggregateOutputType | null
+    _max: IncomeTaxTableMaxAggregateOutputType | null
+  }
+
+  type GetIncomeTaxTableGroupByPayload<T extends IncomeTaxTableGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeTaxTableGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeTaxTableGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeTaxTableGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeTaxTableGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeTaxTableSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    semester?: boolean
+    month?: boolean
+    description?: boolean
+    nonTaxableMinimum?: boolean
+    specialDeduction?: boolean
+    spouseDeduction?: boolean
+    childDeduction?: boolean
+    disabledChildDeduction?: boolean
+    specialDeductionNewProf?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["incomeTaxTable"]>
+
+
+
+  export type IncomeTaxTableSelectScalar = {
+    id?: boolean
+    year?: boolean
+    semester?: boolean
+    month?: boolean
+    description?: boolean
+    nonTaxableMinimum?: boolean
+    specialDeduction?: boolean
+    spouseDeduction?: boolean
+    childDeduction?: boolean
+    disabledChildDeduction?: boolean
+    specialDeductionNewProf?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IncomeTaxTableOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "semester" | "month" | "description" | "nonTaxableMinimum" | "specialDeduction" | "spouseDeduction" | "childDeduction" | "disabledChildDeduction" | "specialDeductionNewProf" | "createdAt" | "updatedAt", ExtArgs["result"]["incomeTaxTable"]>
+
+  export type $IncomeTaxTablePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncomeTaxTable"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      year: number
+      semester: number | null
+      month: number
+      description: string | null
+      nonTaxableMinimum: Prisma.Decimal
+      specialDeduction: Prisma.Decimal
+      spouseDeduction: Prisma.Decimal
+      childDeduction: Prisma.Decimal
+      disabledChildDeduction: Prisma.Decimal
+      specialDeductionNewProf: Prisma.Decimal | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["incomeTaxTable"]>
+    composites: {}
+  }
+
+  type IncomeTaxTableGetPayload<S extends boolean | null | undefined | IncomeTaxTableDefaultArgs> = $Result.GetResult<Prisma.$IncomeTaxTablePayload, S>
+
+  type IncomeTaxTableCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeTaxTableFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeTaxTableCountAggregateInputType | true
+    }
+
+  export interface IncomeTaxTableDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncomeTaxTable'], meta: { name: 'IncomeTaxTable' } }
+    /**
+     * Find zero or one IncomeTaxTable that matches the filter.
+     * @param {IncomeTaxTableFindUniqueArgs} args - Arguments to find a IncomeTaxTable
+     * @example
+     * // Get one IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeTaxTableFindUniqueArgs>(args: SelectSubset<T, IncomeTaxTableFindUniqueArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncomeTaxTable that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeTaxTableFindUniqueOrThrowArgs} args - Arguments to find a IncomeTaxTable
+     * @example
+     * // Get one IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeTaxTableFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeTaxTableFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxTable that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableFindFirstArgs} args - Arguments to find a IncomeTaxTable
+     * @example
+     * // Get one IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeTaxTableFindFirstArgs>(args?: SelectSubset<T, IncomeTaxTableFindFirstArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxTable that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableFindFirstOrThrowArgs} args - Arguments to find a IncomeTaxTable
+     * @example
+     * // Get one IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeTaxTableFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeTaxTableFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncomeTaxTables that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncomeTaxTables
+     * const incomeTaxTables = await prisma.incomeTaxTable.findMany()
+     * 
+     * // Get first 10 IncomeTaxTables
+     * const incomeTaxTables = await prisma.incomeTaxTable.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeTaxTableWithIdOnly = await prisma.incomeTaxTable.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeTaxTableFindManyArgs>(args?: SelectSubset<T, IncomeTaxTableFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncomeTaxTable.
+     * @param {IncomeTaxTableCreateArgs} args - Arguments to create a IncomeTaxTable.
+     * @example
+     * // Create one IncomeTaxTable
+     * const IncomeTaxTable = await prisma.incomeTaxTable.create({
+     *   data: {
+     *     // ... data to create a IncomeTaxTable
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeTaxTableCreateArgs>(args: SelectSubset<T, IncomeTaxTableCreateArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncomeTaxTables.
+     * @param {IncomeTaxTableCreateManyArgs} args - Arguments to create many IncomeTaxTables.
+     * @example
+     * // Create many IncomeTaxTables
+     * const incomeTaxTable = await prisma.incomeTaxTable.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeTaxTableCreateManyArgs>(args?: SelectSubset<T, IncomeTaxTableCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncomeTaxTable.
+     * @param {IncomeTaxTableDeleteArgs} args - Arguments to delete one IncomeTaxTable.
+     * @example
+     * // Delete one IncomeTaxTable
+     * const IncomeTaxTable = await prisma.incomeTaxTable.delete({
+     *   where: {
+     *     // ... filter to delete one IncomeTaxTable
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeTaxTableDeleteArgs>(args: SelectSubset<T, IncomeTaxTableDeleteArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncomeTaxTable.
+     * @param {IncomeTaxTableUpdateArgs} args - Arguments to update one IncomeTaxTable.
+     * @example
+     * // Update one IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeTaxTableUpdateArgs>(args: SelectSubset<T, IncomeTaxTableUpdateArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncomeTaxTables.
+     * @param {IncomeTaxTableDeleteManyArgs} args - Arguments to filter IncomeTaxTables to delete.
+     * @example
+     * // Delete a few IncomeTaxTables
+     * const { count } = await prisma.incomeTaxTable.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeTaxTableDeleteManyArgs>(args?: SelectSubset<T, IncomeTaxTableDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncomeTaxTables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncomeTaxTables
+     * const incomeTaxTable = await prisma.incomeTaxTable.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeTaxTableUpdateManyArgs>(args: SelectSubset<T, IncomeTaxTableUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncomeTaxTable.
+     * @param {IncomeTaxTableUpsertArgs} args - Arguments to update or create a IncomeTaxTable.
+     * @example
+     * // Update or create a IncomeTaxTable
+     * const incomeTaxTable = await prisma.incomeTaxTable.upsert({
+     *   create: {
+     *     // ... data to create a IncomeTaxTable
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncomeTaxTable we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeTaxTableUpsertArgs>(args: SelectSubset<T, IncomeTaxTableUpsertArgs<ExtArgs>>): Prisma__IncomeTaxTableClient<$Result.GetResult<Prisma.$IncomeTaxTablePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncomeTaxTables.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableCountArgs} args - Arguments to filter IncomeTaxTables to count.
+     * @example
+     * // Count the number of IncomeTaxTables
+     * const count = await prisma.incomeTaxTable.count({
+     *   where: {
+     *     // ... the filter for the IncomeTaxTables we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeTaxTableCountArgs>(
+      args?: Subset<T, IncomeTaxTableCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeTaxTableCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncomeTaxTable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeTaxTableAggregateArgs>(args: Subset<T, IncomeTaxTableAggregateArgs>): Prisma.PrismaPromise<GetIncomeTaxTableAggregateType<T>>
+
+    /**
+     * Group by IncomeTaxTable.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxTableGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeTaxTableGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeTaxTableGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeTaxTableGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeTaxTableGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeTaxTableGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncomeTaxTable model
+   */
+  readonly fields: IncomeTaxTableFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncomeTaxTable.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeTaxTableClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncomeTaxTable model
+   */
+  interface IncomeTaxTableFieldRefs {
+    readonly id: FieldRef<"IncomeTaxTable", 'String'>
+    readonly year: FieldRef<"IncomeTaxTable", 'Int'>
+    readonly semester: FieldRef<"IncomeTaxTable", 'Int'>
+    readonly month: FieldRef<"IncomeTaxTable", 'Int'>
+    readonly description: FieldRef<"IncomeTaxTable", 'String'>
+    readonly nonTaxableMinimum: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly specialDeduction: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly spouseDeduction: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly childDeduction: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly disabledChildDeduction: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly specialDeductionNewProf: FieldRef<"IncomeTaxTable", 'Decimal'>
+    readonly createdAt: FieldRef<"IncomeTaxTable", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncomeTaxTable", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxTable findUnique
+   */
+  export type IncomeTaxTableFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxTable to fetch.
+     */
+    where: IncomeTaxTableWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxTable findUniqueOrThrow
+   */
+  export type IncomeTaxTableFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxTable to fetch.
+     */
+    where: IncomeTaxTableWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxTable findFirst
+   */
+  export type IncomeTaxTableFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxTable to fetch.
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxTables to fetch.
+     */
+    orderBy?: IncomeTaxTableOrderByWithRelationInput | IncomeTaxTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxTables.
+     */
+    cursor?: IncomeTaxTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxTables.
+     */
+    distinct?: IncomeTaxTableScalarFieldEnum | IncomeTaxTableScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxTable findFirstOrThrow
+   */
+  export type IncomeTaxTableFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxTable to fetch.
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxTables to fetch.
+     */
+    orderBy?: IncomeTaxTableOrderByWithRelationInput | IncomeTaxTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxTables.
+     */
+    cursor?: IncomeTaxTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxTables.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxTables.
+     */
+    distinct?: IncomeTaxTableScalarFieldEnum | IncomeTaxTableScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxTable findMany
+   */
+  export type IncomeTaxTableFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxTables to fetch.
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxTables to fetch.
+     */
+    orderBy?: IncomeTaxTableOrderByWithRelationInput | IncomeTaxTableOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncomeTaxTables.
+     */
+    cursor?: IncomeTaxTableWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxTables from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxTables.
+     */
+    skip?: number
+    distinct?: IncomeTaxTableScalarFieldEnum | IncomeTaxTableScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxTable create
+   */
+  export type IncomeTaxTableCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * The data needed to create a IncomeTaxTable.
+     */
+    data: XOR<IncomeTaxTableCreateInput, IncomeTaxTableUncheckedCreateInput>
+  }
+
+  /**
+   * IncomeTaxTable createMany
+   */
+  export type IncomeTaxTableCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncomeTaxTables.
+     */
+    data: IncomeTaxTableCreateManyInput | IncomeTaxTableCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncomeTaxTable update
+   */
+  export type IncomeTaxTableUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * The data needed to update a IncomeTaxTable.
+     */
+    data: XOR<IncomeTaxTableUpdateInput, IncomeTaxTableUncheckedUpdateInput>
+    /**
+     * Choose, which IncomeTaxTable to update.
+     */
+    where: IncomeTaxTableWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxTable updateMany
+   */
+  export type IncomeTaxTableUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncomeTaxTables.
+     */
+    data: XOR<IncomeTaxTableUpdateManyMutationInput, IncomeTaxTableUncheckedUpdateManyInput>
+    /**
+     * Filter which IncomeTaxTables to update
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * Limit how many IncomeTaxTables to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxTable upsert
+   */
+  export type IncomeTaxTableUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * The filter to search for the IncomeTaxTable to update in case it exists.
+     */
+    where: IncomeTaxTableWhereUniqueInput
+    /**
+     * In case the IncomeTaxTable found by the `where` argument doesn't exist, create a new IncomeTaxTable with this data.
+     */
+    create: XOR<IncomeTaxTableCreateInput, IncomeTaxTableUncheckedCreateInput>
+    /**
+     * In case the IncomeTaxTable was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeTaxTableUpdateInput, IncomeTaxTableUncheckedUpdateInput>
+  }
+
+  /**
+   * IncomeTaxTable delete
+   */
+  export type IncomeTaxTableDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+    /**
+     * Filter which IncomeTaxTable to delete.
+     */
+    where: IncomeTaxTableWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxTable deleteMany
+   */
+  export type IncomeTaxTableDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxTables to delete
+     */
+    where?: IncomeTaxTableWhereInput
+    /**
+     * Limit how many IncomeTaxTables to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxTable without action
+   */
+  export type IncomeTaxTableDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxTable
+     */
+    select?: IncomeTaxTableSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxTable
+     */
+    omit?: IncomeTaxTableOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model IncomeTaxScale
+   */
+
+  export type AggregateIncomeTaxScale = {
+    _count: IncomeTaxScaleCountAggregateOutputType | null
+    _avg: IncomeTaxScaleAvgAggregateOutputType | null
+    _sum: IncomeTaxScaleSumAggregateOutputType | null
+    _min: IncomeTaxScaleMinAggregateOutputType | null
+    _max: IncomeTaxScaleMaxAggregateOutputType | null
+  }
+
+  export type IncomeTaxScaleAvgAggregateOutputType = {
+    year: number | null
+    month: number | null
+    step: number | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
+    fixedAmount: Decimal | null
+    ratePercentage: Decimal | null
+  }
+
+  export type IncomeTaxScaleSumAggregateOutputType = {
+    year: number | null
+    month: number | null
+    step: number | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
+    fixedAmount: Decimal | null
+    ratePercentage: Decimal | null
+  }
+
+  export type IncomeTaxScaleMinAggregateOutputType = {
+    id: string | null
+    year: number | null
+    month: number | null
+    step: number | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
+    fixedAmount: Decimal | null
+    ratePercentage: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxScaleMaxAggregateOutputType = {
+    id: string | null
+    year: number | null
+    month: number | null
+    step: number | null
+    fromAmount: Decimal | null
+    toAmount: Decimal | null
+    fixedAmount: Decimal | null
+    ratePercentage: Decimal | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxScaleCountAggregateOutputType = {
+    id: number
+    year: number
+    month: number
+    step: number
+    fromAmount: number
+    toAmount: number
+    fixedAmount: number
+    ratePercentage: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IncomeTaxScaleAvgAggregateInputType = {
+    year?: true
+    month?: true
+    step?: true
+    fromAmount?: true
+    toAmount?: true
+    fixedAmount?: true
+    ratePercentage?: true
+  }
+
+  export type IncomeTaxScaleSumAggregateInputType = {
+    year?: true
+    month?: true
+    step?: true
+    fromAmount?: true
+    toAmount?: true
+    fixedAmount?: true
+    ratePercentage?: true
+  }
+
+  export type IncomeTaxScaleMinAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    step?: true
+    fromAmount?: true
+    toAmount?: true
+    fixedAmount?: true
+    ratePercentage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxScaleMaxAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    step?: true
+    fromAmount?: true
+    toAmount?: true
+    fixedAmount?: true
+    ratePercentage?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxScaleCountAggregateInputType = {
+    id?: true
+    year?: true
+    month?: true
+    step?: true
+    fromAmount?: true
+    toAmount?: true
+    fixedAmount?: true
+    ratePercentage?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IncomeTaxScaleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxScale to aggregate.
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxScales to fetch.
+     */
+    orderBy?: IncomeTaxScaleOrderByWithRelationInput | IncomeTaxScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeTaxScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncomeTaxScales
+    **/
+    _count?: true | IncomeTaxScaleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeTaxScaleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeTaxScaleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeTaxScaleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeTaxScaleMaxAggregateInputType
+  }
+
+  export type GetIncomeTaxScaleAggregateType<T extends IncomeTaxScaleAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncomeTaxScale]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncomeTaxScale[P]>
+      : GetScalarType<T[P], AggregateIncomeTaxScale[P]>
+  }
+
+
+
+
+  export type IncomeTaxScaleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxScaleWhereInput
+    orderBy?: IncomeTaxScaleOrderByWithAggregationInput | IncomeTaxScaleOrderByWithAggregationInput[]
+    by: IncomeTaxScaleScalarFieldEnum[] | IncomeTaxScaleScalarFieldEnum
+    having?: IncomeTaxScaleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeTaxScaleCountAggregateInputType | true
+    _avg?: IncomeTaxScaleAvgAggregateInputType
+    _sum?: IncomeTaxScaleSumAggregateInputType
+    _min?: IncomeTaxScaleMinAggregateInputType
+    _max?: IncomeTaxScaleMaxAggregateInputType
+  }
+
+  export type IncomeTaxScaleGroupByOutputType = {
+    id: string
+    year: number
+    month: number
+    step: number
+    fromAmount: Decimal
+    toAmount: Decimal | null
+    fixedAmount: Decimal
+    ratePercentage: Decimal
+    createdAt: Date
+    updatedAt: Date
+    _count: IncomeTaxScaleCountAggregateOutputType | null
+    _avg: IncomeTaxScaleAvgAggregateOutputType | null
+    _sum: IncomeTaxScaleSumAggregateOutputType | null
+    _min: IncomeTaxScaleMinAggregateOutputType | null
+    _max: IncomeTaxScaleMaxAggregateOutputType | null
+  }
+
+  type GetIncomeTaxScaleGroupByPayload<T extends IncomeTaxScaleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeTaxScaleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeTaxScaleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeTaxScaleGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeTaxScaleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeTaxScaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    month?: boolean
+    step?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
+    fixedAmount?: boolean
+    ratePercentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["incomeTaxScale"]>
+
+
+
+  export type IncomeTaxScaleSelectScalar = {
+    id?: boolean
+    year?: boolean
+    month?: boolean
+    step?: boolean
+    fromAmount?: boolean
+    toAmount?: boolean
+    fixedAmount?: boolean
+    ratePercentage?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IncomeTaxScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "month" | "step" | "fromAmount" | "toAmount" | "fixedAmount" | "ratePercentage" | "createdAt" | "updatedAt", ExtArgs["result"]["incomeTaxScale"]>
+
+  export type $IncomeTaxScalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncomeTaxScale"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      year: number
+      month: number
+      step: number
+      fromAmount: Prisma.Decimal
+      toAmount: Prisma.Decimal | null
+      fixedAmount: Prisma.Decimal
+      ratePercentage: Prisma.Decimal
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["incomeTaxScale"]>
+    composites: {}
+  }
+
+  type IncomeTaxScaleGetPayload<S extends boolean | null | undefined | IncomeTaxScaleDefaultArgs> = $Result.GetResult<Prisma.$IncomeTaxScalePayload, S>
+
+  type IncomeTaxScaleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeTaxScaleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeTaxScaleCountAggregateInputType | true
+    }
+
+  export interface IncomeTaxScaleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncomeTaxScale'], meta: { name: 'IncomeTaxScale' } }
+    /**
+     * Find zero or one IncomeTaxScale that matches the filter.
+     * @param {IncomeTaxScaleFindUniqueArgs} args - Arguments to find a IncomeTaxScale
+     * @example
+     * // Get one IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeTaxScaleFindUniqueArgs>(args: SelectSubset<T, IncomeTaxScaleFindUniqueArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncomeTaxScale that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeTaxScaleFindUniqueOrThrowArgs} args - Arguments to find a IncomeTaxScale
+     * @example
+     * // Get one IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeTaxScaleFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeTaxScaleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxScale that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleFindFirstArgs} args - Arguments to find a IncomeTaxScale
+     * @example
+     * // Get one IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeTaxScaleFindFirstArgs>(args?: SelectSubset<T, IncomeTaxScaleFindFirstArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxScale that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleFindFirstOrThrowArgs} args - Arguments to find a IncomeTaxScale
+     * @example
+     * // Get one IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeTaxScaleFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeTaxScaleFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncomeTaxScales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncomeTaxScales
+     * const incomeTaxScales = await prisma.incomeTaxScale.findMany()
+     * 
+     * // Get first 10 IncomeTaxScales
+     * const incomeTaxScales = await prisma.incomeTaxScale.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeTaxScaleWithIdOnly = await prisma.incomeTaxScale.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeTaxScaleFindManyArgs>(args?: SelectSubset<T, IncomeTaxScaleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncomeTaxScale.
+     * @param {IncomeTaxScaleCreateArgs} args - Arguments to create a IncomeTaxScale.
+     * @example
+     * // Create one IncomeTaxScale
+     * const IncomeTaxScale = await prisma.incomeTaxScale.create({
+     *   data: {
+     *     // ... data to create a IncomeTaxScale
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeTaxScaleCreateArgs>(args: SelectSubset<T, IncomeTaxScaleCreateArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncomeTaxScales.
+     * @param {IncomeTaxScaleCreateManyArgs} args - Arguments to create many IncomeTaxScales.
+     * @example
+     * // Create many IncomeTaxScales
+     * const incomeTaxScale = await prisma.incomeTaxScale.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeTaxScaleCreateManyArgs>(args?: SelectSubset<T, IncomeTaxScaleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncomeTaxScale.
+     * @param {IncomeTaxScaleDeleteArgs} args - Arguments to delete one IncomeTaxScale.
+     * @example
+     * // Delete one IncomeTaxScale
+     * const IncomeTaxScale = await prisma.incomeTaxScale.delete({
+     *   where: {
+     *     // ... filter to delete one IncomeTaxScale
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeTaxScaleDeleteArgs>(args: SelectSubset<T, IncomeTaxScaleDeleteArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncomeTaxScale.
+     * @param {IncomeTaxScaleUpdateArgs} args - Arguments to update one IncomeTaxScale.
+     * @example
+     * // Update one IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeTaxScaleUpdateArgs>(args: SelectSubset<T, IncomeTaxScaleUpdateArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncomeTaxScales.
+     * @param {IncomeTaxScaleDeleteManyArgs} args - Arguments to filter IncomeTaxScales to delete.
+     * @example
+     * // Delete a few IncomeTaxScales
+     * const { count } = await prisma.incomeTaxScale.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeTaxScaleDeleteManyArgs>(args?: SelectSubset<T, IncomeTaxScaleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncomeTaxScales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncomeTaxScales
+     * const incomeTaxScale = await prisma.incomeTaxScale.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeTaxScaleUpdateManyArgs>(args: SelectSubset<T, IncomeTaxScaleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncomeTaxScale.
+     * @param {IncomeTaxScaleUpsertArgs} args - Arguments to update or create a IncomeTaxScale.
+     * @example
+     * // Update or create a IncomeTaxScale
+     * const incomeTaxScale = await prisma.incomeTaxScale.upsert({
+     *   create: {
+     *     // ... data to create a IncomeTaxScale
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncomeTaxScale we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeTaxScaleUpsertArgs>(args: SelectSubset<T, IncomeTaxScaleUpsertArgs<ExtArgs>>): Prisma__IncomeTaxScaleClient<$Result.GetResult<Prisma.$IncomeTaxScalePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncomeTaxScales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleCountArgs} args - Arguments to filter IncomeTaxScales to count.
+     * @example
+     * // Count the number of IncomeTaxScales
+     * const count = await prisma.incomeTaxScale.count({
+     *   where: {
+     *     // ... the filter for the IncomeTaxScales we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeTaxScaleCountArgs>(
+      args?: Subset<T, IncomeTaxScaleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeTaxScaleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncomeTaxScale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeTaxScaleAggregateArgs>(args: Subset<T, IncomeTaxScaleAggregateArgs>): Prisma.PrismaPromise<GetIncomeTaxScaleAggregateType<T>>
+
+    /**
+     * Group by IncomeTaxScale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxScaleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeTaxScaleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeTaxScaleGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeTaxScaleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeTaxScaleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeTaxScaleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncomeTaxScale model
+   */
+  readonly fields: IncomeTaxScaleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncomeTaxScale.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeTaxScaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncomeTaxScale model
+   */
+  interface IncomeTaxScaleFieldRefs {
+    readonly id: FieldRef<"IncomeTaxScale", 'String'>
+    readonly year: FieldRef<"IncomeTaxScale", 'Int'>
+    readonly month: FieldRef<"IncomeTaxScale", 'Int'>
+    readonly step: FieldRef<"IncomeTaxScale", 'Int'>
+    readonly fromAmount: FieldRef<"IncomeTaxScale", 'Decimal'>
+    readonly toAmount: FieldRef<"IncomeTaxScale", 'Decimal'>
+    readonly fixedAmount: FieldRef<"IncomeTaxScale", 'Decimal'>
+    readonly ratePercentage: FieldRef<"IncomeTaxScale", 'Decimal'>
+    readonly createdAt: FieldRef<"IncomeTaxScale", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncomeTaxScale", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxScale findUnique
+   */
+  export type IncomeTaxScaleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxScale to fetch.
+     */
+    where: IncomeTaxScaleWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxScale findUniqueOrThrow
+   */
+  export type IncomeTaxScaleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxScale to fetch.
+     */
+    where: IncomeTaxScaleWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxScale findFirst
+   */
+  export type IncomeTaxScaleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxScale to fetch.
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxScales to fetch.
+     */
+    orderBy?: IncomeTaxScaleOrderByWithRelationInput | IncomeTaxScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxScales.
+     */
+    cursor?: IncomeTaxScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxScales.
+     */
+    distinct?: IncomeTaxScaleScalarFieldEnum | IncomeTaxScaleScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxScale findFirstOrThrow
+   */
+  export type IncomeTaxScaleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxScale to fetch.
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxScales to fetch.
+     */
+    orderBy?: IncomeTaxScaleOrderByWithRelationInput | IncomeTaxScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxScales.
+     */
+    cursor?: IncomeTaxScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxScales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxScales.
+     */
+    distinct?: IncomeTaxScaleScalarFieldEnum | IncomeTaxScaleScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxScale findMany
+   */
+  export type IncomeTaxScaleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxScales to fetch.
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxScales to fetch.
+     */
+    orderBy?: IncomeTaxScaleOrderByWithRelationInput | IncomeTaxScaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncomeTaxScales.
+     */
+    cursor?: IncomeTaxScaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxScales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxScales.
+     */
+    skip?: number
+    distinct?: IncomeTaxScaleScalarFieldEnum | IncomeTaxScaleScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxScale create
+   */
+  export type IncomeTaxScaleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * The data needed to create a IncomeTaxScale.
+     */
+    data: XOR<IncomeTaxScaleCreateInput, IncomeTaxScaleUncheckedCreateInput>
+  }
+
+  /**
+   * IncomeTaxScale createMany
+   */
+  export type IncomeTaxScaleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncomeTaxScales.
+     */
+    data: IncomeTaxScaleCreateManyInput | IncomeTaxScaleCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncomeTaxScale update
+   */
+  export type IncomeTaxScaleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * The data needed to update a IncomeTaxScale.
+     */
+    data: XOR<IncomeTaxScaleUpdateInput, IncomeTaxScaleUncheckedUpdateInput>
+    /**
+     * Choose, which IncomeTaxScale to update.
+     */
+    where: IncomeTaxScaleWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxScale updateMany
+   */
+  export type IncomeTaxScaleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncomeTaxScales.
+     */
+    data: XOR<IncomeTaxScaleUpdateManyMutationInput, IncomeTaxScaleUncheckedUpdateManyInput>
+    /**
+     * Filter which IncomeTaxScales to update
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * Limit how many IncomeTaxScales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxScale upsert
+   */
+  export type IncomeTaxScaleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * The filter to search for the IncomeTaxScale to update in case it exists.
+     */
+    where: IncomeTaxScaleWhereUniqueInput
+    /**
+     * In case the IncomeTaxScale found by the `where` argument doesn't exist, create a new IncomeTaxScale with this data.
+     */
+    create: XOR<IncomeTaxScaleCreateInput, IncomeTaxScaleUncheckedCreateInput>
+    /**
+     * In case the IncomeTaxScale was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeTaxScaleUpdateInput, IncomeTaxScaleUncheckedUpdateInput>
+  }
+
+  /**
+   * IncomeTaxScale delete
+   */
+  export type IncomeTaxScaleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+    /**
+     * Filter which IncomeTaxScale to delete.
+     */
+    where: IncomeTaxScaleWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxScale deleteMany
+   */
+  export type IncomeTaxScaleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxScales to delete
+     */
+    where?: IncomeTaxScaleWhereInput
+    /**
+     * Limit how many IncomeTaxScales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxScale without action
+   */
+  export type IncomeTaxScaleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxScale
+     */
+    select?: IncomeTaxScaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxScale
+     */
+    omit?: IncomeTaxScaleOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model IncomeTaxGeneralDeductionLimit
+   */
+
+  export type AggregateIncomeTaxGeneralDeductionLimit = {
+    _count: IncomeTaxGeneralDeductionLimitCountAggregateOutputType | null
+    _avg: IncomeTaxGeneralDeductionLimitAvgAggregateOutputType | null
+    _sum: IncomeTaxGeneralDeductionLimitSumAggregateOutputType | null
+    _min: IncomeTaxGeneralDeductionLimitMinAggregateOutputType | null
+    _max: IncomeTaxGeneralDeductionLimitMaxAggregateOutputType | null
+  }
+
+  export type IncomeTaxGeneralDeductionLimitAvgAggregateOutputType = {
+    year: number | null
+    limitValue: Decimal | null
+  }
+
+  export type IncomeTaxGeneralDeductionLimitSumAggregateOutputType = {
+    year: number | null
+    limitValue: Decimal | null
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMinAggregateOutputType = {
+    id: string | null
+    year: number | null
+    code: string | null
+    name: string | null
+    limitType: string | null
+    limitValue: Decimal | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMaxAggregateOutputType = {
+    id: string | null
+    year: number | null
+    code: string | null
+    name: string | null
+    limitType: string | null
+    limitValue: Decimal | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxGeneralDeductionLimitCountAggregateOutputType = {
+    id: number
+    year: number
+    code: number
+    name: number
+    limitType: number
+    limitValue: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IncomeTaxGeneralDeductionLimitAvgAggregateInputType = {
+    year?: true
+    limitValue?: true
+  }
+
+  export type IncomeTaxGeneralDeductionLimitSumAggregateInputType = {
+    year?: true
+    limitValue?: true
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMinAggregateInputType = {
+    id?: true
+    year?: true
+    code?: true
+    name?: true
+    limitType?: true
+    limitValue?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMaxAggregateInputType = {
+    id?: true
+    year?: true
+    code?: true
+    name?: true
+    limitType?: true
+    limitValue?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxGeneralDeductionLimitCountAggregateInputType = {
+    id?: true
+    year?: true
+    code?: true
+    name?: true
+    limitType?: true
+    limitValue?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IncomeTaxGeneralDeductionLimitAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxGeneralDeductionLimit to aggregate.
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxGeneralDeductionLimits to fetch.
+     */
+    orderBy?: IncomeTaxGeneralDeductionLimitOrderByWithRelationInput | IncomeTaxGeneralDeductionLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxGeneralDeductionLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxGeneralDeductionLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncomeTaxGeneralDeductionLimits
+    **/
+    _count?: true | IncomeTaxGeneralDeductionLimitCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeTaxGeneralDeductionLimitAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeTaxGeneralDeductionLimitSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeTaxGeneralDeductionLimitMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeTaxGeneralDeductionLimitMaxAggregateInputType
+  }
+
+  export type GetIncomeTaxGeneralDeductionLimitAggregateType<T extends IncomeTaxGeneralDeductionLimitAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncomeTaxGeneralDeductionLimit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncomeTaxGeneralDeductionLimit[P]>
+      : GetScalarType<T[P], AggregateIncomeTaxGeneralDeductionLimit[P]>
+  }
+
+
+
+
+  export type IncomeTaxGeneralDeductionLimitGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    orderBy?: IncomeTaxGeneralDeductionLimitOrderByWithAggregationInput | IncomeTaxGeneralDeductionLimitOrderByWithAggregationInput[]
+    by: IncomeTaxGeneralDeductionLimitScalarFieldEnum[] | IncomeTaxGeneralDeductionLimitScalarFieldEnum
+    having?: IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeTaxGeneralDeductionLimitCountAggregateInputType | true
+    _avg?: IncomeTaxGeneralDeductionLimitAvgAggregateInputType
+    _sum?: IncomeTaxGeneralDeductionLimitSumAggregateInputType
+    _min?: IncomeTaxGeneralDeductionLimitMinAggregateInputType
+    _max?: IncomeTaxGeneralDeductionLimitMaxAggregateInputType
+  }
+
+  export type IncomeTaxGeneralDeductionLimitGroupByOutputType = {
+    id: string
+    year: number
+    code: string
+    name: string
+    limitType: string
+    limitValue: Decimal
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: IncomeTaxGeneralDeductionLimitCountAggregateOutputType | null
+    _avg: IncomeTaxGeneralDeductionLimitAvgAggregateOutputType | null
+    _sum: IncomeTaxGeneralDeductionLimitSumAggregateOutputType | null
+    _min: IncomeTaxGeneralDeductionLimitMinAggregateOutputType | null
+    _max: IncomeTaxGeneralDeductionLimitMaxAggregateOutputType | null
+  }
+
+  type GetIncomeTaxGeneralDeductionLimitGroupByPayload<T extends IncomeTaxGeneralDeductionLimitGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeTaxGeneralDeductionLimitGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeTaxGeneralDeductionLimitGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeTaxGeneralDeductionLimitGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeTaxGeneralDeductionLimitGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeTaxGeneralDeductionLimitSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    year?: boolean
+    code?: boolean
+    name?: boolean
+    limitType?: boolean
+    limitValue?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["incomeTaxGeneralDeductionLimit"]>
+
+
+
+  export type IncomeTaxGeneralDeductionLimitSelectScalar = {
+    id?: boolean
+    year?: boolean
+    code?: boolean
+    name?: boolean
+    limitType?: boolean
+    limitValue?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IncomeTaxGeneralDeductionLimitOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "year" | "code" | "name" | "limitType" | "limitValue" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["incomeTaxGeneralDeductionLimit"]>
+
+  export type $IncomeTaxGeneralDeductionLimitPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncomeTaxGeneralDeductionLimit"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      year: number
+      code: string
+      name: string
+      limitType: string
+      limitValue: Prisma.Decimal
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["incomeTaxGeneralDeductionLimit"]>
+    composites: {}
+  }
+
+  type IncomeTaxGeneralDeductionLimitGetPayload<S extends boolean | null | undefined | IncomeTaxGeneralDeductionLimitDefaultArgs> = $Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload, S>
+
+  type IncomeTaxGeneralDeductionLimitCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeTaxGeneralDeductionLimitFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeTaxGeneralDeductionLimitCountAggregateInputType | true
+    }
+
+  export interface IncomeTaxGeneralDeductionLimitDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncomeTaxGeneralDeductionLimit'], meta: { name: 'IncomeTaxGeneralDeductionLimit' } }
+    /**
+     * Find zero or one IncomeTaxGeneralDeductionLimit that matches the filter.
+     * @param {IncomeTaxGeneralDeductionLimitFindUniqueArgs} args - Arguments to find a IncomeTaxGeneralDeductionLimit
+     * @example
+     * // Get one IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeTaxGeneralDeductionLimitFindUniqueArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitFindUniqueArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncomeTaxGeneralDeductionLimit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeTaxGeneralDeductionLimitFindUniqueOrThrowArgs} args - Arguments to find a IncomeTaxGeneralDeductionLimit
+     * @example
+     * // Get one IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeTaxGeneralDeductionLimitFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxGeneralDeductionLimit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitFindFirstArgs} args - Arguments to find a IncomeTaxGeneralDeductionLimit
+     * @example
+     * // Get one IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeTaxGeneralDeductionLimitFindFirstArgs>(args?: SelectSubset<T, IncomeTaxGeneralDeductionLimitFindFirstArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxGeneralDeductionLimit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitFindFirstOrThrowArgs} args - Arguments to find a IncomeTaxGeneralDeductionLimit
+     * @example
+     * // Get one IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeTaxGeneralDeductionLimitFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeTaxGeneralDeductionLimitFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncomeTaxGeneralDeductionLimits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncomeTaxGeneralDeductionLimits
+     * const incomeTaxGeneralDeductionLimits = await prisma.incomeTaxGeneralDeductionLimit.findMany()
+     * 
+     * // Get first 10 IncomeTaxGeneralDeductionLimits
+     * const incomeTaxGeneralDeductionLimits = await prisma.incomeTaxGeneralDeductionLimit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeTaxGeneralDeductionLimitWithIdOnly = await prisma.incomeTaxGeneralDeductionLimit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeTaxGeneralDeductionLimitFindManyArgs>(args?: SelectSubset<T, IncomeTaxGeneralDeductionLimitFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncomeTaxGeneralDeductionLimit.
+     * @param {IncomeTaxGeneralDeductionLimitCreateArgs} args - Arguments to create a IncomeTaxGeneralDeductionLimit.
+     * @example
+     * // Create one IncomeTaxGeneralDeductionLimit
+     * const IncomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.create({
+     *   data: {
+     *     // ... data to create a IncomeTaxGeneralDeductionLimit
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeTaxGeneralDeductionLimitCreateArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitCreateArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncomeTaxGeneralDeductionLimits.
+     * @param {IncomeTaxGeneralDeductionLimitCreateManyArgs} args - Arguments to create many IncomeTaxGeneralDeductionLimits.
+     * @example
+     * // Create many IncomeTaxGeneralDeductionLimits
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeTaxGeneralDeductionLimitCreateManyArgs>(args?: SelectSubset<T, IncomeTaxGeneralDeductionLimitCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncomeTaxGeneralDeductionLimit.
+     * @param {IncomeTaxGeneralDeductionLimitDeleteArgs} args - Arguments to delete one IncomeTaxGeneralDeductionLimit.
+     * @example
+     * // Delete one IncomeTaxGeneralDeductionLimit
+     * const IncomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.delete({
+     *   where: {
+     *     // ... filter to delete one IncomeTaxGeneralDeductionLimit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeTaxGeneralDeductionLimitDeleteArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitDeleteArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncomeTaxGeneralDeductionLimit.
+     * @param {IncomeTaxGeneralDeductionLimitUpdateArgs} args - Arguments to update one IncomeTaxGeneralDeductionLimit.
+     * @example
+     * // Update one IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeTaxGeneralDeductionLimitUpdateArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitUpdateArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncomeTaxGeneralDeductionLimits.
+     * @param {IncomeTaxGeneralDeductionLimitDeleteManyArgs} args - Arguments to filter IncomeTaxGeneralDeductionLimits to delete.
+     * @example
+     * // Delete a few IncomeTaxGeneralDeductionLimits
+     * const { count } = await prisma.incomeTaxGeneralDeductionLimit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeTaxGeneralDeductionLimitDeleteManyArgs>(args?: SelectSubset<T, IncomeTaxGeneralDeductionLimitDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncomeTaxGeneralDeductionLimits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncomeTaxGeneralDeductionLimits
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeTaxGeneralDeductionLimitUpdateManyArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncomeTaxGeneralDeductionLimit.
+     * @param {IncomeTaxGeneralDeductionLimitUpsertArgs} args - Arguments to update or create a IncomeTaxGeneralDeductionLimit.
+     * @example
+     * // Update or create a IncomeTaxGeneralDeductionLimit
+     * const incomeTaxGeneralDeductionLimit = await prisma.incomeTaxGeneralDeductionLimit.upsert({
+     *   create: {
+     *     // ... data to create a IncomeTaxGeneralDeductionLimit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncomeTaxGeneralDeductionLimit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeTaxGeneralDeductionLimitUpsertArgs>(args: SelectSubset<T, IncomeTaxGeneralDeductionLimitUpsertArgs<ExtArgs>>): Prisma__IncomeTaxGeneralDeductionLimitClient<$Result.GetResult<Prisma.$IncomeTaxGeneralDeductionLimitPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncomeTaxGeneralDeductionLimits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitCountArgs} args - Arguments to filter IncomeTaxGeneralDeductionLimits to count.
+     * @example
+     * // Count the number of IncomeTaxGeneralDeductionLimits
+     * const count = await prisma.incomeTaxGeneralDeductionLimit.count({
+     *   where: {
+     *     // ... the filter for the IncomeTaxGeneralDeductionLimits we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeTaxGeneralDeductionLimitCountArgs>(
+      args?: Subset<T, IncomeTaxGeneralDeductionLimitCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeTaxGeneralDeductionLimitCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncomeTaxGeneralDeductionLimit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeTaxGeneralDeductionLimitAggregateArgs>(args: Subset<T, IncomeTaxGeneralDeductionLimitAggregateArgs>): Prisma.PrismaPromise<GetIncomeTaxGeneralDeductionLimitAggregateType<T>>
+
+    /**
+     * Group by IncomeTaxGeneralDeductionLimit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxGeneralDeductionLimitGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeTaxGeneralDeductionLimitGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeTaxGeneralDeductionLimitGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeTaxGeneralDeductionLimitGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeTaxGeneralDeductionLimitGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeTaxGeneralDeductionLimitGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncomeTaxGeneralDeductionLimit model
+   */
+  readonly fields: IncomeTaxGeneralDeductionLimitFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncomeTaxGeneralDeductionLimit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeTaxGeneralDeductionLimitClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncomeTaxGeneralDeductionLimit model
+   */
+  interface IncomeTaxGeneralDeductionLimitFieldRefs {
+    readonly id: FieldRef<"IncomeTaxGeneralDeductionLimit", 'String'>
+    readonly year: FieldRef<"IncomeTaxGeneralDeductionLimit", 'Int'>
+    readonly code: FieldRef<"IncomeTaxGeneralDeductionLimit", 'String'>
+    readonly name: FieldRef<"IncomeTaxGeneralDeductionLimit", 'String'>
+    readonly limitType: FieldRef<"IncomeTaxGeneralDeductionLimit", 'String'>
+    readonly limitValue: FieldRef<"IncomeTaxGeneralDeductionLimit", 'Decimal'>
+    readonly description: FieldRef<"IncomeTaxGeneralDeductionLimit", 'String'>
+    readonly createdAt: FieldRef<"IncomeTaxGeneralDeductionLimit", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncomeTaxGeneralDeductionLimit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxGeneralDeductionLimit findUnique
+   */
+  export type IncomeTaxGeneralDeductionLimitFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxGeneralDeductionLimit to fetch.
+     */
+    where: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit findUniqueOrThrow
+   */
+  export type IncomeTaxGeneralDeductionLimitFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxGeneralDeductionLimit to fetch.
+     */
+    where: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit findFirst
+   */
+  export type IncomeTaxGeneralDeductionLimitFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxGeneralDeductionLimit to fetch.
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxGeneralDeductionLimits to fetch.
+     */
+    orderBy?: IncomeTaxGeneralDeductionLimitOrderByWithRelationInput | IncomeTaxGeneralDeductionLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxGeneralDeductionLimits.
+     */
+    cursor?: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxGeneralDeductionLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxGeneralDeductionLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxGeneralDeductionLimits.
+     */
+    distinct?: IncomeTaxGeneralDeductionLimitScalarFieldEnum | IncomeTaxGeneralDeductionLimitScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit findFirstOrThrow
+   */
+  export type IncomeTaxGeneralDeductionLimitFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxGeneralDeductionLimit to fetch.
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxGeneralDeductionLimits to fetch.
+     */
+    orderBy?: IncomeTaxGeneralDeductionLimitOrderByWithRelationInput | IncomeTaxGeneralDeductionLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxGeneralDeductionLimits.
+     */
+    cursor?: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxGeneralDeductionLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxGeneralDeductionLimits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxGeneralDeductionLimits.
+     */
+    distinct?: IncomeTaxGeneralDeductionLimitScalarFieldEnum | IncomeTaxGeneralDeductionLimitScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit findMany
+   */
+  export type IncomeTaxGeneralDeductionLimitFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxGeneralDeductionLimits to fetch.
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxGeneralDeductionLimits to fetch.
+     */
+    orderBy?: IncomeTaxGeneralDeductionLimitOrderByWithRelationInput | IncomeTaxGeneralDeductionLimitOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncomeTaxGeneralDeductionLimits.
+     */
+    cursor?: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxGeneralDeductionLimits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxGeneralDeductionLimits.
+     */
+    skip?: number
+    distinct?: IncomeTaxGeneralDeductionLimitScalarFieldEnum | IncomeTaxGeneralDeductionLimitScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit create
+   */
+  export type IncomeTaxGeneralDeductionLimitCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * The data needed to create a IncomeTaxGeneralDeductionLimit.
+     */
+    data: XOR<IncomeTaxGeneralDeductionLimitCreateInput, IncomeTaxGeneralDeductionLimitUncheckedCreateInput>
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit createMany
+   */
+  export type IncomeTaxGeneralDeductionLimitCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncomeTaxGeneralDeductionLimits.
+     */
+    data: IncomeTaxGeneralDeductionLimitCreateManyInput | IncomeTaxGeneralDeductionLimitCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit update
+   */
+  export type IncomeTaxGeneralDeductionLimitUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * The data needed to update a IncomeTaxGeneralDeductionLimit.
+     */
+    data: XOR<IncomeTaxGeneralDeductionLimitUpdateInput, IncomeTaxGeneralDeductionLimitUncheckedUpdateInput>
+    /**
+     * Choose, which IncomeTaxGeneralDeductionLimit to update.
+     */
+    where: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit updateMany
+   */
+  export type IncomeTaxGeneralDeductionLimitUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncomeTaxGeneralDeductionLimits.
+     */
+    data: XOR<IncomeTaxGeneralDeductionLimitUpdateManyMutationInput, IncomeTaxGeneralDeductionLimitUncheckedUpdateManyInput>
+    /**
+     * Filter which IncomeTaxGeneralDeductionLimits to update
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * Limit how many IncomeTaxGeneralDeductionLimits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit upsert
+   */
+  export type IncomeTaxGeneralDeductionLimitUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * The filter to search for the IncomeTaxGeneralDeductionLimit to update in case it exists.
+     */
+    where: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+    /**
+     * In case the IncomeTaxGeneralDeductionLimit found by the `where` argument doesn't exist, create a new IncomeTaxGeneralDeductionLimit with this data.
+     */
+    create: XOR<IncomeTaxGeneralDeductionLimitCreateInput, IncomeTaxGeneralDeductionLimitUncheckedCreateInput>
+    /**
+     * In case the IncomeTaxGeneralDeductionLimit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeTaxGeneralDeductionLimitUpdateInput, IncomeTaxGeneralDeductionLimitUncheckedUpdateInput>
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit delete
+   */
+  export type IncomeTaxGeneralDeductionLimitDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+    /**
+     * Filter which IncomeTaxGeneralDeductionLimit to delete.
+     */
+    where: IncomeTaxGeneralDeductionLimitWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit deleteMany
+   */
+  export type IncomeTaxGeneralDeductionLimitDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxGeneralDeductionLimits to delete
+     */
+    where?: IncomeTaxGeneralDeductionLimitWhereInput
+    /**
+     * Limit how many IncomeTaxGeneralDeductionLimits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxGeneralDeductionLimit without action
+   */
+  export type IncomeTaxGeneralDeductionLimitDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxGeneralDeductionLimit
+     */
+    select?: IncomeTaxGeneralDeductionLimitSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxGeneralDeductionLimit
+     */
+    omit?: IncomeTaxGeneralDeductionLimitOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeIncomeTaxDeduction
+   */
+
+  export type AggregateEmployeeIncomeTaxDeduction = {
+    _count: EmployeeIncomeTaxDeductionCountAggregateOutputType | null
+    _avg: EmployeeIncomeTaxDeductionAvgAggregateOutputType | null
+    _sum: EmployeeIncomeTaxDeductionSumAggregateOutputType | null
+    _min: EmployeeIncomeTaxDeductionMinAggregateOutputType | null
+    _max: EmployeeIncomeTaxDeductionMaxAggregateOutputType | null
+  }
+
+  export type EmployeeIncomeTaxDeductionAvgAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    amount: Decimal | null
+  }
+
+  export type EmployeeIncomeTaxDeductionSumAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    amount: Decimal | null
+  }
+
+  export type EmployeeIncomeTaxDeductionMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    deductionType: string | null
+    providerCuit: string | null
+    providerName: string | null
+    voucherType: string | null
+    voucherNumber: string | null
+    month: number | null
+    amount: Decimal | null
+    source: string | null
+    siradigPresentationId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeIncomeTaxDeductionMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    deductionType: string | null
+    providerCuit: string | null
+    providerName: string | null
+    voucherType: string | null
+    voucherNumber: string | null
+    month: number | null
+    amount: Decimal | null
+    source: string | null
+    siradigPresentationId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeIncomeTaxDeductionCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    fiscalYear: number
+    deductionType: number
+    providerCuit: number
+    providerName: number
+    voucherType: number
+    voucherNumber: number
+    month: number
+    amount: number
+    source: number
+    siradigPresentationId: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeIncomeTaxDeductionAvgAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    amount?: true
+  }
+
+  export type EmployeeIncomeTaxDeductionSumAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    amount?: true
+  }
+
+  export type EmployeeIncomeTaxDeductionMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    deductionType?: true
+    providerCuit?: true
+    providerName?: true
+    voucherType?: true
+    voucherNumber?: true
+    month?: true
+    amount?: true
+    source?: true
+    siradigPresentationId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeIncomeTaxDeductionMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    deductionType?: true
+    providerCuit?: true
+    providerName?: true
+    voucherType?: true
+    voucherNumber?: true
+    month?: true
+    amount?: true
+    source?: true
+    siradigPresentationId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeIncomeTaxDeductionCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    deductionType?: true
+    providerCuit?: true
+    providerName?: true
+    voucherType?: true
+    voucherNumber?: true
+    month?: true
+    amount?: true
+    source?: true
+    siradigPresentationId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeIncomeTaxDeductionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncomeTaxDeduction to aggregate.
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxDeductions to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithRelationInput | EmployeeIncomeTaxDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeIncomeTaxDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeIncomeTaxDeductions
+    **/
+    _count?: true | EmployeeIncomeTaxDeductionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeIncomeTaxDeductionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeIncomeTaxDeductionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeIncomeTaxDeductionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeIncomeTaxDeductionMaxAggregateInputType
+  }
+
+  export type GetEmployeeIncomeTaxDeductionAggregateType<T extends EmployeeIncomeTaxDeductionAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeIncomeTaxDeduction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeIncomeTaxDeduction[P]>
+      : GetScalarType<T[P], AggregateEmployeeIncomeTaxDeduction[P]>
+  }
+
+
+
+
+  export type EmployeeIncomeTaxDeductionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithAggregationInput | EmployeeIncomeTaxDeductionOrderByWithAggregationInput[]
+    by: EmployeeIncomeTaxDeductionScalarFieldEnum[] | EmployeeIncomeTaxDeductionScalarFieldEnum
+    having?: EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeIncomeTaxDeductionCountAggregateInputType | true
+    _avg?: EmployeeIncomeTaxDeductionAvgAggregateInputType
+    _sum?: EmployeeIncomeTaxDeductionSumAggregateInputType
+    _min?: EmployeeIncomeTaxDeductionMinAggregateInputType
+    _max?: EmployeeIncomeTaxDeductionMaxAggregateInputType
+  }
+
+  export type EmployeeIncomeTaxDeductionGroupByOutputType = {
+    id: string
+    employeeId: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit: string | null
+    providerName: string | null
+    voucherType: string | null
+    voucherNumber: string | null
+    month: number | null
+    amount: Decimal
+    source: string
+    siradigPresentationId: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: EmployeeIncomeTaxDeductionCountAggregateOutputType | null
+    _avg: EmployeeIncomeTaxDeductionAvgAggregateOutputType | null
+    _sum: EmployeeIncomeTaxDeductionSumAggregateOutputType | null
+    _min: EmployeeIncomeTaxDeductionMinAggregateOutputType | null
+    _max: EmployeeIncomeTaxDeductionMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeIncomeTaxDeductionGroupByPayload<T extends EmployeeIncomeTaxDeductionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeIncomeTaxDeductionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeIncomeTaxDeductionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeIncomeTaxDeductionGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeIncomeTaxDeductionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeIncomeTaxDeductionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    deductionType?: boolean
+    providerCuit?: boolean
+    providerName?: boolean
+    voucherType?: boolean
+    voucherNumber?: boolean
+    month?: boolean
+    amount?: boolean
+    source?: boolean
+    siradigPresentationId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeIncomeTaxDeduction"]>
+
+
+
+  export type EmployeeIncomeTaxDeductionSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    deductionType?: boolean
+    providerCuit?: boolean
+    providerName?: boolean
+    voucherType?: boolean
+    voucherNumber?: boolean
+    month?: boolean
+    amount?: boolean
+    source?: boolean
+    siradigPresentationId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmployeeIncomeTaxDeductionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "fiscalYear" | "deductionType" | "providerCuit" | "providerName" | "voucherType" | "voucherNumber" | "month" | "amount" | "source" | "siradigPresentationId" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["employeeIncomeTaxDeduction"]>
+  export type EmployeeIncomeTaxDeductionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeIncomeTaxDeductionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeIncomeTaxDeduction"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      fiscalYear: number
+      deductionType: string
+      providerCuit: string | null
+      providerName: string | null
+      voucherType: string | null
+      voucherNumber: string | null
+      month: number | null
+      amount: Prisma.Decimal
+      source: string
+      siradigPresentationId: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["employeeIncomeTaxDeduction"]>
+    composites: {}
+  }
+
+  type EmployeeIncomeTaxDeductionGetPayload<S extends boolean | null | undefined | EmployeeIncomeTaxDeductionDefaultArgs> = $Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload, S>
+
+  type EmployeeIncomeTaxDeductionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeIncomeTaxDeductionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeIncomeTaxDeductionCountAggregateInputType | true
+    }
+
+  export interface EmployeeIncomeTaxDeductionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeIncomeTaxDeduction'], meta: { name: 'EmployeeIncomeTaxDeduction' } }
+    /**
+     * Find zero or one EmployeeIncomeTaxDeduction that matches the filter.
+     * @param {EmployeeIncomeTaxDeductionFindUniqueArgs} args - Arguments to find a EmployeeIncomeTaxDeduction
+     * @example
+     * // Get one EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeIncomeTaxDeductionFindUniqueArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionFindUniqueArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeIncomeTaxDeduction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeIncomeTaxDeductionFindUniqueOrThrowArgs} args - Arguments to find a EmployeeIncomeTaxDeduction
+     * @example
+     * // Get one EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeIncomeTaxDeductionFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncomeTaxDeduction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionFindFirstArgs} args - Arguments to find a EmployeeIncomeTaxDeduction
+     * @example
+     * // Get one EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeIncomeTaxDeductionFindFirstArgs>(args?: SelectSubset<T, EmployeeIncomeTaxDeductionFindFirstArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncomeTaxDeduction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionFindFirstOrThrowArgs} args - Arguments to find a EmployeeIncomeTaxDeduction
+     * @example
+     * // Get one EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeIncomeTaxDeductionFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeIncomeTaxDeductionFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeIncomeTaxDeductions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeIncomeTaxDeductions
+     * const employeeIncomeTaxDeductions = await prisma.employeeIncomeTaxDeduction.findMany()
+     * 
+     * // Get first 10 EmployeeIncomeTaxDeductions
+     * const employeeIncomeTaxDeductions = await prisma.employeeIncomeTaxDeduction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeIncomeTaxDeductionWithIdOnly = await prisma.employeeIncomeTaxDeduction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeIncomeTaxDeductionFindManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxDeductionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeIncomeTaxDeduction.
+     * @param {EmployeeIncomeTaxDeductionCreateArgs} args - Arguments to create a EmployeeIncomeTaxDeduction.
+     * @example
+     * // Create one EmployeeIncomeTaxDeduction
+     * const EmployeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.create({
+     *   data: {
+     *     // ... data to create a EmployeeIncomeTaxDeduction
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeIncomeTaxDeductionCreateArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionCreateArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeIncomeTaxDeductions.
+     * @param {EmployeeIncomeTaxDeductionCreateManyArgs} args - Arguments to create many EmployeeIncomeTaxDeductions.
+     * @example
+     * // Create many EmployeeIncomeTaxDeductions
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeIncomeTaxDeductionCreateManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxDeductionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeIncomeTaxDeduction.
+     * @param {EmployeeIncomeTaxDeductionDeleteArgs} args - Arguments to delete one EmployeeIncomeTaxDeduction.
+     * @example
+     * // Delete one EmployeeIncomeTaxDeduction
+     * const EmployeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeIncomeTaxDeduction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeIncomeTaxDeductionDeleteArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionDeleteArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeIncomeTaxDeduction.
+     * @param {EmployeeIncomeTaxDeductionUpdateArgs} args - Arguments to update one EmployeeIncomeTaxDeduction.
+     * @example
+     * // Update one EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeIncomeTaxDeductionUpdateArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionUpdateArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeIncomeTaxDeductions.
+     * @param {EmployeeIncomeTaxDeductionDeleteManyArgs} args - Arguments to filter EmployeeIncomeTaxDeductions to delete.
+     * @example
+     * // Delete a few EmployeeIncomeTaxDeductions
+     * const { count } = await prisma.employeeIncomeTaxDeduction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeIncomeTaxDeductionDeleteManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxDeductionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeIncomeTaxDeductions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeIncomeTaxDeductions
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeIncomeTaxDeductionUpdateManyArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeIncomeTaxDeduction.
+     * @param {EmployeeIncomeTaxDeductionUpsertArgs} args - Arguments to update or create a EmployeeIncomeTaxDeduction.
+     * @example
+     * // Update or create a EmployeeIncomeTaxDeduction
+     * const employeeIncomeTaxDeduction = await prisma.employeeIncomeTaxDeduction.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeIncomeTaxDeduction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeIncomeTaxDeduction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeIncomeTaxDeductionUpsertArgs>(args: SelectSubset<T, EmployeeIncomeTaxDeductionUpsertArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxDeductionClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxDeductionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeIncomeTaxDeductions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionCountArgs} args - Arguments to filter EmployeeIncomeTaxDeductions to count.
+     * @example
+     * // Count the number of EmployeeIncomeTaxDeductions
+     * const count = await prisma.employeeIncomeTaxDeduction.count({
+     *   where: {
+     *     // ... the filter for the EmployeeIncomeTaxDeductions we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeIncomeTaxDeductionCountArgs>(
+      args?: Subset<T, EmployeeIncomeTaxDeductionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeIncomeTaxDeductionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeIncomeTaxDeduction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeIncomeTaxDeductionAggregateArgs>(args: Subset<T, EmployeeIncomeTaxDeductionAggregateArgs>): Prisma.PrismaPromise<GetEmployeeIncomeTaxDeductionAggregateType<T>>
+
+    /**
+     * Group by EmployeeIncomeTaxDeduction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxDeductionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeIncomeTaxDeductionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeIncomeTaxDeductionGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeIncomeTaxDeductionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeIncomeTaxDeductionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeIncomeTaxDeductionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeIncomeTaxDeduction model
+   */
+  readonly fields: EmployeeIncomeTaxDeductionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeIncomeTaxDeduction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeIncomeTaxDeductionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeIncomeTaxDeduction model
+   */
+  interface EmployeeIncomeTaxDeductionFieldRefs {
+    readonly id: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly employeeId: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly fiscalYear: FieldRef<"EmployeeIncomeTaxDeduction", 'Int'>
+    readonly deductionType: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly providerCuit: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly providerName: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly voucherType: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly voucherNumber: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly month: FieldRef<"EmployeeIncomeTaxDeduction", 'Int'>
+    readonly amount: FieldRef<"EmployeeIncomeTaxDeduction", 'Decimal'>
+    readonly source: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly siradigPresentationId: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly notes: FieldRef<"EmployeeIncomeTaxDeduction", 'String'>
+    readonly createdAt: FieldRef<"EmployeeIncomeTaxDeduction", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeIncomeTaxDeduction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeIncomeTaxDeduction findUnique
+   */
+  export type EmployeeIncomeTaxDeductionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxDeduction to fetch.
+     */
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction findUniqueOrThrow
+   */
+  export type EmployeeIncomeTaxDeductionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxDeduction to fetch.
+     */
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction findFirst
+   */
+  export type EmployeeIncomeTaxDeductionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxDeduction to fetch.
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxDeductions to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithRelationInput | EmployeeIncomeTaxDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncomeTaxDeductions.
+     */
+    cursor?: EmployeeIncomeTaxDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncomeTaxDeductions.
+     */
+    distinct?: EmployeeIncomeTaxDeductionScalarFieldEnum | EmployeeIncomeTaxDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction findFirstOrThrow
+   */
+  export type EmployeeIncomeTaxDeductionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxDeduction to fetch.
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxDeductions to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithRelationInput | EmployeeIncomeTaxDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncomeTaxDeductions.
+     */
+    cursor?: EmployeeIncomeTaxDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxDeductions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncomeTaxDeductions.
+     */
+    distinct?: EmployeeIncomeTaxDeductionScalarFieldEnum | EmployeeIncomeTaxDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction findMany
+   */
+  export type EmployeeIncomeTaxDeductionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxDeductions to fetch.
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxDeductions to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxDeductionOrderByWithRelationInput | EmployeeIncomeTaxDeductionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeIncomeTaxDeductions.
+     */
+    cursor?: EmployeeIncomeTaxDeductionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxDeductions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxDeductions.
+     */
+    skip?: number
+    distinct?: EmployeeIncomeTaxDeductionScalarFieldEnum | EmployeeIncomeTaxDeductionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction create
+   */
+  export type EmployeeIncomeTaxDeductionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeIncomeTaxDeduction.
+     */
+    data: XOR<EmployeeIncomeTaxDeductionCreateInput, EmployeeIncomeTaxDeductionUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction createMany
+   */
+  export type EmployeeIncomeTaxDeductionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeIncomeTaxDeductions.
+     */
+    data: EmployeeIncomeTaxDeductionCreateManyInput | EmployeeIncomeTaxDeductionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction update
+   */
+  export type EmployeeIncomeTaxDeductionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeIncomeTaxDeduction.
+     */
+    data: XOR<EmployeeIncomeTaxDeductionUpdateInput, EmployeeIncomeTaxDeductionUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeIncomeTaxDeduction to update.
+     */
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction updateMany
+   */
+  export type EmployeeIncomeTaxDeductionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeIncomeTaxDeductions.
+     */
+    data: XOR<EmployeeIncomeTaxDeductionUpdateManyMutationInput, EmployeeIncomeTaxDeductionUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeIncomeTaxDeductions to update
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * Limit how many EmployeeIncomeTaxDeductions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction upsert
+   */
+  export type EmployeeIncomeTaxDeductionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeIncomeTaxDeduction to update in case it exists.
+     */
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+    /**
+     * In case the EmployeeIncomeTaxDeduction found by the `where` argument doesn't exist, create a new EmployeeIncomeTaxDeduction with this data.
+     */
+    create: XOR<EmployeeIncomeTaxDeductionCreateInput, EmployeeIncomeTaxDeductionUncheckedCreateInput>
+    /**
+     * In case the EmployeeIncomeTaxDeduction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeIncomeTaxDeductionUpdateInput, EmployeeIncomeTaxDeductionUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction delete
+   */
+  export type EmployeeIncomeTaxDeductionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeIncomeTaxDeduction to delete.
+     */
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction deleteMany
+   */
+  export type EmployeeIncomeTaxDeductionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncomeTaxDeductions to delete
+     */
+    where?: EmployeeIncomeTaxDeductionWhereInput
+    /**
+     * Limit how many EmployeeIncomeTaxDeductions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncomeTaxDeduction without action
+   */
+  export type EmployeeIncomeTaxDeductionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxDeduction
+     */
+    select?: EmployeeIncomeTaxDeductionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxDeduction
+     */
+    omit?: EmployeeIncomeTaxDeductionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxDeductionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeOtherIncome
+   */
+
+  export type AggregateEmployeeOtherIncome = {
+    _count: EmployeeOtherIncomeCountAggregateOutputType | null
+    _avg: EmployeeOtherIncomeAvgAggregateOutputType | null
+    _sum: EmployeeOtherIncomeSumAggregateOutputType | null
+    _min: EmployeeOtherIncomeMinAggregateOutputType | null
+    _max: EmployeeOtherIncomeMaxAggregateOutputType | null
+  }
+
+  export type EmployeeOtherIncomeAvgAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    grossIncome: Decimal | null
+    nonTaxableIncome: Decimal | null
+    exemptIncome: Decimal | null
+    pensionContrib: Decimal | null
+    healthInsuranceContrib: Decimal | null
+    unionContrib: Decimal | null
+    withheldTax: Decimal | null
+  }
+
+  export type EmployeeOtherIncomeSumAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    grossIncome: Decimal | null
+    nonTaxableIncome: Decimal | null
+    exemptIncome: Decimal | null
+    pensionContrib: Decimal | null
+    healthInsuranceContrib: Decimal | null
+    unionContrib: Decimal | null
+    withheldTax: Decimal | null
+  }
+
+  export type EmployeeOtherIncomeMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    month: number | null
+    employerCuit: string | null
+    employerName: string | null
+    grossIncome: Decimal | null
+    nonTaxableIncome: Decimal | null
+    exemptIncome: Decimal | null
+    pensionContrib: Decimal | null
+    healthInsuranceContrib: Decimal | null
+    unionContrib: Decimal | null
+    withheldTax: Decimal | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeOtherIncomeMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    month: number | null
+    employerCuit: string | null
+    employerName: string | null
+    grossIncome: Decimal | null
+    nonTaxableIncome: Decimal | null
+    exemptIncome: Decimal | null
+    pensionContrib: Decimal | null
+    healthInsuranceContrib: Decimal | null
+    unionContrib: Decimal | null
+    withheldTax: Decimal | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeOtherIncomeCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    fiscalYear: number
+    month: number
+    employerCuit: number
+    employerName: number
+    grossIncome: number
+    nonTaxableIncome: number
+    exemptIncome: number
+    pensionContrib: number
+    healthInsuranceContrib: number
+    unionContrib: number
+    withheldTax: number
+    source: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeOtherIncomeAvgAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    grossIncome?: true
+    nonTaxableIncome?: true
+    exemptIncome?: true
+    pensionContrib?: true
+    healthInsuranceContrib?: true
+    unionContrib?: true
+    withheldTax?: true
+  }
+
+  export type EmployeeOtherIncomeSumAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    grossIncome?: true
+    nonTaxableIncome?: true
+    exemptIncome?: true
+    pensionContrib?: true
+    healthInsuranceContrib?: true
+    unionContrib?: true
+    withheldTax?: true
+  }
+
+  export type EmployeeOtherIncomeMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    month?: true
+    employerCuit?: true
+    employerName?: true
+    grossIncome?: true
+    nonTaxableIncome?: true
+    exemptIncome?: true
+    pensionContrib?: true
+    healthInsuranceContrib?: true
+    unionContrib?: true
+    withheldTax?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeOtherIncomeMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    month?: true
+    employerCuit?: true
+    employerName?: true
+    grossIncome?: true
+    nonTaxableIncome?: true
+    exemptIncome?: true
+    pensionContrib?: true
+    healthInsuranceContrib?: true
+    unionContrib?: true
+    withheldTax?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeOtherIncomeCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    month?: true
+    employerCuit?: true
+    employerName?: true
+    grossIncome?: true
+    nonTaxableIncome?: true
+    exemptIncome?: true
+    pensionContrib?: true
+    healthInsuranceContrib?: true
+    unionContrib?: true
+    withheldTax?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeOtherIncomeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeOtherIncome to aggregate.
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeOtherIncomes to fetch.
+     */
+    orderBy?: EmployeeOtherIncomeOrderByWithRelationInput | EmployeeOtherIncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeOtherIncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeOtherIncomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeOtherIncomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeOtherIncomes
+    **/
+    _count?: true | EmployeeOtherIncomeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeOtherIncomeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeOtherIncomeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeOtherIncomeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeOtherIncomeMaxAggregateInputType
+  }
+
+  export type GetEmployeeOtherIncomeAggregateType<T extends EmployeeOtherIncomeAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeOtherIncome]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeOtherIncome[P]>
+      : GetScalarType<T[P], AggregateEmployeeOtherIncome[P]>
+  }
+
+
+
+
+  export type EmployeeOtherIncomeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeOtherIncomeWhereInput
+    orderBy?: EmployeeOtherIncomeOrderByWithAggregationInput | EmployeeOtherIncomeOrderByWithAggregationInput[]
+    by: EmployeeOtherIncomeScalarFieldEnum[] | EmployeeOtherIncomeScalarFieldEnum
+    having?: EmployeeOtherIncomeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeOtherIncomeCountAggregateInputType | true
+    _avg?: EmployeeOtherIncomeAvgAggregateInputType
+    _sum?: EmployeeOtherIncomeSumAggregateInputType
+    _min?: EmployeeOtherIncomeMinAggregateInputType
+    _max?: EmployeeOtherIncomeMaxAggregateInputType
+  }
+
+  export type EmployeeOtherIncomeGroupByOutputType = {
+    id: string
+    employeeId: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal
+    nonTaxableIncome: Decimal | null
+    exemptIncome: Decimal | null
+    pensionContrib: Decimal | null
+    healthInsuranceContrib: Decimal | null
+    unionContrib: Decimal | null
+    withheldTax: Decimal | null
+    source: string
+    createdAt: Date
+    updatedAt: Date
+    _count: EmployeeOtherIncomeCountAggregateOutputType | null
+    _avg: EmployeeOtherIncomeAvgAggregateOutputType | null
+    _sum: EmployeeOtherIncomeSumAggregateOutputType | null
+    _min: EmployeeOtherIncomeMinAggregateOutputType | null
+    _max: EmployeeOtherIncomeMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeOtherIncomeGroupByPayload<T extends EmployeeOtherIncomeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeOtherIncomeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeOtherIncomeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeOtherIncomeGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeOtherIncomeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeOtherIncomeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    month?: boolean
+    employerCuit?: boolean
+    employerName?: boolean
+    grossIncome?: boolean
+    nonTaxableIncome?: boolean
+    exemptIncome?: boolean
+    pensionContrib?: boolean
+    healthInsuranceContrib?: boolean
+    unionContrib?: boolean
+    withheldTax?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeOtherIncome"]>
+
+
+
+  export type EmployeeOtherIncomeSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    month?: boolean
+    employerCuit?: boolean
+    employerName?: boolean
+    grossIncome?: boolean
+    nonTaxableIncome?: boolean
+    exemptIncome?: boolean
+    pensionContrib?: boolean
+    healthInsuranceContrib?: boolean
+    unionContrib?: boolean
+    withheldTax?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmployeeOtherIncomeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "fiscalYear" | "month" | "employerCuit" | "employerName" | "grossIncome" | "nonTaxableIncome" | "exemptIncome" | "pensionContrib" | "healthInsuranceContrib" | "unionContrib" | "withheldTax" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["employeeOtherIncome"]>
+  export type EmployeeOtherIncomeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeOtherIncomePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeOtherIncome"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      fiscalYear: number
+      month: number
+      employerCuit: string
+      employerName: string
+      grossIncome: Prisma.Decimal
+      nonTaxableIncome: Prisma.Decimal | null
+      exemptIncome: Prisma.Decimal | null
+      pensionContrib: Prisma.Decimal | null
+      healthInsuranceContrib: Prisma.Decimal | null
+      unionContrib: Prisma.Decimal | null
+      withheldTax: Prisma.Decimal | null
+      source: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["employeeOtherIncome"]>
+    composites: {}
+  }
+
+  type EmployeeOtherIncomeGetPayload<S extends boolean | null | undefined | EmployeeOtherIncomeDefaultArgs> = $Result.GetResult<Prisma.$EmployeeOtherIncomePayload, S>
+
+  type EmployeeOtherIncomeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeOtherIncomeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeOtherIncomeCountAggregateInputType | true
+    }
+
+  export interface EmployeeOtherIncomeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeOtherIncome'], meta: { name: 'EmployeeOtherIncome' } }
+    /**
+     * Find zero or one EmployeeOtherIncome that matches the filter.
+     * @param {EmployeeOtherIncomeFindUniqueArgs} args - Arguments to find a EmployeeOtherIncome
+     * @example
+     * // Get one EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeOtherIncomeFindUniqueArgs>(args: SelectSubset<T, EmployeeOtherIncomeFindUniqueArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeOtherIncome that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeOtherIncomeFindUniqueOrThrowArgs} args - Arguments to find a EmployeeOtherIncome
+     * @example
+     * // Get one EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeOtherIncomeFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeOtherIncomeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeOtherIncome that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeFindFirstArgs} args - Arguments to find a EmployeeOtherIncome
+     * @example
+     * // Get one EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeOtherIncomeFindFirstArgs>(args?: SelectSubset<T, EmployeeOtherIncomeFindFirstArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeOtherIncome that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeFindFirstOrThrowArgs} args - Arguments to find a EmployeeOtherIncome
+     * @example
+     * // Get one EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeOtherIncomeFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeOtherIncomeFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeOtherIncomes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeOtherIncomes
+     * const employeeOtherIncomes = await prisma.employeeOtherIncome.findMany()
+     * 
+     * // Get first 10 EmployeeOtherIncomes
+     * const employeeOtherIncomes = await prisma.employeeOtherIncome.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeOtherIncomeWithIdOnly = await prisma.employeeOtherIncome.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeOtherIncomeFindManyArgs>(args?: SelectSubset<T, EmployeeOtherIncomeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeOtherIncome.
+     * @param {EmployeeOtherIncomeCreateArgs} args - Arguments to create a EmployeeOtherIncome.
+     * @example
+     * // Create one EmployeeOtherIncome
+     * const EmployeeOtherIncome = await prisma.employeeOtherIncome.create({
+     *   data: {
+     *     // ... data to create a EmployeeOtherIncome
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeOtherIncomeCreateArgs>(args: SelectSubset<T, EmployeeOtherIncomeCreateArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeOtherIncomes.
+     * @param {EmployeeOtherIncomeCreateManyArgs} args - Arguments to create many EmployeeOtherIncomes.
+     * @example
+     * // Create many EmployeeOtherIncomes
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeOtherIncomeCreateManyArgs>(args?: SelectSubset<T, EmployeeOtherIncomeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeOtherIncome.
+     * @param {EmployeeOtherIncomeDeleteArgs} args - Arguments to delete one EmployeeOtherIncome.
+     * @example
+     * // Delete one EmployeeOtherIncome
+     * const EmployeeOtherIncome = await prisma.employeeOtherIncome.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeOtherIncome
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeOtherIncomeDeleteArgs>(args: SelectSubset<T, EmployeeOtherIncomeDeleteArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeOtherIncome.
+     * @param {EmployeeOtherIncomeUpdateArgs} args - Arguments to update one EmployeeOtherIncome.
+     * @example
+     * // Update one EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeOtherIncomeUpdateArgs>(args: SelectSubset<T, EmployeeOtherIncomeUpdateArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeOtherIncomes.
+     * @param {EmployeeOtherIncomeDeleteManyArgs} args - Arguments to filter EmployeeOtherIncomes to delete.
+     * @example
+     * // Delete a few EmployeeOtherIncomes
+     * const { count } = await prisma.employeeOtherIncome.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeOtherIncomeDeleteManyArgs>(args?: SelectSubset<T, EmployeeOtherIncomeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeOtherIncomes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeOtherIncomes
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeOtherIncomeUpdateManyArgs>(args: SelectSubset<T, EmployeeOtherIncomeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeOtherIncome.
+     * @param {EmployeeOtherIncomeUpsertArgs} args - Arguments to update or create a EmployeeOtherIncome.
+     * @example
+     * // Update or create a EmployeeOtherIncome
+     * const employeeOtherIncome = await prisma.employeeOtherIncome.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeOtherIncome
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeOtherIncome we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeOtherIncomeUpsertArgs>(args: SelectSubset<T, EmployeeOtherIncomeUpsertArgs<ExtArgs>>): Prisma__EmployeeOtherIncomeClient<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeOtherIncomes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeCountArgs} args - Arguments to filter EmployeeOtherIncomes to count.
+     * @example
+     * // Count the number of EmployeeOtherIncomes
+     * const count = await prisma.employeeOtherIncome.count({
+     *   where: {
+     *     // ... the filter for the EmployeeOtherIncomes we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeOtherIncomeCountArgs>(
+      args?: Subset<T, EmployeeOtherIncomeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeOtherIncomeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeOtherIncome.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeOtherIncomeAggregateArgs>(args: Subset<T, EmployeeOtherIncomeAggregateArgs>): Prisma.PrismaPromise<GetEmployeeOtherIncomeAggregateType<T>>
+
+    /**
+     * Group by EmployeeOtherIncome.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeOtherIncomeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeOtherIncomeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeOtherIncomeGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeOtherIncomeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeOtherIncomeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeOtherIncomeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeOtherIncome model
+   */
+  readonly fields: EmployeeOtherIncomeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeOtherIncome.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeOtherIncomeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeOtherIncome model
+   */
+  interface EmployeeOtherIncomeFieldRefs {
+    readonly id: FieldRef<"EmployeeOtherIncome", 'String'>
+    readonly employeeId: FieldRef<"EmployeeOtherIncome", 'String'>
+    readonly fiscalYear: FieldRef<"EmployeeOtherIncome", 'Int'>
+    readonly month: FieldRef<"EmployeeOtherIncome", 'Int'>
+    readonly employerCuit: FieldRef<"EmployeeOtherIncome", 'String'>
+    readonly employerName: FieldRef<"EmployeeOtherIncome", 'String'>
+    readonly grossIncome: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly nonTaxableIncome: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly exemptIncome: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly pensionContrib: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly healthInsuranceContrib: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly unionContrib: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly withheldTax: FieldRef<"EmployeeOtherIncome", 'Decimal'>
+    readonly source: FieldRef<"EmployeeOtherIncome", 'String'>
+    readonly createdAt: FieldRef<"EmployeeOtherIncome", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeOtherIncome", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeOtherIncome findUnique
+   */
+  export type EmployeeOtherIncomeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeOtherIncome to fetch.
+     */
+    where: EmployeeOtherIncomeWhereUniqueInput
+  }
+
+  /**
+   * EmployeeOtherIncome findUniqueOrThrow
+   */
+  export type EmployeeOtherIncomeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeOtherIncome to fetch.
+     */
+    where: EmployeeOtherIncomeWhereUniqueInput
+  }
+
+  /**
+   * EmployeeOtherIncome findFirst
+   */
+  export type EmployeeOtherIncomeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeOtherIncome to fetch.
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeOtherIncomes to fetch.
+     */
+    orderBy?: EmployeeOtherIncomeOrderByWithRelationInput | EmployeeOtherIncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeOtherIncomes.
+     */
+    cursor?: EmployeeOtherIncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeOtherIncomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeOtherIncomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeOtherIncomes.
+     */
+    distinct?: EmployeeOtherIncomeScalarFieldEnum | EmployeeOtherIncomeScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeOtherIncome findFirstOrThrow
+   */
+  export type EmployeeOtherIncomeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeOtherIncome to fetch.
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeOtherIncomes to fetch.
+     */
+    orderBy?: EmployeeOtherIncomeOrderByWithRelationInput | EmployeeOtherIncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeOtherIncomes.
+     */
+    cursor?: EmployeeOtherIncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeOtherIncomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeOtherIncomes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeOtherIncomes.
+     */
+    distinct?: EmployeeOtherIncomeScalarFieldEnum | EmployeeOtherIncomeScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeOtherIncome findMany
+   */
+  export type EmployeeOtherIncomeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeOtherIncomes to fetch.
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeOtherIncomes to fetch.
+     */
+    orderBy?: EmployeeOtherIncomeOrderByWithRelationInput | EmployeeOtherIncomeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeOtherIncomes.
+     */
+    cursor?: EmployeeOtherIncomeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeOtherIncomes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeOtherIncomes.
+     */
+    skip?: number
+    distinct?: EmployeeOtherIncomeScalarFieldEnum | EmployeeOtherIncomeScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeOtherIncome create
+   */
+  export type EmployeeOtherIncomeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeOtherIncome.
+     */
+    data: XOR<EmployeeOtherIncomeCreateInput, EmployeeOtherIncomeUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeOtherIncome createMany
+   */
+  export type EmployeeOtherIncomeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeOtherIncomes.
+     */
+    data: EmployeeOtherIncomeCreateManyInput | EmployeeOtherIncomeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeOtherIncome update
+   */
+  export type EmployeeOtherIncomeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeOtherIncome.
+     */
+    data: XOR<EmployeeOtherIncomeUpdateInput, EmployeeOtherIncomeUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeOtherIncome to update.
+     */
+    where: EmployeeOtherIncomeWhereUniqueInput
+  }
+
+  /**
+   * EmployeeOtherIncome updateMany
+   */
+  export type EmployeeOtherIncomeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeOtherIncomes.
+     */
+    data: XOR<EmployeeOtherIncomeUpdateManyMutationInput, EmployeeOtherIncomeUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeOtherIncomes to update
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * Limit how many EmployeeOtherIncomes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeOtherIncome upsert
+   */
+  export type EmployeeOtherIncomeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeOtherIncome to update in case it exists.
+     */
+    where: EmployeeOtherIncomeWhereUniqueInput
+    /**
+     * In case the EmployeeOtherIncome found by the `where` argument doesn't exist, create a new EmployeeOtherIncome with this data.
+     */
+    create: XOR<EmployeeOtherIncomeCreateInput, EmployeeOtherIncomeUncheckedCreateInput>
+    /**
+     * In case the EmployeeOtherIncome was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeOtherIncomeUpdateInput, EmployeeOtherIncomeUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeOtherIncome delete
+   */
+  export type EmployeeOtherIncomeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeOtherIncome to delete.
+     */
+    where: EmployeeOtherIncomeWhereUniqueInput
+  }
+
+  /**
+   * EmployeeOtherIncome deleteMany
+   */
+  export type EmployeeOtherIncomeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeOtherIncomes to delete
+     */
+    where?: EmployeeOtherIncomeWhereInput
+    /**
+     * Limit how many EmployeeOtherIncomes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeOtherIncome without action
+   */
+  export type EmployeeOtherIncomeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeOtherIncome
+     */
+    select?: EmployeeOtherIncomeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeOtherIncome
+     */
+    omit?: EmployeeOtherIncomeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeOtherIncomeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeIncomeTaxPaymentOnAccount
+   */
+
+  export type AggregateEmployeeIncomeTaxPaymentOnAccount = {
+    _count: EmployeeIncomeTaxPaymentOnAccountCountAggregateOutputType | null
+    _avg: EmployeeIncomeTaxPaymentOnAccountAvgAggregateOutputType | null
+    _sum: EmployeeIncomeTaxPaymentOnAccountSumAggregateOutputType | null
+    _min: EmployeeIncomeTaxPaymentOnAccountMinAggregateOutputType | null
+    _max: EmployeeIncomeTaxPaymentOnAccountMaxAggregateOutputType | null
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountAvgAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    amount: Decimal | null
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountSumAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    amount: Decimal | null
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    paymentType: string | null
+    cuitAgent: string | null
+    agentName: string | null
+    month: number | null
+    amount: Decimal | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    fiscalYear: number | null
+    paymentType: string | null
+    cuitAgent: string | null
+    agentName: string | null
+    month: number | null
+    amount: Decimal | null
+    source: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    fiscalYear: number
+    paymentType: number
+    cuitAgent: number
+    agentName: number
+    month: number
+    amount: number
+    source: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeIncomeTaxPaymentOnAccountAvgAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    amount?: true
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountSumAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    amount?: true
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    paymentType?: true
+    cuitAgent?: true
+    agentName?: true
+    month?: true
+    amount?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    paymentType?: true
+    cuitAgent?: true
+    agentName?: true
+    month?: true
+    amount?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    fiscalYear?: true
+    paymentType?: true
+    cuitAgent?: true
+    agentName?: true
+    month?: true
+    amount?: true
+    source?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncomeTaxPaymentOnAccount to aggregate.
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxPaymentOnAccounts to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxPaymentOnAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeIncomeTaxPaymentOnAccounts
+    **/
+    _count?: true | EmployeeIncomeTaxPaymentOnAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeIncomeTaxPaymentOnAccountAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeIncomeTaxPaymentOnAccountSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeIncomeTaxPaymentOnAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeIncomeTaxPaymentOnAccountMaxAggregateInputType
+  }
+
+  export type GetEmployeeIncomeTaxPaymentOnAccountAggregateType<T extends EmployeeIncomeTaxPaymentOnAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeIncomeTaxPaymentOnAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeIncomeTaxPaymentOnAccount[P]>
+      : GetScalarType<T[P], AggregateEmployeeIncomeTaxPaymentOnAccount[P]>
+  }
+
+
+
+
+  export type EmployeeIncomeTaxPaymentOnAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithAggregationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithAggregationInput[]
+    by: EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum[] | EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum
+    having?: EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeIncomeTaxPaymentOnAccountCountAggregateInputType | true
+    _avg?: EmployeeIncomeTaxPaymentOnAccountAvgAggregateInputType
+    _sum?: EmployeeIncomeTaxPaymentOnAccountSumAggregateInputType
+    _min?: EmployeeIncomeTaxPaymentOnAccountMinAggregateInputType
+    _max?: EmployeeIncomeTaxPaymentOnAccountMaxAggregateInputType
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountGroupByOutputType = {
+    id: string
+    employeeId: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent: string | null
+    agentName: string | null
+    month: number
+    amount: Decimal
+    source: string
+    createdAt: Date
+    updatedAt: Date
+    _count: EmployeeIncomeTaxPaymentOnAccountCountAggregateOutputType | null
+    _avg: EmployeeIncomeTaxPaymentOnAccountAvgAggregateOutputType | null
+    _sum: EmployeeIncomeTaxPaymentOnAccountSumAggregateOutputType | null
+    _min: EmployeeIncomeTaxPaymentOnAccountMinAggregateOutputType | null
+    _max: EmployeeIncomeTaxPaymentOnAccountMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeIncomeTaxPaymentOnAccountGroupByPayload<T extends EmployeeIncomeTaxPaymentOnAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeIncomeTaxPaymentOnAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeIncomeTaxPaymentOnAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeIncomeTaxPaymentOnAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeIncomeTaxPaymentOnAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    paymentType?: boolean
+    cuitAgent?: boolean
+    agentName?: boolean
+    month?: boolean
+    amount?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeIncomeTaxPaymentOnAccount"]>
+
+
+
+  export type EmployeeIncomeTaxPaymentOnAccountSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    fiscalYear?: boolean
+    paymentType?: boolean
+    cuitAgent?: boolean
+    agentName?: boolean
+    month?: boolean
+    amount?: boolean
+    source?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "fiscalYear" | "paymentType" | "cuitAgent" | "agentName" | "month" | "amount" | "source" | "createdAt" | "updatedAt", ExtArgs["result"]["employeeIncomeTaxPaymentOnAccount"]>
+  export type EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeIncomeTaxPaymentOnAccount"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      fiscalYear: number
+      paymentType: string
+      cuitAgent: string | null
+      agentName: string | null
+      month: number
+      amount: Prisma.Decimal
+      source: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["employeeIncomeTaxPaymentOnAccount"]>
+    composites: {}
+  }
+
+  type EmployeeIncomeTaxPaymentOnAccountGetPayload<S extends boolean | null | undefined | EmployeeIncomeTaxPaymentOnAccountDefaultArgs> = $Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload, S>
+
+  type EmployeeIncomeTaxPaymentOnAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeIncomeTaxPaymentOnAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeIncomeTaxPaymentOnAccountCountAggregateInputType | true
+    }
+
+  export interface EmployeeIncomeTaxPaymentOnAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeIncomeTaxPaymentOnAccount'], meta: { name: 'EmployeeIncomeTaxPaymentOnAccount' } }
+    /**
+     * Find zero or one EmployeeIncomeTaxPaymentOnAccount that matches the filter.
+     * @param {EmployeeIncomeTaxPaymentOnAccountFindUniqueArgs} args - Arguments to find a EmployeeIncomeTaxPaymentOnAccount
+     * @example
+     * // Get one EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeIncomeTaxPaymentOnAccountFindUniqueArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountFindUniqueArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeIncomeTaxPaymentOnAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeIncomeTaxPaymentOnAccountFindUniqueOrThrowArgs} args - Arguments to find a EmployeeIncomeTaxPaymentOnAccount
+     * @example
+     * // Get one EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeIncomeTaxPaymentOnAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncomeTaxPaymentOnAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountFindFirstArgs} args - Arguments to find a EmployeeIncomeTaxPaymentOnAccount
+     * @example
+     * // Get one EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeIncomeTaxPaymentOnAccountFindFirstArgs>(args?: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountFindFirstArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncomeTaxPaymentOnAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountFindFirstOrThrowArgs} args - Arguments to find a EmployeeIncomeTaxPaymentOnAccount
+     * @example
+     * // Get one EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeIncomeTaxPaymentOnAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeIncomeTaxPaymentOnAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeIncomeTaxPaymentOnAccounts
+     * const employeeIncomeTaxPaymentOnAccounts = await prisma.employeeIncomeTaxPaymentOnAccount.findMany()
+     * 
+     * // Get first 10 EmployeeIncomeTaxPaymentOnAccounts
+     * const employeeIncomeTaxPaymentOnAccounts = await prisma.employeeIncomeTaxPaymentOnAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeIncomeTaxPaymentOnAccountWithIdOnly = await prisma.employeeIncomeTaxPaymentOnAccount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeIncomeTaxPaymentOnAccountFindManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeIncomeTaxPaymentOnAccount.
+     * @param {EmployeeIncomeTaxPaymentOnAccountCreateArgs} args - Arguments to create a EmployeeIncomeTaxPaymentOnAccount.
+     * @example
+     * // Create one EmployeeIncomeTaxPaymentOnAccount
+     * const EmployeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.create({
+     *   data: {
+     *     // ... data to create a EmployeeIncomeTaxPaymentOnAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeIncomeTaxPaymentOnAccountCreateArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountCreateArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeIncomeTaxPaymentOnAccounts.
+     * @param {EmployeeIncomeTaxPaymentOnAccountCreateManyArgs} args - Arguments to create many EmployeeIncomeTaxPaymentOnAccounts.
+     * @example
+     * // Create many EmployeeIncomeTaxPaymentOnAccounts
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeIncomeTaxPaymentOnAccountCreateManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeIncomeTaxPaymentOnAccount.
+     * @param {EmployeeIncomeTaxPaymentOnAccountDeleteArgs} args - Arguments to delete one EmployeeIncomeTaxPaymentOnAccount.
+     * @example
+     * // Delete one EmployeeIncomeTaxPaymentOnAccount
+     * const EmployeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeIncomeTaxPaymentOnAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeIncomeTaxPaymentOnAccountDeleteArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountDeleteArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeIncomeTaxPaymentOnAccount.
+     * @param {EmployeeIncomeTaxPaymentOnAccountUpdateArgs} args - Arguments to update one EmployeeIncomeTaxPaymentOnAccount.
+     * @example
+     * // Update one EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeIncomeTaxPaymentOnAccountUpdateArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountUpdateArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeIncomeTaxPaymentOnAccounts.
+     * @param {EmployeeIncomeTaxPaymentOnAccountDeleteManyArgs} args - Arguments to filter EmployeeIncomeTaxPaymentOnAccounts to delete.
+     * @example
+     * // Delete a few EmployeeIncomeTaxPaymentOnAccounts
+     * const { count } = await prisma.employeeIncomeTaxPaymentOnAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeIncomeTaxPaymentOnAccountDeleteManyArgs>(args?: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeIncomeTaxPaymentOnAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeIncomeTaxPaymentOnAccounts
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeIncomeTaxPaymentOnAccountUpdateManyArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeIncomeTaxPaymentOnAccount.
+     * @param {EmployeeIncomeTaxPaymentOnAccountUpsertArgs} args - Arguments to update or create a EmployeeIncomeTaxPaymentOnAccount.
+     * @example
+     * // Update or create a EmployeeIncomeTaxPaymentOnAccount
+     * const employeeIncomeTaxPaymentOnAccount = await prisma.employeeIncomeTaxPaymentOnAccount.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeIncomeTaxPaymentOnAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeIncomeTaxPaymentOnAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeIncomeTaxPaymentOnAccountUpsertArgs>(args: SelectSubset<T, EmployeeIncomeTaxPaymentOnAccountUpsertArgs<ExtArgs>>): Prisma__EmployeeIncomeTaxPaymentOnAccountClient<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeIncomeTaxPaymentOnAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountCountArgs} args - Arguments to filter EmployeeIncomeTaxPaymentOnAccounts to count.
+     * @example
+     * // Count the number of EmployeeIncomeTaxPaymentOnAccounts
+     * const count = await prisma.employeeIncomeTaxPaymentOnAccount.count({
+     *   where: {
+     *     // ... the filter for the EmployeeIncomeTaxPaymentOnAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeIncomeTaxPaymentOnAccountCountArgs>(
+      args?: Subset<T, EmployeeIncomeTaxPaymentOnAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeIncomeTaxPaymentOnAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeIncomeTaxPaymentOnAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeIncomeTaxPaymentOnAccountAggregateArgs>(args: Subset<T, EmployeeIncomeTaxPaymentOnAccountAggregateArgs>): Prisma.PrismaPromise<GetEmployeeIncomeTaxPaymentOnAccountAggregateType<T>>
+
+    /**
+     * Group by EmployeeIncomeTaxPaymentOnAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncomeTaxPaymentOnAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeIncomeTaxPaymentOnAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeIncomeTaxPaymentOnAccountGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeIncomeTaxPaymentOnAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeIncomeTaxPaymentOnAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeIncomeTaxPaymentOnAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeIncomeTaxPaymentOnAccount model
+   */
+  readonly fields: EmployeeIncomeTaxPaymentOnAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeIncomeTaxPaymentOnAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeIncomeTaxPaymentOnAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeIncomeTaxPaymentOnAccount model
+   */
+  interface EmployeeIncomeTaxPaymentOnAccountFieldRefs {
+    readonly id: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly employeeId: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly fiscalYear: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'Int'>
+    readonly paymentType: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly cuitAgent: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly agentName: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly month: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'Int'>
+    readonly amount: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'Decimal'>
+    readonly source: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'String'>
+    readonly createdAt: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeIncomeTaxPaymentOnAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount findUnique
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxPaymentOnAccount to fetch.
+     */
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount findUniqueOrThrow
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxPaymentOnAccount to fetch.
+     */
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount findFirst
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxPaymentOnAccount to fetch.
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxPaymentOnAccounts to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    cursor?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxPaymentOnAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    distinct?: EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum | EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount findFirstOrThrow
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxPaymentOnAccount to fetch.
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxPaymentOnAccounts to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    cursor?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxPaymentOnAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    distinct?: EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum | EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount findMany
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncomeTaxPaymentOnAccounts to fetch.
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncomeTaxPaymentOnAccounts to fetch.
+     */
+    orderBy?: EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput | EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    cursor?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncomeTaxPaymentOnAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    skip?: number
+    distinct?: EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum | EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount create
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeIncomeTaxPaymentOnAccount.
+     */
+    data: XOR<EmployeeIncomeTaxPaymentOnAccountCreateInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount createMany
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    data: EmployeeIncomeTaxPaymentOnAccountCreateManyInput | EmployeeIncomeTaxPaymentOnAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount update
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeIncomeTaxPaymentOnAccount.
+     */
+    data: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeIncomeTaxPaymentOnAccount to update.
+     */
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount updateMany
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeIncomeTaxPaymentOnAccounts.
+     */
+    data: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateManyMutationInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeIncomeTaxPaymentOnAccounts to update
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * Limit how many EmployeeIncomeTaxPaymentOnAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount upsert
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeIncomeTaxPaymentOnAccount to update in case it exists.
+     */
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    /**
+     * In case the EmployeeIncomeTaxPaymentOnAccount found by the `where` argument doesn't exist, create a new EmployeeIncomeTaxPaymentOnAccount with this data.
+     */
+    create: XOR<EmployeeIncomeTaxPaymentOnAccountCreateInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateInput>
+    /**
+     * In case the EmployeeIncomeTaxPaymentOnAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount delete
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeIncomeTaxPaymentOnAccount to delete.
+     */
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount deleteMany
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncomeTaxPaymentOnAccounts to delete
+     */
+    where?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    /**
+     * Limit how many EmployeeIncomeTaxPaymentOnAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncomeTaxPaymentOnAccount without action
+   */
+  export type EmployeeIncomeTaxPaymentOnAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    select?: EmployeeIncomeTaxPaymentOnAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncomeTaxPaymentOnAccount
+     */
+    omit?: EmployeeIncomeTaxPaymentOnAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncomeTaxPaymentOnAccountInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SiradigImport
+   */
+
+  export type AggregateSiradigImport = {
+    _count: SiradigImportCountAggregateOutputType | null
+    _avg: SiradigImportAvgAggregateOutputType | null
+    _sum: SiradigImportSumAggregateOutputType | null
+    _min: SiradigImportMinAggregateOutputType | null
+    _max: SiradigImportMaxAggregateOutputType | null
+  }
+
+  export type SiradigImportAvgAggregateOutputType = {
+    fiscalYear: number | null
+    totalRecords: number | null
+    processedEmployees: number | null
+  }
+
+  export type SiradigImportSumAggregateOutputType = {
+    fiscalYear: number | null
+    totalRecords: number | null
+    processedEmployees: number | null
+  }
+
+  export type SiradigImportMinAggregateOutputType = {
+    id: string | null
+    fiscalYear: number | null
+    filename: string | null
+    xmlVersion: string | null
+    presentationDate: Date | null
+    totalRecords: number | null
+    processedEmployees: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SiradigImportMaxAggregateOutputType = {
+    id: string | null
+    fiscalYear: number | null
+    filename: string | null
+    xmlVersion: string | null
+    presentationDate: Date | null
+    totalRecords: number | null
+    processedEmployees: number | null
+    status: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SiradigImportCountAggregateOutputType = {
+    id: number
+    fiscalYear: number
+    filename: number
+    xmlVersion: number
+    presentationDate: number
+    totalRecords: number
+    processedEmployees: number
+    status: number
+    summary: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SiradigImportAvgAggregateInputType = {
+    fiscalYear?: true
+    totalRecords?: true
+    processedEmployees?: true
+  }
+
+  export type SiradigImportSumAggregateInputType = {
+    fiscalYear?: true
+    totalRecords?: true
+    processedEmployees?: true
+  }
+
+  export type SiradigImportMinAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    filename?: true
+    xmlVersion?: true
+    presentationDate?: true
+    totalRecords?: true
+    processedEmployees?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SiradigImportMaxAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    filename?: true
+    xmlVersion?: true
+    presentationDate?: true
+    totalRecords?: true
+    processedEmployees?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SiradigImportCountAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    filename?: true
+    xmlVersion?: true
+    presentationDate?: true
+    totalRecords?: true
+    processedEmployees?: true
+    status?: true
+    summary?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SiradigImportAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SiradigImport to aggregate.
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SiradigImports to fetch.
+     */
+    orderBy?: SiradigImportOrderByWithRelationInput | SiradigImportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SiradigImportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SiradigImports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SiradigImports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SiradigImports
+    **/
+    _count?: true | SiradigImportCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SiradigImportAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SiradigImportSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SiradigImportMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SiradigImportMaxAggregateInputType
+  }
+
+  export type GetSiradigImportAggregateType<T extends SiradigImportAggregateArgs> = {
+        [P in keyof T & keyof AggregateSiradigImport]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSiradigImport[P]>
+      : GetScalarType<T[P], AggregateSiradigImport[P]>
+  }
+
+
+
+
+  export type SiradigImportGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SiradigImportWhereInput
+    orderBy?: SiradigImportOrderByWithAggregationInput | SiradigImportOrderByWithAggregationInput[]
+    by: SiradigImportScalarFieldEnum[] | SiradigImportScalarFieldEnum
+    having?: SiradigImportScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SiradigImportCountAggregateInputType | true
+    _avg?: SiradigImportAvgAggregateInputType
+    _sum?: SiradigImportSumAggregateInputType
+    _min?: SiradigImportMinAggregateInputType
+    _max?: SiradigImportMaxAggregateInputType
+  }
+
+  export type SiradigImportGroupByOutputType = {
+    id: string
+    fiscalYear: number
+    filename: string
+    xmlVersion: string | null
+    presentationDate: Date | null
+    totalRecords: number
+    processedEmployees: number
+    status: string
+    summary: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SiradigImportCountAggregateOutputType | null
+    _avg: SiradigImportAvgAggregateOutputType | null
+    _sum: SiradigImportSumAggregateOutputType | null
+    _min: SiradigImportMinAggregateOutputType | null
+    _max: SiradigImportMaxAggregateOutputType | null
+  }
+
+  type GetSiradigImportGroupByPayload<T extends SiradigImportGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SiradigImportGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SiradigImportGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SiradigImportGroupByOutputType[P]>
+            : GetScalarType<T[P], SiradigImportGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SiradigImportSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fiscalYear?: boolean
+    filename?: boolean
+    xmlVersion?: boolean
+    presentationDate?: boolean
+    totalRecords?: boolean
+    processedEmployees?: boolean
+    status?: boolean
+    summary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["siradigImport"]>
+
+
+
+  export type SiradigImportSelectScalar = {
+    id?: boolean
+    fiscalYear?: boolean
+    filename?: boolean
+    xmlVersion?: boolean
+    presentationDate?: boolean
+    totalRecords?: boolean
+    processedEmployees?: boolean
+    status?: boolean
+    summary?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SiradigImportOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fiscalYear" | "filename" | "xmlVersion" | "presentationDate" | "totalRecords" | "processedEmployees" | "status" | "summary" | "createdAt" | "updatedAt", ExtArgs["result"]["siradigImport"]>
+
+  export type $SiradigImportPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SiradigImport"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fiscalYear: number
+      filename: string
+      xmlVersion: string | null
+      presentationDate: Date | null
+      totalRecords: number
+      processedEmployees: number
+      status: string
+      summary: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["siradigImport"]>
+    composites: {}
+  }
+
+  type SiradigImportGetPayload<S extends boolean | null | undefined | SiradigImportDefaultArgs> = $Result.GetResult<Prisma.$SiradigImportPayload, S>
+
+  type SiradigImportCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SiradigImportFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SiradigImportCountAggregateInputType | true
+    }
+
+  export interface SiradigImportDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SiradigImport'], meta: { name: 'SiradigImport' } }
+    /**
+     * Find zero or one SiradigImport that matches the filter.
+     * @param {SiradigImportFindUniqueArgs} args - Arguments to find a SiradigImport
+     * @example
+     * // Get one SiradigImport
+     * const siradigImport = await prisma.siradigImport.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SiradigImportFindUniqueArgs>(args: SelectSubset<T, SiradigImportFindUniqueArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SiradigImport that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SiradigImportFindUniqueOrThrowArgs} args - Arguments to find a SiradigImport
+     * @example
+     * // Get one SiradigImport
+     * const siradigImport = await prisma.siradigImport.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SiradigImportFindUniqueOrThrowArgs>(args: SelectSubset<T, SiradigImportFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SiradigImport that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportFindFirstArgs} args - Arguments to find a SiradigImport
+     * @example
+     * // Get one SiradigImport
+     * const siradigImport = await prisma.siradigImport.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SiradigImportFindFirstArgs>(args?: SelectSubset<T, SiradigImportFindFirstArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SiradigImport that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportFindFirstOrThrowArgs} args - Arguments to find a SiradigImport
+     * @example
+     * // Get one SiradigImport
+     * const siradigImport = await prisma.siradigImport.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SiradigImportFindFirstOrThrowArgs>(args?: SelectSubset<T, SiradigImportFindFirstOrThrowArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SiradigImports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SiradigImports
+     * const siradigImports = await prisma.siradigImport.findMany()
+     * 
+     * // Get first 10 SiradigImports
+     * const siradigImports = await prisma.siradigImport.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const siradigImportWithIdOnly = await prisma.siradigImport.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SiradigImportFindManyArgs>(args?: SelectSubset<T, SiradigImportFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SiradigImport.
+     * @param {SiradigImportCreateArgs} args - Arguments to create a SiradigImport.
+     * @example
+     * // Create one SiradigImport
+     * const SiradigImport = await prisma.siradigImport.create({
+     *   data: {
+     *     // ... data to create a SiradigImport
+     *   }
+     * })
+     * 
+     */
+    create<T extends SiradigImportCreateArgs>(args: SelectSubset<T, SiradigImportCreateArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SiradigImports.
+     * @param {SiradigImportCreateManyArgs} args - Arguments to create many SiradigImports.
+     * @example
+     * // Create many SiradigImports
+     * const siradigImport = await prisma.siradigImport.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SiradigImportCreateManyArgs>(args?: SelectSubset<T, SiradigImportCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SiradigImport.
+     * @param {SiradigImportDeleteArgs} args - Arguments to delete one SiradigImport.
+     * @example
+     * // Delete one SiradigImport
+     * const SiradigImport = await prisma.siradigImport.delete({
+     *   where: {
+     *     // ... filter to delete one SiradigImport
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SiradigImportDeleteArgs>(args: SelectSubset<T, SiradigImportDeleteArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SiradigImport.
+     * @param {SiradigImportUpdateArgs} args - Arguments to update one SiradigImport.
+     * @example
+     * // Update one SiradigImport
+     * const siradigImport = await prisma.siradigImport.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SiradigImportUpdateArgs>(args: SelectSubset<T, SiradigImportUpdateArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SiradigImports.
+     * @param {SiradigImportDeleteManyArgs} args - Arguments to filter SiradigImports to delete.
+     * @example
+     * // Delete a few SiradigImports
+     * const { count } = await prisma.siradigImport.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SiradigImportDeleteManyArgs>(args?: SelectSubset<T, SiradigImportDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SiradigImports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SiradigImports
+     * const siradigImport = await prisma.siradigImport.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SiradigImportUpdateManyArgs>(args: SelectSubset<T, SiradigImportUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SiradigImport.
+     * @param {SiradigImportUpsertArgs} args - Arguments to update or create a SiradigImport.
+     * @example
+     * // Update or create a SiradigImport
+     * const siradigImport = await prisma.siradigImport.upsert({
+     *   create: {
+     *     // ... data to create a SiradigImport
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SiradigImport we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SiradigImportUpsertArgs>(args: SelectSubset<T, SiradigImportUpsertArgs<ExtArgs>>): Prisma__SiradigImportClient<$Result.GetResult<Prisma.$SiradigImportPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SiradigImports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportCountArgs} args - Arguments to filter SiradigImports to count.
+     * @example
+     * // Count the number of SiradigImports
+     * const count = await prisma.siradigImport.count({
+     *   where: {
+     *     // ... the filter for the SiradigImports we want to count
+     *   }
+     * })
+    **/
+    count<T extends SiradigImportCountArgs>(
+      args?: Subset<T, SiradigImportCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SiradigImportCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SiradigImport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SiradigImportAggregateArgs>(args: Subset<T, SiradigImportAggregateArgs>): Prisma.PrismaPromise<GetSiradigImportAggregateType<T>>
+
+    /**
+     * Group by SiradigImport.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SiradigImportGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SiradigImportGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SiradigImportGroupByArgs['orderBy'] }
+        : { orderBy?: SiradigImportGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SiradigImportGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSiradigImportGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SiradigImport model
+   */
+  readonly fields: SiradigImportFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SiradigImport.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SiradigImportClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SiradigImport model
+   */
+  interface SiradigImportFieldRefs {
+    readonly id: FieldRef<"SiradigImport", 'String'>
+    readonly fiscalYear: FieldRef<"SiradigImport", 'Int'>
+    readonly filename: FieldRef<"SiradigImport", 'String'>
+    readonly xmlVersion: FieldRef<"SiradigImport", 'String'>
+    readonly presentationDate: FieldRef<"SiradigImport", 'DateTime'>
+    readonly totalRecords: FieldRef<"SiradigImport", 'Int'>
+    readonly processedEmployees: FieldRef<"SiradigImport", 'Int'>
+    readonly status: FieldRef<"SiradigImport", 'String'>
+    readonly summary: FieldRef<"SiradigImport", 'Json'>
+    readonly createdAt: FieldRef<"SiradigImport", 'DateTime'>
+    readonly updatedAt: FieldRef<"SiradigImport", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SiradigImport findUnique
+   */
+  export type SiradigImportFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter, which SiradigImport to fetch.
+     */
+    where: SiradigImportWhereUniqueInput
+  }
+
+  /**
+   * SiradigImport findUniqueOrThrow
+   */
+  export type SiradigImportFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter, which SiradigImport to fetch.
+     */
+    where: SiradigImportWhereUniqueInput
+  }
+
+  /**
+   * SiradigImport findFirst
+   */
+  export type SiradigImportFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter, which SiradigImport to fetch.
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SiradigImports to fetch.
+     */
+    orderBy?: SiradigImportOrderByWithRelationInput | SiradigImportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SiradigImports.
+     */
+    cursor?: SiradigImportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SiradigImports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SiradigImports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SiradigImports.
+     */
+    distinct?: SiradigImportScalarFieldEnum | SiradigImportScalarFieldEnum[]
+  }
+
+  /**
+   * SiradigImport findFirstOrThrow
+   */
+  export type SiradigImportFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter, which SiradigImport to fetch.
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SiradigImports to fetch.
+     */
+    orderBy?: SiradigImportOrderByWithRelationInput | SiradigImportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SiradigImports.
+     */
+    cursor?: SiradigImportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SiradigImports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SiradigImports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SiradigImports.
+     */
+    distinct?: SiradigImportScalarFieldEnum | SiradigImportScalarFieldEnum[]
+  }
+
+  /**
+   * SiradigImport findMany
+   */
+  export type SiradigImportFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter, which SiradigImports to fetch.
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SiradigImports to fetch.
+     */
+    orderBy?: SiradigImportOrderByWithRelationInput | SiradigImportOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SiradigImports.
+     */
+    cursor?: SiradigImportWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SiradigImports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SiradigImports.
+     */
+    skip?: number
+    distinct?: SiradigImportScalarFieldEnum | SiradigImportScalarFieldEnum[]
+  }
+
+  /**
+   * SiradigImport create
+   */
+  export type SiradigImportCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * The data needed to create a SiradigImport.
+     */
+    data: XOR<SiradigImportCreateInput, SiradigImportUncheckedCreateInput>
+  }
+
+  /**
+   * SiradigImport createMany
+   */
+  export type SiradigImportCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SiradigImports.
+     */
+    data: SiradigImportCreateManyInput | SiradigImportCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SiradigImport update
+   */
+  export type SiradigImportUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * The data needed to update a SiradigImport.
+     */
+    data: XOR<SiradigImportUpdateInput, SiradigImportUncheckedUpdateInput>
+    /**
+     * Choose, which SiradigImport to update.
+     */
+    where: SiradigImportWhereUniqueInput
+  }
+
+  /**
+   * SiradigImport updateMany
+   */
+  export type SiradigImportUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SiradigImports.
+     */
+    data: XOR<SiradigImportUpdateManyMutationInput, SiradigImportUncheckedUpdateManyInput>
+    /**
+     * Filter which SiradigImports to update
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * Limit how many SiradigImports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SiradigImport upsert
+   */
+  export type SiradigImportUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * The filter to search for the SiradigImport to update in case it exists.
+     */
+    where: SiradigImportWhereUniqueInput
+    /**
+     * In case the SiradigImport found by the `where` argument doesn't exist, create a new SiradigImport with this data.
+     */
+    create: XOR<SiradigImportCreateInput, SiradigImportUncheckedCreateInput>
+    /**
+     * In case the SiradigImport was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SiradigImportUpdateInput, SiradigImportUncheckedUpdateInput>
+  }
+
+  /**
+   * SiradigImport delete
+   */
+  export type SiradigImportDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+    /**
+     * Filter which SiradigImport to delete.
+     */
+    where: SiradigImportWhereUniqueInput
+  }
+
+  /**
+   * SiradigImport deleteMany
+   */
+  export type SiradigImportDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SiradigImports to delete
+     */
+    where?: SiradigImportWhereInput
+    /**
+     * Limit how many SiradigImports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SiradigImport without action
+   */
+  export type SiradigImportDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SiradigImport
+     */
+    select?: SiradigImportSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SiradigImport
+     */
+    omit?: SiradigImportOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model IncomeTaxSettlement
+   */
+
+  export type AggregateIncomeTaxSettlement = {
+    _count: IncomeTaxSettlementCountAggregateOutputType | null
+    _avg: IncomeTaxSettlementAvgAggregateOutputType | null
+    _sum: IncomeTaxSettlementSumAggregateOutputType | null
+    _min: IncomeTaxSettlementMinAggregateOutputType | null
+    _max: IncomeTaxSettlementMaxAggregateOutputType | null
+  }
+
+  export type IncomeTaxSettlementAvgAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    totalEmployeesEvaluated: number | null
+    totalEmployeesWithheld: number | null
+    totalWithheldAmount: Decimal | null
+    totalRefundAmount: Decimal | null
+  }
+
+  export type IncomeTaxSettlementSumAggregateOutputType = {
+    fiscalYear: number | null
+    month: number | null
+    totalEmployeesEvaluated: number | null
+    totalEmployeesWithheld: number | null
+    totalWithheldAmount: Decimal | null
+    totalRefundAmount: Decimal | null
+  }
+
+  export type IncomeTaxSettlementMinAggregateOutputType = {
+    id: string | null
+    fiscalYear: number | null
+    month: number | null
+    settlementType: string | null
+    status: string | null
+    description: string | null
+    totalEmployeesEvaluated: number | null
+    totalEmployeesWithheld: number | null
+    totalWithheldAmount: Decimal | null
+    totalRefundAmount: Decimal | null
+    withholdingConceptId: string | null
+    refundConceptId: string | null
+    exportedPayrollPeriodId: string | null
+    exportedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxSettlementMaxAggregateOutputType = {
+    id: string | null
+    fiscalYear: number | null
+    month: number | null
+    settlementType: string | null
+    status: string | null
+    description: string | null
+    totalEmployeesEvaluated: number | null
+    totalEmployeesWithheld: number | null
+    totalWithheldAmount: Decimal | null
+    totalRefundAmount: Decimal | null
+    withholdingConceptId: string | null
+    refundConceptId: string | null
+    exportedPayrollPeriodId: string | null
+    exportedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxSettlementCountAggregateOutputType = {
+    id: number
+    fiscalYear: number
+    month: number
+    settlementType: number
+    status: number
+    description: number
+    totalEmployeesEvaluated: number
+    totalEmployeesWithheld: number
+    totalWithheldAmount: number
+    totalRefundAmount: number
+    withholdingConceptId: number
+    refundConceptId: number
+    exportedPayrollPeriodId: number
+    exportedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IncomeTaxSettlementAvgAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    totalEmployeesEvaluated?: true
+    totalEmployeesWithheld?: true
+    totalWithheldAmount?: true
+    totalRefundAmount?: true
+  }
+
+  export type IncomeTaxSettlementSumAggregateInputType = {
+    fiscalYear?: true
+    month?: true
+    totalEmployeesEvaluated?: true
+    totalEmployeesWithheld?: true
+    totalWithheldAmount?: true
+    totalRefundAmount?: true
+  }
+
+  export type IncomeTaxSettlementMinAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    month?: true
+    settlementType?: true
+    status?: true
+    description?: true
+    totalEmployeesEvaluated?: true
+    totalEmployeesWithheld?: true
+    totalWithheldAmount?: true
+    totalRefundAmount?: true
+    withholdingConceptId?: true
+    refundConceptId?: true
+    exportedPayrollPeriodId?: true
+    exportedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxSettlementMaxAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    month?: true
+    settlementType?: true
+    status?: true
+    description?: true
+    totalEmployeesEvaluated?: true
+    totalEmployeesWithheld?: true
+    totalWithheldAmount?: true
+    totalRefundAmount?: true
+    withholdingConceptId?: true
+    refundConceptId?: true
+    exportedPayrollPeriodId?: true
+    exportedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxSettlementCountAggregateInputType = {
+    id?: true
+    fiscalYear?: true
+    month?: true
+    settlementType?: true
+    status?: true
+    description?: true
+    totalEmployeesEvaluated?: true
+    totalEmployeesWithheld?: true
+    totalWithheldAmount?: true
+    totalRefundAmount?: true
+    withholdingConceptId?: true
+    refundConceptId?: true
+    exportedPayrollPeriodId?: true
+    exportedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IncomeTaxSettlementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxSettlement to aggregate.
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlements to fetch.
+     */
+    orderBy?: IncomeTaxSettlementOrderByWithRelationInput | IncomeTaxSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeTaxSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncomeTaxSettlements
+    **/
+    _count?: true | IncomeTaxSettlementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeTaxSettlementAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeTaxSettlementSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeTaxSettlementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeTaxSettlementMaxAggregateInputType
+  }
+
+  export type GetIncomeTaxSettlementAggregateType<T extends IncomeTaxSettlementAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncomeTaxSettlement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncomeTaxSettlement[P]>
+      : GetScalarType<T[P], AggregateIncomeTaxSettlement[P]>
+  }
+
+
+
+
+  export type IncomeTaxSettlementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxSettlementWhereInput
+    orderBy?: IncomeTaxSettlementOrderByWithAggregationInput | IncomeTaxSettlementOrderByWithAggregationInput[]
+    by: IncomeTaxSettlementScalarFieldEnum[] | IncomeTaxSettlementScalarFieldEnum
+    having?: IncomeTaxSettlementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeTaxSettlementCountAggregateInputType | true
+    _avg?: IncomeTaxSettlementAvgAggregateInputType
+    _sum?: IncomeTaxSettlementSumAggregateInputType
+    _min?: IncomeTaxSettlementMinAggregateInputType
+    _max?: IncomeTaxSettlementMaxAggregateInputType
+  }
+
+  export type IncomeTaxSettlementGroupByOutputType = {
+    id: string
+    fiscalYear: number
+    month: number
+    settlementType: string
+    status: string
+    description: string | null
+    totalEmployeesEvaluated: number
+    totalEmployeesWithheld: number
+    totalWithheldAmount: Decimal
+    totalRefundAmount: Decimal
+    withholdingConceptId: string | null
+    refundConceptId: string | null
+    exportedPayrollPeriodId: string | null
+    exportedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: IncomeTaxSettlementCountAggregateOutputType | null
+    _avg: IncomeTaxSettlementAvgAggregateOutputType | null
+    _sum: IncomeTaxSettlementSumAggregateOutputType | null
+    _min: IncomeTaxSettlementMinAggregateOutputType | null
+    _max: IncomeTaxSettlementMaxAggregateOutputType | null
+  }
+
+  type GetIncomeTaxSettlementGroupByPayload<T extends IncomeTaxSettlementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeTaxSettlementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeTaxSettlementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeTaxSettlementGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeTaxSettlementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeTaxSettlementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fiscalYear?: boolean
+    month?: boolean
+    settlementType?: boolean
+    status?: boolean
+    description?: boolean
+    totalEmployeesEvaluated?: boolean
+    totalEmployeesWithheld?: boolean
+    totalWithheldAmount?: boolean
+    totalRefundAmount?: boolean
+    withholdingConceptId?: boolean
+    refundConceptId?: boolean
+    exportedPayrollPeriodId?: boolean
+    exportedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    details?: boolean | IncomeTaxSettlement$detailsArgs<ExtArgs>
+    _count?: boolean | IncomeTaxSettlementCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incomeTaxSettlement"]>
+
+
+
+  export type IncomeTaxSettlementSelectScalar = {
+    id?: boolean
+    fiscalYear?: boolean
+    month?: boolean
+    settlementType?: boolean
+    status?: boolean
+    description?: boolean
+    totalEmployeesEvaluated?: boolean
+    totalEmployeesWithheld?: boolean
+    totalWithheldAmount?: boolean
+    totalRefundAmount?: boolean
+    withholdingConceptId?: boolean
+    refundConceptId?: boolean
+    exportedPayrollPeriodId?: boolean
+    exportedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IncomeTaxSettlementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fiscalYear" | "month" | "settlementType" | "status" | "description" | "totalEmployeesEvaluated" | "totalEmployeesWithheld" | "totalWithheldAmount" | "totalRefundAmount" | "withholdingConceptId" | "refundConceptId" | "exportedPayrollPeriodId" | "exportedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["incomeTaxSettlement"]>
+  export type IncomeTaxSettlementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    details?: boolean | IncomeTaxSettlement$detailsArgs<ExtArgs>
+    _count?: boolean | IncomeTaxSettlementCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $IncomeTaxSettlementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncomeTaxSettlement"
+    objects: {
+      details: Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fiscalYear: number
+      month: number
+      settlementType: string
+      status: string
+      description: string | null
+      totalEmployeesEvaluated: number
+      totalEmployeesWithheld: number
+      totalWithheldAmount: Prisma.Decimal
+      totalRefundAmount: Prisma.Decimal
+      withholdingConceptId: string | null
+      refundConceptId: string | null
+      exportedPayrollPeriodId: string | null
+      exportedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["incomeTaxSettlement"]>
+    composites: {}
+  }
+
+  type IncomeTaxSettlementGetPayload<S extends boolean | null | undefined | IncomeTaxSettlementDefaultArgs> = $Result.GetResult<Prisma.$IncomeTaxSettlementPayload, S>
+
+  type IncomeTaxSettlementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeTaxSettlementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeTaxSettlementCountAggregateInputType | true
+    }
+
+  export interface IncomeTaxSettlementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncomeTaxSettlement'], meta: { name: 'IncomeTaxSettlement' } }
+    /**
+     * Find zero or one IncomeTaxSettlement that matches the filter.
+     * @param {IncomeTaxSettlementFindUniqueArgs} args - Arguments to find a IncomeTaxSettlement
+     * @example
+     * // Get one IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeTaxSettlementFindUniqueArgs>(args: SelectSubset<T, IncomeTaxSettlementFindUniqueArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncomeTaxSettlement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeTaxSettlementFindUniqueOrThrowArgs} args - Arguments to find a IncomeTaxSettlement
+     * @example
+     * // Get one IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeTaxSettlementFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeTaxSettlementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxSettlement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementFindFirstArgs} args - Arguments to find a IncomeTaxSettlement
+     * @example
+     * // Get one IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeTaxSettlementFindFirstArgs>(args?: SelectSubset<T, IncomeTaxSettlementFindFirstArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxSettlement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementFindFirstOrThrowArgs} args - Arguments to find a IncomeTaxSettlement
+     * @example
+     * // Get one IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeTaxSettlementFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeTaxSettlementFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncomeTaxSettlements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncomeTaxSettlements
+     * const incomeTaxSettlements = await prisma.incomeTaxSettlement.findMany()
+     * 
+     * // Get first 10 IncomeTaxSettlements
+     * const incomeTaxSettlements = await prisma.incomeTaxSettlement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeTaxSettlementWithIdOnly = await prisma.incomeTaxSettlement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeTaxSettlementFindManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncomeTaxSettlement.
+     * @param {IncomeTaxSettlementCreateArgs} args - Arguments to create a IncomeTaxSettlement.
+     * @example
+     * // Create one IncomeTaxSettlement
+     * const IncomeTaxSettlement = await prisma.incomeTaxSettlement.create({
+     *   data: {
+     *     // ... data to create a IncomeTaxSettlement
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeTaxSettlementCreateArgs>(args: SelectSubset<T, IncomeTaxSettlementCreateArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncomeTaxSettlements.
+     * @param {IncomeTaxSettlementCreateManyArgs} args - Arguments to create many IncomeTaxSettlements.
+     * @example
+     * // Create many IncomeTaxSettlements
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeTaxSettlementCreateManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncomeTaxSettlement.
+     * @param {IncomeTaxSettlementDeleteArgs} args - Arguments to delete one IncomeTaxSettlement.
+     * @example
+     * // Delete one IncomeTaxSettlement
+     * const IncomeTaxSettlement = await prisma.incomeTaxSettlement.delete({
+     *   where: {
+     *     // ... filter to delete one IncomeTaxSettlement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeTaxSettlementDeleteArgs>(args: SelectSubset<T, IncomeTaxSettlementDeleteArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncomeTaxSettlement.
+     * @param {IncomeTaxSettlementUpdateArgs} args - Arguments to update one IncomeTaxSettlement.
+     * @example
+     * // Update one IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeTaxSettlementUpdateArgs>(args: SelectSubset<T, IncomeTaxSettlementUpdateArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncomeTaxSettlements.
+     * @param {IncomeTaxSettlementDeleteManyArgs} args - Arguments to filter IncomeTaxSettlements to delete.
+     * @example
+     * // Delete a few IncomeTaxSettlements
+     * const { count } = await prisma.incomeTaxSettlement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeTaxSettlementDeleteManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncomeTaxSettlements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncomeTaxSettlements
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeTaxSettlementUpdateManyArgs>(args: SelectSubset<T, IncomeTaxSettlementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncomeTaxSettlement.
+     * @param {IncomeTaxSettlementUpsertArgs} args - Arguments to update or create a IncomeTaxSettlement.
+     * @example
+     * // Update or create a IncomeTaxSettlement
+     * const incomeTaxSettlement = await prisma.incomeTaxSettlement.upsert({
+     *   create: {
+     *     // ... data to create a IncomeTaxSettlement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncomeTaxSettlement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeTaxSettlementUpsertArgs>(args: SelectSubset<T, IncomeTaxSettlementUpsertArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncomeTaxSettlements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementCountArgs} args - Arguments to filter IncomeTaxSettlements to count.
+     * @example
+     * // Count the number of IncomeTaxSettlements
+     * const count = await prisma.incomeTaxSettlement.count({
+     *   where: {
+     *     // ... the filter for the IncomeTaxSettlements we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeTaxSettlementCountArgs>(
+      args?: Subset<T, IncomeTaxSettlementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeTaxSettlementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncomeTaxSettlement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeTaxSettlementAggregateArgs>(args: Subset<T, IncomeTaxSettlementAggregateArgs>): Prisma.PrismaPromise<GetIncomeTaxSettlementAggregateType<T>>
+
+    /**
+     * Group by IncomeTaxSettlement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeTaxSettlementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeTaxSettlementGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeTaxSettlementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeTaxSettlementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeTaxSettlementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncomeTaxSettlement model
+   */
+  readonly fields: IncomeTaxSettlementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncomeTaxSettlement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeTaxSettlementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    details<T extends IncomeTaxSettlement$detailsArgs<ExtArgs> = {}>(args?: Subset<T, IncomeTaxSettlement$detailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncomeTaxSettlement model
+   */
+  interface IncomeTaxSettlementFieldRefs {
+    readonly id: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly fiscalYear: FieldRef<"IncomeTaxSettlement", 'Int'>
+    readonly month: FieldRef<"IncomeTaxSettlement", 'Int'>
+    readonly settlementType: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly status: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly description: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly totalEmployeesEvaluated: FieldRef<"IncomeTaxSettlement", 'Int'>
+    readonly totalEmployeesWithheld: FieldRef<"IncomeTaxSettlement", 'Int'>
+    readonly totalWithheldAmount: FieldRef<"IncomeTaxSettlement", 'Decimal'>
+    readonly totalRefundAmount: FieldRef<"IncomeTaxSettlement", 'Decimal'>
+    readonly withholdingConceptId: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly refundConceptId: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly exportedPayrollPeriodId: FieldRef<"IncomeTaxSettlement", 'String'>
+    readonly exportedAt: FieldRef<"IncomeTaxSettlement", 'DateTime'>
+    readonly createdAt: FieldRef<"IncomeTaxSettlement", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncomeTaxSettlement", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxSettlement findUnique
+   */
+  export type IncomeTaxSettlementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlement to fetch.
+     */
+    where: IncomeTaxSettlementWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlement findUniqueOrThrow
+   */
+  export type IncomeTaxSettlementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlement to fetch.
+     */
+    where: IncomeTaxSettlementWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlement findFirst
+   */
+  export type IncomeTaxSettlementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlement to fetch.
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlements to fetch.
+     */
+    orderBy?: IncomeTaxSettlementOrderByWithRelationInput | IncomeTaxSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxSettlements.
+     */
+    cursor?: IncomeTaxSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxSettlements.
+     */
+    distinct?: IncomeTaxSettlementScalarFieldEnum | IncomeTaxSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlement findFirstOrThrow
+   */
+  export type IncomeTaxSettlementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlement to fetch.
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlements to fetch.
+     */
+    orderBy?: IncomeTaxSettlementOrderByWithRelationInput | IncomeTaxSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxSettlements.
+     */
+    cursor?: IncomeTaxSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxSettlements.
+     */
+    distinct?: IncomeTaxSettlementScalarFieldEnum | IncomeTaxSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlement findMany
+   */
+  export type IncomeTaxSettlementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlements to fetch.
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlements to fetch.
+     */
+    orderBy?: IncomeTaxSettlementOrderByWithRelationInput | IncomeTaxSettlementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncomeTaxSettlements.
+     */
+    cursor?: IncomeTaxSettlementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlements.
+     */
+    skip?: number
+    distinct?: IncomeTaxSettlementScalarFieldEnum | IncomeTaxSettlementScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlement create
+   */
+  export type IncomeTaxSettlementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IncomeTaxSettlement.
+     */
+    data: XOR<IncomeTaxSettlementCreateInput, IncomeTaxSettlementUncheckedCreateInput>
+  }
+
+  /**
+   * IncomeTaxSettlement createMany
+   */
+  export type IncomeTaxSettlementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncomeTaxSettlements.
+     */
+    data: IncomeTaxSettlementCreateManyInput | IncomeTaxSettlementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncomeTaxSettlement update
+   */
+  export type IncomeTaxSettlementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IncomeTaxSettlement.
+     */
+    data: XOR<IncomeTaxSettlementUpdateInput, IncomeTaxSettlementUncheckedUpdateInput>
+    /**
+     * Choose, which IncomeTaxSettlement to update.
+     */
+    where: IncomeTaxSettlementWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlement updateMany
+   */
+  export type IncomeTaxSettlementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncomeTaxSettlements.
+     */
+    data: XOR<IncomeTaxSettlementUpdateManyMutationInput, IncomeTaxSettlementUncheckedUpdateManyInput>
+    /**
+     * Filter which IncomeTaxSettlements to update
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * Limit how many IncomeTaxSettlements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxSettlement upsert
+   */
+  export type IncomeTaxSettlementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IncomeTaxSettlement to update in case it exists.
+     */
+    where: IncomeTaxSettlementWhereUniqueInput
+    /**
+     * In case the IncomeTaxSettlement found by the `where` argument doesn't exist, create a new IncomeTaxSettlement with this data.
+     */
+    create: XOR<IncomeTaxSettlementCreateInput, IncomeTaxSettlementUncheckedCreateInput>
+    /**
+     * In case the IncomeTaxSettlement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeTaxSettlementUpdateInput, IncomeTaxSettlementUncheckedUpdateInput>
+  }
+
+  /**
+   * IncomeTaxSettlement delete
+   */
+  export type IncomeTaxSettlementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+    /**
+     * Filter which IncomeTaxSettlement to delete.
+     */
+    where: IncomeTaxSettlementWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlement deleteMany
+   */
+  export type IncomeTaxSettlementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxSettlements to delete
+     */
+    where?: IncomeTaxSettlementWhereInput
+    /**
+     * Limit how many IncomeTaxSettlements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxSettlement.details
+   */
+  export type IncomeTaxSettlement$detailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    where?: IncomeTaxSettlementDetailWhereInput
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncomeTaxSettlementDetailScalarFieldEnum | IncomeTaxSettlementDetailScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlement without action
+   */
+  export type IncomeTaxSettlementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlement
+     */
+    select?: IncomeTaxSettlementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlement
+     */
+    omit?: IncomeTaxSettlementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model IncomeTaxSettlementDetail
+   */
+
+  export type AggregateIncomeTaxSettlementDetail = {
+    _count: IncomeTaxSettlementDetailCountAggregateOutputType | null
+    _avg: IncomeTaxSettlementDetailAvgAggregateOutputType | null
+    _sum: IncomeTaxSettlementDetailSumAggregateOutputType | null
+    _min: IncomeTaxSettlementDetailMinAggregateOutputType | null
+    _max: IncomeTaxSettlementDetailMaxAggregateOutputType | null
+  }
+
+  export type IncomeTaxSettlementDetailAvgAggregateOutputType = {
+    currentMonthGross: Decimal | null
+    accumulatedGross: Decimal | null
+    sacProjectedMonth: Decimal | null
+    sacProjectedAccumulated: Decimal | null
+    otherEmployersGross: Decimal | null
+    legalDeductionsAccumulated: Decimal | null
+    generalDeductionsAccumulated: Decimal | null
+    personalDeductionsAccumulated: Decimal | null
+    netTaxableIncomeAccumulated: Decimal | null
+    determinedTaxAccumulated: Decimal | null
+    paymentsOnAccountAccumulated: Decimal | null
+    priorMonthsWithheldTax: Decimal | null
+    netMonthlyWithholding: Decimal | null
+  }
+
+  export type IncomeTaxSettlementDetailSumAggregateOutputType = {
+    currentMonthGross: Decimal | null
+    accumulatedGross: Decimal | null
+    sacProjectedMonth: Decimal | null
+    sacProjectedAccumulated: Decimal | null
+    otherEmployersGross: Decimal | null
+    legalDeductionsAccumulated: Decimal | null
+    generalDeductionsAccumulated: Decimal | null
+    personalDeductionsAccumulated: Decimal | null
+    netTaxableIncomeAccumulated: Decimal | null
+    determinedTaxAccumulated: Decimal | null
+    paymentsOnAccountAccumulated: Decimal | null
+    priorMonthsWithheldTax: Decimal | null
+    netMonthlyWithholding: Decimal | null
+  }
+
+  export type IncomeTaxSettlementDetailMinAggregateOutputType = {
+    id: string | null
+    settlementId: string | null
+    employeeId: string | null
+    currentMonthGross: Decimal | null
+    accumulatedGross: Decimal | null
+    sacProjectedMonth: Decimal | null
+    sacProjectedAccumulated: Decimal | null
+    otherEmployersGross: Decimal | null
+    legalDeductionsAccumulated: Decimal | null
+    generalDeductionsAccumulated: Decimal | null
+    personalDeductionsAccumulated: Decimal | null
+    netTaxableIncomeAccumulated: Decimal | null
+    determinedTaxAccumulated: Decimal | null
+    paymentsOnAccountAccumulated: Decimal | null
+    priorMonthsWithheldTax: Decimal | null
+    netMonthlyWithholding: Decimal | null
+    isExportedToPayroll: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxSettlementDetailMaxAggregateOutputType = {
+    id: string | null
+    settlementId: string | null
+    employeeId: string | null
+    currentMonthGross: Decimal | null
+    accumulatedGross: Decimal | null
+    sacProjectedMonth: Decimal | null
+    sacProjectedAccumulated: Decimal | null
+    otherEmployersGross: Decimal | null
+    legalDeductionsAccumulated: Decimal | null
+    generalDeductionsAccumulated: Decimal | null
+    personalDeductionsAccumulated: Decimal | null
+    netTaxableIncomeAccumulated: Decimal | null
+    determinedTaxAccumulated: Decimal | null
+    paymentsOnAccountAccumulated: Decimal | null
+    priorMonthsWithheldTax: Decimal | null
+    netMonthlyWithholding: Decimal | null
+    isExportedToPayroll: boolean | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type IncomeTaxSettlementDetailCountAggregateOutputType = {
+    id: number
+    settlementId: number
+    employeeId: number
+    currentMonthGross: number
+    accumulatedGross: number
+    sacProjectedMonth: number
+    sacProjectedAccumulated: number
+    otherEmployersGross: number
+    legalDeductionsAccumulated: number
+    generalDeductionsAccumulated: number
+    personalDeductionsAccumulated: number
+    familyDeductionDetails: number
+    netTaxableIncomeAccumulated: number
+    determinedTaxAccumulated: number
+    paymentsOnAccountAccumulated: number
+    priorMonthsWithheldTax: number
+    netMonthlyWithholding: number
+    isExportedToPayroll: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type IncomeTaxSettlementDetailAvgAggregateInputType = {
+    currentMonthGross?: true
+    accumulatedGross?: true
+    sacProjectedMonth?: true
+    sacProjectedAccumulated?: true
+    otherEmployersGross?: true
+    legalDeductionsAccumulated?: true
+    generalDeductionsAccumulated?: true
+    personalDeductionsAccumulated?: true
+    netTaxableIncomeAccumulated?: true
+    determinedTaxAccumulated?: true
+    paymentsOnAccountAccumulated?: true
+    priorMonthsWithheldTax?: true
+    netMonthlyWithholding?: true
+  }
+
+  export type IncomeTaxSettlementDetailSumAggregateInputType = {
+    currentMonthGross?: true
+    accumulatedGross?: true
+    sacProjectedMonth?: true
+    sacProjectedAccumulated?: true
+    otherEmployersGross?: true
+    legalDeductionsAccumulated?: true
+    generalDeductionsAccumulated?: true
+    personalDeductionsAccumulated?: true
+    netTaxableIncomeAccumulated?: true
+    determinedTaxAccumulated?: true
+    paymentsOnAccountAccumulated?: true
+    priorMonthsWithheldTax?: true
+    netMonthlyWithholding?: true
+  }
+
+  export type IncomeTaxSettlementDetailMinAggregateInputType = {
+    id?: true
+    settlementId?: true
+    employeeId?: true
+    currentMonthGross?: true
+    accumulatedGross?: true
+    sacProjectedMonth?: true
+    sacProjectedAccumulated?: true
+    otherEmployersGross?: true
+    legalDeductionsAccumulated?: true
+    generalDeductionsAccumulated?: true
+    personalDeductionsAccumulated?: true
+    netTaxableIncomeAccumulated?: true
+    determinedTaxAccumulated?: true
+    paymentsOnAccountAccumulated?: true
+    priorMonthsWithheldTax?: true
+    netMonthlyWithholding?: true
+    isExportedToPayroll?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxSettlementDetailMaxAggregateInputType = {
+    id?: true
+    settlementId?: true
+    employeeId?: true
+    currentMonthGross?: true
+    accumulatedGross?: true
+    sacProjectedMonth?: true
+    sacProjectedAccumulated?: true
+    otherEmployersGross?: true
+    legalDeductionsAccumulated?: true
+    generalDeductionsAccumulated?: true
+    personalDeductionsAccumulated?: true
+    netTaxableIncomeAccumulated?: true
+    determinedTaxAccumulated?: true
+    paymentsOnAccountAccumulated?: true
+    priorMonthsWithheldTax?: true
+    netMonthlyWithholding?: true
+    isExportedToPayroll?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type IncomeTaxSettlementDetailCountAggregateInputType = {
+    id?: true
+    settlementId?: true
+    employeeId?: true
+    currentMonthGross?: true
+    accumulatedGross?: true
+    sacProjectedMonth?: true
+    sacProjectedAccumulated?: true
+    otherEmployersGross?: true
+    legalDeductionsAccumulated?: true
+    generalDeductionsAccumulated?: true
+    personalDeductionsAccumulated?: true
+    familyDeductionDetails?: true
+    netTaxableIncomeAccumulated?: true
+    determinedTaxAccumulated?: true
+    paymentsOnAccountAccumulated?: true
+    priorMonthsWithheldTax?: true
+    netMonthlyWithholding?: true
+    isExportedToPayroll?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type IncomeTaxSettlementDetailAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxSettlementDetail to aggregate.
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlementDetails to fetch.
+     */
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlementDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlementDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncomeTaxSettlementDetails
+    **/
+    _count?: true | IncomeTaxSettlementDetailCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: IncomeTaxSettlementDetailAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: IncomeTaxSettlementDetailSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncomeTaxSettlementDetailMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncomeTaxSettlementDetailMaxAggregateInputType
+  }
+
+  export type GetIncomeTaxSettlementDetailAggregateType<T extends IncomeTaxSettlementDetailAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncomeTaxSettlementDetail]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncomeTaxSettlementDetail[P]>
+      : GetScalarType<T[P], AggregateIncomeTaxSettlementDetail[P]>
+  }
+
+
+
+
+  export type IncomeTaxSettlementDetailGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncomeTaxSettlementDetailWhereInput
+    orderBy?: IncomeTaxSettlementDetailOrderByWithAggregationInput | IncomeTaxSettlementDetailOrderByWithAggregationInput[]
+    by: IncomeTaxSettlementDetailScalarFieldEnum[] | IncomeTaxSettlementDetailScalarFieldEnum
+    having?: IncomeTaxSettlementDetailScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncomeTaxSettlementDetailCountAggregateInputType | true
+    _avg?: IncomeTaxSettlementDetailAvgAggregateInputType
+    _sum?: IncomeTaxSettlementDetailSumAggregateInputType
+    _min?: IncomeTaxSettlementDetailMinAggregateInputType
+    _max?: IncomeTaxSettlementDetailMaxAggregateInputType
+  }
+
+  export type IncomeTaxSettlementDetailGroupByOutputType = {
+    id: string
+    settlementId: string
+    employeeId: string
+    currentMonthGross: Decimal
+    accumulatedGross: Decimal
+    sacProjectedMonth: Decimal
+    sacProjectedAccumulated: Decimal
+    otherEmployersGross: Decimal
+    legalDeductionsAccumulated: Decimal
+    generalDeductionsAccumulated: Decimal
+    personalDeductionsAccumulated: Decimal
+    familyDeductionDetails: JsonValue | null
+    netTaxableIncomeAccumulated: Decimal
+    determinedTaxAccumulated: Decimal
+    paymentsOnAccountAccumulated: Decimal
+    priorMonthsWithheldTax: Decimal
+    netMonthlyWithholding: Decimal
+    isExportedToPayroll: boolean
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: IncomeTaxSettlementDetailCountAggregateOutputType | null
+    _avg: IncomeTaxSettlementDetailAvgAggregateOutputType | null
+    _sum: IncomeTaxSettlementDetailSumAggregateOutputType | null
+    _min: IncomeTaxSettlementDetailMinAggregateOutputType | null
+    _max: IncomeTaxSettlementDetailMaxAggregateOutputType | null
+  }
+
+  type GetIncomeTaxSettlementDetailGroupByPayload<T extends IncomeTaxSettlementDetailGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncomeTaxSettlementDetailGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncomeTaxSettlementDetailGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncomeTaxSettlementDetailGroupByOutputType[P]>
+            : GetScalarType<T[P], IncomeTaxSettlementDetailGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncomeTaxSettlementDetailSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    settlementId?: boolean
+    employeeId?: boolean
+    currentMonthGross?: boolean
+    accumulatedGross?: boolean
+    sacProjectedMonth?: boolean
+    sacProjectedAccumulated?: boolean
+    otherEmployersGross?: boolean
+    legalDeductionsAccumulated?: boolean
+    generalDeductionsAccumulated?: boolean
+    personalDeductionsAccumulated?: boolean
+    familyDeductionDetails?: boolean
+    netTaxableIncomeAccumulated?: boolean
+    determinedTaxAccumulated?: boolean
+    paymentsOnAccountAccumulated?: boolean
+    priorMonthsWithheldTax?: boolean
+    netMonthlyWithholding?: boolean
+    isExportedToPayroll?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    settlement?: boolean | IncomeTaxSettlementDefaultArgs<ExtArgs>
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incomeTaxSettlementDetail"]>
+
+
+
+  export type IncomeTaxSettlementDetailSelectScalar = {
+    id?: boolean
+    settlementId?: boolean
+    employeeId?: boolean
+    currentMonthGross?: boolean
+    accumulatedGross?: boolean
+    sacProjectedMonth?: boolean
+    sacProjectedAccumulated?: boolean
+    otherEmployersGross?: boolean
+    legalDeductionsAccumulated?: boolean
+    generalDeductionsAccumulated?: boolean
+    personalDeductionsAccumulated?: boolean
+    familyDeductionDetails?: boolean
+    netTaxableIncomeAccumulated?: boolean
+    determinedTaxAccumulated?: boolean
+    paymentsOnAccountAccumulated?: boolean
+    priorMonthsWithheldTax?: boolean
+    netMonthlyWithholding?: boolean
+    isExportedToPayroll?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type IncomeTaxSettlementDetailOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "settlementId" | "employeeId" | "currentMonthGross" | "accumulatedGross" | "sacProjectedMonth" | "sacProjectedAccumulated" | "otherEmployersGross" | "legalDeductionsAccumulated" | "generalDeductionsAccumulated" | "personalDeductionsAccumulated" | "familyDeductionDetails" | "netTaxableIncomeAccumulated" | "determinedTaxAccumulated" | "paymentsOnAccountAccumulated" | "priorMonthsWithheldTax" | "netMonthlyWithholding" | "isExportedToPayroll" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["incomeTaxSettlementDetail"]>
+  export type IncomeTaxSettlementDetailInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    settlement?: boolean | IncomeTaxSettlementDefaultArgs<ExtArgs>
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $IncomeTaxSettlementDetailPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncomeTaxSettlementDetail"
+    objects: {
+      settlement: Prisma.$IncomeTaxSettlementPayload<ExtArgs>
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      settlementId: string
+      employeeId: string
+      currentMonthGross: Prisma.Decimal
+      accumulatedGross: Prisma.Decimal
+      sacProjectedMonth: Prisma.Decimal
+      sacProjectedAccumulated: Prisma.Decimal
+      otherEmployersGross: Prisma.Decimal
+      legalDeductionsAccumulated: Prisma.Decimal
+      generalDeductionsAccumulated: Prisma.Decimal
+      personalDeductionsAccumulated: Prisma.Decimal
+      familyDeductionDetails: Prisma.JsonValue | null
+      netTaxableIncomeAccumulated: Prisma.Decimal
+      determinedTaxAccumulated: Prisma.Decimal
+      paymentsOnAccountAccumulated: Prisma.Decimal
+      priorMonthsWithheldTax: Prisma.Decimal
+      netMonthlyWithholding: Prisma.Decimal
+      isExportedToPayroll: boolean
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["incomeTaxSettlementDetail"]>
+    composites: {}
+  }
+
+  type IncomeTaxSettlementDetailGetPayload<S extends boolean | null | undefined | IncomeTaxSettlementDetailDefaultArgs> = $Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload, S>
+
+  type IncomeTaxSettlementDetailCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncomeTaxSettlementDetailFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncomeTaxSettlementDetailCountAggregateInputType | true
+    }
+
+  export interface IncomeTaxSettlementDetailDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncomeTaxSettlementDetail'], meta: { name: 'IncomeTaxSettlementDetail' } }
+    /**
+     * Find zero or one IncomeTaxSettlementDetail that matches the filter.
+     * @param {IncomeTaxSettlementDetailFindUniqueArgs} args - Arguments to find a IncomeTaxSettlementDetail
+     * @example
+     * // Get one IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncomeTaxSettlementDetailFindUniqueArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailFindUniqueArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncomeTaxSettlementDetail that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncomeTaxSettlementDetailFindUniqueOrThrowArgs} args - Arguments to find a IncomeTaxSettlementDetail
+     * @example
+     * // Get one IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncomeTaxSettlementDetailFindUniqueOrThrowArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxSettlementDetail that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailFindFirstArgs} args - Arguments to find a IncomeTaxSettlementDetail
+     * @example
+     * // Get one IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncomeTaxSettlementDetailFindFirstArgs>(args?: SelectSubset<T, IncomeTaxSettlementDetailFindFirstArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncomeTaxSettlementDetail that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailFindFirstOrThrowArgs} args - Arguments to find a IncomeTaxSettlementDetail
+     * @example
+     * // Get one IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncomeTaxSettlementDetailFindFirstOrThrowArgs>(args?: SelectSubset<T, IncomeTaxSettlementDetailFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncomeTaxSettlementDetails that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncomeTaxSettlementDetails
+     * const incomeTaxSettlementDetails = await prisma.incomeTaxSettlementDetail.findMany()
+     * 
+     * // Get first 10 IncomeTaxSettlementDetails
+     * const incomeTaxSettlementDetails = await prisma.incomeTaxSettlementDetail.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incomeTaxSettlementDetailWithIdOnly = await prisma.incomeTaxSettlementDetail.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncomeTaxSettlementDetailFindManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementDetailFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncomeTaxSettlementDetail.
+     * @param {IncomeTaxSettlementDetailCreateArgs} args - Arguments to create a IncomeTaxSettlementDetail.
+     * @example
+     * // Create one IncomeTaxSettlementDetail
+     * const IncomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.create({
+     *   data: {
+     *     // ... data to create a IncomeTaxSettlementDetail
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncomeTaxSettlementDetailCreateArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailCreateArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncomeTaxSettlementDetails.
+     * @param {IncomeTaxSettlementDetailCreateManyArgs} args - Arguments to create many IncomeTaxSettlementDetails.
+     * @example
+     * // Create many IncomeTaxSettlementDetails
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncomeTaxSettlementDetailCreateManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementDetailCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncomeTaxSettlementDetail.
+     * @param {IncomeTaxSettlementDetailDeleteArgs} args - Arguments to delete one IncomeTaxSettlementDetail.
+     * @example
+     * // Delete one IncomeTaxSettlementDetail
+     * const IncomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.delete({
+     *   where: {
+     *     // ... filter to delete one IncomeTaxSettlementDetail
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncomeTaxSettlementDetailDeleteArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailDeleteArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncomeTaxSettlementDetail.
+     * @param {IncomeTaxSettlementDetailUpdateArgs} args - Arguments to update one IncomeTaxSettlementDetail.
+     * @example
+     * // Update one IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncomeTaxSettlementDetailUpdateArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailUpdateArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncomeTaxSettlementDetails.
+     * @param {IncomeTaxSettlementDetailDeleteManyArgs} args - Arguments to filter IncomeTaxSettlementDetails to delete.
+     * @example
+     * // Delete a few IncomeTaxSettlementDetails
+     * const { count } = await prisma.incomeTaxSettlementDetail.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncomeTaxSettlementDetailDeleteManyArgs>(args?: SelectSubset<T, IncomeTaxSettlementDetailDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncomeTaxSettlementDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncomeTaxSettlementDetails
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncomeTaxSettlementDetailUpdateManyArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncomeTaxSettlementDetail.
+     * @param {IncomeTaxSettlementDetailUpsertArgs} args - Arguments to update or create a IncomeTaxSettlementDetail.
+     * @example
+     * // Update or create a IncomeTaxSettlementDetail
+     * const incomeTaxSettlementDetail = await prisma.incomeTaxSettlementDetail.upsert({
+     *   create: {
+     *     // ... data to create a IncomeTaxSettlementDetail
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncomeTaxSettlementDetail we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncomeTaxSettlementDetailUpsertArgs>(args: SelectSubset<T, IncomeTaxSettlementDetailUpsertArgs<ExtArgs>>): Prisma__IncomeTaxSettlementDetailClient<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncomeTaxSettlementDetails.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailCountArgs} args - Arguments to filter IncomeTaxSettlementDetails to count.
+     * @example
+     * // Count the number of IncomeTaxSettlementDetails
+     * const count = await prisma.incomeTaxSettlementDetail.count({
+     *   where: {
+     *     // ... the filter for the IncomeTaxSettlementDetails we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncomeTaxSettlementDetailCountArgs>(
+      args?: Subset<T, IncomeTaxSettlementDetailCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncomeTaxSettlementDetailCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncomeTaxSettlementDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncomeTaxSettlementDetailAggregateArgs>(args: Subset<T, IncomeTaxSettlementDetailAggregateArgs>): Prisma.PrismaPromise<GetIncomeTaxSettlementDetailAggregateType<T>>
+
+    /**
+     * Group by IncomeTaxSettlementDetail.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncomeTaxSettlementDetailGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncomeTaxSettlementDetailGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncomeTaxSettlementDetailGroupByArgs['orderBy'] }
+        : { orderBy?: IncomeTaxSettlementDetailGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncomeTaxSettlementDetailGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncomeTaxSettlementDetailGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncomeTaxSettlementDetail model
+   */
+  readonly fields: IncomeTaxSettlementDetailFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncomeTaxSettlementDetail.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncomeTaxSettlementDetailClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    settlement<T extends IncomeTaxSettlementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncomeTaxSettlementDefaultArgs<ExtArgs>>): Prisma__IncomeTaxSettlementClient<$Result.GetResult<Prisma.$IncomeTaxSettlementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncomeTaxSettlementDetail model
+   */
+  interface IncomeTaxSettlementDetailFieldRefs {
+    readonly id: FieldRef<"IncomeTaxSettlementDetail", 'String'>
+    readonly settlementId: FieldRef<"IncomeTaxSettlementDetail", 'String'>
+    readonly employeeId: FieldRef<"IncomeTaxSettlementDetail", 'String'>
+    readonly currentMonthGross: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly accumulatedGross: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly sacProjectedMonth: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly sacProjectedAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly otherEmployersGross: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly legalDeductionsAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly generalDeductionsAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly personalDeductionsAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly familyDeductionDetails: FieldRef<"IncomeTaxSettlementDetail", 'Json'>
+    readonly netTaxableIncomeAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly determinedTaxAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly paymentsOnAccountAccumulated: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly priorMonthsWithheldTax: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly netMonthlyWithholding: FieldRef<"IncomeTaxSettlementDetail", 'Decimal'>
+    readonly isExportedToPayroll: FieldRef<"IncomeTaxSettlementDetail", 'Boolean'>
+    readonly notes: FieldRef<"IncomeTaxSettlementDetail", 'String'>
+    readonly createdAt: FieldRef<"IncomeTaxSettlementDetail", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncomeTaxSettlementDetail", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncomeTaxSettlementDetail findUnique
+   */
+  export type IncomeTaxSettlementDetailFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlementDetail to fetch.
+     */
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlementDetail findUniqueOrThrow
+   */
+  export type IncomeTaxSettlementDetailFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlementDetail to fetch.
+     */
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlementDetail findFirst
+   */
+  export type IncomeTaxSettlementDetailFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlementDetail to fetch.
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlementDetails to fetch.
+     */
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxSettlementDetails.
+     */
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlementDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlementDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxSettlementDetails.
+     */
+    distinct?: IncomeTaxSettlementDetailScalarFieldEnum | IncomeTaxSettlementDetailScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlementDetail findFirstOrThrow
+   */
+  export type IncomeTaxSettlementDetailFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlementDetail to fetch.
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlementDetails to fetch.
+     */
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncomeTaxSettlementDetails.
+     */
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlementDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlementDetails.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncomeTaxSettlementDetails.
+     */
+    distinct?: IncomeTaxSettlementDetailScalarFieldEnum | IncomeTaxSettlementDetailScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlementDetail findMany
+   */
+  export type IncomeTaxSettlementDetailFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter, which IncomeTaxSettlementDetails to fetch.
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncomeTaxSettlementDetails to fetch.
+     */
+    orderBy?: IncomeTaxSettlementDetailOrderByWithRelationInput | IncomeTaxSettlementDetailOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncomeTaxSettlementDetails.
+     */
+    cursor?: IncomeTaxSettlementDetailWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncomeTaxSettlementDetails from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncomeTaxSettlementDetails.
+     */
+    skip?: number
+    distinct?: IncomeTaxSettlementDetailScalarFieldEnum | IncomeTaxSettlementDetailScalarFieldEnum[]
+  }
+
+  /**
+   * IncomeTaxSettlementDetail create
+   */
+  export type IncomeTaxSettlementDetailCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IncomeTaxSettlementDetail.
+     */
+    data: XOR<IncomeTaxSettlementDetailCreateInput, IncomeTaxSettlementDetailUncheckedCreateInput>
+  }
+
+  /**
+   * IncomeTaxSettlementDetail createMany
+   */
+  export type IncomeTaxSettlementDetailCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncomeTaxSettlementDetails.
+     */
+    data: IncomeTaxSettlementDetailCreateManyInput | IncomeTaxSettlementDetailCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncomeTaxSettlementDetail update
+   */
+  export type IncomeTaxSettlementDetailUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IncomeTaxSettlementDetail.
+     */
+    data: XOR<IncomeTaxSettlementDetailUpdateInput, IncomeTaxSettlementDetailUncheckedUpdateInput>
+    /**
+     * Choose, which IncomeTaxSettlementDetail to update.
+     */
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlementDetail updateMany
+   */
+  export type IncomeTaxSettlementDetailUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncomeTaxSettlementDetails.
+     */
+    data: XOR<IncomeTaxSettlementDetailUpdateManyMutationInput, IncomeTaxSettlementDetailUncheckedUpdateManyInput>
+    /**
+     * Filter which IncomeTaxSettlementDetails to update
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * Limit how many IncomeTaxSettlementDetails to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxSettlementDetail upsert
+   */
+  export type IncomeTaxSettlementDetailUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IncomeTaxSettlementDetail to update in case it exists.
+     */
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    /**
+     * In case the IncomeTaxSettlementDetail found by the `where` argument doesn't exist, create a new IncomeTaxSettlementDetail with this data.
+     */
+    create: XOR<IncomeTaxSettlementDetailCreateInput, IncomeTaxSettlementDetailUncheckedCreateInput>
+    /**
+     * In case the IncomeTaxSettlementDetail was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncomeTaxSettlementDetailUpdateInput, IncomeTaxSettlementDetailUncheckedUpdateInput>
+  }
+
+  /**
+   * IncomeTaxSettlementDetail delete
+   */
+  export type IncomeTaxSettlementDetailDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+    /**
+     * Filter which IncomeTaxSettlementDetail to delete.
+     */
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+  }
+
+  /**
+   * IncomeTaxSettlementDetail deleteMany
+   */
+  export type IncomeTaxSettlementDetailDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncomeTaxSettlementDetails to delete
+     */
+    where?: IncomeTaxSettlementDetailWhereInput
+    /**
+     * Limit how many IncomeTaxSettlementDetails to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncomeTaxSettlementDetail without action
+   */
+  export type IncomeTaxSettlementDetailDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncomeTaxSettlementDetail
+     */
+    select?: IncomeTaxSettlementDetailSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncomeTaxSettlementDetail
+     */
+    omit?: IncomeTaxSettlementDetailOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncomeTaxSettlementDetailInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -40158,6 +50735,13 @@ export namespace Prisma {
     cuil: 'cuil',
     birthDate: 'birthDate',
     isAdherent: 'isAdherent',
+    appliesIncomeTax: 'appliesIncomeTax',
+    incomeTaxDeductionType: 'incomeTaxDeductionType',
+    deductionPercentage: 'deductionPercentage',
+    isDisability: 'isDisability',
+    hasNoIncomeOrBelowMni: 'hasNoIncomeOrBelowMni',
+    validFromMonth: 'validFromMonth',
+    validToMonth: 'validToMonth',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -40471,12 +51055,196 @@ export namespace Prisma {
   export type EmployeeEmbargoConceptScalarFieldEnum = (typeof EmployeeEmbargoConceptScalarFieldEnum)[keyof typeof EmployeeEmbargoConceptScalarFieldEnum]
 
 
+  export const IncomeTaxTableScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    semester: 'semester',
+    month: 'month',
+    description: 'description',
+    nonTaxableMinimum: 'nonTaxableMinimum',
+    specialDeduction: 'specialDeduction',
+    spouseDeduction: 'spouseDeduction',
+    childDeduction: 'childDeduction',
+    disabledChildDeduction: 'disabledChildDeduction',
+    specialDeductionNewProf: 'specialDeductionNewProf',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IncomeTaxTableScalarFieldEnum = (typeof IncomeTaxTableScalarFieldEnum)[keyof typeof IncomeTaxTableScalarFieldEnum]
+
+
+  export const IncomeTaxScaleScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    month: 'month',
+    step: 'step',
+    fromAmount: 'fromAmount',
+    toAmount: 'toAmount',
+    fixedAmount: 'fixedAmount',
+    ratePercentage: 'ratePercentage',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IncomeTaxScaleScalarFieldEnum = (typeof IncomeTaxScaleScalarFieldEnum)[keyof typeof IncomeTaxScaleScalarFieldEnum]
+
+
+  export const IncomeTaxGeneralDeductionLimitScalarFieldEnum: {
+    id: 'id',
+    year: 'year',
+    code: 'code',
+    name: 'name',
+    limitType: 'limitType',
+    limitValue: 'limitValue',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IncomeTaxGeneralDeductionLimitScalarFieldEnum = (typeof IncomeTaxGeneralDeductionLimitScalarFieldEnum)[keyof typeof IncomeTaxGeneralDeductionLimitScalarFieldEnum]
+
+
+  export const EmployeeIncomeTaxDeductionScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    fiscalYear: 'fiscalYear',
+    deductionType: 'deductionType',
+    providerCuit: 'providerCuit',
+    providerName: 'providerName',
+    voucherType: 'voucherType',
+    voucherNumber: 'voucherNumber',
+    month: 'month',
+    amount: 'amount',
+    source: 'source',
+    siradigPresentationId: 'siradigPresentationId',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmployeeIncomeTaxDeductionScalarFieldEnum = (typeof EmployeeIncomeTaxDeductionScalarFieldEnum)[keyof typeof EmployeeIncomeTaxDeductionScalarFieldEnum]
+
+
+  export const EmployeeOtherIncomeScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    fiscalYear: 'fiscalYear',
+    month: 'month',
+    employerCuit: 'employerCuit',
+    employerName: 'employerName',
+    grossIncome: 'grossIncome',
+    nonTaxableIncome: 'nonTaxableIncome',
+    exemptIncome: 'exemptIncome',
+    pensionContrib: 'pensionContrib',
+    healthInsuranceContrib: 'healthInsuranceContrib',
+    unionContrib: 'unionContrib',
+    withheldTax: 'withheldTax',
+    source: 'source',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmployeeOtherIncomeScalarFieldEnum = (typeof EmployeeOtherIncomeScalarFieldEnum)[keyof typeof EmployeeOtherIncomeScalarFieldEnum]
+
+
+  export const EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    fiscalYear: 'fiscalYear',
+    paymentType: 'paymentType',
+    cuitAgent: 'cuitAgent',
+    agentName: 'agentName',
+    month: 'month',
+    amount: 'amount',
+    source: 'source',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum = (typeof EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum)[keyof typeof EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum]
+
+
+  export const SiradigImportScalarFieldEnum: {
+    id: 'id',
+    fiscalYear: 'fiscalYear',
+    filename: 'filename',
+    xmlVersion: 'xmlVersion',
+    presentationDate: 'presentationDate',
+    totalRecords: 'totalRecords',
+    processedEmployees: 'processedEmployees',
+    status: 'status',
+    summary: 'summary',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SiradigImportScalarFieldEnum = (typeof SiradigImportScalarFieldEnum)[keyof typeof SiradigImportScalarFieldEnum]
+
+
+  export const IncomeTaxSettlementScalarFieldEnum: {
+    id: 'id',
+    fiscalYear: 'fiscalYear',
+    month: 'month',
+    settlementType: 'settlementType',
+    status: 'status',
+    description: 'description',
+    totalEmployeesEvaluated: 'totalEmployeesEvaluated',
+    totalEmployeesWithheld: 'totalEmployeesWithheld',
+    totalWithheldAmount: 'totalWithheldAmount',
+    totalRefundAmount: 'totalRefundAmount',
+    withholdingConceptId: 'withholdingConceptId',
+    refundConceptId: 'refundConceptId',
+    exportedPayrollPeriodId: 'exportedPayrollPeriodId',
+    exportedAt: 'exportedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IncomeTaxSettlementScalarFieldEnum = (typeof IncomeTaxSettlementScalarFieldEnum)[keyof typeof IncomeTaxSettlementScalarFieldEnum]
+
+
+  export const IncomeTaxSettlementDetailScalarFieldEnum: {
+    id: 'id',
+    settlementId: 'settlementId',
+    employeeId: 'employeeId',
+    currentMonthGross: 'currentMonthGross',
+    accumulatedGross: 'accumulatedGross',
+    sacProjectedMonth: 'sacProjectedMonth',
+    sacProjectedAccumulated: 'sacProjectedAccumulated',
+    otherEmployersGross: 'otherEmployersGross',
+    legalDeductionsAccumulated: 'legalDeductionsAccumulated',
+    generalDeductionsAccumulated: 'generalDeductionsAccumulated',
+    personalDeductionsAccumulated: 'personalDeductionsAccumulated',
+    familyDeductionDetails: 'familyDeductionDetails',
+    netTaxableIncomeAccumulated: 'netTaxableIncomeAccumulated',
+    determinedTaxAccumulated: 'determinedTaxAccumulated',
+    paymentsOnAccountAccumulated: 'paymentsOnAccountAccumulated',
+    priorMonthsWithheldTax: 'priorMonthsWithheldTax',
+    netMonthlyWithholding: 'netMonthlyWithholding',
+    isExportedToPayroll: 'isExportedToPayroll',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type IncomeTaxSettlementDetailScalarFieldEnum = (typeof IncomeTaxSettlementDetailScalarFieldEnum)[keyof typeof IncomeTaxSettlementDetailScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const NullsOrder: {
@@ -40729,7 +51497,8 @@ export namespace Prisma {
     firstName: 'firstName',
     documentType: 'documentType',
     documentNumber: 'documentNumber',
-    cuil: 'cuil'
+    cuil: 'cuil',
+    incomeTaxDeductionType: 'incomeTaxDeductionType'
   };
 
   export type EmployeeRelativeOrderByRelevanceFieldEnum = (typeof EmployeeRelativeOrderByRelevanceFieldEnum)[keyof typeof EmployeeRelativeOrderByRelevanceFieldEnum]
@@ -40898,6 +51667,121 @@ export namespace Prisma {
   export type EmployeeEmbargoConceptOrderByRelevanceFieldEnum = (typeof EmployeeEmbargoConceptOrderByRelevanceFieldEnum)[keyof typeof EmployeeEmbargoConceptOrderByRelevanceFieldEnum]
 
 
+  export const IncomeTaxTableOrderByRelevanceFieldEnum: {
+    id: 'id',
+    description: 'description'
+  };
+
+  export type IncomeTaxTableOrderByRelevanceFieldEnum = (typeof IncomeTaxTableOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxTableOrderByRelevanceFieldEnum]
+
+
+  export const IncomeTaxScaleOrderByRelevanceFieldEnum: {
+    id: 'id'
+  };
+
+  export type IncomeTaxScaleOrderByRelevanceFieldEnum = (typeof IncomeTaxScaleOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxScaleOrderByRelevanceFieldEnum]
+
+
+  export const IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    limitType: 'limitType',
+    description: 'description'
+  };
+
+  export type IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum = (typeof IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    deductionType: 'deductionType',
+    providerCuit: 'providerCuit',
+    providerName: 'providerName',
+    voucherType: 'voucherType',
+    voucherNumber: 'voucherNumber',
+    source: 'source',
+    siradigPresentationId: 'siradigPresentationId',
+    notes: 'notes'
+  };
+
+  export type EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum = (typeof EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum)[keyof typeof EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeOtherIncomeOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    employerCuit: 'employerCuit',
+    employerName: 'employerName',
+    source: 'source'
+  };
+
+  export type EmployeeOtherIncomeOrderByRelevanceFieldEnum = (typeof EmployeeOtherIncomeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOtherIncomeOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    paymentType: 'paymentType',
+    cuitAgent: 'cuitAgent',
+    agentName: 'agentName',
+    source: 'source'
+  };
+
+  export type EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum = (typeof EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum)[keyof typeof EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const SiradigImportOrderByRelevanceFieldEnum: {
+    id: 'id',
+    filename: 'filename',
+    xmlVersion: 'xmlVersion',
+    status: 'status'
+  };
+
+  export type SiradigImportOrderByRelevanceFieldEnum = (typeof SiradigImportOrderByRelevanceFieldEnum)[keyof typeof SiradigImportOrderByRelevanceFieldEnum]
+
+
+  export const IncomeTaxSettlementOrderByRelevanceFieldEnum: {
+    id: 'id',
+    settlementType: 'settlementType',
+    status: 'status',
+    description: 'description',
+    withholdingConceptId: 'withholdingConceptId',
+    refundConceptId: 'refundConceptId',
+    exportedPayrollPeriodId: 'exportedPayrollPeriodId'
+  };
+
+  export type IncomeTaxSettlementOrderByRelevanceFieldEnum = (typeof IncomeTaxSettlementOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxSettlementOrderByRelevanceFieldEnum]
+
+
+  export const IncomeTaxSettlementDetailOrderByRelevanceFieldEnum: {
+    id: 'id',
+    settlementId: 'settlementId',
+    employeeId: 'employeeId',
+    notes: 'notes'
+  };
+
+  export type IncomeTaxSettlementDetailOrderByRelevanceFieldEnum = (typeof IncomeTaxSettlementDetailOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxSettlementDetailOrderByRelevanceFieldEnum]
+
+
   /**
    * Field references
    */
@@ -40935,6 +51819,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
     
 
 
@@ -42198,6 +53096,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
     embargoes?: EmployeeEmbargoListRelationFilter
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionListRelationFilter
+    otherIncomes?: EmployeeOtherIncomeListRelationFilter
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountListRelationFilter
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -42257,6 +53159,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptOrderByRelationAggregateInput
     periodNovelties?: PeriodNoveltyOrderByRelationAggregateInput
     embargoes?: EmployeeEmbargoOrderByRelationAggregateInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionOrderByRelationAggregateInput
+    otherIncomes?: EmployeeOtherIncomeOrderByRelationAggregateInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountOrderByRelationAggregateInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailOrderByRelationAggregateInput
     _relevance?: EmployeeOrderByRelevanceInput
   }
 
@@ -42320,6 +53226,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
     embargoes?: EmployeeEmbargoListRelationFilter
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionListRelationFilter
+    otherIncomes?: EmployeeOtherIncomeListRelationFilter
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountListRelationFilter
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
   }, "id" | "fileNumber" | "cuil">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -42580,6 +53490,13 @@ export namespace Prisma {
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
     isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
+    appliesIncomeTax?: BoolFilter<"EmployeeRelative"> | boolean
+    incomeTaxDeductionType?: StringNullableFilter<"EmployeeRelative"> | string | null
+    deductionPercentage?: DecimalFilter<"EmployeeRelative"> | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFilter<"EmployeeRelative"> | boolean
+    hasNoIncomeOrBelowMni?: BoolFilter<"EmployeeRelative"> | boolean
+    validFromMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
+    validToMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -42598,6 +53515,13 @@ export namespace Prisma {
     cuil?: SortOrderInput | SortOrder
     birthDate?: SortOrder
     isAdherent?: SortOrder
+    appliesIncomeTax?: SortOrder
+    incomeTaxDeductionType?: SortOrderInput | SortOrder
+    deductionPercentage?: SortOrder
+    isDisability?: SortOrder
+    hasNoIncomeOrBelowMni?: SortOrder
+    validFromMonth?: SortOrderInput | SortOrder
+    validToMonth?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -42620,6 +53544,13 @@ export namespace Prisma {
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
     isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
+    appliesIncomeTax?: BoolFilter<"EmployeeRelative"> | boolean
+    incomeTaxDeductionType?: StringNullableFilter<"EmployeeRelative"> | string | null
+    deductionPercentage?: DecimalFilter<"EmployeeRelative"> | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFilter<"EmployeeRelative"> | boolean
+    hasNoIncomeOrBelowMni?: BoolFilter<"EmployeeRelative"> | boolean
+    validFromMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
+    validToMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -42638,12 +53569,21 @@ export namespace Prisma {
     cuil?: SortOrderInput | SortOrder
     birthDate?: SortOrder
     isAdherent?: SortOrder
+    appliesIncomeTax?: SortOrder
+    incomeTaxDeductionType?: SortOrderInput | SortOrder
+    deductionPercentage?: SortOrder
+    isDisability?: SortOrder
+    hasNoIncomeOrBelowMni?: SortOrder
+    validFromMonth?: SortOrderInput | SortOrder
+    validToMonth?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     _count?: EmployeeRelativeCountOrderByAggregateInput
+    _avg?: EmployeeRelativeAvgOrderByAggregateInput
     _max?: EmployeeRelativeMaxOrderByAggregateInput
     _min?: EmployeeRelativeMinOrderByAggregateInput
+    _sum?: EmployeeRelativeSumOrderByAggregateInput
   }
 
   export type EmployeeRelativeScalarWhereWithAggregatesInput = {
@@ -42660,6 +53600,13 @@ export namespace Prisma {
     cuil?: StringNullableWithAggregatesFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
     isAdherent?: BoolWithAggregatesFilter<"EmployeeRelative"> | boolean
+    appliesIncomeTax?: BoolWithAggregatesFilter<"EmployeeRelative"> | boolean
+    incomeTaxDeductionType?: StringNullableWithAggregatesFilter<"EmployeeRelative"> | string | null
+    deductionPercentage?: DecimalWithAggregatesFilter<"EmployeeRelative"> | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolWithAggregatesFilter<"EmployeeRelative"> | boolean
+    hasNoIncomeOrBelowMni?: BoolWithAggregatesFilter<"EmployeeRelative"> | boolean
+    validFromMonth?: IntNullableWithAggregatesFilter<"EmployeeRelative"> | number | null
+    validToMonth?: IntNullableWithAggregatesFilter<"EmployeeRelative"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"EmployeeRelative"> | Date | string | null
@@ -44278,6 +55225,909 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"EmployeeEmbargoConcept"> | Date | string
   }
 
+  export type IncomeTaxTableWhereInput = {
+    AND?: IncomeTaxTableWhereInput | IncomeTaxTableWhereInput[]
+    OR?: IncomeTaxTableWhereInput[]
+    NOT?: IncomeTaxTableWhereInput | IncomeTaxTableWhereInput[]
+    id?: StringFilter<"IncomeTaxTable"> | string
+    year?: IntFilter<"IncomeTaxTable"> | number
+    semester?: IntNullableFilter<"IncomeTaxTable"> | number | null
+    month?: IntFilter<"IncomeTaxTable"> | number
+    description?: StringNullableFilter<"IncomeTaxTable"> | string | null
+    nonTaxableMinimum?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: DecimalNullableFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxTable"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxTable"> | Date | string
+  }
+
+  export type IncomeTaxTableOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    semester?: SortOrderInput | SortOrder
+    month?: SortOrder
+    description?: SortOrderInput | SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: IncomeTaxTableOrderByRelevanceInput
+  }
+
+  export type IncomeTaxTableWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    year_month?: IncomeTaxTableYearMonthCompoundUniqueInput
+    AND?: IncomeTaxTableWhereInput | IncomeTaxTableWhereInput[]
+    OR?: IncomeTaxTableWhereInput[]
+    NOT?: IncomeTaxTableWhereInput | IncomeTaxTableWhereInput[]
+    year?: IntFilter<"IncomeTaxTable"> | number
+    semester?: IntNullableFilter<"IncomeTaxTable"> | number | null
+    month?: IntFilter<"IncomeTaxTable"> | number
+    description?: StringNullableFilter<"IncomeTaxTable"> | string | null
+    nonTaxableMinimum?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: DecimalNullableFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxTable"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxTable"> | Date | string
+  }, "id" | "year_month">
+
+  export type IncomeTaxTableOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    semester?: SortOrderInput | SortOrder
+    month?: SortOrder
+    description?: SortOrderInput | SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IncomeTaxTableCountOrderByAggregateInput
+    _avg?: IncomeTaxTableAvgOrderByAggregateInput
+    _max?: IncomeTaxTableMaxOrderByAggregateInput
+    _min?: IncomeTaxTableMinOrderByAggregateInput
+    _sum?: IncomeTaxTableSumOrderByAggregateInput
+  }
+
+  export type IncomeTaxTableScalarWhereWithAggregatesInput = {
+    AND?: IncomeTaxTableScalarWhereWithAggregatesInput | IncomeTaxTableScalarWhereWithAggregatesInput[]
+    OR?: IncomeTaxTableScalarWhereWithAggregatesInput[]
+    NOT?: IncomeTaxTableScalarWhereWithAggregatesInput | IncomeTaxTableScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncomeTaxTable"> | string
+    year?: IntWithAggregatesFilter<"IncomeTaxTable"> | number
+    semester?: IntNullableWithAggregatesFilter<"IncomeTaxTable"> | number | null
+    month?: IntWithAggregatesFilter<"IncomeTaxTable"> | number
+    description?: StringNullableWithAggregatesFilter<"IncomeTaxTable"> | string | null
+    nonTaxableMinimum?: DecimalWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: DecimalNullableWithAggregatesFilter<"IncomeTaxTable"> | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxTable"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxTable"> | Date | string
+  }
+
+  export type IncomeTaxScaleWhereInput = {
+    AND?: IncomeTaxScaleWhereInput | IncomeTaxScaleWhereInput[]
+    OR?: IncomeTaxScaleWhereInput[]
+    NOT?: IncomeTaxScaleWhereInput | IncomeTaxScaleWhereInput[]
+    id?: StringFilter<"IncomeTaxScale"> | string
+    year?: IntFilter<"IncomeTaxScale"> | number
+    month?: IntFilter<"IncomeTaxScale"> | number
+    step?: IntFilter<"IncomeTaxScale"> | number
+    fromAmount?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalNullableFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"IncomeTaxScale"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxScale"> | Date | string
+  }
+
+  export type IncomeTaxScaleOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrderInput | SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: IncomeTaxScaleOrderByRelevanceInput
+  }
+
+  export type IncomeTaxScaleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    year_month_step?: IncomeTaxScaleYearMonthStepCompoundUniqueInput
+    AND?: IncomeTaxScaleWhereInput | IncomeTaxScaleWhereInput[]
+    OR?: IncomeTaxScaleWhereInput[]
+    NOT?: IncomeTaxScaleWhereInput | IncomeTaxScaleWhereInput[]
+    year?: IntFilter<"IncomeTaxScale"> | number
+    month?: IntFilter<"IncomeTaxScale"> | number
+    step?: IntFilter<"IncomeTaxScale"> | number
+    fromAmount?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalNullableFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFilter<"IncomeTaxScale"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxScale"> | Date | string
+  }, "id" | "year_month_step">
+
+  export type IncomeTaxScaleOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrderInput | SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IncomeTaxScaleCountOrderByAggregateInput
+    _avg?: IncomeTaxScaleAvgOrderByAggregateInput
+    _max?: IncomeTaxScaleMaxOrderByAggregateInput
+    _min?: IncomeTaxScaleMinOrderByAggregateInput
+    _sum?: IncomeTaxScaleSumOrderByAggregateInput
+  }
+
+  export type IncomeTaxScaleScalarWhereWithAggregatesInput = {
+    AND?: IncomeTaxScaleScalarWhereWithAggregatesInput | IncomeTaxScaleScalarWhereWithAggregatesInput[]
+    OR?: IncomeTaxScaleScalarWhereWithAggregatesInput[]
+    NOT?: IncomeTaxScaleScalarWhereWithAggregatesInput | IncomeTaxScaleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncomeTaxScale"> | string
+    year?: IntWithAggregatesFilter<"IncomeTaxScale"> | number
+    month?: IntWithAggregatesFilter<"IncomeTaxScale"> | number
+    step?: IntWithAggregatesFilter<"IncomeTaxScale"> | number
+    fromAmount?: DecimalWithAggregatesFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    toAmount?: DecimalNullableWithAggregatesFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalWithAggregatesFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalWithAggregatesFilter<"IncomeTaxScale"> | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxScale"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxScale"> | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitWhereInput = {
+    AND?: IncomeTaxGeneralDeductionLimitWhereInput | IncomeTaxGeneralDeductionLimitWhereInput[]
+    OR?: IncomeTaxGeneralDeductionLimitWhereInput[]
+    NOT?: IncomeTaxGeneralDeductionLimitWhereInput | IncomeTaxGeneralDeductionLimitWhereInput[]
+    id?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    year?: IntFilter<"IncomeTaxGeneralDeductionLimit"> | number
+    code?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    name?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitType?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitValue?: DecimalFilter<"IncomeTaxGeneralDeductionLimit"> | Decimal | DecimalJsLike | number | string
+    description?: StringNullableFilter<"IncomeTaxGeneralDeductionLimit"> | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitOrderByWithRelationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    limitType?: SortOrder
+    limitValue?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: IncomeTaxGeneralDeductionLimitOrderByRelevanceInput
+  }
+
+  export type IncomeTaxGeneralDeductionLimitWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    year_code?: IncomeTaxGeneralDeductionLimitYearCodeCompoundUniqueInput
+    AND?: IncomeTaxGeneralDeductionLimitWhereInput | IncomeTaxGeneralDeductionLimitWhereInput[]
+    OR?: IncomeTaxGeneralDeductionLimitWhereInput[]
+    NOT?: IncomeTaxGeneralDeductionLimitWhereInput | IncomeTaxGeneralDeductionLimitWhereInput[]
+    year?: IntFilter<"IncomeTaxGeneralDeductionLimit"> | number
+    code?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    name?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitType?: StringFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitValue?: DecimalFilter<"IncomeTaxGeneralDeductionLimit"> | Decimal | DecimalJsLike | number | string
+    description?: StringNullableFilter<"IncomeTaxGeneralDeductionLimit"> | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+  }, "id" | "year_code">
+
+  export type IncomeTaxGeneralDeductionLimitOrderByWithAggregationInput = {
+    id?: SortOrder
+    year?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    limitType?: SortOrder
+    limitValue?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IncomeTaxGeneralDeductionLimitCountOrderByAggregateInput
+    _avg?: IncomeTaxGeneralDeductionLimitAvgOrderByAggregateInput
+    _max?: IncomeTaxGeneralDeductionLimitMaxOrderByAggregateInput
+    _min?: IncomeTaxGeneralDeductionLimitMinOrderByAggregateInput
+    _sum?: IncomeTaxGeneralDeductionLimitSumOrderByAggregateInput
+  }
+
+  export type IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput = {
+    AND?: IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput | IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput[]
+    OR?: IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput[]
+    NOT?: IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput | IncomeTaxGeneralDeductionLimitScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    year?: IntWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | number
+    code?: StringWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    name?: StringWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitType?: StringWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | string
+    limitValue?: DecimalWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | Decimal | DecimalJsLike | number | string
+    description?: StringNullableWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxGeneralDeductionLimit"> | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionWhereInput = {
+    AND?: EmployeeIncomeTaxDeductionWhereInput | EmployeeIncomeTaxDeductionWhereInput[]
+    OR?: EmployeeIncomeTaxDeductionWhereInput[]
+    NOT?: EmployeeIncomeTaxDeductionWhereInput | EmployeeIncomeTaxDeductionWhereInput[]
+    id?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    employeeId?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxDeduction"> | number
+    deductionType?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    providerCuit?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    providerName?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherType?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherNumber?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    month?: IntNullableFilter<"EmployeeIncomeTaxDeduction"> | number | null
+    amount?: DecimalFilter<"EmployeeIncomeTaxDeduction"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    siradigPresentationId?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    notes?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type EmployeeIncomeTaxDeductionOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    deductionType?: SortOrder
+    providerCuit?: SortOrderInput | SortOrder
+    providerName?: SortOrderInput | SortOrder
+    voucherType?: SortOrderInput | SortOrder
+    voucherNumber?: SortOrderInput | SortOrder
+    month?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    siradigPresentationId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    _relevance?: EmployeeIncomeTaxDeductionOrderByRelevanceInput
+  }
+
+  export type EmployeeIncomeTaxDeductionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeIncomeTaxDeductionWhereInput | EmployeeIncomeTaxDeductionWhereInput[]
+    OR?: EmployeeIncomeTaxDeductionWhereInput[]
+    NOT?: EmployeeIncomeTaxDeductionWhereInput | EmployeeIncomeTaxDeductionWhereInput[]
+    employeeId?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxDeduction"> | number
+    deductionType?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    providerCuit?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    providerName?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherType?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherNumber?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    month?: IntNullableFilter<"EmployeeIncomeTaxDeduction"> | number | null
+    amount?: DecimalFilter<"EmployeeIncomeTaxDeduction"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    siradigPresentationId?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    notes?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id">
+
+  export type EmployeeIncomeTaxDeductionOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    deductionType?: SortOrder
+    providerCuit?: SortOrderInput | SortOrder
+    providerName?: SortOrderInput | SortOrder
+    voucherType?: SortOrderInput | SortOrder
+    voucherNumber?: SortOrderInput | SortOrder
+    month?: SortOrderInput | SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    siradigPresentationId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmployeeIncomeTaxDeductionCountOrderByAggregateInput
+    _avg?: EmployeeIncomeTaxDeductionAvgOrderByAggregateInput
+    _max?: EmployeeIncomeTaxDeductionMaxOrderByAggregateInput
+    _min?: EmployeeIncomeTaxDeductionMinOrderByAggregateInput
+    _sum?: EmployeeIncomeTaxDeductionSumOrderByAggregateInput
+  }
+
+  export type EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput = {
+    AND?: EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput | EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput[]
+    OR?: EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput | EmployeeIncomeTaxDeductionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string
+    fiscalYear?: IntWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | number
+    deductionType?: StringWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string
+    providerCuit?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    providerName?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherType?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherNumber?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    month?: IntNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | number | null
+    amount?: DecimalWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | Decimal | DecimalJsLike | number | string
+    source?: StringWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string
+    siradigPresentationId?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+  }
+
+  export type EmployeeOtherIncomeWhereInput = {
+    AND?: EmployeeOtherIncomeWhereInput | EmployeeOtherIncomeWhereInput[]
+    OR?: EmployeeOtherIncomeWhereInput[]
+    NOT?: EmployeeOtherIncomeWhereInput | EmployeeOtherIncomeWhereInput[]
+    id?: StringFilter<"EmployeeOtherIncome"> | string
+    employeeId?: StringFilter<"EmployeeOtherIncome"> | string
+    fiscalYear?: IntFilter<"EmployeeOtherIncome"> | number
+    month?: IntFilter<"EmployeeOtherIncome"> | number
+    employerCuit?: StringFilter<"EmployeeOtherIncome"> | string
+    employerName?: StringFilter<"EmployeeOtherIncome"> | string
+    grossIncome?: DecimalFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    source?: StringFilter<"EmployeeOtherIncome"> | string
+    createdAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type EmployeeOtherIncomeOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    employerCuit?: SortOrder
+    employerName?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrderInput | SortOrder
+    exemptIncome?: SortOrderInput | SortOrder
+    pensionContrib?: SortOrderInput | SortOrder
+    healthInsuranceContrib?: SortOrderInput | SortOrder
+    unionContrib?: SortOrderInput | SortOrder
+    withheldTax?: SortOrderInput | SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    _relevance?: EmployeeOtherIncomeOrderByRelevanceInput
+  }
+
+  export type EmployeeOtherIncomeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeOtherIncomeWhereInput | EmployeeOtherIncomeWhereInput[]
+    OR?: EmployeeOtherIncomeWhereInput[]
+    NOT?: EmployeeOtherIncomeWhereInput | EmployeeOtherIncomeWhereInput[]
+    employeeId?: StringFilter<"EmployeeOtherIncome"> | string
+    fiscalYear?: IntFilter<"EmployeeOtherIncome"> | number
+    month?: IntFilter<"EmployeeOtherIncome"> | number
+    employerCuit?: StringFilter<"EmployeeOtherIncome"> | string
+    employerName?: StringFilter<"EmployeeOtherIncome"> | string
+    grossIncome?: DecimalFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    source?: StringFilter<"EmployeeOtherIncome"> | string
+    createdAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id">
+
+  export type EmployeeOtherIncomeOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    employerCuit?: SortOrder
+    employerName?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrderInput | SortOrder
+    exemptIncome?: SortOrderInput | SortOrder
+    pensionContrib?: SortOrderInput | SortOrder
+    healthInsuranceContrib?: SortOrderInput | SortOrder
+    unionContrib?: SortOrderInput | SortOrder
+    withheldTax?: SortOrderInput | SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmployeeOtherIncomeCountOrderByAggregateInput
+    _avg?: EmployeeOtherIncomeAvgOrderByAggregateInput
+    _max?: EmployeeOtherIncomeMaxOrderByAggregateInput
+    _min?: EmployeeOtherIncomeMinOrderByAggregateInput
+    _sum?: EmployeeOtherIncomeSumOrderByAggregateInput
+  }
+
+  export type EmployeeOtherIncomeScalarWhereWithAggregatesInput = {
+    AND?: EmployeeOtherIncomeScalarWhereWithAggregatesInput | EmployeeOtherIncomeScalarWhereWithAggregatesInput[]
+    OR?: EmployeeOtherIncomeScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeOtherIncomeScalarWhereWithAggregatesInput | EmployeeOtherIncomeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeOtherIncome"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeOtherIncome"> | string
+    fiscalYear?: IntWithAggregatesFilter<"EmployeeOtherIncome"> | number
+    month?: IntWithAggregatesFilter<"EmployeeOtherIncome"> | number
+    employerCuit?: StringWithAggregatesFilter<"EmployeeOtherIncome"> | string
+    employerName?: StringWithAggregatesFilter<"EmployeeOtherIncome"> | string
+    grossIncome?: DecimalWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: DecimalNullableWithAggregatesFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    source?: StringWithAggregatesFilter<"EmployeeOtherIncome"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeOtherIncome"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeOtherIncome"> | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountWhereInput = {
+    AND?: EmployeeIncomeTaxPaymentOnAccountWhereInput | EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    OR?: EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    NOT?: EmployeeIncomeTaxPaymentOnAccountWhereInput | EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    id?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    employeeId?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    paymentType?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    cuitAgent?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    agentName?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    month?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    amount?: DecimalFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    paymentType?: SortOrder
+    cuitAgent?: SortOrderInput | SortOrder
+    agentName?: SortOrderInput | SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    _relevance?: EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceInput
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeIncomeTaxPaymentOnAccountWhereInput | EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    OR?: EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    NOT?: EmployeeIncomeTaxPaymentOnAccountWhereInput | EmployeeIncomeTaxPaymentOnAccountWhereInput[]
+    employeeId?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    paymentType?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    cuitAgent?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    agentName?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    month?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    amount?: DecimalFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id">
+
+  export type EmployeeIncomeTaxPaymentOnAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    paymentType?: SortOrder
+    cuitAgent?: SortOrderInput | SortOrder
+    agentName?: SortOrderInput | SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: EmployeeIncomeTaxPaymentOnAccountCountOrderByAggregateInput
+    _avg?: EmployeeIncomeTaxPaymentOnAccountAvgOrderByAggregateInput
+    _max?: EmployeeIncomeTaxPaymentOnAccountMaxOrderByAggregateInput
+    _min?: EmployeeIncomeTaxPaymentOnAccountMinOrderByAggregateInput
+    _sum?: EmployeeIncomeTaxPaymentOnAccountSumOrderByAggregateInput
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput = {
+    AND?: EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput[]
+    OR?: EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    fiscalYear?: IntWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    paymentType?: StringWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    cuitAgent?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    agentName?: StringNullableWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    month?: IntWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    amount?: DecimalWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Decimal | DecimalJsLike | number | string
+    source?: StringWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+  }
+
+  export type SiradigImportWhereInput = {
+    AND?: SiradigImportWhereInput | SiradigImportWhereInput[]
+    OR?: SiradigImportWhereInput[]
+    NOT?: SiradigImportWhereInput | SiradigImportWhereInput[]
+    id?: StringFilter<"SiradigImport"> | string
+    fiscalYear?: IntFilter<"SiradigImport"> | number
+    filename?: StringFilter<"SiradigImport"> | string
+    xmlVersion?: StringNullableFilter<"SiradigImport"> | string | null
+    presentationDate?: DateTimeNullableFilter<"SiradigImport"> | Date | string | null
+    totalRecords?: IntFilter<"SiradigImport"> | number
+    processedEmployees?: IntFilter<"SiradigImport"> | number
+    status?: StringFilter<"SiradigImport"> | string
+    summary?: JsonNullableFilter<"SiradigImport">
+    createdAt?: DateTimeFilter<"SiradigImport"> | Date | string
+    updatedAt?: DateTimeFilter<"SiradigImport"> | Date | string
+  }
+
+  export type SiradigImportOrderByWithRelationInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    filename?: SortOrder
+    xmlVersion?: SortOrderInput | SortOrder
+    presentationDate?: SortOrderInput | SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+    status?: SortOrder
+    summary?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: SiradigImportOrderByRelevanceInput
+  }
+
+  export type SiradigImportWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SiradigImportWhereInput | SiradigImportWhereInput[]
+    OR?: SiradigImportWhereInput[]
+    NOT?: SiradigImportWhereInput | SiradigImportWhereInput[]
+    fiscalYear?: IntFilter<"SiradigImport"> | number
+    filename?: StringFilter<"SiradigImport"> | string
+    xmlVersion?: StringNullableFilter<"SiradigImport"> | string | null
+    presentationDate?: DateTimeNullableFilter<"SiradigImport"> | Date | string | null
+    totalRecords?: IntFilter<"SiradigImport"> | number
+    processedEmployees?: IntFilter<"SiradigImport"> | number
+    status?: StringFilter<"SiradigImport"> | string
+    summary?: JsonNullableFilter<"SiradigImport">
+    createdAt?: DateTimeFilter<"SiradigImport"> | Date | string
+    updatedAt?: DateTimeFilter<"SiradigImport"> | Date | string
+  }, "id">
+
+  export type SiradigImportOrderByWithAggregationInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    filename?: SortOrder
+    xmlVersion?: SortOrderInput | SortOrder
+    presentationDate?: SortOrderInput | SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+    status?: SortOrder
+    summary?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SiradigImportCountOrderByAggregateInput
+    _avg?: SiradigImportAvgOrderByAggregateInput
+    _max?: SiradigImportMaxOrderByAggregateInput
+    _min?: SiradigImportMinOrderByAggregateInput
+    _sum?: SiradigImportSumOrderByAggregateInput
+  }
+
+  export type SiradigImportScalarWhereWithAggregatesInput = {
+    AND?: SiradigImportScalarWhereWithAggregatesInput | SiradigImportScalarWhereWithAggregatesInput[]
+    OR?: SiradigImportScalarWhereWithAggregatesInput[]
+    NOT?: SiradigImportScalarWhereWithAggregatesInput | SiradigImportScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SiradigImport"> | string
+    fiscalYear?: IntWithAggregatesFilter<"SiradigImport"> | number
+    filename?: StringWithAggregatesFilter<"SiradigImport"> | string
+    xmlVersion?: StringNullableWithAggregatesFilter<"SiradigImport"> | string | null
+    presentationDate?: DateTimeNullableWithAggregatesFilter<"SiradigImport"> | Date | string | null
+    totalRecords?: IntWithAggregatesFilter<"SiradigImport"> | number
+    processedEmployees?: IntWithAggregatesFilter<"SiradigImport"> | number
+    status?: StringWithAggregatesFilter<"SiradigImport"> | string
+    summary?: JsonNullableWithAggregatesFilter<"SiradigImport">
+    createdAt?: DateTimeWithAggregatesFilter<"SiradigImport"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SiradigImport"> | Date | string
+  }
+
+  export type IncomeTaxSettlementWhereInput = {
+    AND?: IncomeTaxSettlementWhereInput | IncomeTaxSettlementWhereInput[]
+    OR?: IncomeTaxSettlementWhereInput[]
+    NOT?: IncomeTaxSettlementWhereInput | IncomeTaxSettlementWhereInput[]
+    id?: StringFilter<"IncomeTaxSettlement"> | string
+    fiscalYear?: IntFilter<"IncomeTaxSettlement"> | number
+    month?: IntFilter<"IncomeTaxSettlement"> | number
+    settlementType?: StringFilter<"IncomeTaxSettlement"> | string
+    status?: StringFilter<"IncomeTaxSettlement"> | string
+    description?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    totalEmployeesEvaluated?: IntFilter<"IncomeTaxSettlement"> | number
+    totalEmployeesWithheld?: IntFilter<"IncomeTaxSettlement"> | number
+    totalWithheldAmount?: DecimalFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    refundConceptId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    exportedPayrollPeriodId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    exportedAt?: DateTimeNullableFilter<"IncomeTaxSettlement"> | Date | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxSettlement"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxSettlement"> | Date | string
+    details?: IncomeTaxSettlementDetailListRelationFilter
+  }
+
+  export type IncomeTaxSettlementOrderByWithRelationInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    settlementType?: SortOrder
+    status?: SortOrder
+    description?: SortOrderInput | SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+    withholdingConceptId?: SortOrderInput | SortOrder
+    refundConceptId?: SortOrderInput | SortOrder
+    exportedPayrollPeriodId?: SortOrderInput | SortOrder
+    exportedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    details?: IncomeTaxSettlementDetailOrderByRelationAggregateInput
+    _relevance?: IncomeTaxSettlementOrderByRelevanceInput
+  }
+
+  export type IncomeTaxSettlementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    fiscalYear_month_settlementType?: IncomeTaxSettlementFiscalYearMonthSettlementTypeCompoundUniqueInput
+    AND?: IncomeTaxSettlementWhereInput | IncomeTaxSettlementWhereInput[]
+    OR?: IncomeTaxSettlementWhereInput[]
+    NOT?: IncomeTaxSettlementWhereInput | IncomeTaxSettlementWhereInput[]
+    fiscalYear?: IntFilter<"IncomeTaxSettlement"> | number
+    month?: IntFilter<"IncomeTaxSettlement"> | number
+    settlementType?: StringFilter<"IncomeTaxSettlement"> | string
+    status?: StringFilter<"IncomeTaxSettlement"> | string
+    description?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    totalEmployeesEvaluated?: IntFilter<"IncomeTaxSettlement"> | number
+    totalEmployeesWithheld?: IntFilter<"IncomeTaxSettlement"> | number
+    totalWithheldAmount?: DecimalFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    refundConceptId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    exportedPayrollPeriodId?: StringNullableFilter<"IncomeTaxSettlement"> | string | null
+    exportedAt?: DateTimeNullableFilter<"IncomeTaxSettlement"> | Date | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxSettlement"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxSettlement"> | Date | string
+    details?: IncomeTaxSettlementDetailListRelationFilter
+  }, "id" | "fiscalYear_month_settlementType">
+
+  export type IncomeTaxSettlementOrderByWithAggregationInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    settlementType?: SortOrder
+    status?: SortOrder
+    description?: SortOrderInput | SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+    withholdingConceptId?: SortOrderInput | SortOrder
+    refundConceptId?: SortOrderInput | SortOrder
+    exportedPayrollPeriodId?: SortOrderInput | SortOrder
+    exportedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IncomeTaxSettlementCountOrderByAggregateInput
+    _avg?: IncomeTaxSettlementAvgOrderByAggregateInput
+    _max?: IncomeTaxSettlementMaxOrderByAggregateInput
+    _min?: IncomeTaxSettlementMinOrderByAggregateInput
+    _sum?: IncomeTaxSettlementSumOrderByAggregateInput
+  }
+
+  export type IncomeTaxSettlementScalarWhereWithAggregatesInput = {
+    AND?: IncomeTaxSettlementScalarWhereWithAggregatesInput | IncomeTaxSettlementScalarWhereWithAggregatesInput[]
+    OR?: IncomeTaxSettlementScalarWhereWithAggregatesInput[]
+    NOT?: IncomeTaxSettlementScalarWhereWithAggregatesInput | IncomeTaxSettlementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncomeTaxSettlement"> | string
+    fiscalYear?: IntWithAggregatesFilter<"IncomeTaxSettlement"> | number
+    month?: IntWithAggregatesFilter<"IncomeTaxSettlement"> | number
+    settlementType?: StringWithAggregatesFilter<"IncomeTaxSettlement"> | string
+    status?: StringWithAggregatesFilter<"IncomeTaxSettlement"> | string
+    description?: StringNullableWithAggregatesFilter<"IncomeTaxSettlement"> | string | null
+    totalEmployeesEvaluated?: IntWithAggregatesFilter<"IncomeTaxSettlement"> | number
+    totalEmployeesWithheld?: IntWithAggregatesFilter<"IncomeTaxSettlement"> | number
+    totalWithheldAmount?: DecimalWithAggregatesFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalWithAggregatesFilter<"IncomeTaxSettlement"> | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: StringNullableWithAggregatesFilter<"IncomeTaxSettlement"> | string | null
+    refundConceptId?: StringNullableWithAggregatesFilter<"IncomeTaxSettlement"> | string | null
+    exportedPayrollPeriodId?: StringNullableWithAggregatesFilter<"IncomeTaxSettlement"> | string | null
+    exportedAt?: DateTimeNullableWithAggregatesFilter<"IncomeTaxSettlement"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlement"> | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailWhereInput = {
+    AND?: IncomeTaxSettlementDetailWhereInput | IncomeTaxSettlementDetailWhereInput[]
+    OR?: IncomeTaxSettlementDetailWhereInput[]
+    NOT?: IncomeTaxSettlementDetailWhereInput | IncomeTaxSettlementDetailWhereInput[]
+    id?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    settlementId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    employeeId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    currentMonthGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: JsonNullableFilter<"IncomeTaxSettlementDetail">
+    netTaxableIncomeAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFilter<"IncomeTaxSettlementDetail"> | boolean
+    notes?: StringNullableFilter<"IncomeTaxSettlementDetail"> | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+    settlement?: XOR<IncomeTaxSettlementScalarRelationFilter, IncomeTaxSettlementWhereInput>
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type IncomeTaxSettlementDetailOrderByWithRelationInput = {
+    id?: SortOrder
+    settlementId?: SortOrder
+    employeeId?: SortOrder
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    familyDeductionDetails?: SortOrderInput | SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+    isExportedToPayroll?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    settlement?: IncomeTaxSettlementOrderByWithRelationInput
+    employee?: EmployeeOrderByWithRelationInput
+    _relevance?: IncomeTaxSettlementDetailOrderByRelevanceInput
+  }
+
+  export type IncomeTaxSettlementDetailWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    settlementId_employeeId?: IncomeTaxSettlementDetailSettlementIdEmployeeIdCompoundUniqueInput
+    AND?: IncomeTaxSettlementDetailWhereInput | IncomeTaxSettlementDetailWhereInput[]
+    OR?: IncomeTaxSettlementDetailWhereInput[]
+    NOT?: IncomeTaxSettlementDetailWhereInput | IncomeTaxSettlementDetailWhereInput[]
+    settlementId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    employeeId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    currentMonthGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: JsonNullableFilter<"IncomeTaxSettlementDetail">
+    netTaxableIncomeAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFilter<"IncomeTaxSettlementDetail"> | boolean
+    notes?: StringNullableFilter<"IncomeTaxSettlementDetail"> | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+    settlement?: XOR<IncomeTaxSettlementScalarRelationFilter, IncomeTaxSettlementWhereInput>
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id" | "settlementId_employeeId">
+
+  export type IncomeTaxSettlementDetailOrderByWithAggregationInput = {
+    id?: SortOrder
+    settlementId?: SortOrder
+    employeeId?: SortOrder
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    familyDeductionDetails?: SortOrderInput | SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+    isExportedToPayroll?: SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: IncomeTaxSettlementDetailCountOrderByAggregateInput
+    _avg?: IncomeTaxSettlementDetailAvgOrderByAggregateInput
+    _max?: IncomeTaxSettlementDetailMaxOrderByAggregateInput
+    _min?: IncomeTaxSettlementDetailMinOrderByAggregateInput
+    _sum?: IncomeTaxSettlementDetailSumOrderByAggregateInput
+  }
+
+  export type IncomeTaxSettlementDetailScalarWhereWithAggregatesInput = {
+    AND?: IncomeTaxSettlementDetailScalarWhereWithAggregatesInput | IncomeTaxSettlementDetailScalarWhereWithAggregatesInput[]
+    OR?: IncomeTaxSettlementDetailScalarWhereWithAggregatesInput[]
+    NOT?: IncomeTaxSettlementDetailScalarWhereWithAggregatesInput | IncomeTaxSettlementDetailScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncomeTaxSettlementDetail"> | string
+    settlementId?: StringWithAggregatesFilter<"IncomeTaxSettlementDetail"> | string
+    employeeId?: StringWithAggregatesFilter<"IncomeTaxSettlementDetail"> | string
+    currentMonthGross?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: JsonNullableWithAggregatesFilter<"IncomeTaxSettlementDetail">
+    netTaxableIncomeAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolWithAggregatesFilter<"IncomeTaxSettlementDetail"> | boolean
+    notes?: StringNullableWithAggregatesFilter<"IncomeTaxSettlementDetail"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Date | string
+  }
+
   export type CompanyProfileCreateInput = {
     id?: string
     legalName: string
@@ -45632,6 +57482,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -45683,6 +57537,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -45734,6 +57592,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -45785,6 +57647,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -46088,6 +57954,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46106,6 +57979,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46120,6 +58000,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46138,6 +58025,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46154,6 +58048,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -46168,6 +58069,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -46184,6 +58092,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -48093,6 +60008,1048 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncomeTaxTableCreateInput = {
+    id?: string
+    year: number
+    semester?: number | null
+    month: number
+    description?: string | null
+    nonTaxableMinimum: Decimal | DecimalJsLike | number | string
+    specialDeduction: Decimal | DecimalJsLike | number | string
+    spouseDeduction: Decimal | DecimalJsLike | number | string
+    childDeduction: Decimal | DecimalJsLike | number | string
+    disabledChildDeduction: Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxTableUncheckedCreateInput = {
+    id?: string
+    year: number
+    semester?: number | null
+    month: number
+    description?: string | null
+    nonTaxableMinimum: Decimal | DecimalJsLike | number | string
+    specialDeduction: Decimal | DecimalJsLike | number | string
+    spouseDeduction: Decimal | DecimalJsLike | number | string
+    childDeduction: Decimal | DecimalJsLike | number | string
+    disabledChildDeduction: Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxTableUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    month?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    nonTaxableMinimum?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxTableUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    month?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    nonTaxableMinimum?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxTableCreateManyInput = {
+    id?: string
+    year: number
+    semester?: number | null
+    month: number
+    description?: string | null
+    nonTaxableMinimum: Decimal | DecimalJsLike | number | string
+    specialDeduction: Decimal | DecimalJsLike | number | string
+    spouseDeduction: Decimal | DecimalJsLike | number | string
+    childDeduction: Decimal | DecimalJsLike | number | string
+    disabledChildDeduction: Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: Decimal | DecimalJsLike | number | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxTableUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    month?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    nonTaxableMinimum?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxTableUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    semester?: NullableIntFieldUpdateOperationsInput | number | null
+    month?: IntFieldUpdateOperationsInput | number
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    nonTaxableMinimum?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    spouseDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    childDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    disabledChildDeduction?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    specialDeductionNewProf?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxScaleCreateInput = {
+    id?: string
+    year: number
+    month: number
+    step: number
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string
+    ratePercentage: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxScaleUncheckedCreateInput = {
+    id?: string
+    year: number
+    month: number
+    step: number
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string
+    ratePercentage: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxScaleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    step?: IntFieldUpdateOperationsInput | number
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxScaleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    step?: IntFieldUpdateOperationsInput | number
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxScaleCreateManyInput = {
+    id?: string
+    year: number
+    month: number
+    step: number
+    fromAmount: Decimal | DecimalJsLike | number | string
+    toAmount?: Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: Decimal | DecimalJsLike | number | string
+    ratePercentage: Decimal | DecimalJsLike | number | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxScaleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    step?: IntFieldUpdateOperationsInput | number
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxScaleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    step?: IntFieldUpdateOperationsInput | number
+    fromAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    toAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    fixedAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    ratePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitCreateInput = {
+    id?: string
+    year: number
+    code: string
+    name: string
+    limitType: string
+    limitValue: Decimal | DecimalJsLike | number | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitUncheckedCreateInput = {
+    id?: string
+    year: number
+    code: string
+    name: string
+    limitType: string
+    limitValue: Decimal | DecimalJsLike | number | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    limitType?: StringFieldUpdateOperationsInput | string
+    limitValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    limitType?: StringFieldUpdateOperationsInput | string
+    limitValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitCreateManyInput = {
+    id?: string
+    year: number
+    code: string
+    name: string
+    limitType: string
+    limitValue: Decimal | DecimalJsLike | number | string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    limitType?: StringFieldUpdateOperationsInput | string
+    limitValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    limitType?: StringFieldUpdateOperationsInput | string
+    limitValue?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateInput = {
+    id?: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutIncomeTaxDeductionsInput
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutIncomeTaxDeductionsNestedInput
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateManyInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeCreateInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutOtherIncomesInput
+  }
+
+  export type EmployeeOtherIncomeUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeOtherIncomeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutOtherIncomesNestedInput
+  }
+
+  export type EmployeeOtherIncomeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeCreateManyInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeOtherIncomeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateInput = {
+    id?: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutIncomeTaxPaymentsOnAccountInput
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutIncomeTaxPaymentsOnAccountNestedInput
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateManyInput = {
+    id?: string
+    employeeId: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SiradigImportCreateInput = {
+    id?: string
+    fiscalYear: number
+    filename: string
+    xmlVersion?: string | null
+    presentationDate?: Date | string | null
+    totalRecords?: number
+    processedEmployees?: number
+    status?: string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SiradigImportUncheckedCreateInput = {
+    id?: string
+    fiscalYear: number
+    filename: string
+    xmlVersion?: string | null
+    presentationDate?: Date | string | null
+    totalRecords?: number
+    processedEmployees?: number
+    status?: string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SiradigImportUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    filename?: StringFieldUpdateOperationsInput | string
+    xmlVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    presentationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecords?: IntFieldUpdateOperationsInput | number
+    processedEmployees?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SiradigImportUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    filename?: StringFieldUpdateOperationsInput | string
+    xmlVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    presentationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecords?: IntFieldUpdateOperationsInput | number
+    processedEmployees?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SiradigImportCreateManyInput = {
+    id?: string
+    fiscalYear: number
+    filename: string
+    xmlVersion?: string | null
+    presentationDate?: Date | string | null
+    totalRecords?: number
+    processedEmployees?: number
+    status?: string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SiradigImportUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    filename?: StringFieldUpdateOperationsInput | string
+    xmlVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    presentationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecords?: IntFieldUpdateOperationsInput | number
+    processedEmployees?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SiradigImportUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    filename?: StringFieldUpdateOperationsInput | string
+    xmlVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    presentationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalRecords?: IntFieldUpdateOperationsInput | number
+    processedEmployees?: IntFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    summary?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementCreateInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    settlementType?: string
+    status?: string
+    description?: string | null
+    totalEmployeesEvaluated?: number
+    totalEmployeesWithheld?: number
+    totalWithheldAmount?: Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: string | null
+    refundConceptId?: string | null
+    exportedPayrollPeriodId?: string | null
+    exportedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: IncomeTaxSettlementDetailCreateNestedManyWithoutSettlementInput
+  }
+
+  export type IncomeTaxSettlementUncheckedCreateInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    settlementType?: string
+    status?: string
+    description?: string | null
+    totalEmployeesEvaluated?: number
+    totalEmployeesWithheld?: number
+    totalWithheldAmount?: Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: string | null
+    refundConceptId?: string | null
+    exportedPayrollPeriodId?: string | null
+    exportedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    details?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutSettlementInput
+  }
+
+  export type IncomeTaxSettlementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: IncomeTaxSettlementDetailUpdateManyWithoutSettlementNestedInput
+  }
+
+  export type IncomeTaxSettlementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    details?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutSettlementNestedInput
+  }
+
+  export type IncomeTaxSettlementCreateManyInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    settlementType?: string
+    status?: string
+    description?: string | null
+    totalEmployeesEvaluated?: number
+    totalEmployeesWithheld?: number
+    totalWithheldAmount?: Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: string | null
+    refundConceptId?: string | null
+    exportedPayrollPeriodId?: string | null
+    exportedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateInput = {
+    id?: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    settlement: IncomeTaxSettlementCreateNestedOneWithoutDetailsInput
+    employee: EmployeeCreateNestedOneWithoutIncomeTaxSettlementDetailsInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedCreateInput = {
+    id?: string
+    settlementId: string
+    employeeId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlement?: IncomeTaxSettlementUpdateOneRequiredWithoutDetailsNestedInput
+    employee?: EmployeeUpdateOneRequiredWithoutIncomeTaxSettlementDetailsNestedInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    settlementId?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateManyInput = {
+    id?: string
+    settlementId: string
+    employeeId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    settlementId?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -49155,6 +62112,30 @@ export namespace Prisma {
     none?: EmployeeEmbargoWhereInput
   }
 
+  export type EmployeeIncomeTaxDeductionListRelationFilter = {
+    every?: EmployeeIncomeTaxDeductionWhereInput
+    some?: EmployeeIncomeTaxDeductionWhereInput
+    none?: EmployeeIncomeTaxDeductionWhereInput
+  }
+
+  export type EmployeeOtherIncomeListRelationFilter = {
+    every?: EmployeeOtherIncomeWhereInput
+    some?: EmployeeOtherIncomeWhereInput
+    none?: EmployeeOtherIncomeWhereInput
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountListRelationFilter = {
+    every?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    some?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+    none?: EmployeeIncomeTaxPaymentOnAccountWhereInput
+  }
+
+  export type IncomeTaxSettlementDetailListRelationFilter = {
+    every?: IncomeTaxSettlementDetailWhereInput
+    some?: IncomeTaxSettlementDetailWhereInput
+    none?: IncomeTaxSettlementDetailWhereInput
+  }
+
   export type PaySlipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -49172,6 +62153,22 @@ export namespace Prisma {
   }
 
   export type EmployeeEmbargoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type IncomeTaxSettlementDetailOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -49448,9 +62445,22 @@ export namespace Prisma {
     cuil?: SortOrder
     birthDate?: SortOrder
     isAdherent?: SortOrder
+    appliesIncomeTax?: SortOrder
+    incomeTaxDeductionType?: SortOrder
+    deductionPercentage?: SortOrder
+    isDisability?: SortOrder
+    hasNoIncomeOrBelowMni?: SortOrder
+    validFromMonth?: SortOrder
+    validToMonth?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type EmployeeRelativeAvgOrderByAggregateInput = {
+    deductionPercentage?: SortOrder
+    validFromMonth?: SortOrder
+    validToMonth?: SortOrder
   }
 
   export type EmployeeRelativeMaxOrderByAggregateInput = {
@@ -49464,6 +62474,13 @@ export namespace Prisma {
     cuil?: SortOrder
     birthDate?: SortOrder
     isAdherent?: SortOrder
+    appliesIncomeTax?: SortOrder
+    incomeTaxDeductionType?: SortOrder
+    deductionPercentage?: SortOrder
+    isDisability?: SortOrder
+    hasNoIncomeOrBelowMni?: SortOrder
+    validFromMonth?: SortOrder
+    validToMonth?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -49480,9 +62497,22 @@ export namespace Prisma {
     cuil?: SortOrder
     birthDate?: SortOrder
     isAdherent?: SortOrder
+    appliesIncomeTax?: SortOrder
+    incomeTaxDeductionType?: SortOrder
+    deductionPercentage?: SortOrder
+    isDisability?: SortOrder
+    hasNoIncomeOrBelowMni?: SortOrder
+    validFromMonth?: SortOrder
+    validToMonth?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
+  }
+
+  export type EmployeeRelativeSumOrderByAggregateInput = {
+    deductionPercentage?: SortOrder
+    validFromMonth?: SortOrder
+    validToMonth?: SortOrder
   }
 
   export type PayrollMatrixNullableScalarRelationFilter = {
@@ -50731,6 +63761,748 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type IncomeTaxTableOrderByRelevanceInput = {
+    fields: IncomeTaxTableOrderByRelevanceFieldEnum | IncomeTaxTableOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncomeTaxTableYearMonthCompoundUniqueInput = {
+    year: number
+    month: number
+  }
+
+  export type IncomeTaxTableCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    semester?: SortOrder
+    month?: SortOrder
+    description?: SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxTableAvgOrderByAggregateInput = {
+    year?: SortOrder
+    semester?: SortOrder
+    month?: SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrder
+  }
+
+  export type IncomeTaxTableMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    semester?: SortOrder
+    month?: SortOrder
+    description?: SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxTableMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    semester?: SortOrder
+    month?: SortOrder
+    description?: SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxTableSumOrderByAggregateInput = {
+    year?: SortOrder
+    semester?: SortOrder
+    month?: SortOrder
+    nonTaxableMinimum?: SortOrder
+    specialDeduction?: SortOrder
+    spouseDeduction?: SortOrder
+    childDeduction?: SortOrder
+    disabledChildDeduction?: SortOrder
+    specialDeductionNewProf?: SortOrder
+  }
+
+  export type IncomeTaxScaleOrderByRelevanceInput = {
+    fields: IncomeTaxScaleOrderByRelevanceFieldEnum | IncomeTaxScaleOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncomeTaxScaleYearMonthStepCompoundUniqueInput = {
+    year: number
+    month: number
+    step: number
+  }
+
+  export type IncomeTaxScaleCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxScaleAvgOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+  }
+
+  export type IncomeTaxScaleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxScaleMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxScaleSumOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+    step?: SortOrder
+    fromAmount?: SortOrder
+    toAmount?: SortOrder
+    fixedAmount?: SortOrder
+    ratePercentage?: SortOrder
+  }
+
+  export type IncomeTaxGeneralDeductionLimitOrderByRelevanceInput = {
+    fields: IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum | IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitYearCodeCompoundUniqueInput = {
+    year: number
+    code: string
+  }
+
+  export type IncomeTaxGeneralDeductionLimitCountOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    limitType?: SortOrder
+    limitValue?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxGeneralDeductionLimitAvgOrderByAggregateInput = {
+    year?: SortOrder
+    limitValue?: SortOrder
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMaxOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    limitType?: SortOrder
+    limitValue?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxGeneralDeductionLimitMinOrderByAggregateInput = {
+    id?: SortOrder
+    year?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    limitType?: SortOrder
+    limitValue?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxGeneralDeductionLimitSumOrderByAggregateInput = {
+    year?: SortOrder
+    limitValue?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionOrderByRelevanceInput = {
+    fields: EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum | EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeIncomeTaxDeductionCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    deductionType?: SortOrder
+    providerCuit?: SortOrder
+    providerName?: SortOrder
+    voucherType?: SortOrder
+    voucherNumber?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    siradigPresentationId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionAvgOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    deductionType?: SortOrder
+    providerCuit?: SortOrder
+    providerName?: SortOrder
+    voucherType?: SortOrder
+    voucherNumber?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    siradigPresentationId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    deductionType?: SortOrder
+    providerCuit?: SortOrder
+    providerName?: SortOrder
+    voucherType?: SortOrder
+    voucherNumber?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    siradigPresentationId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxDeductionSumOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeOrderByRelevanceInput = {
+    fields: EmployeeOtherIncomeOrderByRelevanceFieldEnum | EmployeeOtherIncomeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeOtherIncomeCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    employerCuit?: SortOrder
+    employerName?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrder
+    exemptIncome?: SortOrder
+    pensionContrib?: SortOrder
+    healthInsuranceContrib?: SortOrder
+    unionContrib?: SortOrder
+    withheldTax?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeAvgOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrder
+    exemptIncome?: SortOrder
+    pensionContrib?: SortOrder
+    healthInsuranceContrib?: SortOrder
+    unionContrib?: SortOrder
+    withheldTax?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    employerCuit?: SortOrder
+    employerName?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrder
+    exemptIncome?: SortOrder
+    pensionContrib?: SortOrder
+    healthInsuranceContrib?: SortOrder
+    unionContrib?: SortOrder
+    withheldTax?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    employerCuit?: SortOrder
+    employerName?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrder
+    exemptIncome?: SortOrder
+    pensionContrib?: SortOrder
+    healthInsuranceContrib?: SortOrder
+    unionContrib?: SortOrder
+    withheldTax?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeOtherIncomeSumOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    grossIncome?: SortOrder
+    nonTaxableIncome?: SortOrder
+    exemptIncome?: SortOrder
+    pensionContrib?: SortOrder
+    healthInsuranceContrib?: SortOrder
+    unionContrib?: SortOrder
+    withheldTax?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceInput = {
+    fields: EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum | EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    paymentType?: SortOrder
+    cuitAgent?: SortOrder
+    agentName?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountAvgOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    paymentType?: SortOrder
+    cuitAgent?: SortOrder
+    agentName?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    fiscalYear?: SortOrder
+    paymentType?: SortOrder
+    cuitAgent?: SortOrder
+    agentName?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+    source?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountSumOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    amount?: SortOrder
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type SiradigImportOrderByRelevanceInput = {
+    fields: SiradigImportOrderByRelevanceFieldEnum | SiradigImportOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SiradigImportCountOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    filename?: SortOrder
+    xmlVersion?: SortOrder
+    presentationDate?: SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+    status?: SortOrder
+    summary?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SiradigImportAvgOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+  }
+
+  export type SiradigImportMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    filename?: SortOrder
+    xmlVersion?: SortOrder
+    presentationDate?: SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SiradigImportMinOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    filename?: SortOrder
+    xmlVersion?: SortOrder
+    presentationDate?: SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SiradigImportSumOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    totalRecords?: SortOrder
+    processedEmployees?: SortOrder
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type IncomeTaxSettlementOrderByRelevanceInput = {
+    fields: IncomeTaxSettlementOrderByRelevanceFieldEnum | IncomeTaxSettlementOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncomeTaxSettlementFiscalYearMonthSettlementTypeCompoundUniqueInput = {
+    fiscalYear: number
+    month: number
+    settlementType: string
+  }
+
+  export type IncomeTaxSettlementCountOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    settlementType?: SortOrder
+    status?: SortOrder
+    description?: SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+    withholdingConceptId?: SortOrder
+    refundConceptId?: SortOrder
+    exportedPayrollPeriodId?: SortOrder
+    exportedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementAvgOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+  }
+
+  export type IncomeTaxSettlementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    settlementType?: SortOrder
+    status?: SortOrder
+    description?: SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+    withholdingConceptId?: SortOrder
+    refundConceptId?: SortOrder
+    exportedPayrollPeriodId?: SortOrder
+    exportedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementMinOrderByAggregateInput = {
+    id?: SortOrder
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    settlementType?: SortOrder
+    status?: SortOrder
+    description?: SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+    withholdingConceptId?: SortOrder
+    refundConceptId?: SortOrder
+    exportedPayrollPeriodId?: SortOrder
+    exportedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementSumOrderByAggregateInput = {
+    fiscalYear?: SortOrder
+    month?: SortOrder
+    totalEmployeesEvaluated?: SortOrder
+    totalEmployeesWithheld?: SortOrder
+    totalWithheldAmount?: SortOrder
+    totalRefundAmount?: SortOrder
+  }
+
+  export type IncomeTaxSettlementScalarRelationFilter = {
+    is?: IncomeTaxSettlementWhereInput
+    isNot?: IncomeTaxSettlementWhereInput
+  }
+
+  export type IncomeTaxSettlementDetailOrderByRelevanceInput = {
+    fields: IncomeTaxSettlementDetailOrderByRelevanceFieldEnum | IncomeTaxSettlementDetailOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncomeTaxSettlementDetailSettlementIdEmployeeIdCompoundUniqueInput = {
+    settlementId: string
+    employeeId: string
+  }
+
+  export type IncomeTaxSettlementDetailCountOrderByAggregateInput = {
+    id?: SortOrder
+    settlementId?: SortOrder
+    employeeId?: SortOrder
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    familyDeductionDetails?: SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+    isExportedToPayroll?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementDetailAvgOrderByAggregateInput = {
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+  }
+
+  export type IncomeTaxSettlementDetailMaxOrderByAggregateInput = {
+    id?: SortOrder
+    settlementId?: SortOrder
+    employeeId?: SortOrder
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+    isExportedToPayroll?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementDetailMinOrderByAggregateInput = {
+    id?: SortOrder
+    settlementId?: SortOrder
+    employeeId?: SortOrder
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+    isExportedToPayroll?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type IncomeTaxSettlementDetailSumOrderByAggregateInput = {
+    currentMonthGross?: SortOrder
+    accumulatedGross?: SortOrder
+    sacProjectedMonth?: SortOrder
+    sacProjectedAccumulated?: SortOrder
+    otherEmployersGross?: SortOrder
+    legalDeductionsAccumulated?: SortOrder
+    generalDeductionsAccumulated?: SortOrder
+    personalDeductionsAccumulated?: SortOrder
+    netTaxableIncomeAccumulated?: SortOrder
+    determinedTaxAccumulated?: SortOrder
+    paymentsOnAccountAccumulated?: SortOrder
+    priorMonthsWithheldTax?: SortOrder
+    netMonthlyWithholding?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -51612,6 +65384,34 @@ export namespace Prisma {
     connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
   }
 
+  export type EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput[] | EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxDeductionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+  }
+
+  export type EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput> | EmployeeOtherIncomeCreateWithoutEmployeeInput[] | EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput | EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeOtherIncomeCreateManyEmployeeInputEnvelope
+    connect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput[] | EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+  }
+
+  export type IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput> | IncomeTaxSettlementDetailCreateWithoutEmployeeInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput | IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+  }
+
   export type PaySlipUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -51645,6 +65445,34 @@ export namespace Prisma {
     connectOrCreate?: EmployeeEmbargoCreateOrConnectWithoutEmployeeInput | EmployeeEmbargoCreateOrConnectWithoutEmployeeInput[]
     createMany?: EmployeeEmbargoCreateManyEmployeeInputEnvelope
     connect?: EmployeeEmbargoWhereUniqueInput | EmployeeEmbargoWhereUniqueInput[]
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput[] | EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxDeductionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+  }
+
+  export type EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput> | EmployeeOtherIncomeCreateWithoutEmployeeInput[] | EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput | EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeOtherIncomeCreateManyEmployeeInputEnvelope
+    connect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput[] | EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput> | IncomeTaxSettlementDetailCreateWithoutEmployeeInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput | IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -51797,6 +65625,62 @@ export namespace Prisma {
     deleteMany?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
   }
 
+  export type EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput[] | EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncomeTaxDeductionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxDeductionCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    disconnect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    delete?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    connect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    update?: EmployeeIncomeTaxDeductionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncomeTaxDeductionUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncomeTaxDeductionScalarWhereInput | EmployeeIncomeTaxDeductionScalarWhereInput[]
+  }
+
+  export type EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput> | EmployeeOtherIncomeCreateWithoutEmployeeInput[] | EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput | EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeOtherIncomeUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeOtherIncomeUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeOtherIncomeCreateManyEmployeeInputEnvelope
+    set?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    disconnect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    delete?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    connect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    update?: EmployeeOtherIncomeUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeOtherIncomeUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeOtherIncomeUpdateManyWithWhereWithoutEmployeeInput | EmployeeOtherIncomeUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeOtherIncomeScalarWhereInput | EmployeeOtherIncomeScalarWhereInput[]
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput[] | EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncomeTaxPaymentOnAccountUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    disconnect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    delete?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    connect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    update?: EmployeeIncomeTaxPaymentOnAccountUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput> | IncomeTaxSettlementDetailCreateWithoutEmployeeInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput | IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput[]
+    upsert?: IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutEmployeeInput | IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope
+    set?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    disconnect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    delete?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    update?: IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+  }
+
   export type PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -51865,6 +65749,62 @@ export namespace Prisma {
     update?: EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeEmbargoUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput | EmployeeEmbargoUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: EmployeeEmbargoScalarWhereInput | EmployeeEmbargoScalarWhereInput[]
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput[] | EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncomeTaxDeductionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxDeductionCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    disconnect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    delete?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    connect?: EmployeeIncomeTaxDeductionWhereUniqueInput | EmployeeIncomeTaxDeductionWhereUniqueInput[]
+    update?: EmployeeIncomeTaxDeductionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncomeTaxDeductionUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncomeTaxDeductionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncomeTaxDeductionScalarWhereInput | EmployeeIncomeTaxDeductionScalarWhereInput[]
+  }
+
+  export type EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput> | EmployeeOtherIncomeCreateWithoutEmployeeInput[] | EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput | EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeOtherIncomeUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeOtherIncomeUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeOtherIncomeCreateManyEmployeeInputEnvelope
+    set?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    disconnect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    delete?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    connect?: EmployeeOtherIncomeWhereUniqueInput | EmployeeOtherIncomeWhereUniqueInput[]
+    update?: EmployeeOtherIncomeUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeOtherIncomeUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeOtherIncomeUpdateManyWithWhereWithoutEmployeeInput | EmployeeOtherIncomeUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeOtherIncomeScalarWhereInput | EmployeeOtherIncomeScalarWhereInput[]
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput> | EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput[] | EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncomeTaxPaymentOnAccountUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    disconnect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    delete?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    connect?: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput | EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput[]
+    update?: EmployeeIncomeTaxPaymentOnAccountUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncomeTaxPaymentOnAccountUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput> | IncomeTaxSettlementDetailCreateWithoutEmployeeInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput | IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput[]
+    upsert?: IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutEmployeeInput | IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope
+    set?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    disconnect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    delete?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    update?: IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedManyWithoutSalaryScaleInput = {
@@ -52765,6 +66705,118 @@ export namespace Prisma {
     update?: XOR<XOR<ConceptUpdateToOneWithWhereWithoutEmbargoConceptsInput, ConceptUpdateWithoutEmbargoConceptsInput>, ConceptUncheckedUpdateWithoutEmbargoConceptsInput>
   }
 
+  export type EmployeeCreateNestedOneWithoutIncomeTaxDeductionsInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxDeductionsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutIncomeTaxDeductionsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxDeductionsInput
+    upsert?: EmployeeUpsertWithoutIncomeTaxDeductionsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutIncomeTaxDeductionsInput, EmployeeUpdateWithoutIncomeTaxDeductionsInput>, EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput>
+  }
+
+  export type EmployeeCreateNestedOneWithoutOtherIncomesInput = {
+    create?: XOR<EmployeeCreateWithoutOtherIncomesInput, EmployeeUncheckedCreateWithoutOtherIncomesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutOtherIncomesInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutOtherIncomesNestedInput = {
+    create?: XOR<EmployeeCreateWithoutOtherIncomesInput, EmployeeUncheckedCreateWithoutOtherIncomesInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutOtherIncomesInput
+    upsert?: EmployeeUpsertWithoutOtherIncomesInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutOtherIncomesInput, EmployeeUpdateWithoutOtherIncomesInput>, EmployeeUncheckedUpdateWithoutOtherIncomesInput>
+  }
+
+  export type EmployeeCreateNestedOneWithoutIncomeTaxPaymentsOnAccountInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxPaymentsOnAccountInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutIncomeTaxPaymentsOnAccountNestedInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxPaymentsOnAccountInput
+    upsert?: EmployeeUpsertWithoutIncomeTaxPaymentsOnAccountInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUpdateWithoutIncomeTaxPaymentsOnAccountInput>, EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput>
+  }
+
+  export type IncomeTaxSettlementDetailCreateNestedManyWithoutSettlementInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput> | IncomeTaxSettlementDetailCreateWithoutSettlementInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput | IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManySettlementInputEnvelope
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutSettlementInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput> | IncomeTaxSettlementDetailCreateWithoutSettlementInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput | IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManySettlementInputEnvelope
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUpdateManyWithoutSettlementNestedInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput> | IncomeTaxSettlementDetailCreateWithoutSettlementInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput | IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput[]
+    upsert?: IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutSettlementInput | IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutSettlementInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManySettlementInputEnvelope
+    set?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    disconnect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    delete?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    update?: IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutSettlementInput | IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutSettlementInput[]
+    updateMany?: IncomeTaxSettlementDetailUpdateManyWithWhereWithoutSettlementInput | IncomeTaxSettlementDetailUpdateManyWithWhereWithoutSettlementInput[]
+    deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateManyWithoutSettlementNestedInput = {
+    create?: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput> | IncomeTaxSettlementDetailCreateWithoutSettlementInput[] | IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput[]
+    connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput | IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput[]
+    upsert?: IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutSettlementInput | IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutSettlementInput[]
+    createMany?: IncomeTaxSettlementDetailCreateManySettlementInputEnvelope
+    set?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    disconnect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    delete?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+    update?: IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutSettlementInput | IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutSettlementInput[]
+    updateMany?: IncomeTaxSettlementDetailUpdateManyWithWhereWithoutSettlementInput | IncomeTaxSettlementDetailUpdateManyWithWhereWithoutSettlementInput[]
+    deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+  }
+
+  export type IncomeTaxSettlementCreateNestedOneWithoutDetailsInput = {
+    create?: XOR<IncomeTaxSettlementCreateWithoutDetailsInput, IncomeTaxSettlementUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: IncomeTaxSettlementCreateOrConnectWithoutDetailsInput
+    connect?: IncomeTaxSettlementWhereUniqueInput
+  }
+
+  export type EmployeeCreateNestedOneWithoutIncomeTaxSettlementDetailsInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxSettlementDetailsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type IncomeTaxSettlementUpdateOneRequiredWithoutDetailsNestedInput = {
+    create?: XOR<IncomeTaxSettlementCreateWithoutDetailsInput, IncomeTaxSettlementUncheckedCreateWithoutDetailsInput>
+    connectOrCreate?: IncomeTaxSettlementCreateOrConnectWithoutDetailsInput
+    upsert?: IncomeTaxSettlementUpsertWithoutDetailsInput
+    connect?: IncomeTaxSettlementWhereUniqueInput
+    update?: XOR<XOR<IncomeTaxSettlementUpdateToOneWithWhereWithoutDetailsInput, IncomeTaxSettlementUpdateWithoutDetailsInput>, IncomeTaxSettlementUncheckedUpdateWithoutDetailsInput>
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutIncomeTaxSettlementDetailsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncomeTaxSettlementDetailsInput
+    upsert?: EmployeeUpsertWithoutIncomeTaxSettlementDetailsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutIncomeTaxSettlementDetailsInput, EmployeeUpdateWithoutIncomeTaxSettlementDetailsInput>, EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -53023,6 +67075,29 @@ export namespace Prisma {
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
 
   export type EmployeeCreateWithoutDepartmentInput = {
     id?: string
@@ -53072,6 +67147,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -53122,6 +67201,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -53480,6 +67563,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutContractModalityInput = {
@@ -53530,6 +67617,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutContractModalityInput = {
@@ -53700,6 +67791,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutJobPositionInput = {
@@ -53750,6 +67845,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutJobPositionInput = {
@@ -53986,6 +68085,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutWorkShiftInput = {
@@ -54036,6 +68139,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutWorkShiftInput = {
@@ -54236,6 +68343,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutHealthInsuranceInput = {
@@ -54286,6 +68397,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutHealthInsuranceInput = {
@@ -54483,6 +68598,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUnionInput = {
@@ -54533,6 +68652,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUnionInput = {
@@ -55125,6 +69248,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutMutualInput = {
@@ -55175,6 +69302,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutMutualInput = {
@@ -55931,6 +70062,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -55947,6 +70085,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -56077,6 +70222,188 @@ export namespace Prisma {
 
   export type EmployeeEmbargoCreateManyEmployeeInputEnvelope = {
     data: EmployeeEmbargoCreateManyEmployeeInput | EmployeeEmbargoCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+    create: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateManyEmployeeInputEnvelope = {
+    data: EmployeeIncomeTaxDeductionCreateManyEmployeeInput | EmployeeIncomeTaxDeductionCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeOtherIncomeCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeOtherIncomeCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeOtherIncomeWhereUniqueInput
+    create: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeOtherIncomeCreateManyEmployeeInputEnvelope = {
+    data: EmployeeOtherIncomeCreateManyEmployeeInput | EmployeeOtherIncomeCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    create: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInputEnvelope = {
+    data: EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInput | EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncomeTaxSettlementDetailCreateWithoutEmployeeInput = {
+    id?: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    settlement: IncomeTaxSettlementCreateNestedOneWithoutDetailsInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    settlementId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    create: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope = {
+    data: IncomeTaxSettlementDetailCreateManyEmployeeInput | IncomeTaxSettlementDetailCreateManyEmployeeInput[]
     skipDuplicates?: boolean
   }
 
@@ -56449,6 +70776,13 @@ export namespace Prisma {
     cuil?: StringNullableFilter<"EmployeeRelative"> | string | null
     birthDate?: DateTimeFilter<"EmployeeRelative"> | Date | string
     isAdherent?: BoolFilter<"EmployeeRelative"> | boolean
+    appliesIncomeTax?: BoolFilter<"EmployeeRelative"> | boolean
+    incomeTaxDeductionType?: StringNullableFilter<"EmployeeRelative"> | string | null
+    deductionPercentage?: DecimalFilter<"EmployeeRelative"> | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFilter<"EmployeeRelative"> | boolean
+    hasNoIncomeOrBelowMni?: BoolFilter<"EmployeeRelative"> | boolean
+    validFromMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
+    validToMonth?: IntNullableFilter<"EmployeeRelative"> | number | null
     createdAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     updatedAt?: DateTimeFilter<"EmployeeRelative"> | Date | string
     deletedAt?: DateTimeNullableFilter<"EmployeeRelative"> | Date | string | null
@@ -56557,6 +70891,157 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"EmployeeEmbargo"> | Date | string
   }
 
+  export type EmployeeIncomeTaxDeductionUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+    update: XOR<EmployeeIncomeTaxDeductionUpdateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeIncomeTaxDeductionCreateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxDeductionUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxDeductionWhereUniqueInput
+    data: XOR<EmployeeIncomeTaxDeductionUpdateWithoutEmployeeInput, EmployeeIncomeTaxDeductionUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxDeductionUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxDeductionScalarWhereInput
+    data: XOR<EmployeeIncomeTaxDeductionUpdateManyMutationInput, EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxDeductionScalarWhereInput = {
+    AND?: EmployeeIncomeTaxDeductionScalarWhereInput | EmployeeIncomeTaxDeductionScalarWhereInput[]
+    OR?: EmployeeIncomeTaxDeductionScalarWhereInput[]
+    NOT?: EmployeeIncomeTaxDeductionScalarWhereInput | EmployeeIncomeTaxDeductionScalarWhereInput[]
+    id?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    employeeId?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxDeduction"> | number
+    deductionType?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    providerCuit?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    providerName?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherType?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    voucherNumber?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    month?: IntNullableFilter<"EmployeeIncomeTaxDeduction"> | number | null
+    amount?: DecimalFilter<"EmployeeIncomeTaxDeduction"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxDeduction"> | string
+    siradigPresentationId?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    notes?: StringNullableFilter<"EmployeeIncomeTaxDeduction"> | string | null
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxDeduction"> | Date | string
+  }
+
+  export type EmployeeOtherIncomeUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeOtherIncomeWhereUniqueInput
+    update: XOR<EmployeeOtherIncomeUpdateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeOtherIncomeCreateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeOtherIncomeUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeOtherIncomeWhereUniqueInput
+    data: XOR<EmployeeOtherIncomeUpdateWithoutEmployeeInput, EmployeeOtherIncomeUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeOtherIncomeUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeOtherIncomeScalarWhereInput
+    data: XOR<EmployeeOtherIncomeUpdateManyMutationInput, EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeOtherIncomeScalarWhereInput = {
+    AND?: EmployeeOtherIncomeScalarWhereInput | EmployeeOtherIncomeScalarWhereInput[]
+    OR?: EmployeeOtherIncomeScalarWhereInput[]
+    NOT?: EmployeeOtherIncomeScalarWhereInput | EmployeeOtherIncomeScalarWhereInput[]
+    id?: StringFilter<"EmployeeOtherIncome"> | string
+    employeeId?: StringFilter<"EmployeeOtherIncome"> | string
+    fiscalYear?: IntFilter<"EmployeeOtherIncome"> | number
+    month?: IntFilter<"EmployeeOtherIncome"> | number
+    employerCuit?: StringFilter<"EmployeeOtherIncome"> | string
+    employerName?: StringFilter<"EmployeeOtherIncome"> | string
+    grossIncome?: DecimalFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: DecimalNullableFilter<"EmployeeOtherIncome"> | Decimal | DecimalJsLike | number | string | null
+    source?: StringFilter<"EmployeeOtherIncome"> | string
+    createdAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeOtherIncome"> | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    update: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeIncomeTaxPaymentOnAccountCreateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxPaymentOnAccountWhereUniqueInput
+    data: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateWithoutEmployeeInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput
+    data: XOR<EmployeeIncomeTaxPaymentOnAccountUpdateManyMutationInput, EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountScalarWhereInput = {
+    AND?: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereInput[]
+    OR?: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput[]
+    NOT?: EmployeeIncomeTaxPaymentOnAccountScalarWhereInput | EmployeeIncomeTaxPaymentOnAccountScalarWhereInput[]
+    id?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    employeeId?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    fiscalYear?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    paymentType?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    cuitAgent?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    agentName?: StringNullableFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string | null
+    month?: IntFilter<"EmployeeIncomeTaxPaymentOnAccount"> | number
+    amount?: DecimalFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Decimal | DecimalJsLike | number | string
+    source?: StringFilter<"EmployeeIncomeTaxPaymentOnAccount"> | string
+    createdAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncomeTaxPaymentOnAccount"> | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    update: XOR<IncomeTaxSettlementDetailUpdateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<IncomeTaxSettlementDetailCreateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    data: XOR<IncomeTaxSettlementDetailUpdateWithoutEmployeeInput, IncomeTaxSettlementDetailUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput = {
+    where: IncomeTaxSettlementDetailScalarWhereInput
+    data: XOR<IncomeTaxSettlementDetailUpdateManyMutationInput, IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type IncomeTaxSettlementDetailScalarWhereInput = {
+    AND?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+    OR?: IncomeTaxSettlementDetailScalarWhereInput[]
+    NOT?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+    id?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    settlementId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    employeeId?: StringFilter<"IncomeTaxSettlementDetail"> | string
+    currentMonthGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: JsonNullableFilter<"IncomeTaxSettlementDetail">
+    netTaxableIncomeAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFilter<"IncomeTaxSettlementDetail"> | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFilter<"IncomeTaxSettlementDetail"> | boolean
+    notes?: StringNullableFilter<"IncomeTaxSettlementDetail"> | string | null
+    createdAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+    updatedAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
+  }
+
   export type EmployeeCreateWithoutSalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -56605,6 +71090,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSalaryScaleInput = {
@@ -56655,6 +71144,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSalaryScaleInput = {
@@ -56692,6 +71185,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -56708,6 +71208,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -56787,6 +71294,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutRelativesInput = {
@@ -56837,6 +71348,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutRelativesInput = {
@@ -56926,6 +71441,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutRelativesInput = {
@@ -56976,6 +71495,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type KinshipUpsertWithoutRelativesInput = {
@@ -57477,6 +72000,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAssignedConceptsInput = {
@@ -57527,6 +72054,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAssignedConceptsInput = {
@@ -57692,6 +72223,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAssignedConceptsInput = {
@@ -57742,6 +72277,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutAssignedEmployeesInput = {
@@ -58439,6 +72978,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPaySlipsInput = {
@@ -58489,6 +73032,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPaySlipsInput = {
@@ -58723,6 +73270,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPaySlipsInput = {
@@ -58773,6 +73324,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PaySlipItemUpsertWithWhereUniqueWithoutPaySlipInput = {
@@ -59344,6 +73899,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -59394,6 +73953,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -59620,6 +74183,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -59670,6 +74237,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutPeriodNoveltiesInput = {
@@ -59825,6 +74396,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutEmbargoesInput = {
@@ -59875,6 +74450,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutEmbargoesInput = {
@@ -59963,6 +74542,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutEmbargoesInput = {
@@ -60013,6 +74596,10 @@ export namespace Prisma {
     relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput = {
@@ -60331,6 +74918,1098 @@ export namespace Prisma {
     mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutConceptNestedInput
   }
 
+  export type EmployeeCreateWithoutIncomeTaxDeductionsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutIncomeTaxDeductionsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput>
+  }
+
+  export type EmployeeUpsertWithoutIncomeTaxDeductionsInput = {
+    update: XOR<EmployeeUpdateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput>
+    create: XOR<EmployeeCreateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutIncomeTaxDeductionsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutIncomeTaxDeductionsInput, EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput>
+  }
+
+  export type EmployeeUpdateWithoutIncomeTaxDeductionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeCreateWithoutOtherIncomesInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutOtherIncomesInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutOtherIncomesInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutOtherIncomesInput, EmployeeUncheckedCreateWithoutOtherIncomesInput>
+  }
+
+  export type EmployeeUpsertWithoutOtherIncomesInput = {
+    update: XOR<EmployeeUpdateWithoutOtherIncomesInput, EmployeeUncheckedUpdateWithoutOtherIncomesInput>
+    create: XOR<EmployeeCreateWithoutOtherIncomesInput, EmployeeUncheckedCreateWithoutOtherIncomesInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutOtherIncomesInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutOtherIncomesInput, EmployeeUncheckedUpdateWithoutOtherIncomesInput>
+  }
+
+  export type EmployeeUpdateWithoutOtherIncomesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutOtherIncomesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutIncomeTaxPaymentsOnAccountInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput>
+  }
+
+  export type EmployeeUpsertWithoutIncomeTaxPaymentsOnAccountInput = {
+    update: XOR<EmployeeUpdateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput>
+    create: XOR<EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutIncomeTaxPaymentsOnAccountInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutIncomeTaxPaymentsOnAccountInput, EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput>
+  }
+
+  export type EmployeeUpdateWithoutIncomeTaxPaymentsOnAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type IncomeTaxSettlementDetailCreateWithoutSettlementInput = {
+    id?: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutIncomeTaxSettlementDetailsInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput = {
+    id?: string
+    employeeId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateOrConnectWithoutSettlementInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    create: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput>
+  }
+
+  export type IncomeTaxSettlementDetailCreateManySettlementInputEnvelope = {
+    data: IncomeTaxSettlementDetailCreateManySettlementInput | IncomeTaxSettlementDetailCreateManySettlementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type IncomeTaxSettlementDetailUpsertWithWhereUniqueWithoutSettlementInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    update: XOR<IncomeTaxSettlementDetailUpdateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedUpdateWithoutSettlementInput>
+    create: XOR<IncomeTaxSettlementDetailCreateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedCreateWithoutSettlementInput>
+  }
+
+  export type IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutSettlementInput = {
+    where: IncomeTaxSettlementDetailWhereUniqueInput
+    data: XOR<IncomeTaxSettlementDetailUpdateWithoutSettlementInput, IncomeTaxSettlementDetailUncheckedUpdateWithoutSettlementInput>
+  }
+
+  export type IncomeTaxSettlementDetailUpdateManyWithWhereWithoutSettlementInput = {
+    where: IncomeTaxSettlementDetailScalarWhereInput
+    data: XOR<IncomeTaxSettlementDetailUpdateManyMutationInput, IncomeTaxSettlementDetailUncheckedUpdateManyWithoutSettlementInput>
+  }
+
+  export type IncomeTaxSettlementCreateWithoutDetailsInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    settlementType?: string
+    status?: string
+    description?: string | null
+    totalEmployeesEvaluated?: number
+    totalEmployeesWithheld?: number
+    totalWithheldAmount?: Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: string | null
+    refundConceptId?: string | null
+    exportedPayrollPeriodId?: string | null
+    exportedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementUncheckedCreateWithoutDetailsInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    settlementType?: string
+    status?: string
+    description?: string | null
+    totalEmployeesEvaluated?: number
+    totalEmployeesWithheld?: number
+    totalWithheldAmount?: Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: string | null
+    refundConceptId?: string | null
+    exportedPayrollPeriodId?: string | null
+    exportedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementCreateOrConnectWithoutDetailsInput = {
+    where: IncomeTaxSettlementWhereUniqueInput
+    create: XOR<IncomeTaxSettlementCreateWithoutDetailsInput, IncomeTaxSettlementUncheckedCreateWithoutDetailsInput>
+  }
+
+  export type EmployeeCreateWithoutIncomeTaxSettlementDetailsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutIncomeTaxSettlementDetailsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput>
+  }
+
+  export type IncomeTaxSettlementUpsertWithoutDetailsInput = {
+    update: XOR<IncomeTaxSettlementUpdateWithoutDetailsInput, IncomeTaxSettlementUncheckedUpdateWithoutDetailsInput>
+    create: XOR<IncomeTaxSettlementCreateWithoutDetailsInput, IncomeTaxSettlementUncheckedCreateWithoutDetailsInput>
+    where?: IncomeTaxSettlementWhereInput
+  }
+
+  export type IncomeTaxSettlementUpdateToOneWithWhereWithoutDetailsInput = {
+    where?: IncomeTaxSettlementWhereInput
+    data: XOR<IncomeTaxSettlementUpdateWithoutDetailsInput, IncomeTaxSettlementUncheckedUpdateWithoutDetailsInput>
+  }
+
+  export type IncomeTaxSettlementUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementUncheckedUpdateWithoutDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    settlementType?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    totalEmployeesEvaluated?: IntFieldUpdateOperationsInput | number
+    totalEmployeesWithheld?: IntFieldUpdateOperationsInput | number
+    totalWithheldAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalRefundAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    withholdingConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    refundConceptId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedPayrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    exportedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeUpsertWithoutIncomeTaxSettlementDetailsInput = {
+    update: XOR<EmployeeUpdateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput>
+    create: XOR<EmployeeCreateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutIncomeTaxSettlementDetailsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutIncomeTaxSettlementDetailsInput, EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput>
+  }
+
+  export type EmployeeUpdateWithoutIncomeTaxSettlementDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
   export type EmployeeCreateManyDepartmentInput = {
     id?: string
     fileNumber: string
@@ -60424,6 +76103,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -60474,6 +76157,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -60830,6 +76517,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutContractModalityInput = {
@@ -60880,6 +76571,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutContractModalityInput = {
@@ -61020,6 +76715,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutJobPositionInput = {
@@ -61070,6 +76769,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutJobPositionInput = {
@@ -61274,6 +76977,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutWorkShiftInput = {
@@ -61324,6 +77031,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutWorkShiftInput = {
@@ -61464,6 +77175,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutHealthInsuranceInput = {
@@ -61514,6 +77229,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutHealthInsuranceInput = {
@@ -61678,6 +77397,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUnionInput = {
@@ -61728,6 +77451,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutUnionInput = {
@@ -61892,6 +77619,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutMutualInput = {
@@ -61942,6 +77673,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutMutualInput = {
@@ -62038,6 +77773,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -62081,6 +77823,77 @@ export namespace Prisma {
     status?: string
     startDate?: Date | string | null
     endDate?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionCreateManyEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    deductionType: string
+    providerCuit?: string | null
+    providerName?: string | null
+    voucherType?: string | null
+    voucherNumber?: string | null
+    month?: number | null
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    siradigPresentationId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeOtherIncomeCreateManyEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    month: number
+    employerCuit: string
+    employerName: string
+    grossIncome: Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: Decimal | DecimalJsLike | number | string | null
+    unionContrib?: Decimal | DecimalJsLike | number | string | null
+    withheldTax?: Decimal | DecimalJsLike | number | string | null
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountCreateManyEmployeeInput = {
+    id?: string
+    fiscalYear: number
+    paymentType: string
+    cuitAgent?: string | null
+    agentName?: string | null
+    month: number
+    amount: Decimal | DecimalJsLike | number | string
+    source?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateManyEmployeeInput = {
+    id?: string
+    settlementId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -62216,6 +78029,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62232,6 +78052,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62247,6 +78074,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62383,6 +78217,219 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EmployeeIncomeTaxDeductionUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    deductionType?: StringFieldUpdateOperationsInput | string
+    providerCuit?: NullableStringFieldUpdateOperationsInput | string | null
+    providerName?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherType?: NullableStringFieldUpdateOperationsInput | string | null
+    voucherNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: NullableIntFieldUpdateOperationsInput | number | null
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    siradigPresentationId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    employerCuit?: StringFieldUpdateOperationsInput | string
+    employerName?: StringFieldUpdateOperationsInput | string
+    grossIncome?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    nonTaxableIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    exemptIncome?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    pensionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    healthInsuranceContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    unionContrib?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    withheldTax?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalYear?: IntFieldUpdateOperationsInput | number
+    paymentType?: StringFieldUpdateOperationsInput | string
+    cuitAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    agentName?: NullableStringFieldUpdateOperationsInput | string | null
+    month?: IntFieldUpdateOperationsInput | number
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    source?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    settlement?: IncomeTaxSettlementUpdateOneRequiredWithoutDetailsNestedInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    settlementId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    settlementId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EmployeeCreateManySalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -62476,6 +78523,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSalaryScaleInput = {
@@ -62526,6 +78577,10 @@ export namespace Prisma {
     assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
     embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutSalaryScaleInput = {
@@ -62583,6 +78638,13 @@ export namespace Prisma {
     cuil?: string | null
     birthDate: Date | string
     isAdherent?: boolean
+    appliesIncomeTax?: boolean
+    incomeTaxDeductionType?: string | null
+    deductionPercentage?: Decimal | DecimalJsLike | number | string
+    isDisability?: boolean
+    hasNoIncomeOrBelowMni?: boolean
+    validFromMonth?: number | null
+    validToMonth?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -62597,6 +78659,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62613,6 +78682,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62628,6 +78704,13 @@ export namespace Prisma {
     cuil?: NullableStringFieldUpdateOperationsInput | string | null
     birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isAdherent?: BoolFieldUpdateOperationsInput | boolean
+    appliesIncomeTax?: BoolFieldUpdateOperationsInput | boolean
+    incomeTaxDeductionType?: NullableStringFieldUpdateOperationsInput | string | null
+    deductionPercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isDisability?: BoolFieldUpdateOperationsInput | boolean
+    hasNoIncomeOrBelowMni?: BoolFieldUpdateOperationsInput | boolean
+    validFromMonth?: NullableIntFieldUpdateOperationsInput | number | null
+    validToMonth?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -63445,6 +79528,98 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     conceptId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailCreateManySettlementInput = {
+    id?: string
+    employeeId: string
+    currentMonthGross: Decimal | DecimalJsLike | number | string
+    accumulatedGross: Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated: Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated: Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated: Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding: Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: boolean
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUpdateWithoutSettlementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutIncomeTaxSettlementDetailsNestedInput
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateWithoutSettlementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncomeTaxSettlementDetailUncheckedUpdateManyWithoutSettlementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    currentMonthGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    accumulatedGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedMonth?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    sacProjectedAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    otherEmployersGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    legalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    generalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    personalDeductionsAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    familyDeductionDetails?: NullableJsonNullValueInput | InputJsonValue
+    netTaxableIncomeAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    determinedTaxAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    paymentsOnAccountAccumulated?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    priorMonthsWithheldTax?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    netMonthlyWithholding?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    isExportedToPayroll?: BoolFieldUpdateOperationsInput | boolean
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

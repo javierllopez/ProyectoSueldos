@@ -380,6 +380,13 @@ exports.Prisma.EmployeeRelativeScalarFieldEnum = {
   cuil: 'cuil',
   birthDate: 'birthDate',
   isAdherent: 'isAdherent',
+  appliesIncomeTax: 'appliesIncomeTax',
+  incomeTaxDeductionType: 'incomeTaxDeductionType',
+  deductionPercentage: 'deductionPercentage',
+  isDisability: 'isDisability',
+  hasNoIncomeOrBelowMni: 'hasNoIncomeOrBelowMni',
+  validFromMonth: 'validFromMonth',
+  validToMonth: 'validToMonth',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -651,9 +658,163 @@ exports.Prisma.EmployeeEmbargoConceptScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.IncomeTaxTableScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  semester: 'semester',
+  month: 'month',
+  description: 'description',
+  nonTaxableMinimum: 'nonTaxableMinimum',
+  specialDeduction: 'specialDeduction',
+  spouseDeduction: 'spouseDeduction',
+  childDeduction: 'childDeduction',
+  disabledChildDeduction: 'disabledChildDeduction',
+  specialDeductionNewProf: 'specialDeductionNewProf',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IncomeTaxScaleScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  month: 'month',
+  step: 'step',
+  fromAmount: 'fromAmount',
+  toAmount: 'toAmount',
+  fixedAmount: 'fixedAmount',
+  ratePercentage: 'ratePercentage',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IncomeTaxGeneralDeductionLimitScalarFieldEnum = {
+  id: 'id',
+  year: 'year',
+  code: 'code',
+  name: 'name',
+  limitType: 'limitType',
+  limitValue: 'limitValue',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmployeeIncomeTaxDeductionScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  fiscalYear: 'fiscalYear',
+  deductionType: 'deductionType',
+  providerCuit: 'providerCuit',
+  providerName: 'providerName',
+  voucherType: 'voucherType',
+  voucherNumber: 'voucherNumber',
+  month: 'month',
+  amount: 'amount',
+  source: 'source',
+  siradigPresentationId: 'siradigPresentationId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmployeeOtherIncomeScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  fiscalYear: 'fiscalYear',
+  month: 'month',
+  employerCuit: 'employerCuit',
+  employerName: 'employerName',
+  grossIncome: 'grossIncome',
+  nonTaxableIncome: 'nonTaxableIncome',
+  exemptIncome: 'exemptIncome',
+  pensionContrib: 'pensionContrib',
+  healthInsuranceContrib: 'healthInsuranceContrib',
+  unionContrib: 'unionContrib',
+  withheldTax: 'withheldTax',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.EmployeeIncomeTaxPaymentOnAccountScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  fiscalYear: 'fiscalYear',
+  paymentType: 'paymentType',
+  cuitAgent: 'cuitAgent',
+  agentName: 'agentName',
+  month: 'month',
+  amount: 'amount',
+  source: 'source',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SiradigImportScalarFieldEnum = {
+  id: 'id',
+  fiscalYear: 'fiscalYear',
+  filename: 'filename',
+  xmlVersion: 'xmlVersion',
+  presentationDate: 'presentationDate',
+  totalRecords: 'totalRecords',
+  processedEmployees: 'processedEmployees',
+  status: 'status',
+  summary: 'summary',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IncomeTaxSettlementScalarFieldEnum = {
+  id: 'id',
+  fiscalYear: 'fiscalYear',
+  month: 'month',
+  settlementType: 'settlementType',
+  status: 'status',
+  description: 'description',
+  totalEmployeesEvaluated: 'totalEmployeesEvaluated',
+  totalEmployeesWithheld: 'totalEmployeesWithheld',
+  totalWithheldAmount: 'totalWithheldAmount',
+  totalRefundAmount: 'totalRefundAmount',
+  withholdingConceptId: 'withholdingConceptId',
+  refundConceptId: 'refundConceptId',
+  exportedPayrollPeriodId: 'exportedPayrollPeriodId',
+  exportedAt: 'exportedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.IncomeTaxSettlementDetailScalarFieldEnum = {
+  id: 'id',
+  settlementId: 'settlementId',
+  employeeId: 'employeeId',
+  currentMonthGross: 'currentMonthGross',
+  accumulatedGross: 'accumulatedGross',
+  sacProjectedMonth: 'sacProjectedMonth',
+  sacProjectedAccumulated: 'sacProjectedAccumulated',
+  otherEmployersGross: 'otherEmployersGross',
+  legalDeductionsAccumulated: 'legalDeductionsAccumulated',
+  generalDeductionsAccumulated: 'generalDeductionsAccumulated',
+  personalDeductionsAccumulated: 'personalDeductionsAccumulated',
+  familyDeductionDetails: 'familyDeductionDetails',
+  netTaxableIncomeAccumulated: 'netTaxableIncomeAccumulated',
+  determinedTaxAccumulated: 'determinedTaxAccumulated',
+  paymentsOnAccountAccumulated: 'paymentsOnAccountAccumulated',
+  priorMonthsWithheldTax: 'priorMonthsWithheldTax',
+  netMonthlyWithholding: 'netMonthlyWithholding',
+  isExportedToPayroll: 'isExportedToPayroll',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.NullsOrder = {
@@ -846,7 +1007,8 @@ exports.Prisma.EmployeeRelativeOrderByRelevanceFieldEnum = {
   firstName: 'firstName',
   documentType: 'documentType',
   documentNumber: 'documentNumber',
-  cuil: 'cuil'
+  cuil: 'cuil',
+  incomeTaxDeductionType: 'incomeTaxDeductionType'
 };
 
 exports.Prisma.ConceptOrderByRelevanceFieldEnum = {
@@ -973,6 +1135,88 @@ exports.Prisma.EmployeeEmbargoConceptOrderByRelevanceFieldEnum = {
   conceptId: 'conceptId'
 };
 
+exports.Prisma.IncomeTaxTableOrderByRelevanceFieldEnum = {
+  id: 'id',
+  description: 'description'
+};
+
+exports.Prisma.IncomeTaxScaleOrderByRelevanceFieldEnum = {
+  id: 'id'
+};
+
+exports.Prisma.IncomeTaxGeneralDeductionLimitOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  limitType: 'limitType',
+  description: 'description'
+};
+
+exports.Prisma.EmployeeIncomeTaxDeductionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  deductionType: 'deductionType',
+  providerCuit: 'providerCuit',
+  providerName: 'providerName',
+  voucherType: 'voucherType',
+  voucherNumber: 'voucherNumber',
+  source: 'source',
+  siradigPresentationId: 'siradigPresentationId',
+  notes: 'notes'
+};
+
+exports.Prisma.EmployeeOtherIncomeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  employerCuit: 'employerCuit',
+  employerName: 'employerName',
+  source: 'source'
+};
+
+exports.Prisma.EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  paymentType: 'paymentType',
+  cuitAgent: 'cuitAgent',
+  agentName: 'agentName',
+  source: 'source'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.SiradigImportOrderByRelevanceFieldEnum = {
+  id: 'id',
+  filename: 'filename',
+  xmlVersion: 'xmlVersion',
+  status: 'status'
+};
+
+exports.Prisma.IncomeTaxSettlementOrderByRelevanceFieldEnum = {
+  id: 'id',
+  settlementType: 'settlementType',
+  status: 'status',
+  description: 'description',
+  withholdingConceptId: 'withholdingConceptId',
+  refundConceptId: 'refundConceptId',
+  exportedPayrollPeriodId: 'exportedPayrollPeriodId'
+};
+
+exports.Prisma.IncomeTaxSettlementDetailOrderByRelevanceFieldEnum = {
+  id: 'id',
+  settlementId: 'settlementId',
+  employeeId: 'employeeId',
+  notes: 'notes'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -1007,7 +1251,16 @@ exports.Prisma.ModelName = {
   PayrollSetting: 'PayrollSetting',
   PeriodNovelty: 'PeriodNovelty',
   EmployeeEmbargo: 'EmployeeEmbargo',
-  EmployeeEmbargoConcept: 'EmployeeEmbargoConcept'
+  EmployeeEmbargoConcept: 'EmployeeEmbargoConcept',
+  IncomeTaxTable: 'IncomeTaxTable',
+  IncomeTaxScale: 'IncomeTaxScale',
+  IncomeTaxGeneralDeductionLimit: 'IncomeTaxGeneralDeductionLimit',
+  EmployeeIncomeTaxDeduction: 'EmployeeIncomeTaxDeduction',
+  EmployeeOtherIncome: 'EmployeeOtherIncome',
+  EmployeeIncomeTaxPaymentOnAccount: 'EmployeeIncomeTaxPaymentOnAccount',
+  SiradigImport: 'SiradigImport',
+  IncomeTaxSettlement: 'IncomeTaxSettlement',
+  IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail'
 };
 
 /**

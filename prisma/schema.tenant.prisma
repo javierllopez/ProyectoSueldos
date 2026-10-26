@@ -338,11 +338,15 @@ model Employee {
   contractModality     ArcaContractModality? @relation(fields: [contractModalityCode], references: [code])
   salaryScale          SalaryScale?          @relation(fields: [salaryScaleId], references: [id])
   workShift            WorkShift?            @relation(fields: [workShiftId], references: [id])
-  paySlips             PaySlip[]
-  relatives            EmployeeRelative[]
-  assignedConcepts     EmployeeConcept[]
-  periodNovelties      PeriodNovelty[]
-  embargoes            EmployeeEmbargo[]
+  paySlips                      PaySlip[]
+  relatives                     EmployeeRelative[]
+  assignedConcepts              EmployeeConcept[]
+  periodNovelties               PeriodNovelty[]
+  embargoes                     EmployeeEmbargo[]
+  incomeTaxDeductions           EmployeeIncomeTaxDeduction[]
+  otherIncomes                  EmployeeOtherIncome[]
+  incomeTaxPaymentsOnAccount    EmployeeIncomeTaxPaymentOnAccount[]
+  incomeTaxSettlementDetails    IncomeTaxSettlementDetail[]
 
   @@index([departmentId])
   @@index([jobPositionId])
@@ -386,19 +390,26 @@ model Kinship {
 }
 
 model EmployeeRelative {
-  id             String    @id @default(uuid())
-  employeeId     String    @map("employee_id")
-  kinshipId      String    @map("kinship_id")
-  lastName       String    @map("last_name")
-  firstName      String    @map("first_name")
-  documentType   String    @default("DNI") @map("document_type")
-  documentNumber String    @map("document_number")
-  cuil           String?   @db.VarChar(11) @map("cuil")
-  birthDate      DateTime  @map("birth_date")
-  isAdherent     Boolean   @default(false) @map("is_adherent")
-  createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt      DateTime  @updatedAt @map("updated_at")
-  deletedAt      DateTime? @map("deleted_at")
+  id                      String    @id @default(uuid())
+  employeeId              String    @map("employee_id")
+  kinshipId               String    @map("kinship_id")
+  lastName                String    @map("last_name")
+  firstName               String    @map("first_name")
+  documentType            String    @default("DNI") @map("document_type")
+  documentNumber          String    @map("document_number")
+  cuil                    String?   @db.VarChar(11) @map("cuil")
+  birthDate               DateTime  @map("birth_date")
+  isAdherent              Boolean   @default(false) @map("is_adherent")
+  appliesIncomeTax        Boolean   @default(false) @map("applies_income_tax")
+  incomeTaxDeductionType  String?   @map("income_tax_deduction_type") // SPOUSE, CHILD, DISABLED_CHILD
+  deductionPercentage     Decimal   @default(100.00) @db.Decimal(5, 2) @map("deduction_percentage")
+  isDisability            Boolean   @default(false) @map("is_disability")
+  hasNoIncomeOrBelowMni   Boolean   @default(true) @map("has_no_income_or_below_mni")
+  validFromMonth          Int?      @default(1) @map("valid_from_month")
+  validToMonth            Int?      @default(12) @map("valid_to_month")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+  deletedAt               DateTime? @map("deleted_at")
 
   employee Employee @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   kinship  Kinship  @relation(fields: [kinshipId], references: [id])
@@ -784,4 +795,196 @@ model EmployeeEmbargoConcept {
   @@index([conceptId])
   @@map("employee_embargo_concepts")
 }
+
+// ============================================================================
+// IMPUESTO A LAS GANANCIAS CUARTA CATEGORÍA (LEY 27.743 & RG ARCA 4003/2017)
+// ============================================================================
+
+model IncomeTaxTable {
+  id                      String    @id @default(uuid())
+  year                    Int       @map("year")
+  semester                Int?      @default(1) @map("semester")
+  month                   Int       @map("month") // 1..12 acumulado
+  description             String?   @map("description")
+  nonTaxableMinimum       Decimal   @db.Decimal(14, 2) @map("non_taxable_minimum") // GNI
+  specialDeduction        Decimal   @db.Decimal(14, 2) @map("special_deduction") // Deducción Especial
+  spouseDeduction         Decimal   @db.Decimal(14, 2) @map("spouse_deduction") // Cónyuge
+  childDeduction          Decimal   @db.Decimal(14, 2) @map("child_deduction") // Hijo 100%
+  disabledChildDeduction  Decimal   @db.Decimal(14, 2) @map("disabled_child_deduction") // Hijo Incapacitado 200%
+  specialDeductionNewProf Decimal?  @default(0) @db.Decimal(14, 2) @map("special_deduction_new_prof")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  @@unique([year, month], map: "uniq_income_tax_table_year_month")
+  @@map("income_tax_tables")
+}
+
+model IncomeTaxScale {
+  id             String    @id @default(uuid())
+  year           Int       @map("year")
+  month          Int       @map("month") // 1..12 acumulado
+  step           Int       @map("step") // 1..9
+  fromAmount     Decimal   @db.Decimal(14, 2) @map("from_amount")
+  toAmount       Decimal?  @db.Decimal(14, 2) @map("to_amount")
+  fixedAmount    Decimal   @default(0) @db.Decimal(14, 2) @map("fixed_amount")
+  ratePercentage Decimal   @db.Decimal(5, 2) @map("rate_percentage")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+
+  @@unique([year, month, step], map: "uniq_income_tax_scale_year_month_step")
+  @@map("income_tax_scales")
+}
+
+model IncomeTaxGeneralDeductionLimit {
+  id          String    @id @default(uuid())
+  year        Int       @map("year")
+  code        String    @map("code") // ALQUILER_INQUILINO, ALQUILER_DUENO, GASTOS_EDUCATIVOS, PREPAGA, SEPELIO, HIPOTECARIO, SEGURO_VIDA, SEGURO_RETIRO, DOMESTICO, DONACIONES, VIATICOS
+  name        String    @map("name")
+  limitType   String    @map("limit_type") // ANNUAL_FIXED, PERCENTAGE_NET_INCOME, MNI_PERCENTAGE
+  limitValue  Decimal   @db.Decimal(14, 2) @map("limit_value")
+  description String?   @map("description")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@unique([year, code], map: "uniq_it_gen_limit_year_code")
+  @@map("income_tax_general_deduction_limits")
+}
+
+model EmployeeIncomeTaxDeduction {
+  id                     String    @id @default(uuid())
+  employeeId             String    @map("employee_id")
+  fiscalYear             Int       @map("fiscal_year")
+  deductionType          String    @map("deduction_type")
+  providerCuit           String?   @db.VarChar(11) @map("provider_cuit")
+  providerName           String?   @map("provider_name")
+  voucherType            String?   @map("voucher_type")
+  voucherNumber          String?   @map("voucher_number")
+  month                  Int?      @map("month")
+  amount                 Decimal   @db.Decimal(12, 2) @map("amount")
+  source                 String    @default("MANUAL") @map("source") // SIRADIG, MANUAL
+  siradigPresentationId  String?   @map("siradig_presentation_id")
+  notes                  String?   @db.Text @map("notes")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  employee               Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, fiscalYear])
+  @@map("employee_income_tax_deductions")
+}
+
+model EmployeeOtherIncome {
+  id                      String    @id @default(uuid())
+  employeeId              String    @map("employee_id")
+  fiscalYear              Int       @map("fiscal_year")
+  month                   Int       @map("month")
+  employerCuit            String    @db.VarChar(11) @map("employer_cuit")
+  employerName            String    @map("employer_name")
+  grossIncome             Decimal   @db.Decimal(12, 2) @map("gross_income")
+  nonTaxableIncome        Decimal?  @default(0) @db.Decimal(12, 2) @map("non_taxable_income")
+  exemptIncome            Decimal?  @default(0) @db.Decimal(12, 2) @map("exempt_income")
+  pensionContrib          Decimal?  @default(0) @db.Decimal(12, 2) @map("pension_contrib")
+  healthInsuranceContrib  Decimal?  @default(0) @db.Decimal(12, 2) @map("health_insurance_contrib")
+  unionContrib            Decimal?  @default(0) @db.Decimal(12, 2) @map("union_contrib")
+  withheldTax             Decimal?  @default(0) @db.Decimal(12, 2) @map("withheld_tax")
+  source                  String    @default("SIRADIG") @map("source")
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  employee                Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, fiscalYear])
+  @@map("employee_other_incomes")
+}
+
+model EmployeeIncomeTaxPaymentOnAccount {
+  id          String    @id @default(uuid())
+  employeeId  String    @map("employee_id")
+  fiscalYear  Int       @map("fiscal_year")
+  paymentType String    @map("payment_type") // PERCEPCION_DIVISAS, PERCEPCION_ADUANERA, CREDITO_DEBITO, OTRO
+  cuitAgent   String?   @db.VarChar(11) @map("cuit_agent")
+  agentName   String?   @map("agent_name")
+  month       Int       @map("month")
+  amount      Decimal   @db.Decimal(12, 2) @map("amount")
+  source      String    @default("SIRADIG") @map("source")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  employee    Employee  @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@index([employeeId, fiscalYear], map: "idx_it_pay_on_acc_emp_year")
+  @@map("employee_income_tax_payments_on_account")
+}
+
+model SiradigImport {
+  id                  String    @id @default(uuid())
+  fiscalYear          Int       @map("fiscal_year")
+  filename            String    @map("filename")
+  xmlVersion          String?   @map("xml_version")
+  presentationDate    DateTime? @map("presentation_date")
+  totalRecords        Int       @default(0) @map("total_records")
+  processedEmployees  Int       @default(0) @map("processed_employees")
+  status              String    @default("PROCESSED") @map("status")
+  summary             Json?     @map("summary")
+  createdAt           DateTime  @default(now()) @map("created_at")
+  updatedAt           DateTime  @updatedAt @map("updated_at")
+
+  @@map("siradig_imports")
+}
+
+model IncomeTaxSettlement {
+  id                        String                       @id @default(uuid())
+  fiscalYear                Int                          @map("fiscal_year")
+  month                     Int                          @map("month")
+  settlementType            String                       @default("MONTHLY") @map("settlement_type") // MONTHLY, ANNUAL, FINAL
+  status                    String                       @default("CALCULATED") @map("status") // CALCULATED, EXPORTED_TO_PAYROLL, CLOSED
+  description               String?                      @map("description")
+  totalEmployeesEvaluated   Int                          @default(0) @map("total_employees_evaluated")
+  totalEmployeesWithheld    Int                          @default(0) @map("total_employees_withheld")
+  totalWithheldAmount       Decimal                      @default(0) @db.Decimal(14, 2) @map("total_withheld_amount")
+  totalRefundAmount         Decimal                      @default(0) @db.Decimal(14, 2) @map("total_refund_amount")
+  withholdingConceptId      String?                      @map("withholding_concept_id")
+  refundConceptId           String?                      @map("refund_concept_id")
+  exportedPayrollPeriodId   String?                      @map("exported_payroll_period_id")
+  exportedAt                DateTime?                    @map("exported_at")
+  createdAt                 DateTime                     @default(now()) @map("created_at")
+  updatedAt                 DateTime                     @updatedAt @map("updated_at")
+
+  details                   IncomeTaxSettlementDetail[]
+
+  @@unique([fiscalYear, month, settlementType], map: "uniq_it_settlement_period")
+  @@map("income_tax_settlements")
+}
+
+model IncomeTaxSettlementDetail {
+  id                            String              @id @default(uuid())
+  settlementId                  String              @map("settlement_id")
+  employeeId                    String              @map("employee_id")
+  currentMonthGross             Decimal             @db.Decimal(12, 2) @map("current_month_gross")
+  accumulatedGross              Decimal             @db.Decimal(14, 2) @map("accumulated_gross")
+  sacProjectedMonth             Decimal             @default(0) @db.Decimal(12, 2) @map("sac_projected_month")
+  sacProjectedAccumulated       Decimal             @default(0) @db.Decimal(14, 2) @map("sac_projected_accumulated")
+  otherEmployersGross           Decimal             @default(0) @db.Decimal(14, 2) @map("other_employers_gross")
+  legalDeductionsAccumulated     Decimal             @db.Decimal(14, 2) @map("legal_deductions_accumulated")
+  generalDeductionsAccumulated   Decimal             @db.Decimal(14, 2) @map("general_deductions_accumulated")
+  personalDeductionsAccumulated  Decimal             @db.Decimal(14, 2) @map("personal_deductions_accumulated")
+  familyDeductionDetails        Json?               @map("family_deduction_details")
+  netTaxableIncomeAccumulated   Decimal             @db.Decimal(14, 2) @map("net_taxable_income_accumulated")
+  determinedTaxAccumulated      Decimal             @db.Decimal(14, 2) @map("determined_tax_accumulated")
+  paymentsOnAccountAccumulated  Decimal             @default(0) @db.Decimal(14, 2) @map("payments_on_account_accumulated")
+  priorMonthsWithheldTax        Decimal             @default(0) @db.Decimal(14, 2) @map("prior_months_withheld_tax")
+  netMonthlyWithholding         Decimal             @db.Decimal(12, 2) @map("net_monthly_withholding")
+  isExportedToPayroll           Boolean             @default(false) @map("is_exported_to_payroll")
+  notes                         String?             @db.Text @map("notes")
+  createdAt                     DateTime            @default(now()) @map("created_at")
+  updatedAt                     DateTime            @updatedAt @map("updated_at")
+
+  settlement                    IncomeTaxSettlement @relation(fields: [settlementId], references: [id], onDelete: Cascade)
+  employee                      Employee            @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([settlementId, employeeId], map: "uniq_it_settlement_emp")
+  @@index([employeeId])
+  @@map("income_tax_settlement_details")
+}
+
 

@@ -9,6 +9,7 @@ import kinshipRoutes from '../modules/kinships/kinship.routes.js';
 import claeRoutes from '../modules/clae/clae.routes.js';
 import payrollRoutes from '../modules/payroll/payroll.routes.js';
 import embargoRoutes from '../modules/embargoes/embargo.routes.js';
+import incomeTaxRoutes from '../modules/income-tax/incomeTax.routes.js';
 
 const router = Router();
 
@@ -30,6 +31,7 @@ router.use('/employees', employeeRoutes);
 router.use('/clae', claeRoutes);
 router.use('/payroll', payrollRoutes);
 router.use('/embargoes', embargoRoutes);
+router.use('/income-tax', incomeTaxRoutes);
 router.use('/', organizationRoutes);
 router.use('/', affiliationRoutes);
 router.use('/', kinshipRoutes);

@@ -2564,7 +2564,531 @@ async function runTests() {
       throw new Error('Falla en desasignación selectiva según Opción B');
     }
 
-    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 25) PASARON EXITOSAMENTE!');
+    // =========================================================================
+    // 26. IMPRESIÓN POR LOTES DE RECIBOS Y PREVENCIÓN DE LIQUIDACIONES VACÍAS
+    // =========================================================================
+    console.log('\n--- 26. IMPRESIÓN POR LOTES Y PREVENCIÓN DE LIQUIDACIONES VACÍAS (SIN CONCEPTOS) ---');
+
+    // 26.1: GET /api/v1/payroll/periods/:id/slips-batch-print
+    console.log('  -> 26.1: GET /api/v1/payroll/periods/:id/slips-batch-print (Obtener lote completo para imprimir)');
+    const batchPrintRes = await fetch(`${baseUrl}/payroll/periods/${periodId}/slips-batch-print`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    console.log('     Status Batch Print:', batchPrintRes.status);
+    if (batchPrintRes.status !== 200) throw new Error('Fallo al obtener lote de recibos para imprimir');
+    const batchPrintJson = await batchPrintRes.json();
+    const batchData = batchPrintJson.data;
+
+    console.log('     Recibos en lote:', batchData.slips?.length, '| Período:', batchData.period?.settlementName, '| Empresa:', batchData.company?.legalName || batchData.company?.name);
+    if (!batchData.slips || batchData.slips.length === 0) {
+      throw new Error('El lote de impresión debía devolver al menos 1 recibo');
+    }
+    const sampleSlip = batchData.slips[0];
+    if (!sampleSlip.items || sampleSlip.items.length === 0) {
+      throw new Error('Los recibos en el lote de impresión deben incluir sus items/conceptos');
+    }
+
+    // 26.2: Desactivar fórmulas y conceptos de prueba globales de tests anteriores para aislar colaboradores sin conceptos
+    console.log('  -> 26.2: PATCH /api/v1/payroll/concepts/:id (Desactivar conceptos globales de prueba previa)');
+    const conceptsListRes = await fetch(`${baseUrl}/payroll/concepts?limit=100`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const conceptsListJson = await conceptsListRes.json();
+    const testConceptsToDeactivate = (conceptsListJson.data || []).filter((c) =>
+      ['SU1050', 'SU1060', 'SU1070', 'SU1080', 'SU1090', 'SU1091', 'SU2150', 'SU2500', 'SU6005', 'SU7001', 'SU7002', 'SU7003'].includes(c.code)
+    );
+    for (const c of testConceptsToDeactivate) {
+      await fetch(`${baseUrl}/payroll/concepts/${c.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminToken}`,
+          'x-company-id': companyId,
+        },
+        body: JSON.stringify({ isActive: false }),
+      });
+    }
+
+    // 26.3: Crear un colaborador sin conceptos ni novedades y liquidarlo
+    console.log('  -> 26.3: POST /api/v1/employees (Crear colaborador sin básico ni conceptos)');
+    const emptyEmpRes = await fetch(`${baseUrl}/employees`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        fileNumber: 'EMPTY-001',
+        firstName: 'SinConceptos',
+        lastName: 'Prueba',
+        documentType: 'DNI',
+        documentNumber: '40123456',
+        cuil: '20401234560',
+        gender: 'M',
+        birthDate: '1998-01-01',
+        hireDate: '2026-01-01',
+        status: 'ACTIVE',
+        departmentId: departmentId,
+        jobPositionId: jobPositionId,
+        healthInsuranceId: healthInsuranceId,
+        payrollGroup: 'MENSUAL',
+        basicSalary: 0,
+        hourlyRate: 0,
+      }),
+    });
+    const emptyEmpJson = await emptyEmpRes.json();
+    if (emptyEmpRes.status !== 201) {
+      throw new Error('Falló creación de empleado sin conceptos: ' + JSON.stringify(emptyEmpJson));
+    }
+    const emptyEmpId = emptyEmpJson.data.id;
+    console.log('     Colaborador sin conceptos creado:', emptyEmpId);
+
+    // 26.4: Liquidar a este colaborador
+    console.log('  -> 26.4: POST /api/v1/payroll/periods/:id/calculate-single/:id (Debe omitirse y no generar recibo)');
+    const singleEmptyRes = await fetch(`${baseUrl}/payroll/periods/${periodId}/calculate-single/${emptyEmpId}`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const singleEmptyJson = await singleEmptyRes.json();
+    console.log('     Status:', singleEmptyRes.status, '| Omitidos:', singleEmptyJson.data.omittedEmployeesCount, '| Procesados:', singleEmptyJson.data.processedEmployees);
+    if (singleEmptyJson.data.processedEmployees !== 0 || singleEmptyJson.data.omittedEmployeesCount !== 1) {
+      throw new Error('El colaborador sin conceptos debió ser omitido con 0 recibos procesados');
+    }
+    if (!singleEmptyJson.data.omittedEmployees || singleEmptyJson.data.omittedEmployees.length === 0) {
+      throw new Error('Debe devolver el detalle del colaborador omitido');
+    }
+
+    // 26.5: Verificar que NO exista un registro en paySlip para este colaborador
+    const slipsAfterRes = await fetch(`${baseUrl}/payroll/periods/${periodId}/slips?search=EMPTY-001`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const slipsAfterJson = await slipsAfterRes.json();
+    console.log('     Recibos encontrados para el colaborador sin conceptos:', slipsAfterJson.data?.length || 0);
+    if (slipsAfterJson.data && slipsAfterJson.data.length > 0) {
+      throw new Error('Se generó un recibo vacío indebido en la base de datos');
+    }
+    console.log('     -> Validación de no generación de liquidaciones vacías 100% exitosa.');
+
+    // 26.6: Probar liquidación en un período donde el 100% de colaboradores son omitidos (debe permanecer en OPEN)
+    console.log('  -> 26.6: Período con 100% omitidos debe permanecer en estado OPEN');
+    const emptyPeriodRes = await fetch(`${baseUrl}/payroll/periods`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        periodType: 'VACATIONS',
+        year: 2026,
+        month: 10,
+        settlementName: 'Vacaciones Octubre 2026 (Sin Novedades)',
+        paymentDate: '2026-10-20',
+      }),
+    });
+    const emptyPeriodJson = await emptyPeriodRes.json();
+    const emptyPeriodId = emptyPeriodJson.data.id;
+
+    const calcEmptyPeriodRes = await fetch(`${baseUrl}/payroll/periods/${emptyPeriodId}/calculate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({}),
+    });
+    const calcEmptyPeriodJson = await calcEmptyPeriodRes.json();
+    console.log('     Status Período 100% omitido:', calcEmptyPeriodRes.status, '| Omitidos:', calcEmptyPeriodJson.data.omittedEmployeesCount, '| Procesados:', calcEmptyPeriodJson.data.processedEmployees);
+    if (calcEmptyPeriodJson.data.processedEmployees !== 0) {
+      throw new Error('Todos los colaboradores debieron ser omitidos');
+    }
+
+    const checkPeriodRes = await fetch(`${baseUrl}/payroll/periods/${emptyPeriodId}`, {
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+    const checkPeriodJson = await checkPeriodRes.json();
+    console.log('     Estado final del período sin conceptos generados:', checkPeriodJson.data.status);
+    if (checkPeriodJson.data.status !== 'OPEN') {
+      throw new Error(`El período debió permanecer en OPEN y dio: ${checkPeriodJson.data.status}`);
+    }
+    console.log('     -> Preservación de estado OPEN con 100% omitidos 100% verificada.');
+
+    // 26.5: Limpiar empleado de prueba
+    await fetch(`${baseUrl}/employees/${emptyEmpId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+    });
+
+    // 27. Test: Módulo Integral de Impuesto a las Ganancias Cuarta Categoría (Ley 27.743 & RG ARCA 4003/2017)
+    console.log('\n2️⃣7️⃣ Test: Módulo Integral de Impuesto a las Ganancias Cuarta Categoría (Ley 27.743 & RG ARCA 4003/2017)');
+
+    // 27.1 Consultar tablas oficiales Art. 30, Art. 94 y Límites Generales
+    console.log('  -> 27.1: GET /api/v1/income-tax/tables, /scales, /limits (Verificar precarga oficial)');
+    const itTablesRes = await fetch(`${baseUrl}/income-tax/tables?year=2024`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const itTablesJson = await itTablesRes.json();
+    console.log('     Status Tablas Art. 30 (2024):', itTablesRes.status, '| Meses precargados:', itTablesJson.data?.length);
+    if (itTablesRes.status !== 200 || !itTablesJson.data || itTablesJson.data.length !== 12) {
+      throw new Error(`Se esperaban 12 meses de Art. 30 para 2024 y se obtuvieron: ${itTablesJson.data?.length}`);
+    }
+
+    const itScalesRes = await fetch(`${baseUrl}/income-tax/scales?year=2024&month=12`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const itScalesJson = await itScalesRes.json();
+    console.log('     Status Escalas Art. 94 (2024):', itScalesRes.status, '| Tramos precargados:', itScalesJson.data?.length);
+    if (itScalesRes.status !== 200 || !itScalesJson.data || itScalesJson.data.length < 5) {
+      throw new Error(`Se esperaban tramos de escala progresiva Art. 94 y se obtuvieron: ${itScalesJson.data?.length}`);
+    }
+
+    const itLimitsRes = await fetch(`${baseUrl}/income-tax/limits?year=2024`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const itLimitsJson = await itLimitsRes.json();
+    console.log('     Status Límites Deducciones:', itLimitsRes.status, '| Cantidad:', itLimitsJson.data?.length);
+    if (itLimitsRes.status !== 200 || !itLimitsJson.data || itLimitsJson.data.length === 0) {
+      throw new Error('No se cargaron los límites de deducciones generales');
+    }
+
+    // 27.2 Clonar y ajustar tablas por IPC (+10% para 2027)
+    console.log('  -> 27.2: POST /api/v1/income-tax/clone-adjust (Ajuste por IPC +10% de 2024 a 2027)');
+    const cloneIpcRes = await fetch(`${baseUrl}/income-tax/clone-adjust`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        sourceYear: 2024,
+        targetYear: 2027,
+        ipcPercentage: 10.0,
+      }),
+    });
+    const cloneIpcJson = await cloneIpcRes.json();
+    console.log('     Status Clonar IPC:', cloneIpcRes.status, cloneIpcJson.message);
+    if (cloneIpcRes.status !== 200) throw new Error('Falló clonación y ajuste por IPC: ' + JSON.stringify(cloneIpcJson));
+
+    const check2027Res = await fetch(`${baseUrl}/income-tax/tables?year=2027`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const check2027Json = await check2027Res.json();
+    if (check2027Res.status !== 200 || !check2027Json.data || check2027Json.data.length !== 12) {
+      throw new Error('No se crearon las 12 tablas mensuales para el año 2027 ajustadas por IPC');
+    }
+    console.log('     -> Tablas de 2027 verificadas correctamente con ajuste IPC.');
+
+    // 27.3 Validación de Cargas de Familia (Elegibilidad Fiscal s/Ley 27.743 Art. 30 Inc. b)
+    console.log('  -> 27.3: Validación de límites de cargas de familia (Hijo >= 18 no discapacitado debe ser rechazado)');
+    const invalidChildRes = await fetch(`${baseUrl}/employees/${empFamilyId}/relatives`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        kinshipId: conyugeKin.id,
+        lastName: 'Martínez',
+        firstName: 'Federico',
+        documentType: 'DNI',
+        documentNumber: '40111222',
+        birthDate: '1998-05-10',
+        appliesIncomeTax: true,
+        incomeTaxDeductionType: 'CHILD',
+        isDisability: false,
+      }),
+    });
+    const invalidChildJson = await invalidChildRes.json();
+    console.log('     Status Hijo >= 18 sin discapacidad (esperado 400):', invalidChildRes.status, invalidChildJson.message || invalidChildJson.error?.message);
+    if (invalidChildRes.status !== 400) {
+      throw new Error('Debió rechazarse la carga de hijo mayor de 18 años sin discapacidad para deducción de ganancias');
+    }
+
+    // Agregar carga válida: hijo menor de 18 años con deducción 100%
+    console.log('  -> 27.3.b: Agregar hijo menor computable (< 18 años)');
+    const validChildRes = await fetch(`${baseUrl}/employees/${empFamilyId}/relatives`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        kinshipId: hijoKin.id,
+        lastName: 'Martínez',
+        firstName: 'Camila',
+        documentType: 'DNI',
+        documentNumber: '55111333',
+        birthDate: '2015-08-20',
+        appliesIncomeTax: true,
+        incomeTaxDeductionType: 'CHILD',
+        deductionPercentage: 100,
+        isDisability: false,
+        hasNoIncomeOrBelowMni: true,
+        validFromMonth: 1,
+        validToMonth: 12,
+      }),
+    });
+    const validChildJson = await validChildRes.json();
+    console.log('     Status Hijo válido:', validChildRes.status, validChildJson.message);
+    if (validChildRes.status !== 201) throw new Error('Falló creación de hijo computable para ganancias: ' + JSON.stringify(validChildJson));
+
+    // 27.4 Importación de Archivo XML SiRADIG (F. 572 Web)
+    console.log('  -> 27.4: POST /api/v1/income-tax/siradig/import (Importación de F. 572 Web)');
+    const siradigXmlSample = `<?xml version="1.0" encoding="UTF-8"?>
+<presentacion>
+  <periodo>2026</periodo>
+  <nroPresentacion>1</nroPresentacion>
+  <fechaPresentacion>2026-03-01</fechaPresentacion>
+  <empleado>
+    <cuit>${empFamilyCuit}</cuit>
+    <tipoDoc>DNI</tipoDoc>
+    <nroDoc>36123456</nroDoc>
+    <apellido>Martínez</apellido>
+    <nombre>Carlos</nombre>
+  </empleado>
+  <cargasFamilia>
+    <cargaFamilia>
+      <tipo>HIJO</tipo>
+      <tipoDoc>DNI</tipoDoc>
+      <nroDoc>55111333</nroDoc>
+      <apellido>Martínez</apellido>
+      <nombre>Camila</nombre>
+      <fechaNac>2015-08-20</fechaNac>
+      <mesDesde>1</mesDesde>
+      <mesHasta>12</mesHasta>
+      <porcentajeDeduccion>100</porcentajeDeduccion>
+    </cargaFamilia>
+  </cargasFamilia>
+  <deducciones>
+    <deduccion>
+      <tipo>CUOTA_MEDICO_ASISTENCIAL</tipo>
+      <cuit>30500010912</cuit>
+      <denominacion>OSDE Medicina Prepaga</denominacion>
+      <mesDesde>1</mesDesde>
+      <mesHasta>12</mesHasta>
+      <montoTotal>1200000.00</montoTotal>
+    </deduccion>
+    <deduccion>
+      <tipo>SEGURO_VIDA</tipo>
+      <cuit>30500010913</cuit>
+      <denominacion>Seguros La Segunda</denominacion>
+      <mesDesde>1</mesDesde>
+      <mesHasta>12</mesHasta>
+      <montoTotal>450000.00</montoTotal>
+    </deduccion>
+  </deducciones>
+  <otrosEmpleadores>
+    <empresa>
+      <cuit>30711122234</cuit>
+      <denominacion>Servicios Profesionales SA</denominacion>
+      <ingresosBrutos>45000000.00</ingresosBrutos>
+      <retGanancias>0.00</retGanancias>
+      <mesDesde>10</mesDesde>
+      <mesHasta>10</mesHasta>
+    </empresa>
+  </otrosEmpleadores>
+  <pagosACuenta>
+    <pago>
+      <tipo>PERCEPCION_TARJETA</tipo>
+      <cuit>30500010914</cuit>
+      <denominacion>Banco Santander RG 4815</denominacion>
+      <mes>2</mes>
+      <montoTotal>85000.00</montoTotal>
+    </pago>
+  </pagosACuenta>
+</presentacion>`;
+
+    const siradigRes = await fetch(`${baseUrl}/income-tax/siradig/import`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        filename: 'F572_2026_TEST.xml',
+        xmlContent: siradigXmlSample,
+      }),
+    });
+    const siradigJson = await siradigRes.json();
+    console.log('     Status Importación SiRADIG:', siradigRes.status, siradigJson.message);
+    if (siradigRes.status !== 200 || siradigJson.data?.processedEmployees !== 1) {
+      throw new Error(`Falló importación SiRADIG: ${JSON.stringify(siradigJson)}`);
+    }
+    console.log(`     -> SiRADIG procesado: ${siradigJson.data?.deductionsCount} deducciones, ${siradigJson.data?.otherIncomesCount} pluriempleo.`);
+
+    // 27.5 Verificar Legajo Fiscal 360°
+    console.log(`  -> 27.5: GET /api/v1/income-tax/employees/${empFamilyId}/profile?year=2026 (Legajo Fiscal 360)`);
+    const profileRes = await fetch(`${baseUrl}/income-tax/employees/${empFamilyId}/profile?year=2026`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const profileJson = await profileRes.json();
+    console.log('     Status Legajo Fiscal:', profileRes.status, '| Deducciones generales registradas:', profileJson.data?.generalDeductions?.length);
+    if (profileRes.status !== 200 || !profileJson.data?.generalDeductions || profileJson.data.generalDeductions.length === 0) {
+      throw new Error('El legajo fiscal no muestra las deducciones importadas');
+    }
+
+    // 27.6 Cálculo Acumulativo de Liquidación Mensual de Ganancias (Octubre 2026)
+    console.log('  -> 27.6: POST /api/v1/income-tax/settlements/calculate (Liquidación Mensual Acumulativa)');
+    const calcItRes = await fetch(`${baseUrl}/income-tax/settlements/calculate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        fiscalYear: 2026,
+        month: 10,
+        settlementType: 'MONTHLY',
+      }),
+    });
+    const calcItJson = await calcItRes.json();
+    const itSettlementId = calcItJson.data?.settlement?.id || calcItJson.data?.id;
+    console.log('     Status Cálculo Ganancias:', calcItRes.status, calcItJson.message, '| ID:', itSettlementId);
+    if (calcItRes.status !== 200 || !itSettlementId) {
+      throw new Error(`Falló liquidación acumulativa de Ganancias: ${JSON.stringify(calcItJson)}`);
+    }
+
+    // Verificar detalle del empleado
+    const itDetailRes = await fetch(`${baseUrl}/income-tax/settlements/${itSettlementId}`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const itDetailJson = await itDetailRes.json();
+    const empItDetail = itDetailJson.data?.details?.find((d) => d.employeeId === empFamilyId);
+    console.log('     Detalle Ganancias Empleado:', {
+      remunBrutaAcum: empItDetail?.accumulatedGross,
+      sacProyectado: empItDetail?.sacProjectedAccumulated,
+      deduccionesPersonales: empItDetail?.personalDeductionsAccumulated,
+      gananciaNetaSujetaImpuesto: empItDetail?.netTaxableIncomeAccumulated,
+      impuestoDeterminado: empItDetail?.determinedTaxAccumulated,
+      retencionNetaMes: empItDetail?.netMonthlyWithholding,
+    });
+    if (!empItDetail) {
+      throw new Error('No se encontró el detalle de liquidación de Ganancias para el colaborador');
+    }
+
+    // 27.7 Exportar a Nómina con Selección de Conceptos y Validación ARCA
+    console.log('  -> 27.7: Validación de códigos ARCA en exportación a nómina (820000 / 520002)');
+    // A. Probar con un concepto inválido (ej. SU1000 que es 110000 Sueldo Básico)
+    const allConceptsRes = await fetch(`${baseUrl}/payroll/concepts?limit=500`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const allConceptsJson = await allConceptsRes.json();
+    const invalidConcept = allConceptsJson.data?.find((c) => c.code === 'SU1000') || allConceptsJson.data[0];
+    const validWithholdingConcept = allConceptsJson.data?.find((c) => c.arcaConceptCode === '820000' || c.code === 'SU8200');
+    const validRefundConcept = allConceptsJson.data?.find((c) => c.arcaConceptCode === '520002' || c.code === 'SU5200');
+
+    if (!validWithholdingConcept || !validRefundConcept) {
+      throw new Error('No se encontraron los conceptos oficiales SU8200 (ARCA 820000) o SU5200 (ARCA 520002)');
+    }
+
+    const invalidExportRes = await fetch(`${baseUrl}/income-tax/settlements/${itSettlementId}/export-to-payroll`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        periodId,
+        withholdingConceptId: invalidConcept.id,
+        refundConceptId: validRefundConcept.id,
+      }),
+    });
+    const invalidExportJson = await invalidExportRes.json();
+    console.log('     Status Exportación con Concepto Inválido (esperado 400):', invalidExportRes.status, invalidExportJson.message || invalidExportJson.error?.message);
+    if (invalidExportRes.status !== 400) {
+      throw new Error('Debió rechazarse la exportación por usar un concepto que no posee el código ARCA 820000');
+    }
+
+    // B. Exportar con los conceptos válidos oficiales
+    console.log('  -> 27.7.b: Exportar a Nómina con conceptos oficiales validados por ARCA');
+    const validExportRes = await fetch(`${baseUrl}/income-tax/settlements/${itSettlementId}/export-to-payroll`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({
+        periodId,
+        withholdingConceptId: validWithholdingConcept.id,
+        refundConceptId: validRefundConcept.id,
+      }),
+    });
+    const validExportJson = await validExportRes.json();
+    console.log('     Status Exportación Válida:', validExportRes.status, validExportJson.message);
+    if (validExportRes.status !== 200) {
+      throw new Error(`Falló exportación a nómina con conceptos válidos: ${JSON.stringify(validExportJson)}`);
+    }
+
+    // C. Verificar que se haya creado la novedad en el período
+    const periodNoveltiesRes = await fetch(`${baseUrl}/payroll/periods/${periodId}/novelties`, {
+      headers: { Authorization: `Bearer ${adminToken}`, 'x-company-id': companyId },
+    });
+    const periodNoveltiesJson = await periodNoveltiesRes.json();
+    const itNovelty = periodNoveltiesJson.data?.find(
+      (n) => n.employeeId === empFamilyId && (n.conceptId === validWithholdingConcept.id || n.conceptId === validRefundConcept.id)
+    );
+    console.log('     Novedad de Ganancias encontrada en período de nómina:', Boolean(itNovelty), itNovelty ? `Monto: $${itNovelty.amount}` : '');
+    if (!itNovelty && Number(empItDetail.netMonthlyWithholding) !== 0) {
+      throw new Error('No se generó la novedad de retención/reintegro de Ganancias en el período');
+    }
+    console.log('     -> Novedades en nómina y validación estricta de códigos ARCA 100% verificadas.');
+
+    // 27.8 Liquidación Anual y Exportación de F. 1359 (ARCA)
+    console.log('  -> 27.8: POST /api/v1/income-tax/annual/calculate & /f1359/export (Liquidación Anual)');
+    const calcAnnualRes = await fetch(`${baseUrl}/income-tax/annual/calculate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({ fiscalYear: 2026 }),
+    });
+    const calcAnnualJson = await calcAnnualRes.json();
+    console.log('     Status Liquidación Anual:', calcAnnualRes.status, calcAnnualJson.message);
+    if (calcAnnualRes.status !== 200) throw new Error('Falló cálculo de liquidación anual: ' + JSON.stringify(calcAnnualJson));
+
+    const exportF1359Res = await fetch(`${baseUrl}/income-tax/f1359/export`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminToken}`,
+        'x-company-id': companyId,
+      },
+      body: JSON.stringify({ fiscalYear: 2026, presentationType: 'ANNUAL' }),
+    });
+    const exportF1359Text = await exportF1359Res.text();
+    console.log('     Status F.1359 Export:', exportF1359Res.status, '| Bytes generados:', exportF1359Text.length);
+    if (exportF1359Res.status !== 200 || !exportF1359Text.includes('01')) {
+      throw new Error('El archivo exportado F.1359 no posee la estructura de registros oficial de ARCA');
+    }
+    console.log('     -> Archivo F.1359 generado con registros oficiales de ARCA exitosamente.');
+
+    console.log('\n🎉 ¡TODAS LAS PRUEBAS (1 a 27) PASARON EXITOSAMENTE!');
   } finally {
     // 🧹 Limpieza automática de recursos temporales creados exclusivamente por el test
     if (testDbName && testDbName.startsWith('sueldos_emp_30708381256_')) {

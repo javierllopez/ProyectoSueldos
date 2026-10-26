@@ -467,6 +467,13 @@ export async function createEmployee(tenantPrisma, employeeData) {
             cuil: r.cuil ? r.cuil.replace(/\D/g, '') : null,
             birthDate: new Date(r.birthDate),
             isAdherent: Boolean(r.isAdherent),
+            appliesIncomeTax: Boolean(r.appliesIncomeTax),
+            incomeTaxDeductionType: r.incomeTaxDeductionType || null,
+            deductionPercentage: r.deductionPercentage !== undefined ? Number(r.deductionPercentage) : 100.00,
+            isDisability: Boolean(r.isDisability),
+            hasNoIncomeOrBelowMni: r.hasNoIncomeOrBelowMni !== undefined ? Boolean(r.hasNoIncomeOrBelowMni) : true,
+            validFromMonth: r.validFromMonth !== undefined ? parseInt(r.validFromMonth, 10) : 1,
+            validToMonth: r.validToMonth !== undefined ? parseInt(r.validToMonth, 10) : 12,
           })),
         }
       : undefined;
@@ -1375,6 +1382,65 @@ export function isPrimaryFamilyKinship(kinship) {
 }
 
 /**
+ * Valida la admisibilidad fiscal de una carga de familia conforme al Art. 30 Ley 27.743 y RG 4003.
+ */
+export function validateRelativeTaxEligibility(data, birthDate, kinship) {
+  if (!data.appliesIncomeTax) return;
+
+  if (!data.incomeTaxDeductionType) {
+    const error = new Error('Debe especificar el tipo de deducción de ganancias (Cónyuge, Hijo o Hijo Incapacitado)');
+    error.status = 400;
+    throw error;
+  }
+
+  // Calcular edad a la fecha
+  const bDate = new Date(birthDate);
+  const now = new Date();
+  let age = now.getFullYear() - bDate.getFullYear();
+  const m = now.getMonth() - bDate.getMonth();
+  if (m < 0 || (m === 0 && now.getDate() < bDate.getDate())) {
+    age--;
+  }
+
+  if (data.incomeTaxDeductionType === 'CHILD') {
+    if (age >= 18 && !data.isDisability) {
+      const error = new Error(`El familiar tiene ${age} años. Para ser deducible en Impuesto a las Ganancias como hijo común debe ser menor de 18 años (Ley 27.743). Si posee incapacidad para el trabajo, debe seleccionarse 'Hijo/a Incapacitado/a'.`);
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  if (data.incomeTaxDeductionType === 'SPOUSE') {
+    const kinshipCode = (kinship?.code || '').toUpperCase();
+    if (kinshipCode.includes('HIJO') || kinshipCode.includes('HERMANO') || kinshipCode.includes('PADRE')) {
+      const error = new Error('El tipo de deducción CÓNYUGE sólo puede asignarse a cónyuge o conviviente.');
+      error.status = 400;
+      throw error;
+    }
+    if (data.hasNoIncomeOrBelowMni === false) {
+      const error = new Error('El cónyuge sólo puede deducirse si sus ingresos anuales netos no superan el Mínimo No Imponible.');
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  const pct = Number(data.deductionPercentage);
+  if (isNaN(pct) || pct <= 0 || pct > 100) {
+    const error = new Error('El porcentaje de deducción debe ser entre 1% y 100% (habitualmente 100% o 50% compartido).');
+    error.status = 400;
+    throw error;
+  }
+
+  const fromMonth = data.validFromMonth !== undefined ? parseInt(data.validFromMonth, 10) : 1;
+  const toMonth = data.validToMonth !== undefined ? parseInt(data.validToMonth, 10) : 12;
+  if (fromMonth < 1 || fromMonth > 12 || toMonth < 1 || toMonth > 12 || fromMonth > toMonth) {
+    const error = new Error('Los meses de vigencia de la deducción deben ser válidos (de 1 a 12, con mes desde menor o igual a mes hasta).');
+    error.status = 400;
+    throw error;
+  }
+}
+
+/**
  * Agrega un familiar a un empleado.
  */
 export async function createRelative(tenantPrisma, employeeId, data) {
@@ -1398,6 +1464,9 @@ export async function createRelative(tenantPrisma, employeeId, data) {
     throw error;
   }
 
+  // Validación fiscal para Impuesto a las Ganancias
+  validateRelativeTaxEligibility(data, data.birthDate, kinship);
+
   const cleanCuil = data.cuil ? data.cuil.replace(/\D/g, '') : null;
 
   return tenantPrisma.employeeRelative.create({
@@ -1412,6 +1481,13 @@ export async function createRelative(tenantPrisma, employeeId, data) {
       cuil: cleanCuil || null,
       birthDate: new Date(data.birthDate),
       isAdherent,
+      appliesIncomeTax: Boolean(data.appliesIncomeTax),
+      incomeTaxDeductionType: data.incomeTaxDeductionType || null,
+      deductionPercentage: data.deductionPercentage !== undefined ? Number(data.deductionPercentage) : 100.00,
+      isDisability: Boolean(data.isDisability),
+      hasNoIncomeOrBelowMni: data.hasNoIncomeOrBelowMni !== undefined ? Boolean(data.hasNoIncomeOrBelowMni) : true,
+      validFromMonth: data.validFromMonth !== undefined ? parseInt(data.validFromMonth, 10) : 1,
+      validToMonth: data.validToMonth !== undefined ? parseInt(data.validToMonth, 10) : 12,
     },
     include: {
       kinship: true,
@@ -1455,6 +1531,18 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
     throw error;
   }
 
+  const mergedTaxData = {
+    appliesIncomeTax: data.appliesIncomeTax !== undefined ? Boolean(data.appliesIncomeTax) : Boolean(existing.appliesIncomeTax),
+    incomeTaxDeductionType: data.incomeTaxDeductionType !== undefined ? data.incomeTaxDeductionType : existing.incomeTaxDeductionType,
+    deductionPercentage: data.deductionPercentage !== undefined ? Number(data.deductionPercentage) : Number(existing.deductionPercentage),
+    isDisability: data.isDisability !== undefined ? Boolean(data.isDisability) : Boolean(existing.isDisability),
+    hasNoIncomeOrBelowMni: data.hasNoIncomeOrBelowMni !== undefined ? Boolean(data.hasNoIncomeOrBelowMni) : Boolean(existing.hasNoIncomeOrBelowMni),
+    validFromMonth: data.validFromMonth !== undefined ? parseInt(data.validFromMonth, 10) : existing.validFromMonth,
+    validToMonth: data.validToMonth !== undefined ? parseInt(data.validToMonth, 10) : existing.validToMonth,
+  };
+  const targetBirthDate = data.birthDate ? new Date(data.birthDate) : existing.birthDate;
+  validateRelativeTaxEligibility(mergedTaxData, targetBirthDate, targetKinship);
+
   const updateData = {};
   if (data.kinshipId !== undefined) updateData.kinshipId = data.kinshipId;
   if (data.lastName !== undefined) updateData.lastName = data.lastName.trim();
@@ -1464,6 +1552,13 @@ export async function updateRelative(tenantPrisma, relativeId, data) {
   if (data.cuil !== undefined) updateData.cuil = data.cuil ? data.cuil.replace(/\D/g, '') : null;
   if (data.birthDate !== undefined) updateData.birthDate = new Date(data.birthDate);
   if (data.isAdherent !== undefined) updateData.isAdherent = willBeAdherent;
+  if (data.appliesIncomeTax !== undefined) updateData.appliesIncomeTax = Boolean(data.appliesIncomeTax);
+  if (data.incomeTaxDeductionType !== undefined) updateData.incomeTaxDeductionType = data.incomeTaxDeductionType;
+  if (data.deductionPercentage !== undefined) updateData.deductionPercentage = Number(data.deductionPercentage);
+  if (data.isDisability !== undefined) updateData.isDisability = Boolean(data.isDisability);
+  if (data.hasNoIncomeOrBelowMni !== undefined) updateData.hasNoIncomeOrBelowMni = Boolean(data.hasNoIncomeOrBelowMni);
+  if (data.validFromMonth !== undefined) updateData.validFromMonth = parseInt(data.validFromMonth, 10);
+  if (data.validToMonth !== undefined) updateData.validToMonth = parseInt(data.validToMonth, 10);
 
   return tenantPrisma.employeeRelative.update({
     where: { id: relativeId },
