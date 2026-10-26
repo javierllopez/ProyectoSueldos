@@ -1549,7 +1549,10 @@ class PersonnelMethods {
             <td>
               ${isAdherent
                 ? '<span class="badge bg-purple-lt text-purple fw-bold"><i class="ti ti-shield-plus me-1"></i>Adherente OS</span>'
-                : '<span class="badge bg-light text-muted border"><i class="ti ti-shield-check me-1"></i>Titular / Primario</span>'}
+                : '<span class="badge bg-light text-muted border"><i class="ti ti-shield-check me-1"></i>Titular OS</span>'}
+              ${rel.appliesIncomeTax
+                ? `<span class="badge bg-indigo-lt text-indigo fw-bold ms-1" title="Carga computable para Ganancias (${rel.incomeTaxType})"><i class="ti ti-receipt-tax me-1"></i>Ganancias (${Number(rel.deductionPercentage || 100)}%)</span>`
+                : ''}
             </td>
             <td class="text-end">
               <div class="d-inline-flex gap-1">
@@ -3333,9 +3336,31 @@ class PersonnelMethods {
       }
     });
 
-    // Cambio de Parentesco para validar adherencia a Obra Social (Ley 23.660)
+    // Cambio de Parentesco para validar adherencia a Obra Social (Ley 23.660) y sugerir tipo en Ganancias
     document.getElementById('relative-input-kinship')?.addEventListener('change', () => {
       this.updateAdherentSwitchState();
+      this.updateTaxTypeSuggestion();
+    });
+
+    // Toggle de contenedor de campos de Impuesto a las Ganancias
+    document.getElementById('relative-input-applies-income-tax')?.addEventListener('change', (e) => {
+      const container = document.getElementById('relative-income-tax-fields');
+      if (container) {
+        if (e.target.checked) {
+          container.classList.remove('d-none');
+          this.updateTaxTypeSuggestion();
+        } else {
+          container.classList.add('d-none');
+        }
+      }
+    });
+
+    // Toggle de incapacidad laboral
+    document.getElementById('relative-input-is-disability')?.addEventListener('change', (e) => {
+      const taxTypeSelect = document.getElementById('relative-input-tax-type');
+      if (e.target.checked && taxTypeSelect && taxTypeSelect.value === 'CHILD') {
+        taxTypeSelect.value = 'DISABLED_CHILD';
+      }
     });
 
     // Submit de Familiar de Empleado (Submodal)
@@ -3383,6 +3408,14 @@ class PersonnelMethods {
         return;
       }
 
+      const appliesIncomeTax = Boolean(document.getElementById('relative-input-applies-income-tax')?.checked);
+      const incomeTaxDeductionType = appliesIncomeTax ? document.getElementById('relative-input-tax-type')?.value || null : null;
+      const deductionPercentage = appliesIncomeTax ? parseFloat(document.getElementById('relative-input-deduction-pct')?.value || '100') : 100;
+      const isDisability = appliesIncomeTax ? Boolean(document.getElementById('relative-input-is-disability')?.checked) : false;
+      const hasNoIncomeOrBelowMni = appliesIncomeTax ? Boolean(document.getElementById('relative-input-has-no-income')?.checked) : true;
+      const validFromMonth = appliesIncomeTax ? parseInt(document.getElementById('relative-input-tax-from-month')?.value || '1', 10) : 1;
+      const validToMonth = appliesIncomeTax ? parseInt(document.getElementById('relative-input-tax-to-month')?.value || '12', 10) : 12;
+
       const relPayload = {
         kinshipId,
         lastName,
@@ -3392,6 +3425,13 @@ class PersonnelMethods {
         cuil: cuilRaw,
         birthDate,
         isAdherent,
+        appliesIncomeTax,
+        incomeTaxDeductionType,
+        deductionPercentage,
+        isDisability,
+        hasNoIncomeOrBelowMni,
+        validFromMonth,
+        validToMonth,
       };
 
       if (submitBtn) {
@@ -6972,6 +7012,25 @@ class PersonnelMethods {
     }
   }
 
+  updateTaxTypeSuggestion() {
+    const kinSelect = document.getElementById('relative-input-kinship');
+    const taxTypeSelect = document.getElementById('relative-input-tax-type');
+    if (!kinSelect || !taxTypeSelect || !kinSelect.value) return;
+
+    const selectedKin = this.kinships.find((k) => k.id === kinSelect.value);
+    if (!selectedKin) return;
+
+    const code = String(selectedKin.code || '').toUpperCase();
+    const name = String(selectedKin.name || '').toLowerCase();
+
+    if (code === 'CONYUGE' || code === 'CONVIVIENTE' || name.includes('cónyuge') || name.includes('conyuge') || name.includes('conviviente')) {
+      taxTypeSelect.value = 'SPOUSE';
+    } else if (code.startsWith('HIJO') || name.includes('hijo') || name.includes('hija') || name.includes('hijastro')) {
+      const isDisability = Boolean(document.getElementById('relative-input-is-disability')?.checked);
+      taxTypeSelect.value = isDisability ? 'DISABLED_CHILD' : 'CHILD';
+    }
+  }
+
   openNewRelativeModal() {
     document.getElementById('form-employee-relative').reset();
     document.getElementById('employee-relative-form-index').value = '';
@@ -6984,6 +7043,23 @@ class PersonnelMethods {
       adherentSwitch.checked = false;
       adherentSwitch.disabled = true;
     }
+    const taxSwitch = document.getElementById('relative-input-applies-income-tax');
+    if (taxSwitch) taxSwitch.checked = false;
+    const taxFields = document.getElementById('relative-income-tax-fields');
+    if (taxFields) taxFields.classList.add('d-none');
+    const taxType = document.getElementById('relative-input-tax-type');
+    if (taxType) taxType.value = 'CHILD';
+    const taxPct = document.getElementById('relative-input-deduction-pct');
+    if (taxPct) taxPct.value = '100';
+    const disSwitch = document.getElementById('relative-input-is-disability');
+    if (disSwitch) disSwitch.checked = false;
+    const noIncSwitch = document.getElementById('relative-input-has-no-income');
+    if (noIncSwitch) noIncSwitch.checked = true;
+    const fromMonth = document.getElementById('relative-input-tax-from-month');
+    if (fromMonth) fromMonth.value = '1';
+    const toMonth = document.getElementById('relative-input-tax-to-month');
+    if (toMonth) toMonth.value = '12';
+
     this.updateAdherentSwitchState();
     getBootstrapModal(document.getElementById('modal-employee-relative-form'))?.show();
   }
@@ -7013,6 +7089,27 @@ class PersonnelMethods {
     if (!this.isPrimaryFamilyKinship(this.kinships.find((k) => k.id === (rel.kinshipId || rel.kinship?.id)))) {
       if (adherentSwitch) adherentSwitch.checked = Boolean(rel.isAdherent);
     }
+
+    const appliesTax = Boolean(rel.appliesIncomeTax);
+    const taxSwitch = document.getElementById('relative-input-applies-income-tax');
+    if (taxSwitch) taxSwitch.checked = appliesTax;
+    const taxFields = document.getElementById('relative-income-tax-fields');
+    if (taxFields) {
+      if (appliesTax) taxFields.classList.remove('d-none');
+      else taxFields.classList.add('d-none');
+    }
+    const taxType = document.getElementById('relative-input-tax-type');
+    if (taxType) taxType.value = rel.incomeTaxDeductionType || 'CHILD';
+    const taxPct = document.getElementById('relative-input-deduction-pct');
+    if (taxPct) taxPct.value = String(rel.deductionPercentage ? Number(rel.deductionPercentage) : 100);
+    const disSwitch = document.getElementById('relative-input-is-disability');
+    if (disSwitch) disSwitch.checked = Boolean(rel.isDisability);
+    const noIncSwitch = document.getElementById('relative-input-has-no-income');
+    if (noIncSwitch) noIncSwitch.checked = rel.hasNoIncomeOrBelowMni !== undefined ? Boolean(rel.hasNoIncomeOrBelowMni) : true;
+    const fromMonth = document.getElementById('relative-input-tax-from-month');
+    if (fromMonth) fromMonth.value = String(rel.validFromMonth || 1);
+    const toMonth = document.getElementById('relative-input-tax-to-month');
+    if (toMonth) toMonth.value = String(rel.validToMonth || 12);
 
     getBootstrapModal(document.getElementById('modal-employee-relative-form'))?.show();
   }

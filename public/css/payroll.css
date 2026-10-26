@@ -246,6 +246,7 @@
   box-shadow: var(--pay-shadow-xs);
   overflow: hidden !important;
   margin-bottom: 0 !important;
+  width: 100% !important;
 }
 
 .payroll-sidebar-header {
@@ -268,6 +269,7 @@
   text-transform: uppercase;
 }
 
+.payroll-nav-group,
 #payroll-sidebar-nav {
   flex: 1 1 0 !important;
   min-height: 0 !important;
@@ -276,7 +278,9 @@
   padding: var(--pay-space-8) !important;
   display: flex !important;
   flex-direction: column !important;
+  flex-wrap: nowrap !important;
   gap: var(--pay-space-4) !important;
+  width: 100% !important;
 }
 
 #payroll-sidebar-nav::-webkit-scrollbar {
@@ -369,7 +373,11 @@
   margin-bottom: var(--pay-space-4);
 }
 
-.payroll-submenu {
+.payroll-submenu:not(.show) {
+  display: none !important;
+}
+
+.payroll-submenu.show {
   padding-left: var(--pay-space-16);
   padding-top: var(--pay-space-4);
   padding-bottom: var(--pay-space-4);
@@ -377,8 +385,8 @@
   margin-left: var(--pay-space-20);
   margin-top: var(--pay-space-4);
   margin-bottom: var(--pay-space-4);
-  display: flex;
-  flex-direction: column;
+  display: flex !important;
+  flex-direction: column !important;
   gap: var(--pay-space-4);
 }
 
@@ -612,8 +620,21 @@
 /* ==========================================================================
    5. TABLAS DE DATOS & RESILIENCIA INFLACIONARIA
    ========================================================================== */
-.payroll-table-card,
 .card-payroll-accent {
+  border-top: 3px solid var(--pay-indigo-600) !important;
+  border-radius: var(--pay-radius-12) !important;
+  box-shadow: var(--pay-shadow-xs) !important;
+  background: var(--pay-white) !important;
+  overflow: visible !important;
+  position: relative;
+  z-index: 25;
+}
+
+.card-payroll-accent > .card-body {
+  overflow: visible !important;
+}
+
+.payroll-table-card {
   border-top: 3px solid var(--pay-indigo-600) !important;
   border-radius: var(--pay-radius-12) !important;
   box-shadow: var(--pay-shadow-xs) !important;
@@ -1211,3 +1232,216 @@
   font-weight: 700 !important;
   border-bottom: 2px solid var(--pay-indigo-500) !important;
 }
+
+/* ==========================================================================
+   11. IMPUESTO A LAS GANANCIAS (LAYOUT FLEX VIEWPORT & SCROLL INDEPENDIENTE)
+   ========================================================================== */
+#payroll-tab-content > .tab-pane:not(.active) {
+  display: none !important;
+}
+
+#pane-payroll-income-tax:not(.active) {
+  display: none !important;
+}
+
+#pane-payroll-income-tax.active {
+  height: 100% !important;
+  max-height: 100% !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#pane-payroll-income-tax > .card-payroll-accent {
+  flex-shrink: 0 !important;
+  margin-bottom: 0.5rem !important;
+}
+
+#pane-payroll-income-tax > .card:not(.card-payroll-accent) {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  margin-bottom: 0 !important;
+}
+
+#pane-payroll-income-tax > .card:not(.card-payroll-accent) > .card-header {
+  flex-shrink: 0 !important;
+}
+
+#pane-payroll-income-tax > .card:not(.card-payroll-accent) > .card-body {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  padding: 0.5rem !important;
+}
+
+#income-tax-subtab-content {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#income-tax-subtab-content > .tab-pane {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+#income-tax-subtab-content > .tab-pane.active {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+/* Tab 1: Liquidación Mensual */
+#it-monthly-toolbar {
+  flex-shrink: 0 !important;
+  margin-bottom: 0.35rem !important;
+}
+
+.income-tax-table-container {
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  display: block !important;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 4px;
+}
+
+#it-monthly-pagination-bar {
+  flex-shrink: 0 !important;
+  position: relative;
+  z-index: 5;
+  background-color: #ffffff !important;
+  margin-top: auto !important;
+  border-top: 1px solid var(--bs-border-color) !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.2rem !important;
+}
+
+.income-tax-main-table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.income-tax-main-table th,
+.income-tax-main-table td {
+  padding: 7px 10px !important;
+  vertical-align: middle;
+}
+
+.income-tax-main-table .text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.income-tax-main-table .font-monospace {
+  white-space: nowrap;
+}
+
+#it-pane-monthly,
+#it-pane-profile,
+#it-profile-details-container {
+  max-width: 100% !important;
+}
+
+.it-profile-table-card {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.it-profile-table-card .table {
+  width: 100% !important;
+  table-layout: auto !important;
+}
+
+.it-profile-table-card .table td,
+.it-profile-table-card .table th {
+  padding: 6px 8px !important;
+  vertical-align: middle;
+}
+
+/* Tab 4: Tablas Impositivas Oficiales */
+#it-tax-tables-pills {
+  flex-shrink: 0 !important;
+  margin-bottom: 0.4rem !important;
+}
+
+#it-tax-tables-pills .nav-link {
+  color: #475569;
+  border-radius: 4px;
+  transition: all 0.15s ease-in-out;
+}
+
+#it-tax-tables-pills .nav-link.active {
+  background-color: #ffffff !important;
+  color: #3730a3 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+#it-tax-tables-pills-content {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#it-tax-tables-pills-content > .tab-pane {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+}
+
+#it-tax-tables-pills-content > .tab-pane.active {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#it-tax-tables-pills-content .card {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  margin-bottom: 0 !important;
+}
+
+#it-tax-tables-pills-content .card > .card-header {
+  flex-shrink: 0 !important;
+}
+
+#it-tax-tables-pills-content .card > .table-responsive {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+}
+
+

@@ -7,11 +7,12 @@ import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 import { registerAdminMethods } from './modules/admin.view.js';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
 import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.3';
-import { registerPayrollMethods } from './modules/payroll.view.js';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.4';
 import { registerSalaryScalesMethods } from './modules/salaryScales.view.js';
 import { registerConceptsMethods } from './modules/concepts.view.js';
 import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';
 import { registerEmbargoesMethods } from './modules/embargoes.view.js';
+import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.4';
 
 export { ARCA_T03_ACTIVITIES, getArcaActivityInfo };
 
@@ -352,6 +353,7 @@ registerSalaryScalesMethods(AppController.prototype);
 registerConceptsMethods(AppController.prototype);
 registerMatricesAndSettingsMethods(AppController.prototype);
 registerEmbargoesMethods(AppController.prototype);
+registerIncomeTaxMethods(AppController.prototype);
 
 export { AppController };
 
@@ -359,6 +361,7 @@ export { AppController };
 if (typeof document !== 'undefined') {
   document.addEventListener('DOMContentLoaded', () => {
     const app = new AppController();
+    window.app = app;
     app.init();
   });
 }

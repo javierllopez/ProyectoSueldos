@@ -746,14 +746,48 @@ body {
 
 /* REGLAS DE IMPRESIÓN OFICIALES (A4 PORTRAIT) */
 @media print {
-  /* Ocultar toda la interfaz del sistema */
-  body * {
+  /* --- MODO 1: IMPRESIÓN DE LOTE DE RECIBOS (SIN HOJAS VACÍAS) --- */
+  body.batch-printing .page,
+  body.batch-printing .navbar,
+  body.batch-printing .modal,
+  body.batch-printing #toast-container {
+    display: none !important;
+  }
+
+  body.batch-printing #batch-payslip-print-container {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.batch-printing #batch-payslip-print-container * {
+    visibility: visible !important;
+  }
+
+  body.batch-printing .payslip-sheet-print {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    padding: 8mm 10mm !important;
+    margin: 0 !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+    box-sizing: border-box !important;
+    background: #ffffff !important;
+  }
+
+  /* --- MODO 2: IMPRESIÓN INDIVIDUAL DESDE MODAL --- */
+  body:not(.batch-printing) * {
     visibility: hidden;
   }
 
-  /* Mostrar exclusivamente el modal de recibo/auditoría */
-  #modal-view-payslip,
-  #modal-view-payslip * {
+  body:not(.batch-printing) #modal-view-payslip,
+  body:not(.batch-printing) #modal-view-payslip * {
     visibility: visible;
   }
 
@@ -1268,12 +1302,18 @@ body {
   }
 
   #personnel-sidebar-nav,
-  #payroll-sidebar-nav {
+  #payroll-sidebar-nav,
+  .pers-nav-group,
+  .payroll-nav-group {
     flex: 1 1 0 !important;
     min-height: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     padding-bottom: 1.5rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
   }
 
   /* 8. Contenedor de Pestañas / Pantallas a la Derecha */
@@ -1286,6 +1326,7 @@ body {
     min-height: 0 !important;
     overflow: hidden !important;
     flex: 1 1 0 !important;
+    width: 100% !important;
   }
 
   #personnel-tab-content > .tab-pane,
@@ -1294,6 +1335,11 @@ body {
     max-height: 100% !important;
     min-height: 0 !important;
     overflow: hidden !important;
+  }
+
+  #personnel-tab-content > .tab-pane:not(.active),
+  #payroll-tab-content > .tab-pane:not(.active) {
+    display: none !important;
   }
 
   #personnel-tab-content > .tab-pane.active,
@@ -1305,6 +1351,7 @@ body {
     min-height: 0 !important;
     flex: 1 1 0 !important;
     overflow: hidden !important;
+    width: 100% !important;
   }
 
   /* 9. Nivel 3: Encabezado de Cada Pantalla Fijo (Buscador, Filtros, Botones de Acción) */
@@ -1314,6 +1361,9 @@ body {
   .app-view > .page-header {
     flex-shrink: 0 !important;
     margin-bottom: 0.5rem !important;
+    overflow: visible !important;
+    position: relative;
+    z-index: 25;
   }
 
   /* 10. Área Inferior de Contenido: Tablas y Listas con Scroll Independiente */
@@ -1328,6 +1378,13 @@ body {
     flex-direction: column !important;
     overflow: hidden !important;
     margin-bottom: 0 !important;
+  }
+
+  #tab-settlement-batch.active {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    min-height: 0 !important;
   }
 
   #personnel-tab-content .card > .card-header,

@@ -64,10 +64,17 @@ export async function apiRequest(endpoint, options = {}) {
     headers['x-company-id'] = activeCompanyId;
   }
 
+  const fetchOptions = { ...options };
+  let body = fetchOptions.body;
+  if (body && typeof body === 'object' && !(body instanceof FormData) && !(body instanceof Blob)) {
+    body = JSON.stringify(body);
+  }
+
   try {
     let response = await fetch(url, {
-      ...options,
+      ...fetchOptions,
       headers,
+      body,
     });
 
     // Si recibimos 401 y tenemos refresh token, intentar renovar la sesión
@@ -77,8 +84,9 @@ export async function apiRequest(endpoint, options = {}) {
         // Reintentar la petición original con el nuevo token
         headers['Authorization'] = `Bearer ${storage.getToken()}`;
         response = await fetch(url, {
-          ...options,
+          ...fetchOptions,
           headers,
+          body,
         });
       } else {
         storage.clearSession();

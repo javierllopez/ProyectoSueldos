@@ -8,11 +8,11 @@
   <link rel="stylesheet" href="/vendor/tabler/css/tabler.min.css">
   <link rel="stylesheet" href="/vendor/tabler-icons/tabler-icons.min.css">
   <link rel="stylesheet" href="/vendor/tabler/libs/tom-select/dist/css/tom-select.bootstrap5.min.css">
-  <link rel="stylesheet" href="/css/custom.css?v=custom-2.1">
+  <link rel="stylesheet" href="/css/custom.css?v=custom-2.2">
   <link rel="stylesheet" href="/css/dashboard.css">
   <link rel="stylesheet" href="/css/personnel.css?v=personnel-2.3">
   <link rel="stylesheet" href="/css/admin.css?v=admin-1.0">
-  <link rel="stylesheet" href="/css/payroll.css?v=payroll-1.2">
+  <link rel="stylesheet" href="/css/payroll.css?v=payroll-1.3">
 </head>
 <body>
   <div class="page">
@@ -1698,15 +1698,15 @@
             <div class="row gx-3 gy-0 module-layout-row">
               <!-- BARRA LATERAL IZQUIERDA CON SUBMENÚES DE SUELDOS -->
               <div class="col-lg-3 col-md-4 sidebar-col-container">
-                <div class="payroll-sidebar-card mb-3">
+                <div class="payroll-sidebar-card mb-0">
                   <div class="payroll-sidebar-header">
                     <div class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.05em;">
                       <i class="ti ti-layout-sidebar me-1 text-primary"></i> Navegación de Nómina
                     </div>
                   </div>
-                  <div class="py-2" id="payroll-sidebar-nav">
+                  <div class="payroll-nav-group py-2" id="payroll-sidebar-nav">
                     <!-- 1. ALÍCUOTAS PATRONALES -->
-                    <a href="#pane-payroll-settings" class="payroll-nav-item" id="side-payroll-settings" data-bs-toggle="tab" data-bs-target="#pane-payroll-settings" role="tab">
+                    <a href="#pane-payroll-settings" class="payroll-nav-item" id="side-payroll-settings" data-bs-target="#pane-payroll-settings">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-settings-automation text-cyan"></i>
                       </div>
@@ -1717,7 +1717,7 @@
                     </a>
 
                     <!-- 1b. NÓMINA (SUELDOS BÁSICOS) -->
-                    <a href="#pane-payroll-salary-scales" class="payroll-nav-item" id="side-payroll-salary-scales" data-bs-toggle="tab" data-bs-target="#pane-payroll-salary-scales" role="tab">
+                    <a href="#pane-payroll-salary-scales" class="payroll-nav-item" id="side-payroll-salary-scales" data-bs-target="#pane-payroll-salary-scales">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-cash-banknote text-teal"></i>
                       </div>
@@ -1730,7 +1730,7 @@
 
                     <!-- 2. CONCEPTOS Y FÓRMULAS (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
-                      <a href="#submenu-payroll-concepts" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-payroll-concepts-menu" data-bs-toggle="collapse" role="button" aria-expanded="false">
+                      <a href="#submenu-payroll-concepts" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-payroll-concepts-menu" data-bs-toggle="collapse" data-bs-target="#submenu-payroll-concepts" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
                             <i class="ti ti-variable text-purple"></i>
@@ -1743,17 +1743,17 @@
                         <i class="ti ti-chevron-down submenu-caret text-muted" style="transition: transform 0.2s ease;"></i>
                       </a>
                       <div class="collapse payroll-submenu" id="submenu-payroll-concepts">
-                        <a href="#pane-payroll-concepts" class="payroll-nav-subitem" id="side-payroll-concepts" data-bs-toggle="tab" data-bs-target="#pane-payroll-concepts" role="tab">
+                        <a href="#pane-payroll-concepts" class="payroll-nav-subitem" id="side-payroll-concepts" data-bs-target="#pane-payroll-concepts">
                           <i class="ti ti-list-details"></i>
                           <span class="flex-fill">Conceptos de Liquidación</span>
                           <span class="badge bg-purple-lt ms-auto" id="payroll-badge-concepts-count">0</span>
                         </a>
-                        <a href="#pane-payroll-matrices" class="payroll-nav-subitem" id="side-payroll-matrices" data-bs-toggle="tab" data-bs-target="#pane-payroll-matrices" role="tab">
+                        <a href="#pane-payroll-matrices" class="payroll-nav-subitem" id="side-payroll-matrices" data-bs-target="#pane-payroll-matrices">
                           <i class="ti ti-table"></i>
                           <span class="flex-fill">Matrices de Liquidación</span>
                           <span class="badge bg-indigo-lt ms-auto" id="payroll-badge-matrices-count">0</span>
                         </a>
-                        <a href="#pane-payroll-fixed-values" class="payroll-nav-subitem" id="side-payroll-fixed-values" data-bs-toggle="tab" data-bs-target="#pane-payroll-fixed-values" role="tab">
+                        <a href="#pane-payroll-fixed-values" class="payroll-nav-subitem" id="side-payroll-fixed-values" data-bs-target="#pane-payroll-fixed-values">
                           <i class="ti ti-pinned"></i>
                           <span class="flex-fill">Valores Fijos</span>
                           <span class="badge bg-azure-lt ms-auto" id="payroll-badge-fixed-values-count">0</span>
@@ -1763,7 +1763,7 @@
 
                     <!-- 3. NOVEDADES PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
-                      <a href="#submenu-novedades-persistentes" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-nov-pers-menu" data-bs-toggle="collapse" role="button" aria-expanded="true">
+                      <a href="#submenu-novedades-persistentes" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-nov-pers-menu" data-bs-toggle="collapse" data-bs-target="#submenu-novedades-persistentes" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
                             <i class="ti ti-pin text-indigo"></i>
@@ -1775,16 +1775,16 @@
                         </div>
                         <i class="ti ti-chevron-down submenu-caret text-muted" style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse show payroll-submenu" id="submenu-novedades-persistentes">
-                        <a href="#pane-nov-pers-emp" class="payroll-nav-subitem" id="side-nov-pers-emp" data-bs-toggle="tab" data-bs-target="#pane-nov-pers-emp" role="tab">
+                      <div class="collapse payroll-submenu" id="submenu-novedades-persistentes">
+                        <a href="#pane-nov-pers-emp" class="payroll-nav-subitem" id="side-nov-pers-emp" data-bs-target="#pane-nov-pers-emp">
                           <i class="ti ti-user-check"></i>
                           <span class="flex-fill">Conceptos por empleado</span>
                         </a>
-                        <a href="#pane-nov-pers-con" class="payroll-nav-subitem" id="side-nov-pers-con" data-bs-toggle="tab" data-bs-target="#pane-nov-pers-con" role="tab">
+                        <a href="#pane-nov-pers-con" class="payroll-nav-subitem" id="side-nov-pers-con" data-bs-target="#pane-nov-pers-con">
                           <i class="ti ti-users-group"></i>
                           <span class="flex-fill">Empleados por concepto</span>
                         </a>
-                        <a href="#pane-payroll-embargoes" class="payroll-nav-subitem" id="side-payroll-embargoes" data-bs-toggle="tab" data-bs-target="#pane-payroll-embargoes" role="tab">
+                        <a href="#pane-payroll-embargoes" class="payroll-nav-subitem" id="side-payroll-embargoes" data-bs-target="#pane-payroll-embargoes">
                           <i class="ti ti-scale text-primary"></i>
                           <span class="flex-fill">Embargos de Haberes</span>
                           <span class="badge bg-primary-lt ms-auto" id="payroll-badge-embargoes-count">0</span>
@@ -1794,7 +1794,7 @@
 
                     <!-- 4. NOVEDADES NO PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
-                      <a href="#submenu-novedades-no-persistentes" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-nov-nopers-menu" data-bs-toggle="collapse" role="button" aria-expanded="true">
+                      <a href="#submenu-novedades-no-persistentes" class="payroll-nav-item d-flex align-items-center justify-content-between" id="side-nov-nopers-menu" data-bs-toggle="collapse" data-bs-target="#submenu-novedades-no-persistentes" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
                             <i class="ti ti-calendar-event text-azure"></i>
@@ -1806,12 +1806,12 @@
                         </div>
                         <i class="ti ti-chevron-down submenu-caret text-muted" style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse show payroll-submenu" id="submenu-novedades-no-persistentes">
-                        <a href="#pane-nov-nopers-emp" class="payroll-nav-subitem" id="side-nov-nopers-emp" data-bs-toggle="tab" data-bs-target="#pane-nov-nopers-emp" role="tab">
+                      <div class="collapse payroll-submenu" id="submenu-novedades-no-persistentes">
+                        <a href="#pane-nov-nopers-emp" class="payroll-nav-subitem" id="side-nov-nopers-emp" data-bs-target="#pane-nov-nopers-emp">
                           <i class="ti ti-user-edit"></i>
                           <span class="flex-fill">Conceptos por empleado</span>
                         </a>
-                        <a href="#pane-nov-nopers-con" class="payroll-nav-subitem" id="side-nov-nopers-con" data-bs-toggle="tab" data-bs-target="#pane-nov-nopers-con" role="tab">
+                        <a href="#pane-nov-nopers-con" class="payroll-nav-subitem" id="side-nov-nopers-con" data-bs-target="#pane-nov-nopers-con">
                           <i class="ti ti-list-numbers"></i>
                           <span class="flex-fill">Empleados por concepto</span>
                         </a>
@@ -1819,7 +1819,7 @@
                     </div>
 
                     <!-- 5. LIQUIDACIÓN (NUEVA INTERFAZ) -->
-                    <a href="#pane-payroll-settlement" class="payroll-nav-item" id="side-payroll-settlement" data-bs-toggle="tab" data-bs-target="#pane-payroll-settlement" role="tab">
+                    <a href="#pane-payroll-settlement" class="payroll-nav-item" id="side-payroll-settlement" data-bs-target="#pane-payroll-settlement">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-calculator text-primary"></i>
                       </div>
@@ -1830,7 +1830,7 @@
                     </a>
 
                     <!-- 6. RECIBOS DE SUELDO -->
-                    <a href="#pane-payroll-slips" class="payroll-nav-item" id="side-payroll-slips" data-bs-toggle="tab" data-bs-target="#pane-payroll-slips" role="tab">
+                    <a href="#pane-payroll-slips" class="payroll-nav-item" id="side-payroll-slips" data-bs-target="#pane-payroll-slips">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-receipt-2 text-success"></i>
                       </div>
@@ -1842,7 +1842,7 @@
                     </a>
 
                     <!-- 7. PERÍODOS Y LIQUIDACIONES -->
-                    <a href="#pane-payroll-periods" class="payroll-nav-item active" id="side-payroll-periods" data-bs-toggle="tab" data-bs-target="#pane-payroll-periods" role="tab">
+                    <a href="#pane-payroll-periods" class="payroll-nav-item active" id="side-payroll-periods" data-bs-target="#pane-payroll-periods">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-calendar-time text-secondary"></i>
                       </div>
@@ -1854,13 +1854,24 @@
                     </a>
 
                     <!-- 8. LIBRO DIGITAL ARCA -->
-                    <a href="#pane-payroll-lsd" class="payroll-nav-item" id="side-payroll-lsd" data-bs-toggle="tab" data-bs-target="#pane-payroll-lsd" role="tab">
+                    <a href="#pane-payroll-lsd" class="payroll-nav-item" id="side-payroll-lsd" data-bs-target="#pane-payroll-lsd">
                       <div class="payroll-nav-icon">
                         <i class="ti ti-file-certificate text-warning"></i>
                       </div>
                       <div class="flex-fill">
                         <div>Libro Digital (ARCA)</div>
                         <small class="text-muted d-block" style="font-size: 0.7rem;">Archivos 195 y 999 chars F.931</small>
+                      </div>
+                    </a>
+
+                    <!-- 9. IMPUESTO A LAS GANANCIAS 4TA CATEGORÍA -->
+                    <a href="#pane-payroll-income-tax" class="payroll-nav-item" id="side-payroll-income-tax" data-bs-target="#pane-payroll-income-tax">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-receipt-tax text-danger"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div class="fw-bold">Impuesto a las Ganancias</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">4ta Categoría, SiRADIG y F.1359</small>
                       </div>
                     </a>
                   </div>
@@ -2617,9 +2628,9 @@
                             </div>
                           </div>
 
-                          <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                          <div class="table-responsive flex-fill" id="settlement-batch-table-container" style="max-height: calc(100vh - 430px); min-height: 180px; overflow-y: auto;">
                             <table class="table table-vcenter card-table table-hover table-striped mb-0">
-                              <thead class="sticky-top">
+                              <thead class="sticky-top bg-light">
                                 <tr>
                                   <th style="width: 40px;" class="text-center">
                                     <input type="checkbox" class="form-check-input" id="settlement-batch-master-check" />
@@ -2642,11 +2653,11 @@
                             </table>
                           </div>
 
-                          <div class="d-flex justify-content-between align-items-center mt-3 pt-2 border-top">
+                          <div class="d-flex justify-content-between align-items-center mt-2 pt-2 pb-1 border-top bg-white position-sticky bottom-0 z-index-10 shadow-xs px-1" id="settlement-batch-sticky-footer">
                             <div>
                               <span class="fw-bold" id="settlement-batch-selected-count">0</span> colaboradores seleccionados para liquidar
                             </div>
-                            <button type="button" class="btn btn-payroll" id="btn-settlement-calc-batch" disabled>
+                            <button type="button" class="btn btn-payroll shadow-sm" id="btn-settlement-calc-batch" disabled>
                               <i class="ti ti-calculator me-1"></i> Liquidar Selección
                             </button>
                           </div>
@@ -3323,6 +3334,450 @@
 
                       </div>
                     </form>
+                  </div>
+
+                  <!-- PANE 9: IMPUESTO A LAS GANANCIAS CUARTA CATEGORÍA -->
+                  <div class="tab-pane fade" id="pane-payroll-income-tax" role="tabpanel">
+                    <div class="card shadow-xs mb-2 card-payroll-accent flex-shrink-0">
+                      <div class="card-body py-2 px-3">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="avatar avatar-sm bg-danger-lt text-danger"><i class="ti ti-receipt-tax fs-2"></i></span>
+                            <div>
+                              <h3 class="card-title mb-0" style="font-size: 1rem;">Impuesto a las Ganancias (4ta Categoría)</h3>
+                              <div class="text-muted small" style="font-size: 0.73rem;">Régimen de Retención Ley 27.743 y RG AFIP/ARCA 4003/2017</div>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center gap-2">
+                            <label class="form-label small fw-bold mb-0 text-muted">Período Fiscal:</label>
+                            <select id="it-global-year-select" class="form-select form-select-sm font-monospace py-0 px-2" style="width: 100px; height: 30px;">
+                              <option value="2026" selected>2026</option>
+                              <option value="2025">2025</option>
+                              <option value="2024">2024</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Subpestañas de Navegación del Módulo de Ganancias -->
+                    <div class="card shadow-xs flex-grow-1 d-flex flex-column overflow-hidden mb-0" style="min-height: 0;">
+                      <div class="card-header border-bottom p-0 flex-shrink-0">
+                        <ul class="nav nav-tabs card-header-tabs m-0 border-0" id="income-tax-subtabs" role="tablist">
+                          <li class="nav-item">
+                            <button class="nav-link active py-2 px-3 fw-bold" id="tab-it-monthly" data-bs-toggle="tab" data-bs-target="#it-pane-monthly" type="button" role="tab">
+                              <i class="ti ti-calculator me-1 text-primary"></i> Liquidación Mensual
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-profile" data-bs-toggle="tab" data-bs-target="#it-pane-profile" type="button" role="tab">
+                              <i class="ti ti-user-scan me-1 text-teal"></i> Legajo Fiscal 360°
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-siradig" data-bs-toggle="tab" data-bs-target="#it-pane-siradig" type="button" role="tab">
+                              <i class="ti ti-file-upload me-1 text-azure"></i> SiRADIG (F. 572)
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-tables" data-bs-toggle="tab" data-bs-target="#it-pane-tables" type="button" role="tab">
+                              <i class="ti ti-table me-1 text-indigo"></i> Tablas Impositivas
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-annual" data-bs-toggle="tab" data-bs-target="#it-pane-annual" type="button" role="tab">
+                              <i class="ti ti-file-certificate me-1 text-warning"></i> Anual & F. 1359
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="card-body p-2 d-flex flex-column flex-grow-1 overflow-hidden" style="min-height: 0;">
+                        <div class="tab-content flex-grow-1 d-flex flex-column overflow-hidden" id="income-tax-subtab-content" style="min-height: 0; height: 100%;">
+                          <!-- SUB-PANE 1: LIQUIDACIÓN MENSUAL -->
+                          <div class="tab-pane fade show active h-100 flex-column overflow-hidden" id="it-pane-monthly" role="tabpanel" style="min-height: 0;">
+                            <div class="d-flex flex-column h-100 flex-grow-1 overflow-hidden" style="min-height: 0;">
+                              <!-- Barra Unificada de Filtros, Totales y Acciones (Sin aumentar altura vertical) -->
+                              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 p-2 bg-light rounded border mb-2 flex-shrink-0" id="it-monthly-toolbar">
+                                <!-- Controles y Filtros Izquierda -->
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                  <div class="d-flex align-items-center gap-1">
+                                    <label class="form-label small fw-bold mb-0 text-nowrap"><i class="ti ti-calendar me-1"></i>Mes:</label>
+                                    <select id="it-monthly-month-select" class="form-select form-select-sm py-1" style="width: 135px; height: 32px;">
+                                      <option value="1">Enero</option>
+                                      <option value="2">Febrero</option>
+                                      <option value="3">Marzo</option>
+                                      <option value="4">Abril</option>
+                                      <option value="5">Mayo</option>
+                                      <option value="6">Junio (SAC)</option>
+                                      <option value="7">Julio</option>
+                                      <option value="8">Agosto</option>
+                                      <option value="9">Septiembre</option>
+                                      <option value="10">Octubre</option>
+                                      <option value="11">Noviembre</option>
+                                      <option value="12">Diciembre (SAC)</option>
+                                    </select>
+                                  </div>
+                                  <div class="input-icon" style="width: 180px;">
+                                    <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+                                    <input type="text" id="it-monthly-search-employee" class="form-control form-control-sm py-1" placeholder="Buscar colaborador..." style="height: 32px;" />
+                                  </div>
+                                  <div class="form-check form-switch mb-0 d-flex align-items-center gap-1 ps-0">
+                                    <input class="form-check-input ms-0 me-1" type="checkbox" id="it-monthly-filter-withholding-only" role="switch" style="cursor: pointer;" />
+                                    <label class="form-check-label small fw-semibold text-nowrap cursor-pointer" for="it-monthly-filter-withholding-only" style="cursor: pointer;">Solo con saldo</label>
+                                  </div>
+                                </div>
+
+                                <!-- Totales Resumen Integrados -->
+                                <div class="d-flex align-items-center flex-wrap gap-2" id="it-monthly-summary-badges">
+                                  <span class="badge bg-white text-dark border py-1 px-2 text-nowrap shadow-2xs" title="Total colaboradores evaluados en el período">
+                                    <span class="text-muted fw-normal">Eval:</span> <strong id="it-kpi-evaluated">0</strong>
+                                  </span>
+                                  <span class="badge bg-danger-lt border border-danger-subtle py-1 px-2 text-nowrap" title="Total retenciones a practicar">
+                                    <span>Ret:</span> <strong id="it-kpi-withheld-amount" class="font-monospace">$ 0,00</strong>
+                                  </span>
+                                  <span class="badge bg-teal-lt border border-teal-subtle py-1 px-2 text-nowrap" title="Total reintegros a favor del colaborador">
+                                    <span>Reint:</span> <strong id="it-kpi-refund-amount" class="font-monospace">$ 0,00</strong>
+                                  </span>
+                                  <span class="badge bg-primary-lt border border-primary-subtle py-1 px-2 text-nowrap" title="Colaboradores con retención o reintegro">
+                                    <span>Con Saldo:</span> <strong id="it-kpi-withheld-count">0</strong>
+                                  </span>
+                                </div>
+
+                                <!-- Botones Reducidos Derecha -->
+                                <div class="d-flex align-items-center gap-1">
+                                  <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 text-nowrap" id="btn-it-calculate-monthly" title="Calcular Liquidación de Ganancias">
+                                    <i class="ti ti-calculator me-1"></i> Calcular
+                                  </button>
+                                  <button type="button" class="btn btn-primary btn-sm py-1 px-2 text-nowrap" id="btn-it-open-export-modal" disabled title="Exportar a Nómina del Período">
+                                    <i class="ti ti-file-upload me-1"></i> Exportar
+                                  </button>
+                                </div>
+                              </div>
+
+                              <!-- Tabla de Liquidación sin scroll horizontal -->
+                              <div class="income-tax-table-container border rounded flex-grow-1" style="overflow-y: auto; overflow-x: auto; width: 100%; min-height: 0; flex: 1 1 0;">
+                                <table class="table table-sm table-vcenter table-hover table-striped mb-0 income-tax-main-table" id="it-monthly-table" style="width: 100%; table-layout: fixed;">
+                                  <thead class="table-light sticky-top shadow-2xs">
+                                    <tr style="font-size: 0.75rem;">
+                                      <th style="width: 24%;">Colaborador</th>
+                                      <th class="text-end" style="width: 14%;">Remuneraciones</th>
+                                      <th class="text-end" style="width: 14%;">Deduc. Ley / Gral</th>
+                                      <th class="text-end" style="width: 13%;">Deduc. Art. 30</th>
+                                      <th class="text-end" style="width: 13%;">Base Imponible</th>
+                                      <th class="text-end" style="width: 11%;">Impuesto / Prev.</th>
+                                      <th class="text-end" style="width: 11%;">Saldo Mes</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="it-monthly-table-body" style="font-size: 0.80rem;">
+                                    <tr>
+                                      <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="ti ti-calculator fs-2 text-muted mb-2 d-block"></i>
+                                        Seleccione un mes y haga click en "Calcular".
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+
+                              <!-- Paginación del Browse Fijada al Pie -->
+                              <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2 px-1 flex-shrink-0 border-top bg-white mt-1" id="it-monthly-pagination-bar">
+                                <div class="d-flex align-items-center gap-2">
+                                  <small class="text-muted">Mostrar:</small>
+                                  <select id="it-monthly-page-size" class="form-select form-select-sm py-0 px-2" style="width: 70px; height: 28px;">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                  </select>
+                                  <small class="text-muted" id="it-monthly-pagination-info">Mostrando 0 a 0 de 0 colaboradores</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                  <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" id="btn-it-monthly-prev" style="height: 28px;" disabled title="Página anterior">
+                                    <i class="ti ti-chevron-left"></i> Anterior
+                                  </button>
+                                  <span class="badge bg-light text-dark border px-2 py-1 small font-monospace" id="it-monthly-pagination-pages">Pág. 1 / 1</span>
+                                  <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2" id="btn-it-monthly-next" style="height: 28px;" disabled title="Página siguiente">
+                                    Siguiente <i class="ti ti-chevron-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 2: LEGAJO FISCAL 360° -->
+                          <div class="tab-pane fade h-100 flex-column overflow-hidden" id="it-pane-profile" role="tabpanel" style="min-height: 0;">
+                            <!-- Encabezado Unificado: Selector de Colaborador y Datos del Empleado Lado a Lado -->
+                            <div class="card shadow-xs mb-2 border bg-light-subtle flex-shrink-0">
+                              <div class="card-body p-2 p-md-3">
+                                <div class="row g-2 align-items-center">
+                                  <div class="col-12 col-md-5 col-lg-4">
+                                    <label class="form-label small fw-bold mb-1 d-flex align-items-center gap-1 text-primary">
+                                      <i class="ti ti-user-search"></i> Seleccionar Colaborador:
+                                    </label>
+                                    <select id="it-profile-employee-select" class="form-select form-select-sm">
+                                      <option value="">Cargando colaboradores...</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-12 col-md-7 col-lg-8">
+                                    <div class="d-flex align-items-center justify-content-between p-2 rounded bg-white border flex-wrap gap-2 shadow-2xs" id="it-profile-header-summary">
+                                      <div class="d-flex align-items-center gap-2 text-truncate" style="min-width: 0;">
+                                        <span class="avatar avatar-sm bg-teal-lt text-teal rounded-circle"><i class="ti ti-user-check fs-2"></i></span>
+                                        <div class="text-truncate" style="min-width: 0;">
+                                          <h4 class="card-title mb-0 text-truncate fw-bold text-dark" id="it-profile-emp-name" style="font-size: 0.95rem;">Seleccione un colaborador</h4>
+                                          <div class="text-muted small text-truncate" id="it-profile-emp-meta" style="font-size: 0.75rem;">CUIL: - | Legajo: - | Puesto: -</div>
+                                        </div>
+                                      </div>
+                                      <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2" id="btn-it-profile-open-detail" disabled title="Ver Detalle Completo de Deducciones, Cargas y Pluriempleo">
+                                          <i class="ti ti-file-text me-1"></i> Ver Detalle
+                                        </button>
+                                        <span class="badge bg-primary-lt fw-bold px-2 py-1" id="it-profile-fiscal-year-badge">Período Fiscal 2026</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Contenedor dinámico del legajo fiscal -->
+                            <div id="it-profile-details-container" class="flex-grow-1 overflow-auto pe-1" style="min-height: 0; flex: 1 1 0;">
+                              <div class="text-center py-4 text-muted">
+                                <i class="ti ti-user-scan fs-1 text-muted mb-2 d-block"></i>
+                                Seleccione un colaborador para visualizar su legajo impositivo 360°.
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 3: SIRADIG (F. 572 WEB) -->
+                          <div class="tab-pane fade h-100 flex-column overflow-auto pe-1" id="it-pane-siradig" role="tabpanel" style="min-height: 0;">
+                            <div class="card shadow-xs mb-3 border border-azure-lt bg-azure-lt-subtle">
+                              <div class="card-body p-3">
+                                <h4 class="card-title d-flex align-items-center gap-2 mb-2 text-azure">
+                                  <i class="ti ti-file-upload fs-2"></i> Importar Formulario 572 Web (SiRADIG Empleador)
+                                </h4>
+                                <p class="text-muted small mb-3">
+                                  Cargue el archivo XML descargado de la página de ARCA (ex-AFIP) con las declaraciones juradas de cargas de familia, deducciones generales, otros empleos y percepciones presentadas por los trabajadores.
+                                </p>
+                                <div class="row g-2 align-items-center">
+                                  <div class="col-md-8">
+                                    <input type="file" id="siradig-file-input" class="form-control" accept=".xml,text/xml" />
+                                  </div>
+                                  <div class="col-md-4">
+                                    <button type="button" class="btn btn-azure w-100" id="btn-siradig-process">
+                                      <i class="ti ti-checkup-list me-1"></i> Procesar F. 572 Web
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div id="siradig-result-box" class="d-none"></div>
+
+                            <!-- Historial de Importaciones -->
+                            <div class="card shadow-xs">
+                              <div class="card-header py-2">
+                                <h5 class="card-title mb-0">Historial de Importaciones SiRADIG</h5>
+                              </div>
+                              <div class="table-responsive">
+                                <table class="table table-sm table-vcenter mb-0">
+                                  <thead class="table-light">
+                                    <tr>
+                                      <th>Archivo</th>
+                                      <th>Período Fiscal</th>
+                                      <th>Fecha Presentación</th>
+                                      <th>Colaboradores</th>
+                                      <th>Estado</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="siradig-history-table-body">
+                                    <tr><td colspan="5" class="text-center py-3 text-muted">Cargando historial...</td></tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 4: TABLAS IMPOSITIVAS OFICIALES -->
+                          <div class="tab-pane fade h-100 flex-column overflow-hidden" id="it-pane-tables" role="tabpanel" style="min-height: 0;">
+                            <div class="d-flex flex-column h-100 flex-grow-1 overflow-hidden" style="min-height: 0;">
+                              <div class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2 flex-shrink-0">
+                                <div>
+                                  <h4 class="mb-0" style="font-size: 0.95rem;">Tablas Oficiales del Impuesto a las Ganancias</h4>
+                                  <small class="text-muted" style="font-size: 0.72rem;">Art. 30 (Deducciones Personales), Art. 94 (Escalas Progresivas) y Límites</small>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2" id="btn-it-open-adjust-ipc-modal" data-bs-toggle="modal" data-bs-target="#modal-income-tax-adjust-ipc">
+                                  <i class="ti ti-adjustments-alt me-1"></i> Proyectar / Ajustar por IPC
+                                </button>
+                              </div>
+
+                              <!-- SUB-PESTAÑAS TIPO PÍLDORAS PARA TABLAS IMPOSITIVAS -->
+                              <ul class="nav nav-pills gap-2 mb-2 bg-light p-1 rounded border flex-shrink-0" id="it-tax-tables-pills" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active py-2 px-3 fw-bold small" id="pill-tax-art30-tab" data-bs-toggle="pill" data-bs-target="#pill-tax-art30" type="button" role="tab" aria-selected="true">
+                                    <i class="ti ti-user-check me-1 text-primary"></i> Art. 30: Deducciones Personales
+                                  </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link py-2 px-3 fw-bold small" id="pill-tax-art94-tab" data-bs-toggle="pill" data-bs-target="#pill-tax-art94" type="button" role="tab" aria-selected="false">
+                                    <i class="ti ti-chart-arrows me-1 text-teal"></i> Art. 94: Escalas Progresivas
+                                  </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link py-2 px-3 fw-bold small" id="pill-tax-limits-tab" data-bs-toggle="pill" data-bs-target="#pill-tax-limits" type="button" role="tab" aria-selected="false">
+                                    <i class="ti ti-receipt me-1 text-indigo"></i> Topes y Límites (RG 4003)
+                                  </button>
+                                </li>
+                              </ul>
+
+                              <div class="tab-content flex-grow-1 overflow-hidden d-flex flex-column" id="it-tax-tables-pills-content" style="min-height: 0;">
+                                <!-- PÍLDORA 1: ART. 30 DEDUCCIONES PERSONALES -->
+                                <div class="tab-pane fade show active h-100 flex-column" id="pill-tax-art30" role="tabpanel" style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0" style="min-height: 0;">
+                                    <div class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-shrink-0">
+                                      <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                        <i class="ti ti-user-check me-1 text-primary"></i> Art. 30: Deducciones Personales Acumuladas (Meses 1 a 12)
+                                      </h5>
+                                      <span class="badge bg-primary-lt">Valores Oficiales Ley 27.743</span>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th>Mes Acumulado</th>
+                                            <th class="text-end">Ganancia No Imp. (MNI)</th>
+                                            <th class="text-end">Deducción Especial</th>
+                                            <th class="text-end">Cónyuge</th>
+                                            <th class="text-end">Hijo</th>
+                                            <th class="text-end">Hijo Incapacitado</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-art30-tbody" style="font-size: 0.80rem;">
+                                          <tr><td colspan="6" class="text-center py-3 text-muted">Cargando tabla Art. 30...</td></tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- PÍLDORA 2: ART. 94 ESCALA PROGRESIVA DE ALÍCUOTAS -->
+                                <div class="tab-pane fade h-100 flex-column" id="pill-tax-art94" role="tabpanel" style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0" style="min-height: 0;">
+                                    <div class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-wrap gap-2 flex-shrink-0">
+                                      <div class="d-flex align-items-center gap-2">
+                                        <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                          <i class="ti ti-chart-arrows me-1 text-teal"></i> Art. 94: Escala Progresiva de Alícuotas (Escalones 1 al 9)
+                                        </h5>
+                                        <span class="badge bg-teal-lt">Alícuotas 5% a 35%</span>
+                                      </div>
+                                      <div class="d-flex align-items-center gap-2">
+                                        <label class="form-label small fw-bold mb-0 text-nowrap" for="it-tables-art94-month-select">
+                                          <i class="ti ti-calendar me-1"></i>Mes Acumulado:
+                                        </label>
+                                        <select id="it-tables-art94-month-select" class="form-select form-select-sm py-0 px-2" style="width: 145px; height: 30px;">
+                                          <option value="1">Mes 1 (Enero)</option>
+                                          <option value="2">Mes 2 (Febrero)</option>
+                                          <option value="3">Mes 3 (Marzo)</option>
+                                          <option value="4">Mes 4 (Abril)</option>
+                                          <option value="5">Mes 5 (Mayo)</option>
+                                          <option value="6">Mes 6 (Junio)</option>
+                                          <option value="7">Mes 7 (Julio)</option>
+                                          <option value="8">Mes 8 (Agosto)</option>
+                                          <option value="9">Mes 9 (Septiembre)</option>
+                                          <option value="10">Mes 10 (Octubre)</option>
+                                          <option value="11">Mes 11 (Noviembre)</option>
+                                          <option value="12" selected>Mes 12 (Anual / Dic)</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th class="text-center" style="width: 80px;">Escalón</th>
+                                            <th class="text-end">Desde ($)</th>
+                                            <th class="text-end">Hasta ($)</th>
+                                            <th class="text-end">Fijo ($)</th>
+                                            <th class="text-end" style="width: 120px;">Alícuota (%)</th>
+                                            <th>Fórmula / Tramo</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-art94-tbody" style="font-size: 0.80rem;">
+                                          <tr><td colspan="6" class="text-center py-3 text-muted">Cargando escala Art. 94...</td></tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- PÍLDORA 3: TOPES Y LÍMITES DEDUCCIONES GENERALES -->
+                                <div class="tab-pane fade h-100 flex-column" id="pill-tax-limits" role="tabpanel" style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0" style="min-height: 0;">
+                                    <div class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-shrink-0">
+                                      <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                        <i class="ti ti-receipt me-1 text-indigo"></i> Límites y Topes de Deducciones Generales (RG 4003 y modif.)
+                                      </h5>
+                                      <span class="badge bg-indigo-lt">Topes Legales y Prorrateos</span>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th>Concepto Deducible</th>
+                                            <th>Código</th>
+                                            <th>Tipo de Tope</th>
+                                            <th class="text-end">Límite Aplicable</th>
+                                            <th>Fundamento / Detalle</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-limits-tbody" style="font-size: 0.80rem;">
+                                          <tr><td colspan="5" class="text-center py-3 text-muted">Cargando límites...</td></tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 5: LIQUIDACIÓN ANUAL Y F. 1359 -->
+                          <div class="tab-pane fade h-100 flex-column overflow-auto pe-1" id="it-pane-annual" role="tabpanel" style="min-height: 0;">
+                            <div class="card shadow-xs mb-3 border border-warning-lt bg-warning-lt-subtle">
+                              <div class="card-body p-3">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                  <div>
+                                    <h4 class="card-title d-flex align-items-center gap-2 mb-1 text-warning">
+                                      <i class="ti ti-file-certificate fs-2"></i> Declaración Jurada Anual F. 1359 (ARCA)
+                                    </h4>
+                                    <p class="text-muted small mb-0">
+                                      Generación de la liquidación anual de cierre (Mes 12) y exportación del archivo plano oficial de presentación ante ARCA conforme manual F.1359 V2.0.
+                                    </p>
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-warning" id="btn-it-calc-annual">
+                                      <i class="ti ti-calculator me-1"></i> Calcular Liquidación Anual
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning" id="btn-it-download-f1359">
+                                      <i class="ti ti-download me-1"></i> Descargar F.1359 (.txt)
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div id="it-f1359-preview-box" class="card shadow-xs d-none">
+                              <div class="card-header py-2 d-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0">Vista Previa Registros Planos ARCA F. 1359</h5>
+                              </div>
+                              <div class="card-body p-2 bg-dark rounded-bottom">
+                                <pre class="font-monospace text-success small mb-0" style="max-height: 320px; overflow-y: auto; white-space: pre;"></pre>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -5519,6 +5974,91 @@
                 Aplica a familiares a cargo fuera del grupo familiar primario (ej. padres, hermanos).
               </div>
             </div>
+
+            <!-- DEDUCCIONES IMPUESTO A LAS GANANCIAS (ART. 30 LEY 27.743) -->
+            <div class="mt-3 p-3 bg-indigo-lt rounded border border-indigo-subtle" id="relative-income-tax-container">
+              <label class="form-check form-switch mb-1">
+                <input class="form-check-input" type="checkbox" id="relative-input-applies-income-tax">
+                <span class="form-check-label fw-bold text-dark">
+                  <i class="ti ti-receipt-tax me-1 text-indigo"></i> Carga de Familia para Ganancias 4ta Cat. (Art. 30 Inc. b)
+                </span>
+              </label>
+              <div class="form-hint text-muted small mb-2">
+                Permite deducir cónyuge, conviviente o hijos menores / con discapacidad según Ley 27.743.
+              </div>
+
+              <div id="relative-income-tax-fields" class="d-none pt-2 border-top border-indigo-subtle">
+                <div class="row g-2 mb-2">
+                  <div class="col-md-6">
+                    <label class="form-label required fw-bold small mb-1">Tipo de Deducción</label>
+                    <select class="form-select form-select-sm" id="relative-input-tax-type">
+                      <option value="SPOUSE">Cónyuge / Conviviente</option>
+                      <option value="CHILD" selected>Hijo / Hijastro (&lt; 18 años)</option>
+                      <option value="DISABLED_CHILD">Hijo Incapacitado para el Trabajo</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label required fw-bold small mb-1">% Deducción Computable</label>
+                    <select class="form-select form-select-sm" id="relative-input-deduction-pct">
+                      <option value="100" selected>100% (Deducción completa por este progenitor)</option>
+                      <option value="50">50% (Compartida entre ambos progenitores)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row g-2 mb-2">
+                  <div class="col-md-6">
+                    <label class="form-check form-switch mb-1 mt-1">
+                      <input class="form-check-input" type="checkbox" id="relative-input-is-disability">
+                      <span class="form-check-label small fw-bold">Incapacidad laboral (Deducción 200%)</span>
+                    </label>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-check form-switch mb-1 mt-1">
+                      <input class="form-check-input" type="checkbox" id="relative-input-has-no-income" checked>
+                      <span class="form-check-label small fw-bold">Sin ingresos propios superiores al MNI</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small mb-1">Mes Inicio de Cómputo</label>
+                    <select class="form-select form-select-sm" id="relative-input-tax-from-month">
+                      <option value="1" selected>Enero (1)</option>
+                      <option value="2">Febrero (2)</option>
+                      <option value="3">Marzo (3)</option>
+                      <option value="4">Abril (4)</option>
+                      <option value="5">Mayo (5)</option>
+                      <option value="6">Junio (6)</option>
+                      <option value="7">Julio (7)</option>
+                      <option value="8">Agosto (8)</option>
+                      <option value="9">Septiembre (9)</option>
+                      <option value="10">Octubre (10)</option>
+                      <option value="11">Noviembre (11)</option>
+                      <option value="12">Diciembre (12)</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small mb-1">Mes Fin de Cómputo</label>
+                    <select class="form-select form-select-sm" id="relative-input-tax-to-month">
+                      <option value="1">Enero (1)</option>
+                      <option value="2">Febrero (2)</option>
+                      <option value="3">Marzo (3)</option>
+                      <option value="4">Abril (4)</option>
+                      <option value="5">Mayo (5)</option>
+                      <option value="6">Junio (6)</option>
+                      <option value="7">Julio (7)</option>
+                      <option value="8">Agosto (8)</option>
+                      <option value="9">Septiembre (9)</option>
+                      <option value="10">Octubre (10)</option>
+                      <option value="11">Noviembre (11)</option>
+                      <option value="12" selected>Diciembre (12)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="modal-footer bg-light">
             <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -5861,21 +6401,21 @@
             <div class="card bg-light border-0 mb-3">
               <div class="card-body p-3">
                 <div class="row g-3 align-items-end">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <label class="form-label required fw-bold">Tipo de Aumento</label>
                     <select class="form-select" id="mass-scale-increase-type" required>
-                      <option value="PERCENTAGE" selected>Porcentaje (%) sobre valor actual</option>
-                      <option value="FIXED_AMOUNT">Suma fija adicional ($)</option>
+                      <option value="PERCENTAGE" selected>Porcentaje (%)</option>
+                      <option value="FIXED_AMOUNT">Suma fija ($)</option>
                     </select>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <label class="form-label required fw-bold" id="mass-scale-increase-value-label">Porcentaje a Aplicar (%)</label>
                     <div class="input-group">
                       <span class="input-group-text" id="mass-scale-increase-symbol">%</span>
                       <input type="number" step="0.01" min="0.01" class="form-control font-monospace fw-bold" id="mass-scale-increase-value" placeholder="Ej. 12.5" required />
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-3">
                     <label class="form-label fw-bold">Redondeo</label>
                     <select class="form-select" id="mass-scale-increase-rounding">
                       <option value="DECIMAL_2" selected>2 Decimales</option>
@@ -5883,8 +6423,8 @@
                       <option value="NONE">Sin Redondeo</option>
                     </select>
                   </div>
-                  <div class="col-md-2">
-                    <button type="button" class="btn btn-outline-teal w-100 fw-bold" id="btn-preview-mass-scale-increase">
+                  <div class="col-md-3">
+                    <button type="button" class="btn btn-outline-teal w-100 fw-bold text-nowrap px-2" id="btn-preview-mass-scale-increase">
                       <i class="ti ti-eye me-1"></i> Previsualizar
                     </button>
                   </div>
@@ -6178,6 +6718,14 @@
               <div class="col-md-6">
                 <label class="form-label fw-bold">Banco del Depósito</label>
                 <input type="text" class="form-control" id="period-input-deposit-bank" placeholder="Ej. Banco Santander / Banco Nación" />
+              </div>
+            </div>
+
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Fecha de Rúbrica <span class="text-muted fw-normal">(Opcional)</span></label>
+                <input type="date" class="form-control" id="period-input-rubric-date" />
+                <div class="form-hint">Autoridad laboral provincial. Si no posee o no corresponde, dejar vacío (se exportan espacios en blanco a ARCA).</div>
               </div>
             </div>
           </div>
@@ -6668,11 +7216,20 @@
             <div class="card bg-muted-lt border-0">
               <div class="card-body p-3">
                 <div class="d-flex align-items-center justify-content-between mb-2">
-                  <div class="fw-bold small text-muted text-uppercase">
-                    <i class="ti ti-building-bank me-1 text-primary"></i> Bases Remunerativas Imponibles (ARCA F.931 / LSD)
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="fw-bold small text-muted text-uppercase">
+                      <i class="ti ti-building-bank me-1 text-primary"></i> Bases Remunerativas Imponibles (ARCA F.931 / LSD)
+                    </div>
+                    <span id="arca-subsystems-badge" class="badge bg-purple-lt small font-monospace d-none" style="font-size: 0.68rem;">Sugerencia ARCA activa</span>
                   </div>
-                  <span class="badge bg-blue-lt small">Registro 01 - Pos 168 a 186</span>
+                  <div class="d-flex align-items-center gap-2">
+                    <button type="button" class="btn btn-sm btn-link p-0 text-muted small text-decoration-none" id="btn-reset-arca-subsystems" title="Restablecer casillas según código ARCA seleccionado">
+                      <i class="ti ti-refresh me-1"></i>Restablecer sugeridos ARCA
+                    </button>
+                    <span class="badge bg-blue-lt small">Registro 01 - Pos 168 a 186</span>
+                  </div>
                 </div>
+                <div id="arca-subsystems-hint" class="text-muted small mb-2 d-none" style="font-size: 0.72rem;"></div>
                 <div class="row g-2">
                   <div class="col-12 col-md-6">
                     <label class="form-check form-check-inline mb-0">
@@ -7802,6 +8359,7 @@
                 <tr>
                   <th style="width: 80px;">Legajo</th>
                   <th>Colaborador</th>
+                  <th>Sector</th>
                   <th class="text-end">Motivo</th>
                 </tr>
               </thead>
@@ -7988,6 +8546,327 @@
     </div>
   </div>
 
+  <!-- MODAL: CONFIRMACIÓN DE LIQUIDACIÓN GENERAL -->
+  <div class="modal modal-blur fade" id="modal-confirm-general-settlement" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+      <div class="modal-content shadow-lg">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-status bg-primary"></div>
+        <div class="modal-body text-center py-4">
+          <div class="avatar avatar-lg bg-primary-lt text-primary rounded-circle mb-3 mx-auto">
+            <i class="ti ti-calculator fs-1"></i>
+          </div>
+          <h3 class="fw-bold mb-1">¿Iniciar Liquidación General?</h3>
+          <div class="text-muted small mb-2" id="modal-confirm-settlement-period-name">
+            Se procesará la nómina completa de colaboradores activos.
+          </div>
+          <div class="alert alert-info py-2 small mt-3 text-start mb-0">
+            <i class="ti ti-info-circle me-1"></i> Este proceso calculará o actualizará los recibos de todos los empleados activos para este período.
+          </div>
+        </div>
+        <div class="modal-footer bg-light">
+          <div class="w-100">
+            <div class="row g-2">
+              <div class="col-6">
+                <button type="button" class="btn btn-link link-secondary w-100" data-bs-dismiss="modal">
+                  Cancelar
+                </button>
+              </div>
+              <div class="col-6">
+                <button type="button" class="btn btn-payroll w-100" id="btn-confirm-general-settlement-action">
+                  <i class="ti ti-check me-1"></i> Iniciar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: EXPORTAR LIQUIDACIÓN DE GANANCIAS A NÓMINA -->
+  <div class="modal modal-blur fade" id="modal-income-tax-export-payroll" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content shadow-lg">
+        <form id="form-income-tax-export-payroll">
+          <div class="modal-header bg-primary-lt">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar avatar-sm bg-primary text-white rounded">
+                <i class="ti ti-file-upload fs-2"></i>
+              </div>
+              <div>
+                <h5 class="modal-title fw-bold">Exportar a Nómina del Período</h5>
+                <div class="text-muted small">Generar novedades de retención / devolución en recibos</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div id="it-export-modal-summary" class="mb-3">
+              <!-- Resumen dinámico -->
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required fw-bold">Período de Sueldos Destino</label>
+              <select class="form-select" id="it-export-period-select" required>
+                <option value="">Cargando períodos...</option>
+              </select>
+              <div class="form-hint text-muted small">
+                Se generarán Novedades de Período para cada colaborador evaluado con saldo en este período.
+              </div>
+            </div>
+
+            <div class="card mb-3 bg-light border">
+              <div class="card-body p-3">
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label required fw-bold mb-0">
+                      <i class="ti ti-arrow-down-right text-danger me-1"></i> Concepto para Retención (Percepción)
+                    </label>
+                    <span id="it-export-withholding-arca-status" class="badge bg-secondary-lt">Validando ARCA...</span>
+                  </div>
+                  <select class="form-select" id="it-export-withholding-concept" required>
+                    <!-- Conceptos -->
+                  </select>
+                  <div class="form-hint text-muted small">
+                    Debe coincidir con la codificación oficial de ARCA Libro de Sueldos Digital (Código: <strong>820000</strong>).
+                  </div>
+                </div>
+
+                <div>
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label required fw-bold mb-0">
+                      <i class="ti ti-arrow-up-right text-teal me-1"></i> Concepto para Devolución / Reintegro
+                    </label>
+                    <span id="it-export-refund-arca-status" class="badge bg-secondary-lt">Validando ARCA...</span>
+                  </div>
+                  <select class="form-select" id="it-export-refund-concept" required>
+                    <!-- Conceptos -->
+                  </select>
+                  <div class="form-hint text-muted small">
+                    Debe coincidir con la codificación oficial de ARCA Libro de Sueldos Digital (Código: <strong>520002</strong>).
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-info py-2 small mb-0">
+              <i class="ti ti-info-circle me-1"></i>
+              Si el período de sueldos ya posee liquidaciones calculadas, el sistema solicitará recalcular los recibos para reflejar los nuevos saldos.
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btn-submit-export-payroll" class="btn btn-primary ms-auto">
+              <i class="ti ti-check me-1"></i> Confirmar e Impactar en Novedades
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE ANALÍTICO DE LIQUIDACIÓN DE GANANCIAS POR EMPLEADO -->
+  <div class="modal modal-blur fade" id="modal-income-tax-row-detail" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content shadow-lg">
+        <div class="modal-header bg-primary-lt d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar avatar-sm bg-primary text-white rounded">
+              <i class="ti ti-calculator fs-2"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold" id="it-modal-detail-title">Desglose Analítico de Ganancias (4ta Cat.)</h5>
+              <div class="text-muted small" id="it-modal-detail-subtitle">Detalle completo de liquidación mensual acumulativa</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-danger btn-sm py-1 px-2" id="btn-it-detail-print-pdf" title="Imprimir Desglose en PDF (Hoja A4)">
+              <i class="ti ti-file-type-pdf me-1"></i> Imprimir PDF (A4)
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-3" id="it-modal-detail-body">
+          <!-- Contenido dinámico del desglose -->
+        </div>
+        <div class="modal-footer bg-light py-2 d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-danger btn-sm" id="btn-it-detail-print-pdf-footer">
+            <i class="ti ti-printer me-1"></i> Generar PDF Imprimible (A4)
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE ESTRUCTURADO DEL LEGAJO FISCAL 360° -->
+  <div class="modal modal-blur fade" id="modal-income-tax-profile-detail" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-content shadow-lg">
+        <div class="modal-header bg-teal-lt d-flex align-items-center justify-content-between">
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar avatar-sm bg-teal text-white rounded">
+              <i class="ti ti-id-badge-2 fs-2"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold" id="it-modal-profile-title">Legajo Fiscal 360° — Detalle Analítico de Conceptos</h5>
+              <div class="text-muted small" id="it-modal-profile-subtitle">Declaración Jurada SiRADIG F. 572 Web, deducciones, cargas y pluriempleo</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-danger btn-sm py-1 px-2" id="btn-it-profile-print-pdf" title="Imprimir Legajo Fiscal en PDF (Hoja A4)">
+              <i class="ti ti-file-type-pdf me-1"></i> Imprimir PDF (A4)
+            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body p-3" id="it-modal-profile-body" style="max-height: 75vh; overflow-y: auto;">
+          <!-- Contenido estructurado dinámico -->
+        </div>
+        <div class="modal-footer bg-light py-2 d-flex justify-content-between">
+          <button type="button" class="btn btn-outline-danger btn-sm" id="btn-it-profile-print-pdf-footer">
+            <i class="ti ti-printer me-1"></i> Generar Informe PDF (A4)
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ACTUALIZAR TABLAS IMPOSITIVAS POR IPC -->
+  <div class="modal modal-blur fade" id="modal-income-tax-adjust-ipc" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content shadow-lg">
+        <form id="form-income-tax-adjust-ipc">
+          <div class="modal-header bg-indigo-lt">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar avatar-sm bg-indigo text-white rounded">
+                <i class="ti ti-percentage fs-2"></i>
+              </div>
+              <div>
+                <h5 class="modal-title fw-bold">Actualización de Tablas por IPC (Ley 27.743)</h5>
+                <div class="text-muted small">Clonar y ajustar deducciones y escalas con variación IPC</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="alert alert-indigo py-2 small mb-3">
+              <i class="ti ti-info-circle me-1"></i>
+              De acuerdo con la Ley 27.743, las deducciones del Art. 30 y los tramos del Art. 94 se ajustan semestralmente por el Índice de Precios al Consumidor (IPC).
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col-md-6">
+                <label class="form-label required fw-bold">Año Base (Origen)</label>
+                <input type="number" class="form-control" id="it-ipc-source-year" value="2024" min="2020" max="2035" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required fw-bold">Año Destino</label>
+                <input type="number" class="form-control" id="it-ipc-target-year" value="2025" min="2020" max="2035" required />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label required fw-bold">% Variación IPC a Aplicar</label>
+              <div class="input-group">
+                <input type="number" step="0.01" class="form-control" id="it-ipc-percentage" value="15.00" required />
+                <span class="input-group-text">%</span>
+              </div>
+              <div class="form-hint text-muted small">
+                Ejemplo: un 15% incrementará todos los montos de deducciones y escalas en 1.15x.
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" id="btn-submit-adjust-ipc" class="btn btn-indigo ms-auto">
+              <i class="ti ti-refresh me-1"></i> Proyectar y Actualizar Tablas
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETECCIÓN DE CARGAS DE FAMILIA NO REGISTRADAS EN SiRADIG F. 572 -->
+  <div class="modal modal-blur fade" id="modal-siradig-unregistered-relatives" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content shadow-lg border-0">
+        <div class="modal-header bg-indigo text-white">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-white text-indigo rounded">
+              <i class="ti ti-users"></i>
+            </span>
+            <div>
+              <h4 class="modal-title fw-bold text-white mb-0">Cargas de Familia No Registradas en Personal</h4>
+              <small class="text-white-50">Detección de parientes en archivo F. 572 Web (SiRADIG)</small>
+            </div>
+          </div>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-3 p-md-4">
+          <div class="alert alert-warning d-flex align-items-start gap-2 mb-3">
+            <i class="ti ti-alert-triangle fs-2 text-warning flex-shrink-0"></i>
+            <div>
+              <div class="fw-bold">Se han detectado personas informadas como cargas de familia que no figuran en la ficha de familiares del módulo de Personal.</div>
+              <div class="small mt-1 text-muted">
+                Indique si desea darlas de alta formalmente en la nómina de familiares del colaborador o si únicamente deben computarse para la deducción del Impuesto a las Ganancias del ejercicio actual.
+              </div>
+            </div>
+          </div>
+
+          <div class="table-responsive border rounded mb-3" style="max-height: 260px; overflow-y: auto;">
+            <table class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+              <thead class="table-light sticky-top">
+                <tr style="font-size: 0.75rem;">
+                  <th>Colaborador</th>
+                  <th>Familiar Declarado</th>
+                  <th>DNI / Doc</th>
+                  <th>Vínculo / Tipo</th>
+                  <th class="text-center">% Deducción</th>
+                  <th class="text-center">Período</th>
+                </tr>
+              </thead>
+              <tbody id="siradig-unregistered-relatives-tbody" style="font-size: 0.80rem;">
+                <!-- Filas renderizadas dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+          <div class="p-3 bg-light rounded border text-muted small">
+            <i class="ti ti-info-circle me-1 text-primary"></i>
+            <strong>¿Qué sucede según su elección?</strong>
+            <ul class="mb-0 ps-3 mt-1">
+              <li><strong>Sí, incorporar a Familiares:</strong> Crea el registro formal en el legajo de RRHH del colaborador con vínculo, DNI y vigencia, quedando habilitado tanto para Ganancias como para Obra Social y Asignaciones.</li>
+              <li><strong>No, computar solo en Ganancias:</strong> Aplica la deducción del Art. 30 en el cálculo impositivo de este período fiscal, pero <u>no</u> crea el registro en la ficha de familiares de Personal.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light d-flex justify-content-between flex-wrap gap-2">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="ti ti-x me-1"></i> Cancelar Importación
+          </button>
+          <div class="d-flex align-items-center gap-2">
+            <button type="button" class="btn btn-outline-primary" id="btn-siradig-relatives-only-tax">
+              <i class="ti ti-calculator me-1"></i> No, computar solo en Ganancias
+            </button>
+            <button type="button" class="btn btn-primary" id="btn-siradig-relatives-add-all">
+              <i class="ti ti-user-plus me-1"></i> Sí, incorporar a Familiares de Personal
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL REUTILIZABLE: CONFIRMACIÓN DE ELIMINACIÓN -->
   <div class="modal modal-blur fade" id="modal-confirm-delete" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
@@ -8024,6 +8903,9 @@
     </div>
   </div>
 
+  <!-- Contenedor Oficial para Impresión de Lote de Recibos A4 -->
+  <div id="batch-payslip-print-container" class="d-none"></div>
+
   <!-- Toast Container -->
   <div id="toast-container" class="toast-container"></div>
 
@@ -8036,6 +8918,6 @@
       window.bootstrap = window.tabler.bootstrap || window.tabler;
     }
   </script>
-  <script type="module" src="/js/app.js?v=personnel-2.3"></script>
+  <script type="module" src="/js/app.js?v=payroll-2.4"></script>
 </body>
 </html>
