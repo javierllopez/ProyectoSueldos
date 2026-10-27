@@ -1604,13 +1604,32 @@ export async function listEmployeeConcepts(tenantPrisma, employeeId) {
     throw error;
   }
 
-  return tenantPrisma.employeeConcept.findMany({
+  const assignments = await tenantPrisma.employeeConcept.findMany({
     where: { employeeId },
     include: {
       concept: true,
     },
     orderBy: { createdAt: 'asc' },
   });
+
+  // Identificar conceptos de embargos judiciales activos vinculados al colaborador
+  const embargoConceptIds = new Set();
+  try {
+    const embargos = await tenantPrisma.employeeEmbargo.findMany({
+      where: { employeeId, status: 'ACTIVE' },
+      include: { concepts: true },
+    });
+    embargos.forEach((emb) => {
+      (emb.concepts || []).forEach((c) => embargoConceptIds.add(c.conceptId));
+    });
+  } catch (err) {
+    // Fallback seguro si la tabla aún no fue consultada
+  }
+
+  return assignments.map((asg) => ({
+    ...asg,
+    isEmbargo: Boolean(asg.concept?.isEmbargo) || embargoConceptIds.has(asg.conceptId),
+  }));
 }
 
 /**
@@ -1692,7 +1711,7 @@ export async function assignEmployeeConcept(tenantPrisma, employeeId, conceptDat
  */
 export async function listConceptAssignedEmployees(tenantPrisma, conceptId) {
   await ensureTenantPersonnelSchema(tenantPrisma);
-  return tenantPrisma.employeeConcept.findMany({
+  const assignments = await tenantPrisma.employeeConcept.findMany({
     where: { conceptId },
     include: {
       employee: {
@@ -1714,6 +1733,28 @@ export async function listConceptAssignedEmployees(tenantPrisma, conceptId) {
       { employee: { lastName: 'asc' } },
     ],
   });
+
+  // Identificar colaboradores que tienen un embargo activo con este concepto
+  const embargoEmpIds = new Set();
+  try {
+    const activeEmbargoConcepts = await tenantPrisma.employeeEmbargoConcept.findMany({
+      where: {
+        conceptId,
+        embargo: { status: 'ACTIVE' },
+      },
+      select: { embargo: { select: { employeeId: true } } },
+    });
+    activeEmbargoConcepts.forEach((item) => {
+      if (item.embargo?.employeeId) embargoEmpIds.add(item.embargo.employeeId);
+    });
+  } catch (err) {
+    // Fallback seguro
+  }
+
+  return assignments.map((asg) => ({
+    ...asg,
+    isEmbargo: Boolean(asg.concept?.isEmbargo) || embargoEmpIds.has(asg.employee?.id || asg.employeeId),
+  }));
 }
 
 /**
@@ -1788,6 +1829,369 @@ export async function assignConceptToEmployees(tenantPrisma, conceptId, data) {
 }
 
 /**
+ * Resumen de convenios colectivos asignados al personal activo para selector.
+ */
+export async function getCctSummary(tenantPrisma) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  const activeEmployees = await tenantPrisma.employee.findMany({
+    where: {
+      status: 'ACTIVE',
+      deletedAt: null,
+    },
+    select: {
+      id: true,
+      jobPositionId: true,
+      jobPosition: {
+        select: {
+          id: true,
+          name: true,
+          cctCode: true,
+          cct: {
+            select: {
+              code: true,
+              name: true,
+              description: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const cctMap = new Map();
+  let sinConvenioCount = 0;
+  let fueraConvenioCount = 0;
+
+  for (const emp of activeEmployees) {
+    const jp = emp.jobPosition;
+    if (!jp || !jp.cctCode) {
+      sinConvenioCount++;
+      continue;
+    }
+
+    const cctCodeNorm = String(jp.cctCode).trim().toUpperCase();
+    const jpNameNorm = String(jp.name || '').trim().toLowerCase();
+    const cctNameNorm = String(jp.cct?.name || '').trim().toLowerCase();
+
+    if (
+      cctCodeNorm === 'FUERA' ||
+      cctCodeNorm === 'FUERA_CONVENIO' ||
+      jpNameNorm.includes('fuera de convenio') ||
+      jpNameNorm.includes('fuera convenio') ||
+      cctNameNorm.includes('fuera de convenio')
+    ) {
+      fueraConvenioCount++;
+      continue;
+    }
+
+    if (!cctMap.has(jp.cctCode)) {
+      const displayName = jp.cct
+        ? `[${jp.cct.code}] ${jp.cct.description || jp.cct.name}`
+        : `[${jp.cctCode}] Convenio ${jp.cctCode}`;
+      cctMap.set(jp.cctCode, {
+        code: jp.cctCode,
+        name: displayName,
+        count: 0,
+      });
+    }
+    cctMap.get(jp.cctCode).count++;
+  }
+
+  const result = Array.from(cctMap.values()).sort((a, b) => a.code.localeCompare(b.code));
+
+  result.push({
+    code: 'FUERA_CONVENIO',
+    name: 'Personal Fuera de Convenio',
+    count: fueraConvenioCount,
+  });
+
+  result.push({
+    code: 'SIN_CONVENIO',
+    name: 'Sin Convenio Asignado',
+    count: sinConvenioCount,
+  });
+
+  return result;
+}
+
+/**
+ * Asigna un concepto persistente a todos los empleados activos de un CCT,
+ * o a los empleados fuera de convenio / sin convenio asignado.
+ */
+export async function assignConceptByCct(tenantPrisma, conceptId, data) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+  const concept = await tenantPrisma.concept.findUnique({ where: { id: conceptId } });
+  if (!concept || concept.deletedAt) {
+    const error = new Error('El concepto especificado no existe');
+    error.status = 400;
+    throw error;
+  }
+  if (String(concept.scope || '').toUpperCase() !== 'INDIVIDUAL') {
+    const error = new Error(`Solo pueden asignarse conceptos con alcance INDIVIDUAL. El concepto ${concept.code} es GENERAL.`);
+    error.status = 400;
+    throw error;
+  }
+  if (!concept.isPersistent) {
+    const error = new Error(`El concepto ${concept.code} (${concept.name}) es no persistente. Debe gestionarse en Novedades No Persistentes.`);
+    error.status = 400;
+    throw error;
+  }
+
+  const cctOption = String(data.cctOption || '').trim();
+  if (!cctOption) {
+    const error = new Error('Debe seleccionar un convenio colectivo o categoría de convenio');
+    error.status = 400;
+    throw error;
+  }
+
+  let matchingEmployees = [];
+  if (cctOption === 'SIN_CONVENIO') {
+    matchingEmployees = await tenantPrisma.employee.findMany({
+      where: {
+        status: 'ACTIVE',
+        deletedAt: null,
+        OR: [
+          { jobPositionId: null },
+          { jobPosition: { cctCode: null } },
+        ],
+      },
+      select: { id: true, fileNumber: true, lastName: true, firstName: true },
+    });
+  } else if (cctOption === 'FUERA_CONVENIO') {
+    matchingEmployees = await tenantPrisma.employee.findMany({
+      where: {
+        status: 'ACTIVE',
+        deletedAt: null,
+        jobPosition: {
+          OR: [
+            { cctCode: 'FUERA' },
+            { cctCode: 'FUERA_CONVENIO' },
+            { name: { contains: 'fuera' } },
+          ],
+        },
+      },
+      select: { id: true, fileNumber: true, lastName: true, firstName: true },
+    });
+  } else {
+    matchingEmployees = await tenantPrisma.employee.findMany({
+      where: {
+        status: 'ACTIVE',
+        deletedAt: null,
+        jobPosition: { cctCode: cctOption },
+      },
+      select: { id: true, fileNumber: true, lastName: true, firstName: true },
+    });
+  }
+
+  if (matchingEmployees.length === 0) {
+    return {
+      totalEmployees: 0,
+      createdCount: 0,
+      updatedCount: 0,
+      message: 'No se encontraron colaboradores activos en la condición de convenio seleccionada',
+    };
+  }
+
+  let amountVal = null;
+  let unitsVal = null;
+  if (concept.noveltyDataType === 'IMPORTE') {
+    amountVal = data.amount !== undefined && data.amount !== null && data.amount !== '' ? Number(data.amount) : (Number(data.value) || 0);
+  } else {
+    unitsVal = data.units !== undefined && data.units !== null && data.units !== '' ? Number(data.units) : (Number(data.value) || 0);
+  }
+
+  const payload = {
+    amount: amountVal,
+    units: unitsVal,
+    notes: data.notes ? data.notes.trim() : null,
+    validFrom: data.validFrom ? new Date(data.validFrom) : null,
+    validTo: data.validTo ? new Date(data.validTo) : null,
+    isActive: data.isActive ?? true,
+  };
+
+  let createdCount = 0;
+  let updatedCount = 0;
+
+  await tenantPrisma.$transaction(async (tx) => {
+    for (const emp of matchingEmployees) {
+      const existing = await tx.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId: emp.id,
+            conceptId,
+          },
+        },
+      });
+
+      if (existing) {
+        await tx.employeeConcept.update({
+          where: { id: existing.id },
+          data: payload,
+        });
+        updatedCount++;
+      } else {
+        await tx.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId: emp.id,
+            conceptId,
+            ...payload,
+          },
+        });
+        createdCount++;
+      }
+    }
+  });
+
+  return {
+    totalEmployees: matchingEmployees.length,
+    createdCount,
+    updatedCount,
+    message: `Concepto asignado exitosamente a ${matchingEmployees.length} colaborador(es) (${createdCount} nuevas asignaciones, ${updatedCount} actualizados)`,
+  };
+}
+
+/**
+ * Importación masiva de novedades persistentes desde archivo Excel.
+ * Formato de columnas:
+ * Col 1: Legajo
+ * Col 2: Valor (Importe, Porcentaje, Cantidad u Horas según noveltyDataType)
+ * Col 3 (opcional): Vigente Desde
+ * Col 4 (opcional): Vigente Hasta
+ */
+export async function batchImportConceptNovelties(tenantPrisma, conceptId, { rows = [], defaultNotes } = {}) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+  const concept = await tenantPrisma.concept.findUnique({ where: { id: conceptId } });
+  if (!concept || concept.deletedAt) {
+    const error = new Error('El concepto especificado no existe');
+    error.status = 400;
+    throw error;
+  }
+  if (String(concept.scope || '').toUpperCase() !== 'INDIVIDUAL') {
+    const error = new Error(`Solo pueden asignarse conceptos con alcance INDIVIDUAL. El concepto ${concept.code} es GENERAL.`);
+    error.status = 400;
+    throw error;
+  }
+  if (!concept.isPersistent) {
+    const error = new Error(`El concepto ${concept.code} (${concept.name}) es no persistente. Debe gestionarse en Novedades No Persistentes.`);
+    error.status = 400;
+    throw error;
+  }
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    const error = new Error('No se proporcionaron filas para importar');
+    error.status = 400;
+    throw error;
+  }
+
+  const activeEmployees = await tenantPrisma.employee.findMany({
+    where: { status: 'ACTIVE', deletedAt: null },
+    select: { id: true, fileNumber: true, lastName: true, firstName: true },
+  });
+
+  const empByFile = new Map();
+  for (const emp of activeEmployees) {
+    if (emp.fileNumber) {
+      empByFile.set(String(emp.fileNumber).trim().toLowerCase(), emp);
+    }
+  }
+
+  const omittedRows = [];
+  let createdCount = 0;
+  let updatedCount = 0;
+  let processedCount = 0;
+
+  await tenantPrisma.$transaction(async (tx) => {
+    for (const row of rows) {
+      const rawFile = String(row.fileNumber || '').trim();
+      if (!rawFile) continue;
+
+      const emp = empByFile.get(rawFile.toLowerCase());
+      if (!emp) {
+        omittedRows.push({
+          fileNumber: rawFile,
+          value: row.value,
+          reason: 'Legajo inexistente o inactivo en la nómina',
+        });
+        continue;
+      }
+
+      processedCount++;
+
+      let amountVal = null;
+      let unitsVal = null;
+      const numVal = Number(row.value) || 0;
+
+      if (concept.noveltyDataType === 'IMPORTE') {
+        amountVal = numVal;
+      } else {
+        unitsVal = numVal;
+      }
+
+      let validFrom = null;
+      let validTo = null;
+      if (row.validFrom) {
+        const dFrom = new Date(row.validFrom);
+        if (!isNaN(dFrom.getTime())) validFrom = dFrom;
+      }
+      if (row.validTo) {
+        const dTo = new Date(row.validTo);
+        if (!isNaN(dTo.getTime())) validTo = dTo;
+      }
+
+      const notes = row.notes ? String(row.notes).trim() : (defaultNotes ? String(defaultNotes).trim() : 'Importado por Excel');
+
+      const payload = {
+        amount: amountVal,
+        units: unitsVal,
+        validFrom,
+        validTo,
+        notes,
+        isActive: true,
+      };
+
+      const existing = await tx.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId: emp.id,
+            conceptId,
+          },
+        },
+      });
+
+      if (existing) {
+        await tx.employeeConcept.update({
+          where: { id: existing.id },
+          data: payload,
+        });
+        updatedCount++;
+      } else {
+        await tx.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId: emp.id,
+            conceptId,
+            ...payload,
+          },
+        });
+        createdCount++;
+      }
+    }
+  });
+
+  return {
+    totalRows: rows.length,
+    processedCount,
+    createdCount,
+    updatedCount,
+    omittedCount: omittedRows.length,
+    omittedRows,
+    message: `Importación completada: ${processedCount} asignaciones confirmadas (${createdCount} nuevas, ${updatedCount} actualizadas). ${omittedRows.length} legajos omitidos.`,
+  };
+}
+
+/**
  * Elimina una asignación por ID de asignación.
  */
 export async function deleteConceptAssignment(tenantPrisma, assignmentId) {
@@ -1804,6 +2208,25 @@ export async function deleteConceptAssignment(tenantPrisma, assignmentId) {
 
   if (existing.concept?.scope === 'GENERAL') {
     const error = new Error('Los conceptos de ámbito general no pueden ser eliminados desde las novedades individuales del empleado');
+    error.status = 400;
+    throw error;
+  }
+
+  // Protección legal de embargos judiciales
+  const isEmbargo = Boolean(existing.concept?.isEmbargo);
+  let hasActiveEmbargo = false;
+  try {
+    const count = await tenantPrisma.employeeEmbargoConcept.count({
+      where: {
+        conceptId: existing.conceptId,
+        embargo: { employeeId: existing.employeeId },
+      },
+    });
+    hasActiveEmbargo = count > 0;
+  } catch (e) {}
+
+  if (isEmbargo || hasActiveEmbargo) {
+    const error = new Error('Este concepto corresponde a un embargo judicial. Solo puede eliminarse desde la pantalla de Embargos de Sueldo.');
     error.status = 400;
     throw error;
   }
@@ -1883,6 +2306,25 @@ export async function deleteEmployeeConcept(tenantPrisma, employeeId, assignment
 
   if (existing.concept?.scope === 'GENERAL') {
     const error = new Error('Los conceptos de ámbito general no pueden ser eliminados desde las novedades individuales del empleado');
+    error.status = 400;
+    throw error;
+  }
+
+  // Protección legal de embargos judiciales
+  const isEmbargo = Boolean(existing.concept?.isEmbargo);
+  let hasActiveEmbargo = false;
+  try {
+    const count = await tenantPrisma.employeeEmbargoConcept.count({
+      where: {
+        conceptId: existing.conceptId,
+        embargo: { employeeId: existing.employeeId },
+      },
+    });
+    hasActiveEmbargo = count > 0;
+  } catch (e) {}
+
+  if (isEmbargo || hasActiveEmbargo) {
+    const error = new Error('Este concepto corresponde a un embargo judicial. Solo puede eliminarse desde la pantalla de Embargos de Sueldo.');
     error.status = 400;
     throw error;
   }

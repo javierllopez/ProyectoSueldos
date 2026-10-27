@@ -7,7 +7,7 @@ import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 import { registerAdminMethods } from './modules/admin.view.js';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
 import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.3';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.4';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.5';
 import { registerSalaryScalesMethods } from './modules/salaryScales.view.js';
 import { registerConceptsMethods } from './modules/concepts.view.js';
 import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';

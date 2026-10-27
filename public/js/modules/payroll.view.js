@@ -1338,6 +1338,15 @@ class PayrollMethods {
               <i class="ti ti-lock"></i>
             </button>
           `
+          : (item.isEmbargo || item.concept?.isEmbargo)
+          ? `
+            <button type="button" class="btn btn-sm btn-icon btn-ghost-primary btn-edit-nov-pers-emp" data-id="${item.id}" title="Modificar asignación">
+              <i class="ti ti-edit"></i>
+            </button>
+            <span class="badge bg-purple-lt text-nowrap d-inline-flex align-items-center" title="Embargo judicial: Solo puede eliminarse desde la pantalla de Embargos de Sueldo" style="font-size: 0.72rem; cursor: help;">
+              <i class="ti ti-gavel me-1"></i> Embargo
+            </span>
+          `
           : `
             <button type="button" class="btn btn-sm btn-icon btn-ghost-primary btn-edit-nov-pers-emp" data-id="${item.id}" title="Modificar asignación">
               <i class="ti ti-edit"></i>
@@ -1424,6 +1433,10 @@ class PayrollMethods {
     document.getElementById('nov-pers-con-card')?.classList.add('d-none');
     const addBtn = document.getElementById('btn-nov-pers-con-add');
     if (addBtn) addBtn.disabled = true;
+    const excelBtn = document.getElementById('btn-nov-pers-con-excel');
+    if (excelBtn) excelBtn.disabled = true;
+    const cctBtn = document.getElementById('btn-nov-pers-con-cct');
+    if (cctBtn) cctBtn.disabled = true;
     const tbody = document.getElementById('nov-pers-con-table-body');
     if (tbody) {
       tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">Seleccione un concepto persistente para listar los colaboradores asignados.</td></tr>';
@@ -1454,6 +1467,10 @@ class PayrollMethods {
 
     const addBtn = document.getElementById('btn-nov-pers-con-add');
     if (addBtn) addBtn.disabled = false;
+    const excelBtn = document.getElementById('btn-nov-pers-con-excel');
+    if (excelBtn) excelBtn.disabled = false;
+    const cctBtn = document.getElementById('btn-nov-pers-con-cct');
+    if (cctBtn) cctBtn.disabled = false;
 
     // Cargar empleados asignados a este concepto
     const spinner = document.getElementById('nov-pers-con-spinner');
@@ -1504,12 +1521,23 @@ class PayrollMethods {
             <td>${escapeHtml(emp.department?.name || '-')}</td>
             <td class="text-end">${formattedVal}</td>
             <td class="text-end text-nowrap">
-              <button type="button" class="btn btn-sm btn-icon btn-ghost-primary btn-edit-nov-pers-con" data-id="${asg.id}" title="Modificar asignación">
-                <i class="ti ti-edit"></i>
-              </button>
-              <button type="button" class="btn btn-sm btn-icon btn-ghost-danger btn-del-nov-pers-con" data-id="${asg.id}" data-name="${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}" title="Eliminar asignación">
-                <i class="ti ti-trash"></i>
-              </button>
+              ${(asg.isEmbargo || c.isEmbargo)
+                ? `
+                  <button type="button" class="btn btn-sm btn-icon btn-ghost-primary btn-edit-nov-pers-con" data-id="${asg.id}" title="Modificar asignación">
+                    <i class="ti ti-edit"></i>
+                  </button>
+                  <span class="badge bg-purple-lt text-nowrap d-inline-flex align-items-center" title="Embargo judicial: Solo puede eliminarse desde la pantalla de Embargos de Sueldo" style="font-size: 0.72rem; cursor: help;">
+                    <i class="ti ti-gavel me-1"></i> Embargo
+                  </span>
+                `
+                : `
+                  <button type="button" class="btn btn-sm btn-icon btn-ghost-primary btn-edit-nov-pers-con" data-id="${asg.id}" title="Modificar asignación">
+                    <i class="ti ti-edit"></i>
+                  </button>
+                  <button type="button" class="btn btn-sm btn-icon btn-ghost-danger btn-del-nov-pers-con" data-id="${asg.id}" data-name="${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}" title="Eliminar asignación">
+                    <i class="ti ti-trash"></i>
+                  </button>
+                `}
             </td>
           </tr>
         `;
@@ -1539,6 +1567,357 @@ class PayrollMethods {
         });
       });
     });
+  }
+
+  // -------------------------------------------------------------------------
+  // IMPORTACIÓN DE NOVEDADES PERSISTENTES DESDE EXCEL
+  // -------------------------------------------------------------------------
+
+  openPersConceptExcelModal() {
+    if (!this.novPersConSelectedConcept) return;
+    const c = this.novPersConSelectedConcept;
+
+    document.getElementById('pers-excel-concept-title').textContent = `[${c.code}] ${c.name}`;
+    document.getElementById('pers-excel-datatype-badge').textContent = c.noveltyDataType || 'UNITS';
+
+    // Limpiar alertas, previsualización e informes previos
+    document.getElementById('pers-excel-alert')?.classList.add('d-none');
+    document.getElementById('pers-excel-preview-card')?.classList.add('d-none');
+    document.getElementById('pers-excel-result-card')?.classList.add('d-none');
+    document.getElementById('pers-excel-omitted-container')?.classList.add('d-none');
+
+    const fileInput = document.getElementById('pers-concept-excel-file');
+    if (fileInput) fileInput.value = '';
+
+    const submitBtn = document.getElementById('btn-pers-excel-submit');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="ti ti-upload me-1"></i> Procesar e Importar Novedades';
+    }
+
+    this.persConceptExcelParsedRows = [];
+
+    getBootstrapModal(document.getElementById('modal-import-pers-concept-excel'))?.show();
+  }
+
+  downloadPersConceptExcelTemplate() {
+    if (!window.XLSX) {
+      showToast('La librería SheetJS (XLSX) no está disponible en este momento', 'warning');
+      return;
+    }
+    const c = this.novPersConSelectedConcept || { code: 'CONCEPTO', name: 'Novedad' };
+    const sampleVal = c.noveltyDataType === 'IMPORTE' ? 50000 : (c.noveltyDataType === 'PORCENTAJE' ? 10 : 1);
+
+    const rows = [
+      ['Legajo', 'Valor', 'Vigente Desde', 'Vigente Hasta'],
+      ['L-1001', sampleVal, '2026-01-01', ''],
+      ['L-1002', sampleVal, '', ''],
+      ['L-1003', sampleVal, '2026-06-01', '2026-12-31'],
+    ];
+
+    const wb = window.XLSX.utils.book_new();
+    const ws = window.XLSX.utils.aoa_to_sheet(rows);
+
+    ws['!cols'] = [{ wch: 15 }, { wch: 15 }, { wch: 18 }, { wch: 18 }];
+
+    window.XLSX.utils.book_append_sheet(wb, ws, 'Novedades');
+    const filename = `Plantilla_Novedad_${c.code}.xlsx`;
+    window.XLSX.writeFile(wb, filename);
+  }
+
+  async handlePersConceptExcelFileSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const alertBox = document.getElementById('pers-excel-alert');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    const previewCard = document.getElementById('pers-excel-preview-card');
+    const previewTbody = document.getElementById('pers-excel-preview-tbody');
+    const previewCount = document.getElementById('pers-excel-preview-count');
+    const submitBtn = document.getElementById('btn-pers-excel-submit');
+
+    try {
+      if (!window.XLSX) throw new Error('La librería SheetJS no está cargada');
+      const data = await file.arrayBuffer();
+      const workbook = window.XLSX.read(data, { type: 'array' });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rawRows = window.XLSX.utils.sheet_to_json(firstSheet, { header: 1, defval: '' });
+
+      if (!rawRows || rawRows.length < 2) {
+        throw new Error('El archivo debe contener al menos una fila de encabezados y una fila con datos.');
+      }
+
+      // Procesar filas (si fila 0 es encabezado con texto no numérico)
+      const startIndex = typeof rawRows[0][0] === 'string' && isNaN(Number(rawRows[0][0])) ? 1 : 0;
+      const parsedRows = [];
+
+      for (let i = startIndex; i < rawRows.length; i++) {
+        const row = rawRows[i];
+        if (!row || row.length === 0) continue;
+
+        const legajo = String(row[0] || '').trim();
+        if (!legajo) continue;
+
+        const val = Number(row[1]) || 0;
+
+        let vFrom = '';
+        let vTo = '';
+        if (row[2]) vFrom = this.formatExcelDate(row[2]);
+        if (row[3]) vTo = this.formatExcelDate(row[3]);
+
+        parsedRows.push({
+          fileNumber: legajo,
+          value: val,
+          validFrom: vFrom || null,
+          validTo: vTo || null,
+        });
+      }
+
+      if (parsedRows.length === 0) {
+        throw new Error('No se encontraron filas con número de legajo válido en el archivo.');
+      }
+
+      this.persConceptExcelParsedRows = parsedRows;
+
+      // Renderizar previsualización
+      if (previewTbody) {
+        previewTbody.innerHTML = parsedRows
+          .slice(0, 50)
+          .map((r, idx) => `
+            <tr>
+              <td><span class="text-muted">${idx + 1}</span></td>
+              <td><strong class="font-monospace text-primary">${escapeHtml(r.fileNumber)}</strong></td>
+              <td class="text-end font-monospace">${escapeHtml(String(r.value))}</td>
+              <td>${r.validFrom ? escapeHtml(r.validFrom) : '<span class="text-muted small">Permanente</span>'}</td>
+              <td>${r.validTo ? escapeHtml(r.validTo) : '<span class="text-muted small">Sin vencimiento</span>'}</td>
+            </tr>
+          `)
+          .join('');
+      }
+
+      if (previewCount) {
+        previewCount.textContent = `${parsedRows.length} fila(s) detectada(s)`;
+      }
+
+      previewCard?.classList.remove('d-none');
+      if (submitBtn) submitBtn.disabled = false;
+    } catch (err) {
+      if (alertBox) {
+        alertBox.textContent = `Error al procesar el archivo: ${err.message}`;
+        alertBox.classList.remove('d-none');
+      }
+      previewCard?.classList.add('d-none');
+      if (submitBtn) submitBtn.disabled = true;
+    }
+  }
+
+  formatExcelDate(cellVal) {
+    if (!cellVal) return '';
+    if (typeof cellVal === 'number') {
+      const date = new Date(Math.round((cellVal - 25569) * 86400 * 1000));
+      return date.toISOString().split('T')[0];
+    }
+    const str = String(cellVal).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+    const parts = str.split(/[\/\-]/);
+    if (parts.length === 3 && parts[2].length === 4) {
+      return `${parts[2]}-${String(parts[1]).padStart(2, '0')}-${String(parts[0]).padStart(2, '0')}`;
+    }
+    return str;
+  }
+
+  async submitPersConceptExcel() {
+    if (!this.novPersConSelectedConcept) return;
+    if (!this.persConceptExcelParsedRows || this.persConceptExcelParsedRows.length === 0) return;
+
+    const alertBox = document.getElementById('pers-excel-alert');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    const submitBtn = document.getElementById('btn-pers-excel-submit');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Importando...';
+    }
+
+    try {
+      const res = await apiRequest(`/employees/by-concept/${this.novPersConSelectedConcept.id}/batch-import-novelties`, {
+        method: 'POST',
+        body: {
+          rows: this.persConceptExcelParsedRows,
+          defaultNotes: 'Importado por Excel',
+        },
+      });
+
+      const data = res.data || {};
+      const resultCard = document.getElementById('pers-excel-result-card');
+      const resultAlert = document.getElementById('pers-excel-result-alert');
+      const omittedContainer = document.getElementById('pers-excel-omitted-container');
+      const omittedTbody = document.getElementById('pers-excel-omitted-tbody');
+
+      if (resultCard && resultAlert) {
+        resultCard.classList.remove('d-none');
+        resultAlert.className = 'alert alert-success py-2 mb-2';
+        resultAlert.innerHTML = `
+          <div class="fw-bold"><i class="ti ti-check me-1"></i> Importación Finalizada</div>
+          <div class="small mt-1">
+            <strong>${data.processedCount || 0}</strong> colaboradores procesados: 
+            <span class="badge bg-green-lt">${data.createdCount || 0} nuevas altas</span> | 
+            <span class="badge bg-blue-lt">${data.updatedCount || 0} valores actualizados</span>
+          </div>
+        `;
+
+        if (Array.isArray(data.omittedRows) && data.omittedRows.length > 0) {
+          resultAlert.innerHTML += `<div class="small text-danger mt-1"><strong>${data.omittedRows.length}</strong> legajos fueron omitidos por no existir o estar inactivos en nómina.</div>`;
+          if (omittedContainer && omittedTbody) {
+            omittedContainer.classList.remove('d-none');
+            omittedTbody.innerHTML = data.omittedRows
+              .map((o) => `
+                <tr>
+                  <td><strong class="font-monospace text-danger">${escapeHtml(o.fileNumber)}</strong></td>
+                  <td>${escapeHtml(String(o.value !== undefined ? o.value : '-'))}</td>
+                  <td>${escapeHtml(o.reason || 'Legajo inexistente')}</td>
+                </tr>
+              `)
+              .join('');
+          }
+        } else {
+          omittedContainer?.classList.add('d-none');
+        }
+      }
+
+      showToast(res.message || 'Importación completada correctamente', 'success');
+
+      // Recargar lista de colaboradores con este concepto
+      await this.onNovPersConSelected(this.novPersConSelectedConcept.id);
+
+      if (submitBtn) {
+        submitBtn.innerHTML = '<i class="ti ti-check me-1"></i> Importación Finalizada';
+        submitBtn.disabled = true;
+      }
+    } catch (err) {
+      if (alertBox) {
+        alertBox.textContent = err.message || 'Error al importar archivo';
+        alertBox.classList.remove('d-none');
+      }
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="ti ti-upload me-1"></i> Reintentar Importación';
+      }
+    }
+  }
+
+  // -------------------------------------------------------------------------
+  // ASIGNACIÓN POR CONVENIO COLECTIVO DE TRABAJO (CCT)
+  // -------------------------------------------------------------------------
+
+  async openPersConceptCctModal() {
+    if (!this.novPersConSelectedConcept) return;
+    const c = this.novPersConSelectedConcept;
+
+    document.getElementById('pers-cct-concept-title').textContent = `[${c.code}] ${c.name}`;
+    document.getElementById('pers-cct-alert')?.classList.add('d-none');
+
+    // Cargar selector de CCT
+    const select = document.getElementById('pers-cct-select');
+    const countBadge = document.getElementById('pers-cct-count-badge');
+    if (countBadge) countBadge.textContent = '0 colaboradores alcanzados';
+
+    if (select) {
+      select.innerHTML = '<option value="">Cargando convenios asignados...</option>';
+      select.disabled = true;
+
+      try {
+        const res = await apiRequest('/employees/cct-summary');
+        const summary = res.data || [];
+        this.persConceptCctSummary = summary;
+
+        let optsHtml = '<option value="">Seleccione un convenio colectivo o condición...</option>';
+        summary.forEach((item) => {
+          optsHtml += `<option value="${escapeHtml(item.code)}" data-count="${item.count}">${escapeHtml(item.name)} (${item.count} colab.)</option>`;
+        });
+        select.innerHTML = optsHtml;
+        select.disabled = false;
+      } catch (err) {
+        select.innerHTML = '<option value="">Error al cargar convenios</option>';
+        showToast(err.message || 'Error al obtener resumen de CCT', 'danger');
+      }
+    }
+
+    // Renderizar control dinámico de entrada según tipo de dato
+    renderDynamicNoveltyControl('pers-cct-dynamic-container', c, {});
+
+    // Limpiar campos de vigencia y notas
+    const validFrom = document.getElementById('pers-cct-valid-from');
+    if (validFrom) validFrom.value = '';
+    const validTo = document.getElementById('pers-cct-valid-to');
+    if (validTo) validTo.value = '';
+    const notes = document.getElementById('pers-cct-notes');
+    if (notes) notes.value = '';
+
+    getBootstrapModal(document.getElementById('modal-assign-pers-concept-cct'))?.show();
+  }
+
+  async submitPersConceptCct(e) {
+    e.preventDefault();
+    if (!this.novPersConSelectedConcept) return;
+
+    const alertBox = document.getElementById('pers-cct-alert');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    const cctOption = document.getElementById('pers-cct-select')?.value;
+    if (!cctOption) {
+      if (alertBox) {
+        alertBox.textContent = 'Debe seleccionar un convenio colectivo o condición';
+        alertBox.classList.remove('d-none');
+      }
+      return;
+    }
+
+    const valContainer = document.getElementById('pers-cct-dynamic-container');
+    const inputVal = valContainer?.querySelector('input');
+    const valueNum = inputVal ? Number(inputVal.value) || 0 : 0;
+
+    const validFrom = document.getElementById('pers-cct-valid-from')?.value || null;
+    const validTo = document.getElementById('pers-cct-valid-to')?.value || null;
+    const notes = document.getElementById('pers-cct-notes')?.value.trim() || null;
+
+    const submitBtn = document.getElementById('btn-pers-cct-submit');
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status"></span> Asignando...';
+    }
+
+    try {
+      const res = await apiRequest(`/employees/by-concept/${this.novPersConSelectedConcept.id}/assign-by-cct`, {
+        method: 'POST',
+        body: {
+          cctOption,
+          value: valueNum,
+          amount: this.novPersConSelectedConcept.noveltyDataType === 'IMPORTE' ? valueNum : null,
+          units: this.novPersConSelectedConcept.noveltyDataType !== 'IMPORTE' ? valueNum : null,
+          validFrom,
+          validTo,
+          notes,
+        },
+      });
+
+      showToast(res.message || 'Concepto asignado al convenio exitosamente', 'success');
+      getBootstrapModal(document.getElementById('modal-assign-pers-concept-cct'))?.hide();
+
+      // Recargar lista de colaboradores con este concepto
+      await this.onNovPersConSelected(this.novPersConSelectedConcept.id);
+    } catch (err) {
+      if (alertBox) {
+        alertBox.textContent = err.message || 'Error al asignar concepto por CCT';
+        alertBox.classList.remove('d-none');
+      }
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="ti ti-check me-1"></i> Asignar a Colaboradores';
+      }
+    }
   }
 
   // -------------------------------------------------------------------------
@@ -2942,6 +3321,45 @@ class PayrollMethods {
           this.openPersistentConceptModal({ concept: this.novPersConSelectedConcept });
         }
       });
+    }
+
+    // Botones Excel y CCT para Concepto Persistente
+    const btnExcelCon = document.getElementById('btn-nov-pers-con-excel');
+    if (btnExcelCon) {
+      btnExcelCon.addEventListener('click', () => this.openPersConceptExcelModal());
+    }
+    const btnCctCon = document.getElementById('btn-nov-pers-con-cct');
+    if (btnCctCon) {
+      btnCctCon.addEventListener('click', () => this.openPersConceptCctModal());
+    }
+
+    // Modal Excel: Descarga de plantilla y subida de archivo
+    const btnDownloadTemplate = document.getElementById('btn-pers-excel-download-template');
+    if (btnDownloadTemplate) {
+      btnDownloadTemplate.addEventListener('click', () => this.downloadPersConceptExcelTemplate());
+    }
+    const fileExcelInput = document.getElementById('pers-concept-excel-file');
+    if (fileExcelInput) {
+      fileExcelInput.addEventListener('change', (e) => this.handlePersConceptExcelFileSelect(e));
+    }
+    const btnSubmitExcel = document.getElementById('btn-pers-excel-submit');
+    if (btnSubmitExcel) {
+      btnSubmitExcel.addEventListener('click', () => this.submitPersConceptExcel());
+    }
+
+    // Modal CCT: Cambio en select y submit
+    const cctSelect = document.getElementById('pers-cct-select');
+    if (cctSelect) {
+      cctSelect.addEventListener('change', () => {
+        const selectedOpt = cctSelect.options[cctSelect.selectedIndex];
+        const count = selectedOpt ? selectedOpt.dataset.count || 0 : 0;
+        const countBadge = document.getElementById('pers-cct-count-badge');
+        if (countBadge) countBadge.textContent = `${count} colaborador(es) alcanzado(s)`;
+      });
+    }
+    const formCct = document.getElementById('form-assign-pers-concept-cct');
+    if (formCct) {
+      formCct.addEventListener('submit', (e) => this.submitPersConceptCct(e));
     }
 
     // Concept select change inside modal

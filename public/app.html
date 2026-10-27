@@ -2160,8 +2160,14 @@
                           </h4>
                           <span class="badge bg-indigo-lt text-nowrap fw-bold" id="nov-pers-con-count">0 colaboradores</span>
                         </div>
-                        <div>
-                          <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-pers-con-add" disabled>
+                        <div class="d-flex align-items-center gap-1 flex-wrap">
+                          <button type="button" class="btn btn-outline-success btn-sm py-1 px-2 text-nowrap" id="btn-nov-pers-con-excel" disabled title="Importar novedades desde archivo Excel">
+                            <i class="ti ti-file-spreadsheet me-1"></i> Importar Excel
+                          </button>
+                          <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 text-nowrap" id="btn-nov-pers-con-cct" disabled title="Asignar concepto a todo un Convenio Colectivo">
+                            <i class="ti ti-certificate me-1"></i> Asignar por CCT
+                          </button>
+                          <button type="button" class="btn btn-payroll btn-sm py-1 px-2 text-nowrap" id="btn-nov-pers-con-add" disabled title="Asignar a colaborador(es) específico(s)">
                             <i class="ti ti-user-plus me-1"></i> Asignar Colaborador(es)
                           </button>
                         </div>
@@ -7670,12 +7676,12 @@
 
   <!-- MODAL: ASIGNACIÓN / EDICIÓN DE CONCEPTO PERSISTENTE -->
   <div class="modal modal-blur fade" id="modal-assign-persistent-concept" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-height: 92vh;">
       <div class="modal-content shadow-lg">
         <form id="form-assign-persistent-concept">
           <input type="hidden" id="pers-concept-assign-id" />
           
-          <div class="modal-header border-bottom-0 pb-0">
+          <div class="modal-header border-bottom-0 py-2">
             <div class="d-flex align-items-center gap-2">
               <div class="avatar avatar-sm bg-indigo-lt text-indigo rounded">
                 <i class="ti ti-pin fs-2"></i>
@@ -7688,12 +7694,12 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
-          <div class="modal-body pt-3">
-            <div id="pers-concept-alert" class="alert alert-danger d-none mb-3"></div>
+          <div class="modal-body py-2">
+            <div id="pers-concept-alert" class="alert alert-danger d-none py-2 mb-2"></div>
 
             <!-- Selector o Display de Colaborador -->
-            <div class="mb-3" id="pers-concept-employee-group">
-              <label class="form-label required fw-bold">Colaborador <span class="text-danger">*</span></label>
+            <div class="mb-2" id="pers-concept-employee-group">
+              <label class="form-label required fw-bold mb-1">Colaborador <span class="text-danger">*</span></label>
               <select class="form-select" id="pers-concept-employee-select" required>
                 <option value="">Seleccione un colaborador...</option>
               </select>
@@ -7701,8 +7707,8 @@
             </div>
 
             <!-- Selector o Display de Concepto -->
-            <div class="mb-3" id="pers-concept-concept-group">
-              <label class="form-label required fw-bold">Concepto Persistente <span class="text-danger">*</span></label>
+            <div class="mb-2" id="pers-concept-concept-group">
+              <label class="form-label required fw-bold mb-1">Concepto Persistente <span class="text-danger">*</span></label>
               <select class="form-select" id="pers-concept-select" required>
                 <option value="">Seleccione un concepto...</option>
               </select>
@@ -7710,7 +7716,7 @@
             </div>
 
             <!-- Concept Info Card -->
-            <div id="pers-concept-hint" class="d-none alert alert-indigo py-2 px-3 small mb-3">
+            <div id="pers-concept-hint" class="d-none alert alert-indigo py-1 px-3 small mb-2">
               <div class="d-flex justify-content-between align-items-center">
                 <strong id="pers-concept-hint-code">-</strong>
                 <span class="badge bg-indigo-lt" id="pers-concept-hint-type">-</span>
@@ -7719,26 +7725,26 @@
             </div>
 
             <!-- Control Dinámico de Entrada Único según Tipo de Dato -->
-            <div id="pers-concept-dynamic-container" class="mb-3">
+            <div id="pers-concept-dynamic-container" class="mb-2">
               <!-- Renderizado dinámicamente con un solo control (Cantidad, Hora HH:MM, Porcentaje o Importe $) -->
             </div>
 
             <!-- Vigencia -->
-            <div class="row g-2 mb-3">
+            <div class="row g-2 mb-2">
               <div class="col-6">
-                <label class="form-label fw-bold">Vigente Desde</label>
+                <label class="form-label fw-bold mb-1">Vigente Desde</label>
                 <input type="date" class="form-control" id="pers-concept-valid-from" />
               </div>
               <div class="col-6">
-                <label class="form-label fw-bold">Vigente Hasta</label>
+                <label class="form-label fw-bold mb-1">Vigente Hasta</label>
                 <input type="date" class="form-control" id="pers-concept-valid-to" />
               </div>
             </div>
 
             <!-- Campo Observaciones -->
-            <div class="mb-3">
-              <label class="form-label fw-bold">Observaciones / Justificación</label>
-              <textarea class="form-control" id="pers-concept-notes" rows="2" maxlength="255" placeholder="Ej. Adicional por título universitario / Convenio colectivo / Embargo N° ..."></textarea>
+            <div class="mb-2">
+              <label class="form-label fw-bold mb-1">Observaciones / Justificación</label>
+              <textarea class="form-control" id="pers-concept-notes" rows="1" maxlength="255" placeholder="Ej. Adicional por título universitario / Convenio colectivo / Embargo N° ..."></textarea>
             </div>
 
             <!-- Switch Activo -->
@@ -7748,10 +7754,191 @@
             </div>
           </div>
 
-          <div class="modal-footer bg-light">
+          <div class="modal-footer bg-light py-2">
             <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="submit" class="btn btn-payroll ms-auto" id="btn-save-persistent-concept">
               <i class="ti ti-device-floppy me-1"></i> Guardar Concepto
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: IMPORTACIÓN POR EXCEL DE NOVEDADES PERSISTENTES -->
+  <div class="modal modal-blur fade" id="modal-import-pers-concept-excel" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document" style="max-height: 92vh;">
+      <div class="modal-content shadow-lg">
+        <div class="modal-header bg-green-lt py-2">
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar avatar-sm bg-green text-white rounded">
+              <i class="ti ti-file-spreadsheet fs-2"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold">Importar Novedades Persistentes desde Excel</h5>
+              <div class="text-muted small">Concepto: <strong id="pers-excel-concept-title" class="text-dark">-</strong></div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body py-2">
+          <div id="pers-excel-alert" class="alert alert-danger d-none py-2 mb-2"></div>
+
+          <!-- Instrucciones de columnas y descarga de plantilla -->
+          <div class="alert alert-info py-2 px-3 small mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div>
+              <div class="fw-bold mb-1"><i class="ti ti-info-circle me-1"></i> Estructura del archivo Excel (.xlsx / .xls):</div>
+              <ul class="mb-0 ps-3">
+                <li><strong>Columna 1:</strong> Legajo del colaborador (ej. L-1001)</li>
+                <li><strong>Columna 2:</strong> Valor del concepto (<span id="pers-excel-datatype-badge" class="badge bg-blue-lt">IMPORTE</span>)</li>
+                <li><strong>Columna 3 (Opcional):</strong> Vigente Desde (AAAA-MM-DD o DD/MM/AAAA)</li>
+                <li><strong>Columna 4 (Opcional):</strong> Vigente Hasta (AAAA-MM-DD o DD/MM/AAAA)</li>
+              </ul>
+              <div class="text-muted mt-1" style="font-size: 0.75rem;">
+                * Si un colaborador ya tiene el concepto, se actualizará su valor. Si no se informan fechas, la vigencia es permanente.
+              </div>
+            </div>
+            <div>
+              <button type="button" class="btn btn-outline-success btn-sm text-nowrap" id="btn-pers-excel-download-template">
+                <i class="ti ti-download me-1"></i> Descargar Plantilla (.xlsx)
+              </button>
+            </div>
+          </div>
+
+          <!-- Selector de Archivo -->
+          <div class="mb-2">
+            <label class="form-label required fw-bold mb-1">Seleccionar archivo Excel (.xlsx, .xls o .csv)</label>
+            <input type="file" id="pers-concept-excel-file" class="form-control" accept=".xlsx, .xls, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+          </div>
+
+          <!-- Previsualización de Filas -->
+          <div id="pers-excel-preview-card" class="d-none border rounded p-2 bg-light mb-2">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="fw-bold small text-dark"><i class="ti ti-table me-1"></i> Previsualización de Filas a Procesar:</span>
+              <span class="badge bg-success-lt" id="pers-excel-preview-count">0 filas detectadas</span>
+            </div>
+            <div class="table-responsive border rounded bg-white" style="max-height: 180px; overflow-y: auto;">
+              <table class="table table-sm table-vcenter table-striped mb-0 text-nowrap" style="font-size: 0.80rem;">
+                <thead class="table-light sticky-top">
+                  <tr>
+                    <th>#</th>
+                    <th>Col 1: Legajo</th>
+                    <th>Col 2: Valor</th>
+                    <th>Col 3: Vig. Desde</th>
+                    <th>Col 4: Vig. Hasta</th>
+                  </tr>
+                </thead>
+                <tbody id="pers-excel-preview-tbody">
+                  <!-- Filas dinámicas -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Informe de Resultados -->
+          <div id="pers-excel-result-card" class="d-none border rounded p-2 mb-2">
+            <div id="pers-excel-result-alert" class="alert mb-2 py-2"></div>
+            <div id="pers-excel-omitted-container" class="d-none">
+              <div class="fw-bold text-danger small mb-1">
+                <i class="ti ti-alert-triangle me-1"></i> Legajos omitidos (no encontrados o inactivos en nómina):
+              </div>
+              <div class="table-responsive border rounded bg-white" style="max-height: 140px; overflow-y: auto;">
+                <table class="table table-sm table-vcenter table-hover mb-0 text-nowrap" style="font-size: 0.78rem;">
+                  <thead class="table-danger sticky-top">
+                    <tr>
+                      <th>Legajo</th>
+                      <th>Valor Informado</th>
+                      <th>Motivo de Omisión</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pers-excel-omitted-tbody">
+                    <!-- Filas omitidas -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light py-2">
+          <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-success ms-auto" id="btn-pers-excel-submit" disabled>
+            <i class="ti ti-upload me-1"></i> Procesar e Importar Novedades
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ASIGNACIÓN POR CONVENIO COLECTIVO DE TRABAJO (CCT) -->
+  <div class="modal modal-blur fade" id="modal-assign-pers-concept-cct" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="max-height: 92vh;">
+      <div class="modal-content shadow-lg">
+        <form id="form-assign-pers-concept-cct">
+          <div class="modal-header bg-primary-lt py-2">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar avatar-sm bg-primary text-white rounded">
+                <i class="ti ti-certificate fs-2"></i>
+              </div>
+              <div>
+                <h5 class="modal-title fw-bold">Asignar Concepto por Convenio Colectivo</h5>
+                <div class="text-muted small">Concepto: <strong id="pers-cct-concept-title" class="text-dark">-</strong></div>
+              </div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body py-2">
+            <div id="pers-cct-alert" class="alert alert-danger d-none py-2 mb-2"></div>
+
+            <!-- Selector de Convenio Colectivo -->
+            <div class="mb-2">
+              <label class="form-label required fw-bold mb-1">
+                Convenio Colectivo de Trabajo / Condición <span class="text-danger">*</span>
+              </label>
+              <select class="form-select" id="pers-cct-select" required>
+                <option value="">Cargando convenios asignados...</option>
+              </select>
+              <div class="d-flex justify-content-between align-items-center mt-1">
+                <span class="text-muted small" style="font-size: 0.75rem;">Convenios asignados al personal activo según su puesto.</span>
+                <span class="badge bg-blue-lt fw-bold" id="pers-cct-count-badge">0 colaboradores alcanzados</span>
+              </div>
+            </div>
+
+            <!-- Control Dinámico de Entrada según Tipo de Dato -->
+            <div id="pers-cct-dynamic-container" class="mb-2">
+              <!-- Renderizado dinámicamente con un solo control (Cantidad, Hora, Porcentaje o Importe $) -->
+            </div>
+
+            <!-- Vigencia -->
+            <div class="row g-2 mb-2">
+              <div class="col-6">
+                <label class="form-label fw-bold mb-1">Vigente Desde</label>
+                <input type="date" class="form-control" id="pers-cct-valid-from" />
+              </div>
+              <div class="col-6">
+                <label class="form-label fw-bold mb-1">Vigente Hasta</label>
+                <input type="date" class="form-control" id="pers-cct-valid-to" />
+              </div>
+            </div>
+
+            <!-- Observaciones -->
+            <div class="mb-2">
+              <label class="form-label fw-bold mb-1">Observaciones / Justificación</label>
+              <input type="text" class="form-control" id="pers-cct-notes" maxlength="255" placeholder="Ej. Adicional paritaria CCT / Aumento escalafonario..." />
+            </div>
+
+            <div class="alert alert-info py-2 px-3 small mb-0">
+              <i class="ti ti-info-circle me-1"></i>
+              La asignación se aplicará simultáneamente a todos los colaboradores activos asignados al convenio seleccionado. Si alguno ya poseía el concepto, su valor será actualizado.
+            </div>
+          </div>
+
+          <div class="modal-footer bg-light py-2">
+            <button type="button" class="btn btn-link link-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary ms-auto" id="btn-pers-cct-submit">
+              <i class="ti ti-check me-1"></i> Asignar a Colaboradores
             </button>
           </div>
         </form>
@@ -8918,6 +9105,6 @@
       window.bootstrap = window.tabler.bootstrap || window.tabler;
     }
   </script>
-  <script type="module" src="/js/app.js?v=payroll-2.4"></script>
+  <script type="module" src="/js/app.js?v=payroll-2.5"></script>
 </body>
 </html>

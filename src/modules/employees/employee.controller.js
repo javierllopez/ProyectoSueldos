@@ -176,5 +176,39 @@ export async function removeEmployeeFromConcept(req, res, next) {
   }
 }
 
+export async function getCctSummary(req, res, next) {
+  try {
+    const summary = await employeeService.getCctSummary(req.tenantPrisma);
+    return res.status(200).json({ data: summary });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function assignConceptByCct(req, res, next) {
+  try {
+    const result = await employeeService.assignConceptByCct(req.tenantPrisma, req.params.conceptId, req.body);
+    return res.status(200).json({
+      message: result.message,
+      data: result,
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function batchImportNovelties(req, res, next) {
+  try {
+    const result = await employeeService.batchImportConceptNovelties(req.tenantPrisma, req.params.conceptId, req.body);
+    return res.status(200).json({
+      message: result.message,
+      data: result,
+    });
+  } catch (err) {
+    return next(err);
+  }
+}
+
+
 
 

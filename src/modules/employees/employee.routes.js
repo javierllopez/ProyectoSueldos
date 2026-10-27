@@ -46,11 +46,22 @@ router.post(
 );
 
 // Asignación inversa: Empleados por Concepto persistente
+router.get('/cct-summary', employeeController.getCctSummary);
 router.get('/by-concept/:conceptId', employeeController.listEmployeesByConcept);
 router.post(
   '/by-concept/:conceptId',
   requireCompanyRole('ADMIN', 'OPERATOR'),
   employeeController.assignEmployeesToConcept
+);
+router.post(
+  '/by-concept/:conceptId/assign-by-cct',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  employeeController.assignConceptByCct
+);
+router.post(
+  '/by-concept/:conceptId/batch-import-novelties',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  employeeController.batchImportNovelties
 );
 router.delete(
   '/by-concept/:conceptId/:assignmentId',
