@@ -936,6 +936,13 @@ export async function getPaySlips(tenantPrisma, periodId, { search = '', page = 
       take,
       orderBy: { employee: { lastName: 'asc' } },
       include: {
+        payrollPeriod: {
+          select: {
+            id: true,
+            status: true,
+            settlementName: true,
+          },
+        },
         employee: {
           include: {
             department: true,
@@ -1175,6 +1182,76 @@ export async function updatePaySlipWorkedDays(tenantPrisma, slipId, workedDays) 
     where: { id: slipId },
     data: { workedDays: days },
   });
+}
+
+/**
+ * Elimina un recibo de sueldo individual de una liquidación abierta.
+ * Si la liquidación está cerrada, arroja Error 400.
+ * Actualiza automáticamente los totales del período.
+ */
+export async function deletePaySlip(tenantPrisma, slipId) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const slip = await tenantPrisma.paySlip.findUnique({
+    where: { id: slipId },
+    include: {
+      payrollPeriod: {
+        include: { fiscalPeriod: true },
+      },
+      employee: {
+        select: { id: true, fileNumber: true, firstName: true, lastName: true },
+      },
+    },
+  });
+
+  if (!slip) {
+    const err = new Error('Recibo de sueldo no encontrado');
+    err.status = 404;
+    throw err;
+  }
+
+  if (slip.payrollPeriod?.status === 'CLOSED' || slip.payrollPeriod?.fiscalPeriod?.status === 'CLOSED') {
+    const err = new Error('No es posible eliminar recibos de una liquidación cerrada legalmente');
+    err.status = 400;
+    throw err;
+  }
+
+  const periodId = slip.payrollPeriodId;
+
+  await tenantPrisma.$transaction(async (tx) => {
+    await tx.paySlipBasis.deleteMany({ where: { paySlipId: slipId } });
+    await tx.paySlipItem.deleteMany({ where: { paySlipId: slipId } });
+    await tx.paySlip.delete({ where: { id: slipId } });
+
+    const remainingSlipsCount = await tx.paySlip.count({ where: { payrollPeriodId: periodId } });
+    const periodTotals = await tx.paySlip.aggregate({
+      where: { payrollPeriodId: periodId },
+      _sum: {
+        grossSalary: true,
+        netSalary: true,
+        totalLaborCost: true,
+      },
+    });
+
+    const updateData = {
+      totalGross: periodTotals._sum.grossSalary || 0,
+      totalNet: periodTotals._sum.netSalary || 0,
+      totalEmployerCost: periodTotals._sum.totalLaborCost || 0,
+    };
+    if (remainingSlipsCount === 0) {
+      updateData.status = 'DRAFT';
+    }
+
+    await tx.payrollPeriod.update({
+      where: { id: periodId },
+      data: updateData,
+    });
+  });
+
+  return {
+    success: true,
+    message: `Recibo de sueldo del colaborador ${slip.employee?.lastName || ''}, ${slip.employee?.firstName || ''} (Legajo ${slip.employee?.fileNumber || '-'}) eliminado exitosamente`,
+  };
 }
 
 // --- PARÁMETROS Y ALÍCUOTAS PATRONALES ---

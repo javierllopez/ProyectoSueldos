@@ -746,6 +746,11 @@ body {
 
 /* REGLAS DE IMPRESIÓN OFICIALES (A4 PORTRAIT) */
 @media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm 8mm 8mm 8mm;
+  }
+
   /* --- MODO 1: IMPRESIÓN DE LOTE DE RECIBOS (SIN HOJAS VACÍAS) --- */
   body.batch-printing .page,
   body.batch-printing .navbar,
@@ -771,8 +776,9 @@ body {
     box-shadow: none !important;
     border: none !important;
     width: 100% !important;
-    padding: 8mm 10mm !important;
-    margin: 0 !important;
+    max-width: 194mm !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
     page-break-after: always !important;
     break-after: page !important;
     page-break-inside: avoid !important;
@@ -843,11 +849,36 @@ body {
 
   .payslip-sheet {
     box-shadow: none !important;
+    border: none !important;
     width: 100% !important;
+    max-width: 194mm !important;
     min-height: auto !important;
     padding: 0 !important;
-    margin: 0 !important;
+    margin: 0 auto !important;
     page-break-after: always;
+    box-sizing: border-box !important;
+  }
+
+  .payslip-table-items {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+  }
+
+  .payslip-table-items th,
+  .payslip-table-items td {
+    padding: 3px 5px !important;
+    font-size: 9.5px !important;
+  }
+
+  .payslip-table-items td:nth-child(4),
+  .payslip-table-items td:nth-child(5),
+  .payslip-table-items td:nth-child(6),
+  .payslip-table-items th:nth-child(4),
+  .payslip-table-items th:nth-child(5),
+  .payslip-table-items th:nth-child(6) {
+    white-space: nowrap !important;
+    text-align: right !important;
   }
 
   /* --- TAB 2: Auditoría Integral de Liquidación (A4) --- */
@@ -858,6 +889,8 @@ body {
     overflow: visible !important;
     max-height: none !important;
     display: block !important;
+    width: 100% !important;
+    max-width: 194mm !important;
   }
 
   #payslip-audit-area .table-responsive {
@@ -872,7 +905,7 @@ body {
     background: #ffffff !important;
     break-inside: avoid;
     page-break-inside: avoid;
-    margin-bottom: 10px !important;
+    margin-bottom: 8px !important;
   }
 
   #payslip-audit-area .card-header {
@@ -880,11 +913,12 @@ body {
     border-bottom: 1px solid #cbd5e1 !important;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
-    padding: 6px 12px !important;
+    padding: 4px 8px !important;
   }
 
   #payslip-audit-area table {
     width: 100% !important;
+    table-layout: auto !important;
     border-collapse: collapse !important;
   }
 
@@ -899,9 +933,70 @@ body {
 
   #payslip-audit-area th,
   #payslip-audit-area td {
-    border-color: #e2e8f0 !important;
-    padding: 4px 6px !important;
-    font-size: 11px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 3px 4px !important;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+  }
+
+  #payslip-audit-area th.col-audit-amount,
+  #payslip-audit-area td.col-audit-amount {
+    white-space: nowrap !important;
+    text-align: right !important;
+    font-weight: 700 !important;
+    width: 110px !important;
+    min-width: 110px !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #payslip-audit-area th.col-audit-base,
+  #payslip-audit-area td.col-audit-base {
+    white-space: nowrap !important;
+    text-align: right !important;
+    width: 80px !important;
+  }
+
+  #payslip-audit-area th.col-audit-units,
+  #payslip-audit-area td.col-audit-units {
+    white-space: nowrap !important;
+    text-align: center !important;
+    width: 45px !important;
+  }
+
+  #payslip-audit-area th.col-audit-type,
+  #payslip-audit-area td.col-audit-type {
+    white-space: nowrap !important;
+    width: 100px !important;
+    font-size: 8.5px !important;
+  }
+
+  #payslip-audit-area th.col-audit-code,
+  #payslip-audit-area td.col-audit-code {
+    white-space: nowrap !important;
+    width: 50px !important;
+  }
+
+  #payslip-audit-area th.col-audit-arca,
+  #payslip-audit-area td.col-audit-arca {
+    white-space: nowrap !important;
+    text-align: center !important;
+    width: 55px !important;
+  }
+
+  #payslip-audit-area th.col-audit-idx,
+  #payslip-audit-area td.col-audit-idx {
+    width: 25px !important;
+    text-align: center !important;
+  }
+
+  #payslip-audit-area td.col-audit-name {
+    word-break: break-word !important;
+  }
+
+  #payslip-audit-area td.col-audit-name .small,
+  #payslip-audit-area td.col-audit-name .badge {
+    font-size: 8px !important;
   }
 
   #payslip-audit-area .badge {
@@ -917,12 +1012,7 @@ body {
     display: block !important;
     border-bottom: 2px solid #2b3a8c !important;
     padding-bottom: 6px !important;
-    margin-bottom: 10px !important;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 10mm 12mm;
+    margin-bottom: 8px !important;
   }
 }
 
@@ -986,16 +1076,17 @@ body {
 
 .table-slips-compact th.col-slip-action,
 .table-slips-compact td.col-slip-action {
-  width: 76px !important;
-  min-width: 76px !important;
-  max-width: 76px !important;
+  width: 115px !important;
+  min-width: 115px !important;
+  max-width: 115px !important;
   text-align: right !important;
   padding: 0.5rem 0.25rem !important;
   overflow: visible !important;
 }
 
 .table-slips-compact .btn-view-slip,
-.table-slips-compact .btn-audit-slip {
+.table-slips-compact .btn-audit-slip,
+.table-slips-compact .btn-delete-slip {
   width: 30px !important;
   height: 30px !important;
   min-width: 30px !important;
@@ -1009,11 +1100,99 @@ body {
 
 .table-slips-compact .btn-view-slip .ti,
 .table-slips-compact .btn-audit-slip .ti,
+.table-slips-compact .btn-delete-slip .ti,
 .table-slips-compact .col-slip-status .ti {
   font-size: 1.15rem !important;
   line-height: 1 !important;
   display: inline-block !important;
   vertical-align: middle !important;
+}
+
+/* ==========================================================================
+   Modal Ampliado de Detalle de Liquidación & Auditoría (Sin Wrap de Importes)
+   ========================================================================== */
+#modal-view-payslip.modal .modal-dialog,
+.modal-payslip-detail {
+  max-width: 95vw !important;
+  width: 95vw !important;
+  margin: 1.25rem auto !important;
+}
+
+@media (max-width: 1200px) {
+  #modal-view-payslip.modal .modal-dialog,
+  .modal-payslip-detail {
+    max-width: 98vw !important;
+    width: 98vw !important;
+    margin: 0.5rem auto !important;
+  }
+}
+
+.table-audit-concepts {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+}
+
+.table-audit-concepts td.col-audit-amount,
+.table-audit-concepts th.col-audit-amount {
+  white-space: nowrap !important;
+  text-align: right !important;
+  font-family: var(--tblr-font-monospace, monospace);
+  font-weight: 700;
+  width: 150px;
+  min-width: 140px;
+}
+
+.table-audit-concepts td.col-audit-base,
+.table-audit-concepts th.col-audit-base {
+  white-space: nowrap !important;
+  text-align: right !important;
+  font-family: var(--tblr-font-monospace, monospace);
+  width: 120px;
+  min-width: 110px;
+}
+
+.table-audit-concepts td.col-audit-units,
+.table-audit-concepts th.col-audit-units {
+  white-space: nowrap !important;
+  text-align: center !important;
+  font-family: var(--tblr-font-monospace, monospace);
+  width: 80px;
+  min-width: 70px;
+}
+
+.table-audit-concepts td.col-audit-type,
+.table-audit-concepts th.col-audit-type {
+  white-space: nowrap !important;
+  width: 160px;
+  min-width: 140px;
+}
+
+.table-audit-concepts td.col-audit-code,
+.table-audit-concepts th.col-audit-code {
+  white-space: nowrap !important;
+  font-family: var(--tblr-font-monospace, monospace);
+  font-weight: 700;
+  width: 80px;
+  min-width: 70px;
+}
+
+.table-audit-concepts td.col-audit-arca,
+.table-audit-concepts th.col-audit-arca {
+  white-space: nowrap !important;
+  text-align: center !important;
+  width: 90px;
+  min-width: 80px;
+}
+
+.table-audit-concepts td.col-audit-idx,
+.table-audit-concepts th.col-audit-idx {
+  width: 40px;
+  text-align: center !important;
+}
+
+.table-audit-concepts td.col-audit-name {
+  word-break: normal;
 }
 
 /* ==========================================================================

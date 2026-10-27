@@ -3816,6 +3816,10 @@ class PayrollMethods {
       return;
     }
 
+    const periodId = document.getElementById('slips-period-select')?.value;
+    const currentPeriod = (this.payrollPeriods || []).find((p) => p.id === periodId);
+    const isPeriodOpen = currentPeriod ? currentPeriod.status !== 'CLOSED' : true;
+
     tbody.innerHTML = slips
       .map((s) => {
         const emp = s.employee || {};
@@ -3823,6 +3827,7 @@ class PayrollMethods {
         const retenciones = Number(s.totalDeductions || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         const neto = Number(s.netSalary || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         const initials = ((emp.firstName?.[0] || '') + (emp.lastName?.[0] || '')).toUpperCase() || 'EM';
+        const canDelete = isPeriodOpen && (s.payrollPeriod?.status ? s.payrollPeriod.status !== 'CLOSED' : true);
 
         return `
           <tr>
@@ -3868,13 +3873,22 @@ class PayrollMethods {
               </span>
             </td>
             <td class="col-slip-action">
-              <div class="d-flex gap-1 justify-content-end">
+              <div class="d-flex gap-1 justify-content-end align-items-center">
                 <button type="button" class="btn btn-sm btn-icon btn-outline-primary btn-view-slip" data-id="${s.id}" title="Ver e imprimir recibo oficial">
                   <i class="ti ti-eye"></i>
                 </button>
                 <button type="button" class="btn btn-sm btn-icon btn-outline-purple btn-audit-slip" data-id="${s.id}" title="Auditoría de liquidación (Ver todos los conceptos y auxiliares)">
                   <i class="ti ti-report-analytics"></i>
                 </button>
+                ${
+                  canDelete
+                    ? `<button type="button" class="btn btn-sm btn-icon btn-outline-danger btn-delete-slip" data-id="${s.id}" data-name="${escapeHtml(emp.lastName || '')}, ${escapeHtml(emp.firstName || '')}" data-file="${escapeHtml(emp.fileNumber || '')}" title="Eliminar recibo de sueldo">
+                         <i class="ti ti-trash"></i>
+                       </button>`
+                    : `<button type="button" class="btn btn-sm btn-icon btn-outline-secondary" disabled title="Liquidación cerrada: no se permite eliminar recibos">
+                         <i class="ti ti-trash"></i>
+                       </button>`
+                }
               </div>
             </td>
           </tr>
@@ -3893,6 +3907,69 @@ class PayrollMethods {
         this.openPayslipModal(btn.dataset.id, 'AUDIT');
       });
     });
+
+    tbody.querySelectorAll('.btn-delete-slip').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        this.confirmDeleteSlip(btn.dataset.id, btn.dataset.name, btn.dataset.file);
+      });
+    });
+  }
+
+  confirmDeleteSlip(slipId, name, fileNumber) {
+    const modalEl = document.getElementById('modal-confirm-delete');
+    const msg = `¿Estás seguro de que deseas eliminar el recibo de sueldo del colaborador <strong>${escapeHtml(name)}</strong>${fileNumber ? ` (Legajo ${escapeHtml(fileNumber)})` : ''}?`;
+    const warn = 'Esta acción eliminará el cálculo del recibo y todos sus conceptos detallados para esta liquidación abierta.';
+
+    if (!modalEl) {
+      if (confirm(`¿Estás seguro de que deseas eliminar el recibo de sueldo de ${name}?`)) {
+        this.executeDeleteSlip(slipId);
+      }
+      return;
+    }
+
+    const titleEl = document.getElementById('modal-confirm-delete-title');
+    const msgEl = document.getElementById('modal-confirm-delete-message');
+    const warnEl = document.getElementById('modal-confirm-delete-warning');
+    const btnConfirm = document.getElementById('btn-confirm-delete-action');
+
+    if (titleEl) titleEl.textContent = '¿Eliminar Recibo de Sueldo?';
+    if (msgEl) msgEl.innerHTML = msg;
+    if (warnEl) {
+      warnEl.innerHTML = `<i class="ti ti-alert-triangle me-1"></i> ${warn}`;
+      warnEl.classList.remove('d-none');
+    }
+
+    if (btnConfirm) {
+      btnConfirm.innerHTML = '<i class="ti ti-trash me-1"></i> Eliminar Recibo';
+      const newBtn = btnConfirm.cloneNode(true);
+      btnConfirm.parentNode.replaceChild(newBtn, btnConfirm);
+
+      newBtn.addEventListener('click', async () => {
+        newBtn.disabled = true;
+        newBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Eliminando...';
+        try {
+          await this.executeDeleteSlip(slipId);
+          getBootstrapModal(modalEl)?.hide();
+        } catch (err) {
+          showToast(err.message || 'Error al eliminar recibo', 'danger');
+        } finally {
+          newBtn.disabled = false;
+          newBtn.innerHTML = '<i class="ti ti-trash me-1"></i> Eliminar Recibo';
+        }
+      });
+    }
+
+    getBootstrapModal(modalEl)?.show();
+  }
+
+  async executeDeleteSlip(slipId) {
+    const res = await apiRequest(`/payroll/slips/${slipId}`, { method: 'DELETE' });
+    showToast(res.message || 'Recibo de sueldo eliminado correctamente', 'success');
+    const sel = document.getElementById('slips-period-select');
+    if (sel?.value) {
+      await this.loadPayrollSlips(sel.value);
+    }
+    await this.loadPayrollPeriods();
   }
 
   renderPayrollSlipsPagination(meta) {
@@ -4029,12 +4106,12 @@ class PayrollMethods {
 
         return `
           <tr>
-            <td class="font-monospace text-center" style="width: 50px;">${escapeHtml(it.conceptCode)}</td>
+            <td class="font-monospace text-center" style="width: 50px; white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
             <td>${escapeHtml(it.conceptName)}</td>
-            <td class="text-center" style="width: 60px;">${it.units ? Number(it.units) : '-'}</td>
-            <td class="text-end font-monospace" style="width: 100px;">${isRem ? amountStr : ''}</td>
-            <td class="text-end font-monospace" style="width: 100px;">${isNonRem ? amountStr : ''}</td>
-            <td class="text-end font-monospace" style="width: 100px;">${isDed ? amountStr : ''}</td>
+            <td class="text-center font-monospace" style="width: 60px; white-space: nowrap;">${it.units ? Number(it.units) : '-'}</td>
+            <td class="text-end font-monospace" style="width: 105px; white-space: nowrap;">${isRem ? `$ ${amountStr}` : ''}</td>
+            <td class="text-end font-monospace" style="width: 110px; white-space: nowrap;">${isNonRem ? `$ ${amountStr}` : ''}</td>
+            <td class="text-end font-monospace" style="width: 105px; white-space: nowrap;">${isDed ? `$ ${amountStr}` : ''}</td>
           </tr>
         `;
       })
@@ -4087,14 +4164,22 @@ class PayrollMethods {
         </div>
         <div class="p-0">
           <table class="payslip-table-items">
+            <colgroup>
+              <col style="width: 50px;">
+              <col style="width: auto;">
+              <col style="width: 60px;">
+              <col style="width: 105px;">
+              <col style="width: 110px;">
+              <col style="width: 105px;">
+            </colgroup>
             <thead>
               <tr>
-                <th class="text-center">Cód.</th>
+                <th class="text-center" style="width: 50px;">Cód.</th>
                 <th>Concepto</th>
-                <th class="text-center">Unid.</th>
-                <th class="text-end">Remunerativos</th>
-                <th class="text-end">No Remunerativos</th>
-                <th class="text-end">Retenciones</th>
+                <th class="text-center" style="width: 60px;">Unid.</th>
+                <th class="text-end" style="width: 105px; white-space: nowrap;">Remunerativos</th>
+                <th class="text-end" style="width: 110px; white-space: nowrap;">No Remunerativos</th>
+                <th class="text-end" style="width: 105px; white-space: nowrap;">Retenciones</th>
               </tr>
             </thead>
             <tbody>
@@ -4400,19 +4485,19 @@ class PayrollMethods {
 
       return `
         <tr class="${rowClass}">
-          <td class="text-center font-monospace text-muted small py-1">${idx + 1}</td>
-          <td class="font-monospace fw-bold text-primary py-1">${escapeHtml(it.conceptCode)}</td>
-          <td class="py-1">
-            <span class="fw-semibold text-dark text-truncate d-inline-block align-middle" style="max-width: 320px;" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
+          <td class="text-center font-monospace text-muted small py-1 col-audit-idx">${idx + 1}</td>
+          <td class="font-monospace fw-bold text-primary py-1 col-audit-code" style="white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
+          <td class="py-1 col-audit-name">
+            <span class="fw-semibold text-dark d-inline-block align-middle" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
             ${formulaExplHtml}
           </td>
-          <td class="py-1">${typeBadges[it.type] || it.type}</td>
-          <td class="text-center font-monospace py-1">${unitsStr}</td>
-          <td class="text-end font-monospace text-muted py-1">${baseStr}</td>
-          <td class="text-end font-monospace fw-bold py-1 ${isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : 'text-dark')}">
+          <td class="py-1 col-audit-type" style="white-space: nowrap;">${typeBadges[it.type] || it.type}</td>
+          <td class="text-center font-monospace py-1 col-audit-units" style="white-space: nowrap;">${unitsStr}</td>
+          <td class="text-end font-monospace text-muted py-1 col-audit-base" style="white-space: nowrap;">${baseStr}</td>
+          <td class="text-end font-monospace fw-bold py-1 col-audit-amount ${isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : 'text-dark')}" style="white-space: nowrap;">
             ${it.type === 'DEDUCTION' ? '-' : ''}$ ${amountStr}
           </td>
-          <td class="text-center py-1">
+          <td class="text-center py-1 col-audit-arca" style="white-space: nowrap;">
             <code>${escapeHtml(it.arcaConceptCode || '-')}</code>
           </td>
         </tr>
@@ -4476,18 +4561,18 @@ class PayrollMethods {
             <span class="small">Variables intermedias de cálculo (no impresas en recibo legal ni ARCA)</span>
           </div>
         </div>
-        <div class="table-responsive" style="max-height: 212px; overflow-y: auto;">
-          <table class="table table-vcenter card-table table-hover table-sm mb-0">
+        <div class="table-responsive" style="max-height: 440px; overflow-y: auto;">
+          <table class="table table-vcenter card-table table-hover table-sm mb-0 table-audit-concepts">
             <thead class="sticky-top bg-light border-bottom" style="z-index: 2;">
               <tr class="table-light">
-                <th class="text-center py-1" style="width: 45px;">#</th>
-                <th class="py-1" style="width: 80px;">Código</th>
-                <th class="py-1">Concepto / Variable</th>
-                <th class="py-1" style="width: 170px;">Tipo</th>
-                <th class="text-center py-1" style="width: 90px;">Unidades</th>
-                <th class="text-end py-1" style="width: 120px;">Base / Tasa</th>
-                <th class="text-end py-1" style="width: 130px;">Importe ($)</th>
-                <th class="text-center py-1" style="width: 90px;">Código ARCA</th>
+                <th class="text-center py-1 col-audit-idx" style="width: 45px;">#</th>
+                <th class="py-1 col-audit-code" style="width: 80px;">Código</th>
+                <th class="py-1 col-audit-name">Concepto / Variable</th>
+                <th class="py-1 col-audit-type" style="width: 170px;">Tipo</th>
+                <th class="text-center py-1 col-audit-units" style="width: 90px;">Unidades</th>
+                <th class="text-end py-1 col-audit-base" style="width: 120px;">Base / Tasa</th>
+                <th class="text-end py-1 col-audit-amount" style="width: 140px;">Importe ($)</th>
+                <th class="text-center py-1 col-audit-arca" style="width: 90px;">Código ARCA</th>
               </tr>
             </thead>
             <tbody>

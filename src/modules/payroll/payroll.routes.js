@@ -124,6 +124,11 @@ router.patch(
   validate(updatePaySlipWorkedDaysSchema),
   payrollController.updatePaySlipWorkedDays
 );
+router.delete(
+  '/slips/:slipId',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deletePaySlip
+);
 
 // --- Parámetros y Alícuotas Patronales ---
 router.get('/settings', payrollController.getPayrollSettings);

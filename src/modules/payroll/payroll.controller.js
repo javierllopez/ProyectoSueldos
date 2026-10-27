@@ -343,3 +343,13 @@ export async function updatePaySlipWorkedDays(req, res) {
     data: updated,
   });
 }
+
+export async function deletePaySlip(req, res, next) {
+  try {
+    const result = await payrollService.deletePaySlip(req.tenantPrisma, req.params.slipId);
+    return res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+}
+
