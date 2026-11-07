@@ -807,6 +807,17 @@ exports.Prisma.IncomeTaxSettlementDetailScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ReportTemplateScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  category: 'category',
+  isSystem: 'isSystem',
+  config: 'config',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -814,6 +825,10 @@ exports.Prisma.SortOrder = {
 
 exports.Prisma.NullableJsonNullValueInput = {
   DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
@@ -1217,6 +1232,13 @@ exports.Prisma.IncomeTaxSettlementDetailOrderByRelevanceFieldEnum = {
   notes: 'notes'
 };
 
+exports.Prisma.ReportTemplateOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  category: 'category'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -1260,7 +1282,8 @@ exports.Prisma.ModelName = {
   EmployeeIncomeTaxPaymentOnAccount: 'EmployeeIncomeTaxPaymentOnAccount',
   SiradigImport: 'SiradigImport',
   IncomeTaxSettlement: 'IncomeTaxSettlement',
-  IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail'
+  IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail',
+  ReportTemplate: 'ReportTemplate'
 };
 
 /**

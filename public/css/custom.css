@@ -668,7 +668,16 @@ body {
 .payslip-table-items {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: 10.5px;
+  box-sizing: border-box;
+}
+
+.payslip-table-items th,
+.payslip-table-items td {
+  padding: 3.5px 6px;
+  border-bottom: 1px solid #e9ecef;
+  box-sizing: border-box;
 }
 
 .payslip-table-items th {
@@ -681,9 +690,18 @@ body {
   color: #2b3a8c;
 }
 
-.payslip-table-items td {
-  padding: 3.5px 6px;
-  border-bottom: 1px solid #e9ecef;
+.payslip-table-items th:first-child,
+.payslip-table-items td:first-child {
+  padding-left: 8px !important;
+}
+
+/* Evitar que la última columna se superponga con el borde del recuadro */
+.payslip-table-items th:last-child,
+.payslip-table-items td:last-child,
+.payslip-table-items .payslip-col-retenciones {
+  padding-right: 14px !important;
+  text-align: right !important;
+  white-space: nowrap !important;
 }
 
 .payslip-table-items tr:last-child td {
@@ -788,13 +806,67 @@ body {
   }
 
   /* --- MODO 2: IMPRESIÓN INDIVIDUAL DESDE MODAL --- */
-  body:not(.batch-printing) * {
+  body:not(.batch-printing):not(.report-printing) * {
     visibility: hidden;
   }
 
-  body:not(.batch-printing) #modal-view-payslip,
-  body:not(.batch-printing) #modal-view-payslip * {
+  body:not(.batch-printing):not(.report-printing) #modal-view-payslip,
+  body:not(.batch-printing):not(.report-printing) #modal-view-payslip * {
     visibility: visible;
+  }
+
+  /* --- MODO 3: IMPRESIÓN DE INFORMES PERSONALIZADOS (#pane-reports-runner) --- */
+  body.report-printing .navbar,
+  body.report-printing .sidebar-col-container,
+  body.report-printing .payroll-executive-header,
+  body.report-printing #pane-reports-runner > .card-payroll-accent,
+  body.report-printing #pane-reports-runner > .screen-fixed-header,
+  body.report-printing #btn-reports-runner-export-excel,
+  body.report-printing #btn-reports-runner-export-pdf,
+  body.report-printing #btn-reports-runner-print,
+  body.report-printing #toast-container {
+    display: none !important;
+  }
+
+  body.report-printing,
+  body.report-printing .page,
+  body.report-printing .page-wrapper,
+  body.report-printing .page-body,
+  body.report-printing .container-xl,
+  body.report-printing #view-payroll,
+  body.report-printing .module-layout-row,
+  body.report-printing .content-col-container,
+  body.report-printing #payroll-tab-content,
+  body.report-printing #pane-reports-runner,
+  body.report-printing #pane-reports-runner > .screen-scroll-body,
+  body.report-printing #reports-runner-results-container,
+  body.report-printing #pane-reports-runner .card,
+  body.report-printing #pane-reports-runner .table-responsive {
+    display: block !important;
+    visibility: visible !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  body.report-printing #reports-result-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 9pt !important;
+  }
+
+  body.report-printing #reports-result-table thead th,
+  body.report-printing #reports-result-table tbody td,
+  body.report-printing #reports-result-table tfoot td {
+    padding: 4px 6px !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    background: transparent !important;
   }
 
   /* Ocultar pestañas no activas para evitar superposición */
@@ -859,26 +931,52 @@ body {
     box-sizing: border-box !important;
   }
 
+  .payslip-box {
+    border: 1px solid #2b3a8c !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+    box-sizing: border-box !important;
+    margin-bottom: 6px !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
   .payslip-table-items {
     width: 100% !important;
     table-layout: fixed !important;
     border-collapse: collapse !important;
+    box-sizing: border-box !important;
   }
 
   .payslip-table-items th,
   .payslip-table-items td {
     padding: 3px 5px !important;
     font-size: 9.5px !important;
+    box-sizing: border-box !important;
+  }
+
+  .payslip-table-items th:first-child,
+  .payslip-table-items td:first-child {
+    padding-left: 8px !important;
   }
 
   .payslip-table-items td:nth-child(4),
   .payslip-table-items td:nth-child(5),
-  .payslip-table-items td:nth-child(6),
   .payslip-table-items th:nth-child(4),
-  .payslip-table-items th:nth-child(5),
-  .payslip-table-items th:nth-child(6) {
+  .payslip-table-items th:nth-child(5) {
     white-space: nowrap !important;
     text-align: right !important;
+  }
+
+  /* Separación generosa del borde derecho del recuadro en el archivo PDF para evitar superposición */
+  .payslip-table-items th:last-child,
+  .payslip-table-items td:last-child,
+  .payslip-table-items .payslip-col-retenciones,
+  .payslip-table-items td:nth-child(6),
+  .payslip-table-items th:nth-child(6) {
+    padding-right: 14px !important;
+    text-align: right !important;
+    white-space: nowrap !important;
   }
 
   /* --- TAB 2: Auditoría Integral de Liquidación (A4) --- */
@@ -1115,7 +1213,8 @@ body {
 .modal-payslip-detail {
   max-width: 95vw !important;
   width: 95vw !important;
-  margin: 1.25rem auto !important;
+  max-height: 94vh !important;
+  margin: 1rem auto !important;
 }
 
 @media (max-width: 1200px) {
@@ -1123,8 +1222,87 @@ body {
   .modal-payslip-detail {
     max-width: 98vw !important;
     width: 98vw !important;
+    max-height: 96vh !important;
     margin: 0.5rem auto !important;
   }
+}
+
+#modal-view-payslip .modal-content {
+  height: 94vh !important;
+  max-height: 94vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  border-radius: var(--pay-radius-16, 16px) !important;
+}
+
+#modal-view-payslip .modal-header {
+  flex-shrink: 0 !important;
+}
+
+#modal-view-payslip .modal-body {
+  padding: 0 !important;
+  flex-grow: 1 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+#modal-view-payslip .tab-content {
+  flex-grow: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+#modal-view-payslip .tab-pane {
+  flex-grow: 1 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+}
+
+#modal-view-payslip .tab-pane.active {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* TAB 1: Recibo Oficial Legal Container */
+#tab-payslip-official {
+  height: 100% !important;
+  overflow: hidden !important;
+}
+
+#tab-payslip-official .payslip-sheet-container {
+  flex-grow: 1 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
+  background-color: #525659 !important;
+  padding: 1.5rem 1rem 3.5rem 1rem !important;
+  display: flex !important;
+  justify-content: center !important;
+  border-radius: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* TAB 2: Auditoría Integral Container */
+#tab-payslip-audit {
+  height: 100% !important;
+  overflow-y: auto !important;
+  background-color: var(--pay-slate-50, #f8fafc) !important;
+  padding: 1.25rem 1.5rem 3.5rem 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+#tab-payslip-audit #payslip-audit-area {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .table-audit-concepts {

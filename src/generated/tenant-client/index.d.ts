@@ -223,6 +223,11 @@ export type IncomeTaxSettlement = $Result.DefaultSelection<Prisma.$IncomeTaxSett
  * 
  */
 export type IncomeTaxSettlementDetail = $Result.DefaultSelection<Prisma.$IncomeTaxSettlementDetailPayload>
+/**
+ * Model ReportTemplate
+ * 
+ */
+export type ReportTemplate = $Result.DefaultSelection<Prisma.$ReportTemplatePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -761,6 +766,16 @@ export class PrismaClient<
     * ```
     */
   get incomeTaxSettlementDetail(): Prisma.IncomeTaxSettlementDetailDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.reportTemplate`: Exposes CRUD operations for the **ReportTemplate** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReportTemplates
+    * const reportTemplates = await prisma.reportTemplate.findMany()
+    * ```
+    */
+  get reportTemplate(): Prisma.ReportTemplateDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1243,7 +1258,8 @@ export namespace Prisma {
     EmployeeIncomeTaxPaymentOnAccount: 'EmployeeIncomeTaxPaymentOnAccount',
     SiradigImport: 'SiradigImport',
     IncomeTaxSettlement: 'IncomeTaxSettlement',
-    IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail'
+    IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail',
+    ReportTemplate: 'ReportTemplate'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1262,7 +1278,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4038,6 +4054,72 @@ export namespace Prisma {
           }
         }
       }
+      ReportTemplate: {
+        payload: Prisma.$ReportTemplatePayload<ExtArgs>
+        fields: Prisma.ReportTemplateFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReportTemplateFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReportTemplateFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          findFirst: {
+            args: Prisma.ReportTemplateFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReportTemplateFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          findMany: {
+            args: Prisma.ReportTemplateFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>[]
+          }
+          create: {
+            args: Prisma.ReportTemplateCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          createMany: {
+            args: Prisma.ReportTemplateCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.ReportTemplateDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          update: {
+            args: Prisma.ReportTemplateUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          deleteMany: {
+            args: Prisma.ReportTemplateDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReportTemplateUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.ReportTemplateUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReportTemplatePayload>
+          }
+          aggregate: {
+            args: Prisma.ReportTemplateAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReportTemplate>
+          }
+          groupBy: {
+            args: Prisma.ReportTemplateGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReportTemplateGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReportTemplateCountArgs<ExtArgs>
+            result: $Utils.Optional<ReportTemplateCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4176,6 +4258,7 @@ export namespace Prisma {
     siradigImport?: SiradigImportOmit
     incomeTaxSettlement?: IncomeTaxSettlementOmit
     incomeTaxSettlementDetail?: IncomeTaxSettlementDetailOmit
+    reportTemplate?: ReportTemplateOmit
   }
 
   /* Types for Logging */
@@ -50406,6 +50489,917 @@ export namespace Prisma {
 
 
   /**
+   * Model ReportTemplate
+   */
+
+  export type AggregateReportTemplate = {
+    _count: ReportTemplateCountAggregateOutputType | null
+    _min: ReportTemplateMinAggregateOutputType | null
+    _max: ReportTemplateMaxAggregateOutputType | null
+  }
+
+  export type ReportTemplateMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    isSystem: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReportTemplateMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    category: string | null
+    isSystem: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ReportTemplateCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    category: number
+    isSystem: number
+    config: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ReportTemplateMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    isSystem?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReportTemplateMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    isSystem?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ReportTemplateCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    category?: true
+    isSystem?: true
+    config?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ReportTemplateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReportTemplate to aggregate.
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportTemplates to fetch.
+     */
+    orderBy?: ReportTemplateOrderByWithRelationInput | ReportTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReportTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReportTemplates
+    **/
+    _count?: true | ReportTemplateCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReportTemplateMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReportTemplateMaxAggregateInputType
+  }
+
+  export type GetReportTemplateAggregateType<T extends ReportTemplateAggregateArgs> = {
+        [P in keyof T & keyof AggregateReportTemplate]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReportTemplate[P]>
+      : GetScalarType<T[P], AggregateReportTemplate[P]>
+  }
+
+
+
+
+  export type ReportTemplateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReportTemplateWhereInput
+    orderBy?: ReportTemplateOrderByWithAggregationInput | ReportTemplateOrderByWithAggregationInput[]
+    by: ReportTemplateScalarFieldEnum[] | ReportTemplateScalarFieldEnum
+    having?: ReportTemplateScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReportTemplateCountAggregateInputType | true
+    _min?: ReportTemplateMinAggregateInputType
+    _max?: ReportTemplateMaxAggregateInputType
+  }
+
+  export type ReportTemplateGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    category: string
+    isSystem: boolean
+    config: JsonValue
+    createdAt: Date
+    updatedAt: Date
+    _count: ReportTemplateCountAggregateOutputType | null
+    _min: ReportTemplateMinAggregateOutputType | null
+    _max: ReportTemplateMaxAggregateOutputType | null
+  }
+
+  type GetReportTemplateGroupByPayload<T extends ReportTemplateGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReportTemplateGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReportTemplateGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReportTemplateGroupByOutputType[P]>
+            : GetScalarType<T[P], ReportTemplateGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReportTemplateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    isSystem?: boolean
+    config?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["reportTemplate"]>
+
+
+
+  export type ReportTemplateSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    category?: boolean
+    isSystem?: boolean
+    config?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ReportTemplateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "category" | "isSystem" | "config" | "createdAt" | "updatedAt", ExtArgs["result"]["reportTemplate"]>
+
+  export type $ReportTemplatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReportTemplate"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      category: string
+      isSystem: boolean
+      config: Prisma.JsonValue
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["reportTemplate"]>
+    composites: {}
+  }
+
+  type ReportTemplateGetPayload<S extends boolean | null | undefined | ReportTemplateDefaultArgs> = $Result.GetResult<Prisma.$ReportTemplatePayload, S>
+
+  type ReportTemplateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReportTemplateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReportTemplateCountAggregateInputType | true
+    }
+
+  export interface ReportTemplateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReportTemplate'], meta: { name: 'ReportTemplate' } }
+    /**
+     * Find zero or one ReportTemplate that matches the filter.
+     * @param {ReportTemplateFindUniqueArgs} args - Arguments to find a ReportTemplate
+     * @example
+     * // Get one ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReportTemplateFindUniqueArgs>(args: SelectSubset<T, ReportTemplateFindUniqueArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReportTemplate that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReportTemplateFindUniqueOrThrowArgs} args - Arguments to find a ReportTemplate
+     * @example
+     * // Get one ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReportTemplateFindUniqueOrThrowArgs>(args: SelectSubset<T, ReportTemplateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReportTemplate that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateFindFirstArgs} args - Arguments to find a ReportTemplate
+     * @example
+     * // Get one ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReportTemplateFindFirstArgs>(args?: SelectSubset<T, ReportTemplateFindFirstArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReportTemplate that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateFindFirstOrThrowArgs} args - Arguments to find a ReportTemplate
+     * @example
+     * // Get one ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReportTemplateFindFirstOrThrowArgs>(args?: SelectSubset<T, ReportTemplateFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReportTemplates that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReportTemplates
+     * const reportTemplates = await prisma.reportTemplate.findMany()
+     * 
+     * // Get first 10 ReportTemplates
+     * const reportTemplates = await prisma.reportTemplate.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const reportTemplateWithIdOnly = await prisma.reportTemplate.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReportTemplateFindManyArgs>(args?: SelectSubset<T, ReportTemplateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReportTemplate.
+     * @param {ReportTemplateCreateArgs} args - Arguments to create a ReportTemplate.
+     * @example
+     * // Create one ReportTemplate
+     * const ReportTemplate = await prisma.reportTemplate.create({
+     *   data: {
+     *     // ... data to create a ReportTemplate
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReportTemplateCreateArgs>(args: SelectSubset<T, ReportTemplateCreateArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReportTemplates.
+     * @param {ReportTemplateCreateManyArgs} args - Arguments to create many ReportTemplates.
+     * @example
+     * // Create many ReportTemplates
+     * const reportTemplate = await prisma.reportTemplate.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReportTemplateCreateManyArgs>(args?: SelectSubset<T, ReportTemplateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ReportTemplate.
+     * @param {ReportTemplateDeleteArgs} args - Arguments to delete one ReportTemplate.
+     * @example
+     * // Delete one ReportTemplate
+     * const ReportTemplate = await prisma.reportTemplate.delete({
+     *   where: {
+     *     // ... filter to delete one ReportTemplate
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReportTemplateDeleteArgs>(args: SelectSubset<T, ReportTemplateDeleteArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReportTemplate.
+     * @param {ReportTemplateUpdateArgs} args - Arguments to update one ReportTemplate.
+     * @example
+     * // Update one ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReportTemplateUpdateArgs>(args: SelectSubset<T, ReportTemplateUpdateArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReportTemplates.
+     * @param {ReportTemplateDeleteManyArgs} args - Arguments to filter ReportTemplates to delete.
+     * @example
+     * // Delete a few ReportTemplates
+     * const { count } = await prisma.reportTemplate.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReportTemplateDeleteManyArgs>(args?: SelectSubset<T, ReportTemplateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReportTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReportTemplates
+     * const reportTemplate = await prisma.reportTemplate.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReportTemplateUpdateManyArgs>(args: SelectSubset<T, ReportTemplateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ReportTemplate.
+     * @param {ReportTemplateUpsertArgs} args - Arguments to update or create a ReportTemplate.
+     * @example
+     * // Update or create a ReportTemplate
+     * const reportTemplate = await prisma.reportTemplate.upsert({
+     *   create: {
+     *     // ... data to create a ReportTemplate
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReportTemplate we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReportTemplateUpsertArgs>(args: SelectSubset<T, ReportTemplateUpsertArgs<ExtArgs>>): Prisma__ReportTemplateClient<$Result.GetResult<Prisma.$ReportTemplatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReportTemplates.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateCountArgs} args - Arguments to filter ReportTemplates to count.
+     * @example
+     * // Count the number of ReportTemplates
+     * const count = await prisma.reportTemplate.count({
+     *   where: {
+     *     // ... the filter for the ReportTemplates we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReportTemplateCountArgs>(
+      args?: Subset<T, ReportTemplateCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReportTemplateCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReportTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReportTemplateAggregateArgs>(args: Subset<T, ReportTemplateAggregateArgs>): Prisma.PrismaPromise<GetReportTemplateAggregateType<T>>
+
+    /**
+     * Group by ReportTemplate.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReportTemplateGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReportTemplateGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReportTemplateGroupByArgs['orderBy'] }
+        : { orderBy?: ReportTemplateGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReportTemplateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReportTemplateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReportTemplate model
+   */
+  readonly fields: ReportTemplateFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReportTemplate.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReportTemplateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReportTemplate model
+   */
+  interface ReportTemplateFieldRefs {
+    readonly id: FieldRef<"ReportTemplate", 'String'>
+    readonly name: FieldRef<"ReportTemplate", 'String'>
+    readonly description: FieldRef<"ReportTemplate", 'String'>
+    readonly category: FieldRef<"ReportTemplate", 'String'>
+    readonly isSystem: FieldRef<"ReportTemplate", 'Boolean'>
+    readonly config: FieldRef<"ReportTemplate", 'Json'>
+    readonly createdAt: FieldRef<"ReportTemplate", 'DateTime'>
+    readonly updatedAt: FieldRef<"ReportTemplate", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReportTemplate findUnique
+   */
+  export type ReportTemplateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ReportTemplate to fetch.
+     */
+    where: ReportTemplateWhereUniqueInput
+  }
+
+  /**
+   * ReportTemplate findUniqueOrThrow
+   */
+  export type ReportTemplateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ReportTemplate to fetch.
+     */
+    where: ReportTemplateWhereUniqueInput
+  }
+
+  /**
+   * ReportTemplate findFirst
+   */
+  export type ReportTemplateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ReportTemplate to fetch.
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportTemplates to fetch.
+     */
+    orderBy?: ReportTemplateOrderByWithRelationInput | ReportTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReportTemplates.
+     */
+    cursor?: ReportTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReportTemplates.
+     */
+    distinct?: ReportTemplateScalarFieldEnum | ReportTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ReportTemplate findFirstOrThrow
+   */
+  export type ReportTemplateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ReportTemplate to fetch.
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportTemplates to fetch.
+     */
+    orderBy?: ReportTemplateOrderByWithRelationInput | ReportTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReportTemplates.
+     */
+    cursor?: ReportTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportTemplates.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReportTemplates.
+     */
+    distinct?: ReportTemplateScalarFieldEnum | ReportTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ReportTemplate findMany
+   */
+  export type ReportTemplateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter, which ReportTemplates to fetch.
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReportTemplates to fetch.
+     */
+    orderBy?: ReportTemplateOrderByWithRelationInput | ReportTemplateOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReportTemplates.
+     */
+    cursor?: ReportTemplateWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReportTemplates from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReportTemplates.
+     */
+    skip?: number
+    distinct?: ReportTemplateScalarFieldEnum | ReportTemplateScalarFieldEnum[]
+  }
+
+  /**
+   * ReportTemplate create
+   */
+  export type ReportTemplateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ReportTemplate.
+     */
+    data: XOR<ReportTemplateCreateInput, ReportTemplateUncheckedCreateInput>
+  }
+
+  /**
+   * ReportTemplate createMany
+   */
+  export type ReportTemplateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReportTemplates.
+     */
+    data: ReportTemplateCreateManyInput | ReportTemplateCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReportTemplate update
+   */
+  export type ReportTemplateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ReportTemplate.
+     */
+    data: XOR<ReportTemplateUpdateInput, ReportTemplateUncheckedUpdateInput>
+    /**
+     * Choose, which ReportTemplate to update.
+     */
+    where: ReportTemplateWhereUniqueInput
+  }
+
+  /**
+   * ReportTemplate updateMany
+   */
+  export type ReportTemplateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReportTemplates.
+     */
+    data: XOR<ReportTemplateUpdateManyMutationInput, ReportTemplateUncheckedUpdateManyInput>
+    /**
+     * Filter which ReportTemplates to update
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * Limit how many ReportTemplates to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReportTemplate upsert
+   */
+  export type ReportTemplateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ReportTemplate to update in case it exists.
+     */
+    where: ReportTemplateWhereUniqueInput
+    /**
+     * In case the ReportTemplate found by the `where` argument doesn't exist, create a new ReportTemplate with this data.
+     */
+    create: XOR<ReportTemplateCreateInput, ReportTemplateUncheckedCreateInput>
+    /**
+     * In case the ReportTemplate was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReportTemplateUpdateInput, ReportTemplateUncheckedUpdateInput>
+  }
+
+  /**
+   * ReportTemplate delete
+   */
+  export type ReportTemplateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+    /**
+     * Filter which ReportTemplate to delete.
+     */
+    where: ReportTemplateWhereUniqueInput
+  }
+
+  /**
+   * ReportTemplate deleteMany
+   */
+  export type ReportTemplateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReportTemplates to delete
+     */
+    where?: ReportTemplateWhereInput
+    /**
+     * Limit how many ReportTemplates to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReportTemplate without action
+   */
+  export type ReportTemplateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReportTemplate
+     */
+    select?: ReportTemplateSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReportTemplate
+     */
+    omit?: ReportTemplateOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51231,6 +52225,20 @@ export namespace Prisma {
   export type IncomeTaxSettlementDetailScalarFieldEnum = (typeof IncomeTaxSettlementDetailScalarFieldEnum)[keyof typeof IncomeTaxSettlementDetailScalarFieldEnum]
 
 
+  export const ReportTemplateScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    category: 'category',
+    isSystem: 'isSystem',
+    config: 'config',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ReportTemplateScalarFieldEnum = (typeof ReportTemplateScalarFieldEnum)[keyof typeof ReportTemplateScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -51245,6 +52253,13 @@ export namespace Prisma {
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const NullsOrder: {
@@ -51780,6 +52795,16 @@ export namespace Prisma {
   };
 
   export type IncomeTaxSettlementDetailOrderByRelevanceFieldEnum = (typeof IncomeTaxSettlementDetailOrderByRelevanceFieldEnum)[keyof typeof IncomeTaxSettlementDetailOrderByRelevanceFieldEnum]
+
+
+  export const ReportTemplateOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    category: 'category'
+  };
+
+  export type ReportTemplateOrderByRelevanceFieldEnum = (typeof ReportTemplateOrderByRelevanceFieldEnum)[keyof typeof ReportTemplateOrderByRelevanceFieldEnum]
 
 
   /**
@@ -56126,6 +57151,74 @@ export namespace Prisma {
     notes?: StringNullableWithAggregatesFilter<"IncomeTaxSettlementDetail"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"IncomeTaxSettlementDetail"> | Date | string
+  }
+
+  export type ReportTemplateWhereInput = {
+    AND?: ReportTemplateWhereInput | ReportTemplateWhereInput[]
+    OR?: ReportTemplateWhereInput[]
+    NOT?: ReportTemplateWhereInput | ReportTemplateWhereInput[]
+    id?: StringFilter<"ReportTemplate"> | string
+    name?: StringFilter<"ReportTemplate"> | string
+    description?: StringNullableFilter<"ReportTemplate"> | string | null
+    category?: StringFilter<"ReportTemplate"> | string
+    isSystem?: BoolFilter<"ReportTemplate"> | boolean
+    config?: JsonFilter<"ReportTemplate">
+    createdAt?: DateTimeFilter<"ReportTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"ReportTemplate"> | Date | string
+  }
+
+  export type ReportTemplateOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    isSystem?: SortOrder
+    config?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: ReportTemplateOrderByRelevanceInput
+  }
+
+  export type ReportTemplateWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ReportTemplateWhereInput | ReportTemplateWhereInput[]
+    OR?: ReportTemplateWhereInput[]
+    NOT?: ReportTemplateWhereInput | ReportTemplateWhereInput[]
+    name?: StringFilter<"ReportTemplate"> | string
+    description?: StringNullableFilter<"ReportTemplate"> | string | null
+    category?: StringFilter<"ReportTemplate"> | string
+    isSystem?: BoolFilter<"ReportTemplate"> | boolean
+    config?: JsonFilter<"ReportTemplate">
+    createdAt?: DateTimeFilter<"ReportTemplate"> | Date | string
+    updatedAt?: DateTimeFilter<"ReportTemplate"> | Date | string
+  }, "id">
+
+  export type ReportTemplateOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    category?: SortOrder
+    isSystem?: SortOrder
+    config?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ReportTemplateCountOrderByAggregateInput
+    _max?: ReportTemplateMaxOrderByAggregateInput
+    _min?: ReportTemplateMinOrderByAggregateInput
+  }
+
+  export type ReportTemplateScalarWhereWithAggregatesInput = {
+    AND?: ReportTemplateScalarWhereWithAggregatesInput | ReportTemplateScalarWhereWithAggregatesInput[]
+    OR?: ReportTemplateScalarWhereWithAggregatesInput[]
+    NOT?: ReportTemplateScalarWhereWithAggregatesInput | ReportTemplateScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReportTemplate"> | string
+    name?: StringWithAggregatesFilter<"ReportTemplate"> | string
+    description?: StringNullableWithAggregatesFilter<"ReportTemplate"> | string | null
+    category?: StringWithAggregatesFilter<"ReportTemplate"> | string
+    isSystem?: BoolWithAggregatesFilter<"ReportTemplate"> | boolean
+    config?: JsonWithAggregatesFilter<"ReportTemplate">
+    createdAt?: DateTimeWithAggregatesFilter<"ReportTemplate"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ReportTemplate"> | Date | string
   }
 
   export type CompanyProfileCreateInput = {
@@ -61050,6 +62143,83 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ReportTemplateCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category?: string
+    isSystem?: boolean
+    config: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReportTemplateUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category?: string
+    isSystem?: boolean
+    config: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReportTemplateUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    config?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportTemplateUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    config?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportTemplateCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    category?: string
+    isSystem?: boolean
+    config: JsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ReportTemplateUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    config?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReportTemplateUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    config?: JsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -64502,6 +65672,92 @@ export namespace Prisma {
     priorMonthsWithheldTax?: SortOrder
     netMonthlyWithholding?: SortOrder
   }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type ReportTemplateOrderByRelevanceInput = {
+    fields: ReportTemplateOrderByRelevanceFieldEnum | ReportTemplateOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type ReportTemplateCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    isSystem?: SortOrder
+    config?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReportTemplateMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ReportTemplateMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    category?: SortOrder
+    isSystem?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
@@ -67083,6 +68339,29 @@ export namespace Prisma {
     | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
   export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+  export type NestedJsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>

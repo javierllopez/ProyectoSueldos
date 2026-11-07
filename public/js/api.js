@@ -109,9 +109,15 @@ export async function apiRequest(endpoint, options = {}) {
     }
 
     if (!response.ok) {
-      const error = new Error(data.error?.message || `Error ${response.status}: ${response.statusText}`);
+      const detailsList = Array.isArray(data.error?.details) ? data.error.details : [];
+      const detailsText =
+        detailsList.length > 0
+          ? ` (${detailsList.map((d) => (d.field ? `${d.field}: ${d.message}` : d.message)).join('; ')})`
+          : '';
+      const baseMsg = data.error?.message || `Error ${response.status}: ${response.statusText}`;
+      const error = new Error(`${baseMsg}${detailsText}`);
       error.status = response.status;
-      error.details = data.error?.details || [];
+      error.details = detailsList;
       throw error;
     }
 

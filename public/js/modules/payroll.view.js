@@ -56,14 +56,13 @@ class PayrollMethods {
           parentBtn.setAttribute('aria-expanded', 'true');
         }
 
-        const collapseSubmenu = parentDropdown.querySelector('.collapse');
+        const collapseSubmenu = parentDropdown.querySelector('.collapse, .payroll-submenu');
         if (collapseSubmenu && !collapseSubmenu.classList.contains('show')) {
-          if (window.bootstrap?.Collapse) {
-            const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseSubmenu, { toggle: false });
-            inst.show();
-          } else {
-            collapseSubmenu.classList.add('show');
-          }
+          collapseSubmenu.classList.add('show');
+        }
+        const caret = parentBtn?.querySelector('.submenu-caret');
+        if (caret) {
+          caret.style.transform = 'rotate(180deg)';
         }
       }
     }
@@ -116,6 +115,15 @@ class PayrollMethods {
       this.loadPayrollSettings();
     } else if (cleanId === '#pane-payroll-income-tax') {
       this.renderIncomeTaxView();
+    } else if (cleanId === '#pane-reports-runner') {
+      this.renderReportsRunnerView();
+    } else if (cleanId === '#pane-reports-builder') {
+      const builderPane = document.querySelector('#pane-reports-builder');
+      const runnerPane = document.querySelector('#pane-reports-runner');
+      if (builderPane) builderPane.classList.remove('show', 'active');
+      if (runnerPane) runnerPane.classList.add('show', 'active');
+      this.renderReportsRunnerView();
+      this.renderReportsBuilderView(null);
     }
   }
 
@@ -146,14 +154,18 @@ class PayrollMethods {
         if (targetId) {
           const collapseEl = document.querySelector(targetId);
           if (collapseEl) {
-            if (window.bootstrap?.Collapse) {
-              const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseEl);
-              inst.toggle();
-            } else {
-              collapseEl.classList.toggle('show');
-            }
+            collapseEl.classList.toggle('show');
             const isShown = collapseEl.classList.contains('show');
             btn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+            const caret = btn.querySelector('.submenu-caret');
+            if (caret) {
+              caret.style.transform = isShown ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+            if (isShown) {
+              setTimeout(() => {
+                collapseEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+              }, 30);
+            }
           }
         }
       };
@@ -191,6 +203,7 @@ class PayrollMethods {
 
   setupPayrollModals() {
     this.setupEmbargoModals?.();
+    this.setupReportsEvents?.();
 
     // --- Fiscal Period Modal ---
     const newFiscalPeriodBtn = document.getElementById('btn-new-fiscal-period');
@@ -4106,12 +4119,12 @@ class PayrollMethods {
 
         return `
           <tr>
-            <td class="font-monospace text-center" style="width: 50px; white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
-            <td>${escapeHtml(it.conceptName)}</td>
-            <td class="text-center font-monospace" style="width: 60px; white-space: nowrap;">${it.units ? Number(it.units) : '-'}</td>
-            <td class="text-end font-monospace" style="width: 105px; white-space: nowrap;">${isRem ? `$ ${amountStr}` : ''}</td>
-            <td class="text-end font-monospace" style="width: 110px; white-space: nowrap;">${isNonRem ? `$ ${amountStr}` : ''}</td>
-            <td class="text-end font-monospace" style="width: 105px; white-space: nowrap;">${isDed ? `$ ${amountStr}` : ''}</td>
+            <td class="font-monospace text-center">${escapeHtml(it.conceptCode)}</td>
+            <td class="payslip-col-concept-name">${escapeHtml(it.conceptName)}</td>
+            <td class="text-center font-monospace">${it.units ? Number(it.units) : '-'}</td>
+            <td class="text-end font-monospace">${isRem ? `$ ${amountStr}` : ''}</td>
+            <td class="text-end font-monospace">${isNonRem ? `$ ${amountStr}` : ''}</td>
+            <td class="text-end font-monospace payslip-col-retenciones">${isDed ? `$ ${amountStr}` : ''}</td>
           </tr>
         `;
       })
@@ -4165,21 +4178,21 @@ class PayrollMethods {
         <div class="p-0">
           <table class="payslip-table-items">
             <colgroup>
-              <col style="width: 50px;">
+              <col style="width: 48px;">
               <col style="width: auto;">
-              <col style="width: 60px;">
+              <col style="width: 55px;">
               <col style="width: 105px;">
               <col style="width: 110px;">
-              <col style="width: 105px;">
+              <col style="width: 110px;">
             </colgroup>
             <thead>
               <tr>
-                <th class="text-center" style="width: 50px;">Cód.</th>
+                <th class="text-center">Cód.</th>
                 <th>Concepto</th>
-                <th class="text-center" style="width: 60px;">Unid.</th>
-                <th class="text-end" style="width: 105px; white-space: nowrap;">Remunerativos</th>
-                <th class="text-end" style="width: 110px; white-space: nowrap;">No Remunerativos</th>
-                <th class="text-end" style="width: 105px; white-space: nowrap;">Retenciones</th>
+                <th class="text-center">Unid.</th>
+                <th class="text-end">Remunerativos</th>
+                <th class="text-end">No Remunerativos</th>
+                <th class="text-end payslip-col-retenciones">Retenciones</th>
               </tr>
             </thead>
             <tbody>

@@ -58,7 +58,14 @@ class TenantConnectionManager {
     const connectionPromise = (async () => {
       // Si el pool alcanzó el límite, desalojar el más antiguo que NO esté en uso
       if (this.pool.size >= this.maxClients) {
-        await this.evictOldestIdle();
+        const evicted = await this.evictOldestIdle();
+        if (!evicted && this.pool.size >= this.maxClients) {
+          const busyError = new Error(
+            'Capacidad máxima de conexiones multi-empresa alcanzada temporalmente. Reintente en unos segundos.'
+          );
+          busyError.status = 503;
+          throw busyError;
+        }
       }
 
       const connectionUrl = this.buildConnectionString(company);
@@ -127,7 +134,9 @@ class TenantConnectionManager {
       } catch (err) {
         console.error(`Error al desconectar cliente tenant inactivo para ${oldestKey}:`, err);
       }
+      return true;
     }
+    return false;
   }
 
   /**

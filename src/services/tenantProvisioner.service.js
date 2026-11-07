@@ -784,6 +784,17 @@ const TENANT_TABLE_DEFINITIONS = [
     CONSTRAINT \`income_tax_settlement_details_settlement_id_fkey\` FOREIGN KEY (\`settlement_id\`) REFERENCES \`income_tax_settlements\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT \`income_tax_settlement_details_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`report_templates\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`description\` TEXT NULL,
+    \`category\` VARCHAR(50) NOT NULL DEFAULT 'PAYROLL',
+    \`is_system\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`config\` JSON NOT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 ];
 
 /**
@@ -2967,3 +2978,29 @@ export async function ensureTenantIncomeTaxSchema(tenantClient, { force = false 
   }
 }
 
+
+
+const verifiedReportsClients = new WeakSet();
+
+export async function ensureTenantReportsSchema(tenantClient, { force = false } = {}) {
+  if (!force && verifiedReportsClients.has(tenantClient)) {
+    return;
+  }
+  try {
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`report_templates\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`description\` TEXT NULL,
+        \`category\` VARCHAR(50) NOT NULL DEFAULT 'PAYROLL',
+        \`is_system\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`config\` JSON NOT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+    verifiedReportsClients.add(tenantClient);
+  } catch (err) {
+    console.warn('Aviso al verificar esquema de Reportes:', err.message);
+  }
+}

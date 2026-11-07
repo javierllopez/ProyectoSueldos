@@ -986,3 +986,16 @@ model IncomeTaxSettlementDetail {
   @@index([employeeId])
   @@map("income_tax_settlement_details")
 }
+
+model ReportTemplate {
+  id          String   @id @default(uuid())
+  name        String   @map("name")
+  description String?  @map("description") @db.Text
+  category    String   @default("PAYROLL") @map("category")
+  isSystem    Boolean  @default(false) @map("is_system")
+  config      Json     @map("config")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("report_templates")
+}
