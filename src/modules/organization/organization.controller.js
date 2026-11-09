@@ -126,6 +126,13 @@ export async function listArcaActivities(req, res) {
   return res.status(200).json({ data: activities });
 }
 
+// --- FORMAS DE PAGO (FUTURO MÓDULO DE PAGOS) ---
+
+export async function listPaymentMethods(req, res) {
+  const paymentMethods = await organizationService.listPaymentMethods(req.tenantPrisma);
+  return res.status(200).json({ data: paymentMethods });
+}
+
 // --- JORNADAS DE TRABAJO ---
 
 export async function listWorkShifts(req, res) {

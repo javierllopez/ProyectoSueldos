@@ -99,6 +99,11 @@ export type MutualConcept = $Result.DefaultSelection<Prisma.$MutualConceptPayloa
  */
 export type Employee = $Result.DefaultSelection<Prisma.$EmployeePayload>
 /**
+ * Model PaymentMethod
+ * 
+ */
+export type PaymentMethod = $Result.DefaultSelection<Prisma.$PaymentMethodPayload>
+/**
  * Model SalaryScale
  * 
  */
@@ -228,6 +233,31 @@ export type IncomeTaxSettlementDetail = $Result.DefaultSelection<Prisma.$IncomeT
  * 
  */
 export type ReportTemplate = $Result.DefaultSelection<Prisma.$ReportTemplatePayload>
+/**
+ * Model IncidentType
+ * 
+ */
+export type IncidentType = $Result.DefaultSelection<Prisma.$IncidentTypePayload>
+/**
+ * Model SanctionType
+ * 
+ */
+export type SanctionType = $Result.DefaultSelection<Prisma.$SanctionTypePayload>
+/**
+ * Model EmployeeIncident
+ * 
+ */
+export type EmployeeIncident = $Result.DefaultSelection<Prisma.$EmployeeIncidentPayload>
+/**
+ * Model EmployeeSanction
+ * 
+ */
+export type EmployeeSanction = $Result.DefaultSelection<Prisma.$EmployeeSanctionPayload>
+/**
+ * Model SanctionIncidentLink
+ * 
+ */
+export type SanctionIncidentLink = $Result.DefaultSelection<Prisma.$SanctionIncidentLinkPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -518,6 +548,16 @@ export class PrismaClient<
   get employee(): Prisma.EmployeeDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.paymentMethod`: Exposes CRUD operations for the **PaymentMethod** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentMethods
+    * const paymentMethods = await prisma.paymentMethod.findMany()
+    * ```
+    */
+  get paymentMethod(): Prisma.PaymentMethodDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.salaryScale`: Exposes CRUD operations for the **SalaryScale** model.
     * Example usage:
     * ```ts
@@ -776,6 +816,56 @@ export class PrismaClient<
     * ```
     */
   get reportTemplate(): Prisma.ReportTemplateDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.incidentType`: Exposes CRUD operations for the **IncidentType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more IncidentTypes
+    * const incidentTypes = await prisma.incidentType.findMany()
+    * ```
+    */
+  get incidentType(): Prisma.IncidentTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sanctionType`: Exposes CRUD operations for the **SanctionType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SanctionTypes
+    * const sanctionTypes = await prisma.sanctionType.findMany()
+    * ```
+    */
+  get sanctionType(): Prisma.SanctionTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeIncident`: Exposes CRUD operations for the **EmployeeIncident** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeIncidents
+    * const employeeIncidents = await prisma.employeeIncident.findMany()
+    * ```
+    */
+  get employeeIncident(): Prisma.EmployeeIncidentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.employeeSanction`: Exposes CRUD operations for the **EmployeeSanction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more EmployeeSanctions
+    * const employeeSanctions = await prisma.employeeSanction.findMany()
+    * ```
+    */
+  get employeeSanction(): Prisma.EmployeeSanctionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sanctionIncidentLink`: Exposes CRUD operations for the **SanctionIncidentLink** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SanctionIncidentLinks
+    * const sanctionIncidentLinks = await prisma.sanctionIncidentLink.findMany()
+    * ```
+    */
+  get sanctionIncidentLink(): Prisma.SanctionIncidentLinkDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1234,6 +1324,7 @@ export namespace Prisma {
     Mutual: 'Mutual',
     MutualConcept: 'MutualConcept',
     Employee: 'Employee',
+    PaymentMethod: 'PaymentMethod',
     SalaryScale: 'SalaryScale',
     Kinship: 'Kinship',
     EmployeeRelative: 'EmployeeRelative',
@@ -1259,7 +1350,12 @@ export namespace Prisma {
     SiradigImport: 'SiradigImport',
     IncomeTaxSettlement: 'IncomeTaxSettlement',
     IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail',
-    ReportTemplate: 'ReportTemplate'
+    ReportTemplate: 'ReportTemplate',
+    IncidentType: 'IncidentType',
+    SanctionType: 'SanctionType',
+    EmployeeIncident: 'EmployeeIncident',
+    EmployeeSanction: 'EmployeeSanction',
+    SanctionIncidentLink: 'SanctionIncidentLink'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1278,7 +1374,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate"
+      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2401,6 +2497,72 @@ export namespace Prisma {
           count: {
             args: Prisma.EmployeeCountArgs<ExtArgs>
             result: $Utils.Optional<EmployeeCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaymentMethod: {
+        payload: Prisma.$PaymentMethodPayload<ExtArgs>
+        fields: Prisma.PaymentMethodFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentMethodFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentMethodFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentMethodFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentMethodFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentMethodFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentMethodCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentMethodCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PaymentMethodDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          update: {
+            args: Prisma.PaymentMethodUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentMethodDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentMethodUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PaymentMethodUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentMethodPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentMethodAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentMethod>
+          }
+          groupBy: {
+            args: Prisma.PaymentMethodGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentMethodGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentMethodCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentMethodCountAggregateOutputType> | number
           }
         }
       }
@@ -4120,6 +4282,336 @@ export namespace Prisma {
           }
         }
       }
+      IncidentType: {
+        payload: Prisma.$IncidentTypePayload<ExtArgs>
+        fields: Prisma.IncidentTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.IncidentTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.IncidentTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          findFirst: {
+            args: Prisma.IncidentTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.IncidentTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          findMany: {
+            args: Prisma.IncidentTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>[]
+          }
+          create: {
+            args: Prisma.IncidentTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          createMany: {
+            args: Prisma.IncidentTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.IncidentTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          update: {
+            args: Prisma.IncidentTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.IncidentTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.IncidentTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.IncidentTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$IncidentTypePayload>
+          }
+          aggregate: {
+            args: Prisma.IncidentTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateIncidentType>
+          }
+          groupBy: {
+            args: Prisma.IncidentTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<IncidentTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.IncidentTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<IncidentTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      SanctionType: {
+        payload: Prisma.$SanctionTypePayload<ExtArgs>
+        fields: Prisma.SanctionTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SanctionTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SanctionTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          findFirst: {
+            args: Prisma.SanctionTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SanctionTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          findMany: {
+            args: Prisma.SanctionTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>[]
+          }
+          create: {
+            args: Prisma.SanctionTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          createMany: {
+            args: Prisma.SanctionTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SanctionTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          update: {
+            args: Prisma.SanctionTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.SanctionTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SanctionTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SanctionTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionTypePayload>
+          }
+          aggregate: {
+            args: Prisma.SanctionTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSanctionType>
+          }
+          groupBy: {
+            args: Prisma.SanctionTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SanctionTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SanctionTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<SanctionTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeIncident: {
+        payload: Prisma.$EmployeeIncidentPayload<ExtArgs>
+        fields: Prisma.EmployeeIncidentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeIncidentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeIncidentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeIncidentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeIncidentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeIncidentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeIncidentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeIncidentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeIncidentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          update: {
+            args: Prisma.EmployeeIncidentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeIncidentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeIncidentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeIncidentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeIncidentPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeIncidentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeIncident>
+          }
+          groupBy: {
+            args: Prisma.EmployeeIncidentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncidentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeIncidentCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeIncidentCountAggregateOutputType> | number
+          }
+        }
+      }
+      EmployeeSanction: {
+        payload: Prisma.$EmployeeSanctionPayload<ExtArgs>
+        fields: Prisma.EmployeeSanctionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.EmployeeSanctionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.EmployeeSanctionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          findFirst: {
+            args: Prisma.EmployeeSanctionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.EmployeeSanctionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          findMany: {
+            args: Prisma.EmployeeSanctionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>[]
+          }
+          create: {
+            args: Prisma.EmployeeSanctionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          createMany: {
+            args: Prisma.EmployeeSanctionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.EmployeeSanctionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          update: {
+            args: Prisma.EmployeeSanctionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          deleteMany: {
+            args: Prisma.EmployeeSanctionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.EmployeeSanctionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.EmployeeSanctionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$EmployeeSanctionPayload>
+          }
+          aggregate: {
+            args: Prisma.EmployeeSanctionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateEmployeeSanction>
+          }
+          groupBy: {
+            args: Prisma.EmployeeSanctionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeSanctionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.EmployeeSanctionCountArgs<ExtArgs>
+            result: $Utils.Optional<EmployeeSanctionCountAggregateOutputType> | number
+          }
+        }
+      }
+      SanctionIncidentLink: {
+        payload: Prisma.$SanctionIncidentLinkPayload<ExtArgs>
+        fields: Prisma.SanctionIncidentLinkFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SanctionIncidentLinkFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SanctionIncidentLinkFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          findFirst: {
+            args: Prisma.SanctionIncidentLinkFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SanctionIncidentLinkFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          findMany: {
+            args: Prisma.SanctionIncidentLinkFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>[]
+          }
+          create: {
+            args: Prisma.SanctionIncidentLinkCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          createMany: {
+            args: Prisma.SanctionIncidentLinkCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SanctionIncidentLinkDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          update: {
+            args: Prisma.SanctionIncidentLinkUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          deleteMany: {
+            args: Prisma.SanctionIncidentLinkDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SanctionIncidentLinkUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SanctionIncidentLinkUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SanctionIncidentLinkPayload>
+          }
+          aggregate: {
+            args: Prisma.SanctionIncidentLinkAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSanctionIncidentLink>
+          }
+          groupBy: {
+            args: Prisma.SanctionIncidentLinkGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SanctionIncidentLinkGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SanctionIncidentLinkCountArgs<ExtArgs>
+            result: $Utils.Optional<SanctionIncidentLinkCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4233,6 +4725,7 @@ export namespace Prisma {
     mutual?: MutualOmit
     mutualConcept?: MutualConceptOmit
     employee?: EmployeeOmit
+    paymentMethod?: PaymentMethodOmit
     salaryScale?: SalaryScaleOmit
     kinship?: KinshipOmit
     employeeRelative?: EmployeeRelativeOmit
@@ -4259,6 +4752,11 @@ export namespace Prisma {
     incomeTaxSettlement?: IncomeTaxSettlementOmit
     incomeTaxSettlementDetail?: IncomeTaxSettlementDetailOmit
     reportTemplate?: ReportTemplateOmit
+    incidentType?: IncidentTypeOmit
+    sanctionType?: SanctionTypeOmit
+    employeeIncident?: EmployeeIncidentOmit
+    employeeSanction?: EmployeeSanctionOmit
+    sanctionIncidentLink?: SanctionIncidentLinkOmit
   }
 
   /* Types for Logging */
@@ -4716,6 +5214,8 @@ export namespace Prisma {
     otherIncomes: number
     incomeTaxPaymentsOnAccount: number
     incomeTaxSettlementDetails: number
+    incidents: number
+    sanctions: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4728,6 +5228,8 @@ export namespace Prisma {
     otherIncomes?: boolean | EmployeeCountOutputTypeCountOtherIncomesArgs
     incomeTaxPaymentsOnAccount?: boolean | EmployeeCountOutputTypeCountIncomeTaxPaymentsOnAccountArgs
     incomeTaxSettlementDetails?: boolean | EmployeeCountOutputTypeCountIncomeTaxSettlementDetailsArgs
+    incidents?: boolean | EmployeeCountOutputTypeCountIncidentsArgs
+    sanctions?: boolean | EmployeeCountOutputTypeCountSanctionsArgs
   }
 
   // Custom InputTypes
@@ -4802,6 +5304,51 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountIncomeTaxSettlementDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IncomeTaxSettlementDetailWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountIncidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncidentWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountSanctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeSanctionWhereInput
+  }
+
+
+  /**
+   * Count Type PaymentMethodCountOutputType
+   */
+
+  export type PaymentMethodCountOutputType = {
+    employees: number
+  }
+
+  export type PaymentMethodCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employees?: boolean | PaymentMethodCountOutputTypeCountEmployeesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PaymentMethodCountOutputType without action
+   */
+  export type PaymentMethodCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethodCountOutputType
+     */
+    select?: PaymentMethodCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaymentMethodCountOutputType without action
+   */
+  export type PaymentMethodCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeWhereInput
   }
 
 
@@ -5144,6 +5691,130 @@ export namespace Prisma {
    */
   export type IncomeTaxSettlementCountOutputTypeCountDetailsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: IncomeTaxSettlementDetailWhereInput
+  }
+
+
+  /**
+   * Count Type IncidentTypeCountOutputType
+   */
+
+  export type IncidentTypeCountOutputType = {
+    incidents: number
+  }
+
+  export type IncidentTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidents?: boolean | IncidentTypeCountOutputTypeCountIncidentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * IncidentTypeCountOutputType without action
+   */
+  export type IncidentTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentTypeCountOutputType
+     */
+    select?: IncidentTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * IncidentTypeCountOutputType without action
+   */
+  export type IncidentTypeCountOutputTypeCountIncidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncidentWhereInput
+  }
+
+
+  /**
+   * Count Type SanctionTypeCountOutputType
+   */
+
+  export type SanctionTypeCountOutputType = {
+    sanctions: number
+  }
+
+  export type SanctionTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sanctions?: boolean | SanctionTypeCountOutputTypeCountSanctionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SanctionTypeCountOutputType without action
+   */
+  export type SanctionTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionTypeCountOutputType
+     */
+    select?: SanctionTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SanctionTypeCountOutputType without action
+   */
+  export type SanctionTypeCountOutputTypeCountSanctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeSanctionWhereInput
+  }
+
+
+  /**
+   * Count Type EmployeeIncidentCountOutputType
+   */
+
+  export type EmployeeIncidentCountOutputType = {
+    sanctionLinks: number
+  }
+
+  export type EmployeeIncidentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sanctionLinks?: boolean | EmployeeIncidentCountOutputTypeCountSanctionLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EmployeeIncidentCountOutputType without action
+   */
+  export type EmployeeIncidentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncidentCountOutputType
+     */
+    select?: EmployeeIncidentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EmployeeIncidentCountOutputType without action
+   */
+  export type EmployeeIncidentCountOutputTypeCountSanctionLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SanctionIncidentLinkWhereInput
+  }
+
+
+  /**
+   * Count Type EmployeeSanctionCountOutputType
+   */
+
+  export type EmployeeSanctionCountOutputType = {
+    incidentLinks: number
+  }
+
+  export type EmployeeSanctionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidentLinks?: boolean | EmployeeSanctionCountOutputTypeCountIncidentLinksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * EmployeeSanctionCountOutputType without action
+   */
+  export type EmployeeSanctionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanctionCountOutputType
+     */
+    select?: EmployeeSanctionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * EmployeeSanctionCountOutputType without action
+   */
+  export type EmployeeSanctionCountOutputTypeCountIncidentLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SanctionIncidentLinkWhereInput
   }
 
 
@@ -21165,6 +21836,7 @@ export namespace Prisma {
     contractModalityCode: string | null
     salaryScaleId: string | null
     workShiftId: string | null
+    paymentMethodId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -21211,6 +21883,7 @@ export namespace Prisma {
     contractModalityCode: string | null
     salaryScaleId: string | null
     workShiftId: string | null
+    paymentMethodId: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -21257,6 +21930,7 @@ export namespace Prisma {
     contractModalityCode: number
     salaryScaleId: number
     workShiftId: number
+    paymentMethodId: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -21321,6 +21995,7 @@ export namespace Prisma {
     contractModalityCode?: true
     salaryScaleId?: true
     workShiftId?: true
+    paymentMethodId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21367,6 +22042,7 @@ export namespace Prisma {
     contractModalityCode?: true
     salaryScaleId?: true
     workShiftId?: true
+    paymentMethodId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21413,6 +22089,7 @@ export namespace Prisma {
     contractModalityCode?: true
     salaryScaleId?: true
     workShiftId?: true
+    paymentMethodId?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -21546,6 +22223,7 @@ export namespace Prisma {
     contractModalityCode: string | null
     salaryScaleId: string | null
     workShiftId: string | null
+    paymentMethodId: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -21611,6 +22289,7 @@ export namespace Prisma {
     contractModalityCode?: boolean
     salaryScaleId?: boolean
     workShiftId?: boolean
+    paymentMethodId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -21631,6 +22310,7 @@ export namespace Prisma {
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     workShift?: boolean | Employee$workShiftArgs<ExtArgs>
+    paymentMethod?: boolean | Employee$paymentMethodArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -21640,6 +22320,8 @@ export namespace Prisma {
     otherIncomes?: boolean | Employee$otherIncomesArgs<ExtArgs>
     incomeTaxPaymentsOnAccount?: boolean | Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>
     incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
+    incidents?: boolean | Employee$incidentsArgs<ExtArgs>
+    sanctions?: boolean | Employee$sanctionsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -21677,6 +22359,7 @@ export namespace Prisma {
     contractModalityCode?: boolean
     salaryScaleId?: boolean
     workShiftId?: boolean
+    paymentMethodId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -21691,7 +22374,7 @@ export namespace Prisma {
     bankAccountType?: boolean
   }
 
-  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "workShiftId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate" | "cbu" | "bankAccountType", ExtArgs["result"]["employee"]>
+  export type EmployeeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fileNumber" | "lastName" | "firstName" | "photo" | "hireDate" | "birthDate" | "documentType" | "documentNumber" | "cuil" | "gender" | "street" | "streetNumber" | "floor" | "apartment" | "city" | "postalCode" | "province" | "email" | "phone" | "status" | "terminationDate" | "terminationReason" | "departmentId" | "jobPositionId" | "healthInsuranceId" | "unionId" | "mutualId" | "contractModalityCode" | "salaryScaleId" | "workShiftId" | "paymentMethodId" | "createdAt" | "updatedAt" | "deletedAt" | "payrollGroup" | "isPartTime" | "weeklyWorkingHours" | "monthlyWorkingHours" | "partTimePercentage" | "basicSalary" | "hourlyRate" | "cbu" | "bankAccountType", ExtArgs["result"]["employee"]>
   export type EmployeeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     department?: boolean | Employee$departmentArgs<ExtArgs>
     jobPosition?: boolean | Employee$jobPositionArgs<ExtArgs>
@@ -21701,6 +22384,7 @@ export namespace Prisma {
     contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     workShift?: boolean | Employee$workShiftArgs<ExtArgs>
+    paymentMethod?: boolean | Employee$paymentMethodArgs<ExtArgs>
     paySlips?: boolean | Employee$paySlipsArgs<ExtArgs>
     relatives?: boolean | Employee$relativesArgs<ExtArgs>
     assignedConcepts?: boolean | Employee$assignedConceptsArgs<ExtArgs>
@@ -21710,6 +22394,8 @@ export namespace Prisma {
     otherIncomes?: boolean | Employee$otherIncomesArgs<ExtArgs>
     incomeTaxPaymentsOnAccount?: boolean | Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>
     incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
+    incidents?: boolean | Employee$incidentsArgs<ExtArgs>
+    sanctions?: boolean | Employee$sanctionsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -21724,6 +22410,7 @@ export namespace Prisma {
       contractModality: Prisma.$ArcaContractModalityPayload<ExtArgs> | null
       salaryScale: Prisma.$SalaryScalePayload<ExtArgs> | null
       workShift: Prisma.$WorkShiftPayload<ExtArgs> | null
+      paymentMethod: Prisma.$PaymentMethodPayload<ExtArgs> | null
       paySlips: Prisma.$PaySlipPayload<ExtArgs>[]
       relatives: Prisma.$EmployeeRelativePayload<ExtArgs>[]
       assignedConcepts: Prisma.$EmployeeConceptPayload<ExtArgs>[]
@@ -21733,6 +22420,8 @@ export namespace Prisma {
       otherIncomes: Prisma.$EmployeeOtherIncomePayload<ExtArgs>[]
       incomeTaxPaymentsOnAccount: Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>[]
       incomeTaxSettlementDetails: Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>[]
+      incidents: Prisma.$EmployeeIncidentPayload<ExtArgs>[]
+      sanctions: Prisma.$EmployeeSanctionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -21766,6 +22455,7 @@ export namespace Prisma {
       contractModalityCode: string | null
       salaryScaleId: string | null
       workShiftId: string | null
+      paymentMethodId: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -22126,6 +22816,7 @@ export namespace Prisma {
     contractModality<T extends Employee$contractModalityArgs<ExtArgs> = {}>(args?: Subset<T, Employee$contractModalityArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     salaryScale<T extends Employee$salaryScaleArgs<ExtArgs> = {}>(args?: Subset<T, Employee$salaryScaleArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     workShift<T extends Employee$workShiftArgs<ExtArgs> = {}>(args?: Subset<T, Employee$workShiftArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    paymentMethod<T extends Employee$paymentMethodArgs<ExtArgs> = {}>(args?: Subset<T, Employee$paymentMethodArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paySlips<T extends Employee$paySlipsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$paySlipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaySlipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     relatives<T extends Employee$relativesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$relativesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeRelativePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     assignedConcepts<T extends Employee$assignedConceptsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$assignedConceptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeConceptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -22135,6 +22826,8 @@ export namespace Prisma {
     otherIncomes<T extends Employee$otherIncomesArgs<ExtArgs> = {}>(args?: Subset<T, Employee$otherIncomesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeOtherIncomePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     incomeTaxPaymentsOnAccount<T extends Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxPaymentsOnAccountArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncomeTaxPaymentOnAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     incomeTaxSettlementDetails<T extends Employee$incomeTaxSettlementDetailsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxSettlementDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    incidents<T extends Employee$incidentsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sanctions<T extends Employee$sanctionsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$sanctionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -22195,6 +22888,7 @@ export namespace Prisma {
     readonly contractModalityCode: FieldRef<"Employee", 'String'>
     readonly salaryScaleId: FieldRef<"Employee", 'String'>
     readonly workShiftId: FieldRef<"Employee", 'String'>
+    readonly paymentMethodId: FieldRef<"Employee", 'String'>
     readonly createdAt: FieldRef<"Employee", 'DateTime'>
     readonly updatedAt: FieldRef<"Employee", 'DateTime'>
     readonly deletedAt: FieldRef<"Employee", 'DateTime'>
@@ -22702,6 +23396,25 @@ export namespace Prisma {
   }
 
   /**
+   * Employee.paymentMethod
+   */
+  export type Employee$paymentMethodArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    where?: PaymentMethodWhereInput
+  }
+
+  /**
    * Employee.paySlips
    */
   export type Employee$paySlipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22918,6 +23631,54 @@ export namespace Prisma {
   }
 
   /**
+   * Employee.incidents
+   */
+  export type Employee$incidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    where?: EmployeeIncidentWhereInput
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    cursor?: EmployeeIncidentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeIncidentScalarFieldEnum | EmployeeIncidentScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.sanctions
+   */
+  export type Employee$sanctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    where?: EmployeeSanctionWhereInput
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    cursor?: EmployeeSanctionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
    * Employee without action
    */
   export type EmployeeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -22933,6 +23694,972 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: EmployeeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PaymentMethod
+   */
+
+  export type AggregatePaymentMethod = {
+    _count: PaymentMethodCountAggregateOutputType | null
+    _min: PaymentMethodMinAggregateOutputType | null
+    _max: PaymentMethodMaxAggregateOutputType | null
+  }
+
+  export type PaymentMethodMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type PaymentMethodMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    description: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type PaymentMethodCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type PaymentMethodMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type PaymentMethodMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type PaymentMethodCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type PaymentMethodAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentMethod to aggregate.
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentMethods to fetch.
+     */
+    orderBy?: PaymentMethodOrderByWithRelationInput | PaymentMethodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentMethodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentMethods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentMethods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentMethods
+    **/
+    _count?: true | PaymentMethodCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentMethodMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentMethodMaxAggregateInputType
+  }
+
+  export type GetPaymentMethodAggregateType<T extends PaymentMethodAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentMethod]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentMethod[P]>
+      : GetScalarType<T[P], AggregatePaymentMethod[P]>
+  }
+
+
+
+
+  export type PaymentMethodGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentMethodWhereInput
+    orderBy?: PaymentMethodOrderByWithAggregationInput | PaymentMethodOrderByWithAggregationInput[]
+    by: PaymentMethodScalarFieldEnum[] | PaymentMethodScalarFieldEnum
+    having?: PaymentMethodScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentMethodCountAggregateInputType | true
+    _min?: PaymentMethodMinAggregateInputType
+    _max?: PaymentMethodMaxAggregateInputType
+  }
+
+  export type PaymentMethodGroupByOutputType = {
+    id: string
+    name: string
+    description: string | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: PaymentMethodCountAggregateOutputType | null
+    _min: PaymentMethodMinAggregateOutputType | null
+    _max: PaymentMethodMaxAggregateOutputType | null
+  }
+
+  type GetPaymentMethodGroupByPayload<T extends PaymentMethodGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentMethodGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentMethodGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentMethodGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentMethodGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentMethodSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    employees?: boolean | PaymentMethod$employeesArgs<ExtArgs>
+    _count?: boolean | PaymentMethodCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentMethod"]>
+
+
+
+  export type PaymentMethodSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type PaymentMethodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["paymentMethod"]>
+  export type PaymentMethodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employees?: boolean | PaymentMethod$employeesArgs<ExtArgs>
+    _count?: boolean | PaymentMethodCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $PaymentMethodPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentMethod"
+    objects: {
+      employees: Prisma.$EmployeePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      description: string | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["paymentMethod"]>
+    composites: {}
+  }
+
+  type PaymentMethodGetPayload<S extends boolean | null | undefined | PaymentMethodDefaultArgs> = $Result.GetResult<Prisma.$PaymentMethodPayload, S>
+
+  type PaymentMethodCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentMethodFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentMethodCountAggregateInputType | true
+    }
+
+  export interface PaymentMethodDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentMethod'], meta: { name: 'PaymentMethod' } }
+    /**
+     * Find zero or one PaymentMethod that matches the filter.
+     * @param {PaymentMethodFindUniqueArgs} args - Arguments to find a PaymentMethod
+     * @example
+     * // Get one PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentMethodFindUniqueArgs>(args: SelectSubset<T, PaymentMethodFindUniqueArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentMethod that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentMethodFindUniqueOrThrowArgs} args - Arguments to find a PaymentMethod
+     * @example
+     * // Get one PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentMethodFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentMethodFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentMethod that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodFindFirstArgs} args - Arguments to find a PaymentMethod
+     * @example
+     * // Get one PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentMethodFindFirstArgs>(args?: SelectSubset<T, PaymentMethodFindFirstArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentMethod that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodFindFirstOrThrowArgs} args - Arguments to find a PaymentMethod
+     * @example
+     * // Get one PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentMethodFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentMethodFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentMethods that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentMethods
+     * const paymentMethods = await prisma.paymentMethod.findMany()
+     * 
+     * // Get first 10 PaymentMethods
+     * const paymentMethods = await prisma.paymentMethod.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentMethodWithIdOnly = await prisma.paymentMethod.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentMethodFindManyArgs>(args?: SelectSubset<T, PaymentMethodFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentMethod.
+     * @param {PaymentMethodCreateArgs} args - Arguments to create a PaymentMethod.
+     * @example
+     * // Create one PaymentMethod
+     * const PaymentMethod = await prisma.paymentMethod.create({
+     *   data: {
+     *     // ... data to create a PaymentMethod
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentMethodCreateArgs>(args: SelectSubset<T, PaymentMethodCreateArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentMethods.
+     * @param {PaymentMethodCreateManyArgs} args - Arguments to create many PaymentMethods.
+     * @example
+     * // Create many PaymentMethods
+     * const paymentMethod = await prisma.paymentMethod.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentMethodCreateManyArgs>(args?: SelectSubset<T, PaymentMethodCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PaymentMethod.
+     * @param {PaymentMethodDeleteArgs} args - Arguments to delete one PaymentMethod.
+     * @example
+     * // Delete one PaymentMethod
+     * const PaymentMethod = await prisma.paymentMethod.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentMethod
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentMethodDeleteArgs>(args: SelectSubset<T, PaymentMethodDeleteArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentMethod.
+     * @param {PaymentMethodUpdateArgs} args - Arguments to update one PaymentMethod.
+     * @example
+     * // Update one PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentMethodUpdateArgs>(args: SelectSubset<T, PaymentMethodUpdateArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentMethods.
+     * @param {PaymentMethodDeleteManyArgs} args - Arguments to filter PaymentMethods to delete.
+     * @example
+     * // Delete a few PaymentMethods
+     * const { count } = await prisma.paymentMethod.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentMethodDeleteManyArgs>(args?: SelectSubset<T, PaymentMethodDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentMethods.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentMethods
+     * const paymentMethod = await prisma.paymentMethod.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentMethodUpdateManyArgs>(args: SelectSubset<T, PaymentMethodUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PaymentMethod.
+     * @param {PaymentMethodUpsertArgs} args - Arguments to update or create a PaymentMethod.
+     * @example
+     * // Update or create a PaymentMethod
+     * const paymentMethod = await prisma.paymentMethod.upsert({
+     *   create: {
+     *     // ... data to create a PaymentMethod
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentMethod we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentMethodUpsertArgs>(args: SelectSubset<T, PaymentMethodUpsertArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentMethods.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodCountArgs} args - Arguments to filter PaymentMethods to count.
+     * @example
+     * // Count the number of PaymentMethods
+     * const count = await prisma.paymentMethod.count({
+     *   where: {
+     *     // ... the filter for the PaymentMethods we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentMethodCountArgs>(
+      args?: Subset<T, PaymentMethodCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentMethodCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentMethod.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentMethodAggregateArgs>(args: Subset<T, PaymentMethodAggregateArgs>): Prisma.PrismaPromise<GetPaymentMethodAggregateType<T>>
+
+    /**
+     * Group by PaymentMethod.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentMethodGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentMethodGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentMethodGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentMethodGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentMethodGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentMethodGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentMethod model
+   */
+  readonly fields: PaymentMethodFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentMethod.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentMethodClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employees<T extends PaymentMethod$employeesArgs<ExtArgs> = {}>(args?: Subset<T, PaymentMethod$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentMethod model
+   */
+  interface PaymentMethodFieldRefs {
+    readonly id: FieldRef<"PaymentMethod", 'String'>
+    readonly name: FieldRef<"PaymentMethod", 'String'>
+    readonly description: FieldRef<"PaymentMethod", 'String'>
+    readonly createdAt: FieldRef<"PaymentMethod", 'DateTime'>
+    readonly updatedAt: FieldRef<"PaymentMethod", 'DateTime'>
+    readonly deletedAt: FieldRef<"PaymentMethod", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentMethod findUnique
+   */
+  export type PaymentMethodFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentMethod to fetch.
+     */
+    where: PaymentMethodWhereUniqueInput
+  }
+
+  /**
+   * PaymentMethod findUniqueOrThrow
+   */
+  export type PaymentMethodFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentMethod to fetch.
+     */
+    where: PaymentMethodWhereUniqueInput
+  }
+
+  /**
+   * PaymentMethod findFirst
+   */
+  export type PaymentMethodFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentMethod to fetch.
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentMethods to fetch.
+     */
+    orderBy?: PaymentMethodOrderByWithRelationInput | PaymentMethodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentMethods.
+     */
+    cursor?: PaymentMethodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentMethods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentMethods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentMethods.
+     */
+    distinct?: PaymentMethodScalarFieldEnum | PaymentMethodScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentMethod findFirstOrThrow
+   */
+  export type PaymentMethodFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentMethod to fetch.
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentMethods to fetch.
+     */
+    orderBy?: PaymentMethodOrderByWithRelationInput | PaymentMethodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentMethods.
+     */
+    cursor?: PaymentMethodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentMethods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentMethods.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentMethods.
+     */
+    distinct?: PaymentMethodScalarFieldEnum | PaymentMethodScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentMethod findMany
+   */
+  export type PaymentMethodFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentMethods to fetch.
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentMethods to fetch.
+     */
+    orderBy?: PaymentMethodOrderByWithRelationInput | PaymentMethodOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentMethods.
+     */
+    cursor?: PaymentMethodWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentMethods from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentMethods.
+     */
+    skip?: number
+    distinct?: PaymentMethodScalarFieldEnum | PaymentMethodScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentMethod create
+   */
+  export type PaymentMethodCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentMethod.
+     */
+    data: XOR<PaymentMethodCreateInput, PaymentMethodUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentMethod createMany
+   */
+  export type PaymentMethodCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentMethods.
+     */
+    data: PaymentMethodCreateManyInput | PaymentMethodCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentMethod update
+   */
+  export type PaymentMethodUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentMethod.
+     */
+    data: XOR<PaymentMethodUpdateInput, PaymentMethodUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentMethod to update.
+     */
+    where: PaymentMethodWhereUniqueInput
+  }
+
+  /**
+   * PaymentMethod updateMany
+   */
+  export type PaymentMethodUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentMethods.
+     */
+    data: XOR<PaymentMethodUpdateManyMutationInput, PaymentMethodUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentMethods to update
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * Limit how many PaymentMethods to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentMethod upsert
+   */
+  export type PaymentMethodUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentMethod to update in case it exists.
+     */
+    where: PaymentMethodWhereUniqueInput
+    /**
+     * In case the PaymentMethod found by the `where` argument doesn't exist, create a new PaymentMethod with this data.
+     */
+    create: XOR<PaymentMethodCreateInput, PaymentMethodUncheckedCreateInput>
+    /**
+     * In case the PaymentMethod was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentMethodUpdateInput, PaymentMethodUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentMethod delete
+   */
+  export type PaymentMethodDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentMethod to delete.
+     */
+    where: PaymentMethodWhereUniqueInput
+  }
+
+  /**
+   * PaymentMethod deleteMany
+   */
+  export type PaymentMethodDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentMethods to delete
+     */
+    where?: PaymentMethodWhereInput
+    /**
+     * Limit how many PaymentMethods to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentMethod.employees
+   */
+  export type PaymentMethod$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Employee
+     */
+    select?: EmployeeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Employee
+     */
+    omit?: EmployeeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeInclude<ExtArgs> | null
+    where?: EmployeeWhereInput
+    orderBy?: EmployeeOrderByWithRelationInput | EmployeeOrderByWithRelationInput[]
+    cursor?: EmployeeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeScalarFieldEnum | EmployeeScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentMethod without action
+   */
+  export type PaymentMethodDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentMethod
+     */
+    select?: PaymentMethodSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentMethod
+     */
+    omit?: PaymentMethodOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentMethodInclude<ExtArgs> | null
   }
 
 
@@ -51400,6 +53127,4977 @@ export namespace Prisma {
 
 
   /**
+   * Model IncidentType
+   */
+
+  export type AggregateIncidentType = {
+    _count: IncidentTypeCountAggregateOutputType | null
+    _min: IncidentTypeMinAggregateOutputType | null
+    _max: IncidentTypeMaxAggregateOutputType | null
+  }
+
+  export type IncidentTypeMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    severity: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type IncidentTypeMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    severity: string | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type IncidentTypeCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    severity: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type IncidentTypeMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    severity?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type IncidentTypeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    severity?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type IncidentTypeCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    severity?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type IncidentTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidentType to aggregate.
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentTypes to fetch.
+     */
+    orderBy?: IncidentTypeOrderByWithRelationInput | IncidentTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: IncidentTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned IncidentTypes
+    **/
+    _count?: true | IncidentTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: IncidentTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: IncidentTypeMaxAggregateInputType
+  }
+
+  export type GetIncidentTypeAggregateType<T extends IncidentTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateIncidentType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateIncidentType[P]>
+      : GetScalarType<T[P], AggregateIncidentType[P]>
+  }
+
+
+
+
+  export type IncidentTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentTypeWhereInput
+    orderBy?: IncidentTypeOrderByWithAggregationInput | IncidentTypeOrderByWithAggregationInput[]
+    by: IncidentTypeScalarFieldEnum[] | IncidentTypeScalarFieldEnum
+    having?: IncidentTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: IncidentTypeCountAggregateInputType | true
+    _min?: IncidentTypeMinAggregateInputType
+    _max?: IncidentTypeMaxAggregateInputType
+  }
+
+  export type IncidentTypeGroupByOutputType = {
+    id: string
+    code: string | null
+    name: string
+    severity: string
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: IncidentTypeCountAggregateOutputType | null
+    _min: IncidentTypeMinAggregateOutputType | null
+    _max: IncidentTypeMaxAggregateOutputType | null
+  }
+
+  type GetIncidentTypeGroupByPayload<T extends IncidentTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<IncidentTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof IncidentTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], IncidentTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], IncidentTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type IncidentTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    severity?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    incidents?: boolean | IncidentType$incidentsArgs<ExtArgs>
+    _count?: boolean | IncidentTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["incidentType"]>
+
+
+
+  export type IncidentTypeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    severity?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type IncidentTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "severity" | "description" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["incidentType"]>
+  export type IncidentTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidents?: boolean | IncidentType$incidentsArgs<ExtArgs>
+    _count?: boolean | IncidentTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $IncidentTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "IncidentType"
+    objects: {
+      incidents: Prisma.$EmployeeIncidentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string | null
+      name: string
+      severity: string
+      description: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["incidentType"]>
+    composites: {}
+  }
+
+  type IncidentTypeGetPayload<S extends boolean | null | undefined | IncidentTypeDefaultArgs> = $Result.GetResult<Prisma.$IncidentTypePayload, S>
+
+  type IncidentTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<IncidentTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: IncidentTypeCountAggregateInputType | true
+    }
+
+  export interface IncidentTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['IncidentType'], meta: { name: 'IncidentType' } }
+    /**
+     * Find zero or one IncidentType that matches the filter.
+     * @param {IncidentTypeFindUniqueArgs} args - Arguments to find a IncidentType
+     * @example
+     * // Get one IncidentType
+     * const incidentType = await prisma.incidentType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends IncidentTypeFindUniqueArgs>(args: SelectSubset<T, IncidentTypeFindUniqueArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one IncidentType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {IncidentTypeFindUniqueOrThrowArgs} args - Arguments to find a IncidentType
+     * @example
+     * // Get one IncidentType
+     * const incidentType = await prisma.incidentType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends IncidentTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, IncidentTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncidentType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeFindFirstArgs} args - Arguments to find a IncidentType
+     * @example
+     * // Get one IncidentType
+     * const incidentType = await prisma.incidentType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends IncidentTypeFindFirstArgs>(args?: SelectSubset<T, IncidentTypeFindFirstArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first IncidentType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeFindFirstOrThrowArgs} args - Arguments to find a IncidentType
+     * @example
+     * // Get one IncidentType
+     * const incidentType = await prisma.incidentType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends IncidentTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, IncidentTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more IncidentTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all IncidentTypes
+     * const incidentTypes = await prisma.incidentType.findMany()
+     * 
+     * // Get first 10 IncidentTypes
+     * const incidentTypes = await prisma.incidentType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const incidentTypeWithIdOnly = await prisma.incidentType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends IncidentTypeFindManyArgs>(args?: SelectSubset<T, IncidentTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a IncidentType.
+     * @param {IncidentTypeCreateArgs} args - Arguments to create a IncidentType.
+     * @example
+     * // Create one IncidentType
+     * const IncidentType = await prisma.incidentType.create({
+     *   data: {
+     *     // ... data to create a IncidentType
+     *   }
+     * })
+     * 
+     */
+    create<T extends IncidentTypeCreateArgs>(args: SelectSubset<T, IncidentTypeCreateArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many IncidentTypes.
+     * @param {IncidentTypeCreateManyArgs} args - Arguments to create many IncidentTypes.
+     * @example
+     * // Create many IncidentTypes
+     * const incidentType = await prisma.incidentType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends IncidentTypeCreateManyArgs>(args?: SelectSubset<T, IncidentTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a IncidentType.
+     * @param {IncidentTypeDeleteArgs} args - Arguments to delete one IncidentType.
+     * @example
+     * // Delete one IncidentType
+     * const IncidentType = await prisma.incidentType.delete({
+     *   where: {
+     *     // ... filter to delete one IncidentType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends IncidentTypeDeleteArgs>(args: SelectSubset<T, IncidentTypeDeleteArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one IncidentType.
+     * @param {IncidentTypeUpdateArgs} args - Arguments to update one IncidentType.
+     * @example
+     * // Update one IncidentType
+     * const incidentType = await prisma.incidentType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends IncidentTypeUpdateArgs>(args: SelectSubset<T, IncidentTypeUpdateArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more IncidentTypes.
+     * @param {IncidentTypeDeleteManyArgs} args - Arguments to filter IncidentTypes to delete.
+     * @example
+     * // Delete a few IncidentTypes
+     * const { count } = await prisma.incidentType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends IncidentTypeDeleteManyArgs>(args?: SelectSubset<T, IncidentTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more IncidentTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many IncidentTypes
+     * const incidentType = await prisma.incidentType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends IncidentTypeUpdateManyArgs>(args: SelectSubset<T, IncidentTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one IncidentType.
+     * @param {IncidentTypeUpsertArgs} args - Arguments to update or create a IncidentType.
+     * @example
+     * // Update or create a IncidentType
+     * const incidentType = await prisma.incidentType.upsert({
+     *   create: {
+     *     // ... data to create a IncidentType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the IncidentType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends IncidentTypeUpsertArgs>(args: SelectSubset<T, IncidentTypeUpsertArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of IncidentTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeCountArgs} args - Arguments to filter IncidentTypes to count.
+     * @example
+     * // Count the number of IncidentTypes
+     * const count = await prisma.incidentType.count({
+     *   where: {
+     *     // ... the filter for the IncidentTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends IncidentTypeCountArgs>(
+      args?: Subset<T, IncidentTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], IncidentTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a IncidentType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends IncidentTypeAggregateArgs>(args: Subset<T, IncidentTypeAggregateArgs>): Prisma.PrismaPromise<GetIncidentTypeAggregateType<T>>
+
+    /**
+     * Group by IncidentType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {IncidentTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends IncidentTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: IncidentTypeGroupByArgs['orderBy'] }
+        : { orderBy?: IncidentTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, IncidentTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetIncidentTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the IncidentType model
+   */
+  readonly fields: IncidentTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for IncidentType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__IncidentTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    incidents<T extends IncidentType$incidentsArgs<ExtArgs> = {}>(args?: Subset<T, IncidentType$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the IncidentType model
+   */
+  interface IncidentTypeFieldRefs {
+    readonly id: FieldRef<"IncidentType", 'String'>
+    readonly code: FieldRef<"IncidentType", 'String'>
+    readonly name: FieldRef<"IncidentType", 'String'>
+    readonly severity: FieldRef<"IncidentType", 'String'>
+    readonly description: FieldRef<"IncidentType", 'String'>
+    readonly isActive: FieldRef<"IncidentType", 'Boolean'>
+    readonly createdAt: FieldRef<"IncidentType", 'DateTime'>
+    readonly updatedAt: FieldRef<"IncidentType", 'DateTime'>
+    readonly deletedAt: FieldRef<"IncidentType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * IncidentType findUnique
+   */
+  export type IncidentTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentType to fetch.
+     */
+    where: IncidentTypeWhereUniqueInput
+  }
+
+  /**
+   * IncidentType findUniqueOrThrow
+   */
+  export type IncidentTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentType to fetch.
+     */
+    where: IncidentTypeWhereUniqueInput
+  }
+
+  /**
+   * IncidentType findFirst
+   */
+  export type IncidentTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentType to fetch.
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentTypes to fetch.
+     */
+    orderBy?: IncidentTypeOrderByWithRelationInput | IncidentTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidentTypes.
+     */
+    cursor?: IncidentTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidentTypes.
+     */
+    distinct?: IncidentTypeScalarFieldEnum | IncidentTypeScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentType findFirstOrThrow
+   */
+  export type IncidentTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentType to fetch.
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentTypes to fetch.
+     */
+    orderBy?: IncidentTypeOrderByWithRelationInput | IncidentTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for IncidentTypes.
+     */
+    cursor?: IncidentTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of IncidentTypes.
+     */
+    distinct?: IncidentTypeScalarFieldEnum | IncidentTypeScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentType findMany
+   */
+  export type IncidentTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which IncidentTypes to fetch.
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of IncidentTypes to fetch.
+     */
+    orderBy?: IncidentTypeOrderByWithRelationInput | IncidentTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing IncidentTypes.
+     */
+    cursor?: IncidentTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` IncidentTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` IncidentTypes.
+     */
+    skip?: number
+    distinct?: IncidentTypeScalarFieldEnum | IncidentTypeScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentType create
+   */
+  export type IncidentTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a IncidentType.
+     */
+    data: XOR<IncidentTypeCreateInput, IncidentTypeUncheckedCreateInput>
+  }
+
+  /**
+   * IncidentType createMany
+   */
+  export type IncidentTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many IncidentTypes.
+     */
+    data: IncidentTypeCreateManyInput | IncidentTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * IncidentType update
+   */
+  export type IncidentTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a IncidentType.
+     */
+    data: XOR<IncidentTypeUpdateInput, IncidentTypeUncheckedUpdateInput>
+    /**
+     * Choose, which IncidentType to update.
+     */
+    where: IncidentTypeWhereUniqueInput
+  }
+
+  /**
+   * IncidentType updateMany
+   */
+  export type IncidentTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update IncidentTypes.
+     */
+    data: XOR<IncidentTypeUpdateManyMutationInput, IncidentTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which IncidentTypes to update
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * Limit how many IncidentTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidentType upsert
+   */
+  export type IncidentTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the IncidentType to update in case it exists.
+     */
+    where: IncidentTypeWhereUniqueInput
+    /**
+     * In case the IncidentType found by the `where` argument doesn't exist, create a new IncidentType with this data.
+     */
+    create: XOR<IncidentTypeCreateInput, IncidentTypeUncheckedCreateInput>
+    /**
+     * In case the IncidentType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<IncidentTypeUpdateInput, IncidentTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * IncidentType delete
+   */
+  export type IncidentTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+    /**
+     * Filter which IncidentType to delete.
+     */
+    where: IncidentTypeWhereUniqueInput
+  }
+
+  /**
+   * IncidentType deleteMany
+   */
+  export type IncidentTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which IncidentTypes to delete
+     */
+    where?: IncidentTypeWhereInput
+    /**
+     * Limit how many IncidentTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * IncidentType.incidents
+   */
+  export type IncidentType$incidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    where?: EmployeeIncidentWhereInput
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    cursor?: EmployeeIncidentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeIncidentScalarFieldEnum | EmployeeIncidentScalarFieldEnum[]
+  }
+
+  /**
+   * IncidentType without action
+   */
+  export type IncidentTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the IncidentType
+     */
+    select?: IncidentTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the IncidentType
+     */
+    omit?: IncidentTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SanctionType
+   */
+
+  export type AggregateSanctionType = {
+    _count: SanctionTypeCountAggregateOutputType | null
+    _min: SanctionTypeMinAggregateOutputType | null
+    _max: SanctionTypeMaxAggregateOutputType | null
+  }
+
+  export type SanctionTypeMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    requiresSuspensionDays: boolean | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type SanctionTypeMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    requiresSuspensionDays: boolean | null
+    description: string | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type SanctionTypeCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    requiresSuspensionDays: number
+    description: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type SanctionTypeMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    requiresSuspensionDays?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type SanctionTypeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    requiresSuspensionDays?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type SanctionTypeCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    requiresSuspensionDays?: true
+    description?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type SanctionTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SanctionType to aggregate.
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionTypes to fetch.
+     */
+    orderBy?: SanctionTypeOrderByWithRelationInput | SanctionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SanctionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SanctionTypes
+    **/
+    _count?: true | SanctionTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SanctionTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SanctionTypeMaxAggregateInputType
+  }
+
+  export type GetSanctionTypeAggregateType<T extends SanctionTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateSanctionType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSanctionType[P]>
+      : GetScalarType<T[P], AggregateSanctionType[P]>
+  }
+
+
+
+
+  export type SanctionTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SanctionTypeWhereInput
+    orderBy?: SanctionTypeOrderByWithAggregationInput | SanctionTypeOrderByWithAggregationInput[]
+    by: SanctionTypeScalarFieldEnum[] | SanctionTypeScalarFieldEnum
+    having?: SanctionTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SanctionTypeCountAggregateInputType | true
+    _min?: SanctionTypeMinAggregateInputType
+    _max?: SanctionTypeMaxAggregateInputType
+  }
+
+  export type SanctionTypeGroupByOutputType = {
+    id: string
+    code: string | null
+    name: string
+    requiresSuspensionDays: boolean
+    description: string | null
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: SanctionTypeCountAggregateOutputType | null
+    _min: SanctionTypeMinAggregateOutputType | null
+    _max: SanctionTypeMaxAggregateOutputType | null
+  }
+
+  type GetSanctionTypeGroupByPayload<T extends SanctionTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SanctionTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SanctionTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SanctionTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], SanctionTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SanctionTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    requiresSuspensionDays?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    sanctions?: boolean | SanctionType$sanctionsArgs<ExtArgs>
+    _count?: boolean | SanctionTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sanctionType"]>
+
+
+
+  export type SanctionTypeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    requiresSuspensionDays?: boolean
+    description?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type SanctionTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "requiresSuspensionDays" | "description" | "isActive" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["sanctionType"]>
+  export type SanctionTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sanctions?: boolean | SanctionType$sanctionsArgs<ExtArgs>
+    _count?: boolean | SanctionTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SanctionTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SanctionType"
+    objects: {
+      sanctions: Prisma.$EmployeeSanctionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string | null
+      name: string
+      requiresSuspensionDays: boolean
+      description: string | null
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["sanctionType"]>
+    composites: {}
+  }
+
+  type SanctionTypeGetPayload<S extends boolean | null | undefined | SanctionTypeDefaultArgs> = $Result.GetResult<Prisma.$SanctionTypePayload, S>
+
+  type SanctionTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SanctionTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SanctionTypeCountAggregateInputType | true
+    }
+
+  export interface SanctionTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SanctionType'], meta: { name: 'SanctionType' } }
+    /**
+     * Find zero or one SanctionType that matches the filter.
+     * @param {SanctionTypeFindUniqueArgs} args - Arguments to find a SanctionType
+     * @example
+     * // Get one SanctionType
+     * const sanctionType = await prisma.sanctionType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SanctionTypeFindUniqueArgs>(args: SelectSubset<T, SanctionTypeFindUniqueArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SanctionType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SanctionTypeFindUniqueOrThrowArgs} args - Arguments to find a SanctionType
+     * @example
+     * // Get one SanctionType
+     * const sanctionType = await prisma.sanctionType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SanctionTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, SanctionTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SanctionType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeFindFirstArgs} args - Arguments to find a SanctionType
+     * @example
+     * // Get one SanctionType
+     * const sanctionType = await prisma.sanctionType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SanctionTypeFindFirstArgs>(args?: SelectSubset<T, SanctionTypeFindFirstArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SanctionType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeFindFirstOrThrowArgs} args - Arguments to find a SanctionType
+     * @example
+     * // Get one SanctionType
+     * const sanctionType = await prisma.sanctionType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SanctionTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, SanctionTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SanctionTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SanctionTypes
+     * const sanctionTypes = await prisma.sanctionType.findMany()
+     * 
+     * // Get first 10 SanctionTypes
+     * const sanctionTypes = await prisma.sanctionType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sanctionTypeWithIdOnly = await prisma.sanctionType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SanctionTypeFindManyArgs>(args?: SelectSubset<T, SanctionTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SanctionType.
+     * @param {SanctionTypeCreateArgs} args - Arguments to create a SanctionType.
+     * @example
+     * // Create one SanctionType
+     * const SanctionType = await prisma.sanctionType.create({
+     *   data: {
+     *     // ... data to create a SanctionType
+     *   }
+     * })
+     * 
+     */
+    create<T extends SanctionTypeCreateArgs>(args: SelectSubset<T, SanctionTypeCreateArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SanctionTypes.
+     * @param {SanctionTypeCreateManyArgs} args - Arguments to create many SanctionTypes.
+     * @example
+     * // Create many SanctionTypes
+     * const sanctionType = await prisma.sanctionType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SanctionTypeCreateManyArgs>(args?: SelectSubset<T, SanctionTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SanctionType.
+     * @param {SanctionTypeDeleteArgs} args - Arguments to delete one SanctionType.
+     * @example
+     * // Delete one SanctionType
+     * const SanctionType = await prisma.sanctionType.delete({
+     *   where: {
+     *     // ... filter to delete one SanctionType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SanctionTypeDeleteArgs>(args: SelectSubset<T, SanctionTypeDeleteArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SanctionType.
+     * @param {SanctionTypeUpdateArgs} args - Arguments to update one SanctionType.
+     * @example
+     * // Update one SanctionType
+     * const sanctionType = await prisma.sanctionType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SanctionTypeUpdateArgs>(args: SelectSubset<T, SanctionTypeUpdateArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SanctionTypes.
+     * @param {SanctionTypeDeleteManyArgs} args - Arguments to filter SanctionTypes to delete.
+     * @example
+     * // Delete a few SanctionTypes
+     * const { count } = await prisma.sanctionType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SanctionTypeDeleteManyArgs>(args?: SelectSubset<T, SanctionTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SanctionTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SanctionTypes
+     * const sanctionType = await prisma.sanctionType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SanctionTypeUpdateManyArgs>(args: SelectSubset<T, SanctionTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SanctionType.
+     * @param {SanctionTypeUpsertArgs} args - Arguments to update or create a SanctionType.
+     * @example
+     * // Update or create a SanctionType
+     * const sanctionType = await prisma.sanctionType.upsert({
+     *   create: {
+     *     // ... data to create a SanctionType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SanctionType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SanctionTypeUpsertArgs>(args: SelectSubset<T, SanctionTypeUpsertArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SanctionTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeCountArgs} args - Arguments to filter SanctionTypes to count.
+     * @example
+     * // Count the number of SanctionTypes
+     * const count = await prisma.sanctionType.count({
+     *   where: {
+     *     // ... the filter for the SanctionTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends SanctionTypeCountArgs>(
+      args?: Subset<T, SanctionTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SanctionTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SanctionType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SanctionTypeAggregateArgs>(args: Subset<T, SanctionTypeAggregateArgs>): Prisma.PrismaPromise<GetSanctionTypeAggregateType<T>>
+
+    /**
+     * Group by SanctionType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SanctionTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SanctionTypeGroupByArgs['orderBy'] }
+        : { orderBy?: SanctionTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SanctionTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSanctionTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SanctionType model
+   */
+  readonly fields: SanctionTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SanctionType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SanctionTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sanctions<T extends SanctionType$sanctionsArgs<ExtArgs> = {}>(args?: Subset<T, SanctionType$sanctionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SanctionType model
+   */
+  interface SanctionTypeFieldRefs {
+    readonly id: FieldRef<"SanctionType", 'String'>
+    readonly code: FieldRef<"SanctionType", 'String'>
+    readonly name: FieldRef<"SanctionType", 'String'>
+    readonly requiresSuspensionDays: FieldRef<"SanctionType", 'Boolean'>
+    readonly description: FieldRef<"SanctionType", 'String'>
+    readonly isActive: FieldRef<"SanctionType", 'Boolean'>
+    readonly createdAt: FieldRef<"SanctionType", 'DateTime'>
+    readonly updatedAt: FieldRef<"SanctionType", 'DateTime'>
+    readonly deletedAt: FieldRef<"SanctionType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SanctionType findUnique
+   */
+  export type SanctionTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionType to fetch.
+     */
+    where: SanctionTypeWhereUniqueInput
+  }
+
+  /**
+   * SanctionType findUniqueOrThrow
+   */
+  export type SanctionTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionType to fetch.
+     */
+    where: SanctionTypeWhereUniqueInput
+  }
+
+  /**
+   * SanctionType findFirst
+   */
+  export type SanctionTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionType to fetch.
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionTypes to fetch.
+     */
+    orderBy?: SanctionTypeOrderByWithRelationInput | SanctionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SanctionTypes.
+     */
+    cursor?: SanctionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SanctionTypes.
+     */
+    distinct?: SanctionTypeScalarFieldEnum | SanctionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionType findFirstOrThrow
+   */
+  export type SanctionTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionType to fetch.
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionTypes to fetch.
+     */
+    orderBy?: SanctionTypeOrderByWithRelationInput | SanctionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SanctionTypes.
+     */
+    cursor?: SanctionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SanctionTypes.
+     */
+    distinct?: SanctionTypeScalarFieldEnum | SanctionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionType findMany
+   */
+  export type SanctionTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionTypes to fetch.
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionTypes to fetch.
+     */
+    orderBy?: SanctionTypeOrderByWithRelationInput | SanctionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SanctionTypes.
+     */
+    cursor?: SanctionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionTypes.
+     */
+    skip?: number
+    distinct?: SanctionTypeScalarFieldEnum | SanctionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionType create
+   */
+  export type SanctionTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SanctionType.
+     */
+    data: XOR<SanctionTypeCreateInput, SanctionTypeUncheckedCreateInput>
+  }
+
+  /**
+   * SanctionType createMany
+   */
+  export type SanctionTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SanctionTypes.
+     */
+    data: SanctionTypeCreateManyInput | SanctionTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SanctionType update
+   */
+  export type SanctionTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SanctionType.
+     */
+    data: XOR<SanctionTypeUpdateInput, SanctionTypeUncheckedUpdateInput>
+    /**
+     * Choose, which SanctionType to update.
+     */
+    where: SanctionTypeWhereUniqueInput
+  }
+
+  /**
+   * SanctionType updateMany
+   */
+  export type SanctionTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SanctionTypes.
+     */
+    data: XOR<SanctionTypeUpdateManyMutationInput, SanctionTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which SanctionTypes to update
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * Limit how many SanctionTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SanctionType upsert
+   */
+  export type SanctionTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SanctionType to update in case it exists.
+     */
+    where: SanctionTypeWhereUniqueInput
+    /**
+     * In case the SanctionType found by the `where` argument doesn't exist, create a new SanctionType with this data.
+     */
+    create: XOR<SanctionTypeCreateInput, SanctionTypeUncheckedCreateInput>
+    /**
+     * In case the SanctionType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SanctionTypeUpdateInput, SanctionTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * SanctionType delete
+   */
+  export type SanctionTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+    /**
+     * Filter which SanctionType to delete.
+     */
+    where: SanctionTypeWhereUniqueInput
+  }
+
+  /**
+   * SanctionType deleteMany
+   */
+  export type SanctionTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SanctionTypes to delete
+     */
+    where?: SanctionTypeWhereInput
+    /**
+     * Limit how many SanctionTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SanctionType.sanctions
+   */
+  export type SanctionType$sanctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    where?: EmployeeSanctionWhereInput
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    cursor?: EmployeeSanctionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionType without action
+   */
+  export type SanctionTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionType
+     */
+    select?: SanctionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionType
+     */
+    omit?: SanctionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeIncident
+   */
+
+  export type AggregateEmployeeIncident = {
+    _count: EmployeeIncidentCountAggregateOutputType | null
+    _min: EmployeeIncidentMinAggregateOutputType | null
+    _max: EmployeeIncidentMaxAggregateOutputType | null
+  }
+
+  export type EmployeeIncidentMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    incidentTypeId: string | null
+    incidentDate: Date | null
+    observations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type EmployeeIncidentMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    incidentTypeId: string | null
+    incidentDate: Date | null
+    observations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type EmployeeIncidentCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    incidentTypeId: number
+    incidentDate: number
+    observations: number
+    attachments: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeIncidentMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    incidentTypeId?: true
+    incidentDate?: true
+    observations?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type EmployeeIncidentMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    incidentTypeId?: true
+    incidentDate?: true
+    observations?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type EmployeeIncidentCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    incidentTypeId?: true
+    incidentDate?: true
+    observations?: true
+    attachments?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeIncidentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncident to aggregate.
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncidents to fetch.
+     */
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeIncidentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncidents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncidents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeIncidents
+    **/
+    _count?: true | EmployeeIncidentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeIncidentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeIncidentMaxAggregateInputType
+  }
+
+  export type GetEmployeeIncidentAggregateType<T extends EmployeeIncidentAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeIncident]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeIncident[P]>
+      : GetScalarType<T[P], AggregateEmployeeIncident[P]>
+  }
+
+
+
+
+  export type EmployeeIncidentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeIncidentWhereInput
+    orderBy?: EmployeeIncidentOrderByWithAggregationInput | EmployeeIncidentOrderByWithAggregationInput[]
+    by: EmployeeIncidentScalarFieldEnum[] | EmployeeIncidentScalarFieldEnum
+    having?: EmployeeIncidentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeIncidentCountAggregateInputType | true
+    _min?: EmployeeIncidentMinAggregateInputType
+    _max?: EmployeeIncidentMaxAggregateInputType
+  }
+
+  export type EmployeeIncidentGroupByOutputType = {
+    id: string
+    employeeId: string
+    incidentTypeId: string
+    incidentDate: Date
+    observations: string | null
+    attachments: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: EmployeeIncidentCountAggregateOutputType | null
+    _min: EmployeeIncidentMinAggregateOutputType | null
+    _max: EmployeeIncidentMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeIncidentGroupByPayload<T extends EmployeeIncidentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeIncidentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeIncidentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeIncidentGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeIncidentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeIncidentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    incidentTypeId?: boolean
+    incidentDate?: boolean
+    observations?: boolean
+    attachments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    incidentType?: boolean | IncidentTypeDefaultArgs<ExtArgs>
+    sanctionLinks?: boolean | EmployeeIncident$sanctionLinksArgs<ExtArgs>
+    _count?: boolean | EmployeeIncidentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeIncident"]>
+
+
+
+  export type EmployeeIncidentSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    incidentTypeId?: boolean
+    incidentDate?: boolean
+    observations?: boolean
+    attachments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type EmployeeIncidentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "incidentTypeId" | "incidentDate" | "observations" | "attachments" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeIncident"]>
+  export type EmployeeIncidentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    incidentType?: boolean | IncidentTypeDefaultArgs<ExtArgs>
+    sanctionLinks?: boolean | EmployeeIncident$sanctionLinksArgs<ExtArgs>
+    _count?: boolean | EmployeeIncidentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeIncidentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeIncident"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+      incidentType: Prisma.$IncidentTypePayload<ExtArgs>
+      sanctionLinks: Prisma.$SanctionIncidentLinkPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      incidentTypeId: string
+      incidentDate: Date
+      observations: string | null
+      attachments: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["employeeIncident"]>
+    composites: {}
+  }
+
+  type EmployeeIncidentGetPayload<S extends boolean | null | undefined | EmployeeIncidentDefaultArgs> = $Result.GetResult<Prisma.$EmployeeIncidentPayload, S>
+
+  type EmployeeIncidentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeIncidentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeIncidentCountAggregateInputType | true
+    }
+
+  export interface EmployeeIncidentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeIncident'], meta: { name: 'EmployeeIncident' } }
+    /**
+     * Find zero or one EmployeeIncident that matches the filter.
+     * @param {EmployeeIncidentFindUniqueArgs} args - Arguments to find a EmployeeIncident
+     * @example
+     * // Get one EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeIncidentFindUniqueArgs>(args: SelectSubset<T, EmployeeIncidentFindUniqueArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeIncident that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeIncidentFindUniqueOrThrowArgs} args - Arguments to find a EmployeeIncident
+     * @example
+     * // Get one EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeIncidentFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeIncidentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncident that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentFindFirstArgs} args - Arguments to find a EmployeeIncident
+     * @example
+     * // Get one EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeIncidentFindFirstArgs>(args?: SelectSubset<T, EmployeeIncidentFindFirstArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeIncident that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentFindFirstOrThrowArgs} args - Arguments to find a EmployeeIncident
+     * @example
+     * // Get one EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeIncidentFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeIncidentFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeIncidents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeIncidents
+     * const employeeIncidents = await prisma.employeeIncident.findMany()
+     * 
+     * // Get first 10 EmployeeIncidents
+     * const employeeIncidents = await prisma.employeeIncident.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeIncidentWithIdOnly = await prisma.employeeIncident.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeIncidentFindManyArgs>(args?: SelectSubset<T, EmployeeIncidentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeIncident.
+     * @param {EmployeeIncidentCreateArgs} args - Arguments to create a EmployeeIncident.
+     * @example
+     * // Create one EmployeeIncident
+     * const EmployeeIncident = await prisma.employeeIncident.create({
+     *   data: {
+     *     // ... data to create a EmployeeIncident
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeIncidentCreateArgs>(args: SelectSubset<T, EmployeeIncidentCreateArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeIncidents.
+     * @param {EmployeeIncidentCreateManyArgs} args - Arguments to create many EmployeeIncidents.
+     * @example
+     * // Create many EmployeeIncidents
+     * const employeeIncident = await prisma.employeeIncident.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeIncidentCreateManyArgs>(args?: SelectSubset<T, EmployeeIncidentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeIncident.
+     * @param {EmployeeIncidentDeleteArgs} args - Arguments to delete one EmployeeIncident.
+     * @example
+     * // Delete one EmployeeIncident
+     * const EmployeeIncident = await prisma.employeeIncident.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeIncident
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeIncidentDeleteArgs>(args: SelectSubset<T, EmployeeIncidentDeleteArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeIncident.
+     * @param {EmployeeIncidentUpdateArgs} args - Arguments to update one EmployeeIncident.
+     * @example
+     * // Update one EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeIncidentUpdateArgs>(args: SelectSubset<T, EmployeeIncidentUpdateArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeIncidents.
+     * @param {EmployeeIncidentDeleteManyArgs} args - Arguments to filter EmployeeIncidents to delete.
+     * @example
+     * // Delete a few EmployeeIncidents
+     * const { count } = await prisma.employeeIncident.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeIncidentDeleteManyArgs>(args?: SelectSubset<T, EmployeeIncidentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeIncidents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeIncidents
+     * const employeeIncident = await prisma.employeeIncident.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeIncidentUpdateManyArgs>(args: SelectSubset<T, EmployeeIncidentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeIncident.
+     * @param {EmployeeIncidentUpsertArgs} args - Arguments to update or create a EmployeeIncident.
+     * @example
+     * // Update or create a EmployeeIncident
+     * const employeeIncident = await prisma.employeeIncident.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeIncident
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeIncident we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeIncidentUpsertArgs>(args: SelectSubset<T, EmployeeIncidentUpsertArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeIncidents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentCountArgs} args - Arguments to filter EmployeeIncidents to count.
+     * @example
+     * // Count the number of EmployeeIncidents
+     * const count = await prisma.employeeIncident.count({
+     *   where: {
+     *     // ... the filter for the EmployeeIncidents we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeIncidentCountArgs>(
+      args?: Subset<T, EmployeeIncidentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeIncidentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeIncident.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeIncidentAggregateArgs>(args: Subset<T, EmployeeIncidentAggregateArgs>): Prisma.PrismaPromise<GetEmployeeIncidentAggregateType<T>>
+
+    /**
+     * Group by EmployeeIncident.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeIncidentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeIncidentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeIncidentGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeIncidentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeIncidentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeIncidentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeIncident model
+   */
+  readonly fields: EmployeeIncidentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeIncident.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeIncidentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    incidentType<T extends IncidentTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, IncidentTypeDefaultArgs<ExtArgs>>): Prisma__IncidentTypeClient<$Result.GetResult<Prisma.$IncidentTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sanctionLinks<T extends EmployeeIncident$sanctionLinksArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeIncident$sanctionLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeIncident model
+   */
+  interface EmployeeIncidentFieldRefs {
+    readonly id: FieldRef<"EmployeeIncident", 'String'>
+    readonly employeeId: FieldRef<"EmployeeIncident", 'String'>
+    readonly incidentTypeId: FieldRef<"EmployeeIncident", 'String'>
+    readonly incidentDate: FieldRef<"EmployeeIncident", 'DateTime'>
+    readonly observations: FieldRef<"EmployeeIncident", 'String'>
+    readonly attachments: FieldRef<"EmployeeIncident", 'Json'>
+    readonly createdAt: FieldRef<"EmployeeIncident", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeIncident", 'DateTime'>
+    readonly deletedAt: FieldRef<"EmployeeIncident", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeIncident findUnique
+   */
+  export type EmployeeIncidentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncident to fetch.
+     */
+    where: EmployeeIncidentWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncident findUniqueOrThrow
+   */
+  export type EmployeeIncidentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncident to fetch.
+     */
+    where: EmployeeIncidentWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncident findFirst
+   */
+  export type EmployeeIncidentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncident to fetch.
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncidents to fetch.
+     */
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncidents.
+     */
+    cursor?: EmployeeIncidentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncidents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncidents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncidents.
+     */
+    distinct?: EmployeeIncidentScalarFieldEnum | EmployeeIncidentScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncident findFirstOrThrow
+   */
+  export type EmployeeIncidentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncident to fetch.
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncidents to fetch.
+     */
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeIncidents.
+     */
+    cursor?: EmployeeIncidentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncidents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncidents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeIncidents.
+     */
+    distinct?: EmployeeIncidentScalarFieldEnum | EmployeeIncidentScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncident findMany
+   */
+  export type EmployeeIncidentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeIncidents to fetch.
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeIncidents to fetch.
+     */
+    orderBy?: EmployeeIncidentOrderByWithRelationInput | EmployeeIncidentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeIncidents.
+     */
+    cursor?: EmployeeIncidentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeIncidents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeIncidents.
+     */
+    skip?: number
+    distinct?: EmployeeIncidentScalarFieldEnum | EmployeeIncidentScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncident create
+   */
+  export type EmployeeIncidentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeIncident.
+     */
+    data: XOR<EmployeeIncidentCreateInput, EmployeeIncidentUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeIncident createMany
+   */
+  export type EmployeeIncidentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeIncidents.
+     */
+    data: EmployeeIncidentCreateManyInput | EmployeeIncidentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeIncident update
+   */
+  export type EmployeeIncidentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeIncident.
+     */
+    data: XOR<EmployeeIncidentUpdateInput, EmployeeIncidentUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeIncident to update.
+     */
+    where: EmployeeIncidentWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncident updateMany
+   */
+  export type EmployeeIncidentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeIncidents.
+     */
+    data: XOR<EmployeeIncidentUpdateManyMutationInput, EmployeeIncidentUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeIncidents to update
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * Limit how many EmployeeIncidents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncident upsert
+   */
+  export type EmployeeIncidentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeIncident to update in case it exists.
+     */
+    where: EmployeeIncidentWhereUniqueInput
+    /**
+     * In case the EmployeeIncident found by the `where` argument doesn't exist, create a new EmployeeIncident with this data.
+     */
+    create: XOR<EmployeeIncidentCreateInput, EmployeeIncidentUncheckedCreateInput>
+    /**
+     * In case the EmployeeIncident was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeIncidentUpdateInput, EmployeeIncidentUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeIncident delete
+   */
+  export type EmployeeIncidentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeIncident to delete.
+     */
+    where: EmployeeIncidentWhereUniqueInput
+  }
+
+  /**
+   * EmployeeIncident deleteMany
+   */
+  export type EmployeeIncidentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeIncidents to delete
+     */
+    where?: EmployeeIncidentWhereInput
+    /**
+     * Limit how many EmployeeIncidents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeIncident.sanctionLinks
+   */
+  export type EmployeeIncident$sanctionLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    where?: SanctionIncidentLinkWhereInput
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SanctionIncidentLinkScalarFieldEnum | SanctionIncidentLinkScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeIncident without action
+   */
+  export type EmployeeIncidentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeIncident
+     */
+    select?: EmployeeIncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeIncident
+     */
+    omit?: EmployeeIncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeIncidentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model EmployeeSanction
+   */
+
+  export type AggregateEmployeeSanction = {
+    _count: EmployeeSanctionCountAggregateOutputType | null
+    _avg: EmployeeSanctionAvgAggregateOutputType | null
+    _sum: EmployeeSanctionSumAggregateOutputType | null
+    _min: EmployeeSanctionMinAggregateOutputType | null
+    _max: EmployeeSanctionMaxAggregateOutputType | null
+  }
+
+  export type EmployeeSanctionAvgAggregateOutputType = {
+    suspensionDays: number | null
+  }
+
+  export type EmployeeSanctionSumAggregateOutputType = {
+    suspensionDays: number | null
+  }
+
+  export type EmployeeSanctionMinAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    sanctionTypeId: string | null
+    sanctionDate: Date | null
+    suspensionDays: number | null
+    observations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type EmployeeSanctionMaxAggregateOutputType = {
+    id: string | null
+    employeeId: string | null
+    sanctionTypeId: string | null
+    sanctionDate: Date | null
+    suspensionDays: number | null
+    observations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    deletedAt: Date | null
+  }
+
+  export type EmployeeSanctionCountAggregateOutputType = {
+    id: number
+    employeeId: number
+    sanctionTypeId: number
+    sanctionDate: number
+    suspensionDays: number
+    observations: number
+    attachments: number
+    createdAt: number
+    updatedAt: number
+    deletedAt: number
+    _all: number
+  }
+
+
+  export type EmployeeSanctionAvgAggregateInputType = {
+    suspensionDays?: true
+  }
+
+  export type EmployeeSanctionSumAggregateInputType = {
+    suspensionDays?: true
+  }
+
+  export type EmployeeSanctionMinAggregateInputType = {
+    id?: true
+    employeeId?: true
+    sanctionTypeId?: true
+    sanctionDate?: true
+    suspensionDays?: true
+    observations?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type EmployeeSanctionMaxAggregateInputType = {
+    id?: true
+    employeeId?: true
+    sanctionTypeId?: true
+    sanctionDate?: true
+    suspensionDays?: true
+    observations?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+  }
+
+  export type EmployeeSanctionCountAggregateInputType = {
+    id?: true
+    employeeId?: true
+    sanctionTypeId?: true
+    sanctionDate?: true
+    suspensionDays?: true
+    observations?: true
+    attachments?: true
+    createdAt?: true
+    updatedAt?: true
+    deletedAt?: true
+    _all?: true
+  }
+
+  export type EmployeeSanctionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeSanction to aggregate.
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeSanctions to fetch.
+     */
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: EmployeeSanctionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeSanctions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeSanctions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned EmployeeSanctions
+    **/
+    _count?: true | EmployeeSanctionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: EmployeeSanctionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: EmployeeSanctionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EmployeeSanctionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EmployeeSanctionMaxAggregateInputType
+  }
+
+  export type GetEmployeeSanctionAggregateType<T extends EmployeeSanctionAggregateArgs> = {
+        [P in keyof T & keyof AggregateEmployeeSanction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEmployeeSanction[P]>
+      : GetScalarType<T[P], AggregateEmployeeSanction[P]>
+  }
+
+
+
+
+  export type EmployeeSanctionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: EmployeeSanctionWhereInput
+    orderBy?: EmployeeSanctionOrderByWithAggregationInput | EmployeeSanctionOrderByWithAggregationInput[]
+    by: EmployeeSanctionScalarFieldEnum[] | EmployeeSanctionScalarFieldEnum
+    having?: EmployeeSanctionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EmployeeSanctionCountAggregateInputType | true
+    _avg?: EmployeeSanctionAvgAggregateInputType
+    _sum?: EmployeeSanctionSumAggregateInputType
+    _min?: EmployeeSanctionMinAggregateInputType
+    _max?: EmployeeSanctionMaxAggregateInputType
+  }
+
+  export type EmployeeSanctionGroupByOutputType = {
+    id: string
+    employeeId: string
+    sanctionTypeId: string
+    sanctionDate: Date
+    suspensionDays: number | null
+    observations: string | null
+    attachments: JsonValue | null
+    createdAt: Date
+    updatedAt: Date
+    deletedAt: Date | null
+    _count: EmployeeSanctionCountAggregateOutputType | null
+    _avg: EmployeeSanctionAvgAggregateOutputType | null
+    _sum: EmployeeSanctionSumAggregateOutputType | null
+    _min: EmployeeSanctionMinAggregateOutputType | null
+    _max: EmployeeSanctionMaxAggregateOutputType | null
+  }
+
+  type GetEmployeeSanctionGroupByPayload<T extends EmployeeSanctionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<EmployeeSanctionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EmployeeSanctionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EmployeeSanctionGroupByOutputType[P]>
+            : GetScalarType<T[P], EmployeeSanctionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EmployeeSanctionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    employeeId?: boolean
+    sanctionTypeId?: boolean
+    sanctionDate?: boolean
+    suspensionDays?: boolean
+    observations?: boolean
+    attachments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    sanctionType?: boolean | SanctionTypeDefaultArgs<ExtArgs>
+    incidentLinks?: boolean | EmployeeSanction$incidentLinksArgs<ExtArgs>
+    _count?: boolean | EmployeeSanctionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["employeeSanction"]>
+
+
+
+  export type EmployeeSanctionSelectScalar = {
+    id?: boolean
+    employeeId?: boolean
+    sanctionTypeId?: boolean
+    sanctionDate?: boolean
+    suspensionDays?: boolean
+    observations?: boolean
+    attachments?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    deletedAt?: boolean
+  }
+
+  export type EmployeeSanctionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "employeeId" | "sanctionTypeId" | "sanctionDate" | "suspensionDays" | "observations" | "attachments" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["employeeSanction"]>
+  export type EmployeeSanctionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+    sanctionType?: boolean | SanctionTypeDefaultArgs<ExtArgs>
+    incidentLinks?: boolean | EmployeeSanction$incidentLinksArgs<ExtArgs>
+    _count?: boolean | EmployeeSanctionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $EmployeeSanctionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "EmployeeSanction"
+    objects: {
+      employee: Prisma.$EmployeePayload<ExtArgs>
+      sanctionType: Prisma.$SanctionTypePayload<ExtArgs>
+      incidentLinks: Prisma.$SanctionIncidentLinkPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      employeeId: string
+      sanctionTypeId: string
+      sanctionDate: Date
+      suspensionDays: number | null
+      observations: string | null
+      attachments: Prisma.JsonValue | null
+      createdAt: Date
+      updatedAt: Date
+      deletedAt: Date | null
+    }, ExtArgs["result"]["employeeSanction"]>
+    composites: {}
+  }
+
+  type EmployeeSanctionGetPayload<S extends boolean | null | undefined | EmployeeSanctionDefaultArgs> = $Result.GetResult<Prisma.$EmployeeSanctionPayload, S>
+
+  type EmployeeSanctionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<EmployeeSanctionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: EmployeeSanctionCountAggregateInputType | true
+    }
+
+  export interface EmployeeSanctionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['EmployeeSanction'], meta: { name: 'EmployeeSanction' } }
+    /**
+     * Find zero or one EmployeeSanction that matches the filter.
+     * @param {EmployeeSanctionFindUniqueArgs} args - Arguments to find a EmployeeSanction
+     * @example
+     * // Get one EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends EmployeeSanctionFindUniqueArgs>(args: SelectSubset<T, EmployeeSanctionFindUniqueArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one EmployeeSanction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {EmployeeSanctionFindUniqueOrThrowArgs} args - Arguments to find a EmployeeSanction
+     * @example
+     * // Get one EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends EmployeeSanctionFindUniqueOrThrowArgs>(args: SelectSubset<T, EmployeeSanctionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeSanction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionFindFirstArgs} args - Arguments to find a EmployeeSanction
+     * @example
+     * // Get one EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends EmployeeSanctionFindFirstArgs>(args?: SelectSubset<T, EmployeeSanctionFindFirstArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first EmployeeSanction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionFindFirstOrThrowArgs} args - Arguments to find a EmployeeSanction
+     * @example
+     * // Get one EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends EmployeeSanctionFindFirstOrThrowArgs>(args?: SelectSubset<T, EmployeeSanctionFindFirstOrThrowArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more EmployeeSanctions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all EmployeeSanctions
+     * const employeeSanctions = await prisma.employeeSanction.findMany()
+     * 
+     * // Get first 10 EmployeeSanctions
+     * const employeeSanctions = await prisma.employeeSanction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const employeeSanctionWithIdOnly = await prisma.employeeSanction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends EmployeeSanctionFindManyArgs>(args?: SelectSubset<T, EmployeeSanctionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a EmployeeSanction.
+     * @param {EmployeeSanctionCreateArgs} args - Arguments to create a EmployeeSanction.
+     * @example
+     * // Create one EmployeeSanction
+     * const EmployeeSanction = await prisma.employeeSanction.create({
+     *   data: {
+     *     // ... data to create a EmployeeSanction
+     *   }
+     * })
+     * 
+     */
+    create<T extends EmployeeSanctionCreateArgs>(args: SelectSubset<T, EmployeeSanctionCreateArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many EmployeeSanctions.
+     * @param {EmployeeSanctionCreateManyArgs} args - Arguments to create many EmployeeSanctions.
+     * @example
+     * // Create many EmployeeSanctions
+     * const employeeSanction = await prisma.employeeSanction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends EmployeeSanctionCreateManyArgs>(args?: SelectSubset<T, EmployeeSanctionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a EmployeeSanction.
+     * @param {EmployeeSanctionDeleteArgs} args - Arguments to delete one EmployeeSanction.
+     * @example
+     * // Delete one EmployeeSanction
+     * const EmployeeSanction = await prisma.employeeSanction.delete({
+     *   where: {
+     *     // ... filter to delete one EmployeeSanction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends EmployeeSanctionDeleteArgs>(args: SelectSubset<T, EmployeeSanctionDeleteArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one EmployeeSanction.
+     * @param {EmployeeSanctionUpdateArgs} args - Arguments to update one EmployeeSanction.
+     * @example
+     * // Update one EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends EmployeeSanctionUpdateArgs>(args: SelectSubset<T, EmployeeSanctionUpdateArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more EmployeeSanctions.
+     * @param {EmployeeSanctionDeleteManyArgs} args - Arguments to filter EmployeeSanctions to delete.
+     * @example
+     * // Delete a few EmployeeSanctions
+     * const { count } = await prisma.employeeSanction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends EmployeeSanctionDeleteManyArgs>(args?: SelectSubset<T, EmployeeSanctionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more EmployeeSanctions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many EmployeeSanctions
+     * const employeeSanction = await prisma.employeeSanction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends EmployeeSanctionUpdateManyArgs>(args: SelectSubset<T, EmployeeSanctionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one EmployeeSanction.
+     * @param {EmployeeSanctionUpsertArgs} args - Arguments to update or create a EmployeeSanction.
+     * @example
+     * // Update or create a EmployeeSanction
+     * const employeeSanction = await prisma.employeeSanction.upsert({
+     *   create: {
+     *     // ... data to create a EmployeeSanction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the EmployeeSanction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends EmployeeSanctionUpsertArgs>(args: SelectSubset<T, EmployeeSanctionUpsertArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of EmployeeSanctions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionCountArgs} args - Arguments to filter EmployeeSanctions to count.
+     * @example
+     * // Count the number of EmployeeSanctions
+     * const count = await prisma.employeeSanction.count({
+     *   where: {
+     *     // ... the filter for the EmployeeSanctions we want to count
+     *   }
+     * })
+    **/
+    count<T extends EmployeeSanctionCountArgs>(
+      args?: Subset<T, EmployeeSanctionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EmployeeSanctionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a EmployeeSanction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EmployeeSanctionAggregateArgs>(args: Subset<T, EmployeeSanctionAggregateArgs>): Prisma.PrismaPromise<GetEmployeeSanctionAggregateType<T>>
+
+    /**
+     * Group by EmployeeSanction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EmployeeSanctionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EmployeeSanctionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EmployeeSanctionGroupByArgs['orderBy'] }
+        : { orderBy?: EmployeeSanctionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EmployeeSanctionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEmployeeSanctionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the EmployeeSanction model
+   */
+  readonly fields: EmployeeSanctionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for EmployeeSanction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__EmployeeSanctionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sanctionType<T extends SanctionTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SanctionTypeDefaultArgs<ExtArgs>>): Prisma__SanctionTypeClient<$Result.GetResult<Prisma.$SanctionTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    incidentLinks<T extends EmployeeSanction$incidentLinksArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeSanction$incidentLinksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the EmployeeSanction model
+   */
+  interface EmployeeSanctionFieldRefs {
+    readonly id: FieldRef<"EmployeeSanction", 'String'>
+    readonly employeeId: FieldRef<"EmployeeSanction", 'String'>
+    readonly sanctionTypeId: FieldRef<"EmployeeSanction", 'String'>
+    readonly sanctionDate: FieldRef<"EmployeeSanction", 'DateTime'>
+    readonly suspensionDays: FieldRef<"EmployeeSanction", 'Int'>
+    readonly observations: FieldRef<"EmployeeSanction", 'String'>
+    readonly attachments: FieldRef<"EmployeeSanction", 'Json'>
+    readonly createdAt: FieldRef<"EmployeeSanction", 'DateTime'>
+    readonly updatedAt: FieldRef<"EmployeeSanction", 'DateTime'>
+    readonly deletedAt: FieldRef<"EmployeeSanction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * EmployeeSanction findUnique
+   */
+  export type EmployeeSanctionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeSanction to fetch.
+     */
+    where: EmployeeSanctionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeSanction findUniqueOrThrow
+   */
+  export type EmployeeSanctionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeSanction to fetch.
+     */
+    where: EmployeeSanctionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeSanction findFirst
+   */
+  export type EmployeeSanctionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeSanction to fetch.
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeSanctions to fetch.
+     */
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeSanctions.
+     */
+    cursor?: EmployeeSanctionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeSanctions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeSanctions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeSanctions.
+     */
+    distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeSanction findFirstOrThrow
+   */
+  export type EmployeeSanctionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeSanction to fetch.
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeSanctions to fetch.
+     */
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for EmployeeSanctions.
+     */
+    cursor?: EmployeeSanctionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeSanctions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeSanctions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of EmployeeSanctions.
+     */
+    distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeSanction findMany
+   */
+  export type EmployeeSanctionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter, which EmployeeSanctions to fetch.
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of EmployeeSanctions to fetch.
+     */
+    orderBy?: EmployeeSanctionOrderByWithRelationInput | EmployeeSanctionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing EmployeeSanctions.
+     */
+    cursor?: EmployeeSanctionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` EmployeeSanctions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` EmployeeSanctions.
+     */
+    skip?: number
+    distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeSanction create
+   */
+  export type EmployeeSanctionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a EmployeeSanction.
+     */
+    data: XOR<EmployeeSanctionCreateInput, EmployeeSanctionUncheckedCreateInput>
+  }
+
+  /**
+   * EmployeeSanction createMany
+   */
+  export type EmployeeSanctionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many EmployeeSanctions.
+     */
+    data: EmployeeSanctionCreateManyInput | EmployeeSanctionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * EmployeeSanction update
+   */
+  export type EmployeeSanctionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a EmployeeSanction.
+     */
+    data: XOR<EmployeeSanctionUpdateInput, EmployeeSanctionUncheckedUpdateInput>
+    /**
+     * Choose, which EmployeeSanction to update.
+     */
+    where: EmployeeSanctionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeSanction updateMany
+   */
+  export type EmployeeSanctionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update EmployeeSanctions.
+     */
+    data: XOR<EmployeeSanctionUpdateManyMutationInput, EmployeeSanctionUncheckedUpdateManyInput>
+    /**
+     * Filter which EmployeeSanctions to update
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * Limit how many EmployeeSanctions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeSanction upsert
+   */
+  export type EmployeeSanctionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the EmployeeSanction to update in case it exists.
+     */
+    where: EmployeeSanctionWhereUniqueInput
+    /**
+     * In case the EmployeeSanction found by the `where` argument doesn't exist, create a new EmployeeSanction with this data.
+     */
+    create: XOR<EmployeeSanctionCreateInput, EmployeeSanctionUncheckedCreateInput>
+    /**
+     * In case the EmployeeSanction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<EmployeeSanctionUpdateInput, EmployeeSanctionUncheckedUpdateInput>
+  }
+
+  /**
+   * EmployeeSanction delete
+   */
+  export type EmployeeSanctionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+    /**
+     * Filter which EmployeeSanction to delete.
+     */
+    where: EmployeeSanctionWhereUniqueInput
+  }
+
+  /**
+   * EmployeeSanction deleteMany
+   */
+  export type EmployeeSanctionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which EmployeeSanctions to delete
+     */
+    where?: EmployeeSanctionWhereInput
+    /**
+     * Limit how many EmployeeSanctions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * EmployeeSanction.incidentLinks
+   */
+  export type EmployeeSanction$incidentLinksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    where?: SanctionIncidentLinkWhereInput
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SanctionIncidentLinkScalarFieldEnum | SanctionIncidentLinkScalarFieldEnum[]
+  }
+
+  /**
+   * EmployeeSanction without action
+   */
+  export type EmployeeSanctionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the EmployeeSanction
+     */
+    select?: EmployeeSanctionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the EmployeeSanction
+     */
+    omit?: EmployeeSanctionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EmployeeSanctionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SanctionIncidentLink
+   */
+
+  export type AggregateSanctionIncidentLink = {
+    _count: SanctionIncidentLinkCountAggregateOutputType | null
+    _min: SanctionIncidentLinkMinAggregateOutputType | null
+    _max: SanctionIncidentLinkMaxAggregateOutputType | null
+  }
+
+  export type SanctionIncidentLinkMinAggregateOutputType = {
+    id: string | null
+    sanctionId: string | null
+    incidentId: string | null
+    createdAt: Date | null
+  }
+
+  export type SanctionIncidentLinkMaxAggregateOutputType = {
+    id: string | null
+    sanctionId: string | null
+    incidentId: string | null
+    createdAt: Date | null
+  }
+
+  export type SanctionIncidentLinkCountAggregateOutputType = {
+    id: number
+    sanctionId: number
+    incidentId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SanctionIncidentLinkMinAggregateInputType = {
+    id?: true
+    sanctionId?: true
+    incidentId?: true
+    createdAt?: true
+  }
+
+  export type SanctionIncidentLinkMaxAggregateInputType = {
+    id?: true
+    sanctionId?: true
+    incidentId?: true
+    createdAt?: true
+  }
+
+  export type SanctionIncidentLinkCountAggregateInputType = {
+    id?: true
+    sanctionId?: true
+    incidentId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SanctionIncidentLinkAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SanctionIncidentLink to aggregate.
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionIncidentLinks to fetch.
+     */
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionIncidentLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionIncidentLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SanctionIncidentLinks
+    **/
+    _count?: true | SanctionIncidentLinkCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SanctionIncidentLinkMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SanctionIncidentLinkMaxAggregateInputType
+  }
+
+  export type GetSanctionIncidentLinkAggregateType<T extends SanctionIncidentLinkAggregateArgs> = {
+        [P in keyof T & keyof AggregateSanctionIncidentLink]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSanctionIncidentLink[P]>
+      : GetScalarType<T[P], AggregateSanctionIncidentLink[P]>
+  }
+
+
+
+
+  export type SanctionIncidentLinkGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SanctionIncidentLinkWhereInput
+    orderBy?: SanctionIncidentLinkOrderByWithAggregationInput | SanctionIncidentLinkOrderByWithAggregationInput[]
+    by: SanctionIncidentLinkScalarFieldEnum[] | SanctionIncidentLinkScalarFieldEnum
+    having?: SanctionIncidentLinkScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SanctionIncidentLinkCountAggregateInputType | true
+    _min?: SanctionIncidentLinkMinAggregateInputType
+    _max?: SanctionIncidentLinkMaxAggregateInputType
+  }
+
+  export type SanctionIncidentLinkGroupByOutputType = {
+    id: string
+    sanctionId: string
+    incidentId: string
+    createdAt: Date
+    _count: SanctionIncidentLinkCountAggregateOutputType | null
+    _min: SanctionIncidentLinkMinAggregateOutputType | null
+    _max: SanctionIncidentLinkMaxAggregateOutputType | null
+  }
+
+  type GetSanctionIncidentLinkGroupByPayload<T extends SanctionIncidentLinkGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SanctionIncidentLinkGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SanctionIncidentLinkGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SanctionIncidentLinkGroupByOutputType[P]>
+            : GetScalarType<T[P], SanctionIncidentLinkGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SanctionIncidentLinkSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    sanctionId?: boolean
+    incidentId?: boolean
+    createdAt?: boolean
+    sanction?: boolean | EmployeeSanctionDefaultArgs<ExtArgs>
+    incident?: boolean | EmployeeIncidentDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sanctionIncidentLink"]>
+
+
+
+  export type SanctionIncidentLinkSelectScalar = {
+    id?: boolean
+    sanctionId?: boolean
+    incidentId?: boolean
+    createdAt?: boolean
+  }
+
+  export type SanctionIncidentLinkOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "sanctionId" | "incidentId" | "createdAt", ExtArgs["result"]["sanctionIncidentLink"]>
+  export type SanctionIncidentLinkInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sanction?: boolean | EmployeeSanctionDefaultArgs<ExtArgs>
+    incident?: boolean | EmployeeIncidentDefaultArgs<ExtArgs>
+  }
+
+  export type $SanctionIncidentLinkPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SanctionIncidentLink"
+    objects: {
+      sanction: Prisma.$EmployeeSanctionPayload<ExtArgs>
+      incident: Prisma.$EmployeeIncidentPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      sanctionId: string
+      incidentId: string
+      createdAt: Date
+    }, ExtArgs["result"]["sanctionIncidentLink"]>
+    composites: {}
+  }
+
+  type SanctionIncidentLinkGetPayload<S extends boolean | null | undefined | SanctionIncidentLinkDefaultArgs> = $Result.GetResult<Prisma.$SanctionIncidentLinkPayload, S>
+
+  type SanctionIncidentLinkCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SanctionIncidentLinkFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SanctionIncidentLinkCountAggregateInputType | true
+    }
+
+  export interface SanctionIncidentLinkDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SanctionIncidentLink'], meta: { name: 'SanctionIncidentLink' } }
+    /**
+     * Find zero or one SanctionIncidentLink that matches the filter.
+     * @param {SanctionIncidentLinkFindUniqueArgs} args - Arguments to find a SanctionIncidentLink
+     * @example
+     * // Get one SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SanctionIncidentLinkFindUniqueArgs>(args: SelectSubset<T, SanctionIncidentLinkFindUniqueArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SanctionIncidentLink that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SanctionIncidentLinkFindUniqueOrThrowArgs} args - Arguments to find a SanctionIncidentLink
+     * @example
+     * // Get one SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SanctionIncidentLinkFindUniqueOrThrowArgs>(args: SelectSubset<T, SanctionIncidentLinkFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SanctionIncidentLink that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkFindFirstArgs} args - Arguments to find a SanctionIncidentLink
+     * @example
+     * // Get one SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SanctionIncidentLinkFindFirstArgs>(args?: SelectSubset<T, SanctionIncidentLinkFindFirstArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SanctionIncidentLink that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkFindFirstOrThrowArgs} args - Arguments to find a SanctionIncidentLink
+     * @example
+     * // Get one SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SanctionIncidentLinkFindFirstOrThrowArgs>(args?: SelectSubset<T, SanctionIncidentLinkFindFirstOrThrowArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SanctionIncidentLinks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SanctionIncidentLinks
+     * const sanctionIncidentLinks = await prisma.sanctionIncidentLink.findMany()
+     * 
+     * // Get first 10 SanctionIncidentLinks
+     * const sanctionIncidentLinks = await prisma.sanctionIncidentLink.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sanctionIncidentLinkWithIdOnly = await prisma.sanctionIncidentLink.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SanctionIncidentLinkFindManyArgs>(args?: SelectSubset<T, SanctionIncidentLinkFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SanctionIncidentLink.
+     * @param {SanctionIncidentLinkCreateArgs} args - Arguments to create a SanctionIncidentLink.
+     * @example
+     * // Create one SanctionIncidentLink
+     * const SanctionIncidentLink = await prisma.sanctionIncidentLink.create({
+     *   data: {
+     *     // ... data to create a SanctionIncidentLink
+     *   }
+     * })
+     * 
+     */
+    create<T extends SanctionIncidentLinkCreateArgs>(args: SelectSubset<T, SanctionIncidentLinkCreateArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SanctionIncidentLinks.
+     * @param {SanctionIncidentLinkCreateManyArgs} args - Arguments to create many SanctionIncidentLinks.
+     * @example
+     * // Create many SanctionIncidentLinks
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SanctionIncidentLinkCreateManyArgs>(args?: SelectSubset<T, SanctionIncidentLinkCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SanctionIncidentLink.
+     * @param {SanctionIncidentLinkDeleteArgs} args - Arguments to delete one SanctionIncidentLink.
+     * @example
+     * // Delete one SanctionIncidentLink
+     * const SanctionIncidentLink = await prisma.sanctionIncidentLink.delete({
+     *   where: {
+     *     // ... filter to delete one SanctionIncidentLink
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SanctionIncidentLinkDeleteArgs>(args: SelectSubset<T, SanctionIncidentLinkDeleteArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SanctionIncidentLink.
+     * @param {SanctionIncidentLinkUpdateArgs} args - Arguments to update one SanctionIncidentLink.
+     * @example
+     * // Update one SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SanctionIncidentLinkUpdateArgs>(args: SelectSubset<T, SanctionIncidentLinkUpdateArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SanctionIncidentLinks.
+     * @param {SanctionIncidentLinkDeleteManyArgs} args - Arguments to filter SanctionIncidentLinks to delete.
+     * @example
+     * // Delete a few SanctionIncidentLinks
+     * const { count } = await prisma.sanctionIncidentLink.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SanctionIncidentLinkDeleteManyArgs>(args?: SelectSubset<T, SanctionIncidentLinkDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SanctionIncidentLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SanctionIncidentLinks
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SanctionIncidentLinkUpdateManyArgs>(args: SelectSubset<T, SanctionIncidentLinkUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SanctionIncidentLink.
+     * @param {SanctionIncidentLinkUpsertArgs} args - Arguments to update or create a SanctionIncidentLink.
+     * @example
+     * // Update or create a SanctionIncidentLink
+     * const sanctionIncidentLink = await prisma.sanctionIncidentLink.upsert({
+     *   create: {
+     *     // ... data to create a SanctionIncidentLink
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SanctionIncidentLink we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SanctionIncidentLinkUpsertArgs>(args: SelectSubset<T, SanctionIncidentLinkUpsertArgs<ExtArgs>>): Prisma__SanctionIncidentLinkClient<$Result.GetResult<Prisma.$SanctionIncidentLinkPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SanctionIncidentLinks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkCountArgs} args - Arguments to filter SanctionIncidentLinks to count.
+     * @example
+     * // Count the number of SanctionIncidentLinks
+     * const count = await prisma.sanctionIncidentLink.count({
+     *   where: {
+     *     // ... the filter for the SanctionIncidentLinks we want to count
+     *   }
+     * })
+    **/
+    count<T extends SanctionIncidentLinkCountArgs>(
+      args?: Subset<T, SanctionIncidentLinkCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SanctionIncidentLinkCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SanctionIncidentLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SanctionIncidentLinkAggregateArgs>(args: Subset<T, SanctionIncidentLinkAggregateArgs>): Prisma.PrismaPromise<GetSanctionIncidentLinkAggregateType<T>>
+
+    /**
+     * Group by SanctionIncidentLink.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SanctionIncidentLinkGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SanctionIncidentLinkGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SanctionIncidentLinkGroupByArgs['orderBy'] }
+        : { orderBy?: SanctionIncidentLinkGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SanctionIncidentLinkGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSanctionIncidentLinkGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SanctionIncidentLink model
+   */
+  readonly fields: SanctionIncidentLinkFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SanctionIncidentLink.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SanctionIncidentLinkClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sanction<T extends EmployeeSanctionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeSanctionDefaultArgs<ExtArgs>>): Prisma__EmployeeSanctionClient<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    incident<T extends EmployeeIncidentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeIncidentDefaultArgs<ExtArgs>>): Prisma__EmployeeIncidentClient<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SanctionIncidentLink model
+   */
+  interface SanctionIncidentLinkFieldRefs {
+    readonly id: FieldRef<"SanctionIncidentLink", 'String'>
+    readonly sanctionId: FieldRef<"SanctionIncidentLink", 'String'>
+    readonly incidentId: FieldRef<"SanctionIncidentLink", 'String'>
+    readonly createdAt: FieldRef<"SanctionIncidentLink", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SanctionIncidentLink findUnique
+   */
+  export type SanctionIncidentLinkFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionIncidentLink to fetch.
+     */
+    where: SanctionIncidentLinkWhereUniqueInput
+  }
+
+  /**
+   * SanctionIncidentLink findUniqueOrThrow
+   */
+  export type SanctionIncidentLinkFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionIncidentLink to fetch.
+     */
+    where: SanctionIncidentLinkWhereUniqueInput
+  }
+
+  /**
+   * SanctionIncidentLink findFirst
+   */
+  export type SanctionIncidentLinkFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionIncidentLink to fetch.
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionIncidentLinks to fetch.
+     */
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SanctionIncidentLinks.
+     */
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionIncidentLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionIncidentLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SanctionIncidentLinks.
+     */
+    distinct?: SanctionIncidentLinkScalarFieldEnum | SanctionIncidentLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionIncidentLink findFirstOrThrow
+   */
+  export type SanctionIncidentLinkFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionIncidentLink to fetch.
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionIncidentLinks to fetch.
+     */
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SanctionIncidentLinks.
+     */
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionIncidentLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionIncidentLinks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SanctionIncidentLinks.
+     */
+    distinct?: SanctionIncidentLinkScalarFieldEnum | SanctionIncidentLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionIncidentLink findMany
+   */
+  export type SanctionIncidentLinkFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter, which SanctionIncidentLinks to fetch.
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SanctionIncidentLinks to fetch.
+     */
+    orderBy?: SanctionIncidentLinkOrderByWithRelationInput | SanctionIncidentLinkOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SanctionIncidentLinks.
+     */
+    cursor?: SanctionIncidentLinkWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SanctionIncidentLinks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SanctionIncidentLinks.
+     */
+    skip?: number
+    distinct?: SanctionIncidentLinkScalarFieldEnum | SanctionIncidentLinkScalarFieldEnum[]
+  }
+
+  /**
+   * SanctionIncidentLink create
+   */
+  export type SanctionIncidentLinkCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SanctionIncidentLink.
+     */
+    data: XOR<SanctionIncidentLinkCreateInput, SanctionIncidentLinkUncheckedCreateInput>
+  }
+
+  /**
+   * SanctionIncidentLink createMany
+   */
+  export type SanctionIncidentLinkCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SanctionIncidentLinks.
+     */
+    data: SanctionIncidentLinkCreateManyInput | SanctionIncidentLinkCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SanctionIncidentLink update
+   */
+  export type SanctionIncidentLinkUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SanctionIncidentLink.
+     */
+    data: XOR<SanctionIncidentLinkUpdateInput, SanctionIncidentLinkUncheckedUpdateInput>
+    /**
+     * Choose, which SanctionIncidentLink to update.
+     */
+    where: SanctionIncidentLinkWhereUniqueInput
+  }
+
+  /**
+   * SanctionIncidentLink updateMany
+   */
+  export type SanctionIncidentLinkUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SanctionIncidentLinks.
+     */
+    data: XOR<SanctionIncidentLinkUpdateManyMutationInput, SanctionIncidentLinkUncheckedUpdateManyInput>
+    /**
+     * Filter which SanctionIncidentLinks to update
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * Limit how many SanctionIncidentLinks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SanctionIncidentLink upsert
+   */
+  export type SanctionIncidentLinkUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SanctionIncidentLink to update in case it exists.
+     */
+    where: SanctionIncidentLinkWhereUniqueInput
+    /**
+     * In case the SanctionIncidentLink found by the `where` argument doesn't exist, create a new SanctionIncidentLink with this data.
+     */
+    create: XOR<SanctionIncidentLinkCreateInput, SanctionIncidentLinkUncheckedCreateInput>
+    /**
+     * In case the SanctionIncidentLink was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SanctionIncidentLinkUpdateInput, SanctionIncidentLinkUncheckedUpdateInput>
+  }
+
+  /**
+   * SanctionIncidentLink delete
+   */
+  export type SanctionIncidentLinkDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+    /**
+     * Filter which SanctionIncidentLink to delete.
+     */
+    where: SanctionIncidentLinkWhereUniqueInput
+  }
+
+  /**
+   * SanctionIncidentLink deleteMany
+   */
+  export type SanctionIncidentLinkDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SanctionIncidentLinks to delete
+     */
+    where?: SanctionIncidentLinkWhereInput
+    /**
+     * Limit how many SanctionIncidentLinks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SanctionIncidentLink without action
+   */
+  export type SanctionIncidentLinkDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SanctionIncidentLink
+     */
+    select?: SanctionIncidentLinkSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SanctionIncidentLink
+     */
+    omit?: SanctionIncidentLinkOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SanctionIncidentLinkInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51673,6 +58371,7 @@ export namespace Prisma {
     contractModalityCode: 'contractModalityCode',
     salaryScaleId: 'salaryScaleId',
     workShiftId: 'workShiftId',
+    paymentMethodId: 'paymentMethodId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt',
@@ -51688,6 +58387,18 @@ export namespace Prisma {
   };
 
   export type EmployeeScalarFieldEnum = (typeof EmployeeScalarFieldEnum)[keyof typeof EmployeeScalarFieldEnum]
+
+
+  export const PaymentMethodScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type PaymentMethodScalarFieldEnum = (typeof PaymentMethodScalarFieldEnum)[keyof typeof PaymentMethodScalarFieldEnum]
 
 
   export const SalaryScaleScalarFieldEnum: {
@@ -52239,6 +58950,77 @@ export namespace Prisma {
   export type ReportTemplateScalarFieldEnum = (typeof ReportTemplateScalarFieldEnum)[keyof typeof ReportTemplateScalarFieldEnum]
 
 
+  export const IncidentTypeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    severity: 'severity',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type IncidentTypeScalarFieldEnum = (typeof IncidentTypeScalarFieldEnum)[keyof typeof IncidentTypeScalarFieldEnum]
+
+
+  export const SanctionTypeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    requiresSuspensionDays: 'requiresSuspensionDays',
+    description: 'description',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type SanctionTypeScalarFieldEnum = (typeof SanctionTypeScalarFieldEnum)[keyof typeof SanctionTypeScalarFieldEnum]
+
+
+  export const EmployeeIncidentScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    incidentTypeId: 'incidentTypeId',
+    incidentDate: 'incidentDate',
+    observations: 'observations',
+    attachments: 'attachments',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type EmployeeIncidentScalarFieldEnum = (typeof EmployeeIncidentScalarFieldEnum)[keyof typeof EmployeeIncidentScalarFieldEnum]
+
+
+  export const EmployeeSanctionScalarFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    sanctionTypeId: 'sanctionTypeId',
+    sanctionDate: 'sanctionDate',
+    suspensionDays: 'suspensionDays',
+    observations: 'observations',
+    attachments: 'attachments',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    deletedAt: 'deletedAt'
+  };
+
+  export type EmployeeSanctionScalarFieldEnum = (typeof EmployeeSanctionScalarFieldEnum)[keyof typeof EmployeeSanctionScalarFieldEnum]
+
+
+  export const SanctionIncidentLinkScalarFieldEnum: {
+    id: 'id',
+    sanctionId: 'sanctionId',
+    incidentId: 'incidentId',
+    createdAt: 'createdAt'
+  };
+
+  export type SanctionIncidentLinkScalarFieldEnum = (typeof SanctionIncidentLinkScalarFieldEnum)[keyof typeof SanctionIncidentLinkScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -52477,12 +59259,22 @@ export namespace Prisma {
     contractModalityCode: 'contractModalityCode',
     salaryScaleId: 'salaryScaleId',
     workShiftId: 'workShiftId',
+    paymentMethodId: 'paymentMethodId',
     payrollGroup: 'payrollGroup',
     cbu: 'cbu',
     bankAccountType: 'bankAccountType'
   };
 
   export type EmployeeOrderByRelevanceFieldEnum = (typeof EmployeeOrderByRelevanceFieldEnum)[keyof typeof EmployeeOrderByRelevanceFieldEnum]
+
+
+  export const PaymentMethodOrderByRelevanceFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type PaymentMethodOrderByRelevanceFieldEnum = (typeof PaymentMethodOrderByRelevanceFieldEnum)[keyof typeof PaymentMethodOrderByRelevanceFieldEnum]
 
 
   export const SalaryScaleOrderByRelevanceFieldEnum: {
@@ -52805,6 +59597,56 @@ export namespace Prisma {
   };
 
   export type ReportTemplateOrderByRelevanceFieldEnum = (typeof ReportTemplateOrderByRelevanceFieldEnum)[keyof typeof ReportTemplateOrderByRelevanceFieldEnum]
+
+
+  export const IncidentTypeOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    severity: 'severity',
+    description: 'description'
+  };
+
+  export type IncidentTypeOrderByRelevanceFieldEnum = (typeof IncidentTypeOrderByRelevanceFieldEnum)[keyof typeof IncidentTypeOrderByRelevanceFieldEnum]
+
+
+  export const SanctionTypeOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type SanctionTypeOrderByRelevanceFieldEnum = (typeof SanctionTypeOrderByRelevanceFieldEnum)[keyof typeof SanctionTypeOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeIncidentOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    incidentTypeId: 'incidentTypeId',
+    observations: 'observations'
+  };
+
+  export type EmployeeIncidentOrderByRelevanceFieldEnum = (typeof EmployeeIncidentOrderByRelevanceFieldEnum)[keyof typeof EmployeeIncidentOrderByRelevanceFieldEnum]
+
+
+  export const EmployeeSanctionOrderByRelevanceFieldEnum: {
+    id: 'id',
+    employeeId: 'employeeId',
+    sanctionTypeId: 'sanctionTypeId',
+    observations: 'observations'
+  };
+
+  export type EmployeeSanctionOrderByRelevanceFieldEnum = (typeof EmployeeSanctionOrderByRelevanceFieldEnum)[keyof typeof EmployeeSanctionOrderByRelevanceFieldEnum]
+
+
+  export const SanctionIncidentLinkOrderByRelevanceFieldEnum: {
+    id: 'id',
+    sanctionId: 'sanctionId',
+    incidentId: 'incidentId'
+  };
+
+  export type SanctionIncidentLinkOrderByRelevanceFieldEnum = (typeof SanctionIncidentLinkOrderByRelevanceFieldEnum)[keyof typeof SanctionIncidentLinkOrderByRelevanceFieldEnum]
 
 
   /**
@@ -54096,6 +60938,7 @@ export namespace Prisma {
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     workShiftId?: StringNullableFilter<"Employee"> | string | null
+    paymentMethodId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -54116,6 +60959,7 @@ export namespace Prisma {
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
+    paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -54125,6 +60969,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeListRelationFilter
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountListRelationFilter
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
+    incidents?: EmployeeIncidentListRelationFilter
+    sanctions?: EmployeeSanctionListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -54159,6 +61005,7 @@ export namespace Prisma {
     contractModalityCode?: SortOrderInput | SortOrder
     salaryScaleId?: SortOrderInput | SortOrder
     workShiftId?: SortOrderInput | SortOrder
+    paymentMethodId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -54179,6 +61026,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityOrderByWithRelationInput
     salaryScale?: SalaryScaleOrderByWithRelationInput
     workShift?: WorkShiftOrderByWithRelationInput
+    paymentMethod?: PaymentMethodOrderByWithRelationInput
     paySlips?: PaySlipOrderByRelationAggregateInput
     relatives?: EmployeeRelativeOrderByRelationAggregateInput
     assignedConcepts?: EmployeeConceptOrderByRelationAggregateInput
@@ -54188,6 +61036,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeOrderByRelationAggregateInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountOrderByRelationAggregateInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailOrderByRelationAggregateInput
+    incidents?: EmployeeIncidentOrderByRelationAggregateInput
+    sanctions?: EmployeeSanctionOrderByRelationAggregateInput
     _relevance?: EmployeeOrderByRelevanceInput
   }
 
@@ -54226,6 +61076,7 @@ export namespace Prisma {
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     workShiftId?: StringNullableFilter<"Employee"> | string | null
+    paymentMethodId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -54246,6 +61097,7 @@ export namespace Prisma {
     contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
+    paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     relatives?: EmployeeRelativeListRelationFilter
     assignedConcepts?: EmployeeConceptListRelationFilter
@@ -54255,6 +61107,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeListRelationFilter
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountListRelationFilter
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
+    incidents?: EmployeeIncidentListRelationFilter
+    sanctions?: EmployeeSanctionListRelationFilter
   }, "id" | "fileNumber" | "cuil">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -54289,6 +61143,7 @@ export namespace Prisma {
     contractModalityCode?: SortOrderInput | SortOrder
     salaryScaleId?: SortOrderInput | SortOrder
     workShiftId?: SortOrderInput | SortOrder
+    paymentMethodId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -54343,6 +61198,7 @@ export namespace Prisma {
     contractModalityCode?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     workShiftId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+    paymentMethodId?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Employee"> | Date | string | null
@@ -54355,6 +61211,67 @@ export namespace Prisma {
     hourlyRate?: DecimalWithAggregatesFilter<"Employee"> | Decimal | DecimalJsLike | number | string
     cbu?: StringNullableWithAggregatesFilter<"Employee"> | string | null
     bankAccountType?: StringNullableWithAggregatesFilter<"Employee"> | string | null
+  }
+
+  export type PaymentMethodWhereInput = {
+    AND?: PaymentMethodWhereInput | PaymentMethodWhereInput[]
+    OR?: PaymentMethodWhereInput[]
+    NOT?: PaymentMethodWhereInput | PaymentMethodWhereInput[]
+    id?: StringFilter<"PaymentMethod"> | string
+    name?: StringFilter<"PaymentMethod"> | string
+    description?: StringNullableFilter<"PaymentMethod"> | string | null
+    createdAt?: DateTimeFilter<"PaymentMethod"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentMethod"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"PaymentMethod"> | Date | string | null
+    employees?: EmployeeListRelationFilter
+  }
+
+  export type PaymentMethodOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    employees?: EmployeeOrderByRelationAggregateInput
+    _relevance?: PaymentMethodOrderByRelevanceInput
+  }
+
+  export type PaymentMethodWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PaymentMethodWhereInput | PaymentMethodWhereInput[]
+    OR?: PaymentMethodWhereInput[]
+    NOT?: PaymentMethodWhereInput | PaymentMethodWhereInput[]
+    name?: StringFilter<"PaymentMethod"> | string
+    description?: StringNullableFilter<"PaymentMethod"> | string | null
+    createdAt?: DateTimeFilter<"PaymentMethod"> | Date | string
+    updatedAt?: DateTimeFilter<"PaymentMethod"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"PaymentMethod"> | Date | string | null
+    employees?: EmployeeListRelationFilter
+  }, "id">
+
+  export type PaymentMethodOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: PaymentMethodCountOrderByAggregateInput
+    _max?: PaymentMethodMaxOrderByAggregateInput
+    _min?: PaymentMethodMinOrderByAggregateInput
+  }
+
+  export type PaymentMethodScalarWhereWithAggregatesInput = {
+    AND?: PaymentMethodScalarWhereWithAggregatesInput | PaymentMethodScalarWhereWithAggregatesInput[]
+    OR?: PaymentMethodScalarWhereWithAggregatesInput[]
+    NOT?: PaymentMethodScalarWhereWithAggregatesInput | PaymentMethodScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PaymentMethod"> | string
+    name?: StringWithAggregatesFilter<"PaymentMethod"> | string
+    description?: StringNullableWithAggregatesFilter<"PaymentMethod"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"PaymentMethod"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PaymentMethod"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"PaymentMethod"> | Date | string | null
   }
 
   export type SalaryScaleWhereInput = {
@@ -57221,6 +64138,384 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"ReportTemplate"> | Date | string
   }
 
+  export type IncidentTypeWhereInput = {
+    AND?: IncidentTypeWhereInput | IncidentTypeWhereInput[]
+    OR?: IncidentTypeWhereInput[]
+    NOT?: IncidentTypeWhereInput | IncidentTypeWhereInput[]
+    id?: StringFilter<"IncidentType"> | string
+    code?: StringNullableFilter<"IncidentType"> | string | null
+    name?: StringFilter<"IncidentType"> | string
+    severity?: StringFilter<"IncidentType"> | string
+    description?: StringNullableFilter<"IncidentType"> | string | null
+    isActive?: BoolFilter<"IncidentType"> | boolean
+    createdAt?: DateTimeFilter<"IncidentType"> | Date | string
+    updatedAt?: DateTimeFilter<"IncidentType"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"IncidentType"> | Date | string | null
+    incidents?: EmployeeIncidentListRelationFilter
+  }
+
+  export type IncidentTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrderInput | SortOrder
+    name?: SortOrder
+    severity?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    incidents?: EmployeeIncidentOrderByRelationAggregateInput
+    _relevance?: IncidentTypeOrderByRelevanceInput
+  }
+
+  export type IncidentTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: IncidentTypeWhereInput | IncidentTypeWhereInput[]
+    OR?: IncidentTypeWhereInput[]
+    NOT?: IncidentTypeWhereInput | IncidentTypeWhereInput[]
+    code?: StringNullableFilter<"IncidentType"> | string | null
+    name?: StringFilter<"IncidentType"> | string
+    severity?: StringFilter<"IncidentType"> | string
+    description?: StringNullableFilter<"IncidentType"> | string | null
+    isActive?: BoolFilter<"IncidentType"> | boolean
+    createdAt?: DateTimeFilter<"IncidentType"> | Date | string
+    updatedAt?: DateTimeFilter<"IncidentType"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"IncidentType"> | Date | string | null
+    incidents?: EmployeeIncidentListRelationFilter
+  }, "id">
+
+  export type IncidentTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrderInput | SortOrder
+    name?: SortOrder
+    severity?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: IncidentTypeCountOrderByAggregateInput
+    _max?: IncidentTypeMaxOrderByAggregateInput
+    _min?: IncidentTypeMinOrderByAggregateInput
+  }
+
+  export type IncidentTypeScalarWhereWithAggregatesInput = {
+    AND?: IncidentTypeScalarWhereWithAggregatesInput | IncidentTypeScalarWhereWithAggregatesInput[]
+    OR?: IncidentTypeScalarWhereWithAggregatesInput[]
+    NOT?: IncidentTypeScalarWhereWithAggregatesInput | IncidentTypeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"IncidentType"> | string
+    code?: StringNullableWithAggregatesFilter<"IncidentType"> | string | null
+    name?: StringWithAggregatesFilter<"IncidentType"> | string
+    severity?: StringWithAggregatesFilter<"IncidentType"> | string
+    description?: StringNullableWithAggregatesFilter<"IncidentType"> | string | null
+    isActive?: BoolWithAggregatesFilter<"IncidentType"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"IncidentType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"IncidentType"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"IncidentType"> | Date | string | null
+  }
+
+  export type SanctionTypeWhereInput = {
+    AND?: SanctionTypeWhereInput | SanctionTypeWhereInput[]
+    OR?: SanctionTypeWhereInput[]
+    NOT?: SanctionTypeWhereInput | SanctionTypeWhereInput[]
+    id?: StringFilter<"SanctionType"> | string
+    code?: StringNullableFilter<"SanctionType"> | string | null
+    name?: StringFilter<"SanctionType"> | string
+    requiresSuspensionDays?: BoolFilter<"SanctionType"> | boolean
+    description?: StringNullableFilter<"SanctionType"> | string | null
+    isActive?: BoolFilter<"SanctionType"> | boolean
+    createdAt?: DateTimeFilter<"SanctionType"> | Date | string
+    updatedAt?: DateTimeFilter<"SanctionType"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SanctionType"> | Date | string | null
+    sanctions?: EmployeeSanctionListRelationFilter
+  }
+
+  export type SanctionTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrderInput | SortOrder
+    name?: SortOrder
+    requiresSuspensionDays?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    sanctions?: EmployeeSanctionOrderByRelationAggregateInput
+    _relevance?: SanctionTypeOrderByRelevanceInput
+  }
+
+  export type SanctionTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SanctionTypeWhereInput | SanctionTypeWhereInput[]
+    OR?: SanctionTypeWhereInput[]
+    NOT?: SanctionTypeWhereInput | SanctionTypeWhereInput[]
+    code?: StringNullableFilter<"SanctionType"> | string | null
+    name?: StringFilter<"SanctionType"> | string
+    requiresSuspensionDays?: BoolFilter<"SanctionType"> | boolean
+    description?: StringNullableFilter<"SanctionType"> | string | null
+    isActive?: BoolFilter<"SanctionType"> | boolean
+    createdAt?: DateTimeFilter<"SanctionType"> | Date | string
+    updatedAt?: DateTimeFilter<"SanctionType"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"SanctionType"> | Date | string | null
+    sanctions?: EmployeeSanctionListRelationFilter
+  }, "id">
+
+  export type SanctionTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrderInput | SortOrder
+    name?: SortOrder
+    requiresSuspensionDays?: SortOrder
+    description?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: SanctionTypeCountOrderByAggregateInput
+    _max?: SanctionTypeMaxOrderByAggregateInput
+    _min?: SanctionTypeMinOrderByAggregateInput
+  }
+
+  export type SanctionTypeScalarWhereWithAggregatesInput = {
+    AND?: SanctionTypeScalarWhereWithAggregatesInput | SanctionTypeScalarWhereWithAggregatesInput[]
+    OR?: SanctionTypeScalarWhereWithAggregatesInput[]
+    NOT?: SanctionTypeScalarWhereWithAggregatesInput | SanctionTypeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SanctionType"> | string
+    code?: StringNullableWithAggregatesFilter<"SanctionType"> | string | null
+    name?: StringWithAggregatesFilter<"SanctionType"> | string
+    requiresSuspensionDays?: BoolWithAggregatesFilter<"SanctionType"> | boolean
+    description?: StringNullableWithAggregatesFilter<"SanctionType"> | string | null
+    isActive?: BoolWithAggregatesFilter<"SanctionType"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"SanctionType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"SanctionType"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"SanctionType"> | Date | string | null
+  }
+
+  export type EmployeeIncidentWhereInput = {
+    AND?: EmployeeIncidentWhereInput | EmployeeIncidentWhereInput[]
+    OR?: EmployeeIncidentWhereInput[]
+    NOT?: EmployeeIncidentWhereInput | EmployeeIncidentWhereInput[]
+    id?: StringFilter<"EmployeeIncident"> | string
+    employeeId?: StringFilter<"EmployeeIncident"> | string
+    incidentTypeId?: StringFilter<"EmployeeIncident"> | string
+    incidentDate?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    observations?: StringNullableFilter<"EmployeeIncident"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeIncident">
+    createdAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeIncident"> | Date | string | null
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    incidentType?: XOR<IncidentTypeScalarRelationFilter, IncidentTypeWhereInput>
+    sanctionLinks?: SanctionIncidentLinkListRelationFilter
+  }
+
+  export type EmployeeIncidentOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    incidentTypeId?: SortOrder
+    incidentDate?: SortOrder
+    observations?: SortOrderInput | SortOrder
+    attachments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    incidentType?: IncidentTypeOrderByWithRelationInput
+    sanctionLinks?: SanctionIncidentLinkOrderByRelationAggregateInput
+    _relevance?: EmployeeIncidentOrderByRelevanceInput
+  }
+
+  export type EmployeeIncidentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeIncidentWhereInput | EmployeeIncidentWhereInput[]
+    OR?: EmployeeIncidentWhereInput[]
+    NOT?: EmployeeIncidentWhereInput | EmployeeIncidentWhereInput[]
+    employeeId?: StringFilter<"EmployeeIncident"> | string
+    incidentTypeId?: StringFilter<"EmployeeIncident"> | string
+    incidentDate?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    observations?: StringNullableFilter<"EmployeeIncident"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeIncident">
+    createdAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeIncident"> | Date | string | null
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    incidentType?: XOR<IncidentTypeScalarRelationFilter, IncidentTypeWhereInput>
+    sanctionLinks?: SanctionIncidentLinkListRelationFilter
+  }, "id">
+
+  export type EmployeeIncidentOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    incidentTypeId?: SortOrder
+    incidentDate?: SortOrder
+    observations?: SortOrderInput | SortOrder
+    attachments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: EmployeeIncidentCountOrderByAggregateInput
+    _max?: EmployeeIncidentMaxOrderByAggregateInput
+    _min?: EmployeeIncidentMinOrderByAggregateInput
+  }
+
+  export type EmployeeIncidentScalarWhereWithAggregatesInput = {
+    AND?: EmployeeIncidentScalarWhereWithAggregatesInput | EmployeeIncidentScalarWhereWithAggregatesInput[]
+    OR?: EmployeeIncidentScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeIncidentScalarWhereWithAggregatesInput | EmployeeIncidentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeIncident"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeIncident"> | string
+    incidentTypeId?: StringWithAggregatesFilter<"EmployeeIncident"> | string
+    incidentDate?: DateTimeWithAggregatesFilter<"EmployeeIncident"> | Date | string
+    observations?: StringNullableWithAggregatesFilter<"EmployeeIncident"> | string | null
+    attachments?: JsonNullableWithAggregatesFilter<"EmployeeIncident">
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeIncident"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeIncident"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"EmployeeIncident"> | Date | string | null
+  }
+
+  export type EmployeeSanctionWhereInput = {
+    AND?: EmployeeSanctionWhereInput | EmployeeSanctionWhereInput[]
+    OR?: EmployeeSanctionWhereInput[]
+    NOT?: EmployeeSanctionWhereInput | EmployeeSanctionWhereInput[]
+    id?: StringFilter<"EmployeeSanction"> | string
+    employeeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionTypeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionDate?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    suspensionDays?: IntNullableFilter<"EmployeeSanction"> | number | null
+    observations?: StringNullableFilter<"EmployeeSanction"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeSanction">
+    createdAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeSanction"> | Date | string | null
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    sanctionType?: XOR<SanctionTypeScalarRelationFilter, SanctionTypeWhereInput>
+    incidentLinks?: SanctionIncidentLinkListRelationFilter
+  }
+
+  export type EmployeeSanctionOrderByWithRelationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    sanctionTypeId?: SortOrder
+    sanctionDate?: SortOrder
+    suspensionDays?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
+    attachments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    employee?: EmployeeOrderByWithRelationInput
+    sanctionType?: SanctionTypeOrderByWithRelationInput
+    incidentLinks?: SanctionIncidentLinkOrderByRelationAggregateInput
+    _relevance?: EmployeeSanctionOrderByRelevanceInput
+  }
+
+  export type EmployeeSanctionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: EmployeeSanctionWhereInput | EmployeeSanctionWhereInput[]
+    OR?: EmployeeSanctionWhereInput[]
+    NOT?: EmployeeSanctionWhereInput | EmployeeSanctionWhereInput[]
+    employeeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionTypeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionDate?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    suspensionDays?: IntNullableFilter<"EmployeeSanction"> | number | null
+    observations?: StringNullableFilter<"EmployeeSanction"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeSanction">
+    createdAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeSanction"> | Date | string | null
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+    sanctionType?: XOR<SanctionTypeScalarRelationFilter, SanctionTypeWhereInput>
+    incidentLinks?: SanctionIncidentLinkListRelationFilter
+  }, "id">
+
+  export type EmployeeSanctionOrderByWithAggregationInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    sanctionTypeId?: SortOrder
+    sanctionDate?: SortOrder
+    suspensionDays?: SortOrderInput | SortOrder
+    observations?: SortOrderInput | SortOrder
+    attachments?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    _count?: EmployeeSanctionCountOrderByAggregateInput
+    _avg?: EmployeeSanctionAvgOrderByAggregateInput
+    _max?: EmployeeSanctionMaxOrderByAggregateInput
+    _min?: EmployeeSanctionMinOrderByAggregateInput
+    _sum?: EmployeeSanctionSumOrderByAggregateInput
+  }
+
+  export type EmployeeSanctionScalarWhereWithAggregatesInput = {
+    AND?: EmployeeSanctionScalarWhereWithAggregatesInput | EmployeeSanctionScalarWhereWithAggregatesInput[]
+    OR?: EmployeeSanctionScalarWhereWithAggregatesInput[]
+    NOT?: EmployeeSanctionScalarWhereWithAggregatesInput | EmployeeSanctionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"EmployeeSanction"> | string
+    employeeId?: StringWithAggregatesFilter<"EmployeeSanction"> | string
+    sanctionTypeId?: StringWithAggregatesFilter<"EmployeeSanction"> | string
+    sanctionDate?: DateTimeWithAggregatesFilter<"EmployeeSanction"> | Date | string
+    suspensionDays?: IntNullableWithAggregatesFilter<"EmployeeSanction"> | number | null
+    observations?: StringNullableWithAggregatesFilter<"EmployeeSanction"> | string | null
+    attachments?: JsonNullableWithAggregatesFilter<"EmployeeSanction">
+    createdAt?: DateTimeWithAggregatesFilter<"EmployeeSanction"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"EmployeeSanction"> | Date | string
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"EmployeeSanction"> | Date | string | null
+  }
+
+  export type SanctionIncidentLinkWhereInput = {
+    AND?: SanctionIncidentLinkWhereInput | SanctionIncidentLinkWhereInput[]
+    OR?: SanctionIncidentLinkWhereInput[]
+    NOT?: SanctionIncidentLinkWhereInput | SanctionIncidentLinkWhereInput[]
+    id?: StringFilter<"SanctionIncidentLink"> | string
+    sanctionId?: StringFilter<"SanctionIncidentLink"> | string
+    incidentId?: StringFilter<"SanctionIncidentLink"> | string
+    createdAt?: DateTimeFilter<"SanctionIncidentLink"> | Date | string
+    sanction?: XOR<EmployeeSanctionScalarRelationFilter, EmployeeSanctionWhereInput>
+    incident?: XOR<EmployeeIncidentScalarRelationFilter, EmployeeIncidentWhereInput>
+  }
+
+  export type SanctionIncidentLinkOrderByWithRelationInput = {
+    id?: SortOrder
+    sanctionId?: SortOrder
+    incidentId?: SortOrder
+    createdAt?: SortOrder
+    sanction?: EmployeeSanctionOrderByWithRelationInput
+    incident?: EmployeeIncidentOrderByWithRelationInput
+    _relevance?: SanctionIncidentLinkOrderByRelevanceInput
+  }
+
+  export type SanctionIncidentLinkWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    sanctionId_incidentId?: SanctionIncidentLinkSanctionIdIncidentIdCompoundUniqueInput
+    AND?: SanctionIncidentLinkWhereInput | SanctionIncidentLinkWhereInput[]
+    OR?: SanctionIncidentLinkWhereInput[]
+    NOT?: SanctionIncidentLinkWhereInput | SanctionIncidentLinkWhereInput[]
+    sanctionId?: StringFilter<"SanctionIncidentLink"> | string
+    incidentId?: StringFilter<"SanctionIncidentLink"> | string
+    createdAt?: DateTimeFilter<"SanctionIncidentLink"> | Date | string
+    sanction?: XOR<EmployeeSanctionScalarRelationFilter, EmployeeSanctionWhereInput>
+    incident?: XOR<EmployeeIncidentScalarRelationFilter, EmployeeIncidentWhereInput>
+  }, "id" | "sanctionId_incidentId">
+
+  export type SanctionIncidentLinkOrderByWithAggregationInput = {
+    id?: SortOrder
+    sanctionId?: SortOrder
+    incidentId?: SortOrder
+    createdAt?: SortOrder
+    _count?: SanctionIncidentLinkCountOrderByAggregateInput
+    _max?: SanctionIncidentLinkMaxOrderByAggregateInput
+    _min?: SanctionIncidentLinkMinOrderByAggregateInput
+  }
+
+  export type SanctionIncidentLinkScalarWhereWithAggregatesInput = {
+    AND?: SanctionIncidentLinkScalarWhereWithAggregatesInput | SanctionIncidentLinkScalarWhereWithAggregatesInput[]
+    OR?: SanctionIncidentLinkScalarWhereWithAggregatesInput[]
+    NOT?: SanctionIncidentLinkScalarWhereWithAggregatesInput | SanctionIncidentLinkScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SanctionIncidentLink"> | string
+    sanctionId?: StringWithAggregatesFilter<"SanctionIncidentLink"> | string
+    incidentId?: StringWithAggregatesFilter<"SanctionIncidentLink"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SanctionIncidentLink"> | Date | string
+  }
+
   export type CompanyProfileCreateInput = {
     id?: string
     legalName: string
@@ -58570,6 +65865,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -58579,6 +65875,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -58613,6 +65911,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -58634,6 +65933,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -58680,6 +65981,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -58689,6 +65991,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -58723,6 +66027,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -58744,6 +66049,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -58778,6 +66085,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -58862,6 +66170,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -58874,6 +66183,73 @@ export namespace Prisma {
     hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     cbu?: NullableStringFieldUpdateOperationsInput | string | null
     bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PaymentMethodCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeCreateNestedManyWithoutPaymentMethodInput
+  }
+
+  export type PaymentMethodUncheckedCreateInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employees?: EmployeeUncheckedCreateNestedManyWithoutPaymentMethodInput
+  }
+
+  export type PaymentMethodUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUpdateManyWithoutPaymentMethodNestedInput
+  }
+
+  export type PaymentMethodUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employees?: EmployeeUncheckedUpdateManyWithoutPaymentMethodNestedInput
+  }
+
+  export type PaymentMethodCreateManyInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PaymentMethodUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PaymentMethodUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type SalaryScaleCreateInput = {
@@ -62220,6 +69596,408 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type IncidentTypeCreateInput = {
+    id?: string
+    code?: string | null
+    name: string
+    severity?: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidents?: EmployeeIncidentCreateNestedManyWithoutIncidentTypeInput
+  }
+
+  export type IncidentTypeUncheckedCreateInput = {
+    id?: string
+    code?: string | null
+    name: string
+    severity?: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutIncidentTypeInput
+  }
+
+  export type IncidentTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidents?: EmployeeIncidentUpdateManyWithoutIncidentTypeNestedInput
+  }
+
+  export type IncidentTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutIncidentTypeNestedInput
+  }
+
+  export type IncidentTypeCreateManyInput = {
+    id?: string
+    code?: string | null
+    name: string
+    severity?: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type IncidentTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type IncidentTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionTypeCreateInput = {
+    id?: string
+    code?: string | null
+    name: string
+    requiresSuspensionDays?: boolean
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutSanctionTypeInput
+  }
+
+  export type SanctionTypeUncheckedCreateInput = {
+    id?: string
+    code?: string | null
+    name: string
+    requiresSuspensionDays?: boolean
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutSanctionTypeInput
+  }
+
+  export type SanctionTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctions?: EmployeeSanctionUpdateManyWithoutSanctionTypeNestedInput
+  }
+
+  export type SanctionTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutSanctionTypeNestedInput
+  }
+
+  export type SanctionTypeCreateManyInput = {
+    id?: string
+    code?: string | null
+    name: string
+    requiresSuspensionDays?: boolean
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SanctionTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeIncidentCreateInput = {
+    id?: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutIncidentsInput
+    incidentType: IncidentTypeCreateNestedOneWithoutIncidentsInput
+    sanctionLinks?: SanctionIncidentLinkCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    incidentTypeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutIncidentsNestedInput
+    incidentType?: IncidentTypeUpdateOneRequiredWithoutIncidentsNestedInput
+    sanctionLinks?: SanctionIncidentLinkUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    incidentTypeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentCreateManyInput = {
+    id?: string
+    employeeId: string
+    incidentTypeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeIncidentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeIncidentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    incidentTypeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeSanctionCreateInput = {
+    id?: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutSanctionsInput
+    sanctionType: SanctionTypeCreateNestedOneWithoutSanctionsInput
+    incidentLinks?: SanctionIncidentLinkCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionUncheckedCreateInput = {
+    id?: string
+    employeeId: string
+    sanctionTypeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutSanctionsNestedInput
+    sanctionType?: SanctionTypeUpdateOneRequiredWithoutSanctionsNestedInput
+    incidentLinks?: SanctionIncidentLinkUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    sanctionTypeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionCreateManyInput = {
+    id?: string
+    employeeId: string
+    sanctionTypeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeSanctionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeSanctionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    sanctionTypeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionIncidentLinkCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    sanction: EmployeeSanctionCreateNestedOneWithoutIncidentLinksInput
+    incident: EmployeeIncidentCreateNestedOneWithoutSanctionLinksInput
+  }
+
+  export type SanctionIncidentLinkUncheckedCreateInput = {
+    id?: string
+    sanctionId: string
+    incidentId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sanction?: EmployeeSanctionUpdateOneRequiredWithoutIncidentLinksNestedInput
+    incident?: EmployeeIncidentUpdateOneRequiredWithoutSanctionLinksNestedInput
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionId?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SanctionIncidentLinkCreateManyInput = {
+    id?: string
+    sanctionId: string
+    incidentId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionId?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -63252,6 +71030,11 @@ export namespace Prisma {
     isNot?: WorkShiftWhereInput | null
   }
 
+  export type PaymentMethodNullableScalarRelationFilter = {
+    is?: PaymentMethodWhereInput | null
+    isNot?: PaymentMethodWhereInput | null
+  }
+
   export type PaySlipListRelationFilter = {
     every?: PaySlipWhereInput
     some?: PaySlipWhereInput
@@ -63306,6 +71089,18 @@ export namespace Prisma {
     none?: IncomeTaxSettlementDetailWhereInput
   }
 
+  export type EmployeeIncidentListRelationFilter = {
+    every?: EmployeeIncidentWhereInput
+    some?: EmployeeIncidentWhereInput
+    none?: EmployeeIncidentWhereInput
+  }
+
+  export type EmployeeSanctionListRelationFilter = {
+    every?: EmployeeSanctionWhereInput
+    some?: EmployeeSanctionWhereInput
+    none?: EmployeeSanctionWhereInput
+  }
+
   export type PaySlipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -63339,6 +71134,14 @@ export namespace Prisma {
   }
 
   export type IncomeTaxSettlementDetailOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeIncidentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeSanctionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -63380,6 +71183,7 @@ export namespace Prisma {
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
     workShiftId?: SortOrder
+    paymentMethodId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -63434,6 +71238,7 @@ export namespace Prisma {
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
     workShiftId?: SortOrder
+    paymentMethodId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -63480,6 +71285,7 @@ export namespace Prisma {
     contractModalityCode?: SortOrder
     salaryScaleId?: SortOrder
     workShiftId?: SortOrder
+    paymentMethodId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -63500,6 +71306,39 @@ export namespace Prisma {
     partTimePercentage?: SortOrder
     basicSalary?: SortOrder
     hourlyRate?: SortOrder
+  }
+
+  export type PaymentMethodOrderByRelevanceInput = {
+    fields: PaymentMethodOrderByRelevanceFieldEnum | PaymentMethodOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PaymentMethodCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type PaymentMethodMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type PaymentMethodMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
   }
 
   export type SalaryScaleOrderByRelevanceInput = {
@@ -65759,6 +73598,243 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>
   }
 
+  export type IncidentTypeOrderByRelevanceInput = {
+    fields: IncidentTypeOrderByRelevanceFieldEnum | IncidentTypeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type IncidentTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    severity?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type IncidentTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    severity?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type IncidentTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    severity?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SanctionTypeOrderByRelevanceInput = {
+    fields: SanctionTypeOrderByRelevanceFieldEnum | SanctionTypeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SanctionTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    requiresSuspensionDays?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SanctionTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    requiresSuspensionDays?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SanctionTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    requiresSuspensionDays?: SortOrder
+    description?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type IncidentTypeScalarRelationFilter = {
+    is?: IncidentTypeWhereInput
+    isNot?: IncidentTypeWhereInput
+  }
+
+  export type SanctionIncidentLinkListRelationFilter = {
+    every?: SanctionIncidentLinkWhereInput
+    some?: SanctionIncidentLinkWhereInput
+    none?: SanctionIncidentLinkWhereInput
+  }
+
+  export type SanctionIncidentLinkOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type EmployeeIncidentOrderByRelevanceInput = {
+    fields: EmployeeIncidentOrderByRelevanceFieldEnum | EmployeeIncidentOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeIncidentCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    incidentTypeId?: SortOrder
+    incidentDate?: SortOrder
+    observations?: SortOrder
+    attachments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type EmployeeIncidentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    incidentTypeId?: SortOrder
+    incidentDate?: SortOrder
+    observations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type EmployeeIncidentMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    incidentTypeId?: SortOrder
+    incidentDate?: SortOrder
+    observations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type SanctionTypeScalarRelationFilter = {
+    is?: SanctionTypeWhereInput
+    isNot?: SanctionTypeWhereInput
+  }
+
+  export type EmployeeSanctionOrderByRelevanceInput = {
+    fields: EmployeeSanctionOrderByRelevanceFieldEnum | EmployeeSanctionOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type EmployeeSanctionCountOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    sanctionTypeId?: SortOrder
+    sanctionDate?: SortOrder
+    suspensionDays?: SortOrder
+    observations?: SortOrder
+    attachments?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type EmployeeSanctionAvgOrderByAggregateInput = {
+    suspensionDays?: SortOrder
+  }
+
+  export type EmployeeSanctionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    sanctionTypeId?: SortOrder
+    sanctionDate?: SortOrder
+    suspensionDays?: SortOrder
+    observations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type EmployeeSanctionMinOrderByAggregateInput = {
+    id?: SortOrder
+    employeeId?: SortOrder
+    sanctionTypeId?: SortOrder
+    sanctionDate?: SortOrder
+    suspensionDays?: SortOrder
+    observations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    deletedAt?: SortOrder
+  }
+
+  export type EmployeeSanctionSumOrderByAggregateInput = {
+    suspensionDays?: SortOrder
+  }
+
+  export type EmployeeSanctionScalarRelationFilter = {
+    is?: EmployeeSanctionWhereInput
+    isNot?: EmployeeSanctionWhereInput
+  }
+
+  export type EmployeeIncidentScalarRelationFilter = {
+    is?: EmployeeIncidentWhereInput
+    isNot?: EmployeeIncidentWhereInput
+  }
+
+  export type SanctionIncidentLinkOrderByRelevanceInput = {
+    fields: SanctionIncidentLinkOrderByRelevanceFieldEnum | SanctionIncidentLinkOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type SanctionIncidentLinkSanctionIdIncidentIdCompoundUniqueInput = {
+    sanctionId: string
+    incidentId: string
+  }
+
+  export type SanctionIncidentLinkCountOrderByAggregateInput = {
+    id?: SortOrder
+    sanctionId?: SortOrder
+    incidentId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SanctionIncidentLinkMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sanctionId?: SortOrder
+    incidentId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SanctionIncidentLinkMinOrderByAggregateInput = {
+    id?: SortOrder
+    sanctionId?: SortOrder
+    incidentId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -66605,6 +74681,12 @@ export namespace Prisma {
     connect?: WorkShiftWhereUniqueInput
   }
 
+  export type PaymentMethodCreateNestedOneWithoutEmployeesInput = {
+    create?: XOR<PaymentMethodCreateWithoutEmployeesInput, PaymentMethodUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: PaymentMethodCreateOrConnectWithoutEmployeesInput
+    connect?: PaymentMethodWhereUniqueInput
+  }
+
   export type PaySlipCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -66668,6 +74750,20 @@ export namespace Prisma {
     connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
   }
 
+  export type EmployeeIncidentCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput> | EmployeeIncidentCreateWithoutEmployeeInput[] | EmployeeIncidentUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutEmployeeInput | EmployeeIncidentCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncidentCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+  }
+
+  export type EmployeeSanctionCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput> | EmployeeSanctionCreateWithoutEmployeeInput[] | EmployeeSanctionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutEmployeeInput | EmployeeSanctionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeSanctionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+  }
+
   export type PaySlipUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -66729,6 +74825,20 @@ export namespace Prisma {
     connectOrCreate?: IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput | IncomeTaxSettlementDetailCreateOrConnectWithoutEmployeeInput[]
     createMany?: IncomeTaxSettlementDetailCreateManyEmployeeInputEnvelope
     connect?: IncomeTaxSettlementDetailWhereUniqueInput | IncomeTaxSettlementDetailWhereUniqueInput[]
+  }
+
+  export type EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput> | EmployeeIncidentCreateWithoutEmployeeInput[] | EmployeeIncidentUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutEmployeeInput | EmployeeIncidentCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeIncidentCreateManyEmployeeInputEnvelope
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+  }
+
+  export type EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput> | EmployeeSanctionCreateWithoutEmployeeInput[] | EmployeeSanctionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutEmployeeInput | EmployeeSanctionCreateOrConnectWithoutEmployeeInput[]
+    createMany?: EmployeeSanctionCreateManyEmployeeInputEnvelope
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -66809,6 +74919,16 @@ export namespace Prisma {
     delete?: WorkShiftWhereInput | boolean
     connect?: WorkShiftWhereUniqueInput
     update?: XOR<XOR<WorkShiftUpdateToOneWithWhereWithoutEmployeesInput, WorkShiftUpdateWithoutEmployeesInput>, WorkShiftUncheckedUpdateWithoutEmployeesInput>
+  }
+
+  export type PaymentMethodUpdateOneWithoutEmployeesNestedInput = {
+    create?: XOR<PaymentMethodCreateWithoutEmployeesInput, PaymentMethodUncheckedCreateWithoutEmployeesInput>
+    connectOrCreate?: PaymentMethodCreateOrConnectWithoutEmployeesInput
+    upsert?: PaymentMethodUpsertWithoutEmployeesInput
+    disconnect?: PaymentMethodWhereInput | boolean
+    delete?: PaymentMethodWhereInput | boolean
+    connect?: PaymentMethodWhereUniqueInput
+    update?: XOR<XOR<PaymentMethodUpdateToOneWithWhereWithoutEmployeesInput, PaymentMethodUpdateWithoutEmployeesInput>, PaymentMethodUncheckedUpdateWithoutEmployeesInput>
   }
 
   export type PaySlipUpdateManyWithoutEmployeeNestedInput = {
@@ -66937,6 +75057,34 @@ export namespace Prisma {
     deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
   }
 
+  export type EmployeeIncidentUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput> | EmployeeIncidentCreateWithoutEmployeeInput[] | EmployeeIncidentUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutEmployeeInput | EmployeeIncidentCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncidentUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncidentUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncidentCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    disconnect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    delete?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    update?: EmployeeIncidentUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncidentUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncidentUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncidentUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+  }
+
+  export type EmployeeSanctionUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput> | EmployeeSanctionCreateWithoutEmployeeInput[] | EmployeeSanctionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutEmployeeInput | EmployeeSanctionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeSanctionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeSanctionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeSanctionCreateManyEmployeeInputEnvelope
+    set?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    disconnect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    delete?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    update?: EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput | EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+  }
+
   export type PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -67061,6 +75209,76 @@ export namespace Prisma {
     update?: IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput | IncomeTaxSettlementDetailUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: IncomeTaxSettlementDetailScalarWhereInput | IncomeTaxSettlementDetailScalarWhereInput[]
+  }
+
+  export type EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput> | EmployeeIncidentCreateWithoutEmployeeInput[] | EmployeeIncidentUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutEmployeeInput | EmployeeIncidentCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeIncidentUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeIncidentUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeIncidentCreateManyEmployeeInputEnvelope
+    set?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    disconnect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    delete?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    update?: EmployeeIncidentUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeIncidentUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeIncidentUpdateManyWithWhereWithoutEmployeeInput | EmployeeIncidentUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+  }
+
+  export type EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput> | EmployeeSanctionCreateWithoutEmployeeInput[] | EmployeeSanctionUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutEmployeeInput | EmployeeSanctionCreateOrConnectWithoutEmployeeInput[]
+    upsert?: EmployeeSanctionUpsertWithWhereUniqueWithoutEmployeeInput | EmployeeSanctionUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: EmployeeSanctionCreateManyEmployeeInputEnvelope
+    set?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    disconnect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    delete?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    update?: EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput | EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+  }
+
+  export type EmployeeCreateNestedManyWithoutPaymentMethodInput = {
+    create?: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput> | EmployeeCreateWithoutPaymentMethodInput[] | EmployeeUncheckedCreateWithoutPaymentMethodInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPaymentMethodInput | EmployeeCreateOrConnectWithoutPaymentMethodInput[]
+    createMany?: EmployeeCreateManyPaymentMethodInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type EmployeeUncheckedCreateNestedManyWithoutPaymentMethodInput = {
+    create?: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput> | EmployeeCreateWithoutPaymentMethodInput[] | EmployeeUncheckedCreateWithoutPaymentMethodInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPaymentMethodInput | EmployeeCreateOrConnectWithoutPaymentMethodInput[]
+    createMany?: EmployeeCreateManyPaymentMethodInputEnvelope
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+  }
+
+  export type EmployeeUpdateManyWithoutPaymentMethodNestedInput = {
+    create?: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput> | EmployeeCreateWithoutPaymentMethodInput[] | EmployeeUncheckedCreateWithoutPaymentMethodInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPaymentMethodInput | EmployeeCreateOrConnectWithoutPaymentMethodInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutPaymentMethodInput | EmployeeUpsertWithWhereUniqueWithoutPaymentMethodInput[]
+    createMany?: EmployeeCreateManyPaymentMethodInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutPaymentMethodInput | EmployeeUpdateWithWhereUniqueWithoutPaymentMethodInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutPaymentMethodInput | EmployeeUpdateManyWithWhereWithoutPaymentMethodInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutPaymentMethodNestedInput = {
+    create?: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput> | EmployeeCreateWithoutPaymentMethodInput[] | EmployeeUncheckedCreateWithoutPaymentMethodInput[]
+    connectOrCreate?: EmployeeCreateOrConnectWithoutPaymentMethodInput | EmployeeCreateOrConnectWithoutPaymentMethodInput[]
+    upsert?: EmployeeUpsertWithWhereUniqueWithoutPaymentMethodInput | EmployeeUpsertWithWhereUniqueWithoutPaymentMethodInput[]
+    createMany?: EmployeeCreateManyPaymentMethodInputEnvelope
+    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
+    update?: EmployeeUpdateWithWhereUniqueWithoutPaymentMethodInput | EmployeeUpdateWithWhereUniqueWithoutPaymentMethodInput[]
+    updateMany?: EmployeeUpdateManyWithWhereWithoutPaymentMethodInput | EmployeeUpdateManyWithWhereWithoutPaymentMethodInput[]
+    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedManyWithoutSalaryScaleInput = {
@@ -68073,6 +76291,258 @@ export namespace Prisma {
     update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutIncomeTaxSettlementDetailsInput, EmployeeUpdateWithoutIncomeTaxSettlementDetailsInput>, EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput>
   }
 
+  export type EmployeeIncidentCreateNestedManyWithoutIncidentTypeInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput> | EmployeeIncidentCreateWithoutIncidentTypeInput[] | EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput | EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput[]
+    createMany?: EmployeeIncidentCreateManyIncidentTypeInputEnvelope
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+  }
+
+  export type EmployeeIncidentUncheckedCreateNestedManyWithoutIncidentTypeInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput> | EmployeeIncidentCreateWithoutIncidentTypeInput[] | EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput | EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput[]
+    createMany?: EmployeeIncidentCreateManyIncidentTypeInputEnvelope
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+  }
+
+  export type EmployeeIncidentUpdateManyWithoutIncidentTypeNestedInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput> | EmployeeIncidentCreateWithoutIncidentTypeInput[] | EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput | EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput[]
+    upsert?: EmployeeIncidentUpsertWithWhereUniqueWithoutIncidentTypeInput | EmployeeIncidentUpsertWithWhereUniqueWithoutIncidentTypeInput[]
+    createMany?: EmployeeIncidentCreateManyIncidentTypeInputEnvelope
+    set?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    disconnect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    delete?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    update?: EmployeeIncidentUpdateWithWhereUniqueWithoutIncidentTypeInput | EmployeeIncidentUpdateWithWhereUniqueWithoutIncidentTypeInput[]
+    updateMany?: EmployeeIncidentUpdateManyWithWhereWithoutIncidentTypeInput | EmployeeIncidentUpdateManyWithWhereWithoutIncidentTypeInput[]
+    deleteMany?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+  }
+
+  export type EmployeeIncidentUncheckedUpdateManyWithoutIncidentTypeNestedInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput> | EmployeeIncidentCreateWithoutIncidentTypeInput[] | EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput[]
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput | EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput[]
+    upsert?: EmployeeIncidentUpsertWithWhereUniqueWithoutIncidentTypeInput | EmployeeIncidentUpsertWithWhereUniqueWithoutIncidentTypeInput[]
+    createMany?: EmployeeIncidentCreateManyIncidentTypeInputEnvelope
+    set?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    disconnect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    delete?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    connect?: EmployeeIncidentWhereUniqueInput | EmployeeIncidentWhereUniqueInput[]
+    update?: EmployeeIncidentUpdateWithWhereUniqueWithoutIncidentTypeInput | EmployeeIncidentUpdateWithWhereUniqueWithoutIncidentTypeInput[]
+    updateMany?: EmployeeIncidentUpdateManyWithWhereWithoutIncidentTypeInput | EmployeeIncidentUpdateManyWithWhereWithoutIncidentTypeInput[]
+    deleteMany?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+  }
+
+  export type EmployeeSanctionCreateNestedManyWithoutSanctionTypeInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput> | EmployeeSanctionCreateWithoutSanctionTypeInput[] | EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput | EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput[]
+    createMany?: EmployeeSanctionCreateManySanctionTypeInputEnvelope
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+  }
+
+  export type EmployeeSanctionUncheckedCreateNestedManyWithoutSanctionTypeInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput> | EmployeeSanctionCreateWithoutSanctionTypeInput[] | EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput | EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput[]
+    createMany?: EmployeeSanctionCreateManySanctionTypeInputEnvelope
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+  }
+
+  export type EmployeeSanctionUpdateManyWithoutSanctionTypeNestedInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput> | EmployeeSanctionCreateWithoutSanctionTypeInput[] | EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput | EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput[]
+    upsert?: EmployeeSanctionUpsertWithWhereUniqueWithoutSanctionTypeInput | EmployeeSanctionUpsertWithWhereUniqueWithoutSanctionTypeInput[]
+    createMany?: EmployeeSanctionCreateManySanctionTypeInputEnvelope
+    set?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    disconnect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    delete?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    update?: EmployeeSanctionUpdateWithWhereUniqueWithoutSanctionTypeInput | EmployeeSanctionUpdateWithWhereUniqueWithoutSanctionTypeInput[]
+    updateMany?: EmployeeSanctionUpdateManyWithWhereWithoutSanctionTypeInput | EmployeeSanctionUpdateManyWithWhereWithoutSanctionTypeInput[]
+    deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+  }
+
+  export type EmployeeSanctionUncheckedUpdateManyWithoutSanctionTypeNestedInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput> | EmployeeSanctionCreateWithoutSanctionTypeInput[] | EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput[]
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput | EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput[]
+    upsert?: EmployeeSanctionUpsertWithWhereUniqueWithoutSanctionTypeInput | EmployeeSanctionUpsertWithWhereUniqueWithoutSanctionTypeInput[]
+    createMany?: EmployeeSanctionCreateManySanctionTypeInputEnvelope
+    set?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    disconnect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    delete?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+    update?: EmployeeSanctionUpdateWithWhereUniqueWithoutSanctionTypeInput | EmployeeSanctionUpdateWithWhereUniqueWithoutSanctionTypeInput[]
+    updateMany?: EmployeeSanctionUpdateManyWithWhereWithoutSanctionTypeInput | EmployeeSanctionUpdateManyWithWhereWithoutSanctionTypeInput[]
+    deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+  }
+
+  export type EmployeeCreateNestedOneWithoutIncidentsInput = {
+    create?: XOR<EmployeeCreateWithoutIncidentsInput, EmployeeUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncidentsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type IncidentTypeCreateNestedOneWithoutIncidentsInput = {
+    create?: XOR<IncidentTypeCreateWithoutIncidentsInput, IncidentTypeUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: IncidentTypeCreateOrConnectWithoutIncidentsInput
+    connect?: IncidentTypeWhereUniqueInput
+  }
+
+  export type SanctionIncidentLinkCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput> | SanctionIncidentLinkCreateWithoutIncidentInput[] | SanctionIncidentLinkUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutIncidentInput | SanctionIncidentLinkCreateOrConnectWithoutIncidentInput[]
+    createMany?: SanctionIncidentLinkCreateManyIncidentInputEnvelope
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+  }
+
+  export type SanctionIncidentLinkUncheckedCreateNestedManyWithoutIncidentInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput> | SanctionIncidentLinkCreateWithoutIncidentInput[] | SanctionIncidentLinkUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutIncidentInput | SanctionIncidentLinkCreateOrConnectWithoutIncidentInput[]
+    createMany?: SanctionIncidentLinkCreateManyIncidentInputEnvelope
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutIncidentsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutIncidentsInput, EmployeeUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutIncidentsInput
+    upsert?: EmployeeUpsertWithoutIncidentsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutIncidentsInput, EmployeeUpdateWithoutIncidentsInput>, EmployeeUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type IncidentTypeUpdateOneRequiredWithoutIncidentsNestedInput = {
+    create?: XOR<IncidentTypeCreateWithoutIncidentsInput, IncidentTypeUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: IncidentTypeCreateOrConnectWithoutIncidentsInput
+    upsert?: IncidentTypeUpsertWithoutIncidentsInput
+    connect?: IncidentTypeWhereUniqueInput
+    update?: XOR<XOR<IncidentTypeUpdateToOneWithWhereWithoutIncidentsInput, IncidentTypeUpdateWithoutIncidentsInput>, IncidentTypeUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type SanctionIncidentLinkUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput> | SanctionIncidentLinkCreateWithoutIncidentInput[] | SanctionIncidentLinkUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutIncidentInput | SanctionIncidentLinkCreateOrConnectWithoutIncidentInput[]
+    upsert?: SanctionIncidentLinkUpsertWithWhereUniqueWithoutIncidentInput | SanctionIncidentLinkUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: SanctionIncidentLinkCreateManyIncidentInputEnvelope
+    set?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    disconnect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    delete?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    update?: SanctionIncidentLinkUpdateWithWhereUniqueWithoutIncidentInput | SanctionIncidentLinkUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: SanctionIncidentLinkUpdateManyWithWhereWithoutIncidentInput | SanctionIncidentLinkUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentNestedInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput> | SanctionIncidentLinkCreateWithoutIncidentInput[] | SanctionIncidentLinkUncheckedCreateWithoutIncidentInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutIncidentInput | SanctionIncidentLinkCreateOrConnectWithoutIncidentInput[]
+    upsert?: SanctionIncidentLinkUpsertWithWhereUniqueWithoutIncidentInput | SanctionIncidentLinkUpsertWithWhereUniqueWithoutIncidentInput[]
+    createMany?: SanctionIncidentLinkCreateManyIncidentInputEnvelope
+    set?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    disconnect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    delete?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    update?: SanctionIncidentLinkUpdateWithWhereUniqueWithoutIncidentInput | SanctionIncidentLinkUpdateWithWhereUniqueWithoutIncidentInput[]
+    updateMany?: SanctionIncidentLinkUpdateManyWithWhereWithoutIncidentInput | SanctionIncidentLinkUpdateManyWithWhereWithoutIncidentInput[]
+    deleteMany?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+  }
+
+  export type EmployeeCreateNestedOneWithoutSanctionsInput = {
+    create?: XOR<EmployeeCreateWithoutSanctionsInput, EmployeeUncheckedCreateWithoutSanctionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSanctionsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type SanctionTypeCreateNestedOneWithoutSanctionsInput = {
+    create?: XOR<SanctionTypeCreateWithoutSanctionsInput, SanctionTypeUncheckedCreateWithoutSanctionsInput>
+    connectOrCreate?: SanctionTypeCreateOrConnectWithoutSanctionsInput
+    connect?: SanctionTypeWhereUniqueInput
+  }
+
+  export type SanctionIncidentLinkCreateNestedManyWithoutSanctionInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput> | SanctionIncidentLinkCreateWithoutSanctionInput[] | SanctionIncidentLinkUncheckedCreateWithoutSanctionInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutSanctionInput | SanctionIncidentLinkCreateOrConnectWithoutSanctionInput[]
+    createMany?: SanctionIncidentLinkCreateManySanctionInputEnvelope
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+  }
+
+  export type SanctionIncidentLinkUncheckedCreateNestedManyWithoutSanctionInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput> | SanctionIncidentLinkCreateWithoutSanctionInput[] | SanctionIncidentLinkUncheckedCreateWithoutSanctionInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutSanctionInput | SanctionIncidentLinkCreateOrConnectWithoutSanctionInput[]
+    createMany?: SanctionIncidentLinkCreateManySanctionInputEnvelope
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutSanctionsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutSanctionsInput, EmployeeUncheckedCreateWithoutSanctionsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutSanctionsInput
+    upsert?: EmployeeUpsertWithoutSanctionsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutSanctionsInput, EmployeeUpdateWithoutSanctionsInput>, EmployeeUncheckedUpdateWithoutSanctionsInput>
+  }
+
+  export type SanctionTypeUpdateOneRequiredWithoutSanctionsNestedInput = {
+    create?: XOR<SanctionTypeCreateWithoutSanctionsInput, SanctionTypeUncheckedCreateWithoutSanctionsInput>
+    connectOrCreate?: SanctionTypeCreateOrConnectWithoutSanctionsInput
+    upsert?: SanctionTypeUpsertWithoutSanctionsInput
+    connect?: SanctionTypeWhereUniqueInput
+    update?: XOR<XOR<SanctionTypeUpdateToOneWithWhereWithoutSanctionsInput, SanctionTypeUpdateWithoutSanctionsInput>, SanctionTypeUncheckedUpdateWithoutSanctionsInput>
+  }
+
+  export type SanctionIncidentLinkUpdateManyWithoutSanctionNestedInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput> | SanctionIncidentLinkCreateWithoutSanctionInput[] | SanctionIncidentLinkUncheckedCreateWithoutSanctionInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutSanctionInput | SanctionIncidentLinkCreateOrConnectWithoutSanctionInput[]
+    upsert?: SanctionIncidentLinkUpsertWithWhereUniqueWithoutSanctionInput | SanctionIncidentLinkUpsertWithWhereUniqueWithoutSanctionInput[]
+    createMany?: SanctionIncidentLinkCreateManySanctionInputEnvelope
+    set?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    disconnect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    delete?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    update?: SanctionIncidentLinkUpdateWithWhereUniqueWithoutSanctionInput | SanctionIncidentLinkUpdateWithWhereUniqueWithoutSanctionInput[]
+    updateMany?: SanctionIncidentLinkUpdateManyWithWhereWithoutSanctionInput | SanctionIncidentLinkUpdateManyWithWhereWithoutSanctionInput[]
+    deleteMany?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionNestedInput = {
+    create?: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput> | SanctionIncidentLinkCreateWithoutSanctionInput[] | SanctionIncidentLinkUncheckedCreateWithoutSanctionInput[]
+    connectOrCreate?: SanctionIncidentLinkCreateOrConnectWithoutSanctionInput | SanctionIncidentLinkCreateOrConnectWithoutSanctionInput[]
+    upsert?: SanctionIncidentLinkUpsertWithWhereUniqueWithoutSanctionInput | SanctionIncidentLinkUpsertWithWhereUniqueWithoutSanctionInput[]
+    createMany?: SanctionIncidentLinkCreateManySanctionInputEnvelope
+    set?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    disconnect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    delete?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    connect?: SanctionIncidentLinkWhereUniqueInput | SanctionIncidentLinkWhereUniqueInput[]
+    update?: SanctionIncidentLinkUpdateWithWhereUniqueWithoutSanctionInput | SanctionIncidentLinkUpdateWithWhereUniqueWithoutSanctionInput[]
+    updateMany?: SanctionIncidentLinkUpdateManyWithWhereWithoutSanctionInput | SanctionIncidentLinkUpdateManyWithWhereWithoutSanctionInput[]
+    deleteMany?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+  }
+
+  export type EmployeeSanctionCreateNestedOneWithoutIncidentLinksInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutIncidentLinksInput, EmployeeSanctionUncheckedCreateWithoutIncidentLinksInput>
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutIncidentLinksInput
+    connect?: EmployeeSanctionWhereUniqueInput
+  }
+
+  export type EmployeeIncidentCreateNestedOneWithoutSanctionLinksInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutSanctionLinksInput, EmployeeIncidentUncheckedCreateWithoutSanctionLinksInput>
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutSanctionLinksInput
+    connect?: EmployeeIncidentWhereUniqueInput
+  }
+
+  export type EmployeeSanctionUpdateOneRequiredWithoutIncidentLinksNestedInput = {
+    create?: XOR<EmployeeSanctionCreateWithoutIncidentLinksInput, EmployeeSanctionUncheckedCreateWithoutIncidentLinksInput>
+    connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutIncidentLinksInput
+    upsert?: EmployeeSanctionUpsertWithoutIncidentLinksInput
+    connect?: EmployeeSanctionWhereUniqueInput
+    update?: XOR<XOR<EmployeeSanctionUpdateToOneWithWhereWithoutIncidentLinksInput, EmployeeSanctionUpdateWithoutIncidentLinksInput>, EmployeeSanctionUncheckedUpdateWithoutIncidentLinksInput>
+  }
+
+  export type EmployeeIncidentUpdateOneRequiredWithoutSanctionLinksNestedInput = {
+    create?: XOR<EmployeeIncidentCreateWithoutSanctionLinksInput, EmployeeIncidentUncheckedCreateWithoutSanctionLinksInput>
+    connectOrCreate?: EmployeeIncidentCreateOrConnectWithoutSanctionLinksInput
+    upsert?: EmployeeIncidentUpsertWithoutSanctionLinksInput
+    connect?: EmployeeIncidentWhereUniqueInput
+    update?: XOR<XOR<EmployeeIncidentUpdateToOneWithWhereWithoutSanctionLinksInput, EmployeeIncidentUpdateWithoutSanctionLinksInput>, EmployeeIncidentUncheckedUpdateWithoutSanctionLinksInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -68421,6 +76891,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -68430,6 +76901,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -68463,6 +76936,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -68484,6 +76958,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -68547,6 +77023,7 @@ export namespace Prisma {
     contractModalityCode?: StringNullableFilter<"Employee"> | string | null
     salaryScaleId?: StringNullableFilter<"Employee"> | string | null
     workShiftId?: StringNullableFilter<"Employee"> | string | null
+    paymentMethodId?: StringNullableFilter<"Employee"> | string | null
     createdAt?: DateTimeFilter<"Employee"> | Date | string
     updatedAt?: DateTimeFilter<"Employee"> | Date | string
     deletedAt?: DateTimeNullableFilter<"Employee"> | Date | string | null
@@ -68837,6 +77314,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -68846,6 +77324,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutContractModalityInput = {
@@ -68879,6 +77359,7 @@ export namespace Prisma {
     mutualId?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -68900,6 +77381,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutContractModalityInput = {
@@ -69065,6 +77548,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -69074,6 +77558,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutJobPositionInput = {
@@ -69107,6 +77593,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69128,6 +77615,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutJobPositionInput = {
@@ -69359,6 +77848,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -69368,6 +77858,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutWorkShiftInput = {
@@ -69401,6 +77893,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69422,6 +77915,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutWorkShiftInput = {
@@ -69617,6 +78112,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -69626,6 +78122,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutHealthInsuranceInput = {
@@ -69659,6 +78157,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69680,6 +78179,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutHealthInsuranceInput = {
@@ -69872,6 +78373,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -69881,6 +78383,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUnionInput = {
@@ -69914,6 +78418,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69935,6 +78440,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUnionInput = {
@@ -70522,6 +79029,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -70531,6 +79039,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutMutualInput = {
@@ -70564,6 +79074,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -70585,6 +79096,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutMutualInput = {
@@ -71240,6 +79753,29 @@ export namespace Prisma {
     create: XOR<WorkShiftCreateWithoutEmployeesInput, WorkShiftUncheckedCreateWithoutEmployeesInput>
   }
 
+  export type PaymentMethodCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PaymentMethodUncheckedCreateWithoutEmployeesInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type PaymentMethodCreateOrConnectWithoutEmployeesInput = {
+    where: PaymentMethodWhereUniqueInput
+    create: XOR<PaymentMethodCreateWithoutEmployeesInput, PaymentMethodUncheckedCreateWithoutEmployeesInput>
+  }
+
   export type PaySlipCreateWithoutEmployeeInput = {
     id?: string
     grossSalary: Decimal | DecimalJsLike | number | string
@@ -71686,6 +80222,76 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type EmployeeIncidentCreateWithoutEmployeeInput = {
+    id?: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidentType: IncidentTypeCreateNestedOneWithoutIncidentsInput
+    sanctionLinks?: SanctionIncidentLinkCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    incidentTypeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    create: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncidentCreateManyEmployeeInputEnvelope = {
+    data: EmployeeIncidentCreateManyEmployeeInput | EmployeeIncidentCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeSanctionCreateWithoutEmployeeInput = {
+    id?: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctionType: SanctionTypeCreateNestedOneWithoutSanctionsInput
+    incidentLinks?: SanctionIncidentLinkCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    sanctionTypeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionCreateOrConnectWithoutEmployeeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    create: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeSanctionCreateManyEmployeeInputEnvelope = {
+    data: EmployeeSanctionCreateManyEmployeeInput | EmployeeSanctionCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
   export type DepartmentUpsertWithoutEmployeesInput = {
     update: XOR<DepartmentUpdateWithoutEmployeesInput, DepartmentUncheckedUpdateWithoutEmployeesInput>
     create: XOR<DepartmentCreateWithoutEmployeesInput, DepartmentUncheckedCreateWithoutEmployeesInput>
@@ -71964,6 +80570,35 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     details?: WorkShiftDetailUncheckedUpdateManyWithoutWorkShiftNestedInput
+  }
+
+  export type PaymentMethodUpsertWithoutEmployeesInput = {
+    update: XOR<PaymentMethodUpdateWithoutEmployeesInput, PaymentMethodUncheckedUpdateWithoutEmployeesInput>
+    create: XOR<PaymentMethodCreateWithoutEmployeesInput, PaymentMethodUncheckedCreateWithoutEmployeesInput>
+    where?: PaymentMethodWhereInput
+  }
+
+  export type PaymentMethodUpdateToOneWithWhereWithoutEmployeesInput = {
+    where?: PaymentMethodWhereInput
+    data: XOR<PaymentMethodUpdateWithoutEmployeesInput, PaymentMethodUncheckedUpdateWithoutEmployeesInput>
+  }
+
+  export type PaymentMethodUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PaymentMethodUncheckedUpdateWithoutEmployeesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PaySlipUpsertWithWhereUniqueWithoutEmployeeInput = {
@@ -72321,6 +80956,209 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"IncomeTaxSettlementDetail"> | Date | string
   }
 
+  export type EmployeeIncidentUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    update: XOR<EmployeeIncidentUpdateWithoutEmployeeInput, EmployeeIncidentUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeIncidentCreateWithoutEmployeeInput, EmployeeIncidentUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncidentUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    data: XOR<EmployeeIncidentUpdateWithoutEmployeeInput, EmployeeIncidentUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncidentUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeIncidentScalarWhereInput
+    data: XOR<EmployeeIncidentUpdateManyMutationInput, EmployeeIncidentUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeIncidentScalarWhereInput = {
+    AND?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+    OR?: EmployeeIncidentScalarWhereInput[]
+    NOT?: EmployeeIncidentScalarWhereInput | EmployeeIncidentScalarWhereInput[]
+    id?: StringFilter<"EmployeeIncident"> | string
+    employeeId?: StringFilter<"EmployeeIncident"> | string
+    incidentTypeId?: StringFilter<"EmployeeIncident"> | string
+    incidentDate?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    observations?: StringNullableFilter<"EmployeeIncident"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeIncident">
+    createdAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeIncident"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeIncident"> | Date | string | null
+  }
+
+  export type EmployeeSanctionUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    update: XOR<EmployeeSanctionUpdateWithoutEmployeeInput, EmployeeSanctionUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<EmployeeSanctionCreateWithoutEmployeeInput, EmployeeSanctionUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    data: XOR<EmployeeSanctionUpdateWithoutEmployeeInput, EmployeeSanctionUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput = {
+    where: EmployeeSanctionScalarWhereInput
+    data: XOR<EmployeeSanctionUpdateManyMutationInput, EmployeeSanctionUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type EmployeeSanctionScalarWhereInput = {
+    AND?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+    OR?: EmployeeSanctionScalarWhereInput[]
+    NOT?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+    id?: StringFilter<"EmployeeSanction"> | string
+    employeeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionTypeId?: StringFilter<"EmployeeSanction"> | string
+    sanctionDate?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    suspensionDays?: IntNullableFilter<"EmployeeSanction"> | number | null
+    observations?: StringNullableFilter<"EmployeeSanction"> | string | null
+    attachments?: JsonNullableFilter<"EmployeeSanction">
+    createdAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    updatedAt?: DateTimeFilter<"EmployeeSanction"> | Date | string
+    deletedAt?: DateTimeNullableFilter<"EmployeeSanction"> | Date | string | null
+  }
+
+  export type EmployeeCreateWithoutPaymentMethodInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutPaymentMethodInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutPaymentMethodInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput>
+  }
+
+  export type EmployeeCreateManyPaymentMethodInputEnvelope = {
+    data: EmployeeCreateManyPaymentMethodInput | EmployeeCreateManyPaymentMethodInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeUpsertWithWhereUniqueWithoutPaymentMethodInput = {
+    where: EmployeeWhereUniqueInput
+    update: XOR<EmployeeUpdateWithoutPaymentMethodInput, EmployeeUncheckedUpdateWithoutPaymentMethodInput>
+    create: XOR<EmployeeCreateWithoutPaymentMethodInput, EmployeeUncheckedCreateWithoutPaymentMethodInput>
+  }
+
+  export type EmployeeUpdateWithWhereUniqueWithoutPaymentMethodInput = {
+    where: EmployeeWhereUniqueInput
+    data: XOR<EmployeeUpdateWithoutPaymentMethodInput, EmployeeUncheckedUpdateWithoutPaymentMethodInput>
+  }
+
+  export type EmployeeUpdateManyWithWhereWithoutPaymentMethodInput = {
+    where: EmployeeScalarWhereInput
+    data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutPaymentMethodInput>
+  }
+
   export type EmployeeCreateWithoutSalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -72364,6 +81202,7 @@ export namespace Prisma {
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -72373,6 +81212,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSalaryScaleInput = {
@@ -72406,6 +81247,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -72427,6 +81269,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSalaryScaleInput = {
@@ -72569,6 +81413,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -72577,6 +81422,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutRelativesInput = {
@@ -72611,6 +81458,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -72631,6 +81479,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutRelativesInput = {
@@ -72716,6 +81566,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -72724,6 +81575,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutRelativesInput = {
@@ -72758,6 +81611,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -72778,6 +81632,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type KinshipUpsertWithoutRelativesInput = {
@@ -73275,6 +82131,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -73283,6 +82140,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAssignedConceptsInput = {
@@ -73317,6 +82176,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -73337,6 +82197,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAssignedConceptsInput = {
@@ -73498,6 +82360,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -73506,6 +82369,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAssignedConceptsInput = {
@@ -73540,6 +82405,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -73560,6 +82426,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutAssignedEmployeesInput = {
@@ -74253,6 +83121,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
@@ -74261,6 +83130,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPaySlipsInput = {
@@ -74295,6 +83166,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -74315,6 +83187,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPaySlipsInput = {
@@ -74545,6 +83419,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
@@ -74553,6 +83428,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPaySlipsInput = {
@@ -74587,6 +83464,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -74607,6 +83485,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PaySlipItemUpsertWithWhereUniqueWithoutPaySlipInput = {
@@ -75174,6 +84054,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -75182,6 +84063,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -75216,6 +84099,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -75236,6 +84120,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -75458,6 +84344,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -75466,6 +84353,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -75500,6 +84389,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -75520,6 +84410,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutPeriodNoveltiesInput = {
@@ -75671,6 +84563,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -75679,6 +84572,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutEmbargoesInput = {
@@ -75713,6 +84608,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -75733,6 +84629,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutEmbargoesInput = {
@@ -75817,6 +84715,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -75825,6 +84724,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutEmbargoesInput = {
@@ -75859,6 +84760,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -75879,6 +84781,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput = {
@@ -76241,6 +85145,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -76249,6 +85154,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput = {
@@ -76283,6 +85190,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -76303,6 +85211,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxDeductionsInput = {
@@ -76365,6 +85275,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -76373,6 +85284,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput = {
@@ -76407,6 +85320,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76427,6 +85341,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutOtherIncomesInput = {
@@ -76473,6 +85389,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -76481,6 +85398,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutOtherIncomesInput = {
@@ -76515,6 +85434,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -76535,6 +85455,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutOtherIncomesInput = {
@@ -76597,6 +85519,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -76605,6 +85528,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutOtherIncomesInput = {
@@ -76639,6 +85564,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76659,6 +85585,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -76705,6 +85633,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -76713,6 +85642,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -76747,6 +85678,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -76767,6 +85699,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -76829,6 +85763,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -76837,6 +85772,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -76871,6 +85808,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -76891,6 +85829,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type IncomeTaxSettlementDetailCreateWithoutSettlementInput = {
@@ -77052,6 +85992,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
     relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
     assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
@@ -77060,6 +86001,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
     otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput = {
@@ -77094,6 +86037,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -77114,6 +86058,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
     otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxSettlementDetailsInput = {
@@ -77225,6 +86171,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -77233,6 +86180,8 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput = {
@@ -77267,6 +86216,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -77287,6 +86237,944 @@ export namespace Prisma {
     incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeIncidentCreateWithoutIncidentTypeInput = {
+    id?: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutIncidentsInput
+    sanctionLinks?: SanctionIncidentLinkCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput = {
+    id?: string
+    employeeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutIncidentInput
+  }
+
+  export type EmployeeIncidentCreateOrConnectWithoutIncidentTypeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    create: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput>
+  }
+
+  export type EmployeeIncidentCreateManyIncidentTypeInputEnvelope = {
+    data: EmployeeIncidentCreateManyIncidentTypeInput | EmployeeIncidentCreateManyIncidentTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeIncidentUpsertWithWhereUniqueWithoutIncidentTypeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    update: XOR<EmployeeIncidentUpdateWithoutIncidentTypeInput, EmployeeIncidentUncheckedUpdateWithoutIncidentTypeInput>
+    create: XOR<EmployeeIncidentCreateWithoutIncidentTypeInput, EmployeeIncidentUncheckedCreateWithoutIncidentTypeInput>
+  }
+
+  export type EmployeeIncidentUpdateWithWhereUniqueWithoutIncidentTypeInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    data: XOR<EmployeeIncidentUpdateWithoutIncidentTypeInput, EmployeeIncidentUncheckedUpdateWithoutIncidentTypeInput>
+  }
+
+  export type EmployeeIncidentUpdateManyWithWhereWithoutIncidentTypeInput = {
+    where: EmployeeIncidentScalarWhereInput
+    data: XOR<EmployeeIncidentUpdateManyMutationInput, EmployeeIncidentUncheckedUpdateManyWithoutIncidentTypeInput>
+  }
+
+  export type EmployeeSanctionCreateWithoutSanctionTypeInput = {
+    id?: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutSanctionsInput
+    incidentLinks?: SanctionIncidentLinkCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput = {
+    id?: string
+    employeeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedCreateNestedManyWithoutSanctionInput
+  }
+
+  export type EmployeeSanctionCreateOrConnectWithoutSanctionTypeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    create: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput>
+  }
+
+  export type EmployeeSanctionCreateManySanctionTypeInputEnvelope = {
+    data: EmployeeSanctionCreateManySanctionTypeInput | EmployeeSanctionCreateManySanctionTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeSanctionUpsertWithWhereUniqueWithoutSanctionTypeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    update: XOR<EmployeeSanctionUpdateWithoutSanctionTypeInput, EmployeeSanctionUncheckedUpdateWithoutSanctionTypeInput>
+    create: XOR<EmployeeSanctionCreateWithoutSanctionTypeInput, EmployeeSanctionUncheckedCreateWithoutSanctionTypeInput>
+  }
+
+  export type EmployeeSanctionUpdateWithWhereUniqueWithoutSanctionTypeInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    data: XOR<EmployeeSanctionUpdateWithoutSanctionTypeInput, EmployeeSanctionUncheckedUpdateWithoutSanctionTypeInput>
+  }
+
+  export type EmployeeSanctionUpdateManyWithWhereWithoutSanctionTypeInput = {
+    where: EmployeeSanctionScalarWhereInput
+    data: XOR<EmployeeSanctionUpdateManyMutationInput, EmployeeSanctionUncheckedUpdateManyWithoutSanctionTypeInput>
+  }
+
+  export type EmployeeCreateWithoutIncidentsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutIncidentsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    paymentMethodId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutIncidentsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutIncidentsInput, EmployeeUncheckedCreateWithoutIncidentsInput>
+  }
+
+  export type IncidentTypeCreateWithoutIncidentsInput = {
+    id?: string
+    code?: string | null
+    name: string
+    severity?: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type IncidentTypeUncheckedCreateWithoutIncidentsInput = {
+    id?: string
+    code?: string | null
+    name: string
+    severity?: string
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type IncidentTypeCreateOrConnectWithoutIncidentsInput = {
+    where: IncidentTypeWhereUniqueInput
+    create: XOR<IncidentTypeCreateWithoutIncidentsInput, IncidentTypeUncheckedCreateWithoutIncidentsInput>
+  }
+
+  export type SanctionIncidentLinkCreateWithoutIncidentInput = {
+    id?: string
+    createdAt?: Date | string
+    sanction: EmployeeSanctionCreateNestedOneWithoutIncidentLinksInput
+  }
+
+  export type SanctionIncidentLinkUncheckedCreateWithoutIncidentInput = {
+    id?: string
+    sanctionId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkCreateOrConnectWithoutIncidentInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    create: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type SanctionIncidentLinkCreateManyIncidentInputEnvelope = {
+    data: SanctionIncidentLinkCreateManyIncidentInput | SanctionIncidentLinkCreateManyIncidentInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeUpsertWithoutIncidentsInput = {
+    update: XOR<EmployeeUpdateWithoutIncidentsInput, EmployeeUncheckedUpdateWithoutIncidentsInput>
+    create: XOR<EmployeeCreateWithoutIncidentsInput, EmployeeUncheckedCreateWithoutIncidentsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutIncidentsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutIncidentsInput, EmployeeUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type EmployeeUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type IncidentTypeUpsertWithoutIncidentsInput = {
+    update: XOR<IncidentTypeUpdateWithoutIncidentsInput, IncidentTypeUncheckedUpdateWithoutIncidentsInput>
+    create: XOR<IncidentTypeCreateWithoutIncidentsInput, IncidentTypeUncheckedCreateWithoutIncidentsInput>
+    where?: IncidentTypeWhereInput
+  }
+
+  export type IncidentTypeUpdateToOneWithWhereWithoutIncidentsInput = {
+    where?: IncidentTypeWhereInput
+    data: XOR<IncidentTypeUpdateWithoutIncidentsInput, IncidentTypeUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type IncidentTypeUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type IncidentTypeUncheckedUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    severity?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionIncidentLinkUpsertWithWhereUniqueWithoutIncidentInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    update: XOR<SanctionIncidentLinkUpdateWithoutIncidentInput, SanctionIncidentLinkUncheckedUpdateWithoutIncidentInput>
+    create: XOR<SanctionIncidentLinkCreateWithoutIncidentInput, SanctionIncidentLinkUncheckedCreateWithoutIncidentInput>
+  }
+
+  export type SanctionIncidentLinkUpdateWithWhereUniqueWithoutIncidentInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    data: XOR<SanctionIncidentLinkUpdateWithoutIncidentInput, SanctionIncidentLinkUncheckedUpdateWithoutIncidentInput>
+  }
+
+  export type SanctionIncidentLinkUpdateManyWithWhereWithoutIncidentInput = {
+    where: SanctionIncidentLinkScalarWhereInput
+    data: XOR<SanctionIncidentLinkUpdateManyMutationInput, SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentInput>
+  }
+
+  export type SanctionIncidentLinkScalarWhereInput = {
+    AND?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+    OR?: SanctionIncidentLinkScalarWhereInput[]
+    NOT?: SanctionIncidentLinkScalarWhereInput | SanctionIncidentLinkScalarWhereInput[]
+    id?: StringFilter<"SanctionIncidentLink"> | string
+    sanctionId?: StringFilter<"SanctionIncidentLink"> | string
+    incidentId?: StringFilter<"SanctionIncidentLink"> | string
+    createdAt?: DateTimeFilter<"SanctionIncidentLink"> | Date | string
+  }
+
+  export type EmployeeCreateWithoutSanctionsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutSanctionsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    paymentMethodId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutSanctionsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutSanctionsInput, EmployeeUncheckedCreateWithoutSanctionsInput>
+  }
+
+  export type SanctionTypeCreateWithoutSanctionsInput = {
+    id?: string
+    code?: string | null
+    name: string
+    requiresSuspensionDays?: boolean
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SanctionTypeUncheckedCreateWithoutSanctionsInput = {
+    id?: string
+    code?: string | null
+    name: string
+    requiresSuspensionDays?: boolean
+    description?: string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type SanctionTypeCreateOrConnectWithoutSanctionsInput = {
+    where: SanctionTypeWhereUniqueInput
+    create: XOR<SanctionTypeCreateWithoutSanctionsInput, SanctionTypeUncheckedCreateWithoutSanctionsInput>
+  }
+
+  export type SanctionIncidentLinkCreateWithoutSanctionInput = {
+    id?: string
+    createdAt?: Date | string
+    incident: EmployeeIncidentCreateNestedOneWithoutSanctionLinksInput
+  }
+
+  export type SanctionIncidentLinkUncheckedCreateWithoutSanctionInput = {
+    id?: string
+    incidentId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkCreateOrConnectWithoutSanctionInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    create: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput>
+  }
+
+  export type SanctionIncidentLinkCreateManySanctionInputEnvelope = {
+    data: SanctionIncidentLinkCreateManySanctionInput | SanctionIncidentLinkCreateManySanctionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type EmployeeUpsertWithoutSanctionsInput = {
+    update: XOR<EmployeeUpdateWithoutSanctionsInput, EmployeeUncheckedUpdateWithoutSanctionsInput>
+    create: XOR<EmployeeCreateWithoutSanctionsInput, EmployeeUncheckedCreateWithoutSanctionsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutSanctionsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutSanctionsInput, EmployeeUncheckedUpdateWithoutSanctionsInput>
+  }
+
+  export type EmployeeUpdateWithoutSanctionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutSanctionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type SanctionTypeUpsertWithoutSanctionsInput = {
+    update: XOR<SanctionTypeUpdateWithoutSanctionsInput, SanctionTypeUncheckedUpdateWithoutSanctionsInput>
+    create: XOR<SanctionTypeCreateWithoutSanctionsInput, SanctionTypeUncheckedCreateWithoutSanctionsInput>
+    where?: SanctionTypeWhereInput
+  }
+
+  export type SanctionTypeUpdateToOneWithWhereWithoutSanctionsInput = {
+    where?: SanctionTypeWhereInput
+    data: XOR<SanctionTypeUpdateWithoutSanctionsInput, SanctionTypeUncheckedUpdateWithoutSanctionsInput>
+  }
+
+  export type SanctionTypeUpdateWithoutSanctionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionTypeUncheckedUpdateWithoutSanctionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: NullableStringFieldUpdateOperationsInput | string | null
+    name?: StringFieldUpdateOperationsInput | string
+    requiresSuspensionDays?: BoolFieldUpdateOperationsInput | boolean
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionIncidentLinkUpsertWithWhereUniqueWithoutSanctionInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    update: XOR<SanctionIncidentLinkUpdateWithoutSanctionInput, SanctionIncidentLinkUncheckedUpdateWithoutSanctionInput>
+    create: XOR<SanctionIncidentLinkCreateWithoutSanctionInput, SanctionIncidentLinkUncheckedCreateWithoutSanctionInput>
+  }
+
+  export type SanctionIncidentLinkUpdateWithWhereUniqueWithoutSanctionInput = {
+    where: SanctionIncidentLinkWhereUniqueInput
+    data: XOR<SanctionIncidentLinkUpdateWithoutSanctionInput, SanctionIncidentLinkUncheckedUpdateWithoutSanctionInput>
+  }
+
+  export type SanctionIncidentLinkUpdateManyWithWhereWithoutSanctionInput = {
+    where: SanctionIncidentLinkScalarWhereInput
+    data: XOR<SanctionIncidentLinkUpdateManyMutationInput, SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionInput>
+  }
+
+  export type EmployeeSanctionCreateWithoutIncidentLinksInput = {
+    id?: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutSanctionsInput
+    sanctionType: SanctionTypeCreateNestedOneWithoutSanctionsInput
+  }
+
+  export type EmployeeSanctionUncheckedCreateWithoutIncidentLinksInput = {
+    id?: string
+    employeeId: string
+    sanctionTypeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeSanctionCreateOrConnectWithoutIncidentLinksInput = {
+    where: EmployeeSanctionWhereUniqueInput
+    create: XOR<EmployeeSanctionCreateWithoutIncidentLinksInput, EmployeeSanctionUncheckedCreateWithoutIncidentLinksInput>
+  }
+
+  export type EmployeeIncidentCreateWithoutSanctionLinksInput = {
+    id?: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    employee: EmployeeCreateNestedOneWithoutIncidentsInput
+    incidentType: IncidentTypeCreateNestedOneWithoutIncidentsInput
+  }
+
+  export type EmployeeIncidentUncheckedCreateWithoutSanctionLinksInput = {
+    id?: string
+    employeeId: string
+    incidentTypeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeIncidentCreateOrConnectWithoutSanctionLinksInput = {
+    where: EmployeeIncidentWhereUniqueInput
+    create: XOR<EmployeeIncidentCreateWithoutSanctionLinksInput, EmployeeIncidentUncheckedCreateWithoutSanctionLinksInput>
+  }
+
+  export type EmployeeSanctionUpsertWithoutIncidentLinksInput = {
+    update: XOR<EmployeeSanctionUpdateWithoutIncidentLinksInput, EmployeeSanctionUncheckedUpdateWithoutIncidentLinksInput>
+    create: XOR<EmployeeSanctionCreateWithoutIncidentLinksInput, EmployeeSanctionUncheckedCreateWithoutIncidentLinksInput>
+    where?: EmployeeSanctionWhereInput
+  }
+
+  export type EmployeeSanctionUpdateToOneWithWhereWithoutIncidentLinksInput = {
+    where?: EmployeeSanctionWhereInput
+    data: XOR<EmployeeSanctionUpdateWithoutIncidentLinksInput, EmployeeSanctionUncheckedUpdateWithoutIncidentLinksInput>
+  }
+
+  export type EmployeeSanctionUpdateWithoutIncidentLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutSanctionsNestedInput
+    sanctionType?: SanctionTypeUpdateOneRequiredWithoutSanctionsNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateWithoutIncidentLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    sanctionTypeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeIncidentUpsertWithoutSanctionLinksInput = {
+    update: XOR<EmployeeIncidentUpdateWithoutSanctionLinksInput, EmployeeIncidentUncheckedUpdateWithoutSanctionLinksInput>
+    create: XOR<EmployeeIncidentCreateWithoutSanctionLinksInput, EmployeeIncidentUncheckedCreateWithoutSanctionLinksInput>
+    where?: EmployeeIncidentWhereInput
+  }
+
+  export type EmployeeIncidentUpdateToOneWithWhereWithoutSanctionLinksInput = {
+    where?: EmployeeIncidentWhereInput
+    data: XOR<EmployeeIncidentUpdateWithoutSanctionLinksInput, EmployeeIncidentUncheckedUpdateWithoutSanctionLinksInput>
+  }
+
+  export type EmployeeIncidentUpdateWithoutSanctionLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutIncidentsNestedInput
+    incidentType?: IncidentTypeUpdateOneRequiredWithoutIncidentsNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateWithoutSanctionLinksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    incidentTypeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type EmployeeCreateManyDepartmentInput = {
@@ -77320,6 +87208,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -77377,6 +87266,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -77386,6 +87276,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -77419,6 +87311,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -77440,6 +87333,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -77473,6 +87368,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -77734,6 +87630,7 @@ export namespace Prisma {
     mutualId?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -77791,6 +87688,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -77800,6 +87698,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutContractModalityInput = {
@@ -77833,6 +87733,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -77854,6 +87755,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutContractModalityInput = {
@@ -77887,6 +87790,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -77932,6 +87836,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -77989,6 +87894,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -77998,6 +87904,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutJobPositionInput = {
@@ -78031,6 +87939,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78052,6 +87961,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutJobPositionInput = {
@@ -78085,6 +87996,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78146,6 +88058,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     salaryScaleId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -78251,6 +88164,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -78260,6 +88174,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutWorkShiftInput = {
@@ -78293,6 +88209,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78314,6 +88231,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutWorkShiftInput = {
@@ -78347,6 +88266,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78392,6 +88312,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -78449,6 +88370,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -78458,6 +88380,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutHealthInsuranceInput = {
@@ -78491,6 +88415,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78512,6 +88437,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutHealthInsuranceInput = {
@@ -78545,6 +88472,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78596,6 +88524,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -78671,6 +88600,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -78680,6 +88610,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUnionInput = {
@@ -78713,6 +88645,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78734,6 +88667,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutUnionInput = {
@@ -78767,6 +88702,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78818,6 +88754,7 @@ export namespace Prisma {
     contractModalityCode?: string | null
     salaryScaleId?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -78893,6 +88830,7 @@ export namespace Prisma {
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -78902,6 +88840,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutMutualInput = {
@@ -78935,6 +88875,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -78956,6 +88897,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutMutualInput = {
@@ -78989,6 +88932,7 @@ export namespace Prisma {
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79176,6 +89120,29 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type EmployeeIncidentCreateManyEmployeeInput = {
+    id?: string
+    incidentTypeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeSanctionCreateManyEmployeeInput = {
+    id?: string
+    sanctionTypeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
   }
 
   export type PaySlipUpdateWithoutEmployeeInput = {
@@ -79709,6 +89676,285 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type EmployeeIncidentUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidentType?: IncidentTypeUpdateOneRequiredWithoutIncidentsNestedInput
+    sanctionLinks?: SanctionIncidentLinkUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentTypeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentTypeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeSanctionUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctionType?: SanctionTypeUpdateOneRequiredWithoutSanctionsNestedInput
+    incidentLinks?: SanctionIncidentLinkUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionTypeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionTypeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeCreateManyPaymentMethodInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+  }
+
+  export type EmployeeUpdateWithoutPaymentMethodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutPaymentMethodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateManyWithoutPaymentMethodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type EmployeeCreateManySalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -79740,6 +89986,7 @@ export namespace Prisma {
     mutualId?: string | null
     contractModalityCode?: string | null
     workShiftId?: string | null
+    paymentMethodId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -79797,6 +90044,7 @@ export namespace Prisma {
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
     contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
     relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
     assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
@@ -79806,6 +90054,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSalaryScaleInput = {
@@ -79839,6 +90089,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -79860,6 +90111,8 @@ export namespace Prisma {
     otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutSalaryScaleInput = {
@@ -79893,6 +90146,7 @@ export namespace Prisma {
     mutualId?: NullableStringFieldUpdateOperationsInput | string | null
     contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -80899,6 +91153,150 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EmployeeIncidentCreateManyIncidentTypeInput = {
+    id?: string
+    employeeId: string
+    incidentDate: Date | string
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeIncidentUpdateWithoutIncidentTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutIncidentsNestedInput
+    sanctionLinks?: SanctionIncidentLinkUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateWithoutIncidentTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    sanctionLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentNestedInput
+  }
+
+  export type EmployeeIncidentUncheckedUpdateManyWithoutIncidentTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    incidentDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type EmployeeSanctionCreateManySanctionTypeInput = {
+    id?: string
+    employeeId: string
+    sanctionDate: Date | string
+    suspensionDays?: number | null
+    observations?: string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+  }
+
+  export type EmployeeSanctionUpdateWithoutSanctionTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    employee?: EmployeeUpdateOneRequiredWithoutSanctionsNestedInput
+    incidentLinks?: SanctionIncidentLinkUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateWithoutSanctionTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    incidentLinks?: SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionNestedInput
+  }
+
+  export type EmployeeSanctionUncheckedUpdateManyWithoutSanctionTypeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    sanctionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    suspensionDays?: NullableIntFieldUpdateOperationsInput | number | null
+    observations?: NullableStringFieldUpdateOperationsInput | string | null
+    attachments?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type SanctionIncidentLinkCreateManyIncidentInput = {
+    id?: string
+    sanctionId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sanction?: EmployeeSanctionUpdateOneRequiredWithoutIncidentLinksNestedInput
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateManyWithoutIncidentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sanctionId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SanctionIncidentLinkCreateManySanctionInput = {
+    id?: string
+    incidentId: string
+    createdAt?: Date | string
+  }
+
+  export type SanctionIncidentLinkUpdateWithoutSanctionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incident?: EmployeeIncidentUpdateOneRequiredWithoutSanctionLinksNestedInput
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateWithoutSanctionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SanctionIncidentLinkUncheckedUpdateManyWithoutSanctionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    incidentId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

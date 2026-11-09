@@ -333,6 +333,7 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   contractModalityCode: 'contractModalityCode',
   salaryScaleId: 'salaryScaleId',
   workShiftId: 'workShiftId',
+  paymentMethodId: 'paymentMethodId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
@@ -345,6 +346,15 @@ exports.Prisma.EmployeeScalarFieldEnum = {
   hourlyRate: 'hourlyRate',
   cbu: 'cbu',
   bankAccountType: 'bankAccountType'
+};
+
+exports.Prisma.PaymentMethodScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
 };
 
 exports.Prisma.SalaryScaleScalarFieldEnum = {
@@ -818,6 +828,62 @@ exports.Prisma.ReportTemplateScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.IncidentTypeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  severity: 'severity',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.SanctionTypeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  requiresSuspensionDays: 'requiresSuspensionDays',
+  description: 'description',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.EmployeeIncidentScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  incidentTypeId: 'incidentTypeId',
+  incidentDate: 'incidentDate',
+  observations: 'observations',
+  attachments: 'attachments',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.EmployeeSanctionScalarFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  sanctionTypeId: 'sanctionTypeId',
+  sanctionDate: 'sanctionDate',
+  suspensionDays: 'suspensionDays',
+  observations: 'observations',
+  attachments: 'attachments',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.SanctionIncidentLinkScalarFieldEnum = {
+  id: 'id',
+  sanctionId: 'sanctionId',
+  incidentId: 'incidentId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -996,9 +1062,16 @@ exports.Prisma.EmployeeOrderByRelevanceFieldEnum = {
   contractModalityCode: 'contractModalityCode',
   salaryScaleId: 'salaryScaleId',
   workShiftId: 'workShiftId',
+  paymentMethodId: 'paymentMethodId',
   payrollGroup: 'payrollGroup',
   cbu: 'cbu',
   bankAccountType: 'bankAccountType'
+};
+
+exports.Prisma.PaymentMethodOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
 };
 
 exports.Prisma.SalaryScaleOrderByRelevanceFieldEnum = {
@@ -1239,6 +1312,41 @@ exports.Prisma.ReportTemplateOrderByRelevanceFieldEnum = {
   category: 'category'
 };
 
+exports.Prisma.IncidentTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  severity: 'severity',
+  description: 'description'
+};
+
+exports.Prisma.SanctionTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.EmployeeIncidentOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  incidentTypeId: 'incidentTypeId',
+  observations: 'observations'
+};
+
+exports.Prisma.EmployeeSanctionOrderByRelevanceFieldEnum = {
+  id: 'id',
+  employeeId: 'employeeId',
+  sanctionTypeId: 'sanctionTypeId',
+  observations: 'observations'
+};
+
+exports.Prisma.SanctionIncidentLinkOrderByRelevanceFieldEnum = {
+  id: 'id',
+  sanctionId: 'sanctionId',
+  incidentId: 'incidentId'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -1258,6 +1366,7 @@ exports.Prisma.ModelName = {
   Mutual: 'Mutual',
   MutualConcept: 'MutualConcept',
   Employee: 'Employee',
+  PaymentMethod: 'PaymentMethod',
   SalaryScale: 'SalaryScale',
   Kinship: 'Kinship',
   EmployeeRelative: 'EmployeeRelative',
@@ -1283,7 +1392,12 @@ exports.Prisma.ModelName = {
   SiradigImport: 'SiradigImport',
   IncomeTaxSettlement: 'IncomeTaxSettlement',
   IncomeTaxSettlementDetail: 'IncomeTaxSettlementDetail',
-  ReportTemplate: 'ReportTemplate'
+  ReportTemplate: 'ReportTemplate',
+  IncidentType: 'IncidentType',
+  SanctionType: 'SanctionType',
+  EmployeeIncident: 'EmployeeIncident',
+  EmployeeSanction: 'EmployeeSanction',
+  SanctionIncidentLink: 'SanctionIncidentLink'
 };
 
 /**

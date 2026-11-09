@@ -105,5 +105,8 @@ router.get('/arca-service-types', organizationController.listArcaServiceTypes);
 router.get('/arca-contract-modalities', organizationController.listArcaContractModalities);
 router.get('/arca-activities', organizationController.listArcaActivities);
 
+// --- Rutas de Formas de Pago ---
+router.get('/payment-methods', organizationController.listPaymentMethods);
+
 export default router;
 

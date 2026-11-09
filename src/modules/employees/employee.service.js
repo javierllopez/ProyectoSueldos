@@ -44,6 +44,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         fileNumber: true,
         lastName: true,
         firstName: true,
+        photo: true,
         hireDate: true,
         birthDate: true,
         documentType: true,
@@ -70,6 +71,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         contractModalityCode: true,
         salaryScaleId: true,
         workShiftId: true,
+        paymentMethodId: true,
         createdAt: true,
         updatedAt: true,
         deletedAt: true,
@@ -102,6 +104,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         contractModality: true,
         salaryScale: { select: { id: true, name: true, code: true, amount: true } },
         workShift: { select: { id: true, name: true, code: true, dailyHours: true, weeklyHours: true, monthlyHours: true, monthlyDays: true, cycleType: true } },
+        paymentMethod: { select: { id: true, name: true, description: true } },
       },
     }),
     tenantPrisma.employee.count({ where }),
@@ -148,6 +151,7 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
           },
         },
       },
+      paymentMethod: true,
       relatives: {
         where: { deletedAt: null },
         include: { kinship: true },
@@ -566,6 +570,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       contractModalityCode: modCode,
       salaryScaleId: scaleId,
       workShiftId: assignedWorkShiftId,
+      paymentMethodId: employeeData.paymentMethodId ? employeeData.paymentMethodId.trim() : null,
       payrollGroup: employeeData.payrollGroup ? employeeData.payrollGroup.trim() : 'MENSUAL',
       isPartTime: finalIsPartTime,
       weeklyWorkingHours: finalWeeklyHours,
@@ -592,6 +597,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       contractModality: true,
       salaryScale: true,
       workShift: true,
+      paymentMethod: true,
       relatives: {
         include: { kinship: true },
       },
@@ -849,6 +855,22 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
     }
   }
 
+  if (data.paymentMethodId !== undefined) {
+    if (data.paymentMethodId && data.paymentMethodId.trim()) {
+      const pm = await tenantPrisma.paymentMethod.findFirst({
+        where: { id: data.paymentMethodId.trim(), deletedAt: null },
+      });
+      if (!pm) {
+        const error = new Error('La forma de pago seleccionada no existe');
+        error.status = 400;
+        throw error;
+      }
+      updatePayload.paymentMethodId = data.paymentMethodId.trim();
+    } else {
+      updatePayload.paymentMethodId = null;
+    }
+  }
+
   if (data.payrollGroup !== undefined) updatePayload.payrollGroup = data.payrollGroup ? data.payrollGroup.trim() : 'MENSUAL';
   if (data.isPartTime !== undefined && data.workShiftId === undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
   if (data.weeklyWorkingHours !== undefined && data.workShiftId === undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
@@ -892,6 +914,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       contractModality: true,
       salaryScale: true,
       workShift: true,
+      paymentMethod: true,
       assignedConcepts: {
         where: {
           concept: { deletedAt: null },

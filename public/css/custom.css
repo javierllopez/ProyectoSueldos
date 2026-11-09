@@ -323,15 +323,22 @@ body {
   font-weight: 700;
 }
 
-/* Pestañas de legajo de empleado */
+/* Pestañas de legajo de empleado: 7 pestañas en una sola fila sin scroll horizontal */
+#modal-employee-form .employee-tabs-bar {
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+}
+
 #modal-employee-form .nav-tabs-personnel {
   flex-wrap: nowrap;
-  overflow-x: auto;
+  overflow-x: hidden;
   overflow-y: hidden;
+  gap: 2px;
 }
 
 #modal-employee-form .nav-tabs-personnel .nav-item {
   flex: 1 1 auto;
+  min-width: 0;
   text-align: center;
 }
 
@@ -340,6 +347,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.76rem;
+  padding: 0.45rem 0.35rem;
+}
+
+#modal-employee-form .nav-tabs-personnel .nav-link i {
+  font-size: 0.88rem;
+  margin-right: 0.22rem !important;
 }
 
 /* ==========================================================================
@@ -480,13 +494,16 @@ body {
 /* Modal de Empleado (Legajo) - Altura controlada, footer fijo visible y pestañas sin wrap */
 #modal-employee-form .modal-dialog {
   max-width: min(96vw, 1200px);
-  max-height: calc(100vh - 2.5rem);
-  margin: 1.25rem auto;
+  height: calc(100vh - 2rem);
+  max-height: 860px;
+  margin: 1rem auto;
   display: flex;
 }
 
 #modal-employee-form .modal-content {
-  max-height: calc(100vh - 2.5rem);
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -495,6 +512,7 @@ body {
 #modal-employee-form #form-employee {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   height: 100%;
   max-height: 100%;
   min-height: 0;
@@ -510,9 +528,53 @@ body {
 #modal-employee-form .modal-body {
   flex: 1 1 auto;
   overflow-y: auto;
-  min-height: min(500px, 60vh);
-  padding-top: 0.85rem;
-  padding-bottom: 2rem;
+  min-height: 0;
+  padding-top: 0.75rem;
+  padding-bottom: 1.25rem;
+}
+
+/* Visor Flotante de Ampliación de Foto de Empleado (Hover Zoom) */
+.employee-photo-zoom-popover {
+  position: fixed;
+  z-index: 2090;
+  pointer-events: none;
+  background: #ffffff;
+  border: 2px solid #0ca678;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28), 0 4px 12px rgba(12, 166, 120, 0.18);
+  width: 246px;
+  transition: opacity 0.14s ease, transform 0.14s ease;
+}
+
+.employee-photo-zoom-img-wrap {
+  width: 226px;
+  height: 226px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.employee-photo-zoom-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.employee-photo-zoom-caption {
+  margin-top: 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #tab-pane-emp-job {
@@ -805,13 +867,37 @@ body {
     background: #ffffff !important;
   }
 
+  /* --- MODO 1B: IMPRESIÓN A4 DE AUDITORÍA DE LIQUIDACIÓN --- */
+  body.audit-printing .page,
+  body.audit-printing .navbar,
+  body.audit-printing .modal,
+  body.audit-printing .modal-backdrop,
+  body.audit-printing #batch-payslip-print-container,
+  body.audit-printing #toast-container {
+    display: none !important;
+  }
+
+  body.audit-printing #audit-payslip-print-container {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  body.audit-printing #audit-payslip-print-container * {
+    visibility: visible !important;
+  }
+
   /* --- MODO 2: IMPRESIÓN INDIVIDUAL DESDE MODAL --- */
-  body:not(.batch-printing):not(.report-printing) * {
+  body:not(.batch-printing):not(.audit-printing):not(.report-printing):not(.disciplinary-printing) * {
     visibility: hidden;
   }
 
-  body:not(.batch-printing):not(.report-printing) #modal-view-payslip,
-  body:not(.batch-printing):not(.report-printing) #modal-view-payslip * {
+  body:not(.batch-printing):not(.audit-printing):not(.report-printing):not(.disciplinary-printing) #modal-view-payslip,
+  body:not(.batch-printing):not(.audit-printing):not(.report-printing):not(.disciplinary-printing) #modal-view-payslip * {
     visibility: visible;
   }
 
@@ -979,138 +1065,293 @@ body {
     white-space: nowrap !important;
   }
 
-  /* --- TAB 2: Auditoría Integral de Liquidación (A4) --- */
-  #payslip-audit-area {
-    background: transparent !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    max-height: none !important;
-    display: block !important;
+  /* --- DOCUMENTO A4 MULTIPÁGINA DE AUDITORÍA DE LIQUIDACIÓN (#audit-payslip-print-container) --- */
+  .audit-print-page {
     width: 100% !important;
     max-width: 194mm !important;
-  }
-
-  #payslip-audit-area .table-responsive {
-    max-height: none !important;
-    overflow: visible !important;
-    display: block !important;
-  }
-
-  #payslip-audit-area .card {
-    box-shadow: none !important;
-    border: 1px solid #cbd5e1 !important;
+    min-height: 277mm !important;
+    max-height: 277mm !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
     background: #ffffff !important;
-    break-inside: avoid;
-    page-break-inside: avoid;
-    margin-bottom: 8px !important;
+    color: #0f172a !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
-  #payslip-audit-area .card-header {
-    background-color: #f8fafc !important;
-    border-bottom: 1px solid #cbd5e1 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-    padding: 4px 8px !important;
+  .audit-print-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
 
-  #payslip-audit-area table {
-    width: 100% !important;
-    table-layout: auto !important;
-    border-collapse: collapse !important;
+  .audit-print-page-header {
+    flex-shrink: 0 !important;
+    border-bottom: 1.5px solid #0f172a !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 6px !important;
   }
 
-  #payslip-audit-area thead {
-    display: table-header-group !important;
+  .audit-print-header-top {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding-bottom: 5px !important;
+    border-bottom: 0.5px solid #cbd5e1 !important;
+    margin-bottom: 5px !important;
   }
 
-  #payslip-audit-area tr {
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  #payslip-audit-area th,
-  #payslip-audit-area td {
-    border: 1px solid #e2e8f0 !important;
-    padding: 3px 4px !important;
-    font-size: 9.5px !important;
+  .audit-print-doc-title {
+    font-size: 11.5pt !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.02em !important;
+    color: #0f172a !important;
     line-height: 1.2 !important;
   }
 
-  #payslip-audit-area th.col-audit-amount,
-  #payslip-audit-area td.col-audit-amount {
-    white-space: nowrap !important;
+  .audit-print-doc-subtitle {
+    font-size: 7.5pt !important;
+    color: #475569 !important;
+    margin-top: 1px !important;
+  }
+
+  .audit-print-header-right {
     text-align: right !important;
+    font-size: 8pt !important;
+    line-height: 1.35 !important;
+    color: #1e293b !important;
+    white-space: nowrap !important;
+  }
+
+  .audit-print-meta-strip {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    font-size: 8pt !important;
+    line-height: 1.35 !important;
+    color: #1e293b !important;
+  }
+
+  .audit-print-meta-col {
+    flex: 1 1 50% !important;
+    min-width: 0 !important;
+  }
+
+  .audit-print-page-body {
+    flex: 1 1 auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+  }
+
+  .audit-print-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    margin-bottom: 8px !important;
+  }
+
+  .audit-print-table thead th {
+    font-size: 7.8pt !important;
     font-weight: 700 !important;
-    width: 110px !important;
-    min-width: 110px !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1.2px solid #0f172a !important;
+    padding: 4px 4px !important;
+    vertical-align: bottom !important;
   }
 
-  #payslip-audit-area th.col-audit-base,
-  #payslip-audit-area td.col-audit-base {
-    white-space: nowrap !important;
-    text-align: right !important;
-    width: 80px !important;
+  .audit-print-table tbody td {
+    font-size: 8.3pt !important;
+    line-height: 1.25 !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 0.5px solid #cbd5e1 !important;
+    padding: 3.5px 4px !important;
+    vertical-align: top !important;
   }
 
-  #payslip-audit-area th.col-audit-units,
-  #payslip-audit-area td.col-audit-units {
-    white-space: nowrap !important;
+  .audit-print-table th.ap-col-idx,
+  .audit-print-table td.ap-col-idx {
     text-align: center !important;
-    width: 45px !important;
-  }
-
-  #payslip-audit-area th.col-audit-type,
-  #payslip-audit-area td.col-audit-type {
     white-space: nowrap !important;
-    width: 100px !important;
-    font-size: 8.5px !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    color: #475569 !important;
   }
 
-  #payslip-audit-area th.col-audit-code,
-  #payslip-audit-area td.col-audit-code {
+  .audit-print-table th.ap-col-code,
+  .audit-print-table td.ap-col-code {
+    text-align: left !important;
     white-space: nowrap !important;
-    width: 50px !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-weight: 700 !important;
   }
 
-  #payslip-audit-area th.col-audit-arca,
-  #payslip-audit-area td.col-audit-arca {
-    white-space: nowrap !important;
-    text-align: center !important;
-    width: 55px !important;
-  }
-
-  #payslip-audit-area th.col-audit-idx,
-  #payslip-audit-area td.col-audit-idx {
-    width: 25px !important;
-    text-align: center !important;
-  }
-
-  #payslip-audit-area td.col-audit-name {
+  .audit-print-table th.ap-col-name,
+  .audit-print-table td.ap-col-name {
+    text-align: left !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
     word-break: break-word !important;
   }
 
-  #payslip-audit-area td.col-audit-name .small,
-  #payslip-audit-area td.col-audit-name .badge {
-    font-size: 8px !important;
-  }
-
-  #payslip-audit-area .badge {
-    border: 1px solid #94a3b8 !important;
-    color: #0f172a !important;
-    background: transparent !important;
+  .audit-print-table .ap-concept-title {
     font-weight: 600 !important;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+    color: #0f172a !important;
   }
 
-  .payslip-audit-print-header {
-    display: block !important;
-    border-bottom: 2px solid #2b3a8c !important;
-    padding-bottom: 6px !important;
-    margin-bottom: 8px !important;
+  .audit-print-table .ap-concept-formula {
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-size: 7.3pt !important;
+    color: #475569 !important;
+    margin-top: 1.5px !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .audit-print-table th.ap-col-type,
+  .audit-print-table td.ap-col-type {
+    text-align: left !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+    font-size: 7.8pt !important;
+    color: #334155 !important;
+  }
+
+  .audit-print-table th.ap-col-units,
+  .audit-print-table td.ap-col-units {
+    text-align: center !important;
+    white-space: nowrap !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+  }
+
+  .audit-print-table th.ap-col-base,
+  .audit-print-table td.ap-col-base {
+    text-align: right !important;
+    white-space: nowrap !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    color: #334155 !important;
+  }
+
+  .audit-print-table th.ap-col-amount,
+  .audit-print-table td.ap-col-amount {
+    text-align: right !important;
+    white-space: nowrap !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-weight: 700 !important;
+  }
+
+  .audit-print-table th.ap-col-arca,
+  .audit-print-table td.ap-col-arca {
+    text-align: center !important;
+    white-space: nowrap !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-size: 7.8pt !important;
+  }
+
+  .audit-print-table td.ap-val-ded,
+  .audit-print-kv-table td.ap-val-ded {
+    color: #b91c1c !important;
+  }
+
+  .audit-print-table td.ap-val-aux {
+    color: #4c1d95 !important;
+  }
+
+  /* Bloque de Resumen Final sin recuadros ni contornos de pantalla */
+  .audit-print-summary-section {
+    margin-top: 8px !important;
+    padding-top: 6px !important;
+    border-top: 1.5px solid #0f172a !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  .audit-print-summary-grid {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 18px !important;
+  }
+
+  .audit-print-summary-col {
+    flex: 1 1 50% !important;
+    min-width: 0 !important;
+  }
+
+  .audit-print-section-title {
+    font-size: 8pt !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+    color: #0f172a !important;
+    border-bottom: 1px solid #0f172a !important;
+    padding-bottom: 3px !important;
+    margin-bottom: 4px !important;
+  }
+
+  .audit-print-kv-table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    border: none !important;
+  }
+
+  .audit-print-kv-table td {
+    font-size: 8pt !important;
+    line-height: 1.3 !important;
+    padding: 2.5px 2px !important;
+    border: none !important;
+    border-bottom: 0.5px dotted #cbd5e1 !important;
+    color: #1e293b !important;
+  }
+
+  .audit-print-kv-table td:first-child {
+    width: 68% !important;
+    white-space: normal !important;
+  }
+
+  .audit-print-kv-table td.ap-kv-val {
+    width: 32% !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    font-family: 'JetBrains Mono', Consolas, monospace !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+  }
+
+  .audit-print-kv-table tr.ap-kv-highlight td {
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    border-top: 1px solid #0f172a !important;
+    border-bottom: 1px solid #0f172a !important;
+    padding-top: 4px !important;
+    padding-bottom: 4px !important;
+  }
+
+  .audit-print-page-footer {
+    flex-shrink: 0 !important;
+    margin-top: auto !important;
+    padding-top: 4px !important;
+    border-top: 1px solid #64748b !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    font-size: 7.5pt !important;
+    color: #475569 !important;
   }
 }
 
@@ -1979,5 +2220,212 @@ body {
   padding: 0 !important;
   border: 0 !important;
 }
+
+/* ========================================================================= */
+/* RÉGIMEN DISCIPLINARIO: SUBPESTAÑAS, TABLAS E INFORMES SCROLLABLES         */
+/* ========================================================================= */
+#pane-personnel-disc-tables > .pers-table-card,
+#pane-personnel-disc-records > .pers-table-card,
+#pane-personnel-disc-reports > .pers-table-card {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#pane-personnel-disc-tables > .pers-table-card > .tab-content,
+#pane-personnel-disc-records > .pers-table-card > .tab-content {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#pane-personnel-disc-tables > .pers-table-card > .tab-content > .tab-pane.active,
+#pane-personnel-disc-records > .pers-table-card > .tab-content > .tab-pane.active {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#pane-personnel-disc-reports > .pers-table-card > .card-body {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+#pane-personnel-disc-reports > .pers-table-card > .card-body > .row {
+  flex-shrink: 0 !important;
+}
+
+#disc-reports-results-container {
+  flex: 1 1 0 !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 6px !important;
+}
+
+#disc-reports-results-container .card {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+#disc-reports-results-container .table-responsive {
+  flex: 0 0 auto !important;
+  height: auto !important;
+  max-height: none !important;
+  min-height: auto !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+}
+
+/* ========================================================================= */
+/* IMPRESIÓN OPTIMIZADA HOJA A4: INFORMES DISCIPLINARIOS E HISTORIAL LEGAJO  */
+/* ========================================================================= */
+@media print {
+  body.disciplinary-printing > *:not(#disciplinary-print-container),
+  body.disciplinary-printing .page,
+  body.disciplinary-printing .navbar,
+  body.disciplinary-printing .modal,
+  body.disciplinary-printing .modal-backdrop,
+  body.disciplinary-printing #toast-container {
+    display: none !important;
+  }
+
+  body.disciplinary-printing {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body.disciplinary-printing #disciplinary-print-container {
+    display: block !important;
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  body.disciplinary-printing #disciplinary-print-container * {
+    visibility: visible !important;
+  }
+
+  .disc-print-sheet {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    font-size: 9pt;
+    color: #0f172a;
+    background: #ffffff;
+    width: 100%;
+  }
+
+  .disc-print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1.5pt solid #0f172a;
+    padding-bottom: 6pt;
+    margin-bottom: 10pt;
+  }
+
+  .disc-print-company {
+    font-size: 8.5pt;
+    font-weight: 700;
+    color: #334155;
+    text-transform: uppercase;
+  }
+
+  .disc-print-title {
+    font-size: 12pt;
+    font-weight: 800;
+    color: #0f172a;
+    margin-top: 2pt;
+  }
+
+  .disc-print-meta {
+    text-align: right;
+    font-size: 8pt;
+    color: #334155;
+    line-height: 1.35;
+  }
+
+  .disc-print-group-title {
+    font-size: 9.5pt;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 10pt;
+    margin-bottom: 4pt;
+    padding-bottom: 2pt;
+    border-bottom: 1pt solid #334155;
+    page-break-after: avoid;
+  }
+
+  .disc-print-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-bottom: 8pt;
+  }
+
+  .disc-print-table thead {
+    display: table-header-group;
+  }
+
+  .disc-print-table tr {
+    page-break-inside: avoid;
+  }
+
+  .disc-print-table th {
+    font-size: 8pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #0f172a;
+    border-bottom: 1pt solid #0f172a;
+    padding: 4pt 4pt;
+    text-align: left;
+  }
+
+  .disc-print-table td {
+    font-size: 8.5pt;
+    color: #1e293b;
+    border-bottom: 0.4pt solid #cbd5e1;
+    padding: 4pt 4pt;
+    vertical-align: top;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .disc-col-nowrap {
+    white-space: nowrap !important;
+    word-wrap: normal !important;
+    overflow-wrap: normal !important;
+  }
+
+  .disc-print-footer {
+    margin-top: 14pt;
+    padding-top: 5pt;
+    border-top: 0.75pt solid #94a3b8;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7.5pt;
+    color: #475569;
+  }
+}
+
 
 

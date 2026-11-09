@@ -198,6 +198,15 @@ const TENANT_TABLE_DEFINITIONS = [
     \`deleted_at\` DATETIME(3) NULL
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
+  `CREATE TABLE IF NOT EXISTS \`payment_methods\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`description\` TEXT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
   `CREATE TABLE IF NOT EXISTS \`employees\` (
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`file_number\` VARCHAR(191) NOT NULL UNIQUE,
@@ -230,6 +239,7 @@ const TENANT_TABLE_DEFINITIONS = [
     \`contract_modality_code\` VARCHAR(50) NULL,
     \`salary_scale_id\` VARCHAR(191) NULL,
     \`work_shift_id\` VARCHAR(191) NULL,
+    \`payment_method_id\` VARCHAR(191) NULL,
     \`payroll_group\` VARCHAR(50) NOT NULL DEFAULT 'MENSUAL',
     \`is_part_time\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`weekly_working_hours\` DECIMAL(5, 2) NOT NULL DEFAULT 48.00,
@@ -250,6 +260,7 @@ const TENANT_TABLE_DEFINITIONS = [
     INDEX \`employees_contract_modality_code_idx\` (\`contract_modality_code\`),
     INDEX \`employees_salary_scale_id_idx\` (\`salary_scale_id\`),
     INDEX \`employees_work_shift_id_idx\` (\`work_shift_id\`),
+    INDEX \`employees_payment_method_id_idx\` (\`payment_method_id\`),
     CONSTRAINT \`employees_department_id_fkey\` FOREIGN KEY (\`department_id\`) REFERENCES \`departments\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_job_position_id_fkey\` FOREIGN KEY (\`job_position_id\`) REFERENCES \`job_positions\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_health_insurance_id_fkey\` FOREIGN KEY (\`health_insurance_id\`) REFERENCES \`health_insurances\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -257,7 +268,8 @@ const TENANT_TABLE_DEFINITIONS = [
     CONSTRAINT \`employees_mutual_id_fkey\` FOREIGN KEY (\`mutual_id\`) REFERENCES \`mutuals\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_contract_modality_code_fkey\` FOREIGN KEY (\`contract_modality_code\`) REFERENCES \`arca_contract_modalities\`(\`code\`) ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT \`employees_salary_scale_id_fkey\` FOREIGN KEY (\`salary_scale_id\` ) REFERENCES \`salary_scales\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
-    CONSTRAINT \`employees_work_shift_id_fkey\` FOREIGN KEY (\`work_shift_id\`) REFERENCES \`work_shifts\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT \`employees_work_shift_id_fkey\` FOREIGN KEY (\`work_shift_id\`) REFERENCES \`work_shifts\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT \`employees_payment_method_id_fkey\` FOREIGN KEY (\`payment_method_id\`) REFERENCES \`payment_methods\`(\`id\`) ON DELETE SET NULL ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
   `CREATE TABLE IF NOT EXISTS \`payroll_matrices\` (
@@ -795,6 +807,77 @@ const TENANT_TABLE_DEFINITIONS = [
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`incident_types\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`code\` VARCHAR(50) NULL,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`severity\` VARCHAR(30) NOT NULL DEFAULT 'MEDIUM',
+    \`description\` TEXT NULL,
+    \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`sanction_types\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`code\` VARCHAR(50) NULL,
+    \`name\` VARCHAR(191) NOT NULL,
+    \`requires_suspension_days\` BOOLEAN NOT NULL DEFAULT FALSE,
+    \`description\` TEXT NULL,
+    \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`employee_incidents\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`employee_id\` VARCHAR(191) NOT NULL,
+    \`incident_type_id\` VARCHAR(191) NOT NULL,
+    \`incident_date\` DATETIME(3) NOT NULL,
+    \`observations\` TEXT NULL,
+    \`attachments\` LONGTEXT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL,
+    INDEX \`employee_incidents_employee_id_idx\` (\`employee_id\`),
+    INDEX \`employee_incidents_incident_type_id_idx\` (\`incident_type_id\`),
+    INDEX \`employee_incidents_incident_date_idx\` (\`incident_date\`),
+    CONSTRAINT \`employee_incidents_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`employee_incidents_incident_type_id_fkey\` FOREIGN KEY (\`incident_type_id\`) REFERENCES \`incident_types\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`employee_sanctions\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`employee_id\` VARCHAR(191) NOT NULL,
+    \`sanction_type_id\` VARCHAR(191) NOT NULL,
+    \`sanction_date\` DATETIME(3) NOT NULL,
+    \`suspension_days\` INT NULL,
+    \`observations\` TEXT NULL,
+    \`attachments\` LONGTEXT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    \`deleted_at\` DATETIME(3) NULL,
+    INDEX \`employee_sanctions_employee_id_idx\` (\`employee_id\`),
+    INDEX \`employee_sanctions_sanction_type_id_idx\` (\`sanction_type_id\`),
+    INDEX \`employee_sanctions_sanction_date_idx\` (\`sanction_date\`),
+    CONSTRAINT \`employee_sanctions_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`employee_sanctions_sanction_type_id_fkey\` FOREIGN KEY (\`sanction_type_id\`) REFERENCES \`sanction_types\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`sanction_incident_links\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`sanction_id\` VARCHAR(191) NOT NULL,
+    \`incident_id\` VARCHAR(191) NOT NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    UNIQUE KEY \`uniq_sanction_incident\` (\`sanction_id\`, \`incident_id\`),
+    INDEX \`sanction_incident_links_sanction_id_idx\` (\`sanction_id\`),
+    INDEX \`sanction_incident_links_incident_id_idx\` (\`incident_id\`),
+    CONSTRAINT \`sanction_incident_links_sanction_id_fkey\` FOREIGN KEY (\`sanction_id\`) REFERENCES \`employee_sanctions\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT \`sanction_incident_links_incident_id_fkey\` FOREIGN KEY (\`incident_id\`) REFERENCES \`employee_incidents\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 ];
 
 /**
@@ -1099,6 +1182,25 @@ export async function provisionTenantDatabase({ cuit, name, activityCode = null,
 const verifiedPersonnelClients = new WeakSet();
 const verifiedPayrollClients = new WeakSet();
 const verifiedProfileClients = new WeakSet();
+
+export const DEFAULT_PAYMENT_METHODS = [
+  {
+    name: 'Acreditación en Cuenta Sueldo (C.B.U.)',
+    description: 'Transferencia electrónica bancaria a la Cuenta Sueldo declarada por el colaborador mediante clave bancaria uniforme (C.B.U.), sin costo para el trabajador conforme Art. 124 LCT.',
+  },
+  {
+    name: 'Pago en Efectivo por Tesorería',
+    description: 'Abono presencial en moneda de curso legal por caja o tesorería de la empresa contra firma de recibo de haberes (Art. 124 LCT).',
+  },
+  {
+    name: 'Cheque / E-Cheq a la Orden',
+    description: 'Emisión de cheque común o cheque electrónico (E-Cheq) no a la orden a nombre del trabajador para su cobro por ventanilla o depósito bancario.',
+  },
+  {
+    name: 'Billetera Virtual / CVU Homologada',
+    description: 'Transferencia electrónica inmediata a cuenta virtual uniforme (C.V.U.) o billetera digital habilitada por el titular del legajo.',
+  },
+];
 
 /**
  * Asegura de forma segura y no destructiva que la tabla company_profile de un tenant existente contenga todas las columnas.
@@ -1494,6 +1596,18 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
       }
     }
 
+    // Tabla payment_methods (Formas de Pago - futuro Módulo de Pagos)
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`payment_methods\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`description\` TEXT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
     // 2. Crear tabla principal employees si no existe
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`employees\` (
@@ -1526,6 +1640,7 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         \`union_id\` VARCHAR(191) NULL,
         \`mutual_id\` VARCHAR(191) NULL,
         \`work_shift_id\` VARCHAR(191) NULL,
+        \`payment_method_id\` VARCHAR(191) NULL,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
         \`deleted_at\` DATETIME(3) NULL,
@@ -1534,7 +1649,8 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         INDEX \`employees_health_insurance_id_idx\` (\`health_insurance_id\`),
         INDEX \`employees_union_id_idx\` (\`union_id\`),
         INDEX \`employees_mutual_id_idx\` (\`mutual_id\`),
-        INDEX \`employees_work_shift_id_idx\` (\`work_shift_id\`)
+        INDEX \`employees_work_shift_id_idx\` (\`work_shift_id\`),
+        INDEX \`employees_payment_method_id_idx\` (\`payment_method_id\`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
@@ -1559,6 +1675,7 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
       { name: 'contract_modality_code', def: 'VARCHAR(50) NULL' },
       { name: 'salary_scale_id', def: 'VARCHAR(191) NULL' },
       { name: 'work_shift_id', def: 'VARCHAR(191) NULL' },
+      { name: 'payment_method_id', def: 'VARCHAR(191) NULL' },
       { name: 'termination_date', def: 'DATETIME(3) NULL' },
       { name: 'termination_reason', def: 'VARCHAR(255) NULL' },
       { name: 'payroll_group', def: "VARCHAR(50) NOT NULL DEFAULT 'MENSUAL'" },
@@ -1774,6 +1891,24 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
           },
         });
       }
+    }
+
+    // 7b. Precargar Formas de Pago de prueba si la tabla está vacía
+    try {
+      const countPm = await tenantClient.paymentMethod.count();
+      if (countPm === 0) {
+        for (const pm of DEFAULT_PAYMENT_METHODS) {
+          await tenantClient.paymentMethod.create({
+            data: {
+              id: crypto.randomUUID(),
+              name: pm.name,
+              description: pm.description,
+            },
+          });
+        }
+      }
+    } catch (pmErr) {
+      console.warn('Aviso al precargar payment_methods:', pmErr.message);
     }
 
     // 8. Precargar o actualizar Convenios Colectivos ARCA (insertar faltantes)
@@ -3002,5 +3137,129 @@ export async function ensureTenantReportsSchema(tenantClient, { force = false } 
     verifiedReportsClients.add(tenantClient);
   } catch (err) {
     console.warn('Aviso al verificar esquema de Reportes:', err.message);
+  }
+}
+
+const verifiedDisciplinaryClients = new WeakSet();
+
+export const DEFAULT_INCIDENT_TYPES = [
+  { code: 'INC-001', name: 'Llegada tarde / Impuntualidad', severity: 'LOW', description: 'Ingreso posterior al horario habitual de inicio de jornada sin aviso o justificación.' },
+  { code: 'INC-002', name: 'Inasistencia injustificada', severity: 'MEDIUM', description: 'Ausencia a la jornada laboral sin preaviso ni certificado respaldatorio válido.' },
+  { code: 'INC-003', name: 'Incumplimiento de normas de higiene y seguridad', severity: 'HIGH', description: 'Omisión de uso de EPP o incumplimiento de protocolos de prevención de riesgos.' },
+  { code: 'INC-004', name: 'Falta de respeto / Inconducta laboral', severity: 'HIGH', description: 'Trato inapropiado hacia compañeros, superiores, clientes o terceros.' },
+  { code: 'INC-005', name: 'Negligencia o daño a bienes de la empresa', severity: 'CRITICAL', description: 'Uso indebido o descuido grave de herramientas, vehículos, equipos o instalaciones.' },
+];
+
+export const DEFAULT_SANCTION_TYPES = [
+  { code: 'SAN-001', name: 'Llamado de atención verbal asentado', requiresSuspensionDays: false, description: 'Advertencia formal preventiva registrada en el legajo del colaborador.' },
+  { code: 'SAN-002', name: 'Apercibimiento por escrito', requiresSuspensionDays: false, description: 'Sanción disciplinaria escrita notificada fehacientemente (Art. 67 LCT).' },
+  { code: 'SAN-003', name: 'Suspensión disciplinaria sin goce de haberes', requiresSuspensionDays: true, description: 'Suspensión por justa causa con plazo cierto y notificación escrita (Arts. 218 a 220 LCT).' },
+  { code: 'SAN-004', name: 'Despido con justa causa (Injuria laboral)', requiresSuspensionDays: false, description: 'Extinción del contrato de trabajo por injuria grave (Art. 242 LCT).' },
+];
+
+export async function ensureTenantDisciplinarySchema(tenantClient, { force = false } = {}) {
+  if (!force && verifiedDisciplinaryClients.has(tenantClient)) {
+    return;
+  }
+  try {
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`incident_types\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`code\` VARCHAR(50) NULL,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`severity\` VARCHAR(30) NOT NULL DEFAULT 'MEDIUM',
+        \`description\` TEXT NULL,
+        \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`sanction_types\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`code\` VARCHAR(50) NULL,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`requires_suspension_days\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`description\` TEXT NULL,
+        \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`employee_incidents\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`employee_id\` VARCHAR(191) NOT NULL,
+        \`incident_type_id\` VARCHAR(191) NOT NULL,
+        \`incident_date\` DATETIME(3) NOT NULL,
+        \`observations\` TEXT NULL,
+        \`attachments\` LONGTEXT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL,
+        INDEX \`employee_incidents_employee_id_idx\` (\`employee_id\`),
+        INDEX \`employee_incidents_incident_type_id_idx\` (\`incident_type_id\`),
+        INDEX \`employee_incidents_incident_date_idx\` (\`incident_date\`),
+        CONSTRAINT \`employee_incidents_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`employee_incidents_incident_type_id_fkey\` FOREIGN KEY (\`incident_type_id\`) REFERENCES \`incident_types\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`employee_sanctions\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`employee_id\` VARCHAR(191) NOT NULL,
+        \`sanction_type_id\` VARCHAR(191) NOT NULL,
+        \`sanction_date\` DATETIME(3) NOT NULL,
+        \`suspension_days\` INT NULL,
+        \`observations\` TEXT NULL,
+        \`attachments\` LONGTEXT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        \`deleted_at\` DATETIME(3) NULL,
+        INDEX \`employee_sanctions_employee_id_idx\` (\`employee_id\`),
+        INDEX \`employee_sanctions_sanction_type_id_idx\` (\`sanction_type_id\`),
+        INDEX \`employee_sanctions_sanction_date_idx\` (\`sanction_date\`),
+        CONSTRAINT \`employee_sanctions_employee_id_fkey\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`employee_sanctions_sanction_type_id_fkey\` FOREIGN KEY (\`sanction_type_id\`) REFERENCES \`sanction_types\`(\`id\`) ON DELETE RESTRICT ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`sanction_incident_links\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`sanction_id\` VARCHAR(191) NOT NULL,
+        \`incident_id\` VARCHAR(191) NOT NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_sanction_incident\` (\`sanction_id\`, \`incident_id\`),
+        INDEX \`sanction_incident_links_sanction_id_idx\` (\`sanction_id\`),
+        INDEX \`sanction_incident_links_incident_id_idx\` (\`incident_id\`),
+        CONSTRAINT \`sanction_incident_links_sanction_id_fkey\` FOREIGN KEY (\`sanction_id\`) REFERENCES \`employee_sanctions\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`sanction_incident_links_incident_id_fkey\` FOREIGN KEY (\`incident_id\`) REFERENCES \`employee_incidents\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    // Seed inicial de tipos de incidentes y sanciones si las tablas están vacías
+    const incCount = await tenantClient.incidentType.count();
+    if (incCount === 0) {
+      await tenantClient.incidentType.createMany({
+        data: DEFAULT_INCIDENT_TYPES,
+      });
+    }
+
+    const sanCount = await tenantClient.sanctionType.count();
+    if (sanCount === 0) {
+      await tenantClient.sanctionType.createMany({
+        data: DEFAULT_SANCTION_TYPES,
+      });
+    }
+
+    verifiedDisciplinaryClients.add(tenantClient);
+  } catch (err) {
+    console.warn('Aviso al verificar esquema de Régimen Disciplinario:', err.message);
   }
 }

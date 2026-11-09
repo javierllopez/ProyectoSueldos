@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { ensureTenantPersonnelSchema, getArcaActivitiesData } from '../../services/tenantProvisioner.service.js';
+import { ensureTenantPersonnelSchema, getArcaActivitiesData, DEFAULT_PAYMENT_METHODS } from '../../services/tenantProvisioner.service.js';
 
 // --- SECTORES (DEPARTMENTS) ---
 
@@ -734,6 +734,35 @@ export async function listArcaContractModalities(tenantPrisma, { search = '', on
 
 export async function listArcaActivities() {
   return getArcaActivitiesData();
+}
+
+// --- FORMAS DE PAGO (TABLA DE PRUEBA / FUTURO MÓDULO DE PAGOS) ---
+
+export async function listPaymentMethods(tenantPrisma) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  let methods = await tenantPrisma.paymentMethod.findMany({
+    where: { deletedAt: null },
+    orderBy: { name: 'asc' },
+  });
+
+  if (methods.length === 0 && Array.isArray(DEFAULT_PAYMENT_METHODS) && DEFAULT_PAYMENT_METHODS.length > 0) {
+    for (const pm of DEFAULT_PAYMENT_METHODS) {
+      await tenantPrisma.paymentMethod.create({
+        data: {
+          id: crypto.randomUUID(),
+          name: pm.name,
+          description: pm.description,
+        },
+      });
+    }
+    methods = await tenantPrisma.paymentMethod.findMany({
+      where: { deletedAt: null },
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  return methods;
 }
 
 

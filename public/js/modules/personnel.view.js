@@ -45,6 +45,7 @@ class PersonnelMethods {
     try {
       await this.loadPersonnelAuxiliaryData();
       await this.loadEmployees();
+      this.loadDisciplinaryCatalogs?.();
     } catch (err) {
       console.error('Error al cargar datos del módulo de personal:', err);
       showToast(err.message || 'Error al cargar personal', 'danger');
@@ -83,7 +84,7 @@ class PersonnelMethods {
     setTableLoading('mutuals-table-body', 5, 'Cargando mutuales...', 'mutuals-pagination-container');
     setTableLoading('kinships-table-body', 4, 'Cargando parentescos...', 'kinships-pagination-container');
 
-    const [deptRes, jobRes, shiftRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, actRes, profileRes, salaryScalesRes, payrollSettingsRes, deductionConceptsRes] = await Promise.all([
+    const [deptRes, jobRes, shiftRes, hiRes, unionRes, mutualRes, kinRes, catRes, posRes, servRes, cctRes, modRes, actRes, profileRes, salaryScalesRes, payrollSettingsRes, deductionConceptsRes, paymentMethodsRes] = await Promise.all([
       apiRequest('/departments'),
       apiRequest('/job-positions'),
       apiRequest('/work-shifts').catch(() => ({ data: [] })),
@@ -101,6 +102,7 @@ class PersonnelMethods {
       apiRequest('/payroll/salary-scales').catch(() => ({ data: [] })),
       apiRequest('/payroll/settings').catch(() => ({ data: null })),
       apiRequest('/payroll/concepts?limit=500&type=DEDUCTION').catch(() => ({ data: [] })),
+      apiRequest('/payment-methods').catch(() => ({ data: [] })),
     ]);
 
     this.departments = deptRes.data || [];
@@ -118,6 +120,7 @@ class PersonnelMethods {
     this.arcaActivities = (actRes && actRes.data && actRes.data.length > 0) ? actRes.data : ARCA_T03_ACTIVITIES;
     this.salaryScales = salaryScalesRes.data || [];
     this.payrollSalaryScales = this.salaryScales;
+    this.paymentMethods = paymentMethodsRes?.data || [];
     this.deductionConcepts = (deductionConceptsRes && deductionConceptsRes.data && (Array.isArray(deductionConceptsRes.data) ? deductionConceptsRes.data : deductionConceptsRes.data.items)) || [];
     if (profileRes && profileRes.data) {
       this.activeCompanyProfile = profileRes.data;
@@ -327,7 +330,7 @@ class PersonnelMethods {
         const docFormatted = `${emp.documentType || 'DNI'} ${emp.documentNumber || ''}`;
 
         const photoAvatarHtml = emp.photo
-          ? `<span class="avatar avatar-md rounded-circle me-2 border border-2 border-teal shadow-xs" style="background-image: url('${escapeHtml(emp.photo)}'); background-size: cover; background-position: center;"></span>`
+          ? `<span class="avatar avatar-md rounded-circle me-2 border border-2 border-teal shadow-xs emp-table-photo-avatar cursor-pointer" data-emp-id="${emp.id}" style="background-image: url('${escapeHtml(emp.photo)}'); background-size: cover; background-position: center;"></span>`
           : `<span class="avatar avatar-md bg-teal-lt text-teal rounded-circle me-2 fw-bold border border-teal-lt">${initials}</span>`;
 
         return `
@@ -397,6 +400,61 @@ class PersonnelMethods {
         this.deleteEmployee(btn.dataset.id, btn.dataset.name);
       });
     });
+
+    tbody.querySelectorAll('.emp-table-photo-avatar').forEach((avatarEl) => {
+      avatarEl.addEventListener('mouseenter', () => {
+        const emp = this.employees.find((x) => x.id === avatarEl.dataset.empId);
+        if (emp && emp.photo) {
+          this.showEmployeePhotoZoom(
+            emp.photo,
+            `${emp.lastName || ''}, ${emp.firstName || ''}`.replace(/^,\s*|\s*,\s*$/g, ''),
+            avatarEl.getBoundingClientRect()
+          );
+        }
+      });
+      avatarEl.addEventListener('mouseleave', () => {
+        this.hideEmployeePhotoZoom();
+      });
+    });
+  }
+
+  showEmployeePhotoZoom(photoSrc, captionText, anchorRect) {
+    if (!photoSrc) return;
+    const popover = document.getElementById('employee-photo-zoom-popover');
+    const imgEl = document.getElementById('employee-photo-zoom-img');
+    const capEl = document.getElementById('employee-photo-zoom-caption');
+    if (!popover || !imgEl) return;
+
+    imgEl.src = photoSrc;
+    if (capEl) {
+      capEl.textContent = captionText || 'Foto del colaborador';
+    }
+
+    popover.classList.remove('d-none');
+
+    const popW = 246;
+    const popH = 266;
+    const margin = 12;
+    let left = (anchorRect?.right || 100) + margin;
+    let top = (anchorRect?.top || 100) - 8;
+
+    if (left + popW > window.innerWidth - 12) {
+      left = Math.max(12, (anchorRect?.left || 100) - popW - margin);
+    }
+    if (top + popH > window.innerHeight - 12) {
+      top = Math.max(12, window.innerHeight - popH - 12);
+    }
+    if (top < 12) top = 12;
+
+    popover.style.left = `${Math.round(left)}px`;
+    popover.style.top = `${Math.round(top)}px`;
+  }
+
+  hideEmployeePhotoZoom() {
+    const popover = document.getElementById('employee-photo-zoom-popover');
+    if (popover) {
+      popover.classList.add('d-none');
+    }
   }
 
   // --- Utilidad Reutilizable de Paginación de Tablas ---
@@ -2334,10 +2392,10 @@ class PersonnelMethods {
       });
     }
 
-    // 2. Ocultar todos los panes y activar el seleccionado
+    // 2. Ocultar todos los panes de primer nivel y activar el seleccionado (sin desactivar sub-pestañas internas)
     const tabContent = document.getElementById('personnel-tab-content');
     if (tabContent) {
-      tabContent.querySelectorAll('.tab-pane').forEach((pane) => {
+      tabContent.querySelectorAll(':scope > .tab-pane').forEach((pane) => {
         pane.classList.remove('show', 'active');
       });
       const targetPane = tabContent.querySelector(targetSelector);
@@ -2363,6 +2421,12 @@ class PersonnelMethods {
       this.renderMutualsTable();
     } else if (targetSelector === '#pane-personnel-kinships') {
       this.renderKinshipsTable();
+    } else if (targetSelector === '#pane-personnel-disc-tables') {
+      this.loadDisciplinaryCatalogs?.();
+    } else if (targetSelector === '#pane-personnel-disc-records') {
+      this.loadDisciplinaryRecordsView?.();
+    } else if (targetSelector === '#pane-personnel-disc-reports') {
+      this.loadDisciplinaryCatalogs?.();
     }
   }
 
@@ -2594,6 +2658,24 @@ class PersonnelMethods {
     btnUploadPhoto?.addEventListener('click', triggerPhotoPick);
     photoWrapper?.addEventListener('click', triggerPhotoPick);
 
+    // Evento al posar el puntero del mouse sobre la foto del empleado en la ficha de edición
+    photoWrapper?.addEventListener('mouseenter', () => {
+      const currentPhoto = photoDataInput?.value?.trim();
+      if (!currentPhoto) return;
+      const lName = document.getElementById('employee-input-last-name')?.value?.trim() || '';
+      const fName = document.getElementById('employee-input-first-name')?.value?.trim() || '';
+      const fullName = [lName, fName].filter(Boolean).join(', ') || 'Foto del Colaborador';
+      this.showEmployeePhotoZoom(currentPhoto, fullName, photoWrapper.getBoundingClientRect());
+    });
+
+    photoWrapper?.addEventListener('mouseleave', () => {
+      this.hideEmployeePhotoZoom();
+    });
+
+    document.getElementById('modal-employee-form')?.addEventListener('hide.bs.modal', () => {
+      this.hideEmployeePhotoZoom();
+    });
+
     photoFileInput?.addEventListener('change', (e) => {
       const file = e.target.files?.[0];
       if (!file) return;
@@ -2607,8 +2689,8 @@ class PersonnelMethods {
       reader.onload = (loadEvt) => {
         const img = new Image();
         img.onload = () => {
-          // Redimensionar en canvas a max 320x320 para un almacenamiento ultra ligero y nítido
-          const maxDim = 320;
+          // Redimensionar en canvas a max 480x480 para almacenamiento ligero y ampliación nítida del rostro
+          const maxDim = 480;
           let width = img.width;
           let height = img.height;
           if (width > height) {
@@ -2646,6 +2728,7 @@ class PersonnelMethods {
 
     btnRemovePhoto?.addEventListener('click', (e) => {
       e.stopPropagation();
+      this.hideEmployeePhotoZoom();
       if (photoFileInput) photoFileInput.value = '';
       if (photoDataInput) photoDataInput.value = '';
       if (photoPreviewAvatar) {
@@ -2719,6 +2802,11 @@ class PersonnelMethods {
       cbuInputEl.addEventListener('input', () => this.updateCbuValidationUI());
       cbuInputEl.addEventListener('blur', () => this.updateCbuValidationUI());
     }
+
+    // Selector de Forma de Pago en Tab 6
+    document.getElementById('employee-select-payment-method')?.addEventListener('change', (e) => {
+      this.updateEmployeePaymentMethodDesc(e.target.value);
+    });
 
     // Botón para asignar concepto fijo al empleado
     document.getElementById('btn-add-employee-concept')?.addEventListener('click', () => {
@@ -2914,6 +3002,7 @@ class PersonnelMethods {
           monthlyWorkingHours,
           partTimePercentage: Number(document.getElementById('employee-input-part-time-pct')?.value || 100),
           salaryScaleId: document.getElementById('employee-select-salary-scale')?.value || null,
+          paymentMethodId: document.getElementById('employee-select-payment-method')?.value || null,
           basicSalary: Number(document.getElementById('employee-input-basic-salary')?.value || 0),
           cbu: cbuRaw,
           bankAccountType: bankAccountType,
@@ -3549,7 +3638,7 @@ class PersonnelMethods {
 
   // --- Aperturas de Modales Auxiliares ---
 
-  populateEmployeeSelects(selectedDept = '', selectedJob = '', selectedHi = '', selectedUnion = '', selectedMutual = '', selectedContractModality = '', selectedSalaryScale = '', selectedWorkShift = '') {
+  populateEmployeeSelects(selectedDept = '', selectedJob = '', selectedHi = '', selectedUnion = '', selectedMutual = '', selectedContractModality = '', selectedSalaryScale = '', selectedWorkShift = '', selectedPaymentMethod = '') {
     const deptSelect = document.getElementById('employee-input-department');
     if (deptSelect) {
       const optsHtml =
@@ -3632,7 +3721,38 @@ class PersonnelMethods {
       updateSearchableSelect(shiftSelect, optsHtml, selectedWorkShift);
     }
 
+    // Selector de Forma de Pago en Tab 6
+    const pmSelect = document.getElementById('employee-select-payment-method');
+    if (pmSelect) {
+      const methods = this.paymentMethods || [];
+      const optsHtml =
+        '<option value="">-- Seleccionar Forma de Pago --</option>' +
+        methods
+          .map(
+            (pm) =>
+              `<option value="${pm.id}" ${pm.id === selectedPaymentMethod ? 'selected' : ''}>${escapeHtml(pm.name)}</option>`
+          )
+          .join('');
+      pmSelect.innerHTML = optsHtml;
+      pmSelect.value = selectedPaymentMethod || '';
+      this.updateEmployeePaymentMethodDesc(pmSelect.value);
+    }
+
     this.updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale);
+  }
+
+  updateEmployeePaymentMethodDesc(paymentMethodId) {
+    const descEl = document.getElementById('employee-payment-method-desc');
+    if (!descEl) return;
+
+    const pm = (this.paymentMethods || []).find((m) => m.id === paymentMethodId);
+    if (pm && pm.description) {
+      descEl.innerHTML = `<i class="ti ti-circle-check me-1 text-teal flex-shrink-0"></i><span class="text-dark">${escapeHtml(pm.description)}</span>`;
+    } else if (pm) {
+      descEl.innerHTML = `<i class="ti ti-circle-check me-1 text-teal flex-shrink-0"></i><span class="text-dark">Forma de pago seleccionada: ${escapeHtml(pm.name)}.</span>`;
+    } else {
+      descEl.innerHTML = `<i class="ti ti-info-circle me-1 text-teal flex-shrink-0"></i><span>Seleccioná una forma de pago para visualizar su descripción operativa.</span>`;
+    }
   }
 
   handleEmployeeWorkShiftChange(shiftId) {
@@ -4021,10 +4141,11 @@ class PersonnelMethods {
     this.renderEmployeeConceptsTable();
     this.updateEmployeeJornadaBadge();
 
-    this.populateEmployeeSelects('', '', '', '', '', '8', '', '');
+    this.populateEmployeeSelects('', '', '', '', '', '8', '', '', '');
     this.handleEmployeeWorkShiftChange('');
     this.updateEmployeeEncuadrePreview('');
     this.updateEmployeeMapPreview();
+    this.resetEmployeeDisciplinaryHistoryTab?.();
 
     const firstTab = document.getElementById('tab-btn-emp-personal');
     if (firstTab && window.bootstrap?.Tab) {
@@ -4144,6 +4265,7 @@ class PersonnelMethods {
     this.updateCbuValidationUI();
 
     const empShiftId = fullEmp.workShiftId || fullEmp.workShift?.id || '';
+    const empPaymentMethodId = fullEmp.paymentMethodId || fullEmp.paymentMethod?.id || '';
     this.populateEmployeeSelects(
       fullEmp.departmentId,
       fullEmp.jobPositionId,
@@ -4152,11 +4274,13 @@ class PersonnelMethods {
       fullEmp.mutualId,
       fullEmp.contractModalityCode || '8',
       fullEmp.salaryScaleId || fullEmp.salaryScale?.id || '',
-      empShiftId
+      empShiftId,
+      empPaymentMethodId
     );
     this.handleEmployeeWorkShiftChange(empShiftId);
     this.updateEmployeeEncuadrePreview(fullEmp.jobPositionId);
     this.updateEmployeeMapPreview();
+    this.loadEmployeeDisciplinaryHistoryTab?.(fullEmp.id);
 
     const firstTab = document.getElementById('tab-btn-emp-personal');
     if (firstTab && window.bootstrap?.Tab) {

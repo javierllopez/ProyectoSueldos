@@ -40,9 +40,13 @@ class PayrollMethods {
     );
     allNavLinks.forEach((i) => i.classList.remove('active'));
 
-    // 2. Activar el ítem seleccionado
+    // 2. Activar el ítem seleccionado (o mantener Períodos y Liquidaciones activo en sub-vistas contextuales)
+    const navLookupId =
+      cleanId === '#pane-payroll-settlement' || cleanId === '#pane-payroll-slips'
+        ? '#pane-payroll-periods'
+        : cleanId;
     const activeItem = document.querySelector(
-      `#payroll-sidebar-nav a[href="${cleanId}"], #payroll-sidebar-nav a[data-bs-target="${cleanId}"]`
+      `#payroll-sidebar-nav a[href="${navLookupId}"], #payroll-sidebar-nav a[data-bs-target="${navLookupId}"]`
     );
     if (activeItem) {
       activeItem.classList.add('active');
@@ -263,27 +267,32 @@ class PayrollMethods {
     this.setupExcelImportHandlers();
     this.setupSimulatePayslipHandlers();
 
-    // --- Slips Handlers ---
-    const slipsPeriodSelect = document.getElementById('slips-period-select');
-    if (slipsPeriodSelect) {
-      slipsPeriodSelect.addEventListener('change', () => {
-        this.activePayrollPeriodId = slipsPeriodSelect.value;
-        this.payrollSlipsPage = 1;
-        this.loadPayrollSlips(slipsPeriodSelect.value);
+    // --- Slips & Settlement Back Navigation Handlers ---
+    const btnBackFromSettlement = document.getElementById('btn-back-from-settlement');
+    if (btnBackFromSettlement) {
+      btnBackFromSettlement.addEventListener('click', () => {
+        this.switchPayrollPane('#pane-payroll-periods');
       });
     }
+    const btnBackFromSlips = document.getElementById('btn-back-from-slips');
+    if (btnBackFromSlips) {
+      btnBackFromSlips.addEventListener('click', () => {
+        this.switchPayrollPane('#pane-payroll-periods');
+      });
+    }
+    const slipsPeriodSelect = document.getElementById('slips-period-select');
     const slipsDeptFilter = document.getElementById('slips-department-filter');
     if (slipsDeptFilter) {
       slipsDeptFilter.addEventListener('change', () => {
         this.payrollSlipsPage = 1;
-        this.loadPayrollSlips(slipsPeriodSelect?.value);
+        this.loadPayrollSlips(slipsPeriodSelect?.value || this.activePayrollPeriodId);
       });
     }
     const slipsSearch = document.getElementById('slips-search-input');
     if (slipsSearch) {
       slipsSearch.addEventListener('input', () => {
         this.payrollSlipsPage = 1;
-        this.loadPayrollSlips(slipsPeriodSelect?.value);
+        this.loadPayrollSlips(slipsPeriodSelect?.value || this.activePayrollPeriodId);
       });
     }
     const slipsPageSize = document.getElementById('slips-page-size-select');
@@ -291,7 +300,7 @@ class PayrollMethods {
       slipsPageSize.addEventListener('change', () => {
         this.payrollSlipsPageSize = Number(slipsPageSize.value) || 5;
         this.payrollSlipsPage = 1;
-        this.loadPayrollSlips(slipsPeriodSelect?.value);
+        this.loadPayrollSlips(slipsPeriodSelect?.value || this.activePayrollPeriodId);
       });
     }
     const btnBatchPrint = document.getElementById('btn-export-slips-batch');
@@ -299,10 +308,32 @@ class PayrollMethods {
       btnBatchPrint.addEventListener('click', () => this.printBatchSlips());
     }
 
-    // --- Print Modal Button ---
+    // --- Print Modal Button & Print Lifecycle ---
     const btnPrintPayslip = document.getElementById('btn-print-payslip');
     if (btnPrintPayslip) {
-      btnPrintPayslip.addEventListener('click', () => window.print());
+      btnPrintPayslip.addEventListener('click', () => {
+        const isAuditActive = document.getElementById('tab-payslip-audit')?.classList.contains('active');
+        if (isAuditActive) {
+          this.printPayslipAuditReport();
+        } else {
+          document.body.classList.remove('audit-printing');
+          window.print();
+        }
+      });
+    }
+
+    if (!this._auditPrintListenersBound) {
+      this._auditPrintListenersBound = true;
+      window.addEventListener('beforeprint', () => {
+        const modalOpen = document.getElementById('modal-view-payslip')?.classList.contains('show');
+        const isAuditActive = document.getElementById('tab-payslip-audit')?.classList.contains('active');
+        if (modalOpen && isAuditActive) {
+          document.body.classList.add('audit-printing');
+        }
+      });
+      window.addEventListener('afterprint', () => {
+        document.body.classList.remove('audit-printing');
+      });
     }
 
     // --- LSD Handlers ---
@@ -817,12 +848,8 @@ class PayrollMethods {
         const periodId = btn.dataset.id;
         this.activePayrollPeriodId = periodId;
         this.syncPayrollPeriodSelectors(periodId);
-        document.getElementById('side-payroll-settlement')?.click();
-        const select = document.getElementById('settlement-period-select');
-        if (select) {
-          select.value = periodId;
-          this.loadSettlementView();
-        }
+        this.showOmittedAlert(0, 0, []);
+        this.switchPayrollPane('#pane-payroll-settlement');
       });
     });
 
@@ -830,13 +857,9 @@ class PayrollMethods {
       btn.addEventListener('click', () => {
         const periodId = btn.dataset.id;
         this.activePayrollPeriodId = periodId;
+        this.payrollSlipsPage = 1;
         this.syncPayrollPeriodSelectors(periodId);
-        document.getElementById('side-payroll-slips')?.click();
-        const select = document.getElementById('slips-period-select');
-        if (select) {
-          select.value = periodId;
-          this.loadPayrollSlips(periodId);
-        }
+        this.switchPayrollPane('#pane-payroll-slips');
       });
     });
 
@@ -873,27 +896,96 @@ class PayrollMethods {
     if (preferredPeriodId) {
       this.activePayrollPeriodId = preferredPeriodId;
     }
-    const selectors = [
+    const targetVal =
+      this.activePayrollPeriodId || (this.payrollPeriods.length > 0 ? this.payrollPeriods[0].id : '');
+
+    const dropdownSelectors = [
       'nov-nopers-emp-period-select',
       'nov-nopers-con-period-select',
-      'settlement-period-select',
-      'slips-period-select',
       'novedades-period-select',
     ];
-    selectors.forEach((selId) => {
+    dropdownSelectors.forEach((selId) => {
       const el = document.getElementById(selId);
       if (!el) return;
       if (this.payrollPeriods.length === 0) {
         updateSearchableSelect(el, '<option value="">No hay liquidaciones registradas</option>', '');
         return;
       }
-      const targetVal = this.activePayrollPeriodId || el.value || (this.payrollPeriods.length > 0 ? this.payrollPeriods[0].id : '');
+      const selTarget = this.activePayrollPeriodId || el.value || targetVal;
       const optsHtml = this.payrollPeriods
         .map(
-          (p) => `<option value="${p.id}" ${p.id === targetVal ? 'selected' : ''}>${String(p.month).padStart(2, '0')}/${p.year} - ${escapeHtml(p.settlementName)} (${p.status})</option>`
+          (p) => `<option value="${p.id}" ${p.id === selTarget ? 'selected' : ''}>${String(p.month).padStart(2, '0')}/${p.year} - ${escapeHtml(p.settlementName)} (${p.status})</option>`
         )
         .join('');
-      updateSearchableSelect(el, optsHtml, targetVal);
+      updateSearchableSelect(el, optsHtml, selTarget);
+    });
+
+    const hiddenSelectors = ['settlement-period-select', 'slips-period-select'];
+    hiddenSelectors.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = targetVal || '';
+    });
+
+    this.renderPeriodContextBanners(targetVal);
+  }
+
+  renderPeriodContextBanners(periodId) {
+    const p = (this.payrollPeriods || []).find((item) => item.id === periodId);
+    const typeLabels = {
+      MONTHLY: 'Mensual',
+      QUINCE_1: '1ra Quincena',
+      QUINCE_2: '2da Quincena',
+      SAC_1: '1er SAC',
+      SAC_2: '2do SAC',
+      VACATIONS: 'Vacaciones',
+      FINAL: 'Liquidación Final',
+    };
+    const statusLabels = {
+      DRAFT: 'Borrador',
+      CALCULATED: 'Calculada',
+      CLOSED: 'Cerrada',
+    };
+    const statusClasses = {
+      DRAFT: 'badge bg-secondary-lt',
+      CALCULATED: 'badge bg-azure-lt',
+      CLOSED: 'badge bg-success text-white',
+    };
+
+    ['settlement-period-context', 'slips-period-context'].forEach((prefix) => {
+      const titleEl = document.getElementById(`${prefix}-title`);
+      const subtitleEl = document.getElementById(`${prefix}-subtitle`);
+      const badgeEl = document.getElementById(`${prefix}-badge`);
+      const statusEl = document.getElementById(`${prefix}-status`);
+
+      if (!p) {
+        if (titleEl) titleEl.textContent = 'Sin liquidación seleccionada';
+        if (subtitleEl) subtitleEl.textContent = 'Seleccione una liquidación desde Períodos y Liquidaciones';
+        if (badgeEl) badgeEl.textContent = '-';
+        if (statusEl) {
+          statusEl.className = 'badge bg-secondary-lt';
+          statusEl.textContent = '-';
+        }
+        return;
+      }
+
+      const monthStr = String(p.month).padStart(2, '0');
+      const liqDateStr = p.liquidationDate
+        ? ` • Fecha de Liquidación: ${new Date(String(p.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}`
+        : '';
+
+      if (titleEl) {
+        titleEl.textContent = `${monthStr}/${p.year} — ${p.settlementName || 'Liquidación'}`;
+      }
+      if (subtitleEl) {
+        subtitleEl.textContent = `Liquidación #${p.settlementNumber || 1}${liqDateStr}`;
+      }
+      if (badgeEl) {
+        badgeEl.textContent = typeLabels[p.periodType] || p.periodType;
+      }
+      if (statusEl) {
+        statusEl.className = statusClasses[p.status] || 'badge bg-secondary-lt';
+        statusEl.textContent = statusLabels[p.status] || p.status;
+      }
     });
   }
 
@@ -2861,11 +2953,15 @@ class PayrollMethods {
 
   async loadSettlementView() {
     const periodSelect = document.getElementById('settlement-period-select');
-    const periodId = periodSelect?.value;
+    const periodId = periodSelect?.value || this.activePayrollPeriodId;
     if (!periodId) {
       this.clearSettlementView();
       return;
     }
+    if (periodSelect && periodSelect.value !== periodId) {
+      periodSelect.value = periodId;
+    }
+    this.renderPeriodContextBanners(periodId);
 
     const isClosed = this.isPeriodClosed(periodId);
     const roAlert = document.getElementById('settlement-readonly-alert');
@@ -3033,6 +3129,7 @@ class PayrollMethods {
         this.showOmittedAlert(0, res.data.processedEmployees || 0, []);
         showToast(`¡Liquidación completada para el colaborador! Neto: $${formatNumber(res.data.totalNet)}`);
       }
+      await this.loadPayrollPeriods();
       await this.loadSettlementView();
       const singleSelect = document.getElementById('settlement-single-emp-select');
       if (singleSelect) singleSelect.value = empId;
@@ -3149,6 +3246,7 @@ class PayrollMethods {
       } else {
         showToast(`¡Liquidación en lote completada para ${res.data.processedEmployees} empleado(s)! Total Neto: $${formatNumber(res.data.totalNet)}`);
       }
+      await this.loadPayrollPeriods();
       await this.loadSettlementView();
     } catch (err) {
       showToast(err.message || 'Error al liquidar lote de empleados', 'danger');
@@ -3656,11 +3754,13 @@ class PayrollMethods {
     if (btnGoSettle) {
       btnGoSettle.addEventListener('click', () => {
         getBootstrapModal(document.getElementById('modal-simulate-payslip'))?.hide();
-        document.getElementById('side-payroll-settlement')?.click();
         const periodId = document.getElementById('nov-nopers-emp-period-select')?.value;
         const empId = document.getElementById('nov-nopers-emp-select')?.value;
-        const settlePeriodSelect = document.getElementById('settlement-period-select');
-        if (settlePeriodSelect && periodId) settlePeriodSelect.value = periodId;
+        if (periodId) {
+          this.activePayrollPeriodId = periodId;
+          this.syncPayrollPeriodSelectors(periodId);
+        }
+        this.switchPayrollPane('#pane-payroll-settlement');
         this.loadSettlementView().then(() => {
           const singleSelect = document.getElementById('settlement-single-emp-select');
           if (singleSelect && empId) {
@@ -3673,15 +3773,6 @@ class PayrollMethods {
   }
 
   setupSettlementHandlers() {
-    const periodSelect = document.getElementById('settlement-period-select');
-    if (periodSelect) {
-      periodSelect.addEventListener('change', () => {
-        this.activePayrollPeriodId = periodSelect.value;
-        this.showOmittedAlert(0, 0, []);
-        this.loadSettlementView();
-      });
-    }
-
     // Modalidad 1: Individual
     const singleSelect = document.getElementById('settlement-single-emp-select');
     if (singleSelect) {
@@ -3785,11 +3876,31 @@ class PayrollMethods {
   async loadPayrollSlips(periodId) {
     if (!periodId) return;
 
+    const slipsInput = document.getElementById('slips-period-select');
+    if (slipsInput && slipsInput.value !== periodId) {
+      slipsInput.value = periodId;
+    }
+    this.renderPeriodContextBanners(periodId);
+
     const spinner = document.getElementById('slips-spinner');
     if (spinner) spinner.classList.remove('d-none');
 
     const searchInput = document.getElementById('slips-search-input');
     const deptFilter = document.getElementById('slips-department-filter');
+
+    if (deptFilter && deptFilter.options.length <= 1) {
+      try {
+        const deptsRes = await apiRequest('/departments?limit=500');
+        const depts = deptsRes.data || [];
+        const curDept = deptFilter.value || 'ALL';
+        deptFilter.innerHTML =
+          '<option value="ALL">Todos los Sectores</option>' +
+          depts.map((d) => `<option value="${d.id}">${escapeHtml(d.name)}</option>`).join('');
+        deptFilter.value = curDept;
+      } catch (_e) {
+        // Ignorar error de carga opcional de sectores
+      }
+    }
 
     const query = new URLSearchParams({
       page: String(this.payrollSlipsPage),
@@ -4321,9 +4432,451 @@ class PayrollMethods {
     });
   }
 
+  resolveAuditItemFormula(it, slip, formatMoney) {
+    let formulaExpl = it.formulaExplanation;
+    if (!formulaExpl && it.formula) {
+      let substituted = it.formula;
+      const itemMap = new Map();
+      (slip.items || []).forEach((item) => {
+        itemMap.set(String(item.conceptCode).toUpperCase(), item.amount);
+        const num = String(item.conceptCode).replace(/\D/g, '');
+        if (num) itemMap.set(num, item.amount);
+      });
+      itemMap.set('BASICO', slip.basicSalary || slip.grossSalary || 0);
+      itemMap.set('TOTAL_REMUNERATIVO', slip.remunerativeSalary || 0);
+      itemMap.set('TOTAL_BRUTO', slip.grossSalary || 0);
+      itemMap.set('CANTIDAD', it.units || 1);
+      itemMap.set('UNIDADES', it.units || 1);
+      itemMap.set('HORAS', it.units || 0);
+
+      substituted = substituted.replace(/\[([A-Z0-9_:]+)\]/gi, (match, key) => {
+        const uKey = key.toUpperCase().trim();
+        if (itemMap.has(uKey)) {
+          return String(itemMap.get(uKey));
+        }
+        return match;
+      });
+      formulaExpl = substituted;
+    } else if (!formulaExpl && it.rate && it.baseAmount) {
+      formulaExpl = `${formatMoney(it.baseAmount)} * ${it.rate}%`;
+    }
+
+    if (
+      formulaExpl &&
+      /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i.test(
+        formulaExpl
+      )
+    ) {
+      let expr = formulaExpl;
+      const fnRegex =
+        /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i;
+      let safety = 25;
+      while (fnRegex.test(expr) && safety > 0) {
+        safety--;
+        const matches = [
+          ...expr.matchAll(
+            /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/gi
+          ),
+        ];
+        if (matches.length === 0) break;
+        const lastMatch = matches[matches.length - 1];
+        const fnName = lastMatch[1].toUpperCase();
+        const startIdx = lastMatch.index;
+        const openParen = startIdx + lastMatch[0].length - 1;
+
+        let depth = 1;
+        let closeParen = -1;
+        for (let i = openParen + 1; i < expr.length; i++) {
+          if (expr[i] === '(') depth++;
+          else if (expr[i] === ')') {
+            depth--;
+            if (depth === 0) {
+              closeParen = i;
+              break;
+            }
+          }
+        }
+        if (closeParen === -1) break;
+
+        const innerArgs = expr
+          .substring(openParen + 1, closeParen)
+          .split(',')
+          .map((s) => s.trim().replace(/^['"]|['"]$/g, ''));
+        let val = 0;
+
+        if (fnName === 'DIF_DIAS') {
+          const d1 = new Date(innerArgs[0]);
+          const d2 = new Date(innerArgs[1]);
+          const inc =
+            innerArgs[2] === 'true' ||
+            innerArgs[2] === '1' ||
+            (innerArgs[2] && innerArgs[2].toUpperCase() === 'INCLUSIVO');
+          if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+            const diffMs = d2.getTime() - d1.getTime();
+            const diffDays = Math.round(diffMs / 86400000);
+            val = inc ? diffDays + 1 : diffDays;
+          }
+        } else if (fnName === 'DIF_MESES') {
+          const d1 = new Date(innerArgs[0]);
+          const d2 = new Date(innerArgs[1]);
+          if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+            let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+            if (d2.getDate() < d1.getDate()) m--;
+            val = Math.max(0, m);
+          }
+        } else if (fnName === 'DIF_ANIOS') {
+          const d1 = new Date(innerArgs[0]);
+          const d2 = new Date(innerArgs[1]);
+          if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+            let y = d2.getFullYear() - d1.getFullYear();
+            const mDiff = d2.getMonth() - d1.getMonth();
+            if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
+            val = Math.max(0, y);
+          }
+        } else if (fnName === 'DIF_FECHA' || fnName === 'DIFERENCIA_FECHAS') {
+          const d1 = new Date(innerArgs[0]);
+          const d2 = new Date(innerArgs[1]);
+          const unit = String(innerArgs[2] || 'DIAS').toUpperCase();
+          const inc = innerArgs[3] === 'true' || innerArgs[3] === '1';
+          if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
+            if (unit.startsWith('DIA') || unit === 'D') {
+              const diffDays = Math.round((d2.getTime() - d1.getTime()) / 86400000);
+              val = inc ? diffDays + 1 : diffDays;
+            } else if (unit.startsWith('MES') || unit === 'M') {
+              let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
+              if (d2.getDate() < d1.getDate()) m--;
+              val = Math.max(0, m);
+            } else {
+              let y = d2.getFullYear() - d1.getFullYear();
+              const mDiff = d2.getMonth() - d1.getMonth();
+              if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
+              val = Math.max(0, y);
+            }
+          }
+        } else if (fnName === 'TOPE_MAX') {
+          val = Math.min(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
+        } else if (fnName === 'TOPE_MIN') {
+          val = Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
+        } else if (fnName === 'LIMITAR') {
+          val = Math.min(Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0), Number(innerArgs[2]) || 0);
+        } else if (fnName === 'MIN') {
+          val = Math.min(...innerArgs.map(Number));
+        } else if (fnName === 'MAX') {
+          val = Math.max(...innerArgs.map(Number));
+        } else if (fnName === 'REDONDEAR' || fnName === 'ROUND') {
+          const dec = Number(innerArgs[1]) || 2;
+          const f = Math.pow(10, dec);
+          val = Math.round((Number(innerArgs[0]) || 0) * f) / f;
+        } else if (fnName === 'ABS') {
+          val = Math.abs(Number(innerArgs[0]) || 0);
+        } else if (fnName === 'CEIL') {
+          val = Math.ceil(Number(innerArgs[0]) || 0);
+        } else if (fnName === 'FLOOR') {
+          val = Math.floor(Number(innerArgs[0]) || 0);
+        } else if (fnName === 'SI' || fnName === 'IF') {
+          val = innerArgs[1] || 0;
+        }
+
+        expr = expr.substring(0, startIdx) + String(val) + expr.substring(closeParen + 1);
+      }
+      formulaExpl = expr;
+    }
+
+    return formulaExpl || '';
+  }
+
+  printPayslipAuditReport() {
+    if (this.currentPayslipAuditData) {
+      const printContainer = document.getElementById('audit-payslip-print-container');
+      if (printContainer) {
+        printContainer.innerHTML = this.generatePayslipAuditPrintHtml(this.currentPayslipAuditData);
+      }
+    }
+    document.body.classList.add('audit-printing');
+    setTimeout(() => {
+      window.print();
+      setTimeout(() => {
+        document.body.classList.remove('audit-printing');
+      }, 300);
+    }, 80);
+  }
+
+  generatePayslipAuditPrintHtml(data) {
+    const slip = data?.slip || data || {};
+    const emp = slip.employee || {};
+    const comp = data?.company || this.activeCompany || {};
+    const period = slip.payrollPeriod || {};
+    const items = slip.items || [];
+    const basis = slip.basis || {};
+    const formatMoney = (n) => Number(n || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+    const typeLabelsPlain = {
+      REMUNERATIVE: 'Remunerativo',
+      NON_REMUNERATIVE: 'No Remunerativo',
+      DEDUCTION: 'Deducción / Retención',
+      AUXILIARY: 'Auxiliar de Cálculo',
+    };
+
+    const sortedItems = [...items].sort((a, b) =>
+      String(a.conceptCode || '').localeCompare(String(b.conceptCode || ''), undefined, { numeric: true })
+    );
+
+    const compName = escapeHtml(comp.businessName || comp.legalName || comp.name || 'EMPRESA');
+    const compCuit = formatCuit(comp.cuit);
+    const compAddress = escapeHtml(comp.address || 'Domicilio fiscal no especificado');
+    const periodLabel = escapeHtml(
+      period.settlementName
+        ? `${String(period.month || '').padStart(2, '0')}/${period.year || ''} - ${period.settlementName}`
+        : `${String(period.month || '').padStart(2, '0')}/${period.year || ''}`
+    );
+    const empFullName = escapeHtml(`${emp.lastName || ''}, ${emp.firstName || ''}`.replace(/^,\s*/, '') || '-');
+    const empFile = escapeHtml(emp.fileNumber || '-');
+    const empCuil = formatCuit(emp.cuil);
+    const empPosition = escapeHtml(emp.jobPosition?.name || 'Sin cargo asignado');
+    const empDept = escapeHtml(emp.department?.name || 'Sin sector');
+    const empCbu = emp.cbu && String(emp.cbu).trim()
+      ? `${escapeHtml(String(emp.cbu).trim())}${emp.bankName ? ` (${escapeHtml(emp.bankName)})` : ''}`
+      : 'Sin CBU informado';
+    const nowStr = new Date().toLocaleString('es-AR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    const hashStr = escapeHtml(slip.signatureHash || 'SEC-VALID-PAYROLL-AUDIT');
+
+    // Preparar filas e inferir peso vertical para paginación multipágina A4
+    const preparedRows = sortedItems.map((it, idx) => {
+      const isAux = it.type === 'AUXILIARY';
+      const isDed = it.type === 'DEDUCTION';
+      const amountStr = `${isDed ? '-$ ' : '$ '}${formatMoney(it.amount)}`;
+      const unitsStr = it.units !== null && it.units !== undefined ? String(it.units) : '-';
+      const baseStr = it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : it.rate ? `${it.rate}%` : '-';
+      const typeStr = typeLabelsPlain[it.type] || String(it.type || '-');
+      const formulaExpl = this.resolveAuditItemFormula(it, slip, formatMoney);
+
+      const nameLines = Math.max(1, Math.ceil(String(it.conceptName || '').length / 38));
+      const formulaLines = formulaExpl ? Math.max(1, Math.ceil((formulaExpl.length + 9) / 48)) : 0;
+      const typeLines = Math.max(1, Math.ceil(typeStr.length / 15));
+      const contentLines = Math.max(nameLines + formulaLines, typeLines);
+      const heightMm = 4.2 + contentLines * 3.6;
+
+      const html = `
+        <tr class="${isAux ? 'ap-row-aux' : ''}">
+          <td class="ap-col-idx">${idx + 1}</td>
+          <td class="ap-col-code">${escapeHtml(it.conceptCode || '-')}</td>
+          <td class="ap-col-name">
+            <div class="ap-concept-title">${escapeHtml(it.conceptName || '-')}</div>
+            ${formulaExpl ? `<div class="ap-concept-formula">Fórmula: ${escapeHtml(formulaExpl)}</div>` : ''}
+          </td>
+          <td class="ap-col-type">${escapeHtml(typeStr)}</td>
+          <td class="ap-col-units">${escapeHtml(unitsStr)}</td>
+          <td class="ap-col-base">${escapeHtml(baseStr)}</td>
+          <td class="ap-col-amount ${isDed ? 'ap-val-ded' : isAux ? 'ap-val-aux' : ''}">${amountStr}</td>
+          <td class="ap-col-arca">${escapeHtml(it.arcaConceptCode || '-')}</td>
+        </tr>
+      `;
+      return { html, heightMm };
+    });
+
+    // Presupuesto vertical útil del cuerpo por página A4 (~212mm disponibles entre encabezado y pie)
+    const MAX_BODY_HEIGHT_MM = 208;
+    const SUMMARY_HEIGHT_MM = 64;
+
+    const pages = [];
+    let currentRows = [];
+    let currentHeight = 0;
+
+    preparedRows.forEach((row) => {
+      if (currentRows.length > 0 && currentHeight + row.heightMm > MAX_BODY_HEIGHT_MM) {
+        pages.push({ rows: currentRows, includeSummary: false });
+        currentRows = [row];
+        currentHeight = row.heightMm;
+      } else {
+        currentRows.push(row);
+        currentHeight += row.heightMm;
+      }
+    });
+
+    if (currentRows.length > 0 || pages.length === 0) {
+      if (currentHeight + SUMMARY_HEIGHT_MM <= MAX_BODY_HEIGHT_MM) {
+        pages.push({ rows: currentRows, includeSummary: true });
+      } else {
+        pages.push({ rows: currentRows, includeSummary: false });
+        pages.push({ rows: [], includeSummary: true });
+      }
+    }
+
+    const totalPages = pages.length;
+
+    const summaryBlockHtml = `
+      <div class="audit-print-summary-section">
+        <div class="audit-print-summary-grid">
+          <div class="audit-print-summary-col">
+            <div class="audit-print-section-title">REMUNERACIONES IMPONIBLES ARCA (F.931)</div>
+            <table class="audit-print-kv-table">
+              <tbody>
+                <tr>
+                  <td>Remuneración 1: Aportes Previsionales (SIPA con tope)</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible1)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 2: Contrib. Previsionales e INSSJyP (sin tope)</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible2)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 3: Contrib. FNE, Asig. Familiares y RENATRE</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible3)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 4: Aportes Obra Social y FSR (con tope)</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible4)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 5: Aportes INSSJyP (PAMI)</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible5)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 8: Contribuciones Obra Social y FSR</td>
+                  <td class="ap-kv-val">$ ${formatMoney(
+                    basis.baseImponible8 !== undefined && basis.baseImponible8 !== null
+                      ? basis.baseImponible8
+                      : basis.baseImponible4
+                  )}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 9: Ley de Riesgos del Trabajo (LRT / ART)</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible9)}</td>
+                </tr>
+                <tr>
+                  <td>Remuneración 10: Contribución SIPA con Detracción</td>
+                  <td class="ap-kv-val">$ ${formatMoney(basis.baseImponible10)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="audit-print-summary-col">
+            <div class="audit-print-section-title">RESUMEN DE LIQUIDACIÓN Y COSTO LABORAL</div>
+            <table class="audit-print-kv-table">
+              <tbody>
+                <tr>
+                  <td>Total Haberes Remunerativos</td>
+                  <td class="ap-kv-val">$ ${formatMoney(slip.remunerativeSalary)}</td>
+                </tr>
+                <tr>
+                  <td>Total Conceptos No Remunerativos</td>
+                  <td class="ap-kv-val">$ ${formatMoney(slip.nonRemunerative)}</td>
+                </tr>
+                <tr>
+                  <td>Total Deducciones y Retenciones del Colaborador</td>
+                  <td class="ap-kv-val ap-val-ded">-$ ${formatMoney(slip.totalDeductions)}</td>
+                </tr>
+                <tr class="ap-kv-highlight">
+                  <td>SUELDO NETO DE BOLSILLO A COBRAR</td>
+                  <td class="ap-kv-val">$ ${formatMoney(slip.netSalary)}</td>
+                </tr>
+                <tr>
+                  <td>Total Contribuciones Patronales Empleador</td>
+                  <td class="ap-kv-val">$ ${formatMoney(slip.totalEmployerContrib)}</td>
+                </tr>
+                <tr class="ap-kv-highlight">
+                  <td>COSTO LABORAL TOTAL EMPRESA</td>
+                  <td class="ap-kv-val">$ ${formatMoney(slip.totalLaborCost)}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    `;
+
+    return pages
+      .map((pageObj, pageIdx) => {
+        const pageNum = pageIdx + 1;
+        const hasRows = pageObj.rows.length > 0;
+        return `
+          <section class="audit-print-page">
+            <header class="audit-print-page-header">
+              <div class="audit-print-header-top">
+                <div>
+                  <div class="audit-print-doc-title">INFORME DE AUDITORÍA Y CONTROL DE LIQUIDACIÓN</div>
+                  <div class="audit-print-doc-subtitle">Secuencia completa de conceptos liquidados, variables auxiliares, fórmulas aplicadas y bases F.931</div>
+                </div>
+                <div class="audit-print-header-right">
+                  <div><strong>Período:</strong> ${periodLabel}</div>
+                  <div><strong>Emisión:</strong> ${nowStr} &bull; <strong>Página ${pageNum} de ${totalPages}</strong></div>
+                </div>
+              </div>
+              <div class="audit-print-meta-strip">
+                <div class="audit-print-meta-col">
+                  <div><strong>Empleador:</strong> ${compName} &bull; <strong>CUIT:</strong> ${compCuit}</div>
+                  <div><strong>Domicilio:</strong> ${compAddress}</div>
+                </div>
+                <div class="audit-print-meta-col">
+                  <div><strong>Colaborador:</strong> ${empFullName} &bull; <strong>Legajo:</strong> ${empFile} &bull; <strong>CUIL:</strong> ${empCuil}</div>
+                  <div><strong>Sector / Cargo:</strong> ${empDept} / ${empPosition} &bull; <strong>CBU:</strong> ${empCbu}</div>
+                </div>
+              </div>
+            </header>
+
+            <main class="audit-print-page-body">
+              ${
+                hasRows
+                  ? `
+                <table class="audit-print-table">
+                  <colgroup>
+                    <col style="width: 4%;" />
+                    <col style="width: 9%;" />
+                    <col style="width: 33%;" />
+                    <col style="width: 13%;" />
+                    <col style="width: 8%;" />
+                    <col style="width: 12%;" />
+                    <col style="width: 13%;" />
+                    <col style="width: 8%;" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th class="ap-col-idx">#</th>
+                      <th class="ap-col-code">Código</th>
+                      <th class="ap-col-name">Concepto / Variable</th>
+                      <th class="ap-col-type">Tipo</th>
+                      <th class="ap-col-units">Unidades</th>
+                      <th class="ap-col-base">Base / Tasa</th>
+                      <th class="ap-col-amount">Importe ($)</th>
+                      <th class="ap-col-arca">Cód. ARCA</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${pageObj.rows.map((r) => r.html).join('')}
+                  </tbody>
+                </table>
+              `
+                  : ''
+              }
+              ${pageObj.includeSummary ? summaryBlockHtml : ''}
+            </main>
+
+            <footer class="audit-print-page-footer">
+              <div>${compName} (CUIT ${compCuit}) &bull; Legajo ${empFile} - ${empFullName}</div>
+              <div>Hash Integridad: ${hashStr}</div>
+              <div><strong>Página ${pageNum} de ${totalPages}</strong></div>
+            </footer>
+          </section>
+        `;
+      })
+      .join('');
+  }
+
   renderPayslipAudit(data) {
     const area = document.getElementById('payslip-audit-area');
     if (!area) return;
+
+    this.currentPayslipAuditData = data;
+    const printContainer = document.getElementById('audit-payslip-print-container');
+    if (printContainer) {
+      printContainer.innerHTML = this.generatePayslipAuditPrintHtml(data);
+    }
 
     const slip = data.slip || data;
     const emp = slip.employee || {};
@@ -4355,140 +4908,7 @@ class PayrollMethods {
       const unitsStr = it.units !== null && it.units !== undefined ? String(it.units) : '-';
       const baseStr = it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : (it.rate ? `${it.rate}%` : '-');
 
-      // Texto explicativo de la fórmula resuelta (compatible con liquidaciones nuevas y anteriores)
-      let formulaExpl = it.formulaExplanation;
-      if (!formulaExpl && it.formula) {
-        let substituted = it.formula;
-        const itemMap = new Map();
-        (slip.items || []).forEach((item) => {
-          itemMap.set(String(item.conceptCode).toUpperCase(), item.amount);
-          const num = String(item.conceptCode).replace(/\D/g, '');
-          if (num) itemMap.set(num, item.amount);
-        });
-        itemMap.set('BASICO', slip.basicSalary || slip.grossSalary || 0);
-        itemMap.set('TOTAL_REMUNERATIVO', slip.remunerativeSalary || 0);
-        itemMap.set('TOTAL_BRUTO', slip.grossSalary || 0);
-        itemMap.set('CANTIDAD', it.units || 1);
-        itemMap.set('UNIDADES', it.units || 1);
-        itemMap.set('HORAS', it.units || 0);
-
-        substituted = substituted.replace(/\[([A-Z0-9_:]+)\]/gi, (match, key) => {
-          const uKey = key.toUpperCase().trim();
-          if (itemMap.has(uKey)) {
-            return String(itemMap.get(uKey));
-          }
-          return match;
-        });
-        formulaExpl = substituted;
-      } else if (!formulaExpl && it.rate && it.baseAmount) {
-        formulaExpl = `${formatMoney(it.baseAmount)} * ${it.rate}%`;
-      }
-
-      // Resolver llamadas a funciones para mostrar el valor resultante (ej: DIF_DIAS, TOPE_MAX, etc.)
-      if (formulaExpl && /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i.test(formulaExpl)) {
-        let expr = formulaExpl;
-        const fnRegex = /(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/i;
-        let safety = 25;
-        while (fnRegex.test(expr) && safety > 0) {
-          safety--;
-          const matches = [...expr.matchAll(/(TOPE_MAX|TOPE_MIN|LIMITAR|SI|IF|MIN|MAX|REDONDEAR|ROUND|ABS|CEIL|FLOOR|DIF_DIAS|DIF_MESES|DIF_ANIOS|DIF_FECHA|DIFERENCIA_FECHAS)\s*\(/gi)];
-          if (matches.length === 0) break;
-          const lastMatch = matches[matches.length - 1];
-          const fnName = lastMatch[1].toUpperCase();
-          const startIdx = lastMatch.index;
-          const openParen = startIdx + lastMatch[0].length - 1;
-
-          let depth = 1;
-          let closeParen = -1;
-          for (let i = openParen + 1; i < expr.length; i++) {
-            if (expr[i] === '(') depth++;
-            else if (expr[i] === ')') {
-              depth--;
-              if (depth === 0) {
-                closeParen = i;
-                break;
-              }
-            }
-          }
-          if (closeParen === -1) break;
-
-          const innerArgs = expr.substring(openParen + 1, closeParen).split(',').map(s => s.trim().replace(/^['"]|['"]$/g, ''));
-          let val = 0;
-
-          if (fnName === 'DIF_DIAS') {
-            const d1 = new Date(innerArgs[0]);
-            const d2 = new Date(innerArgs[1]);
-            const inc = innerArgs[2] === 'true' || innerArgs[2] === '1' || (innerArgs[2] && innerArgs[2].toUpperCase() === 'INCLUSIVO');
-            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
-              const diffMs = d2.getTime() - d1.getTime();
-              const diffDays = Math.round(diffMs / 86400000);
-              val = inc ? diffDays + 1 : diffDays;
-            }
-          } else if (fnName === 'DIF_MESES') {
-            const d1 = new Date(innerArgs[0]);
-            const d2 = new Date(innerArgs[1]);
-            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
-              let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
-              if (d2.getDate() < d1.getDate()) m--;
-              val = Math.max(0, m);
-            }
-          } else if (fnName === 'DIF_ANIOS') {
-            const d1 = new Date(innerArgs[0]);
-            const d2 = new Date(innerArgs[1]);
-            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
-              let y = d2.getFullYear() - d1.getFullYear();
-              const mDiff = d2.getMonth() - d1.getMonth();
-              if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
-              val = Math.max(0, y);
-            }
-          } else if (fnName === 'DIF_FECHA' || fnName === 'DIFERENCIA_FECHAS') {
-            const d1 = new Date(innerArgs[0]);
-            const d2 = new Date(innerArgs[1]);
-            const unit = String(innerArgs[2] || 'DIAS').toUpperCase();
-            const inc = innerArgs[3] === 'true' || innerArgs[3] === '1';
-            if (!isNaN(d1.getTime()) && !isNaN(d2.getTime())) {
-              if (unit.startsWith('DIA') || unit === 'D') {
-                const diffDays = Math.round((d2.getTime() - d1.getTime()) / 86400000);
-                val = inc ? diffDays + 1 : diffDays;
-              } else if (unit.startsWith('MES') || unit === 'M') {
-                let m = (d2.getFullYear() - d1.getFullYear()) * 12 + (d2.getMonth() - d1.getMonth());
-                if (d2.getDate() < d1.getDate()) m--;
-                val = Math.max(0, m);
-              } else {
-                let y = d2.getFullYear() - d1.getFullYear();
-                const mDiff = d2.getMonth() - d1.getMonth();
-                if (mDiff < 0 || (mDiff === 0 && d2.getDate() < d1.getDate())) y--;
-                val = Math.max(0, y);
-              }
-            }
-          } else if (fnName === 'TOPE_MAX') {
-            val = Math.min(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
-          } else if (fnName === 'TOPE_MIN') {
-            val = Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0);
-          } else if (fnName === 'LIMITAR') {
-            val = Math.min(Math.max(Number(innerArgs[0]) || 0, Number(innerArgs[1]) || 0), Number(innerArgs[2]) || 0);
-          } else if (fnName === 'MIN') {
-            val = Math.min(...innerArgs.map(Number));
-          } else if (fnName === 'MAX') {
-            val = Math.max(...innerArgs.map(Number));
-          } else if (fnName === 'REDONDEAR' || fnName === 'ROUND') {
-            const dec = Number(innerArgs[1]) || 2;
-            const f = Math.pow(10, dec);
-            val = Math.round((Number(innerArgs[0]) || 0) * f) / f;
-          } else if (fnName === 'ABS') {
-            val = Math.abs(Number(innerArgs[0]) || 0);
-          } else if (fnName === 'CEIL') {
-            val = Math.ceil(Number(innerArgs[0]) || 0);
-          } else if (fnName === 'FLOOR') {
-            val = Math.floor(Number(innerArgs[0]) || 0);
-          } else if (fnName === 'SI' || fnName === 'IF') {
-            val = innerArgs[1] || 0;
-          }
-
-          expr = expr.substring(0, startIdx) + String(val) + expr.substring(closeParen + 1);
-        }
-        formulaExpl = expr;
-      }
+      const formulaExpl = this.resolveAuditItemFormula(it, slip, formatMoney);
 
       const formulaExplHtml = formulaExpl ? `
         <div class="text-muted small font-monospace mt-1" style="font-size: 0.76rem;">

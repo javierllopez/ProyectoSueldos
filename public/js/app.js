@@ -6,8 +6,9 @@ import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 // Submódulos desacoplados de vistas
 import { registerAdminMethods } from './modules/admin.view.js';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
-import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.3';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.7';
+import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.6';
+import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.1';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.9';
 import { registerSalaryScalesMethods } from './modules/salaryScales.view.js';
 import { registerConceptsMethods } from './modules/concepts.view.js';
 import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';
@@ -117,6 +118,7 @@ class AppController {
       this.setupCompanyProfileForm();
       this.setupUserModals();
       this.setupPersonnelModals();
+      this.setupDisciplinaryModals?.();
       this.setupPayrollModals();
       this.setupPayrollNavigation();
 
@@ -349,6 +351,7 @@ class AppController {
 registerAdminMethods(AppController.prototype);
 registerCompanyProfileMethods(AppController.prototype);
 registerPersonnelMethods(AppController.prototype);
+registerDisciplinaryMethods(AppController.prototype);
 registerPayrollMethods(AppController.prototype);
 registerSalaryScalesMethods(AppController.prototype);
 registerConceptsMethods(AppController.prototype);
