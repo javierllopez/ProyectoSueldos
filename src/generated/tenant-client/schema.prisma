@@ -56,6 +56,7 @@ model ArcaCct {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   jobPositions JobPosition[]
+  salaryScales SalaryScale[]
 
   @@map("arca_ccts")
 }
@@ -314,6 +315,7 @@ model Employee {
   contractModalityCode String? @map("contract_modality_code") @db.VarChar(50)
   salaryScaleId        String? @map("salary_scale_id")
   workShiftId          String? @map("work_shift_id")
+  paymentMethodId      String? @map("payment_method_id")
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -338,6 +340,7 @@ model Employee {
   contractModality           ArcaContractModality?               @relation(fields: [contractModalityCode], references: [code])
   salaryScale                SalaryScale?                        @relation(fields: [salaryScaleId], references: [id])
   workShift                  WorkShift?                          @relation(fields: [workShiftId], references: [id])
+  paymentMethod              PaymentMethod?                      @relation(fields: [paymentMethodId], references: [id], onDelete: SetNull)
   paySlips                   PaySlip[]
   relatives                  EmployeeRelative[]
   assignedConcepts           EmployeeConcept[]
@@ -347,6 +350,8 @@ model Employee {
   otherIncomes               EmployeeOtherIncome[]
   incomeTaxPaymentsOnAccount EmployeeIncomeTaxPaymentOnAccount[]
   incomeTaxSettlementDetails IncomeTaxSettlementDetail[]
+  incidents                  EmployeeIncident[]
+  sanctions                  EmployeeSanction[]
 
   @@index([departmentId])
   @@index([jobPositionId])
@@ -356,13 +361,28 @@ model Employee {
   @@index([contractModalityCode])
   @@index([salaryScaleId])
   @@index([workShiftId])
+  @@index([paymentMethodId])
   @@map("employees")
+}
+
+model PaymentMethod {
+  id          String    @id @default(uuid())
+  name        String    @map("name") @db.VarChar(191)
+  description String?   @map("description") @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  employees Employee[]
+
+  @@map("payment_methods")
 }
 
 model SalaryScale {
   id             String    @id @default(uuid())
   name           String    @map("name")
   code           String?   @map("code") @db.VarChar(50)
+  cctCode        String?   @map("cct_code") @db.VarChar(50)
   description    String?   @map("description") @db.Text
   amount         Decimal   @default(0.00) @map("amount") @db.Decimal(12, 2)
   isInternOnly   Boolean   @default(false) @map("is_intern_only")
@@ -371,9 +391,32 @@ model SalaryScale {
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
 
+  cct       ArcaCct?            @relation(fields: [cctCode], references: [code])
   employees Employee[]
+  periods   SalaryScalePeriod[]
 
+  @@index([cctCode])
   @@map("salary_scales")
+}
+
+model SalaryScalePeriod {
+  id            String   @id @default(uuid())
+  salaryScaleId String   @map("salary_scale_id")
+  validFrom     DateTime @map("valid_from")
+  validTo       DateTime @map("valid_to")
+  amount        Decimal  @default(0.00) @map("amount") @db.Decimal(12, 2)
+  increaseType  String?  @map("increase_type") @db.VarChar(30)
+  increaseValue Decimal? @map("increase_value") @db.Decimal(12, 2)
+  rounding      String?  @map("rounding") @db.VarChar(30)
+  batchId       String?  @map("batch_id") @db.VarChar(191)
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  salaryScale SalaryScale @relation(fields: [salaryScaleId], references: [id], onDelete: Cascade)
+
+  @@index([salaryScaleId])
+  @@index([validFrom, validTo])
+  @@map("salary_scale_periods")
 }
 
 model Kinship {
@@ -998,4 +1041,94 @@ model ReportTemplate {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   @@map("report_templates")
+}
+
+model IncidentType {
+  id          String    @id @default(uuid())
+  code        String?   @map("code") @db.VarChar(50)
+  name        String    @map("name")
+  severity    String    @default("MEDIUM") @map("severity") @db.VarChar(30)
+  description String?   @map("description") @db.Text
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+
+  incidents EmployeeIncident[]
+
+  @@map("incident_types")
+}
+
+model SanctionType {
+  id                     String    @id @default(uuid())
+  code                   String?   @map("code") @db.VarChar(50)
+  name                   String    @map("name")
+  requiresSuspensionDays Boolean   @default(false) @map("requires_suspension_days")
+  description            String?   @map("description") @db.Text
+  isActive               Boolean   @default(true) @map("is_active")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+  deletedAt              DateTime? @map("deleted_at")
+
+  sanctions EmployeeSanction[]
+
+  @@map("sanction_types")
+}
+
+model EmployeeIncident {
+  id             String    @id @default(uuid())
+  employeeId     String    @map("employee_id")
+  incidentTypeId String    @map("incident_type_id")
+  incidentDate   DateTime  @map("incident_date")
+  observations   String?   @map("observations") @db.Text
+  attachments    Json?     @map("attachments")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  employee      Employee               @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  incidentType  IncidentType           @relation(fields: [incidentTypeId], references: [id])
+  sanctionLinks SanctionIncidentLink[]
+
+  @@index([employeeId])
+  @@index([incidentTypeId])
+  @@index([incidentDate])
+  @@map("employee_incidents")
+}
+
+model EmployeeSanction {
+  id             String    @id @default(uuid())
+  employeeId     String    @map("employee_id")
+  sanctionTypeId String    @map("sanction_type_id")
+  sanctionDate   DateTime  @map("sanction_date")
+  suspensionDays Int?      @map("suspension_days")
+  observations   String?   @map("observations") @db.Text
+  attachments    Json?     @map("attachments")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  employee      Employee               @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+  sanctionType  SanctionType           @relation(fields: [sanctionTypeId], references: [id])
+  incidentLinks SanctionIncidentLink[]
+
+  @@index([employeeId])
+  @@index([sanctionTypeId])
+  @@index([sanctionDate])
+  @@map("employee_sanctions")
+}
+
+model SanctionIncidentLink {
+  id         String   @id @default(uuid())
+  sanctionId String   @map("sanction_id")
+  incidentId String   @map("incident_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  sanction EmployeeSanction @relation(fields: [sanctionId], references: [id], onDelete: Cascade)
+  incident EmployeeIncident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@unique([sanctionId, incidentId], map: "uniq_sanction_incident")
+  @@index([sanctionId])
+  @@index([incidentId])
+  @@map("sanction_incident_links")
 }

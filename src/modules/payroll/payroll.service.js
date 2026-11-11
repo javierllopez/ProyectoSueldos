@@ -132,7 +132,10 @@ export async function closeFiscalPeriod(tenantPrisma, fiscalPeriodId) {
 
 // --- LIQUIDACIONES INDIVIDUALES (payroll_periods) ---
 
-export async function getPeriods(tenantPrisma, { search = '', page = 1, limit = 10, status, year, fiscalPeriodId }) {
+export async function getPeriods(
+  tenantPrisma,
+  { search = '', page = 1, limit = 10, status, year, fiscalPeriodId, type, periodType }
+) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
   const take = Math.max(1, Math.min(Number(limit) || 10, 100));
@@ -142,6 +145,10 @@ export async function getPeriods(tenantPrisma, { search = '', page = 1, limit = 
   if (status) where.status = status;
   if (year) where.year = Number(year);
   if (fiscalPeriodId) where.fiscalPeriodId = fiscalPeriodId;
+  const resolvedPeriodType = (periodType || type || '').trim();
+  if (resolvedPeriodType && resolvedPeriodType !== 'ALL') {
+    where.periodType = resolvedPeriodType;
+  }
   if (search) {
     where.OR = [
       { settlementName: { contains: search } },
@@ -238,11 +245,16 @@ export async function createPeriod(tenantPrisma, data) {
   const month = fiscalPeriod.month;
   const periodType = data.periodType || data.type || 'MONTHLY';
 
-  // Obtener el siguiente número correlativo de liquidación para el período fiscal
-  const existingCount = await tenantPrisma.payrollPeriod.count({
-    where: { fiscalPeriodId },
-  });
-  const settlementNumber = existingCount + 1;
+  // Obtener el siguiente número correlativo de liquidación para el período fiscal (usando MAX + 1 para evitar colisiones tras bajas)
+  const getNextSettlementNumber = async () => {
+    const agg = await tenantPrisma.payrollPeriod.aggregate({
+      _max: { settlementNumber: true },
+      where: { year, month },
+    });
+    return (Number(agg?._max?.settlementNumber) || 0) + 1;
+  };
+
+  let settlementNumber = await getNextSettlementNumber();
 
   const monthNames = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -257,7 +269,9 @@ export async function createPeriod(tenantPrisma, data) {
     VACATIONS: 'Vacaciones',
     FINAL: 'Final',
   };
-  const defaultName = data.settlementName || data.name || `${typeNames[periodType] || periodType} - ${monthNames[month - 1]} ${year} (Liq. #${settlementNumber})`;
+  const customSettlementName = data.settlementName || data.name || null;
+  const buildSettlementName = (num) =>
+    customSettlementName || `${typeNames[periodType] || periodType} - ${monthNames[month - 1]} ${year} (Liq. #${num})`;
 
   let liquidationDate = data.liquidationDate ? new Date(data.liquidationDate) : null;
   if (!liquidationDate) {
@@ -268,14 +282,14 @@ export async function createPeriod(tenantPrisma, data) {
     }
   }
 
-  return tenantPrisma.payrollPeriod.create({
+  const buildCreatePayload = (num) => ({
     data: {
       fiscalPeriodId,
       year,
       month,
       periodType,
-      settlementNumber,
-      settlementName: defaultName,
+      settlementNumber: num,
+      settlementName: buildSettlementName(num),
       settlementType: data.settlementType || (periodType.startsWith('QUINCE') ? 'Q' : 'M'),
       liquidationDate,
       paymentDate: data.paymentDate ? new Date(data.paymentDate) : null,
@@ -289,6 +303,18 @@ export async function createPeriod(tenantPrisma, data) {
       fiscalPeriod: true,
     },
   });
+
+  try {
+    return await tenantPrisma.payrollPeriod.create(buildCreatePayload(settlementNumber));
+  } catch (err) {
+    if (err.code === 'P2002') {
+      // Autocuración en caliente: eliminar índices heredados y recalcular correlativo
+      await ensureTenantPayrollSchema(tenantPrisma, { force: true });
+      settlementNumber = await getNextSettlementNumber();
+      return await tenantPrisma.payrollPeriod.create(buildCreatePayload(settlementNumber));
+    }
+    throw err;
+  }
 }
 
 export async function updatePeriod(tenantPrisma, periodId, data) {
@@ -371,6 +397,11 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     }),
     tenantPrisma.salaryScale.findMany({
       where: { deletedAt: null },
+      include: {
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
+      },
     }),
   ]);
 
@@ -390,7 +421,13 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       healthInsurance: true,
       union: true,
       mutual: true,
-      salaryScale: true,
+      salaryScale: {
+        include: {
+          periods: {
+            orderBy: { validFrom: 'asc' },
+          },
+        },
+      },
       workShift: true,
       relatives: {
         where: { deletedAt: null },
@@ -597,6 +634,7 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     allMatrices,
     allFixedValues,
     allSalaryScales,
+    period,
   });
 
   let totalGrossPeriod = 0;

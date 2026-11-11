@@ -102,7 +102,7 @@ export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search
         union: { select: { id: true, name: true, code: true } },
         mutual: { select: { id: true, name: true, code: true } },
         contractModality: true,
-        salaryScale: { select: { id: true, name: true, code: true, amount: true } },
+        salaryScale: { select: { id: true, name: true, code: true, cctCode: true, cct: { select: { code: true, name: true, sector: true } }, amount: true } },
         workShift: { select: { id: true, name: true, code: true, dailyHours: true, weeklyHours: true, monthlyHours: true, monthlyDays: true, cycleType: true } },
         paymentMethod: { select: { id: true, name: true, description: true } },
       },
@@ -143,7 +143,7 @@ export async function getEmployeeById(tenantPrisma, employeeId) {
       union: true,
       mutual: true,
       contractModality: true,
-      salaryScale: true,
+      salaryScale: { include: { cct: { select: { code: true, name: true, sector: true } } } },
       workShift: {
         include: {
           details: {
@@ -363,6 +363,41 @@ export async function syncAffiliationConcepts(tenantPrisma, employeeId, { unionI
 }
 
 /**
+ * Verifica que la nómina asignada sea compatible con la modalidad de contrato
+ * y con el Convenio Colectivo de Trabajo (CCT) del puesto laboral.
+ */
+function assertSalaryScaleCompatibility(scale, { isInternModality, isDirectorModality, jobCctCode }) {
+  if (!scale) return;
+  if (isInternModality && !scale.isInternOnly) {
+    const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
+    err.status = 400;
+    throw err;
+  }
+  if (!isInternModality && scale.isInternOnly) {
+    const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+    err.status = 400;
+    throw err;
+  }
+  if (isDirectorModality && !scale.isDirectorOnly) {
+    const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
+    err.status = 400;
+    throw err;
+  }
+  if (!isDirectorModality && scale.isDirectorOnly) {
+    const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
+    err.status = 400;
+    throw err;
+  }
+  if (!scale.isInternOnly && !scale.isDirectorOnly && scale.cctCode && jobCctCode && scale.cctCode !== jobCctCode) {
+    const err = new Error(
+      `La nómina seleccionada (${scale.name}) pertenece al convenio "${scale.cctCode}" y no coincide con el convenio "${jobCctCode}" asignado al puesto de trabajo.`
+    );
+    err.status = 400;
+    throw err;
+  }
+}
+
+/**
  * Da de alta un nuevo empleado en la base de datos de la empresa activa.
  */
 export async function createEmployee(tenantPrisma, employeeData) {
@@ -493,26 +528,11 @@ export async function createEmployee(tenantPrisma, employeeData) {
       where: { id: scaleId, deletedAt: null },
     });
     if (scale) {
-      if (isInternModality && !scale.isInternOnly) {
-        const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
-        err.status = 400;
-        throw err;
-      }
-      if (!isInternModality && scale.isInternOnly) {
-        const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
-        err.status = 400;
-        throw err;
-      }
-      if (isDirectorModality && !scale.isDirectorOnly) {
-        const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
-        err.status = 400;
-        throw err;
-      }
-      if (!isDirectorModality && scale.isDirectorOnly) {
-        const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
-        err.status = 400;
-        throw err;
-      }
+      assertSalaryScaleCompatibility(scale, {
+        isInternModality,
+        isDirectorModality,
+        jobCctCode: jobPosition?.cctCode || null,
+      });
       assignedBasicSalary = Number(scale.amount);
     }
   }
@@ -595,7 +615,7 @@ export async function createEmployee(tenantPrisma, employeeData) {
       union: true,
       mutual: true,
       contractModality: true,
-      salaryScale: true,
+      salaryScale: { include: { cct: { select: { code: true, name: true, sector: true } } } },
       workShift: true,
       paymentMethod: true,
       relatives: {
@@ -709,6 +729,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
     updatePayload.departmentId = data.departmentId;
   }
   
+  let resolvedJobCctCode = current.jobPosition?.cctCode || null;
   if (data.jobPositionId !== undefined) {
     const job = await tenantPrisma.jobPosition.findFirst({ where: { id: data.jobPositionId, deletedAt: null } });
     if (!job) {
@@ -717,6 +738,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       throw error;
     }
     updatePayload.jobPositionId = data.jobPositionId;
+    resolvedJobCctCode = job.cctCode || null;
   }
   
   if (data.healthInsuranceId !== undefined) {
@@ -784,54 +806,27 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
         where: { id: updatePayload.salaryScaleId, deletedAt: null },
       });
       if (scale) {
-        if (isInternModality && !scale.isInternOnly) {
-          const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
-          err.status = 400;
-          throw err;
-        }
-        if (!isInternModality && scale.isInternOnly) {
-          const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
-          err.status = 400;
-          throw err;
-        }
-        if (isDirectorModality && !scale.isDirectorOnly) {
-          const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
-          err.status = 400;
-          throw err;
-        }
-        if (!isDirectorModality && scale.isDirectorOnly) {
-          const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
-          err.status = 400;
-          throw err;
-        }
+        assertSalaryScaleCompatibility(scale, {
+          isInternModality,
+          isDirectorModality,
+          jobCctCode: resolvedJobCctCode,
+        });
         updatePayload.basicSalary = Number(scale.amount);
       }
     }
-  } else if (updatePayload.contractModalityCode !== undefined && current.salaryScaleId) {
+  } else if (
+    (updatePayload.contractModalityCode !== undefined || updatePayload.jobPositionId !== undefined) &&
+    current.salaryScaleId
+  ) {
     const scale = await tenantPrisma.salaryScale.findFirst({
       where: { id: current.salaryScaleId, deletedAt: null },
     });
     if (scale) {
-      if (isInternModality && !scale.isInternOnly) {
-        const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), debe asignarse una nómina exclusiva para pasantes.');
-        err.status = 400;
-        throw err;
-      }
-      if (!isInternModality && scale.isInternOnly) {
-        const err = new Error('La nómina actualmente asignada es exclusiva para pasantes y no corresponde a la nueva modalidad.');
-        err.status = 400;
-        throw err;
-      }
-      if (isDirectorModality && !scale.isDirectorOnly) {
-        const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), debe asignarse una nómina exclusiva para directores.');
-        err.status = 400;
-        throw err;
-      }
-      if (!isDirectorModality && scale.isDirectorOnly) {
-        const err = new Error('La nómina actualmente asignada es exclusiva para Directores / LRT (modalidad 099) y no corresponde a la nueva modalidad.');
-        err.status = 400;
-        throw err;
-      }
+      assertSalaryScaleCompatibility(scale, {
+        isInternModality,
+        isDirectorModality,
+        jobCctCode: resolvedJobCctCode,
+      });
     }
   }
 
@@ -912,7 +907,7 @@ export async function updateEmployee(tenantPrisma, employeeId, data) {
       union: true,
       mutual: true,
       contractModality: true,
-      salaryScale: true,
+      salaryScale: { include: { cct: { select: { code: true, name: true, sector: true } } } },
       workShift: true,
       paymentMethod: true,
       assignedConcepts: {
@@ -2381,6 +2376,7 @@ export async function applyMassWageIncrease(tenantPrisma, options, isPreview = f
   const filters = {
     departmentId: options.filters?.departmentId || options.filterDepartmentId || null,
     payrollGroup: options.filters?.payrollGroup || options.filterPayrollGroup || null,
+    cctCode: options.filters?.cctCode || options.filterCctCode || null,
     status: options.filters?.status || options.filterStatus || 'ACTIVE',
   };
 
@@ -2397,6 +2393,11 @@ export async function applyMassWageIncrease(tenantPrisma, options, isPreview = f
   }
   if (filters.payrollGroup && filters.payrollGroup !== 'ALL') {
     where.payrollGroup = filters.payrollGroup;
+  }
+  if (filters.cctCode && filters.cctCode !== 'ALL') {
+    where.jobPosition = filters.cctCode === 'NO_CCT'
+      ? { cctCode: null }
+      : { cctCode: String(filters.cctCode).trim() };
   }
   if (filters.status && filters.status !== 'ALL') {
     where.status = filters.status;

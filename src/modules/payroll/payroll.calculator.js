@@ -239,9 +239,49 @@ export const normalizePayrollKey = (str) => {
 };
 
 /**
+ * Resuelve el monto vigente de una nómina/escala salarial para un año y mes determinados,
+ * buscando en sus períodos registrados (salary_scale_periods) aquel cuyo rango [validFrom, validTo]
+ * incluya ese mes y año. Si ninguno coincide, devuelve el monto nominal base de la nómina.
+ */
+export function resolveSalaryScaleAmountForPeriod(scale, year, month) {
+  if (!scale) return 0;
+  const fallback = Number(
+    scale.amount !== undefined && scale.amount !== null ? scale.amount : (scale.basicSalary || 0)
+  );
+  const numYear = Number(year);
+  const numMonth = Number(month);
+  if (!numYear || !numMonth || !Array.isArray(scale.periods) || scale.periods.length === 0) {
+    return fallback;
+  }
+
+  const targetYM = numYear * 100 + numMonth;
+  let matchedAmount = null;
+
+  for (const p of scale.periods) {
+    if (!p.validFrom || !p.validTo) continue;
+    const fromD = new Date(p.validFrom);
+    const toD = new Date(p.validTo);
+    if (isNaN(fromD.getTime()) || isNaN(toD.getTime())) continue;
+    const fromYM = fromD.getFullYear() * 100 + (fromD.getMonth() + 1);
+    const toYM = toD.getFullYear() * 100 + (toD.getMonth() + 1);
+    if (fromYM <= targetYM && targetYM <= toYM) {
+      matchedAmount = Number(p.amount);
+    }
+  }
+
+  return matchedAmount !== null && !isNaN(matchedAmount) ? matchedAmount : fallback;
+}
+
+/**
  * Pre-indexa catálogos salariales para optimización O(1) en cálculos masivos de nómina.
  */
-export function buildPayrollIndices({ allConcepts = [], allMatrices = [], allFixedValues = [], allSalaryScales = [] } = {}) {
+export function buildPayrollIndices({
+  allConcepts = [],
+  allMatrices = [],
+  allFixedValues = [],
+  allSalaryScales = [],
+  period = null,
+} = {}) {
   const conceptsMap = new Map();
   for (const c of allConcepts) {
     conceptsMap.set(String(c.code).trim(), c);
@@ -297,9 +337,13 @@ export function buildPayrollIndices({ allConcepts = [], allMatrices = [], allFix
   };
 
   const salaryScalesMap = new Map();
+  const salaryScalesById = new Map();
   for (const s of allSalaryScales) {
-    const numVal = Number(s.amount !== undefined && s.amount !== null ? s.amount : (s.basicSalary || 0));
-    if (s.id) salaryScalesMap.set(s.id, numVal);
+    const numVal = resolveSalaryScaleAmountForPeriod(s, period?.year, period?.month);
+    if (s.id) {
+      salaryScalesMap.set(s.id, numVal);
+      salaryScalesById.set(s.id, s);
+    }
     if (s.code) {
       const codeClean = String(s.code).trim().toUpperCase();
       salaryScalesMap.set(codeClean, numVal);
@@ -327,6 +371,7 @@ export function buildPayrollIndices({ allConcepts = [], allMatrices = [], allFix
     matricesMap,
     fixedValuesMap,
     salaryScalesMap,
+    salaryScalesById,
     findMatrix,
     findFixedValue,
     findSalaryScale,
@@ -570,10 +615,11 @@ export function calculateEmployeePayroll({
     matricesMap,
     fixedValuesMap,
     salaryScalesMap,
+    salaryScalesById,
     findMatrix,
     findFixedValue,
     findSalaryScale,
-  } = indices || buildPayrollIndices({ allConcepts, allMatrices, allFixedValues, allSalaryScales });
+  } = indices || buildPayrollIndices({ allConcepts, allMatrices, allFixedValues, allSalaryScales, period });
 
   if (isIntern && !conceptsMap.has('SU1001') && !conceptsMap.has('1001')) {
     conceptsMap = new Map(conceptsMap);
@@ -697,11 +743,15 @@ export function calculateEmployeePayroll({
   const defaultHours = isIntern ? 80 : (employee.isPartTime ? 80 : 160);
   let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours;
 
-  const baseSalaryNominal = Number(
-    employee.salaryScale?.amount !== undefined && employee.salaryScale?.amount !== null
-      ? employee.salaryScale.amount
-      : (employee.basicSalary || 0)
-  );
+  const empScaleWithPeriods =
+    (employee.salaryScale?.periods ? employee.salaryScale : null) ||
+    (employee.salaryScaleId && salaryScalesById?.get(employee.salaryScaleId)) ||
+    employee.salaryScale ||
+    null;
+
+  const baseSalaryNominal = empScaleWithPeriods
+    ? resolveSalaryScaleAmountForPeriod(empScaleWithPeriods, period?.year, period?.month)
+    : Number(employee.basicSalary || 0);
 
   // Parámetros de Jornada de Trabajo asignada o fallback seguro
   const shiftDaily = employee.workShift?.dailyHours

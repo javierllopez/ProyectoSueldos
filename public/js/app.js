@@ -6,10 +6,10 @@ import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 // Submódulos desacoplados de vistas
 import { registerAdminMethods } from './modules/admin.view.js';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
-import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.6';
+import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.7';
 import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.1';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-2.9';
-import { registerSalaryScalesMethods } from './modules/salaryScales.view.js';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-3.2';
+import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.2';
 import { registerConceptsMethods } from './modules/concepts.view.js';
 import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';
 import { registerEmbargoesMethods } from './modules/embargoes.view.js';
@@ -38,6 +38,9 @@ class AppController {
     this.jobPositionsPageSize = 5;
     this.pendingImportJobPositions = [];
     this.arcaActivities = ARCA_T03_ACTIVITIES;
+    this.arcaCcts = [];
+    this._arcaCctsCompanyId = null;
+    this._arcaCctsPromise = null;
     this.workShifts = [];
     this.workShiftsPage = 1;
     this.workShiftsPageSize = 5;
@@ -167,6 +170,30 @@ class AppController {
     });
   }
 
+  async ensureArcaCctsLoaded(force = false) {
+    const activeId = this.activeCompany?.id || storage.getActiveCompanyId() || null;
+    if (!force && this._arcaCctsCompanyId === activeId && Array.isArray(this.arcaCcts) && this.arcaCcts.length > 0) {
+      return this.arcaCcts;
+    }
+    if (!force && this._arcaCctsPromise && this._arcaCctsPromiseCompanyId === activeId) {
+      return this._arcaCctsPromise;
+    }
+
+    this._arcaCctsPromiseCompanyId = activeId;
+    this._arcaCctsPromise = apiRequest('/arca-ccts')
+      .then((res) => {
+        const list = res?.data || [];
+        this.arcaCcts = list;
+        this._arcaCctsCompanyId = activeId;
+        return list;
+      })
+      .finally(() => {
+        this._arcaCctsPromise = null;
+      });
+
+    return this._arcaCctsPromise;
+  }
+
   async loadCompanies() {
     try {
       const res = await apiRequest('/companies?limit=100');
@@ -265,6 +292,11 @@ class AppController {
   selectCompany(company, refresh = true) {
     this.activeCompany = company;
     storage.setActiveCompanyId(company.id);
+    this.arcaCcts = [];
+    this._arcaCctsCompanyId = null;
+    this._arcaCctsPromise = null;
+    this.salaryScales = [];
+    this.payrollSalaryScales = [];
     this.renderCompanySelector();
     showToast(`Empresa activa: ${company.name}`);
     if (refresh && this.currentView !== 'company-profile') {

@@ -361,6 +361,7 @@ exports.Prisma.SalaryScaleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
+  cctCode: 'cctCode',
   description: 'description',
   amount: 'amount',
   isInternOnly: 'isInternOnly',
@@ -368,6 +369,20 @@ exports.Prisma.SalaryScaleScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
+};
+
+exports.Prisma.SalaryScalePeriodScalarFieldEnum = {
+  id: 'id',
+  salaryScaleId: 'salaryScaleId',
+  validFrom: 'validFrom',
+  validTo: 'validTo',
+  amount: 'amount',
+  increaseType: 'increaseType',
+  increaseValue: 'increaseValue',
+  rounding: 'rounding',
+  batchId: 'batchId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.KinshipScalarFieldEnum = {
@@ -1078,7 +1093,16 @@ exports.Prisma.SalaryScaleOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code',
+  cctCode: 'cctCode',
   description: 'description'
+};
+
+exports.Prisma.SalaryScalePeriodOrderByRelevanceFieldEnum = {
+  id: 'id',
+  salaryScaleId: 'salaryScaleId',
+  increaseType: 'increaseType',
+  rounding: 'rounding',
+  batchId: 'batchId'
 };
 
 exports.Prisma.KinshipOrderByRelevanceFieldEnum = {
@@ -1368,6 +1392,7 @@ exports.Prisma.ModelName = {
   Employee: 'Employee',
   PaymentMethod: 'PaymentMethod',
   SalaryScale: 'SalaryScale',
+  SalaryScalePeriod: 'SalaryScalePeriod',
   Kinship: 'Kinship',
   EmployeeRelative: 'EmployeeRelative',
   Concept: 'Concept',

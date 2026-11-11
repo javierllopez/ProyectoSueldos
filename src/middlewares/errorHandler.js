@@ -23,9 +23,22 @@ export default function errorHandler(err, req, res, next) {
 
   // Errores de Prisma
   if (err.code === 'P2002') {
+    const rawTarget = Array.isArray(err.meta?.target)
+      ? err.meta.target.join(', ')
+      : String(err.meta?.target || err.message || '');
+    const lowerTarget = rawTarget.toLowerCase();
+    let duplicateMsg = 'Ya existe un registro con los datos únicos proporcionados.';
+    if (lowerTarget.includes('cuil') || lowerTarget.includes('file_number') || lowerTarget.includes('employees')) {
+      duplicateMsg = 'Ya existe un registro con los datos únicos proporcionados (Legajo o CUIL duplicado)';
+    } else if (lowerTarget.includes('payroll_periods')) {
+      duplicateMsg = 'Ya existe una liquidación con ese mismo número correlativo en el período seleccionado.';
+    } else if (lowerTarget.includes('code')) {
+      duplicateMsg = 'Ya existe un registro con el mismo código único.';
+    }
+
     return res.status(409).json({
       error: {
-        message: 'Ya existe un registro con los datos únicos proporcionados (Legajo o CUIL duplicado)',
+        message: duplicateMsg,
         status: 409,
       },
     });

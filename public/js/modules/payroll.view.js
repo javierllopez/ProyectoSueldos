@@ -731,6 +731,16 @@ class PayrollMethods {
       this.renderPayrollSalaryScalesTable();
     });
 
+    document.getElementById('payroll-scale-cct-filter')?.addEventListener('change', () => {
+      this.payrollSalaryScalesPage = 1;
+      this.renderPayrollSalaryScalesTable();
+    });
+
+    document.getElementById('payroll-scale-group-by-cct')?.addEventListener('change', () => {
+      this.payrollSalaryScalesPage = 1;
+      this.renderPayrollSalaryScalesTable();
+    });
+
     document.getElementById('payroll-scales-page-size-select')?.addEventListener('change', (e) => {
       this.payrollSalaryScalesPageSize = parseInt(e.target.value, 10) || 5;
       this.payrollSalaryScalesPage = 1;
@@ -741,18 +751,25 @@ class PayrollMethods {
       this.openMassScaleIncreaseModal();
     });
 
-    const massScaleIncreaseTypeSelect = document.getElementById('mass-scale-increase-type');
-    if (massScaleIncreaseTypeSelect) {
-      massScaleIncreaseTypeSelect.addEventListener('change', () => {
-        const isPct = massScaleIncreaseTypeSelect.value === 'PERCENTAGE';
-        const label = document.getElementById('mass-scale-increase-value-label');
-        const symbol = document.getElementById('mass-scale-increase-symbol');
-        const input = document.getElementById('mass-scale-increase-value');
-        if (label) label.textContent = isPct ? 'Porcentaje a Aplicar (%)' : 'Monto Adicional Fijo ($)';
-        if (symbol) symbol.textContent = isPct ? '%' : '$';
-        if (input) input.placeholder = isPct ? 'Ej. 12.5' : 'Ej. 50000.00';
-      });
-    }
+    document.getElementById('mass-scale-cct-filter')?.addEventListener('change', () => {
+      this.handleMassScaleCctFilterChange?.();
+    });
+
+    document.getElementById('btn-toggle-mass-scale-items')?.addEventListener('click', () => {
+      this.toggleMassScaleItemsChecklist?.();
+    });
+
+    document.getElementById('btn-mass-scale-select-all')?.addEventListener('click', () => {
+      this.setMassScaleChecklistAll?.(true);
+    });
+
+    document.getElementById('btn-mass-scale-select-none')?.addEventListener('click', () => {
+      this.setMassScaleChecklistAll?.(false);
+    });
+
+    document.getElementById('btn-add-mass-scale-period')?.addEventListener('click', () => {
+      this.addMassScalePeriodRow?.();
+    });
 
     document.getElementById('btn-preview-mass-scale-increase')?.addEventListener('click', () => {
       this.previewMassScaleIncrease();

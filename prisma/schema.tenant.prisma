@@ -56,6 +56,7 @@ model ArcaCct {
   updatedAt   DateTime      @updatedAt @map("updated_at")
 
   jobPositions JobPosition[]
+  salaryScales SalaryScale[]
 
   @@map("arca_ccts")
 }
@@ -378,20 +379,44 @@ model PaymentMethod {
 }
 
 model SalaryScale {
-  id           String    @id @default(uuid())
-  name         String    @map("name")
-  code         String?   @map("code") @db.VarChar(50)
-  description  String?   @map("description") @db.Text
+  id             String    @id @default(uuid())
+  name           String    @map("name")
+  code           String?   @map("code") @db.VarChar(50)
+  cctCode        String?   @map("cct_code") @db.VarChar(50)
+  description    String?   @map("description") @db.Text
   amount         Decimal   @default(0.00) @map("amount") @db.Decimal(12, 2)
   isInternOnly   Boolean   @default(false) @map("is_intern_only")
   isDirectorOnly Boolean   @default(false) @map("is_director_only")
   createdAt      DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  deletedAt    DateTime? @map("deleted_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
 
+  cct         ArcaCct?            @relation(fields: [cctCode], references: [code])
   employees   Employee[]
+  periods     SalaryScalePeriod[]
 
+  @@index([cctCode])
   @@map("salary_scales")
+}
+
+model SalaryScalePeriod {
+  id            String      @id @default(uuid())
+  salaryScaleId String      @map("salary_scale_id")
+  validFrom     DateTime    @map("valid_from")
+  validTo       DateTime    @map("valid_to")
+  amount        Decimal     @default(0.00) @map("amount") @db.Decimal(12, 2)
+  increaseType  String?     @map("increase_type") @db.VarChar(30)
+  increaseValue Decimal?    @map("increase_value") @db.Decimal(12, 2)
+  rounding      String?     @map("rounding") @db.VarChar(30)
+  batchId       String?     @map("batch_id") @db.VarChar(191)
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  salaryScale   SalaryScale @relation(fields: [salaryScaleId], references: [id], onDelete: Cascade)
+
+  @@index([salaryScaleId])
+  @@index([validFrom, validTo])
+  @@map("salary_scale_periods")
 }
 
 model Kinship {

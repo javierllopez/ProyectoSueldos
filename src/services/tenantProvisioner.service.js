@@ -189,13 +189,33 @@ const TENANT_TABLE_DEFINITIONS = [
     \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
     \`name\` VARCHAR(191) NOT NULL,
     \`code\` VARCHAR(50) NULL,
+    \`cct_code\` VARCHAR(50) NULL,
     \`description\` TEXT NULL,
     \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
     \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`is_director_only\` BOOLEAN NOT NULL DEFAULT FALSE,
     \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-    \`deleted_at\` DATETIME(3) NULL
+    \`deleted_at\` DATETIME(3) NULL,
+    INDEX \`salary_scales_cct_code_idx\` (\`cct_code\`),
+    CONSTRAINT \`salary_scales_cct_code_fkey\` FOREIGN KEY (\`cct_code\`) REFERENCES \`arca_ccts\`(\`code\`) ON DELETE SET NULL ON UPDATE CASCADE
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
+
+  `CREATE TABLE IF NOT EXISTS \`salary_scale_periods\` (
+    \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+    \`salary_scale_id\` VARCHAR(191) NOT NULL,
+    \`valid_from\` DATETIME(3) NOT NULL,
+    \`valid_to\` DATETIME(3) NOT NULL,
+    \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+    \`increase_type\` VARCHAR(30) NULL,
+    \`increase_value\` DECIMAL(12, 2) NULL,
+    \`rounding\` VARCHAR(30) NULL,
+    \`batch_id\` VARCHAR(191) NULL,
+    \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+    INDEX \`salary_scale_periods_salary_scale_id_idx\` (\`salary_scale_id\`),
+    INDEX \`salary_scale_periods_valid_from_valid_to_idx\` (\`valid_from\`, \`valid_to\`),
+    CONSTRAINT \`salary_scale_periods_salary_scale_id_fkey\` FOREIGN KEY (\`salary_scale_id\`) REFERENCES \`salary_scales\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;`,
 
   `CREATE TABLE IF NOT EXISTS \`payment_methods\` (
@@ -1512,18 +1532,21 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
         \`name\` VARCHAR(191) NOT NULL,
         \`code\` VARCHAR(50) NULL,
+        \`cct_code\` VARCHAR(50) NULL,
         \`description\` TEXT NULL,
         \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
         \`is_intern_only\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`is_director_only\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
-        \`deleted_at\` DATETIME(3) NULL
+        \`deleted_at\` DATETIME(3) NULL,
+        INDEX \`salary_scales_cct_code_idx\` (\`cct_code\`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
     // Comprobar columnas clave en salary_scales para migraciones no destructivas
     const salaryScaleCols = [
+      { name: 'cct_code', def: 'VARCHAR(50) NULL' },
       { name: 'is_intern_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
       { name: 'is_director_only', def: 'BOOLEAN NOT NULL DEFAULT FALSE' },
     ];
@@ -1538,6 +1561,37 @@ export async function ensureTenantPersonnelSchema(tenantClient, { force = false 
         );
       }
     }
+    const existingScaleIdx = await tenantClient.$queryRawUnsafe(
+      `SELECT INDEX_NAME FROM information_schema.STATISTICS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'salary_scales' AND INDEX_NAME = 'salary_scales_cct_code_idx'`
+    );
+    if (!Array.isArray(existingScaleIdx) || existingScaleIdx.length === 0) {
+      try {
+        await tenantClient.$executeRawUnsafe(
+          `CREATE INDEX \`salary_scales_cct_code_idx\` ON \`salary_scales\` (\`cct_code\`);`
+        );
+      } catch (idxErr) {
+        // Ignorar si ya existe con otro estado concurrente
+      }
+    }
+
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`salary_scale_periods\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`salary_scale_id\` VARCHAR(191) NOT NULL,
+        \`valid_from\` DATETIME(3) NOT NULL,
+        \`valid_to\` DATETIME(3) NOT NULL,
+        \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`increase_type\` VARCHAR(30) NULL,
+        \`increase_value\` DECIMAL(12, 2) NULL,
+        \`rounding\` VARCHAR(30) NULL,
+        \`batch_id\` VARCHAR(191) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        INDEX \`salary_scale_periods_salary_scale_id_idx\` (\`salary_scale_id\`),
+        INDEX \`salary_scale_periods_valid_from_valid_to_idx\` (\`valid_from\`, \`valid_to\`),
+        CONSTRAINT \`salary_scale_periods_salary_scale_id_fkey\` FOREIGN KEY (\`salary_scale_id\`) REFERENCES \`salary_scales\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
 
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`work_shifts\` (
@@ -2489,6 +2543,26 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // 1.2b Tabla salary_scale_periods (Vigencias por período de escalas salariales)
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`salary_scale_periods\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`salary_scale_id\` VARCHAR(191) NOT NULL,
+        \`valid_from\` DATETIME(3) NOT NULL,
+        \`valid_to\` DATETIME(3) NOT NULL,
+        \`amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`increase_type\` VARCHAR(30) NULL,
+        \`increase_value\` DECIMAL(12, 2) NULL,
+        \`rounding\` VARCHAR(30) NULL,
+        \`batch_id\` VARCHAR(191) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        INDEX \`salary_scale_periods_salary_scale_id_idx\` (\`salary_scale_id\`),
+        INDEX \`salary_scale_periods_valid_from_valid_to_idx\` (\`valid_from\`, \`valid_to\`),
+        CONSTRAINT \`salary_scale_periods_salary_scale_id_fkey\` FOREIGN KEY (\`salary_scale_id\`) REFERENCES \`salary_scales\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
     // 1.3 Tablas de Embargos Judiciales Multi-Concepto
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`employee_embargoes\` (
@@ -2666,6 +2740,79 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       if (!existingPeriodSet.has(col.name.toLowerCase())) {
         await tenantClient.$executeRawUnsafe(`ALTER TABLE \`payroll_periods\` ADD COLUMN \`${col.name}\` ${col.def};`);
       }
+    }
+
+    // 3.1 Saneamiento de índices únicos heredados en payroll_periods (permitir múltiples liquidaciones del mismo tipo por período)
+    try {
+      const periodIndexes = await tenantClient.$queryRawUnsafe(
+        `SHOW INDEX FROM \`payroll_periods\` WHERE Non_unique = 0 AND Key_name != 'PRIMARY'`
+      );
+      const indexColsMap = new Map();
+      for (const row of periodIndexes) {
+        const keyName = row.Key_name || row.key_name || row.KEY_NAME;
+        const colName = String(row.Column_name || row.column_name || row.COLUMN_NAME || '').toLowerCase();
+        if (!keyName) continue;
+        if (!indexColsMap.has(keyName)) {
+          indexColsMap.set(keyName, new Set());
+        }
+        indexColsMap.get(keyName).add(colName);
+      }
+
+      let hasValidSettlementUniqueIndex = false;
+      for (const [keyName, colsSet] of indexColsMap.entries()) {
+        if (!colsSet.has('settlement_number')) {
+          await tenantClient.$executeRawUnsafe(`ALTER TABLE \`payroll_periods\` DROP INDEX \`${keyName}\`;`);
+        } else if (
+          colsSet.has('year') &&
+          colsSet.has('month') &&
+          colsSet.has('period_type') &&
+          colsSet.has('settlement_number')
+        ) {
+          hasValidSettlementUniqueIndex = true;
+        }
+      }
+
+      // Normalizar settlement_number correlativo por (year, month) si existen duplicados heredados (ej. todos en 1)
+      const allPeriods = await tenantClient.$queryRawUnsafe(
+        `SELECT \`id\`, \`year\`, \`month\`, \`settlement_number\` FROM \`payroll_periods\` ORDER BY \`year\` ASC, \`month\` ASC, \`created_at\` ASC, \`id\` ASC`
+      );
+      const byYearMonth = new Map();
+      for (const p of allPeriods) {
+        const ymKey = `${p.year}-${p.month}`;
+        if (!byYearMonth.has(ymKey)) byYearMonth.set(ymKey, []);
+        byYearMonth.get(ymKey).push(p);
+      }
+      for (const [, list] of byYearMonth.entries()) {
+        const seenNums = new Set();
+        let hasCollision = false;
+        for (const item of list) {
+          const num = Number(item.settlement_number) || 0;
+          if (num <= 0 || seenNums.has(num)) {
+            hasCollision = true;
+            break;
+          }
+          seenNums.add(num);
+        }
+        if (hasCollision) {
+          let seq = 1;
+          for (const item of list) {
+            await tenantClient.$executeRawUnsafe(
+              `UPDATE \`payroll_periods\` SET \`settlement_number\` = ? WHERE \`id\` = ?`,
+              seq,
+              item.id
+            );
+            seq += 1;
+          }
+        }
+      }
+
+      if (!hasValidSettlementUniqueIndex) {
+        await tenantClient.$executeRawUnsafe(
+          `ALTER TABLE \`payroll_periods\` ADD UNIQUE INDEX \`payroll_periods_unique_settlement\` (\`year\`, \`month\`, \`period_type\`, \`settlement_number\`);`
+        );
+      }
+    } catch (idxErr) {
+      console.warn('Aviso al sanear índices de payroll_periods:', idxErr.message);
     }
 
     // 4. Columnas en pay_slips

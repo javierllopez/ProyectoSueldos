@@ -95,7 +95,7 @@ class PersonnelMethods {
       apiRequest('/arca-categories'),
       apiRequest('/arca-positions'),
       apiRequest('/arca-service-types'),
-      apiRequest('/arca-ccts'),
+      this.ensureArcaCctsLoaded ? this.ensureArcaCctsLoaded().then((data) => ({ data })) : apiRequest('/arca-ccts'),
       apiRequest('/arca-contract-modalities'),
       apiRequest('/arca-activities').catch(() => ({ data: ARCA_T03_ACTIVITIES })),
       apiRequest('/companies/profile').catch(() => ({ data: null })),
@@ -2738,9 +2738,13 @@ class PersonnelMethods {
       if (btnRemovePhoto) btnRemovePhoto.classList.add('d-none');
     });
 
-    // Cambio reactivo de puesto de trabajo para actualizar Encuadre Normativo (Pestaña 3)
+    // Cambio reactivo de puesto de trabajo para actualizar Encuadre Normativo (Pestaña 3) y filtrar Nómina (Pestaña 6)
     document.getElementById('employee-input-job-position')?.addEventListener('change', (e) => {
       this.updateEmployeeEncuadrePreview(e.target.value);
+      this.updateSalaryScaleOptions(undefined, undefined, {
+        selectedJobPositionId: e.target.value,
+        isUserJobChange: true,
+      });
     });
 
     // Actualización reactiva de mapa de Google Maps en Pestaña 4 (Domicilio)
@@ -3738,7 +3742,10 @@ class PersonnelMethods {
       this.updateEmployeePaymentMethodDesc(pmSelect.value);
     }
 
-    this.updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale);
+    this.updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale, {
+      selectedJobPositionId: selectedJob,
+      isUserJobChange: false,
+    });
   }
 
   updateEmployeePaymentMethodDesc(paymentMethodId) {
@@ -3796,30 +3803,93 @@ class PersonnelMethods {
   }
 
   /**
-   * Filtra y actualiza dinámicamente las opciones del selector de nómina según la modalidad de contrato
-   * (Mostrando únicamente nóminas de pasantes para modalidades 27 y 51, directores para modalidad 99, o estándar para las demás).
+   * Obtiene el puesto de trabajo actualmente seleccionado en el legajo y su código CCT asociado.
    */
-  updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale) {
+  getSelectedEmployeeJobCct(explicitJobId = undefined) {
+    const jobId =
+      explicitJobId !== undefined && explicitJobId !== null
+        ? String(explicitJobId)
+        : (document.getElementById('employee-input-job-position')?.value || '');
+    const job = (this.jobPositions || []).find((p) => p.id === jobId) || null;
+    const cctCode = job ? (job.cctCode || job.cct?.code || null) : null;
+    const cctObj = job?.cct || (cctCode ? (this.arcaCcts || []).find((c) => c.code === cctCode) : null);
+    return {
+      job,
+      cctCode: cctCode ? String(cctCode).trim() : null,
+      cctName: cctObj?.name || null,
+    };
+  }
+
+  /**
+   * Filtra y actualiza dinámicamente las opciones del selector de nómina según la modalidad de contrato
+   * (pasantes Mod. 27/51, directores Mod. 099 o estándar) y el Convenio Colectivo (CCT) del puesto laboral asignado.
+   */
+  updateSalaryScaleOptions(selectedContractModality, selectedSalaryScale, options = {}) {
     const scaleSelect = document.getElementById('employee-select-salary-scale');
     if (!scaleSelect) return;
 
+    const { selectedJobPositionId, isUserJobChange = false } = options || {};
     const modCode = selectedContractModality !== undefined && selectedContractModality !== null
       ? String(selectedContractModality)
       : (document.getElementById('employee-input-contract-modality')?.value || '');
     const isInternMod = modCode === '27' || modCode === '51';
     const isDirectorMod = modCode === '99';
     const allScales = this.salaryScales || [];
-    const filteredScales = isDirectorMod
+
+    const modalityScales = isDirectorMod
       ? allScales.filter((s) => s.isDirectorOnly === true)
       : (isInternMod
           ? allScales.filter((s) => s.isInternOnly === true)
           : allScales.filter((s) => !s.isInternOnly && !s.isDirectorOnly));
+
+    const { job, cctCode: jobCctCode, cctName: jobCctName } = this.getSelectedEmployeeJobCct(selectedJobPositionId);
+
+    let filteredScales = modalityScales;
+    let filterMode = 'STANDARD';
+
+    if (!isInternMod && !isDirectorMod) {
+      if (jobCctCode) {
+        const cctMatched = modalityScales.filter((s) => s.cctCode === jobCctCode);
+        if (cctMatched.length > 0) {
+          filteredScales = cctMatched;
+          filterMode = 'CCT_EXACT';
+        } else {
+          const generalFallback = modalityScales.filter((s) => !s.cctCode);
+          if (generalFallback.length > 0) {
+            filteredScales = generalFallback;
+            filterMode = 'CCT_FALLBACK_GENERAL';
+          } else {
+            filteredScales = [];
+            filterMode = 'CCT_EMPTY';
+          }
+        }
+      } else {
+        filteredScales = modalityScales;
+        filterMode = job ? 'JOB_NO_CCT' : 'NO_JOB';
+      }
+    }
+
+    let targetSelection =
+      selectedSalaryScale !== undefined && selectedSalaryScale !== null
+        ? String(selectedSalaryScale)
+        : (scaleSelect.value || '');
+
+    let legacyOutOfCctScale = null;
+    if (targetSelection && !filteredScales.some((s) => s.id === targetSelection)) {
+      if (!isUserJobChange) {
+        legacyOutOfCctScale = modalityScales.find((s) => s.id === targetSelection) || null;
+      }
+      if (!legacyOutOfCctScale) {
+        targetSelection = '';
+      }
+    }
 
     // Actualizar títulos e indicaciones visuales
     const cardTitle = document.getElementById('employee-scale-card-title');
     const selectLabel = document.getElementById('employee-scale-select-label');
     const selectHint = document.getElementById('employee-scale-select-hint');
     const amountLabel = document.getElementById('employee-scale-amount-label');
+    const cctBadge = document.getElementById('employee-scale-cct-badge');
 
     if (cardTitle) {
       cardTitle.textContent = isDirectorMod
@@ -3831,10 +3901,41 @@ class PersonnelMethods {
         ? 'Nómina de Director Asignada <span class="text-danger">*</span>'
         : (isInternMod ? 'Nómina de Pasante Asignada <span class="text-danger">*</span>' : 'Nómina / Básico Asignado <span class="text-danger">*</span>');
     }
+    if (cctBadge) {
+      if (isInternMod || isDirectorMod) {
+        cctBadge.classList.add('d-none');
+      } else if (jobCctCode) {
+        cctBadge.className = 'badge bg-indigo-lt text-indigo';
+        cctBadge.textContent = `Filtrado por CCT ${jobCctCode}`;
+        cctBadge.title = jobCctName || `Convenio ${jobCctCode}`;
+      } else if (job) {
+        cctBadge.className = 'badge bg-secondary-lt text-muted';
+        cctBadge.textContent = 'Puesto sin CCT (todas las nóminas)';
+        cctBadge.title = '';
+      } else {
+        cctBadge.className = 'badge bg-secondary-lt text-muted';
+        cctBadge.textContent = 'Sin puesto seleccionado';
+        cctBadge.title = '';
+      }
+    }
     if (selectHint) {
-      selectHint.textContent = isDirectorMod
-        ? 'Nómina exclusiva para Directores / Autoridades con cobertura ART (exentos de aportes y contribuciones SUSS).'
-        : (isInternMod ? 'Nómina exclusiva de asignación estímulo para pasantes educativos (Ley 26.427).' : 'Sueldo básico asignado según nómina seleccionada desde el módulo de Haberes.');
+      if (isDirectorMod) {
+        selectHint.textContent = 'Nómina exclusiva para Directores / Autoridades con cobertura ART (exentos de aportes y contribuciones SUSS).';
+      } else if (isInternMod) {
+        selectHint.textContent = 'Nómina exclusiva de asignación estímulo para pasantes educativos (Ley 26.427).';
+      } else if (legacyOutOfCctScale) {
+        selectHint.innerHTML = `<span class="text-warning fw-bold"><i class="ti ti-alert-triangle me-1"></i>La nómina actual (${escapeHtml(legacyOutOfCctScale.name)}) no pertenece al convenio ${escapeHtml(jobCctCode || 'del puesto')}. Podés actualizarla aquí.</span>`;
+      } else if (filterMode === 'CCT_EXACT') {
+        selectHint.textContent = `Mostrando ${filteredScales.length} nómina(s) correspondientes al convenio ${jobCctCode}${jobCctName ? ` (${jobCctName})` : ''}.`;
+      } else if (filterMode === 'CCT_FALLBACK_GENERAL') {
+        selectHint.innerHTML = `<span class="text-muted">No hay nóminas específicas cargadas para CCT <strong>${escapeHtml(jobCctCode)}</strong>; se muestran nóminas generales sin convenio asignado.</span>`;
+      } else if (filterMode === 'CCT_EMPTY') {
+        selectHint.innerHTML = `<span class="text-danger">No existen nóminas cargadas para CCT <strong>${escapeHtml(jobCctCode)}</strong>. Podés crearlas en Haberes → Nómina.</span>`;
+      } else if (filterMode === 'JOB_NO_CCT') {
+        selectHint.textContent = 'El puesto asignado no tiene CCT configurado; se muestran todas las nóminas disponibles.';
+      } else {
+        selectHint.textContent = 'Seleccioná un Puesto de Trabajo en "2. Laboral y Cobertura" para filtrar automáticamente por convenio laboral.';
+      }
     }
     if (amountLabel) {
       amountLabel.textContent = isDirectorMod
@@ -3842,23 +3943,44 @@ class PersonnelMethods {
         : (isInternMod ? 'Asignación Estímulo Mensual' : 'Importe Básico Mensual');
     }
 
-    let targetSelection = selectedSalaryScale || scaleSelect.value || '';
-    if (!filteredScales.some((s) => s.id === targetSelection)) {
-      targetSelection = '';
-    }
-
     const placeholderText = isDirectorMod
       ? '-- Seleccionar Nómina de Director --'
-      : (isInternMod ? '-- Seleccionar Nómina de Pasante --' : '-- Seleccionar Nómina --');
-    const optsHtml =
-      `<option value="">${placeholderText}</option>` +
-      filteredScales
-        .map((s) => `<option value="${s.id}" data-amount="${s.amount}" ${s.id === targetSelection ? 'selected' : ''}>${escapeHtml(s.name)} ($ ${formatNumber(s.amount)})</option>`)
+      : (isInternMod
+          ? '-- Seleccionar Nómina de Pasante --'
+          : (jobCctCode ? `-- Seleccionar Nómina (CCT ${jobCctCode}) --` : '-- Seleccionar Nómina --'));
+
+    const formatOptionLabel = (s, includeCctPrefix = false) => {
+      const prefix = includeCctPrefix ? (s.cctCode ? `[${s.cctCode}] ` : '[General] ') : '';
+      return `${prefix}${s.name} ($ ${formatNumber(s.amount)})`;
+    };
+
+    const showPrefix = !isInternMod && !isDirectorMod && !jobCctCode;
+    let optsHtml = `<option value="">${escapeHtml(placeholderText)}</option>`;
+
+    if (filterMode === 'CCT_FALLBACK_GENERAL') {
+      optsHtml += `<optgroup label="Sin convenio asignado (Generales)">`;
+      optsHtml += filteredScales
+        .map((s) => `<option value="${s.id}" data-amount="${s.amount}" ${s.id === targetSelection ? 'selected' : ''}>${escapeHtml(formatOptionLabel(s, false))}</option>`)
         .join('');
+      optsHtml += '</optgroup>';
+    } else {
+      optsHtml += filteredScales
+        .map((s) => `<option value="${s.id}" data-amount="${s.amount}" ${s.id === targetSelection ? 'selected' : ''}>${escapeHtml(formatOptionLabel(s, showPrefix))}</option>`)
+        .join('');
+    }
+
+    if (legacyOutOfCctScale) {
+      optsHtml += `<optgroup label="Nómina actual asignada (fuera del CCT del puesto)">`;
+      optsHtml += `<option value="${legacyOutOfCctScale.id}" data-amount="${legacyOutOfCctScale.amount}" selected>${escapeHtml(formatOptionLabel(legacyOutOfCctScale, true))}</option>`;
+      optsHtml += '</optgroup>';
+    }
+
     scaleSelect.innerHTML = optsHtml;
     scaleSelect.value = targetSelection;
 
-    const found = filteredScales.find((s) => s.id === targetSelection);
+    const found =
+      filteredScales.find((s) => s.id === targetSelection) ||
+      (legacyOutOfCctScale && legacyOutOfCctScale.id === targetSelection ? legacyOutOfCctScale : null);
     const amountDisplay = document.getElementById('employee-scale-amount-display');
     const cardDisplay = document.getElementById('employee-scale-amount-card-display');
     const basicSalaryInput = document.getElementById('employee-input-basic-salary');

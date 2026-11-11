@@ -130,10 +130,12 @@ export const massWageIncreaseSchema = z.object({
   filters: z.object({
     departmentId: z.string().optional().nullable(),
     payrollGroup: z.string().optional().nullable(),
+    cctCode: z.string().optional().nullable(),
     status: z.string().default('ACTIVE'),
   }).optional(),
   filterDepartmentId: z.string().optional().nullable(),
   filterPayrollGroup: z.string().optional().nullable(),
+  filterCctCode: z.string().optional().nullable(),
   filterStatus: z.string().optional().nullable(),
   effectiveDate: z.coerce.date().optional().nullable(),
 }).refine(
