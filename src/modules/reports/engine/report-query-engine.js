@@ -1,4 +1,5 @@
 import { evaluateCalculatedColumn, getConceptAmount } from './formula-evaluator.js';
+import { hydrateEmployees, hydratePaySlips } from '../../../services/arcaCatalog.service.js';
 
 /**
  * Obtiene el catálogo de campos disponibles en el sistema para diseñar informes,
@@ -6,9 +7,9 @@ import { evaluateCalculatedColumn, getConceptAmount } from './formula-evaluator.
  */
 export async function getReportMetadata(tenantClient) {
   // Obtener conceptos activos del tenant y empleados activos en paralelo
-  const [concepts, employees] = await Promise.all([
+  const [concepts, rawEmployees] = await Promise.all([
     tenantClient.concept.findMany({
-      where: { isActive: true },
+      where: { isActive: true, deletedAt: null },
       select: {
         id: true,
         code: true,
@@ -22,15 +23,13 @@ export async function getReportMetadata(tenantClient) {
       where: { deletedAt: null },
       include: {
         department: true,
-        jobPosition: {
-          include: {
-            cct: true,
-          },
-        },
+        jobPosition: true,
       },
       orderBy: { fileNumber: 'asc' },
     }),
   ]);
+
+  const employees = await hydrateEmployees(rawEmployees);
 
   const compareNatural = (a, b) =>
     String(a ?? '')
@@ -407,7 +406,7 @@ export async function executeReportData(
     // prefiriendo liquidaciones generales mensuales sobre liquidaciones individuales
     const recentPeriods = await tenantClient.payrollPeriod.findMany({
       include: {
-        _count: { select: { paySlips: true } },
+        _count: { select: { paySlips: { where: { deletedAt: null } } } },
       },
       orderBy: [{ year: 'desc' }, { month: 'desc' }, { createdAt: 'desc' }],
       take: 15,
@@ -442,21 +441,22 @@ export async function executeReportData(
   });
 
   // 2. Obtener perfil de la empresa (cabecera institucional)
-  const companyProfile = await tenantClient.companyProfile.findFirst();
+  const companyProfile = await tenantClient.companyProfile.findFirst({
+    where: { deletedAt: null },
+  });
 
   // 3. Consultar recibos con sus empleados y conceptos para todos los períodos del rango
   const periodIds = selectedPeriods.map((p) => p.id);
-  let paySlips = await tenantClient.paySlip.findMany({
-    where: periodIds.length > 0 ? { payrollPeriodId: { in: periodIds } } : {},
+  let rawPaySlips = await tenantClient.paySlip.findMany({
+    where: {
+      deletedAt: null,
+      ...(periodIds.length > 0 ? { payrollPeriodId: { in: periodIds } } : {}),
+    },
     include: {
       employee: {
         include: {
           department: true,
-          jobPosition: {
-            include: {
-              cct: true,
-            },
-          },
+          jobPosition: true,
           salaryScale: true,
         },
       },
@@ -464,6 +464,8 @@ export async function executeReportData(
     },
     orderBy: [{ employee: { fileNumber: 'asc' } }],
   });
+
+  let paySlips = await hydratePaySlips(rawPaySlips);
 
   // Ordenar recibos cronológicamente por período y luego por número de legajo natural
   paySlips.sort((a, b) => {
@@ -475,19 +477,17 @@ export async function executeReportData(
 
   // Si aún no hay recibos liquidados en el rango de períodos, usar nómina activa de empleados como base
   if (paySlips.length === 0) {
-    const activeEmployees = await tenantClient.employee.findMany({
+    const rawActiveEmployees = await tenantClient.employee.findMany({
       where: { deletedAt: null, status: 'ACTIVE' },
       include: {
         department: true,
-        jobPosition: {
-          include: {
-            cct: true,
-          },
-        },
+        jobPosition: true,
         salaryScale: true,
       },
       orderBy: { fileNumber: 'asc' },
     });
+
+    const activeEmployees = await hydrateEmployees(rawActiveEmployees);
 
     const fallbackPeriodId = selectedPeriods[0]?.id || 'active';
     paySlips = activeEmployees.map((emp) => ({

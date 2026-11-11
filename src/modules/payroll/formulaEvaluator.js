@@ -598,44 +598,13 @@ export function substituteTokens(expr, context = {}, historicalData = {}, matrix
   return res;
 }
 
-const mathFunctionCache = new Map();
-const MAX_MATH_CACHE = 1000;
+import { evaluateMathExpression } from '../../utils/mathParser.js';
 
 /**
- * Evalúa una expresión matemática simple sin funciones complejas de forma segura con caché de compilación.
+ * Evalúa una expresión matemática simple o relacional mediante parser AST/RPN seguro sin `new Function`.
  */
 export function evaluateSafeExpression(expr) {
-  if (!expr || typeof expr !== 'string') return 0;
-
-  // 1. Normalizar comas decimales entre dígitos (ej: 0,25 -> 0.25)
-  let normalized = expr.replace(/(\d+),(\d+)/g, '$1.$2');
-
-  // 2. Normalizar operadores relacionales a sintaxis JavaScript válida
-  normalized = normalized.replace(/<>/g, '!=');
-  normalized = normalized.replace(/==/g, '=');
-  normalized = normalized.replace(/!=/g, '!==');
-  normalized = normalized.replace(/(?<![<>!=])=(?!=)/g, '===');
-
-  // 3. Sanitizar caracteres permitidos (dígitos, operadores aritméticos, relacionales y lógicos seguros)
-  const sanitized = normalized.replace(/[^0-9+\-*/().\s=!<>&|]/g, '').trim();
-  if (!sanitized) return 0;
-
-  try {
-    let fn = mathFunctionCache.get(sanitized);
-    if (!fn) {
-      if (mathFunctionCache.size >= MAX_MATH_CACHE) {
-        const keysToDelete = Array.from(mathFunctionCache.keys()).slice(0, 200);
-        for (const k of keysToDelete) mathFunctionCache.delete(k);
-      }
-      fn = new Function(`'use strict'; return (${sanitized});`);
-      mathFunctionCache.set(sanitized, fn);
-    }
-    const raw = fn();
-    const val = (typeof raw === 'boolean') ? (raw ? 1 : 0) : Number(raw);
-    return isNaN(val) || !isFinite(val) ? 0 : val;
-  } catch (err) {
-    return 0;
-  }
+  return evaluateMathExpression(expr, { arithmeticOnly: false, fallback: 0 });
 }
 
 export const evaluateBasicMath = evaluateSafeExpression;

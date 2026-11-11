@@ -24,36 +24,6 @@ export type CompanyProfile = $Result.DefaultSelection<Prisma.$CompanyProfilePayl
  */
 export type Department = $Result.DefaultSelection<Prisma.$DepartmentPayload>
 /**
- * Model ArcaCct
- * 
- */
-export type ArcaCct = $Result.DefaultSelection<Prisma.$ArcaCctPayload>
-/**
- * Model ArcaCategory
- * 
- */
-export type ArcaCategory = $Result.DefaultSelection<Prisma.$ArcaCategoryPayload>
-/**
- * Model ArcaPosition
- * 
- */
-export type ArcaPosition = $Result.DefaultSelection<Prisma.$ArcaPositionPayload>
-/**
- * Model ArcaServiceType
- * 
- */
-export type ArcaServiceType = $Result.DefaultSelection<Prisma.$ArcaServiceTypePayload>
-/**
- * Model ArcaCctCategoryPosition
- * 
- */
-export type ArcaCctCategoryPosition = $Result.DefaultSelection<Prisma.$ArcaCctCategoryPositionPayload>
-/**
- * Model ArcaContractModality
- * 
- */
-export type ArcaContractModality = $Result.DefaultSelection<Prisma.$ArcaContractModalityPayload>
-/**
  * Model JobPosition
  * 
  */
@@ -163,6 +133,11 @@ export type PaySlip = $Result.DefaultSelection<Prisma.$PaySlipPayload>
  * 
  */
 export type PaySlipItem = $Result.DefaultSelection<Prisma.$PaySlipItemPayload>
+/**
+ * Model PayrollClosingAudit
+ * 
+ */
+export type PayrollClosingAudit = $Result.DefaultSelection<Prisma.$PayrollClosingAuditPayload>
 /**
  * Model PaySlipBasis
  * 
@@ -403,66 +378,6 @@ export class PrismaClient<
   get department(): Prisma.DepartmentDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.arcaCct`: Exposes CRUD operations for the **ArcaCct** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaCcts
-    * const arcaCcts = await prisma.arcaCct.findMany()
-    * ```
-    */
-  get arcaCct(): Prisma.ArcaCctDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.arcaCategory`: Exposes CRUD operations for the **ArcaCategory** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaCategories
-    * const arcaCategories = await prisma.arcaCategory.findMany()
-    * ```
-    */
-  get arcaCategory(): Prisma.ArcaCategoryDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.arcaPosition`: Exposes CRUD operations for the **ArcaPosition** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaPositions
-    * const arcaPositions = await prisma.arcaPosition.findMany()
-    * ```
-    */
-  get arcaPosition(): Prisma.ArcaPositionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.arcaServiceType`: Exposes CRUD operations for the **ArcaServiceType** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaServiceTypes
-    * const arcaServiceTypes = await prisma.arcaServiceType.findMany()
-    * ```
-    */
-  get arcaServiceType(): Prisma.ArcaServiceTypeDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.arcaCctCategoryPosition`: Exposes CRUD operations for the **ArcaCctCategoryPosition** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaCctCategoryPositions
-    * const arcaCctCategoryPositions = await prisma.arcaCctCategoryPosition.findMany()
-    * ```
-    */
-  get arcaCctCategoryPosition(): Prisma.ArcaCctCategoryPositionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.arcaContractModality`: Exposes CRUD operations for the **ArcaContractModality** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more ArcaContractModalities
-    * const arcaContractModalities = await prisma.arcaContractModality.findMany()
-    * ```
-    */
-  get arcaContractModality(): Prisma.ArcaContractModalityDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.jobPosition`: Exposes CRUD operations for the **JobPosition** model.
     * Example usage:
     * ```ts
@@ -681,6 +596,16 @@ export class PrismaClient<
     * ```
     */
   get paySlipItem(): Prisma.PaySlipItemDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payrollClosingAudit`: Exposes CRUD operations for the **PayrollClosingAudit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayrollClosingAudits
+    * const payrollClosingAudits = await prisma.payrollClosingAudit.findMany()
+    * ```
+    */
+  get payrollClosingAudit(): Prisma.PayrollClosingAuditDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.paySlipBasis`: Exposes CRUD operations for the **PaySlipBasis** model.
@@ -1324,12 +1249,6 @@ export namespace Prisma {
   export const ModelName: {
     CompanyProfile: 'CompanyProfile',
     Department: 'Department',
-    ArcaCct: 'ArcaCct',
-    ArcaCategory: 'ArcaCategory',
-    ArcaPosition: 'ArcaPosition',
-    ArcaServiceType: 'ArcaServiceType',
-    ArcaCctCategoryPosition: 'ArcaCctCategoryPosition',
-    ArcaContractModality: 'ArcaContractModality',
     JobPosition: 'JobPosition',
     WorkShift: 'WorkShift',
     WorkShiftDetail: 'WorkShiftDetail',
@@ -1352,6 +1271,7 @@ export namespace Prisma {
     PayrollPeriod: 'PayrollPeriod',
     PaySlip: 'PaySlip',
     PaySlipItem: 'PaySlipItem',
+    PayrollClosingAudit: 'PayrollClosingAudit',
     PaySlipBasis: 'PaySlipBasis',
     PayrollSetting: 'PayrollSetting',
     PeriodNovelty: 'PeriodNovelty',
@@ -1390,7 +1310,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "arcaCct" | "arcaCategory" | "arcaPosition" | "arcaServiceType" | "arcaCctCategoryPosition" | "arcaContractModality" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink"
+      modelProps: "companyProfile" | "department" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "payrollClosingAudit" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1523,402 +1443,6 @@ export namespace Prisma {
           count: {
             args: Prisma.DepartmentCountArgs<ExtArgs>
             result: $Utils.Optional<DepartmentCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaCct: {
-        payload: Prisma.$ArcaCctPayload<ExtArgs>
-        fields: Prisma.ArcaCctFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaCctFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaCctFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaCctFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaCctFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          findMany: {
-            args: Prisma.ArcaCctFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>[]
-          }
-          create: {
-            args: Prisma.ArcaCctCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          createMany: {
-            args: Prisma.ArcaCctCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaCctDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          update: {
-            args: Prisma.ArcaCctUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaCctDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaCctUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaCctUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctPayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaCctAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaCct>
-          }
-          groupBy: {
-            args: Prisma.ArcaCctGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCctGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaCctCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCctCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaCategory: {
-        payload: Prisma.$ArcaCategoryPayload<ExtArgs>
-        fields: Prisma.ArcaCategoryFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaCategoryFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaCategoryFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaCategoryFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaCategoryFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          findMany: {
-            args: Prisma.ArcaCategoryFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>[]
-          }
-          create: {
-            args: Prisma.ArcaCategoryCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          createMany: {
-            args: Prisma.ArcaCategoryCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaCategoryDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          update: {
-            args: Prisma.ArcaCategoryUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaCategoryDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaCategoryUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaCategoryUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCategoryPayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaCategoryAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaCategory>
-          }
-          groupBy: {
-            args: Prisma.ArcaCategoryGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCategoryGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaCategoryCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCategoryCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaPosition: {
-        payload: Prisma.$ArcaPositionPayload<ExtArgs>
-        fields: Prisma.ArcaPositionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaPositionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaPositionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaPositionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaPositionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          findMany: {
-            args: Prisma.ArcaPositionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>[]
-          }
-          create: {
-            args: Prisma.ArcaPositionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          createMany: {
-            args: Prisma.ArcaPositionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaPositionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          update: {
-            args: Prisma.ArcaPositionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaPositionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaPositionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaPositionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaPositionPayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaPositionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaPosition>
-          }
-          groupBy: {
-            args: Prisma.ArcaPositionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaPositionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaPositionCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaPositionCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaServiceType: {
-        payload: Prisma.$ArcaServiceTypePayload<ExtArgs>
-        fields: Prisma.ArcaServiceTypeFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaServiceTypeFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaServiceTypeFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaServiceTypeFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaServiceTypeFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          findMany: {
-            args: Prisma.ArcaServiceTypeFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>[]
-          }
-          create: {
-            args: Prisma.ArcaServiceTypeCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          createMany: {
-            args: Prisma.ArcaServiceTypeCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaServiceTypeDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          update: {
-            args: Prisma.ArcaServiceTypeUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaServiceTypeDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaServiceTypeUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaServiceTypeUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaServiceTypePayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaServiceTypeAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaServiceType>
-          }
-          groupBy: {
-            args: Prisma.ArcaServiceTypeGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaServiceTypeGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaServiceTypeCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaServiceTypeCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaCctCategoryPosition: {
-        payload: Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>
-        fields: Prisma.ArcaCctCategoryPositionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaCctCategoryPositionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaCctCategoryPositionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaCctCategoryPositionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaCctCategoryPositionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          findMany: {
-            args: Prisma.ArcaCctCategoryPositionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>[]
-          }
-          create: {
-            args: Prisma.ArcaCctCategoryPositionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          createMany: {
-            args: Prisma.ArcaCctCategoryPositionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaCctCategoryPositionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          update: {
-            args: Prisma.ArcaCctCategoryPositionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaCctCategoryPositionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaCctCategoryPositionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaCctCategoryPositionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaCctCategoryPositionPayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaCctCategoryPositionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaCctCategoryPosition>
-          }
-          groupBy: {
-            args: Prisma.ArcaCctCategoryPositionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCctCategoryPositionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaCctCategoryPositionCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaCctCategoryPositionCountAggregateOutputType> | number
-          }
-        }
-      }
-      ArcaContractModality: {
-        payload: Prisma.$ArcaContractModalityPayload<ExtArgs>
-        fields: Prisma.ArcaContractModalityFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.ArcaContractModalityFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.ArcaContractModalityFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          findFirst: {
-            args: Prisma.ArcaContractModalityFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.ArcaContractModalityFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          findMany: {
-            args: Prisma.ArcaContractModalityFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>[]
-          }
-          create: {
-            args: Prisma.ArcaContractModalityCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          createMany: {
-            args: Prisma.ArcaContractModalityCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          delete: {
-            args: Prisma.ArcaContractModalityDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          update: {
-            args: Prisma.ArcaContractModalityUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          deleteMany: {
-            args: Prisma.ArcaContractModalityDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.ArcaContractModalityUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          upsert: {
-            args: Prisma.ArcaContractModalityUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$ArcaContractModalityPayload>
-          }
-          aggregate: {
-            args: Prisma.ArcaContractModalityAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateArcaContractModality>
-          }
-          groupBy: {
-            args: Prisma.ArcaContractModalityGroupByArgs<ExtArgs>
-            result: $Utils.Optional<ArcaContractModalityGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.ArcaContractModalityCountArgs<ExtArgs>
-            result: $Utils.Optional<ArcaContractModalityCountAggregateOutputType> | number
           }
         }
       }
@@ -3374,6 +2898,72 @@ export namespace Prisma {
           }
         }
       }
+      PayrollClosingAudit: {
+        payload: Prisma.$PayrollClosingAuditPayload<ExtArgs>
+        fields: Prisma.PayrollClosingAuditFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayrollClosingAuditFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayrollClosingAuditFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          findFirst: {
+            args: Prisma.PayrollClosingAuditFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayrollClosingAuditFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          findMany: {
+            args: Prisma.PayrollClosingAuditFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>[]
+          }
+          create: {
+            args: Prisma.PayrollClosingAuditCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          createMany: {
+            args: Prisma.PayrollClosingAuditCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PayrollClosingAuditDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          update: {
+            args: Prisma.PayrollClosingAuditUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          deleteMany: {
+            args: Prisma.PayrollClosingAuditDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayrollClosingAuditUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PayrollClosingAuditUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollClosingAuditPayload>
+          }
+          aggregate: {
+            args: Prisma.PayrollClosingAuditAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayrollClosingAudit>
+          }
+          groupBy: {
+            args: Prisma.PayrollClosingAuditGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayrollClosingAuditGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayrollClosingAuditCountArgs<ExtArgs>
+            result: $Utils.Optional<PayrollClosingAuditCountAggregateOutputType> | number
+          }
+        }
+      }
       PaySlipBasis: {
         payload: Prisma.$PaySlipBasisPayload<ExtArgs>
         fields: Prisma.PaySlipBasisFieldRefs
@@ -4792,12 +4382,6 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     companyProfile?: CompanyProfileOmit
     department?: DepartmentOmit
-    arcaCct?: ArcaCctOmit
-    arcaCategory?: ArcaCategoryOmit
-    arcaPosition?: ArcaPositionOmit
-    arcaServiceType?: ArcaServiceTypeOmit
-    arcaCctCategoryPosition?: ArcaCctCategoryPositionOmit
-    arcaContractModality?: ArcaContractModalityOmit
     jobPosition?: JobPositionOmit
     workShift?: WorkShiftOmit
     workShiftDetail?: WorkShiftDetailOmit
@@ -4820,6 +4404,7 @@ export namespace Prisma {
     payrollPeriod?: PayrollPeriodOmit
     paySlip?: PaySlipOmit
     paySlipItem?: PaySlipItemOmit
+    payrollClosingAudit?: PayrollClosingAuditOmit
     paySlipBasis?: PaySlipBasisOmit
     payrollSetting?: PayrollSettingOmit
     periodNovelty?: PeriodNoveltyOmit
@@ -4942,170 +4527,6 @@ export namespace Prisma {
    * DepartmentCountOutputType without action
    */
   export type DepartmentCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: EmployeeWhereInput
-  }
-
-
-  /**
-   * Count Type ArcaCctCountOutputType
-   */
-
-  export type ArcaCctCountOutputType = {
-    jobPositions: number
-    salaryScales: number
-  }
-
-  export type ArcaCctCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaCctCountOutputTypeCountJobPositionsArgs
-    salaryScales?: boolean | ArcaCctCountOutputTypeCountSalaryScalesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ArcaCctCountOutputType without action
-   */
-  export type ArcaCctCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCountOutputType
-     */
-    select?: ArcaCctCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ArcaCctCountOutputType without action
-   */
-  export type ArcaCctCountOutputTypeCountJobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobPositionWhereInput
-  }
-
-  /**
-   * ArcaCctCountOutputType without action
-   */
-  export type ArcaCctCountOutputTypeCountSalaryScalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: SalaryScaleWhereInput
-  }
-
-
-  /**
-   * Count Type ArcaCategoryCountOutputType
-   */
-
-  export type ArcaCategoryCountOutputType = {
-    jobPositions: number
-  }
-
-  export type ArcaCategoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaCategoryCountOutputTypeCountJobPositionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ArcaCategoryCountOutputType without action
-   */
-  export type ArcaCategoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategoryCountOutputType
-     */
-    select?: ArcaCategoryCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ArcaCategoryCountOutputType without action
-   */
-  export type ArcaCategoryCountOutputTypeCountJobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobPositionWhereInput
-  }
-
-
-  /**
-   * Count Type ArcaPositionCountOutputType
-   */
-
-  export type ArcaPositionCountOutputType = {
-    jobPositions: number
-  }
-
-  export type ArcaPositionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaPositionCountOutputTypeCountJobPositionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ArcaPositionCountOutputType without action
-   */
-  export type ArcaPositionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPositionCountOutputType
-     */
-    select?: ArcaPositionCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ArcaPositionCountOutputType without action
-   */
-  export type ArcaPositionCountOutputTypeCountJobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobPositionWhereInput
-  }
-
-
-  /**
-   * Count Type ArcaServiceTypeCountOutputType
-   */
-
-  export type ArcaServiceTypeCountOutputType = {
-    jobPositions: number
-  }
-
-  export type ArcaServiceTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaServiceTypeCountOutputTypeCountJobPositionsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ArcaServiceTypeCountOutputType without action
-   */
-  export type ArcaServiceTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceTypeCountOutputType
-     */
-    select?: ArcaServiceTypeCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ArcaServiceTypeCountOutputType without action
-   */
-  export type ArcaServiceTypeCountOutputTypeCountJobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: JobPositionWhereInput
-  }
-
-
-  /**
-   * Count Type ArcaContractModalityCountOutputType
-   */
-
-  export type ArcaContractModalityCountOutputType = {
-    employees: number
-  }
-
-  export type ArcaContractModalityCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    employees?: boolean | ArcaContractModalityCountOutputTypeCountEmployeesArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * ArcaContractModalityCountOutputType without action
-   */
-  export type ArcaContractModalityCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModalityCountOutputType
-     */
-    select?: ArcaContractModalityCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * ArcaContractModalityCountOutputType without action
-   */
-  export type ArcaContractModalityCountOutputTypeCountEmployeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeWhereInput
   }
 
@@ -7948,5779 +7369,6 @@ export namespace Prisma {
 
 
   /**
-   * Model ArcaCct
-   */
-
-  export type AggregateArcaCct = {
-    _count: ArcaCctCountAggregateOutputType | null
-    _min: ArcaCctMinAggregateOutputType | null
-    _max: ArcaCctMaxAggregateOutputType | null
-  }
-
-  export type ArcaCctMinAggregateOutputType = {
-    code: string | null
-    name: string | null
-    sector: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaCctMaxAggregateOutputType = {
-    code: string | null
-    name: string | null
-    sector: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaCctCountAggregateOutputType = {
-    code: number
-    name: number
-    sector: number
-    description: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ArcaCctMinAggregateInputType = {
-    code?: true
-    name?: true
-    sector?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaCctMaxAggregateInputType = {
-    code?: true
-    name?: true
-    sector?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaCctCountAggregateInputType = {
-    code?: true
-    name?: true
-    sector?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ArcaCctAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCct to aggregate.
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCcts to fetch.
-     */
-    orderBy?: ArcaCctOrderByWithRelationInput | ArcaCctOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaCctWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCcts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCcts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaCcts
-    **/
-    _count?: true | ArcaCctCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaCctMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaCctMaxAggregateInputType
-  }
-
-  export type GetArcaCctAggregateType<T extends ArcaCctAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaCct]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaCct[P]>
-      : GetScalarType<T[P], AggregateArcaCct[P]>
-  }
-
-
-
-
-  export type ArcaCctGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaCctWhereInput
-    orderBy?: ArcaCctOrderByWithAggregationInput | ArcaCctOrderByWithAggregationInput[]
-    by: ArcaCctScalarFieldEnum[] | ArcaCctScalarFieldEnum
-    having?: ArcaCctScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaCctCountAggregateInputType | true
-    _min?: ArcaCctMinAggregateInputType
-    _max?: ArcaCctMaxAggregateInputType
-  }
-
-  export type ArcaCctGroupByOutputType = {
-    code: string
-    name: string
-    sector: string | null
-    description: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ArcaCctCountAggregateOutputType | null
-    _min: ArcaCctMinAggregateOutputType | null
-    _max: ArcaCctMaxAggregateOutputType | null
-  }
-
-  type GetArcaCctGroupByPayload<T extends ArcaCctGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaCctGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaCctGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaCctGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaCctGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaCctSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    code?: boolean
-    name?: boolean
-    sector?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    jobPositions?: boolean | ArcaCct$jobPositionsArgs<ExtArgs>
-    salaryScales?: boolean | ArcaCct$salaryScalesArgs<ExtArgs>
-    _count?: boolean | ArcaCctCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["arcaCct"]>
-
-
-
-  export type ArcaCctSelectScalar = {
-    code?: boolean
-    name?: boolean
-    sector?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ArcaCctOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "name" | "sector" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["arcaCct"]>
-  export type ArcaCctInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaCct$jobPositionsArgs<ExtArgs>
-    salaryScales?: boolean | ArcaCct$salaryScalesArgs<ExtArgs>
-    _count?: boolean | ArcaCctCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $ArcaCctPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaCct"
-    objects: {
-      jobPositions: Prisma.$JobPositionPayload<ExtArgs>[]
-      salaryScales: Prisma.$SalaryScalePayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      code: string
-      name: string
-      sector: string | null
-      description: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["arcaCct"]>
-    composites: {}
-  }
-
-  type ArcaCctGetPayload<S extends boolean | null | undefined | ArcaCctDefaultArgs> = $Result.GetResult<Prisma.$ArcaCctPayload, S>
-
-  type ArcaCctCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaCctFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaCctCountAggregateInputType | true
-    }
-
-  export interface ArcaCctDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaCct'], meta: { name: 'ArcaCct' } }
-    /**
-     * Find zero or one ArcaCct that matches the filter.
-     * @param {ArcaCctFindUniqueArgs} args - Arguments to find a ArcaCct
-     * @example
-     * // Get one ArcaCct
-     * const arcaCct = await prisma.arcaCct.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaCctFindUniqueArgs>(args: SelectSubset<T, ArcaCctFindUniqueArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaCct that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaCctFindUniqueOrThrowArgs} args - Arguments to find a ArcaCct
-     * @example
-     * // Get one ArcaCct
-     * const arcaCct = await prisma.arcaCct.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaCctFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaCctFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCct that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctFindFirstArgs} args - Arguments to find a ArcaCct
-     * @example
-     * // Get one ArcaCct
-     * const arcaCct = await prisma.arcaCct.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaCctFindFirstArgs>(args?: SelectSubset<T, ArcaCctFindFirstArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCct that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctFindFirstOrThrowArgs} args - Arguments to find a ArcaCct
-     * @example
-     * // Get one ArcaCct
-     * const arcaCct = await prisma.arcaCct.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaCctFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaCctFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaCcts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaCcts
-     * const arcaCcts = await prisma.arcaCct.findMany()
-     * 
-     * // Get first 10 ArcaCcts
-     * const arcaCcts = await prisma.arcaCct.findMany({ take: 10 })
-     * 
-     * // Only select the `code`
-     * const arcaCctWithCodeOnly = await prisma.arcaCct.findMany({ select: { code: true } })
-     * 
-     */
-    findMany<T extends ArcaCctFindManyArgs>(args?: SelectSubset<T, ArcaCctFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaCct.
-     * @param {ArcaCctCreateArgs} args - Arguments to create a ArcaCct.
-     * @example
-     * // Create one ArcaCct
-     * const ArcaCct = await prisma.arcaCct.create({
-     *   data: {
-     *     // ... data to create a ArcaCct
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaCctCreateArgs>(args: SelectSubset<T, ArcaCctCreateArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaCcts.
-     * @param {ArcaCctCreateManyArgs} args - Arguments to create many ArcaCcts.
-     * @example
-     * // Create many ArcaCcts
-     * const arcaCct = await prisma.arcaCct.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaCctCreateManyArgs>(args?: SelectSubset<T, ArcaCctCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaCct.
-     * @param {ArcaCctDeleteArgs} args - Arguments to delete one ArcaCct.
-     * @example
-     * // Delete one ArcaCct
-     * const ArcaCct = await prisma.arcaCct.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaCct
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaCctDeleteArgs>(args: SelectSubset<T, ArcaCctDeleteArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaCct.
-     * @param {ArcaCctUpdateArgs} args - Arguments to update one ArcaCct.
-     * @example
-     * // Update one ArcaCct
-     * const arcaCct = await prisma.arcaCct.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaCctUpdateArgs>(args: SelectSubset<T, ArcaCctUpdateArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaCcts.
-     * @param {ArcaCctDeleteManyArgs} args - Arguments to filter ArcaCcts to delete.
-     * @example
-     * // Delete a few ArcaCcts
-     * const { count } = await prisma.arcaCct.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaCctDeleteManyArgs>(args?: SelectSubset<T, ArcaCctDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaCcts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaCcts
-     * const arcaCct = await prisma.arcaCct.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaCctUpdateManyArgs>(args: SelectSubset<T, ArcaCctUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaCct.
-     * @param {ArcaCctUpsertArgs} args - Arguments to update or create a ArcaCct.
-     * @example
-     * // Update or create a ArcaCct
-     * const arcaCct = await prisma.arcaCct.upsert({
-     *   create: {
-     *     // ... data to create a ArcaCct
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaCct we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaCctUpsertArgs>(args: SelectSubset<T, ArcaCctUpsertArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaCcts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCountArgs} args - Arguments to filter ArcaCcts to count.
-     * @example
-     * // Count the number of ArcaCcts
-     * const count = await prisma.arcaCct.count({
-     *   where: {
-     *     // ... the filter for the ArcaCcts we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaCctCountArgs>(
-      args?: Subset<T, ArcaCctCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaCctCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaCct.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaCctAggregateArgs>(args: Subset<T, ArcaCctAggregateArgs>): Prisma.PrismaPromise<GetArcaCctAggregateType<T>>
-
-    /**
-     * Group by ArcaCct.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaCctGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaCctGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaCctGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaCctGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaCctGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaCct model
-   */
-  readonly fields: ArcaCctFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaCct.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaCctClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    jobPositions<T extends ArcaCct$jobPositionsArgs<ExtArgs> = {}>(args?: Subset<T, ArcaCct$jobPositionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    salaryScales<T extends ArcaCct$salaryScalesArgs<ExtArgs> = {}>(args?: Subset<T, ArcaCct$salaryScalesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaCct model
-   */
-  interface ArcaCctFieldRefs {
-    readonly code: FieldRef<"ArcaCct", 'String'>
-    readonly name: FieldRef<"ArcaCct", 'String'>
-    readonly sector: FieldRef<"ArcaCct", 'String'>
-    readonly description: FieldRef<"ArcaCct", 'String'>
-    readonly createdAt: FieldRef<"ArcaCct", 'DateTime'>
-    readonly updatedAt: FieldRef<"ArcaCct", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaCct findUnique
-   */
-  export type ArcaCctFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCct to fetch.
-     */
-    where: ArcaCctWhereUniqueInput
-  }
-
-  /**
-   * ArcaCct findUniqueOrThrow
-   */
-  export type ArcaCctFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCct to fetch.
-     */
-    where: ArcaCctWhereUniqueInput
-  }
-
-  /**
-   * ArcaCct findFirst
-   */
-  export type ArcaCctFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCct to fetch.
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCcts to fetch.
-     */
-    orderBy?: ArcaCctOrderByWithRelationInput | ArcaCctOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCcts.
-     */
-    cursor?: ArcaCctWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCcts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCcts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCcts.
-     */
-    distinct?: ArcaCctScalarFieldEnum | ArcaCctScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCct findFirstOrThrow
-   */
-  export type ArcaCctFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCct to fetch.
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCcts to fetch.
-     */
-    orderBy?: ArcaCctOrderByWithRelationInput | ArcaCctOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCcts.
-     */
-    cursor?: ArcaCctWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCcts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCcts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCcts.
-     */
-    distinct?: ArcaCctScalarFieldEnum | ArcaCctScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCct findMany
-   */
-  export type ArcaCctFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCcts to fetch.
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCcts to fetch.
-     */
-    orderBy?: ArcaCctOrderByWithRelationInput | ArcaCctOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaCcts.
-     */
-    cursor?: ArcaCctWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCcts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCcts.
-     */
-    skip?: number
-    distinct?: ArcaCctScalarFieldEnum | ArcaCctScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCct create
-   */
-  export type ArcaCctCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaCct.
-     */
-    data: XOR<ArcaCctCreateInput, ArcaCctUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaCct createMany
-   */
-  export type ArcaCctCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaCcts.
-     */
-    data: ArcaCctCreateManyInput | ArcaCctCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaCct update
-   */
-  export type ArcaCctUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaCct.
-     */
-    data: XOR<ArcaCctUpdateInput, ArcaCctUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaCct to update.
-     */
-    where: ArcaCctWhereUniqueInput
-  }
-
-  /**
-   * ArcaCct updateMany
-   */
-  export type ArcaCctUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaCcts.
-     */
-    data: XOR<ArcaCctUpdateManyMutationInput, ArcaCctUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaCcts to update
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * Limit how many ArcaCcts to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCct upsert
-   */
-  export type ArcaCctUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaCct to update in case it exists.
-     */
-    where: ArcaCctWhereUniqueInput
-    /**
-     * In case the ArcaCct found by the `where` argument doesn't exist, create a new ArcaCct with this data.
-     */
-    create: XOR<ArcaCctCreateInput, ArcaCctUncheckedCreateInput>
-    /**
-     * In case the ArcaCct was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaCctUpdateInput, ArcaCctUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaCct delete
-   */
-  export type ArcaCctDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    /**
-     * Filter which ArcaCct to delete.
-     */
-    where: ArcaCctWhereUniqueInput
-  }
-
-  /**
-   * ArcaCct deleteMany
-   */
-  export type ArcaCctDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCcts to delete
-     */
-    where?: ArcaCctWhereInput
-    /**
-     * Limit how many ArcaCcts to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCct.jobPositions
-   */
-  export type ArcaCct$jobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobPosition
-     */
-    select?: JobPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobPosition
-     */
-    omit?: JobPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobPositionInclude<ExtArgs> | null
-    where?: JobPositionWhereInput
-    orderBy?: JobPositionOrderByWithRelationInput | JobPositionOrderByWithRelationInput[]
-    cursor?: JobPositionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobPositionScalarFieldEnum | JobPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCct.salaryScales
-   */
-  export type ArcaCct$salaryScalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the SalaryScale
-     */
-    select?: SalaryScaleSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the SalaryScale
-     */
-    omit?: SalaryScaleOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: SalaryScaleInclude<ExtArgs> | null
-    where?: SalaryScaleWhereInput
-    orderBy?: SalaryScaleOrderByWithRelationInput | SalaryScaleOrderByWithRelationInput[]
-    cursor?: SalaryScaleWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: SalaryScaleScalarFieldEnum | SalaryScaleScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCct without action
-   */
-  export type ArcaCctDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ArcaCategory
-   */
-
-  export type AggregateArcaCategory = {
-    _count: ArcaCategoryCountAggregateOutputType | null
-    _min: ArcaCategoryMinAggregateOutputType | null
-    _max: ArcaCategoryMaxAggregateOutputType | null
-  }
-
-  export type ArcaCategoryMinAggregateOutputType = {
-    code: string | null
-    name: string | null
-    cct: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaCategoryMaxAggregateOutputType = {
-    code: string | null
-    name: string | null
-    cct: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaCategoryCountAggregateOutputType = {
-    code: number
-    name: number
-    cct: number
-    description: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ArcaCategoryMinAggregateInputType = {
-    code?: true
-    name?: true
-    cct?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaCategoryMaxAggregateInputType = {
-    code?: true
-    name?: true
-    cct?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaCategoryCountAggregateInputType = {
-    code?: true
-    name?: true
-    cct?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ArcaCategoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCategory to aggregate.
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCategories to fetch.
-     */
-    orderBy?: ArcaCategoryOrderByWithRelationInput | ArcaCategoryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaCategoryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCategories from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCategories.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaCategories
-    **/
-    _count?: true | ArcaCategoryCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaCategoryMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaCategoryMaxAggregateInputType
-  }
-
-  export type GetArcaCategoryAggregateType<T extends ArcaCategoryAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaCategory]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaCategory[P]>
-      : GetScalarType<T[P], AggregateArcaCategory[P]>
-  }
-
-
-
-
-  export type ArcaCategoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaCategoryWhereInput
-    orderBy?: ArcaCategoryOrderByWithAggregationInput | ArcaCategoryOrderByWithAggregationInput[]
-    by: ArcaCategoryScalarFieldEnum[] | ArcaCategoryScalarFieldEnum
-    having?: ArcaCategoryScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaCategoryCountAggregateInputType | true
-    _min?: ArcaCategoryMinAggregateInputType
-    _max?: ArcaCategoryMaxAggregateInputType
-  }
-
-  export type ArcaCategoryGroupByOutputType = {
-    code: string
-    name: string
-    cct: string | null
-    description: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ArcaCategoryCountAggregateOutputType | null
-    _min: ArcaCategoryMinAggregateOutputType | null
-    _max: ArcaCategoryMaxAggregateOutputType | null
-  }
-
-  type GetArcaCategoryGroupByPayload<T extends ArcaCategoryGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaCategoryGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaCategoryGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaCategoryGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaCategoryGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaCategorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    code?: boolean
-    name?: boolean
-    cct?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    jobPositions?: boolean | ArcaCategory$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaCategoryCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["arcaCategory"]>
-
-
-
-  export type ArcaCategorySelectScalar = {
-    code?: boolean
-    name?: boolean
-    cct?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ArcaCategoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "name" | "cct" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["arcaCategory"]>
-  export type ArcaCategoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaCategory$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaCategoryCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $ArcaCategoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaCategory"
-    objects: {
-      jobPositions: Prisma.$JobPositionPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      code: string
-      name: string
-      cct: string | null
-      description: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["arcaCategory"]>
-    composites: {}
-  }
-
-  type ArcaCategoryGetPayload<S extends boolean | null | undefined | ArcaCategoryDefaultArgs> = $Result.GetResult<Prisma.$ArcaCategoryPayload, S>
-
-  type ArcaCategoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaCategoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaCategoryCountAggregateInputType | true
-    }
-
-  export interface ArcaCategoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaCategory'], meta: { name: 'ArcaCategory' } }
-    /**
-     * Find zero or one ArcaCategory that matches the filter.
-     * @param {ArcaCategoryFindUniqueArgs} args - Arguments to find a ArcaCategory
-     * @example
-     * // Get one ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaCategoryFindUniqueArgs>(args: SelectSubset<T, ArcaCategoryFindUniqueArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaCategory that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaCategoryFindUniqueOrThrowArgs} args - Arguments to find a ArcaCategory
-     * @example
-     * // Get one ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaCategoryFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaCategoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCategory that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryFindFirstArgs} args - Arguments to find a ArcaCategory
-     * @example
-     * // Get one ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaCategoryFindFirstArgs>(args?: SelectSubset<T, ArcaCategoryFindFirstArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCategory that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryFindFirstOrThrowArgs} args - Arguments to find a ArcaCategory
-     * @example
-     * // Get one ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaCategoryFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaCategoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaCategories that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaCategories
-     * const arcaCategories = await prisma.arcaCategory.findMany()
-     * 
-     * // Get first 10 ArcaCategories
-     * const arcaCategories = await prisma.arcaCategory.findMany({ take: 10 })
-     * 
-     * // Only select the `code`
-     * const arcaCategoryWithCodeOnly = await prisma.arcaCategory.findMany({ select: { code: true } })
-     * 
-     */
-    findMany<T extends ArcaCategoryFindManyArgs>(args?: SelectSubset<T, ArcaCategoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaCategory.
-     * @param {ArcaCategoryCreateArgs} args - Arguments to create a ArcaCategory.
-     * @example
-     * // Create one ArcaCategory
-     * const ArcaCategory = await prisma.arcaCategory.create({
-     *   data: {
-     *     // ... data to create a ArcaCategory
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaCategoryCreateArgs>(args: SelectSubset<T, ArcaCategoryCreateArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaCategories.
-     * @param {ArcaCategoryCreateManyArgs} args - Arguments to create many ArcaCategories.
-     * @example
-     * // Create many ArcaCategories
-     * const arcaCategory = await prisma.arcaCategory.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaCategoryCreateManyArgs>(args?: SelectSubset<T, ArcaCategoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaCategory.
-     * @param {ArcaCategoryDeleteArgs} args - Arguments to delete one ArcaCategory.
-     * @example
-     * // Delete one ArcaCategory
-     * const ArcaCategory = await prisma.arcaCategory.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaCategory
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaCategoryDeleteArgs>(args: SelectSubset<T, ArcaCategoryDeleteArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaCategory.
-     * @param {ArcaCategoryUpdateArgs} args - Arguments to update one ArcaCategory.
-     * @example
-     * // Update one ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaCategoryUpdateArgs>(args: SelectSubset<T, ArcaCategoryUpdateArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaCategories.
-     * @param {ArcaCategoryDeleteManyArgs} args - Arguments to filter ArcaCategories to delete.
-     * @example
-     * // Delete a few ArcaCategories
-     * const { count } = await prisma.arcaCategory.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaCategoryDeleteManyArgs>(args?: SelectSubset<T, ArcaCategoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaCategories.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaCategories
-     * const arcaCategory = await prisma.arcaCategory.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaCategoryUpdateManyArgs>(args: SelectSubset<T, ArcaCategoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaCategory.
-     * @param {ArcaCategoryUpsertArgs} args - Arguments to update or create a ArcaCategory.
-     * @example
-     * // Update or create a ArcaCategory
-     * const arcaCategory = await prisma.arcaCategory.upsert({
-     *   create: {
-     *     // ... data to create a ArcaCategory
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaCategory we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaCategoryUpsertArgs>(args: SelectSubset<T, ArcaCategoryUpsertArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaCategories.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryCountArgs} args - Arguments to filter ArcaCategories to count.
-     * @example
-     * // Count the number of ArcaCategories
-     * const count = await prisma.arcaCategory.count({
-     *   where: {
-     *     // ... the filter for the ArcaCategories we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaCategoryCountArgs>(
-      args?: Subset<T, ArcaCategoryCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaCategoryCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaCategory.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaCategoryAggregateArgs>(args: Subset<T, ArcaCategoryAggregateArgs>): Prisma.PrismaPromise<GetArcaCategoryAggregateType<T>>
-
-    /**
-     * Group by ArcaCategory.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCategoryGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaCategoryGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaCategoryGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaCategoryGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaCategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaCategoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaCategory model
-   */
-  readonly fields: ArcaCategoryFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaCategory.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaCategoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    jobPositions<T extends ArcaCategory$jobPositionsArgs<ExtArgs> = {}>(args?: Subset<T, ArcaCategory$jobPositionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaCategory model
-   */
-  interface ArcaCategoryFieldRefs {
-    readonly code: FieldRef<"ArcaCategory", 'String'>
-    readonly name: FieldRef<"ArcaCategory", 'String'>
-    readonly cct: FieldRef<"ArcaCategory", 'String'>
-    readonly description: FieldRef<"ArcaCategory", 'String'>
-    readonly createdAt: FieldRef<"ArcaCategory", 'DateTime'>
-    readonly updatedAt: FieldRef<"ArcaCategory", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaCategory findUnique
-   */
-  export type ArcaCategoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCategory to fetch.
-     */
-    where: ArcaCategoryWhereUniqueInput
-  }
-
-  /**
-   * ArcaCategory findUniqueOrThrow
-   */
-  export type ArcaCategoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCategory to fetch.
-     */
-    where: ArcaCategoryWhereUniqueInput
-  }
-
-  /**
-   * ArcaCategory findFirst
-   */
-  export type ArcaCategoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCategory to fetch.
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCategories to fetch.
-     */
-    orderBy?: ArcaCategoryOrderByWithRelationInput | ArcaCategoryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCategories.
-     */
-    cursor?: ArcaCategoryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCategories from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCategories.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCategories.
-     */
-    distinct?: ArcaCategoryScalarFieldEnum | ArcaCategoryScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCategory findFirstOrThrow
-   */
-  export type ArcaCategoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCategory to fetch.
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCategories to fetch.
-     */
-    orderBy?: ArcaCategoryOrderByWithRelationInput | ArcaCategoryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCategories.
-     */
-    cursor?: ArcaCategoryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCategories from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCategories.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCategories.
-     */
-    distinct?: ArcaCategoryScalarFieldEnum | ArcaCategoryScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCategory findMany
-   */
-  export type ArcaCategoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaCategories to fetch.
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCategories to fetch.
-     */
-    orderBy?: ArcaCategoryOrderByWithRelationInput | ArcaCategoryOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaCategories.
-     */
-    cursor?: ArcaCategoryWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCategories from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCategories.
-     */
-    skip?: number
-    distinct?: ArcaCategoryScalarFieldEnum | ArcaCategoryScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCategory create
-   */
-  export type ArcaCategoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaCategory.
-     */
-    data: XOR<ArcaCategoryCreateInput, ArcaCategoryUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaCategory createMany
-   */
-  export type ArcaCategoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaCategories.
-     */
-    data: ArcaCategoryCreateManyInput | ArcaCategoryCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaCategory update
-   */
-  export type ArcaCategoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaCategory.
-     */
-    data: XOR<ArcaCategoryUpdateInput, ArcaCategoryUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaCategory to update.
-     */
-    where: ArcaCategoryWhereUniqueInput
-  }
-
-  /**
-   * ArcaCategory updateMany
-   */
-  export type ArcaCategoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaCategories.
-     */
-    data: XOR<ArcaCategoryUpdateManyMutationInput, ArcaCategoryUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaCategories to update
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * Limit how many ArcaCategories to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCategory upsert
-   */
-  export type ArcaCategoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaCategory to update in case it exists.
-     */
-    where: ArcaCategoryWhereUniqueInput
-    /**
-     * In case the ArcaCategory found by the `where` argument doesn't exist, create a new ArcaCategory with this data.
-     */
-    create: XOR<ArcaCategoryCreateInput, ArcaCategoryUncheckedCreateInput>
-    /**
-     * In case the ArcaCategory was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaCategoryUpdateInput, ArcaCategoryUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaCategory delete
-   */
-  export type ArcaCategoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    /**
-     * Filter which ArcaCategory to delete.
-     */
-    where: ArcaCategoryWhereUniqueInput
-  }
-
-  /**
-   * ArcaCategory deleteMany
-   */
-  export type ArcaCategoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCategories to delete
-     */
-    where?: ArcaCategoryWhereInput
-    /**
-     * Limit how many ArcaCategories to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCategory.jobPositions
-   */
-  export type ArcaCategory$jobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobPosition
-     */
-    select?: JobPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobPosition
-     */
-    omit?: JobPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobPositionInclude<ExtArgs> | null
-    where?: JobPositionWhereInput
-    orderBy?: JobPositionOrderByWithRelationInput | JobPositionOrderByWithRelationInput[]
-    cursor?: JobPositionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobPositionScalarFieldEnum | JobPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCategory without action
-   */
-  export type ArcaCategoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ArcaPosition
-   */
-
-  export type AggregateArcaPosition = {
-    _count: ArcaPositionCountAggregateOutputType | null
-    _min: ArcaPositionMinAggregateOutputType | null
-    _max: ArcaPositionMaxAggregateOutputType | null
-  }
-
-  export type ArcaPositionMinAggregateOutputType = {
-    code: string | null
-    name: string | null
-    groupCode: string | null
-    groupName: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaPositionMaxAggregateOutputType = {
-    code: string | null
-    name: string | null
-    groupCode: string | null
-    groupName: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaPositionCountAggregateOutputType = {
-    code: number
-    name: number
-    groupCode: number
-    groupName: number
-    description: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ArcaPositionMinAggregateInputType = {
-    code?: true
-    name?: true
-    groupCode?: true
-    groupName?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaPositionMaxAggregateInputType = {
-    code?: true
-    name?: true
-    groupCode?: true
-    groupName?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaPositionCountAggregateInputType = {
-    code?: true
-    name?: true
-    groupCode?: true
-    groupName?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ArcaPositionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaPosition to aggregate.
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaPositions to fetch.
-     */
-    orderBy?: ArcaPositionOrderByWithRelationInput | ArcaPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaPositions
-    **/
-    _count?: true | ArcaPositionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaPositionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaPositionMaxAggregateInputType
-  }
-
-  export type GetArcaPositionAggregateType<T extends ArcaPositionAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaPosition]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaPosition[P]>
-      : GetScalarType<T[P], AggregateArcaPosition[P]>
-  }
-
-
-
-
-  export type ArcaPositionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaPositionWhereInput
-    orderBy?: ArcaPositionOrderByWithAggregationInput | ArcaPositionOrderByWithAggregationInput[]
-    by: ArcaPositionScalarFieldEnum[] | ArcaPositionScalarFieldEnum
-    having?: ArcaPositionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaPositionCountAggregateInputType | true
-    _min?: ArcaPositionMinAggregateInputType
-    _max?: ArcaPositionMaxAggregateInputType
-  }
-
-  export type ArcaPositionGroupByOutputType = {
-    code: string
-    name: string
-    groupCode: string | null
-    groupName: string | null
-    description: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ArcaPositionCountAggregateOutputType | null
-    _min: ArcaPositionMinAggregateOutputType | null
-    _max: ArcaPositionMaxAggregateOutputType | null
-  }
-
-  type GetArcaPositionGroupByPayload<T extends ArcaPositionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaPositionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaPositionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaPositionGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaPositionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaPositionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    code?: boolean
-    name?: boolean
-    groupCode?: boolean
-    groupName?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    jobPositions?: boolean | ArcaPosition$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaPositionCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["arcaPosition"]>
-
-
-
-  export type ArcaPositionSelectScalar = {
-    code?: boolean
-    name?: boolean
-    groupCode?: boolean
-    groupName?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ArcaPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "name" | "groupCode" | "groupName" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["arcaPosition"]>
-  export type ArcaPositionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaPosition$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaPositionCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $ArcaPositionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaPosition"
-    objects: {
-      jobPositions: Prisma.$JobPositionPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      code: string
-      name: string
-      groupCode: string | null
-      groupName: string | null
-      description: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["arcaPosition"]>
-    composites: {}
-  }
-
-  type ArcaPositionGetPayload<S extends boolean | null | undefined | ArcaPositionDefaultArgs> = $Result.GetResult<Prisma.$ArcaPositionPayload, S>
-
-  type ArcaPositionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaPositionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaPositionCountAggregateInputType | true
-    }
-
-  export interface ArcaPositionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaPosition'], meta: { name: 'ArcaPosition' } }
-    /**
-     * Find zero or one ArcaPosition that matches the filter.
-     * @param {ArcaPositionFindUniqueArgs} args - Arguments to find a ArcaPosition
-     * @example
-     * // Get one ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaPositionFindUniqueArgs>(args: SelectSubset<T, ArcaPositionFindUniqueArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaPosition that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaPositionFindUniqueOrThrowArgs} args - Arguments to find a ArcaPosition
-     * @example
-     * // Get one ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaPositionFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaPositionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaPosition that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionFindFirstArgs} args - Arguments to find a ArcaPosition
-     * @example
-     * // Get one ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaPositionFindFirstArgs>(args?: SelectSubset<T, ArcaPositionFindFirstArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaPosition that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionFindFirstOrThrowArgs} args - Arguments to find a ArcaPosition
-     * @example
-     * // Get one ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaPositionFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaPositionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaPositions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaPositions
-     * const arcaPositions = await prisma.arcaPosition.findMany()
-     * 
-     * // Get first 10 ArcaPositions
-     * const arcaPositions = await prisma.arcaPosition.findMany({ take: 10 })
-     * 
-     * // Only select the `code`
-     * const arcaPositionWithCodeOnly = await prisma.arcaPosition.findMany({ select: { code: true } })
-     * 
-     */
-    findMany<T extends ArcaPositionFindManyArgs>(args?: SelectSubset<T, ArcaPositionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaPosition.
-     * @param {ArcaPositionCreateArgs} args - Arguments to create a ArcaPosition.
-     * @example
-     * // Create one ArcaPosition
-     * const ArcaPosition = await prisma.arcaPosition.create({
-     *   data: {
-     *     // ... data to create a ArcaPosition
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaPositionCreateArgs>(args: SelectSubset<T, ArcaPositionCreateArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaPositions.
-     * @param {ArcaPositionCreateManyArgs} args - Arguments to create many ArcaPositions.
-     * @example
-     * // Create many ArcaPositions
-     * const arcaPosition = await prisma.arcaPosition.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaPositionCreateManyArgs>(args?: SelectSubset<T, ArcaPositionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaPosition.
-     * @param {ArcaPositionDeleteArgs} args - Arguments to delete one ArcaPosition.
-     * @example
-     * // Delete one ArcaPosition
-     * const ArcaPosition = await prisma.arcaPosition.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaPosition
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaPositionDeleteArgs>(args: SelectSubset<T, ArcaPositionDeleteArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaPosition.
-     * @param {ArcaPositionUpdateArgs} args - Arguments to update one ArcaPosition.
-     * @example
-     * // Update one ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaPositionUpdateArgs>(args: SelectSubset<T, ArcaPositionUpdateArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaPositions.
-     * @param {ArcaPositionDeleteManyArgs} args - Arguments to filter ArcaPositions to delete.
-     * @example
-     * // Delete a few ArcaPositions
-     * const { count } = await prisma.arcaPosition.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaPositionDeleteManyArgs>(args?: SelectSubset<T, ArcaPositionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaPositions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaPositions
-     * const arcaPosition = await prisma.arcaPosition.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaPositionUpdateManyArgs>(args: SelectSubset<T, ArcaPositionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaPosition.
-     * @param {ArcaPositionUpsertArgs} args - Arguments to update or create a ArcaPosition.
-     * @example
-     * // Update or create a ArcaPosition
-     * const arcaPosition = await prisma.arcaPosition.upsert({
-     *   create: {
-     *     // ... data to create a ArcaPosition
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaPosition we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaPositionUpsertArgs>(args: SelectSubset<T, ArcaPositionUpsertArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaPositions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionCountArgs} args - Arguments to filter ArcaPositions to count.
-     * @example
-     * // Count the number of ArcaPositions
-     * const count = await prisma.arcaPosition.count({
-     *   where: {
-     *     // ... the filter for the ArcaPositions we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaPositionCountArgs>(
-      args?: Subset<T, ArcaPositionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaPositionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaPosition.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaPositionAggregateArgs>(args: Subset<T, ArcaPositionAggregateArgs>): Prisma.PrismaPromise<GetArcaPositionAggregateType<T>>
-
-    /**
-     * Group by ArcaPosition.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaPositionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaPositionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaPositionGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaPositionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaPositionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaPositionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaPosition model
-   */
-  readonly fields: ArcaPositionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaPosition.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaPositionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    jobPositions<T extends ArcaPosition$jobPositionsArgs<ExtArgs> = {}>(args?: Subset<T, ArcaPosition$jobPositionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaPosition model
-   */
-  interface ArcaPositionFieldRefs {
-    readonly code: FieldRef<"ArcaPosition", 'String'>
-    readonly name: FieldRef<"ArcaPosition", 'String'>
-    readonly groupCode: FieldRef<"ArcaPosition", 'String'>
-    readonly groupName: FieldRef<"ArcaPosition", 'String'>
-    readonly description: FieldRef<"ArcaPosition", 'String'>
-    readonly createdAt: FieldRef<"ArcaPosition", 'DateTime'>
-    readonly updatedAt: FieldRef<"ArcaPosition", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaPosition findUnique
-   */
-  export type ArcaPositionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaPosition to fetch.
-     */
-    where: ArcaPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaPosition findUniqueOrThrow
-   */
-  export type ArcaPositionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaPosition to fetch.
-     */
-    where: ArcaPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaPosition findFirst
-   */
-  export type ArcaPositionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaPosition to fetch.
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaPositions to fetch.
-     */
-    orderBy?: ArcaPositionOrderByWithRelationInput | ArcaPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaPositions.
-     */
-    cursor?: ArcaPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaPositions.
-     */
-    distinct?: ArcaPositionScalarFieldEnum | ArcaPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaPosition findFirstOrThrow
-   */
-  export type ArcaPositionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaPosition to fetch.
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaPositions to fetch.
-     */
-    orderBy?: ArcaPositionOrderByWithRelationInput | ArcaPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaPositions.
-     */
-    cursor?: ArcaPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaPositions.
-     */
-    distinct?: ArcaPositionScalarFieldEnum | ArcaPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaPosition findMany
-   */
-  export type ArcaPositionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaPositions to fetch.
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaPositions to fetch.
-     */
-    orderBy?: ArcaPositionOrderByWithRelationInput | ArcaPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaPositions.
-     */
-    cursor?: ArcaPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaPositions.
-     */
-    skip?: number
-    distinct?: ArcaPositionScalarFieldEnum | ArcaPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaPosition create
-   */
-  export type ArcaPositionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaPosition.
-     */
-    data: XOR<ArcaPositionCreateInput, ArcaPositionUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaPosition createMany
-   */
-  export type ArcaPositionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaPositions.
-     */
-    data: ArcaPositionCreateManyInput | ArcaPositionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaPosition update
-   */
-  export type ArcaPositionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaPosition.
-     */
-    data: XOR<ArcaPositionUpdateInput, ArcaPositionUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaPosition to update.
-     */
-    where: ArcaPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaPosition updateMany
-   */
-  export type ArcaPositionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaPositions.
-     */
-    data: XOR<ArcaPositionUpdateManyMutationInput, ArcaPositionUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaPositions to update
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * Limit how many ArcaPositions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaPosition upsert
-   */
-  export type ArcaPositionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaPosition to update in case it exists.
-     */
-    where: ArcaPositionWhereUniqueInput
-    /**
-     * In case the ArcaPosition found by the `where` argument doesn't exist, create a new ArcaPosition with this data.
-     */
-    create: XOR<ArcaPositionCreateInput, ArcaPositionUncheckedCreateInput>
-    /**
-     * In case the ArcaPosition was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaPositionUpdateInput, ArcaPositionUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaPosition delete
-   */
-  export type ArcaPositionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    /**
-     * Filter which ArcaPosition to delete.
-     */
-    where: ArcaPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaPosition deleteMany
-   */
-  export type ArcaPositionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaPositions to delete
-     */
-    where?: ArcaPositionWhereInput
-    /**
-     * Limit how many ArcaPositions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaPosition.jobPositions
-   */
-  export type ArcaPosition$jobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobPosition
-     */
-    select?: JobPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobPosition
-     */
-    omit?: JobPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobPositionInclude<ExtArgs> | null
-    where?: JobPositionWhereInput
-    orderBy?: JobPositionOrderByWithRelationInput | JobPositionOrderByWithRelationInput[]
-    cursor?: JobPositionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobPositionScalarFieldEnum | JobPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaPosition without action
-   */
-  export type ArcaPositionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ArcaServiceType
-   */
-
-  export type AggregateArcaServiceType = {
-    _count: ArcaServiceTypeCountAggregateOutputType | null
-    _min: ArcaServiceTypeMinAggregateOutputType | null
-    _max: ArcaServiceTypeMaxAggregateOutputType | null
-  }
-
-  export type ArcaServiceTypeMinAggregateOutputType = {
-    code: string | null
-    name: string | null
-    regime: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaServiceTypeMaxAggregateOutputType = {
-    code: string | null
-    name: string | null
-    regime: string | null
-    description: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaServiceTypeCountAggregateOutputType = {
-    code: number
-    name: number
-    regime: number
-    description: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ArcaServiceTypeMinAggregateInputType = {
-    code?: true
-    name?: true
-    regime?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaServiceTypeMaxAggregateInputType = {
-    code?: true
-    name?: true
-    regime?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaServiceTypeCountAggregateInputType = {
-    code?: true
-    name?: true
-    regime?: true
-    description?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ArcaServiceTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaServiceType to aggregate.
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaServiceTypes to fetch.
-     */
-    orderBy?: ArcaServiceTypeOrderByWithRelationInput | ArcaServiceTypeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaServiceTypeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaServiceTypes from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaServiceTypes.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaServiceTypes
-    **/
-    _count?: true | ArcaServiceTypeCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaServiceTypeMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaServiceTypeMaxAggregateInputType
-  }
-
-  export type GetArcaServiceTypeAggregateType<T extends ArcaServiceTypeAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaServiceType]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaServiceType[P]>
-      : GetScalarType<T[P], AggregateArcaServiceType[P]>
-  }
-
-
-
-
-  export type ArcaServiceTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaServiceTypeWhereInput
-    orderBy?: ArcaServiceTypeOrderByWithAggregationInput | ArcaServiceTypeOrderByWithAggregationInput[]
-    by: ArcaServiceTypeScalarFieldEnum[] | ArcaServiceTypeScalarFieldEnum
-    having?: ArcaServiceTypeScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaServiceTypeCountAggregateInputType | true
-    _min?: ArcaServiceTypeMinAggregateInputType
-    _max?: ArcaServiceTypeMaxAggregateInputType
-  }
-
-  export type ArcaServiceTypeGroupByOutputType = {
-    code: string
-    name: string
-    regime: string | null
-    description: string | null
-    createdAt: Date
-    updatedAt: Date
-    _count: ArcaServiceTypeCountAggregateOutputType | null
-    _min: ArcaServiceTypeMinAggregateOutputType | null
-    _max: ArcaServiceTypeMaxAggregateOutputType | null
-  }
-
-  type GetArcaServiceTypeGroupByPayload<T extends ArcaServiceTypeGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaServiceTypeGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaServiceTypeGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaServiceTypeGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaServiceTypeGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaServiceTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    code?: boolean
-    name?: boolean
-    regime?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    jobPositions?: boolean | ArcaServiceType$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaServiceTypeCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["arcaServiceType"]>
-
-
-
-  export type ArcaServiceTypeSelectScalar = {
-    code?: boolean
-    name?: boolean
-    regime?: boolean
-    description?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ArcaServiceTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "name" | "regime" | "description" | "createdAt" | "updatedAt", ExtArgs["result"]["arcaServiceType"]>
-  export type ArcaServiceTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    jobPositions?: boolean | ArcaServiceType$jobPositionsArgs<ExtArgs>
-    _count?: boolean | ArcaServiceTypeCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $ArcaServiceTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaServiceType"
-    objects: {
-      jobPositions: Prisma.$JobPositionPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      code: string
-      name: string
-      regime: string | null
-      description: string | null
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["arcaServiceType"]>
-    composites: {}
-  }
-
-  type ArcaServiceTypeGetPayload<S extends boolean | null | undefined | ArcaServiceTypeDefaultArgs> = $Result.GetResult<Prisma.$ArcaServiceTypePayload, S>
-
-  type ArcaServiceTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaServiceTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaServiceTypeCountAggregateInputType | true
-    }
-
-  export interface ArcaServiceTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaServiceType'], meta: { name: 'ArcaServiceType' } }
-    /**
-     * Find zero or one ArcaServiceType that matches the filter.
-     * @param {ArcaServiceTypeFindUniqueArgs} args - Arguments to find a ArcaServiceType
-     * @example
-     * // Get one ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaServiceTypeFindUniqueArgs>(args: SelectSubset<T, ArcaServiceTypeFindUniqueArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaServiceType that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaServiceTypeFindUniqueOrThrowArgs} args - Arguments to find a ArcaServiceType
-     * @example
-     * // Get one ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaServiceTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaServiceTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaServiceType that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeFindFirstArgs} args - Arguments to find a ArcaServiceType
-     * @example
-     * // Get one ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaServiceTypeFindFirstArgs>(args?: SelectSubset<T, ArcaServiceTypeFindFirstArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaServiceType that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeFindFirstOrThrowArgs} args - Arguments to find a ArcaServiceType
-     * @example
-     * // Get one ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaServiceTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaServiceTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaServiceTypes that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaServiceTypes
-     * const arcaServiceTypes = await prisma.arcaServiceType.findMany()
-     * 
-     * // Get first 10 ArcaServiceTypes
-     * const arcaServiceTypes = await prisma.arcaServiceType.findMany({ take: 10 })
-     * 
-     * // Only select the `code`
-     * const arcaServiceTypeWithCodeOnly = await prisma.arcaServiceType.findMany({ select: { code: true } })
-     * 
-     */
-    findMany<T extends ArcaServiceTypeFindManyArgs>(args?: SelectSubset<T, ArcaServiceTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaServiceType.
-     * @param {ArcaServiceTypeCreateArgs} args - Arguments to create a ArcaServiceType.
-     * @example
-     * // Create one ArcaServiceType
-     * const ArcaServiceType = await prisma.arcaServiceType.create({
-     *   data: {
-     *     // ... data to create a ArcaServiceType
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaServiceTypeCreateArgs>(args: SelectSubset<T, ArcaServiceTypeCreateArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaServiceTypes.
-     * @param {ArcaServiceTypeCreateManyArgs} args - Arguments to create many ArcaServiceTypes.
-     * @example
-     * // Create many ArcaServiceTypes
-     * const arcaServiceType = await prisma.arcaServiceType.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaServiceTypeCreateManyArgs>(args?: SelectSubset<T, ArcaServiceTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaServiceType.
-     * @param {ArcaServiceTypeDeleteArgs} args - Arguments to delete one ArcaServiceType.
-     * @example
-     * // Delete one ArcaServiceType
-     * const ArcaServiceType = await prisma.arcaServiceType.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaServiceType
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaServiceTypeDeleteArgs>(args: SelectSubset<T, ArcaServiceTypeDeleteArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaServiceType.
-     * @param {ArcaServiceTypeUpdateArgs} args - Arguments to update one ArcaServiceType.
-     * @example
-     * // Update one ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaServiceTypeUpdateArgs>(args: SelectSubset<T, ArcaServiceTypeUpdateArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaServiceTypes.
-     * @param {ArcaServiceTypeDeleteManyArgs} args - Arguments to filter ArcaServiceTypes to delete.
-     * @example
-     * // Delete a few ArcaServiceTypes
-     * const { count } = await prisma.arcaServiceType.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaServiceTypeDeleteManyArgs>(args?: SelectSubset<T, ArcaServiceTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaServiceTypes.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaServiceTypes
-     * const arcaServiceType = await prisma.arcaServiceType.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaServiceTypeUpdateManyArgs>(args: SelectSubset<T, ArcaServiceTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaServiceType.
-     * @param {ArcaServiceTypeUpsertArgs} args - Arguments to update or create a ArcaServiceType.
-     * @example
-     * // Update or create a ArcaServiceType
-     * const arcaServiceType = await prisma.arcaServiceType.upsert({
-     *   create: {
-     *     // ... data to create a ArcaServiceType
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaServiceType we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaServiceTypeUpsertArgs>(args: SelectSubset<T, ArcaServiceTypeUpsertArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaServiceTypes.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeCountArgs} args - Arguments to filter ArcaServiceTypes to count.
-     * @example
-     * // Count the number of ArcaServiceTypes
-     * const count = await prisma.arcaServiceType.count({
-     *   where: {
-     *     // ... the filter for the ArcaServiceTypes we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaServiceTypeCountArgs>(
-      args?: Subset<T, ArcaServiceTypeCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaServiceTypeCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaServiceType.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaServiceTypeAggregateArgs>(args: Subset<T, ArcaServiceTypeAggregateArgs>): Prisma.PrismaPromise<GetArcaServiceTypeAggregateType<T>>
-
-    /**
-     * Group by ArcaServiceType.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaServiceTypeGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaServiceTypeGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaServiceTypeGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaServiceTypeGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaServiceTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaServiceTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaServiceType model
-   */
-  readonly fields: ArcaServiceTypeFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaServiceType.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaServiceTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    jobPositions<T extends ArcaServiceType$jobPositionsArgs<ExtArgs> = {}>(args?: Subset<T, ArcaServiceType$jobPositionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JobPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaServiceType model
-   */
-  interface ArcaServiceTypeFieldRefs {
-    readonly code: FieldRef<"ArcaServiceType", 'String'>
-    readonly name: FieldRef<"ArcaServiceType", 'String'>
-    readonly regime: FieldRef<"ArcaServiceType", 'String'>
-    readonly description: FieldRef<"ArcaServiceType", 'String'>
-    readonly createdAt: FieldRef<"ArcaServiceType", 'DateTime'>
-    readonly updatedAt: FieldRef<"ArcaServiceType", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaServiceType findUnique
-   */
-  export type ArcaServiceTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaServiceType to fetch.
-     */
-    where: ArcaServiceTypeWhereUniqueInput
-  }
-
-  /**
-   * ArcaServiceType findUniqueOrThrow
-   */
-  export type ArcaServiceTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaServiceType to fetch.
-     */
-    where: ArcaServiceTypeWhereUniqueInput
-  }
-
-  /**
-   * ArcaServiceType findFirst
-   */
-  export type ArcaServiceTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaServiceType to fetch.
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaServiceTypes to fetch.
-     */
-    orderBy?: ArcaServiceTypeOrderByWithRelationInput | ArcaServiceTypeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaServiceTypes.
-     */
-    cursor?: ArcaServiceTypeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaServiceTypes from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaServiceTypes.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaServiceTypes.
-     */
-    distinct?: ArcaServiceTypeScalarFieldEnum | ArcaServiceTypeScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaServiceType findFirstOrThrow
-   */
-  export type ArcaServiceTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaServiceType to fetch.
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaServiceTypes to fetch.
-     */
-    orderBy?: ArcaServiceTypeOrderByWithRelationInput | ArcaServiceTypeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaServiceTypes.
-     */
-    cursor?: ArcaServiceTypeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaServiceTypes from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaServiceTypes.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaServiceTypes.
-     */
-    distinct?: ArcaServiceTypeScalarFieldEnum | ArcaServiceTypeScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaServiceType findMany
-   */
-  export type ArcaServiceTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaServiceTypes to fetch.
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaServiceTypes to fetch.
-     */
-    orderBy?: ArcaServiceTypeOrderByWithRelationInput | ArcaServiceTypeOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaServiceTypes.
-     */
-    cursor?: ArcaServiceTypeWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaServiceTypes from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaServiceTypes.
-     */
-    skip?: number
-    distinct?: ArcaServiceTypeScalarFieldEnum | ArcaServiceTypeScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaServiceType create
-   */
-  export type ArcaServiceTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaServiceType.
-     */
-    data: XOR<ArcaServiceTypeCreateInput, ArcaServiceTypeUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaServiceType createMany
-   */
-  export type ArcaServiceTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaServiceTypes.
-     */
-    data: ArcaServiceTypeCreateManyInput | ArcaServiceTypeCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaServiceType update
-   */
-  export type ArcaServiceTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaServiceType.
-     */
-    data: XOR<ArcaServiceTypeUpdateInput, ArcaServiceTypeUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaServiceType to update.
-     */
-    where: ArcaServiceTypeWhereUniqueInput
-  }
-
-  /**
-   * ArcaServiceType updateMany
-   */
-  export type ArcaServiceTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaServiceTypes.
-     */
-    data: XOR<ArcaServiceTypeUpdateManyMutationInput, ArcaServiceTypeUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaServiceTypes to update
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * Limit how many ArcaServiceTypes to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaServiceType upsert
-   */
-  export type ArcaServiceTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaServiceType to update in case it exists.
-     */
-    where: ArcaServiceTypeWhereUniqueInput
-    /**
-     * In case the ArcaServiceType found by the `where` argument doesn't exist, create a new ArcaServiceType with this data.
-     */
-    create: XOR<ArcaServiceTypeCreateInput, ArcaServiceTypeUncheckedCreateInput>
-    /**
-     * In case the ArcaServiceType was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaServiceTypeUpdateInput, ArcaServiceTypeUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaServiceType delete
-   */
-  export type ArcaServiceTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    /**
-     * Filter which ArcaServiceType to delete.
-     */
-    where: ArcaServiceTypeWhereUniqueInput
-  }
-
-  /**
-   * ArcaServiceType deleteMany
-   */
-  export type ArcaServiceTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaServiceTypes to delete
-     */
-    where?: ArcaServiceTypeWhereInput
-    /**
-     * Limit how many ArcaServiceTypes to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaServiceType.jobPositions
-   */
-  export type ArcaServiceType$jobPositionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the JobPosition
-     */
-    select?: JobPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the JobPosition
-     */
-    omit?: JobPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: JobPositionInclude<ExtArgs> | null
-    where?: JobPositionWhereInput
-    orderBy?: JobPositionOrderByWithRelationInput | JobPositionOrderByWithRelationInput[]
-    cursor?: JobPositionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: JobPositionScalarFieldEnum | JobPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaServiceType without action
-   */
-  export type ArcaServiceTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ArcaCctCategoryPosition
-   */
-
-  export type AggregateArcaCctCategoryPosition = {
-    _count: ArcaCctCategoryPositionCountAggregateOutputType | null
-    _min: ArcaCctCategoryPositionMinAggregateOutputType | null
-    _max: ArcaCctCategoryPositionMaxAggregateOutputType | null
-  }
-
-  export type ArcaCctCategoryPositionMinAggregateOutputType = {
-    id: string | null
-    cctCode: string | null
-    categoryCode: string | null
-    positionCode: string | null
-    createdAt: Date | null
-  }
-
-  export type ArcaCctCategoryPositionMaxAggregateOutputType = {
-    id: string | null
-    cctCode: string | null
-    categoryCode: string | null
-    positionCode: string | null
-    createdAt: Date | null
-  }
-
-  export type ArcaCctCategoryPositionCountAggregateOutputType = {
-    id: number
-    cctCode: number
-    categoryCode: number
-    positionCode: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type ArcaCctCategoryPositionMinAggregateInputType = {
-    id?: true
-    cctCode?: true
-    categoryCode?: true
-    positionCode?: true
-    createdAt?: true
-  }
-
-  export type ArcaCctCategoryPositionMaxAggregateInputType = {
-    id?: true
-    cctCode?: true
-    categoryCode?: true
-    positionCode?: true
-    createdAt?: true
-  }
-
-  export type ArcaCctCategoryPositionCountAggregateInputType = {
-    id?: true
-    cctCode?: true
-    categoryCode?: true
-    positionCode?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type ArcaCctCategoryPositionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCctCategoryPosition to aggregate.
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCctCategoryPositions to fetch.
-     */
-    orderBy?: ArcaCctCategoryPositionOrderByWithRelationInput | ArcaCctCategoryPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaCctCategoryPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCctCategoryPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCctCategoryPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaCctCategoryPositions
-    **/
-    _count?: true | ArcaCctCategoryPositionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaCctCategoryPositionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaCctCategoryPositionMaxAggregateInputType
-  }
-
-  export type GetArcaCctCategoryPositionAggregateType<T extends ArcaCctCategoryPositionAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaCctCategoryPosition]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaCctCategoryPosition[P]>
-      : GetScalarType<T[P], AggregateArcaCctCategoryPosition[P]>
-  }
-
-
-
-
-  export type ArcaCctCategoryPositionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaCctCategoryPositionWhereInput
-    orderBy?: ArcaCctCategoryPositionOrderByWithAggregationInput | ArcaCctCategoryPositionOrderByWithAggregationInput[]
-    by: ArcaCctCategoryPositionScalarFieldEnum[] | ArcaCctCategoryPositionScalarFieldEnum
-    having?: ArcaCctCategoryPositionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaCctCategoryPositionCountAggregateInputType | true
-    _min?: ArcaCctCategoryPositionMinAggregateInputType
-    _max?: ArcaCctCategoryPositionMaxAggregateInputType
-  }
-
-  export type ArcaCctCategoryPositionGroupByOutputType = {
-    id: string
-    cctCode: string
-    categoryCode: string
-    positionCode: string
-    createdAt: Date
-    _count: ArcaCctCategoryPositionCountAggregateOutputType | null
-    _min: ArcaCctCategoryPositionMinAggregateOutputType | null
-    _max: ArcaCctCategoryPositionMaxAggregateOutputType | null
-  }
-
-  type GetArcaCctCategoryPositionGroupByPayload<T extends ArcaCctCategoryPositionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaCctCategoryPositionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaCctCategoryPositionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaCctCategoryPositionGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaCctCategoryPositionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaCctCategoryPositionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    cctCode?: boolean
-    categoryCode?: boolean
-    positionCode?: boolean
-    createdAt?: boolean
-  }, ExtArgs["result"]["arcaCctCategoryPosition"]>
-
-
-
-  export type ArcaCctCategoryPositionSelectScalar = {
-    id?: boolean
-    cctCode?: boolean
-    categoryCode?: boolean
-    positionCode?: boolean
-    createdAt?: boolean
-  }
-
-  export type ArcaCctCategoryPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "cctCode" | "categoryCode" | "positionCode" | "createdAt", ExtArgs["result"]["arcaCctCategoryPosition"]>
-
-  export type $ArcaCctCategoryPositionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaCctCategoryPosition"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      cctCode: string
-      categoryCode: string
-      positionCode: string
-      createdAt: Date
-    }, ExtArgs["result"]["arcaCctCategoryPosition"]>
-    composites: {}
-  }
-
-  type ArcaCctCategoryPositionGetPayload<S extends boolean | null | undefined | ArcaCctCategoryPositionDefaultArgs> = $Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload, S>
-
-  type ArcaCctCategoryPositionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaCctCategoryPositionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaCctCategoryPositionCountAggregateInputType | true
-    }
-
-  export interface ArcaCctCategoryPositionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaCctCategoryPosition'], meta: { name: 'ArcaCctCategoryPosition' } }
-    /**
-     * Find zero or one ArcaCctCategoryPosition that matches the filter.
-     * @param {ArcaCctCategoryPositionFindUniqueArgs} args - Arguments to find a ArcaCctCategoryPosition
-     * @example
-     * // Get one ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaCctCategoryPositionFindUniqueArgs>(args: SelectSubset<T, ArcaCctCategoryPositionFindUniqueArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaCctCategoryPosition that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaCctCategoryPositionFindUniqueOrThrowArgs} args - Arguments to find a ArcaCctCategoryPosition
-     * @example
-     * // Get one ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaCctCategoryPositionFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaCctCategoryPositionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCctCategoryPosition that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionFindFirstArgs} args - Arguments to find a ArcaCctCategoryPosition
-     * @example
-     * // Get one ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaCctCategoryPositionFindFirstArgs>(args?: SelectSubset<T, ArcaCctCategoryPositionFindFirstArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaCctCategoryPosition that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionFindFirstOrThrowArgs} args - Arguments to find a ArcaCctCategoryPosition
-     * @example
-     * // Get one ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaCctCategoryPositionFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaCctCategoryPositionFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaCctCategoryPositions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaCctCategoryPositions
-     * const arcaCctCategoryPositions = await prisma.arcaCctCategoryPosition.findMany()
-     * 
-     * // Get first 10 ArcaCctCategoryPositions
-     * const arcaCctCategoryPositions = await prisma.arcaCctCategoryPosition.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const arcaCctCategoryPositionWithIdOnly = await prisma.arcaCctCategoryPosition.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends ArcaCctCategoryPositionFindManyArgs>(args?: SelectSubset<T, ArcaCctCategoryPositionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaCctCategoryPosition.
-     * @param {ArcaCctCategoryPositionCreateArgs} args - Arguments to create a ArcaCctCategoryPosition.
-     * @example
-     * // Create one ArcaCctCategoryPosition
-     * const ArcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.create({
-     *   data: {
-     *     // ... data to create a ArcaCctCategoryPosition
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaCctCategoryPositionCreateArgs>(args: SelectSubset<T, ArcaCctCategoryPositionCreateArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaCctCategoryPositions.
-     * @param {ArcaCctCategoryPositionCreateManyArgs} args - Arguments to create many ArcaCctCategoryPositions.
-     * @example
-     * // Create many ArcaCctCategoryPositions
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaCctCategoryPositionCreateManyArgs>(args?: SelectSubset<T, ArcaCctCategoryPositionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaCctCategoryPosition.
-     * @param {ArcaCctCategoryPositionDeleteArgs} args - Arguments to delete one ArcaCctCategoryPosition.
-     * @example
-     * // Delete one ArcaCctCategoryPosition
-     * const ArcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaCctCategoryPosition
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaCctCategoryPositionDeleteArgs>(args: SelectSubset<T, ArcaCctCategoryPositionDeleteArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaCctCategoryPosition.
-     * @param {ArcaCctCategoryPositionUpdateArgs} args - Arguments to update one ArcaCctCategoryPosition.
-     * @example
-     * // Update one ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaCctCategoryPositionUpdateArgs>(args: SelectSubset<T, ArcaCctCategoryPositionUpdateArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaCctCategoryPositions.
-     * @param {ArcaCctCategoryPositionDeleteManyArgs} args - Arguments to filter ArcaCctCategoryPositions to delete.
-     * @example
-     * // Delete a few ArcaCctCategoryPositions
-     * const { count } = await prisma.arcaCctCategoryPosition.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaCctCategoryPositionDeleteManyArgs>(args?: SelectSubset<T, ArcaCctCategoryPositionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaCctCategoryPositions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaCctCategoryPositions
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaCctCategoryPositionUpdateManyArgs>(args: SelectSubset<T, ArcaCctCategoryPositionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaCctCategoryPosition.
-     * @param {ArcaCctCategoryPositionUpsertArgs} args - Arguments to update or create a ArcaCctCategoryPosition.
-     * @example
-     * // Update or create a ArcaCctCategoryPosition
-     * const arcaCctCategoryPosition = await prisma.arcaCctCategoryPosition.upsert({
-     *   create: {
-     *     // ... data to create a ArcaCctCategoryPosition
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaCctCategoryPosition we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaCctCategoryPositionUpsertArgs>(args: SelectSubset<T, ArcaCctCategoryPositionUpsertArgs<ExtArgs>>): Prisma__ArcaCctCategoryPositionClient<$Result.GetResult<Prisma.$ArcaCctCategoryPositionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaCctCategoryPositions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionCountArgs} args - Arguments to filter ArcaCctCategoryPositions to count.
-     * @example
-     * // Count the number of ArcaCctCategoryPositions
-     * const count = await prisma.arcaCctCategoryPosition.count({
-     *   where: {
-     *     // ... the filter for the ArcaCctCategoryPositions we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaCctCategoryPositionCountArgs>(
-      args?: Subset<T, ArcaCctCategoryPositionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaCctCategoryPositionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaCctCategoryPosition.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaCctCategoryPositionAggregateArgs>(args: Subset<T, ArcaCctCategoryPositionAggregateArgs>): Prisma.PrismaPromise<GetArcaCctCategoryPositionAggregateType<T>>
-
-    /**
-     * Group by ArcaCctCategoryPosition.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaCctCategoryPositionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaCctCategoryPositionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaCctCategoryPositionGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaCctCategoryPositionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaCctCategoryPositionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaCctCategoryPositionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaCctCategoryPosition model
-   */
-  readonly fields: ArcaCctCategoryPositionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaCctCategoryPosition.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaCctCategoryPositionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaCctCategoryPosition model
-   */
-  interface ArcaCctCategoryPositionFieldRefs {
-    readonly id: FieldRef<"ArcaCctCategoryPosition", 'String'>
-    readonly cctCode: FieldRef<"ArcaCctCategoryPosition", 'String'>
-    readonly categoryCode: FieldRef<"ArcaCctCategoryPosition", 'String'>
-    readonly positionCode: FieldRef<"ArcaCctCategoryPosition", 'String'>
-    readonly createdAt: FieldRef<"ArcaCctCategoryPosition", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaCctCategoryPosition findUnique
-   */
-  export type ArcaCctCategoryPositionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter, which ArcaCctCategoryPosition to fetch.
-     */
-    where: ArcaCctCategoryPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaCctCategoryPosition findUniqueOrThrow
-   */
-  export type ArcaCctCategoryPositionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter, which ArcaCctCategoryPosition to fetch.
-     */
-    where: ArcaCctCategoryPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaCctCategoryPosition findFirst
-   */
-  export type ArcaCctCategoryPositionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter, which ArcaCctCategoryPosition to fetch.
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCctCategoryPositions to fetch.
-     */
-    orderBy?: ArcaCctCategoryPositionOrderByWithRelationInput | ArcaCctCategoryPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCctCategoryPositions.
-     */
-    cursor?: ArcaCctCategoryPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCctCategoryPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCctCategoryPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCctCategoryPositions.
-     */
-    distinct?: ArcaCctCategoryPositionScalarFieldEnum | ArcaCctCategoryPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCctCategoryPosition findFirstOrThrow
-   */
-  export type ArcaCctCategoryPositionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter, which ArcaCctCategoryPosition to fetch.
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCctCategoryPositions to fetch.
-     */
-    orderBy?: ArcaCctCategoryPositionOrderByWithRelationInput | ArcaCctCategoryPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaCctCategoryPositions.
-     */
-    cursor?: ArcaCctCategoryPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCctCategoryPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCctCategoryPositions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaCctCategoryPositions.
-     */
-    distinct?: ArcaCctCategoryPositionScalarFieldEnum | ArcaCctCategoryPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCctCategoryPosition findMany
-   */
-  export type ArcaCctCategoryPositionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter, which ArcaCctCategoryPositions to fetch.
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaCctCategoryPositions to fetch.
-     */
-    orderBy?: ArcaCctCategoryPositionOrderByWithRelationInput | ArcaCctCategoryPositionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaCctCategoryPositions.
-     */
-    cursor?: ArcaCctCategoryPositionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaCctCategoryPositions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaCctCategoryPositions.
-     */
-    skip?: number
-    distinct?: ArcaCctCategoryPositionScalarFieldEnum | ArcaCctCategoryPositionScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaCctCategoryPosition create
-   */
-  export type ArcaCctCategoryPositionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaCctCategoryPosition.
-     */
-    data: XOR<ArcaCctCategoryPositionCreateInput, ArcaCctCategoryPositionUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaCctCategoryPosition createMany
-   */
-  export type ArcaCctCategoryPositionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaCctCategoryPositions.
-     */
-    data: ArcaCctCategoryPositionCreateManyInput | ArcaCctCategoryPositionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaCctCategoryPosition update
-   */
-  export type ArcaCctCategoryPositionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaCctCategoryPosition.
-     */
-    data: XOR<ArcaCctCategoryPositionUpdateInput, ArcaCctCategoryPositionUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaCctCategoryPosition to update.
-     */
-    where: ArcaCctCategoryPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaCctCategoryPosition updateMany
-   */
-  export type ArcaCctCategoryPositionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaCctCategoryPositions.
-     */
-    data: XOR<ArcaCctCategoryPositionUpdateManyMutationInput, ArcaCctCategoryPositionUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaCctCategoryPositions to update
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * Limit how many ArcaCctCategoryPositions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCctCategoryPosition upsert
-   */
-  export type ArcaCctCategoryPositionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaCctCategoryPosition to update in case it exists.
-     */
-    where: ArcaCctCategoryPositionWhereUniqueInput
-    /**
-     * In case the ArcaCctCategoryPosition found by the `where` argument doesn't exist, create a new ArcaCctCategoryPosition with this data.
-     */
-    create: XOR<ArcaCctCategoryPositionCreateInput, ArcaCctCategoryPositionUncheckedCreateInput>
-    /**
-     * In case the ArcaCctCategoryPosition was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaCctCategoryPositionUpdateInput, ArcaCctCategoryPositionUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaCctCategoryPosition delete
-   */
-  export type ArcaCctCategoryPositionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-    /**
-     * Filter which ArcaCctCategoryPosition to delete.
-     */
-    where: ArcaCctCategoryPositionWhereUniqueInput
-  }
-
-  /**
-   * ArcaCctCategoryPosition deleteMany
-   */
-  export type ArcaCctCategoryPositionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaCctCategoryPositions to delete
-     */
-    where?: ArcaCctCategoryPositionWhereInput
-    /**
-     * Limit how many ArcaCctCategoryPositions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaCctCategoryPosition without action
-   */
-  export type ArcaCctCategoryPositionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCctCategoryPosition
-     */
-    select?: ArcaCctCategoryPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCctCategoryPosition
-     */
-    omit?: ArcaCctCategoryPositionOmit<ExtArgs> | null
-  }
-
-
-  /**
-   * Model ArcaContractModality
-   */
-
-  export type AggregateArcaContractModality = {
-    _count: ArcaContractModalityCountAggregateOutputType | null
-    _min: ArcaContractModalityMinAggregateOutputType | null
-    _max: ArcaContractModalityMaxAggregateOutputType | null
-  }
-
-  export type ArcaContractModalityMinAggregateOutputType = {
-    code: string | null
-    name: string | null
-    periodFrom: string | null
-    periodTo: string | null
-    description: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaContractModalityMaxAggregateOutputType = {
-    code: string | null
-    name: string | null
-    periodFrom: string | null
-    periodTo: string | null
-    description: string | null
-    isActive: boolean | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type ArcaContractModalityCountAggregateOutputType = {
-    code: number
-    name: number
-    periodFrom: number
-    periodTo: number
-    description: number
-    isActive: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type ArcaContractModalityMinAggregateInputType = {
-    code?: true
-    name?: true
-    periodFrom?: true
-    periodTo?: true
-    description?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaContractModalityMaxAggregateInputType = {
-    code?: true
-    name?: true
-    periodFrom?: true
-    periodTo?: true
-    description?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type ArcaContractModalityCountAggregateInputType = {
-    code?: true
-    name?: true
-    periodFrom?: true
-    periodTo?: true
-    description?: true
-    isActive?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type ArcaContractModalityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaContractModality to aggregate.
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaContractModalities to fetch.
-     */
-    orderBy?: ArcaContractModalityOrderByWithRelationInput | ArcaContractModalityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: ArcaContractModalityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaContractModalities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaContractModalities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned ArcaContractModalities
-    **/
-    _count?: true | ArcaContractModalityCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: ArcaContractModalityMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: ArcaContractModalityMaxAggregateInputType
-  }
-
-  export type GetArcaContractModalityAggregateType<T extends ArcaContractModalityAggregateArgs> = {
-        [P in keyof T & keyof AggregateArcaContractModality]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateArcaContractModality[P]>
-      : GetScalarType<T[P], AggregateArcaContractModality[P]>
-  }
-
-
-
-
-  export type ArcaContractModalityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: ArcaContractModalityWhereInput
-    orderBy?: ArcaContractModalityOrderByWithAggregationInput | ArcaContractModalityOrderByWithAggregationInput[]
-    by: ArcaContractModalityScalarFieldEnum[] | ArcaContractModalityScalarFieldEnum
-    having?: ArcaContractModalityScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: ArcaContractModalityCountAggregateInputType | true
-    _min?: ArcaContractModalityMinAggregateInputType
-    _max?: ArcaContractModalityMaxAggregateInputType
-  }
-
-  export type ArcaContractModalityGroupByOutputType = {
-    code: string
-    name: string
-    periodFrom: string | null
-    periodTo: string | null
-    description: string | null
-    isActive: boolean
-    createdAt: Date
-    updatedAt: Date
-    _count: ArcaContractModalityCountAggregateOutputType | null
-    _min: ArcaContractModalityMinAggregateOutputType | null
-    _max: ArcaContractModalityMaxAggregateOutputType | null
-  }
-
-  type GetArcaContractModalityGroupByPayload<T extends ArcaContractModalityGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<ArcaContractModalityGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof ArcaContractModalityGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], ArcaContractModalityGroupByOutputType[P]>
-            : GetScalarType<T[P], ArcaContractModalityGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type ArcaContractModalitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    code?: boolean
-    name?: boolean
-    periodFrom?: boolean
-    periodTo?: boolean
-    description?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    employees?: boolean | ArcaContractModality$employeesArgs<ExtArgs>
-    _count?: boolean | ArcaContractModalityCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["arcaContractModality"]>
-
-
-
-  export type ArcaContractModalitySelectScalar = {
-    code?: boolean
-    name?: boolean
-    periodFrom?: boolean
-    periodTo?: boolean
-    description?: boolean
-    isActive?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type ArcaContractModalityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"code" | "name" | "periodFrom" | "periodTo" | "description" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["arcaContractModality"]>
-  export type ArcaContractModalityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    employees?: boolean | ArcaContractModality$employeesArgs<ExtArgs>
-    _count?: boolean | ArcaContractModalityCountOutputTypeDefaultArgs<ExtArgs>
-  }
-
-  export type $ArcaContractModalityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "ArcaContractModality"
-    objects: {
-      employees: Prisma.$EmployeePayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      code: string
-      name: string
-      periodFrom: string | null
-      periodTo: string | null
-      description: string | null
-      isActive: boolean
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["arcaContractModality"]>
-    composites: {}
-  }
-
-  type ArcaContractModalityGetPayload<S extends boolean | null | undefined | ArcaContractModalityDefaultArgs> = $Result.GetResult<Prisma.$ArcaContractModalityPayload, S>
-
-  type ArcaContractModalityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<ArcaContractModalityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: ArcaContractModalityCountAggregateInputType | true
-    }
-
-  export interface ArcaContractModalityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ArcaContractModality'], meta: { name: 'ArcaContractModality' } }
-    /**
-     * Find zero or one ArcaContractModality that matches the filter.
-     * @param {ArcaContractModalityFindUniqueArgs} args - Arguments to find a ArcaContractModality
-     * @example
-     * // Get one ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends ArcaContractModalityFindUniqueArgs>(args: SelectSubset<T, ArcaContractModalityFindUniqueArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one ArcaContractModality that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {ArcaContractModalityFindUniqueOrThrowArgs} args - Arguments to find a ArcaContractModality
-     * @example
-     * // Get one ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends ArcaContractModalityFindUniqueOrThrowArgs>(args: SelectSubset<T, ArcaContractModalityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaContractModality that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityFindFirstArgs} args - Arguments to find a ArcaContractModality
-     * @example
-     * // Get one ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends ArcaContractModalityFindFirstArgs>(args?: SelectSubset<T, ArcaContractModalityFindFirstArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first ArcaContractModality that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityFindFirstOrThrowArgs} args - Arguments to find a ArcaContractModality
-     * @example
-     * // Get one ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends ArcaContractModalityFindFirstOrThrowArgs>(args?: SelectSubset<T, ArcaContractModalityFindFirstOrThrowArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more ArcaContractModalities that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all ArcaContractModalities
-     * const arcaContractModalities = await prisma.arcaContractModality.findMany()
-     * 
-     * // Get first 10 ArcaContractModalities
-     * const arcaContractModalities = await prisma.arcaContractModality.findMany({ take: 10 })
-     * 
-     * // Only select the `code`
-     * const arcaContractModalityWithCodeOnly = await prisma.arcaContractModality.findMany({ select: { code: true } })
-     * 
-     */
-    findMany<T extends ArcaContractModalityFindManyArgs>(args?: SelectSubset<T, ArcaContractModalityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a ArcaContractModality.
-     * @param {ArcaContractModalityCreateArgs} args - Arguments to create a ArcaContractModality.
-     * @example
-     * // Create one ArcaContractModality
-     * const ArcaContractModality = await prisma.arcaContractModality.create({
-     *   data: {
-     *     // ... data to create a ArcaContractModality
-     *   }
-     * })
-     * 
-     */
-    create<T extends ArcaContractModalityCreateArgs>(args: SelectSubset<T, ArcaContractModalityCreateArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many ArcaContractModalities.
-     * @param {ArcaContractModalityCreateManyArgs} args - Arguments to create many ArcaContractModalities.
-     * @example
-     * // Create many ArcaContractModalities
-     * const arcaContractModality = await prisma.arcaContractModality.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends ArcaContractModalityCreateManyArgs>(args?: SelectSubset<T, ArcaContractModalityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a ArcaContractModality.
-     * @param {ArcaContractModalityDeleteArgs} args - Arguments to delete one ArcaContractModality.
-     * @example
-     * // Delete one ArcaContractModality
-     * const ArcaContractModality = await prisma.arcaContractModality.delete({
-     *   where: {
-     *     // ... filter to delete one ArcaContractModality
-     *   }
-     * })
-     * 
-     */
-    delete<T extends ArcaContractModalityDeleteArgs>(args: SelectSubset<T, ArcaContractModalityDeleteArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one ArcaContractModality.
-     * @param {ArcaContractModalityUpdateArgs} args - Arguments to update one ArcaContractModality.
-     * @example
-     * // Update one ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends ArcaContractModalityUpdateArgs>(args: SelectSubset<T, ArcaContractModalityUpdateArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more ArcaContractModalities.
-     * @param {ArcaContractModalityDeleteManyArgs} args - Arguments to filter ArcaContractModalities to delete.
-     * @example
-     * // Delete a few ArcaContractModalities
-     * const { count } = await prisma.arcaContractModality.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends ArcaContractModalityDeleteManyArgs>(args?: SelectSubset<T, ArcaContractModalityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more ArcaContractModalities.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many ArcaContractModalities
-     * const arcaContractModality = await prisma.arcaContractModality.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends ArcaContractModalityUpdateManyArgs>(args: SelectSubset<T, ArcaContractModalityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one ArcaContractModality.
-     * @param {ArcaContractModalityUpsertArgs} args - Arguments to update or create a ArcaContractModality.
-     * @example
-     * // Update or create a ArcaContractModality
-     * const arcaContractModality = await prisma.arcaContractModality.upsert({
-     *   create: {
-     *     // ... data to create a ArcaContractModality
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the ArcaContractModality we want to update
-     *   }
-     * })
-     */
-    upsert<T extends ArcaContractModalityUpsertArgs>(args: SelectSubset<T, ArcaContractModalityUpsertArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of ArcaContractModalities.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityCountArgs} args - Arguments to filter ArcaContractModalities to count.
-     * @example
-     * // Count the number of ArcaContractModalities
-     * const count = await prisma.arcaContractModality.count({
-     *   where: {
-     *     // ... the filter for the ArcaContractModalities we want to count
-     *   }
-     * })
-    **/
-    count<T extends ArcaContractModalityCountArgs>(
-      args?: Subset<T, ArcaContractModalityCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], ArcaContractModalityCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a ArcaContractModality.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends ArcaContractModalityAggregateArgs>(args: Subset<T, ArcaContractModalityAggregateArgs>): Prisma.PrismaPromise<GetArcaContractModalityAggregateType<T>>
-
-    /**
-     * Group by ArcaContractModality.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {ArcaContractModalityGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends ArcaContractModalityGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: ArcaContractModalityGroupByArgs['orderBy'] }
-        : { orderBy?: ArcaContractModalityGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, ArcaContractModalityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetArcaContractModalityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the ArcaContractModality model
-   */
-  readonly fields: ArcaContractModalityFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for ArcaContractModality.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__ArcaContractModalityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    employees<T extends ArcaContractModality$employeesArgs<ExtArgs> = {}>(args?: Subset<T, ArcaContractModality$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the ArcaContractModality model
-   */
-  interface ArcaContractModalityFieldRefs {
-    readonly code: FieldRef<"ArcaContractModality", 'String'>
-    readonly name: FieldRef<"ArcaContractModality", 'String'>
-    readonly periodFrom: FieldRef<"ArcaContractModality", 'String'>
-    readonly periodTo: FieldRef<"ArcaContractModality", 'String'>
-    readonly description: FieldRef<"ArcaContractModality", 'String'>
-    readonly isActive: FieldRef<"ArcaContractModality", 'Boolean'>
-    readonly createdAt: FieldRef<"ArcaContractModality", 'DateTime'>
-    readonly updatedAt: FieldRef<"ArcaContractModality", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * ArcaContractModality findUnique
-   */
-  export type ArcaContractModalityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaContractModality to fetch.
-     */
-    where: ArcaContractModalityWhereUniqueInput
-  }
-
-  /**
-   * ArcaContractModality findUniqueOrThrow
-   */
-  export type ArcaContractModalityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaContractModality to fetch.
-     */
-    where: ArcaContractModalityWhereUniqueInput
-  }
-
-  /**
-   * ArcaContractModality findFirst
-   */
-  export type ArcaContractModalityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaContractModality to fetch.
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaContractModalities to fetch.
-     */
-    orderBy?: ArcaContractModalityOrderByWithRelationInput | ArcaContractModalityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaContractModalities.
-     */
-    cursor?: ArcaContractModalityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaContractModalities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaContractModalities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaContractModalities.
-     */
-    distinct?: ArcaContractModalityScalarFieldEnum | ArcaContractModalityScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaContractModality findFirstOrThrow
-   */
-  export type ArcaContractModalityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaContractModality to fetch.
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaContractModalities to fetch.
-     */
-    orderBy?: ArcaContractModalityOrderByWithRelationInput | ArcaContractModalityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for ArcaContractModalities.
-     */
-    cursor?: ArcaContractModalityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaContractModalities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaContractModalities.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of ArcaContractModalities.
-     */
-    distinct?: ArcaContractModalityScalarFieldEnum | ArcaContractModalityScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaContractModality findMany
-   */
-  export type ArcaContractModalityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter, which ArcaContractModalities to fetch.
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of ArcaContractModalities to fetch.
-     */
-    orderBy?: ArcaContractModalityOrderByWithRelationInput | ArcaContractModalityOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing ArcaContractModalities.
-     */
-    cursor?: ArcaContractModalityWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` ArcaContractModalities from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` ArcaContractModalities.
-     */
-    skip?: number
-    distinct?: ArcaContractModalityScalarFieldEnum | ArcaContractModalityScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaContractModality create
-   */
-  export type ArcaContractModalityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * The data needed to create a ArcaContractModality.
-     */
-    data: XOR<ArcaContractModalityCreateInput, ArcaContractModalityUncheckedCreateInput>
-  }
-
-  /**
-   * ArcaContractModality createMany
-   */
-  export type ArcaContractModalityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many ArcaContractModalities.
-     */
-    data: ArcaContractModalityCreateManyInput | ArcaContractModalityCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * ArcaContractModality update
-   */
-  export type ArcaContractModalityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * The data needed to update a ArcaContractModality.
-     */
-    data: XOR<ArcaContractModalityUpdateInput, ArcaContractModalityUncheckedUpdateInput>
-    /**
-     * Choose, which ArcaContractModality to update.
-     */
-    where: ArcaContractModalityWhereUniqueInput
-  }
-
-  /**
-   * ArcaContractModality updateMany
-   */
-  export type ArcaContractModalityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update ArcaContractModalities.
-     */
-    data: XOR<ArcaContractModalityUpdateManyMutationInput, ArcaContractModalityUncheckedUpdateManyInput>
-    /**
-     * Filter which ArcaContractModalities to update
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * Limit how many ArcaContractModalities to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaContractModality upsert
-   */
-  export type ArcaContractModalityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * The filter to search for the ArcaContractModality to update in case it exists.
-     */
-    where: ArcaContractModalityWhereUniqueInput
-    /**
-     * In case the ArcaContractModality found by the `where` argument doesn't exist, create a new ArcaContractModality with this data.
-     */
-    create: XOR<ArcaContractModalityCreateInput, ArcaContractModalityUncheckedCreateInput>
-    /**
-     * In case the ArcaContractModality was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<ArcaContractModalityUpdateInput, ArcaContractModalityUncheckedUpdateInput>
-  }
-
-  /**
-   * ArcaContractModality delete
-   */
-  export type ArcaContractModalityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    /**
-     * Filter which ArcaContractModality to delete.
-     */
-    where: ArcaContractModalityWhereUniqueInput
-  }
-
-  /**
-   * ArcaContractModality deleteMany
-   */
-  export type ArcaContractModalityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which ArcaContractModalities to delete
-     */
-    where?: ArcaContractModalityWhereInput
-    /**
-     * Limit how many ArcaContractModalities to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * ArcaContractModality.employees
-   */
-  export type ArcaContractModality$employeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Employee
-     */
-    select?: EmployeeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Employee
-     */
-    omit?: EmployeeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: EmployeeInclude<ExtArgs> | null
-    where?: EmployeeWhereInput
-    orderBy?: EmployeeOrderByWithRelationInput | EmployeeOrderByWithRelationInput[]
-    cursor?: EmployeeWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: EmployeeScalarFieldEnum | EmployeeScalarFieldEnum[]
-  }
-
-  /**
-   * ArcaContractModality without action
-   */
-  export type ArcaContractModalityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model JobPosition
    */
 
@@ -13932,10 +7580,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    cct?: boolean | JobPosition$cctArgs<ExtArgs>
-    category?: boolean | JobPosition$categoryArgs<ExtArgs>
-    arcaPosition?: boolean | JobPosition$arcaPositionArgs<ExtArgs>
-    serviceType?: boolean | JobPosition$serviceTypeArgs<ExtArgs>
     employees?: boolean | JobPosition$employeesArgs<ExtArgs>
     _count?: boolean | JobPositionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["jobPosition"]>
@@ -13958,10 +7602,6 @@ export namespace Prisma {
 
   export type JobPositionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "cctCode" | "categoryCode" | "positionCode" | "serviceTypeCode" | "activityCode" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["jobPosition"]>
   export type JobPositionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cct?: boolean | JobPosition$cctArgs<ExtArgs>
-    category?: boolean | JobPosition$categoryArgs<ExtArgs>
-    arcaPosition?: boolean | JobPosition$arcaPositionArgs<ExtArgs>
-    serviceType?: boolean | JobPosition$serviceTypeArgs<ExtArgs>
     employees?: boolean | JobPosition$employeesArgs<ExtArgs>
     _count?: boolean | JobPositionCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -13969,10 +7609,6 @@ export namespace Prisma {
   export type $JobPositionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "JobPosition"
     objects: {
-      cct: Prisma.$ArcaCctPayload<ExtArgs> | null
-      category: Prisma.$ArcaCategoryPayload<ExtArgs> | null
-      arcaPosition: Prisma.$ArcaPositionPayload<ExtArgs> | null
-      serviceType: Prisma.$ArcaServiceTypePayload<ExtArgs> | null
       employees: Prisma.$EmployeePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -14327,10 +7963,6 @@ export namespace Prisma {
    */
   export interface Prisma__JobPositionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cct<T extends JobPosition$cctArgs<ExtArgs> = {}>(args?: Subset<T, JobPosition$cctArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    category<T extends JobPosition$categoryArgs<ExtArgs> = {}>(args?: Subset<T, JobPosition$categoryArgs<ExtArgs>>): Prisma__ArcaCategoryClient<$Result.GetResult<Prisma.$ArcaCategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    arcaPosition<T extends JobPosition$arcaPositionArgs<ExtArgs> = {}>(args?: Subset<T, JobPosition$arcaPositionArgs<ExtArgs>>): Prisma__ArcaPositionClient<$Result.GetResult<Prisma.$ArcaPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    serviceType<T extends JobPosition$serviceTypeArgs<ExtArgs> = {}>(args?: Subset<T, JobPosition$serviceTypeArgs<ExtArgs>>): Prisma__ArcaServiceTypeClient<$Result.GetResult<Prisma.$ArcaServiceTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     employees<T extends JobPosition$employeesArgs<ExtArgs> = {}>(args?: Subset<T, JobPosition$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -14712,82 +8344,6 @@ export namespace Prisma {
      * Limit how many JobPositions to delete.
      */
     limit?: number
-  }
-
-  /**
-   * JobPosition.cct
-   */
-  export type JobPosition$cctArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    where?: ArcaCctWhereInput
-  }
-
-  /**
-   * JobPosition.category
-   */
-  export type JobPosition$categoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCategory
-     */
-    select?: ArcaCategorySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCategory
-     */
-    omit?: ArcaCategoryOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCategoryInclude<ExtArgs> | null
-    where?: ArcaCategoryWhereInput
-  }
-
-  /**
-   * JobPosition.arcaPosition
-   */
-  export type JobPosition$arcaPositionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaPosition
-     */
-    select?: ArcaPositionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaPosition
-     */
-    omit?: ArcaPositionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaPositionInclude<ExtArgs> | null
-    where?: ArcaPositionWhereInput
-  }
-
-  /**
-   * JobPosition.serviceType
-   */
-  export type JobPosition$serviceTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaServiceType
-     */
-    select?: ArcaServiceTypeSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaServiceType
-     */
-    omit?: ArcaServiceTypeOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaServiceTypeInclude<ExtArgs> | null
-    where?: ArcaServiceTypeWhereInput
   }
 
   /**
@@ -22436,7 +15992,6 @@ export namespace Prisma {
     healthInsurance?: boolean | Employee$healthInsuranceArgs<ExtArgs>
     union?: boolean | Employee$unionArgs<ExtArgs>
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
-    contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     workShift?: boolean | Employee$workShiftArgs<ExtArgs>
     paymentMethod?: boolean | Employee$paymentMethodArgs<ExtArgs>
@@ -22510,7 +16065,6 @@ export namespace Prisma {
     healthInsurance?: boolean | Employee$healthInsuranceArgs<ExtArgs>
     union?: boolean | Employee$unionArgs<ExtArgs>
     mutual?: boolean | Employee$mutualArgs<ExtArgs>
-    contractModality?: boolean | Employee$contractModalityArgs<ExtArgs>
     salaryScale?: boolean | Employee$salaryScaleArgs<ExtArgs>
     workShift?: boolean | Employee$workShiftArgs<ExtArgs>
     paymentMethod?: boolean | Employee$paymentMethodArgs<ExtArgs>
@@ -22536,7 +16090,6 @@ export namespace Prisma {
       healthInsurance: Prisma.$HealthInsurancePayload<ExtArgs> | null
       union: Prisma.$UnionPayload<ExtArgs> | null
       mutual: Prisma.$MutualPayload<ExtArgs> | null
-      contractModality: Prisma.$ArcaContractModalityPayload<ExtArgs> | null
       salaryScale: Prisma.$SalaryScalePayload<ExtArgs> | null
       workShift: Prisma.$WorkShiftPayload<ExtArgs> | null
       paymentMethod: Prisma.$PaymentMethodPayload<ExtArgs> | null
@@ -22942,7 +16495,6 @@ export namespace Prisma {
     healthInsurance<T extends Employee$healthInsuranceArgs<ExtArgs> = {}>(args?: Subset<T, Employee$healthInsuranceArgs<ExtArgs>>): Prisma__HealthInsuranceClient<$Result.GetResult<Prisma.$HealthInsurancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     union<T extends Employee$unionArgs<ExtArgs> = {}>(args?: Subset<T, Employee$unionArgs<ExtArgs>>): Prisma__UnionClient<$Result.GetResult<Prisma.$UnionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     mutual<T extends Employee$mutualArgs<ExtArgs> = {}>(args?: Subset<T, Employee$mutualArgs<ExtArgs>>): Prisma__MutualClient<$Result.GetResult<Prisma.$MutualPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    contractModality<T extends Employee$contractModalityArgs<ExtArgs> = {}>(args?: Subset<T, Employee$contractModalityArgs<ExtArgs>>): Prisma__ArcaContractModalityClient<$Result.GetResult<Prisma.$ArcaContractModalityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     salaryScale<T extends Employee$salaryScaleArgs<ExtArgs> = {}>(args?: Subset<T, Employee$salaryScaleArgs<ExtArgs>>): Prisma__SalaryScaleClient<$Result.GetResult<Prisma.$SalaryScalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     workShift<T extends Employee$workShiftArgs<ExtArgs> = {}>(args?: Subset<T, Employee$workShiftArgs<ExtArgs>>): Prisma__WorkShiftClient<$Result.GetResult<Prisma.$WorkShiftPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paymentMethod<T extends Employee$paymentMethodArgs<ExtArgs> = {}>(args?: Subset<T, Employee$paymentMethodArgs<ExtArgs>>): Prisma__PaymentMethodClient<$Result.GetResult<Prisma.$PaymentMethodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -23465,25 +17017,6 @@ export namespace Prisma {
      */
     include?: MutualInclude<ExtArgs> | null
     where?: MutualWhereInput
-  }
-
-  /**
-   * Employee.contractModality
-   */
-  export type Employee$contractModalityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaContractModality
-     */
-    select?: ArcaContractModalitySelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaContractModality
-     */
-    omit?: ArcaContractModalityOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaContractModalityInclude<ExtArgs> | null
-    where?: ArcaContractModalityWhereInput
   }
 
   /**
@@ -25038,7 +18571,6 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
-    cct?: boolean | SalaryScale$cctArgs<ExtArgs>
     employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
     periods?: boolean | SalaryScale$periodsArgs<ExtArgs>
     _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
@@ -25062,7 +18594,6 @@ export namespace Prisma {
 
   export type SalaryScaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "code" | "cctCode" | "description" | "amount" | "isInternOnly" | "isDirectorOnly" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["salaryScale"]>
   export type SalaryScaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    cct?: boolean | SalaryScale$cctArgs<ExtArgs>
     employees?: boolean | SalaryScale$employeesArgs<ExtArgs>
     periods?: boolean | SalaryScale$periodsArgs<ExtArgs>
     _count?: boolean | SalaryScaleCountOutputTypeDefaultArgs<ExtArgs>
@@ -25071,7 +18602,6 @@ export namespace Prisma {
   export type $SalaryScalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "SalaryScale"
     objects: {
-      cct: Prisma.$ArcaCctPayload<ExtArgs> | null
       employees: Prisma.$EmployeePayload<ExtArgs>[]
       periods: Prisma.$SalaryScalePeriodPayload<ExtArgs>[]
     }
@@ -25427,7 +18957,6 @@ export namespace Prisma {
    */
   export interface Prisma__SalaryScaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    cct<T extends SalaryScale$cctArgs<ExtArgs> = {}>(args?: Subset<T, SalaryScale$cctArgs<ExtArgs>>): Prisma__ArcaCctClient<$Result.GetResult<Prisma.$ArcaCctPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     employees<T extends SalaryScale$employeesArgs<ExtArgs> = {}>(args?: Subset<T, SalaryScale$employeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periods<T extends SalaryScale$periodsArgs<ExtArgs> = {}>(args?: Subset<T, SalaryScale$periodsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalaryScalePeriodPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -25810,25 +19339,6 @@ export namespace Prisma {
      * Limit how many SalaryScales to delete.
      */
     limit?: number
-  }
-
-  /**
-   * SalaryScale.cct
-   */
-  export type SalaryScale$cctArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the ArcaCct
-     */
-    select?: ArcaCctSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the ArcaCct
-     */
-    omit?: ArcaCctOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: ArcaCctInclude<ExtArgs> | null
-    where?: ArcaCctWhereInput
   }
 
   /**
@@ -34745,6 +28255,7 @@ export namespace Prisma {
     totalNet: Decimal | null
     totalEmployerCost: Decimal | null
     closedAt: Date | null
+    closedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34769,6 +28280,7 @@ export namespace Prisma {
     totalNet: Decimal | null
     totalEmployerCost: Decimal | null
     closedAt: Date | null
+    closedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -34793,6 +28305,7 @@ export namespace Prisma {
     totalNet: number
     totalEmployerCost: number
     closedAt: number
+    closedBy: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -34837,6 +28350,7 @@ export namespace Prisma {
     totalNet?: true
     totalEmployerCost?: true
     closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34861,6 +28375,7 @@ export namespace Prisma {
     totalNet?: true
     totalEmployerCost?: true
     closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -34885,6 +28400,7 @@ export namespace Prisma {
     totalNet?: true
     totalEmployerCost?: true
     closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -34996,6 +28512,7 @@ export namespace Prisma {
     totalNet: Decimal
     totalEmployerCost: Decimal
     closedAt: Date | null
+    closedBy: string | null
     createdAt: Date
     updatedAt: Date
     _count: PayrollPeriodCountAggregateOutputType | null
@@ -35039,6 +28556,7 @@ export namespace Prisma {
     totalNet?: boolean
     totalEmployerCost?: boolean
     closedAt?: boolean
+    closedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
@@ -35069,11 +28587,12 @@ export namespace Prisma {
     totalNet?: boolean
     totalEmployerCost?: boolean
     closedAt?: boolean
+    closedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fiscalPeriodId" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "liquidationDate" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
+  export type PayrollPeriodOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fiscalPeriodId" | "year" | "month" | "periodType" | "settlementNumber" | "settlementName" | "settlementType" | "liquidationDate" | "paymentDate" | "paymentPlace" | "depositDate" | "depositBank" | "rubricDate" | "status" | "totalGross" | "totalNet" | "totalEmployerCost" | "closedAt" | "closedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollPeriod"]>
   export type PayrollPeriodInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
@@ -35108,6 +28627,7 @@ export namespace Prisma {
       totalNet: Prisma.Decimal
       totalEmployerCost: Prisma.Decimal
       closedAt: Date | null
+      closedBy: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["payrollPeriod"]>
@@ -35501,6 +29021,7 @@ export namespace Prisma {
     readonly totalNet: FieldRef<"PayrollPeriod", 'Decimal'>
     readonly totalEmployerCost: FieldRef<"PayrollPeriod", 'Decimal'>
     readonly closedAt: FieldRef<"PayrollPeriod", 'DateTime'>
+    readonly closedBy: FieldRef<"PayrollPeriod", 'String'>
     readonly createdAt: FieldRef<"PayrollPeriod", 'DateTime'>
     readonly updatedAt: FieldRef<"PayrollPeriod", 'DateTime'>
   }
@@ -36030,6 +29551,8 @@ export namespace Prisma {
     signatureHash: string | null
     signedAt: Date | null
     status: string | null
+    closedAt: Date | null
+    closedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -36070,6 +29593,8 @@ export namespace Prisma {
     signatureHash: string | null
     signedAt: Date | null
     status: string | null
+    closedAt: Date | null
+    closedBy: string | null
     createdAt: Date | null
     updatedAt: Date | null
     deletedAt: Date | null
@@ -36110,6 +29635,8 @@ export namespace Prisma {
     signatureHash: number
     signedAt: number
     status: number
+    closedAt: number
+    closedBy: number
     createdAt: number
     updatedAt: number
     deletedAt: number
@@ -36204,6 +29731,8 @@ export namespace Prisma {
     signatureHash?: true
     signedAt?: true
     status?: true
+    closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -36244,6 +29773,8 @@ export namespace Prisma {
     signatureHash?: true
     signedAt?: true
     status?: true
+    closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -36284,6 +29815,8 @@ export namespace Prisma {
     signatureHash?: true
     signedAt?: true
     status?: true
+    closedAt?: true
+    closedBy?: true
     createdAt?: true
     updatedAt?: true
     deletedAt?: true
@@ -36411,6 +29944,8 @@ export namespace Prisma {
     signatureHash: string | null
     signedAt: Date | null
     status: string
+    closedAt: Date | null
+    closedBy: string | null
     createdAt: Date
     updatedAt: Date
     deletedAt: Date | null
@@ -36470,6 +30005,8 @@ export namespace Prisma {
     signatureHash?: boolean
     signedAt?: boolean
     status?: boolean
+    closedAt?: boolean
+    closedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
@@ -36517,12 +30054,14 @@ export namespace Prisma {
     signatureHash?: boolean
     signedAt?: boolean
     status?: boolean
+    closedAt?: boolean
+    closedBy?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     deletedAt?: boolean
   }
 
-  export type PaySlipOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollPeriodId" | "employeeId" | "grossSalary" | "remunerativeSalary" | "nonRemunerative" | "totalDeductions" | "netSalary" | "netSalaryWords" | "paymentDate" | "paymentMethod" | "bankName" | "cbu" | "workedDays" | "workedHours" | "sipaContrib" | "inssjypContrib" | "osContrib" | "fneContrib" | "aaffContrib" | "artContrib" | "scvoContrib" | "unionContrib" | "totalEmployerContrib" | "totalLaborCost" | "pctNetSalary" | "pctEmployeeDeductions" | "pctSocialSecurityContrib" | "pctHealthContrib" | "pctArtAndInsurance" | "pctUnionAndChambers" | "signatureHash" | "signedAt" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["paySlip"]>
+  export type PaySlipOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollPeriodId" | "employeeId" | "grossSalary" | "remunerativeSalary" | "nonRemunerative" | "totalDeductions" | "netSalary" | "netSalaryWords" | "paymentDate" | "paymentMethod" | "bankName" | "cbu" | "workedDays" | "workedHours" | "sipaContrib" | "inssjypContrib" | "osContrib" | "fneContrib" | "aaffContrib" | "artContrib" | "scvoContrib" | "unionContrib" | "totalEmployerContrib" | "totalLaborCost" | "pctNetSalary" | "pctEmployeeDeductions" | "pctSocialSecurityContrib" | "pctHealthContrib" | "pctArtAndInsurance" | "pctUnionAndChambers" | "signatureHash" | "signedAt" | "status" | "closedAt" | "closedBy" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["paySlip"]>
   export type PaySlipInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payrollPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -36574,6 +30113,8 @@ export namespace Prisma {
       signatureHash: string | null
       signedAt: Date | null
       status: string
+      closedAt: Date | null
+      closedBy: string | null
       createdAt: Date
       updatedAt: Date
       deletedAt: Date | null
@@ -36984,6 +30525,8 @@ export namespace Prisma {
     readonly signatureHash: FieldRef<"PaySlip", 'String'>
     readonly signedAt: FieldRef<"PaySlip", 'DateTime'>
     readonly status: FieldRef<"PaySlip", 'String'>
+    readonly closedAt: FieldRef<"PaySlip", 'DateTime'>
+    readonly closedBy: FieldRef<"PaySlip", 'String'>
     readonly createdAt: FieldRef<"PaySlip", 'DateTime'>
     readonly updatedAt: FieldRef<"PaySlip", 'DateTime'>
     readonly deletedAt: FieldRef<"PaySlip", 'DateTime'>
@@ -37431,6 +30974,7 @@ export namespace Prisma {
     amount: Decimal | null
     arcaConceptCode: string | null
     formulaExplanation: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37449,6 +30993,7 @@ export namespace Prisma {
     amount: Decimal | null
     arcaConceptCode: string | null
     formulaExplanation: string | null
+    notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -37467,6 +31012,7 @@ export namespace Prisma {
     amount: number
     arcaConceptCode: number
     formulaExplanation: number
+    notes: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -37501,6 +31047,7 @@ export namespace Prisma {
     amount?: true
     arcaConceptCode?: true
     formulaExplanation?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37519,6 +31066,7 @@ export namespace Prisma {
     amount?: true
     arcaConceptCode?: true
     formulaExplanation?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -37537,6 +31085,7 @@ export namespace Prisma {
     amount?: true
     arcaConceptCode?: true
     formulaExplanation?: true
+    notes?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -37642,6 +31191,7 @@ export namespace Prisma {
     amount: Decimal
     arcaConceptCode: string | null
     formulaExplanation: string | null
+    notes: string | null
     createdAt: Date
     updatedAt: Date
     _count: PaySlipItemCountAggregateOutputType | null
@@ -37679,6 +31229,7 @@ export namespace Prisma {
     amount?: boolean
     arcaConceptCode?: boolean
     formulaExplanation?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
@@ -37700,11 +31251,12 @@ export namespace Prisma {
     amount?: boolean
     arcaConceptCode?: boolean
     formulaExplanation?: boolean
+    notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "formulaExplanation" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
+  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "formulaExplanation" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
   export type PaySlipItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
   }
@@ -37728,6 +31280,7 @@ export namespace Prisma {
       amount: Prisma.Decimal
       arcaConceptCode: string | null
       formulaExplanation: string | null
+      notes: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["paySlipItem"]>
@@ -38113,6 +31666,7 @@ export namespace Prisma {
     readonly amount: FieldRef<"PaySlipItem", 'Decimal'>
     readonly arcaConceptCode: FieldRef<"PaySlipItem", 'String'>
     readonly formulaExplanation: FieldRef<"PaySlipItem", 'String'>
+    readonly notes: FieldRef<"PaySlipItem", 'String'>
     readonly createdAt: FieldRef<"PaySlipItem", 'DateTime'>
     readonly updatedAt: FieldRef<"PaySlipItem", 'DateTime'>
   }
@@ -38473,6 +32027,1117 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PaySlipItemInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PayrollClosingAudit
+   */
+
+  export type AggregatePayrollClosingAudit = {
+    _count: PayrollClosingAuditCountAggregateOutputType | null
+    _avg: PayrollClosingAuditAvgAggregateOutputType | null
+    _sum: PayrollClosingAuditSumAggregateOutputType | null
+    _min: PayrollClosingAuditMinAggregateOutputType | null
+    _max: PayrollClosingAuditMaxAggregateOutputType | null
+  }
+
+  export type PayrollClosingAuditAvgAggregateOutputType = {
+    year: number | null
+    month: number | null
+    totalSlipsClosed: number | null
+    totalGross: Decimal | null
+    totalNet: Decimal | null
+    totalEmployerCost: Decimal | null
+    purgedNoveltiesCount: number | null
+    terminatedEmployeesCount: number | null
+  }
+
+  export type PayrollClosingAuditSumAggregateOutputType = {
+    year: number | null
+    month: number | null
+    totalSlipsClosed: number | null
+    totalGross: Decimal | null
+    totalNet: Decimal | null
+    totalEmployerCost: Decimal | null
+    purgedNoveltiesCount: number | null
+    terminatedEmployeesCount: number | null
+  }
+
+  export type PayrollClosingAuditMinAggregateOutputType = {
+    id: string | null
+    scope: string | null
+    fiscalPeriodId: string | null
+    payrollPeriodId: string | null
+    year: number | null
+    month: number | null
+    totalSlipsClosed: number | null
+    totalGross: Decimal | null
+    totalNet: Decimal | null
+    totalEmployerCost: Decimal | null
+    purgedNoveltiesCount: number | null
+    terminatedEmployeesCount: number | null
+    checksumHash: string | null
+    closedBy: string | null
+    closedByName: string | null
+    notes: string | null
+    closedAt: Date | null
+  }
+
+  export type PayrollClosingAuditMaxAggregateOutputType = {
+    id: string | null
+    scope: string | null
+    fiscalPeriodId: string | null
+    payrollPeriodId: string | null
+    year: number | null
+    month: number | null
+    totalSlipsClosed: number | null
+    totalGross: Decimal | null
+    totalNet: Decimal | null
+    totalEmployerCost: Decimal | null
+    purgedNoveltiesCount: number | null
+    terminatedEmployeesCount: number | null
+    checksumHash: string | null
+    closedBy: string | null
+    closedByName: string | null
+    notes: string | null
+    closedAt: Date | null
+  }
+
+  export type PayrollClosingAuditCountAggregateOutputType = {
+    id: number
+    scope: number
+    fiscalPeriodId: number
+    payrollPeriodId: number
+    year: number
+    month: number
+    closedPeriodIds: number
+    totalSlipsClosed: number
+    totalGross: number
+    totalNet: number
+    totalEmployerCost: number
+    purgedNoveltiesCount: number
+    purgedNoveltiesSummary: number
+    terminatedEmployeesCount: number
+    terminatedEmployees: number
+    additionalActions: number
+    warningsAccepted: number
+    checksumHash: number
+    closedBy: number
+    closedByName: number
+    notes: number
+    closedAt: number
+    _all: number
+  }
+
+
+  export type PayrollClosingAuditAvgAggregateInputType = {
+    year?: true
+    month?: true
+    totalSlipsClosed?: true
+    totalGross?: true
+    totalNet?: true
+    totalEmployerCost?: true
+    purgedNoveltiesCount?: true
+    terminatedEmployeesCount?: true
+  }
+
+  export type PayrollClosingAuditSumAggregateInputType = {
+    year?: true
+    month?: true
+    totalSlipsClosed?: true
+    totalGross?: true
+    totalNet?: true
+    totalEmployerCost?: true
+    purgedNoveltiesCount?: true
+    terminatedEmployeesCount?: true
+  }
+
+  export type PayrollClosingAuditMinAggregateInputType = {
+    id?: true
+    scope?: true
+    fiscalPeriodId?: true
+    payrollPeriodId?: true
+    year?: true
+    month?: true
+    totalSlipsClosed?: true
+    totalGross?: true
+    totalNet?: true
+    totalEmployerCost?: true
+    purgedNoveltiesCount?: true
+    terminatedEmployeesCount?: true
+    checksumHash?: true
+    closedBy?: true
+    closedByName?: true
+    notes?: true
+    closedAt?: true
+  }
+
+  export type PayrollClosingAuditMaxAggregateInputType = {
+    id?: true
+    scope?: true
+    fiscalPeriodId?: true
+    payrollPeriodId?: true
+    year?: true
+    month?: true
+    totalSlipsClosed?: true
+    totalGross?: true
+    totalNet?: true
+    totalEmployerCost?: true
+    purgedNoveltiesCount?: true
+    terminatedEmployeesCount?: true
+    checksumHash?: true
+    closedBy?: true
+    closedByName?: true
+    notes?: true
+    closedAt?: true
+  }
+
+  export type PayrollClosingAuditCountAggregateInputType = {
+    id?: true
+    scope?: true
+    fiscalPeriodId?: true
+    payrollPeriodId?: true
+    year?: true
+    month?: true
+    closedPeriodIds?: true
+    totalSlipsClosed?: true
+    totalGross?: true
+    totalNet?: true
+    totalEmployerCost?: true
+    purgedNoveltiesCount?: true
+    purgedNoveltiesSummary?: true
+    terminatedEmployeesCount?: true
+    terminatedEmployees?: true
+    additionalActions?: true
+    warningsAccepted?: true
+    checksumHash?: true
+    closedBy?: true
+    closedByName?: true
+    notes?: true
+    closedAt?: true
+    _all?: true
+  }
+
+  export type PayrollClosingAuditAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollClosingAudit to aggregate.
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollClosingAudits to fetch.
+     */
+    orderBy?: PayrollClosingAuditOrderByWithRelationInput | PayrollClosingAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayrollClosingAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollClosingAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollClosingAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayrollClosingAudits
+    **/
+    _count?: true | PayrollClosingAuditCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PayrollClosingAuditAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PayrollClosingAuditSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayrollClosingAuditMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayrollClosingAuditMaxAggregateInputType
+  }
+
+  export type GetPayrollClosingAuditAggregateType<T extends PayrollClosingAuditAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayrollClosingAudit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayrollClosingAudit[P]>
+      : GetScalarType<T[P], AggregatePayrollClosingAudit[P]>
+  }
+
+
+
+
+  export type PayrollClosingAuditGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayrollClosingAuditWhereInput
+    orderBy?: PayrollClosingAuditOrderByWithAggregationInput | PayrollClosingAuditOrderByWithAggregationInput[]
+    by: PayrollClosingAuditScalarFieldEnum[] | PayrollClosingAuditScalarFieldEnum
+    having?: PayrollClosingAuditScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayrollClosingAuditCountAggregateInputType | true
+    _avg?: PayrollClosingAuditAvgAggregateInputType
+    _sum?: PayrollClosingAuditSumAggregateInputType
+    _min?: PayrollClosingAuditMinAggregateInputType
+    _max?: PayrollClosingAuditMaxAggregateInputType
+  }
+
+  export type PayrollClosingAuditGroupByOutputType = {
+    id: string
+    scope: string
+    fiscalPeriodId: string | null
+    payrollPeriodId: string | null
+    year: number
+    month: number
+    closedPeriodIds: JsonValue
+    totalSlipsClosed: number
+    totalGross: Decimal
+    totalNet: Decimal
+    totalEmployerCost: Decimal
+    purgedNoveltiesCount: number
+    purgedNoveltiesSummary: JsonValue | null
+    terminatedEmployeesCount: number
+    terminatedEmployees: JsonValue | null
+    additionalActions: JsonValue | null
+    warningsAccepted: JsonValue | null
+    checksumHash: string
+    closedBy: string | null
+    closedByName: string | null
+    notes: string | null
+    closedAt: Date
+    _count: PayrollClosingAuditCountAggregateOutputType | null
+    _avg: PayrollClosingAuditAvgAggregateOutputType | null
+    _sum: PayrollClosingAuditSumAggregateOutputType | null
+    _min: PayrollClosingAuditMinAggregateOutputType | null
+    _max: PayrollClosingAuditMaxAggregateOutputType | null
+  }
+
+  type GetPayrollClosingAuditGroupByPayload<T extends PayrollClosingAuditGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayrollClosingAuditGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayrollClosingAuditGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayrollClosingAuditGroupByOutputType[P]>
+            : GetScalarType<T[P], PayrollClosingAuditGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayrollClosingAuditSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    scope?: boolean
+    fiscalPeriodId?: boolean
+    payrollPeriodId?: boolean
+    year?: boolean
+    month?: boolean
+    closedPeriodIds?: boolean
+    totalSlipsClosed?: boolean
+    totalGross?: boolean
+    totalNet?: boolean
+    totalEmployerCost?: boolean
+    purgedNoveltiesCount?: boolean
+    purgedNoveltiesSummary?: boolean
+    terminatedEmployeesCount?: boolean
+    terminatedEmployees?: boolean
+    additionalActions?: boolean
+    warningsAccepted?: boolean
+    checksumHash?: boolean
+    closedBy?: boolean
+    closedByName?: boolean
+    notes?: boolean
+    closedAt?: boolean
+  }, ExtArgs["result"]["payrollClosingAudit"]>
+
+
+
+  export type PayrollClosingAuditSelectScalar = {
+    id?: boolean
+    scope?: boolean
+    fiscalPeriodId?: boolean
+    payrollPeriodId?: boolean
+    year?: boolean
+    month?: boolean
+    closedPeriodIds?: boolean
+    totalSlipsClosed?: boolean
+    totalGross?: boolean
+    totalNet?: boolean
+    totalEmployerCost?: boolean
+    purgedNoveltiesCount?: boolean
+    purgedNoveltiesSummary?: boolean
+    terminatedEmployeesCount?: boolean
+    terminatedEmployees?: boolean
+    additionalActions?: boolean
+    warningsAccepted?: boolean
+    checksumHash?: boolean
+    closedBy?: boolean
+    closedByName?: boolean
+    notes?: boolean
+    closedAt?: boolean
+  }
+
+  export type PayrollClosingAuditOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "scope" | "fiscalPeriodId" | "payrollPeriodId" | "year" | "month" | "closedPeriodIds" | "totalSlipsClosed" | "totalGross" | "totalNet" | "totalEmployerCost" | "purgedNoveltiesCount" | "purgedNoveltiesSummary" | "terminatedEmployeesCount" | "terminatedEmployees" | "additionalActions" | "warningsAccepted" | "checksumHash" | "closedBy" | "closedByName" | "notes" | "closedAt", ExtArgs["result"]["payrollClosingAudit"]>
+
+  export type $PayrollClosingAuditPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayrollClosingAudit"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      scope: string
+      fiscalPeriodId: string | null
+      payrollPeriodId: string | null
+      year: number
+      month: number
+      closedPeriodIds: Prisma.JsonValue
+      totalSlipsClosed: number
+      totalGross: Prisma.Decimal
+      totalNet: Prisma.Decimal
+      totalEmployerCost: Prisma.Decimal
+      purgedNoveltiesCount: number
+      purgedNoveltiesSummary: Prisma.JsonValue | null
+      terminatedEmployeesCount: number
+      terminatedEmployees: Prisma.JsonValue | null
+      additionalActions: Prisma.JsonValue | null
+      warningsAccepted: Prisma.JsonValue | null
+      checksumHash: string
+      closedBy: string | null
+      closedByName: string | null
+      notes: string | null
+      closedAt: Date
+    }, ExtArgs["result"]["payrollClosingAudit"]>
+    composites: {}
+  }
+
+  type PayrollClosingAuditGetPayload<S extends boolean | null | undefined | PayrollClosingAuditDefaultArgs> = $Result.GetResult<Prisma.$PayrollClosingAuditPayload, S>
+
+  type PayrollClosingAuditCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PayrollClosingAuditFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PayrollClosingAuditCountAggregateInputType | true
+    }
+
+  export interface PayrollClosingAuditDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayrollClosingAudit'], meta: { name: 'PayrollClosingAudit' } }
+    /**
+     * Find zero or one PayrollClosingAudit that matches the filter.
+     * @param {PayrollClosingAuditFindUniqueArgs} args - Arguments to find a PayrollClosingAudit
+     * @example
+     * // Get one PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayrollClosingAuditFindUniqueArgs>(args: SelectSubset<T, PayrollClosingAuditFindUniqueArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PayrollClosingAudit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PayrollClosingAuditFindUniqueOrThrowArgs} args - Arguments to find a PayrollClosingAudit
+     * @example
+     * // Get one PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayrollClosingAuditFindUniqueOrThrowArgs>(args: SelectSubset<T, PayrollClosingAuditFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollClosingAudit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditFindFirstArgs} args - Arguments to find a PayrollClosingAudit
+     * @example
+     * // Get one PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayrollClosingAuditFindFirstArgs>(args?: SelectSubset<T, PayrollClosingAuditFindFirstArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollClosingAudit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditFindFirstOrThrowArgs} args - Arguments to find a PayrollClosingAudit
+     * @example
+     * // Get one PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayrollClosingAuditFindFirstOrThrowArgs>(args?: SelectSubset<T, PayrollClosingAuditFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PayrollClosingAudits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayrollClosingAudits
+     * const payrollClosingAudits = await prisma.payrollClosingAudit.findMany()
+     * 
+     * // Get first 10 PayrollClosingAudits
+     * const payrollClosingAudits = await prisma.payrollClosingAudit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payrollClosingAuditWithIdOnly = await prisma.payrollClosingAudit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayrollClosingAuditFindManyArgs>(args?: SelectSubset<T, PayrollClosingAuditFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PayrollClosingAudit.
+     * @param {PayrollClosingAuditCreateArgs} args - Arguments to create a PayrollClosingAudit.
+     * @example
+     * // Create one PayrollClosingAudit
+     * const PayrollClosingAudit = await prisma.payrollClosingAudit.create({
+     *   data: {
+     *     // ... data to create a PayrollClosingAudit
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayrollClosingAuditCreateArgs>(args: SelectSubset<T, PayrollClosingAuditCreateArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PayrollClosingAudits.
+     * @param {PayrollClosingAuditCreateManyArgs} args - Arguments to create many PayrollClosingAudits.
+     * @example
+     * // Create many PayrollClosingAudits
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayrollClosingAuditCreateManyArgs>(args?: SelectSubset<T, PayrollClosingAuditCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PayrollClosingAudit.
+     * @param {PayrollClosingAuditDeleteArgs} args - Arguments to delete one PayrollClosingAudit.
+     * @example
+     * // Delete one PayrollClosingAudit
+     * const PayrollClosingAudit = await prisma.payrollClosingAudit.delete({
+     *   where: {
+     *     // ... filter to delete one PayrollClosingAudit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayrollClosingAuditDeleteArgs>(args: SelectSubset<T, PayrollClosingAuditDeleteArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PayrollClosingAudit.
+     * @param {PayrollClosingAuditUpdateArgs} args - Arguments to update one PayrollClosingAudit.
+     * @example
+     * // Update one PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayrollClosingAuditUpdateArgs>(args: SelectSubset<T, PayrollClosingAuditUpdateArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PayrollClosingAudits.
+     * @param {PayrollClosingAuditDeleteManyArgs} args - Arguments to filter PayrollClosingAudits to delete.
+     * @example
+     * // Delete a few PayrollClosingAudits
+     * const { count } = await prisma.payrollClosingAudit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayrollClosingAuditDeleteManyArgs>(args?: SelectSubset<T, PayrollClosingAuditDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayrollClosingAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayrollClosingAudits
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayrollClosingAuditUpdateManyArgs>(args: SelectSubset<T, PayrollClosingAuditUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PayrollClosingAudit.
+     * @param {PayrollClosingAuditUpsertArgs} args - Arguments to update or create a PayrollClosingAudit.
+     * @example
+     * // Update or create a PayrollClosingAudit
+     * const payrollClosingAudit = await prisma.payrollClosingAudit.upsert({
+     *   create: {
+     *     // ... data to create a PayrollClosingAudit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayrollClosingAudit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayrollClosingAuditUpsertArgs>(args: SelectSubset<T, PayrollClosingAuditUpsertArgs<ExtArgs>>): Prisma__PayrollClosingAuditClient<$Result.GetResult<Prisma.$PayrollClosingAuditPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PayrollClosingAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditCountArgs} args - Arguments to filter PayrollClosingAudits to count.
+     * @example
+     * // Count the number of PayrollClosingAudits
+     * const count = await prisma.payrollClosingAudit.count({
+     *   where: {
+     *     // ... the filter for the PayrollClosingAudits we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayrollClosingAuditCountArgs>(
+      args?: Subset<T, PayrollClosingAuditCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayrollClosingAuditCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayrollClosingAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayrollClosingAuditAggregateArgs>(args: Subset<T, PayrollClosingAuditAggregateArgs>): Prisma.PrismaPromise<GetPayrollClosingAuditAggregateType<T>>
+
+    /**
+     * Group by PayrollClosingAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollClosingAuditGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayrollClosingAuditGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayrollClosingAuditGroupByArgs['orderBy'] }
+        : { orderBy?: PayrollClosingAuditGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayrollClosingAuditGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayrollClosingAuditGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayrollClosingAudit model
+   */
+  readonly fields: PayrollClosingAuditFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayrollClosingAudit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayrollClosingAuditClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayrollClosingAudit model
+   */
+  interface PayrollClosingAuditFieldRefs {
+    readonly id: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly scope: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly fiscalPeriodId: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly payrollPeriodId: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly year: FieldRef<"PayrollClosingAudit", 'Int'>
+    readonly month: FieldRef<"PayrollClosingAudit", 'Int'>
+    readonly closedPeriodIds: FieldRef<"PayrollClosingAudit", 'Json'>
+    readonly totalSlipsClosed: FieldRef<"PayrollClosingAudit", 'Int'>
+    readonly totalGross: FieldRef<"PayrollClosingAudit", 'Decimal'>
+    readonly totalNet: FieldRef<"PayrollClosingAudit", 'Decimal'>
+    readonly totalEmployerCost: FieldRef<"PayrollClosingAudit", 'Decimal'>
+    readonly purgedNoveltiesCount: FieldRef<"PayrollClosingAudit", 'Int'>
+    readonly purgedNoveltiesSummary: FieldRef<"PayrollClosingAudit", 'Json'>
+    readonly terminatedEmployeesCount: FieldRef<"PayrollClosingAudit", 'Int'>
+    readonly terminatedEmployees: FieldRef<"PayrollClosingAudit", 'Json'>
+    readonly additionalActions: FieldRef<"PayrollClosingAudit", 'Json'>
+    readonly warningsAccepted: FieldRef<"PayrollClosingAudit", 'Json'>
+    readonly checksumHash: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly closedBy: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly closedByName: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly notes: FieldRef<"PayrollClosingAudit", 'String'>
+    readonly closedAt: FieldRef<"PayrollClosingAudit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayrollClosingAudit findUnique
+   */
+  export type PayrollClosingAuditFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollClosingAudit to fetch.
+     */
+    where: PayrollClosingAuditWhereUniqueInput
+  }
+
+  /**
+   * PayrollClosingAudit findUniqueOrThrow
+   */
+  export type PayrollClosingAuditFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollClosingAudit to fetch.
+     */
+    where: PayrollClosingAuditWhereUniqueInput
+  }
+
+  /**
+   * PayrollClosingAudit findFirst
+   */
+  export type PayrollClosingAuditFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollClosingAudit to fetch.
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollClosingAudits to fetch.
+     */
+    orderBy?: PayrollClosingAuditOrderByWithRelationInput | PayrollClosingAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollClosingAudits.
+     */
+    cursor?: PayrollClosingAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollClosingAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollClosingAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollClosingAudits.
+     */
+    distinct?: PayrollClosingAuditScalarFieldEnum | PayrollClosingAuditScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollClosingAudit findFirstOrThrow
+   */
+  export type PayrollClosingAuditFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollClosingAudit to fetch.
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollClosingAudits to fetch.
+     */
+    orderBy?: PayrollClosingAuditOrderByWithRelationInput | PayrollClosingAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollClosingAudits.
+     */
+    cursor?: PayrollClosingAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollClosingAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollClosingAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollClosingAudits.
+     */
+    distinct?: PayrollClosingAuditScalarFieldEnum | PayrollClosingAuditScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollClosingAudit findMany
+   */
+  export type PayrollClosingAuditFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollClosingAudits to fetch.
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollClosingAudits to fetch.
+     */
+    orderBy?: PayrollClosingAuditOrderByWithRelationInput | PayrollClosingAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayrollClosingAudits.
+     */
+    cursor?: PayrollClosingAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollClosingAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollClosingAudits.
+     */
+    skip?: number
+    distinct?: PayrollClosingAuditScalarFieldEnum | PayrollClosingAuditScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollClosingAudit create
+   */
+  export type PayrollClosingAuditCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PayrollClosingAudit.
+     */
+    data: XOR<PayrollClosingAuditCreateInput, PayrollClosingAuditUncheckedCreateInput>
+  }
+
+  /**
+   * PayrollClosingAudit createMany
+   */
+  export type PayrollClosingAuditCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayrollClosingAudits.
+     */
+    data: PayrollClosingAuditCreateManyInput | PayrollClosingAuditCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayrollClosingAudit update
+   */
+  export type PayrollClosingAuditUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PayrollClosingAudit.
+     */
+    data: XOR<PayrollClosingAuditUpdateInput, PayrollClosingAuditUncheckedUpdateInput>
+    /**
+     * Choose, which PayrollClosingAudit to update.
+     */
+    where: PayrollClosingAuditWhereUniqueInput
+  }
+
+  /**
+   * PayrollClosingAudit updateMany
+   */
+  export type PayrollClosingAuditUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayrollClosingAudits.
+     */
+    data: XOR<PayrollClosingAuditUpdateManyMutationInput, PayrollClosingAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which PayrollClosingAudits to update
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * Limit how many PayrollClosingAudits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollClosingAudit upsert
+   */
+  export type PayrollClosingAuditUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PayrollClosingAudit to update in case it exists.
+     */
+    where: PayrollClosingAuditWhereUniqueInput
+    /**
+     * In case the PayrollClosingAudit found by the `where` argument doesn't exist, create a new PayrollClosingAudit with this data.
+     */
+    create: XOR<PayrollClosingAuditCreateInput, PayrollClosingAuditUncheckedCreateInput>
+    /**
+     * In case the PayrollClosingAudit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayrollClosingAuditUpdateInput, PayrollClosingAuditUncheckedUpdateInput>
+  }
+
+  /**
+   * PayrollClosingAudit delete
+   */
+  export type PayrollClosingAuditDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
+    /**
+     * Filter which PayrollClosingAudit to delete.
+     */
+    where: PayrollClosingAuditWhereUniqueInput
+  }
+
+  /**
+   * PayrollClosingAudit deleteMany
+   */
+  export type PayrollClosingAuditDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollClosingAudits to delete
+     */
+    where?: PayrollClosingAuditWhereInput
+    /**
+     * Limit how many PayrollClosingAudits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollClosingAudit without action
+   */
+  export type PayrollClosingAuditDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollClosingAudit
+     */
+    select?: PayrollClosingAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollClosingAudit
+     */
+    omit?: PayrollClosingAuditOmit<ExtArgs> | null
   }
 
 
@@ -59374,80 +54039,6 @@ export namespace Prisma {
   export type DepartmentScalarFieldEnum = (typeof DepartmentScalarFieldEnum)[keyof typeof DepartmentScalarFieldEnum]
 
 
-  export const ArcaCctScalarFieldEnum: {
-    code: 'code',
-    name: 'name',
-    sector: 'sector',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ArcaCctScalarFieldEnum = (typeof ArcaCctScalarFieldEnum)[keyof typeof ArcaCctScalarFieldEnum]
-
-
-  export const ArcaCategoryScalarFieldEnum: {
-    code: 'code',
-    name: 'name',
-    cct: 'cct',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ArcaCategoryScalarFieldEnum = (typeof ArcaCategoryScalarFieldEnum)[keyof typeof ArcaCategoryScalarFieldEnum]
-
-
-  export const ArcaPositionScalarFieldEnum: {
-    code: 'code',
-    name: 'name',
-    groupCode: 'groupCode',
-    groupName: 'groupName',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ArcaPositionScalarFieldEnum = (typeof ArcaPositionScalarFieldEnum)[keyof typeof ArcaPositionScalarFieldEnum]
-
-
-  export const ArcaServiceTypeScalarFieldEnum: {
-    code: 'code',
-    name: 'name',
-    regime: 'regime',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ArcaServiceTypeScalarFieldEnum = (typeof ArcaServiceTypeScalarFieldEnum)[keyof typeof ArcaServiceTypeScalarFieldEnum]
-
-
-  export const ArcaCctCategoryPositionScalarFieldEnum: {
-    id: 'id',
-    cctCode: 'cctCode',
-    categoryCode: 'categoryCode',
-    positionCode: 'positionCode',
-    createdAt: 'createdAt'
-  };
-
-  export type ArcaCctCategoryPositionScalarFieldEnum = (typeof ArcaCctCategoryPositionScalarFieldEnum)[keyof typeof ArcaCctCategoryPositionScalarFieldEnum]
-
-
-  export const ArcaContractModalityScalarFieldEnum: {
-    code: 'code',
-    name: 'name',
-    periodFrom: 'periodFrom',
-    periodTo: 'periodTo',
-    description: 'description',
-    isActive: 'isActive',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type ArcaContractModalityScalarFieldEnum = (typeof ArcaContractModalityScalarFieldEnum)[keyof typeof ArcaContractModalityScalarFieldEnum]
-
-
   export const JobPositionScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -59827,6 +54418,7 @@ export namespace Prisma {
     totalNet: 'totalNet',
     totalEmployerCost: 'totalEmployerCost',
     closedAt: 'closedAt',
+    closedBy: 'closedBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -59869,6 +54461,8 @@ export namespace Prisma {
     signatureHash: 'signatureHash',
     signedAt: 'signedAt',
     status: 'status',
+    closedAt: 'closedAt',
+    closedBy: 'closedBy',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
     deletedAt: 'deletedAt'
@@ -59891,11 +54485,40 @@ export namespace Prisma {
     amount: 'amount',
     arcaConceptCode: 'arcaConceptCode',
     formulaExplanation: 'formulaExplanation',
+    notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type PaySlipItemScalarFieldEnum = (typeof PaySlipItemScalarFieldEnum)[keyof typeof PaySlipItemScalarFieldEnum]
+
+
+  export const PayrollClosingAuditScalarFieldEnum: {
+    id: 'id',
+    scope: 'scope',
+    fiscalPeriodId: 'fiscalPeriodId',
+    payrollPeriodId: 'payrollPeriodId',
+    year: 'year',
+    month: 'month',
+    closedPeriodIds: 'closedPeriodIds',
+    totalSlipsClosed: 'totalSlipsClosed',
+    totalGross: 'totalGross',
+    totalNet: 'totalNet',
+    totalEmployerCost: 'totalEmployerCost',
+    purgedNoveltiesCount: 'purgedNoveltiesCount',
+    purgedNoveltiesSummary: 'purgedNoveltiesSummary',
+    terminatedEmployeesCount: 'terminatedEmployeesCount',
+    terminatedEmployees: 'terminatedEmployees',
+    additionalActions: 'additionalActions',
+    warningsAccepted: 'warningsAccepted',
+    checksumHash: 'checksumHash',
+    closedBy: 'closedBy',
+    closedByName: 'closedByName',
+    notes: 'notes',
+    closedAt: 'closedAt'
+  };
+
+  export type PayrollClosingAuditScalarFieldEnum = (typeof PayrollClosingAuditScalarFieldEnum)[keyof typeof PayrollClosingAuditScalarFieldEnum]
 
 
   export const PaySlipBasisScalarFieldEnum: {
@@ -60271,19 +54894,19 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const JsonNullValueInput: {
+    JsonNull: typeof JsonNull
+  };
+
+  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
   export const NullableJsonNullValueInput: {
     DbNull: typeof DbNull,
     JsonNull: typeof JsonNull
   };
 
   export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
-
-
-  export const JsonNullValueInput: {
-    JsonNull: typeof JsonNull
-  };
-
-  export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
   export const NullsOrder: {
@@ -60324,68 +54947,6 @@ export namespace Prisma {
   };
 
   export type DepartmentOrderByRelevanceFieldEnum = (typeof DepartmentOrderByRelevanceFieldEnum)[keyof typeof DepartmentOrderByRelevanceFieldEnum]
-
-
-  export const ArcaCctOrderByRelevanceFieldEnum: {
-    code: 'code',
-    name: 'name',
-    sector: 'sector',
-    description: 'description'
-  };
-
-  export type ArcaCctOrderByRelevanceFieldEnum = (typeof ArcaCctOrderByRelevanceFieldEnum)[keyof typeof ArcaCctOrderByRelevanceFieldEnum]
-
-
-  export const ArcaCategoryOrderByRelevanceFieldEnum: {
-    code: 'code',
-    name: 'name',
-    cct: 'cct',
-    description: 'description'
-  };
-
-  export type ArcaCategoryOrderByRelevanceFieldEnum = (typeof ArcaCategoryOrderByRelevanceFieldEnum)[keyof typeof ArcaCategoryOrderByRelevanceFieldEnum]
-
-
-  export const ArcaPositionOrderByRelevanceFieldEnum: {
-    code: 'code',
-    name: 'name',
-    groupCode: 'groupCode',
-    groupName: 'groupName',
-    description: 'description'
-  };
-
-  export type ArcaPositionOrderByRelevanceFieldEnum = (typeof ArcaPositionOrderByRelevanceFieldEnum)[keyof typeof ArcaPositionOrderByRelevanceFieldEnum]
-
-
-  export const ArcaServiceTypeOrderByRelevanceFieldEnum: {
-    code: 'code',
-    name: 'name',
-    regime: 'regime',
-    description: 'description'
-  };
-
-  export type ArcaServiceTypeOrderByRelevanceFieldEnum = (typeof ArcaServiceTypeOrderByRelevanceFieldEnum)[keyof typeof ArcaServiceTypeOrderByRelevanceFieldEnum]
-
-
-  export const ArcaCctCategoryPositionOrderByRelevanceFieldEnum: {
-    id: 'id',
-    cctCode: 'cctCode',
-    categoryCode: 'categoryCode',
-    positionCode: 'positionCode'
-  };
-
-  export type ArcaCctCategoryPositionOrderByRelevanceFieldEnum = (typeof ArcaCctCategoryPositionOrderByRelevanceFieldEnum)[keyof typeof ArcaCctCategoryPositionOrderByRelevanceFieldEnum]
-
-
-  export const ArcaContractModalityOrderByRelevanceFieldEnum: {
-    code: 'code',
-    name: 'name',
-    periodFrom: 'periodFrom',
-    periodTo: 'periodTo',
-    description: 'description'
-  };
-
-  export type ArcaContractModalityOrderByRelevanceFieldEnum = (typeof ArcaContractModalityOrderByRelevanceFieldEnum)[keyof typeof ArcaContractModalityOrderByRelevanceFieldEnum]
 
 
   export const JobPositionOrderByRelevanceFieldEnum: {
@@ -60636,7 +55197,8 @@ export namespace Prisma {
     settlementType: 'settlementType',
     paymentPlace: 'paymentPlace',
     depositBank: 'depositBank',
-    status: 'status'
+    status: 'status',
+    closedBy: 'closedBy'
   };
 
   export type PayrollPeriodOrderByRelevanceFieldEnum = (typeof PayrollPeriodOrderByRelevanceFieldEnum)[keyof typeof PayrollPeriodOrderByRelevanceFieldEnum]
@@ -60651,7 +55213,8 @@ export namespace Prisma {
     bankName: 'bankName',
     cbu: 'cbu',
     signatureHash: 'signatureHash',
-    status: 'status'
+    status: 'status',
+    closedBy: 'closedBy'
   };
 
   export type PaySlipOrderByRelevanceFieldEnum = (typeof PaySlipOrderByRelevanceFieldEnum)[keyof typeof PaySlipOrderByRelevanceFieldEnum]
@@ -60666,10 +55229,42 @@ export namespace Prisma {
     type: 'type',
     unitLabel: 'unitLabel',
     arcaConceptCode: 'arcaConceptCode',
-    formulaExplanation: 'formulaExplanation'
+    formulaExplanation: 'formulaExplanation',
+    notes: 'notes'
   };
 
   export type PaySlipItemOrderByRelevanceFieldEnum = (typeof PaySlipItemOrderByRelevanceFieldEnum)[keyof typeof PaySlipItemOrderByRelevanceFieldEnum]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
+
+
+  export const QueryMode: {
+    default: 'default',
+    insensitive: 'insensitive'
+  };
+
+  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+  export const PayrollClosingAuditOrderByRelevanceFieldEnum: {
+    id: 'id',
+    scope: 'scope',
+    fiscalPeriodId: 'fiscalPeriodId',
+    payrollPeriodId: 'payrollPeriodId',
+    checksumHash: 'checksumHash',
+    closedBy: 'closedBy',
+    closedByName: 'closedByName',
+    notes: 'notes'
+  };
+
+  export type PayrollClosingAuditOrderByRelevanceFieldEnum = (typeof PayrollClosingAuditOrderByRelevanceFieldEnum)[keyof typeof PayrollClosingAuditOrderByRelevanceFieldEnum]
 
 
   export const PaySlipBasisOrderByRelevanceFieldEnum: {
@@ -60793,23 +55388,6 @@ export namespace Prisma {
   export type EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum = (typeof EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum)[keyof typeof EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum]
 
 
-  export const JsonNullValueFilter: {
-    DbNull: typeof DbNull,
-    JsonNull: typeof JsonNull,
-    AnyNull: typeof AnyNull
-  };
-
-  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
   export const SiradigImportOrderByRelevanceFieldEnum: {
     id: 'id',
     filename: 'filename',
@@ -60923,16 +55501,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
+   * Reference to a field of type 'Decimal'
    */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
     
 
 
   /**
-   * Reference to a field of type 'Decimal'
+   * Reference to a field of type 'Boolean'
    */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 
@@ -61161,383 +55739,6 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableWithAggregatesFilter<"Department"> | Date | string | null
   }
 
-  export type ArcaCctWhereInput = {
-    AND?: ArcaCctWhereInput | ArcaCctWhereInput[]
-    OR?: ArcaCctWhereInput[]
-    NOT?: ArcaCctWhereInput | ArcaCctWhereInput[]
-    code?: StringFilter<"ArcaCct"> | string
-    name?: StringFilter<"ArcaCct"> | string
-    sector?: StringNullableFilter<"ArcaCct"> | string | null
-    description?: StringNullableFilter<"ArcaCct"> | string | null
-    createdAt?: DateTimeFilter<"ArcaCct"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaCct"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-    salaryScales?: SalaryScaleListRelationFilter
-  }
-
-  export type ArcaCctOrderByWithRelationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    sector?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    jobPositions?: JobPositionOrderByRelationAggregateInput
-    salaryScales?: SalaryScaleOrderByRelationAggregateInput
-    _relevance?: ArcaCctOrderByRelevanceInput
-  }
-
-  export type ArcaCctWhereUniqueInput = Prisma.AtLeast<{
-    code?: string
-    AND?: ArcaCctWhereInput | ArcaCctWhereInput[]
-    OR?: ArcaCctWhereInput[]
-    NOT?: ArcaCctWhereInput | ArcaCctWhereInput[]
-    name?: StringFilter<"ArcaCct"> | string
-    sector?: StringNullableFilter<"ArcaCct"> | string | null
-    description?: StringNullableFilter<"ArcaCct"> | string | null
-    createdAt?: DateTimeFilter<"ArcaCct"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaCct"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-    salaryScales?: SalaryScaleListRelationFilter
-  }, "code">
-
-  export type ArcaCctOrderByWithAggregationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    sector?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArcaCctCountOrderByAggregateInput
-    _max?: ArcaCctMaxOrderByAggregateInput
-    _min?: ArcaCctMinOrderByAggregateInput
-  }
-
-  export type ArcaCctScalarWhereWithAggregatesInput = {
-    AND?: ArcaCctScalarWhereWithAggregatesInput | ArcaCctScalarWhereWithAggregatesInput[]
-    OR?: ArcaCctScalarWhereWithAggregatesInput[]
-    NOT?: ArcaCctScalarWhereWithAggregatesInput | ArcaCctScalarWhereWithAggregatesInput[]
-    code?: StringWithAggregatesFilter<"ArcaCct"> | string
-    name?: StringWithAggregatesFilter<"ArcaCct"> | string
-    sector?: StringNullableWithAggregatesFilter<"ArcaCct"> | string | null
-    description?: StringNullableWithAggregatesFilter<"ArcaCct"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaCct"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ArcaCct"> | Date | string
-  }
-
-  export type ArcaCategoryWhereInput = {
-    AND?: ArcaCategoryWhereInput | ArcaCategoryWhereInput[]
-    OR?: ArcaCategoryWhereInput[]
-    NOT?: ArcaCategoryWhereInput | ArcaCategoryWhereInput[]
-    code?: StringFilter<"ArcaCategory"> | string
-    name?: StringFilter<"ArcaCategory"> | string
-    cct?: StringNullableFilter<"ArcaCategory"> | string | null
-    description?: StringNullableFilter<"ArcaCategory"> | string | null
-    createdAt?: DateTimeFilter<"ArcaCategory"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaCategory"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }
-
-  export type ArcaCategoryOrderByWithRelationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    cct?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    jobPositions?: JobPositionOrderByRelationAggregateInput
-    _relevance?: ArcaCategoryOrderByRelevanceInput
-  }
-
-  export type ArcaCategoryWhereUniqueInput = Prisma.AtLeast<{
-    code?: string
-    AND?: ArcaCategoryWhereInput | ArcaCategoryWhereInput[]
-    OR?: ArcaCategoryWhereInput[]
-    NOT?: ArcaCategoryWhereInput | ArcaCategoryWhereInput[]
-    name?: StringFilter<"ArcaCategory"> | string
-    cct?: StringNullableFilter<"ArcaCategory"> | string | null
-    description?: StringNullableFilter<"ArcaCategory"> | string | null
-    createdAt?: DateTimeFilter<"ArcaCategory"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaCategory"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }, "code">
-
-  export type ArcaCategoryOrderByWithAggregationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    cct?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArcaCategoryCountOrderByAggregateInput
-    _max?: ArcaCategoryMaxOrderByAggregateInput
-    _min?: ArcaCategoryMinOrderByAggregateInput
-  }
-
-  export type ArcaCategoryScalarWhereWithAggregatesInput = {
-    AND?: ArcaCategoryScalarWhereWithAggregatesInput | ArcaCategoryScalarWhereWithAggregatesInput[]
-    OR?: ArcaCategoryScalarWhereWithAggregatesInput[]
-    NOT?: ArcaCategoryScalarWhereWithAggregatesInput | ArcaCategoryScalarWhereWithAggregatesInput[]
-    code?: StringWithAggregatesFilter<"ArcaCategory"> | string
-    name?: StringWithAggregatesFilter<"ArcaCategory"> | string
-    cct?: StringNullableWithAggregatesFilter<"ArcaCategory"> | string | null
-    description?: StringNullableWithAggregatesFilter<"ArcaCategory"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaCategory"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ArcaCategory"> | Date | string
-  }
-
-  export type ArcaPositionWhereInput = {
-    AND?: ArcaPositionWhereInput | ArcaPositionWhereInput[]
-    OR?: ArcaPositionWhereInput[]
-    NOT?: ArcaPositionWhereInput | ArcaPositionWhereInput[]
-    code?: StringFilter<"ArcaPosition"> | string
-    name?: StringFilter<"ArcaPosition"> | string
-    groupCode?: StringNullableFilter<"ArcaPosition"> | string | null
-    groupName?: StringNullableFilter<"ArcaPosition"> | string | null
-    description?: StringNullableFilter<"ArcaPosition"> | string | null
-    createdAt?: DateTimeFilter<"ArcaPosition"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaPosition"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }
-
-  export type ArcaPositionOrderByWithRelationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    groupCode?: SortOrderInput | SortOrder
-    groupName?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    jobPositions?: JobPositionOrderByRelationAggregateInput
-    _relevance?: ArcaPositionOrderByRelevanceInput
-  }
-
-  export type ArcaPositionWhereUniqueInput = Prisma.AtLeast<{
-    code?: string
-    AND?: ArcaPositionWhereInput | ArcaPositionWhereInput[]
-    OR?: ArcaPositionWhereInput[]
-    NOT?: ArcaPositionWhereInput | ArcaPositionWhereInput[]
-    name?: StringFilter<"ArcaPosition"> | string
-    groupCode?: StringNullableFilter<"ArcaPosition"> | string | null
-    groupName?: StringNullableFilter<"ArcaPosition"> | string | null
-    description?: StringNullableFilter<"ArcaPosition"> | string | null
-    createdAt?: DateTimeFilter<"ArcaPosition"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaPosition"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }, "code">
-
-  export type ArcaPositionOrderByWithAggregationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    groupCode?: SortOrderInput | SortOrder
-    groupName?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArcaPositionCountOrderByAggregateInput
-    _max?: ArcaPositionMaxOrderByAggregateInput
-    _min?: ArcaPositionMinOrderByAggregateInput
-  }
-
-  export type ArcaPositionScalarWhereWithAggregatesInput = {
-    AND?: ArcaPositionScalarWhereWithAggregatesInput | ArcaPositionScalarWhereWithAggregatesInput[]
-    OR?: ArcaPositionScalarWhereWithAggregatesInput[]
-    NOT?: ArcaPositionScalarWhereWithAggregatesInput | ArcaPositionScalarWhereWithAggregatesInput[]
-    code?: StringWithAggregatesFilter<"ArcaPosition"> | string
-    name?: StringWithAggregatesFilter<"ArcaPosition"> | string
-    groupCode?: StringNullableWithAggregatesFilter<"ArcaPosition"> | string | null
-    groupName?: StringNullableWithAggregatesFilter<"ArcaPosition"> | string | null
-    description?: StringNullableWithAggregatesFilter<"ArcaPosition"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaPosition"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ArcaPosition"> | Date | string
-  }
-
-  export type ArcaServiceTypeWhereInput = {
-    AND?: ArcaServiceTypeWhereInput | ArcaServiceTypeWhereInput[]
-    OR?: ArcaServiceTypeWhereInput[]
-    NOT?: ArcaServiceTypeWhereInput | ArcaServiceTypeWhereInput[]
-    code?: StringFilter<"ArcaServiceType"> | string
-    name?: StringFilter<"ArcaServiceType"> | string
-    regime?: StringNullableFilter<"ArcaServiceType"> | string | null
-    description?: StringNullableFilter<"ArcaServiceType"> | string | null
-    createdAt?: DateTimeFilter<"ArcaServiceType"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaServiceType"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }
-
-  export type ArcaServiceTypeOrderByWithRelationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    regime?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    jobPositions?: JobPositionOrderByRelationAggregateInput
-    _relevance?: ArcaServiceTypeOrderByRelevanceInput
-  }
-
-  export type ArcaServiceTypeWhereUniqueInput = Prisma.AtLeast<{
-    code?: string
-    AND?: ArcaServiceTypeWhereInput | ArcaServiceTypeWhereInput[]
-    OR?: ArcaServiceTypeWhereInput[]
-    NOT?: ArcaServiceTypeWhereInput | ArcaServiceTypeWhereInput[]
-    name?: StringFilter<"ArcaServiceType"> | string
-    regime?: StringNullableFilter<"ArcaServiceType"> | string | null
-    description?: StringNullableFilter<"ArcaServiceType"> | string | null
-    createdAt?: DateTimeFilter<"ArcaServiceType"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaServiceType"> | Date | string
-    jobPositions?: JobPositionListRelationFilter
-  }, "code">
-
-  export type ArcaServiceTypeOrderByWithAggregationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    regime?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArcaServiceTypeCountOrderByAggregateInput
-    _max?: ArcaServiceTypeMaxOrderByAggregateInput
-    _min?: ArcaServiceTypeMinOrderByAggregateInput
-  }
-
-  export type ArcaServiceTypeScalarWhereWithAggregatesInput = {
-    AND?: ArcaServiceTypeScalarWhereWithAggregatesInput | ArcaServiceTypeScalarWhereWithAggregatesInput[]
-    OR?: ArcaServiceTypeScalarWhereWithAggregatesInput[]
-    NOT?: ArcaServiceTypeScalarWhereWithAggregatesInput | ArcaServiceTypeScalarWhereWithAggregatesInput[]
-    code?: StringWithAggregatesFilter<"ArcaServiceType"> | string
-    name?: StringWithAggregatesFilter<"ArcaServiceType"> | string
-    regime?: StringNullableWithAggregatesFilter<"ArcaServiceType"> | string | null
-    description?: StringNullableWithAggregatesFilter<"ArcaServiceType"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaServiceType"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ArcaServiceType"> | Date | string
-  }
-
-  export type ArcaCctCategoryPositionWhereInput = {
-    AND?: ArcaCctCategoryPositionWhereInput | ArcaCctCategoryPositionWhereInput[]
-    OR?: ArcaCctCategoryPositionWhereInput[]
-    NOT?: ArcaCctCategoryPositionWhereInput | ArcaCctCategoryPositionWhereInput[]
-    id?: StringFilter<"ArcaCctCategoryPosition"> | string
-    cctCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    categoryCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    positionCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    createdAt?: DateTimeFilter<"ArcaCctCategoryPosition"> | Date | string
-  }
-
-  export type ArcaCctCategoryPositionOrderByWithRelationInput = {
-    id?: SortOrder
-    cctCode?: SortOrder
-    categoryCode?: SortOrder
-    positionCode?: SortOrder
-    createdAt?: SortOrder
-    _relevance?: ArcaCctCategoryPositionOrderByRelevanceInput
-  }
-
-  export type ArcaCctCategoryPositionWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    cctCode_categoryCode_positionCode?: ArcaCctCategoryPositionCctCodeCategoryCodePositionCodeCompoundUniqueInput
-    AND?: ArcaCctCategoryPositionWhereInput | ArcaCctCategoryPositionWhereInput[]
-    OR?: ArcaCctCategoryPositionWhereInput[]
-    NOT?: ArcaCctCategoryPositionWhereInput | ArcaCctCategoryPositionWhereInput[]
-    cctCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    categoryCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    positionCode?: StringFilter<"ArcaCctCategoryPosition"> | string
-    createdAt?: DateTimeFilter<"ArcaCctCategoryPosition"> | Date | string
-  }, "id" | "cctCode_categoryCode_positionCode">
-
-  export type ArcaCctCategoryPositionOrderByWithAggregationInput = {
-    id?: SortOrder
-    cctCode?: SortOrder
-    categoryCode?: SortOrder
-    positionCode?: SortOrder
-    createdAt?: SortOrder
-    _count?: ArcaCctCategoryPositionCountOrderByAggregateInput
-    _max?: ArcaCctCategoryPositionMaxOrderByAggregateInput
-    _min?: ArcaCctCategoryPositionMinOrderByAggregateInput
-  }
-
-  export type ArcaCctCategoryPositionScalarWhereWithAggregatesInput = {
-    AND?: ArcaCctCategoryPositionScalarWhereWithAggregatesInput | ArcaCctCategoryPositionScalarWhereWithAggregatesInput[]
-    OR?: ArcaCctCategoryPositionScalarWhereWithAggregatesInput[]
-    NOT?: ArcaCctCategoryPositionScalarWhereWithAggregatesInput | ArcaCctCategoryPositionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"ArcaCctCategoryPosition"> | string
-    cctCode?: StringWithAggregatesFilter<"ArcaCctCategoryPosition"> | string
-    categoryCode?: StringWithAggregatesFilter<"ArcaCctCategoryPosition"> | string
-    positionCode?: StringWithAggregatesFilter<"ArcaCctCategoryPosition"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaCctCategoryPosition"> | Date | string
-  }
-
-  export type ArcaContractModalityWhereInput = {
-    AND?: ArcaContractModalityWhereInput | ArcaContractModalityWhereInput[]
-    OR?: ArcaContractModalityWhereInput[]
-    NOT?: ArcaContractModalityWhereInput | ArcaContractModalityWhereInput[]
-    code?: StringFilter<"ArcaContractModality"> | string
-    name?: StringFilter<"ArcaContractModality"> | string
-    periodFrom?: StringNullableFilter<"ArcaContractModality"> | string | null
-    periodTo?: StringNullableFilter<"ArcaContractModality"> | string | null
-    description?: StringNullableFilter<"ArcaContractModality"> | string | null
-    isActive?: BoolFilter<"ArcaContractModality"> | boolean
-    createdAt?: DateTimeFilter<"ArcaContractModality"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaContractModality"> | Date | string
-    employees?: EmployeeListRelationFilter
-  }
-
-  export type ArcaContractModalityOrderByWithRelationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    periodFrom?: SortOrderInput | SortOrder
-    periodTo?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    employees?: EmployeeOrderByRelationAggregateInput
-    _relevance?: ArcaContractModalityOrderByRelevanceInput
-  }
-
-  export type ArcaContractModalityWhereUniqueInput = Prisma.AtLeast<{
-    code?: string
-    AND?: ArcaContractModalityWhereInput | ArcaContractModalityWhereInput[]
-    OR?: ArcaContractModalityWhereInput[]
-    NOT?: ArcaContractModalityWhereInput | ArcaContractModalityWhereInput[]
-    name?: StringFilter<"ArcaContractModality"> | string
-    periodFrom?: StringNullableFilter<"ArcaContractModality"> | string | null
-    periodTo?: StringNullableFilter<"ArcaContractModality"> | string | null
-    description?: StringNullableFilter<"ArcaContractModality"> | string | null
-    isActive?: BoolFilter<"ArcaContractModality"> | boolean
-    createdAt?: DateTimeFilter<"ArcaContractModality"> | Date | string
-    updatedAt?: DateTimeFilter<"ArcaContractModality"> | Date | string
-    employees?: EmployeeListRelationFilter
-  }, "code">
-
-  export type ArcaContractModalityOrderByWithAggregationInput = {
-    code?: SortOrder
-    name?: SortOrder
-    periodFrom?: SortOrderInput | SortOrder
-    periodTo?: SortOrderInput | SortOrder
-    description?: SortOrderInput | SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: ArcaContractModalityCountOrderByAggregateInput
-    _max?: ArcaContractModalityMaxOrderByAggregateInput
-    _min?: ArcaContractModalityMinOrderByAggregateInput
-  }
-
-  export type ArcaContractModalityScalarWhereWithAggregatesInput = {
-    AND?: ArcaContractModalityScalarWhereWithAggregatesInput | ArcaContractModalityScalarWhereWithAggregatesInput[]
-    OR?: ArcaContractModalityScalarWhereWithAggregatesInput[]
-    NOT?: ArcaContractModalityScalarWhereWithAggregatesInput | ArcaContractModalityScalarWhereWithAggregatesInput[]
-    code?: StringWithAggregatesFilter<"ArcaContractModality"> | string
-    name?: StringWithAggregatesFilter<"ArcaContractModality"> | string
-    periodFrom?: StringNullableWithAggregatesFilter<"ArcaContractModality"> | string | null
-    periodTo?: StringNullableWithAggregatesFilter<"ArcaContractModality"> | string | null
-    description?: StringNullableWithAggregatesFilter<"ArcaContractModality"> | string | null
-    isActive?: BoolWithAggregatesFilter<"ArcaContractModality"> | boolean
-    createdAt?: DateTimeWithAggregatesFilter<"ArcaContractModality"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"ArcaContractModality"> | Date | string
-  }
-
   export type JobPositionWhereInput = {
     AND?: JobPositionWhereInput | JobPositionWhereInput[]
     OR?: JobPositionWhereInput[]
@@ -61553,10 +55754,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
-    cct?: XOR<ArcaCctNullableScalarRelationFilter, ArcaCctWhereInput> | null
-    category?: XOR<ArcaCategoryNullableScalarRelationFilter, ArcaCategoryWhereInput> | null
-    arcaPosition?: XOR<ArcaPositionNullableScalarRelationFilter, ArcaPositionWhereInput> | null
-    serviceType?: XOR<ArcaServiceTypeNullableScalarRelationFilter, ArcaServiceTypeWhereInput> | null
     employees?: EmployeeListRelationFilter
   }
 
@@ -61572,10 +55769,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    cct?: ArcaCctOrderByWithRelationInput
-    category?: ArcaCategoryOrderByWithRelationInput
-    arcaPosition?: ArcaPositionOrderByWithRelationInput
-    serviceType?: ArcaServiceTypeOrderByWithRelationInput
     employees?: EmployeeOrderByRelationAggregateInput
     _relevance?: JobPositionOrderByRelevanceInput
   }
@@ -61595,10 +55788,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"JobPosition"> | Date | string
     updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
     deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
-    cct?: XOR<ArcaCctNullableScalarRelationFilter, ArcaCctWhereInput> | null
-    category?: XOR<ArcaCategoryNullableScalarRelationFilter, ArcaCategoryWhereInput> | null
-    arcaPosition?: XOR<ArcaPositionNullableScalarRelationFilter, ArcaPositionWhereInput> | null
-    serviceType?: XOR<ArcaServiceTypeNullableScalarRelationFilter, ArcaServiceTypeWhereInput> | null
     employees?: EmployeeListRelationFilter
   }, "id">
 
@@ -62213,7 +56402,6 @@ export namespace Prisma {
     healthInsurance?: XOR<HealthInsuranceNullableScalarRelationFilter, HealthInsuranceWhereInput> | null
     union?: XOR<UnionNullableScalarRelationFilter, UnionWhereInput> | null
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
-    contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
     paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
@@ -62280,7 +56468,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceOrderByWithRelationInput
     union?: UnionOrderByWithRelationInput
     mutual?: MutualOrderByWithRelationInput
-    contractModality?: ArcaContractModalityOrderByWithRelationInput
     salaryScale?: SalaryScaleOrderByWithRelationInput
     workShift?: WorkShiftOrderByWithRelationInput
     paymentMethod?: PaymentMethodOrderByWithRelationInput
@@ -62351,7 +56538,6 @@ export namespace Prisma {
     healthInsurance?: XOR<HealthInsuranceNullableScalarRelationFilter, HealthInsuranceWhereInput> | null
     union?: XOR<UnionNullableScalarRelationFilter, UnionWhereInput> | null
     mutual?: XOR<MutualNullableScalarRelationFilter, MutualWhereInput> | null
-    contractModality?: XOR<ArcaContractModalityNullableScalarRelationFilter, ArcaContractModalityWhereInput> | null
     salaryScale?: XOR<SalaryScaleNullableScalarRelationFilter, SalaryScaleWhereInput> | null
     workShift?: XOR<WorkShiftNullableScalarRelationFilter, WorkShiftWhereInput> | null
     paymentMethod?: XOR<PaymentMethodNullableScalarRelationFilter, PaymentMethodWhereInput> | null
@@ -62546,7 +56732,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
-    cct?: XOR<ArcaCctNullableScalarRelationFilter, ArcaCctWhereInput> | null
     employees?: EmployeeListRelationFilter
     periods?: SalaryScalePeriodListRelationFilter
   }
@@ -62563,7 +56748,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
-    cct?: ArcaCctOrderByWithRelationInput
     employees?: EmployeeOrderByRelationAggregateInput
     periods?: SalaryScalePeriodOrderByRelationAggregateInput
     _relevance?: SalaryScaleOrderByRelevanceInput
@@ -62584,7 +56768,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
     updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
     deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
-    cct?: XOR<ArcaCctNullableScalarRelationFilter, ArcaCctWhereInput> | null
     employees?: EmployeeListRelationFilter
     periods?: SalaryScalePeriodListRelationFilter
   }, "id">
@@ -63521,6 +57704,7 @@ export namespace Prisma {
     totalNet?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    closedBy?: StringNullableFilter<"PayrollPeriod"> | string | null
     createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
@@ -63548,6 +57732,7 @@ export namespace Prisma {
     totalNet?: SortOrder
     totalEmployerCost?: SortOrder
     closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     fiscalPeriod?: PayrollFiscalPeriodOrderByWithRelationInput
@@ -63580,6 +57765,7 @@ export namespace Prisma {
     totalNet?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    closedBy?: StringNullableFilter<"PayrollPeriod"> | string | null
     createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
@@ -63607,6 +57793,7 @@ export namespace Prisma {
     totalNet?: SortOrder
     totalEmployerCost?: SortOrder
     closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PayrollPeriodCountOrderByAggregateInput
@@ -63639,6 +57826,7 @@ export namespace Prisma {
     totalNet?: DecimalWithAggregatesFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalWithAggregatesFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     closedAt?: DateTimeNullableWithAggregatesFilter<"PayrollPeriod"> | Date | string | null
+    closedBy?: StringNullableWithAggregatesFilter<"PayrollPeriod"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PayrollPeriod"> | Date | string
   }
@@ -63681,6 +57869,8 @@ export namespace Prisma {
     signatureHash?: StringNullableFilter<"PaySlip"> | string | null
     signedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
     status?: StringFilter<"PaySlip"> | string
+    closedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
+    closedBy?: StringNullableFilter<"PaySlip"> | string | null
     createdAt?: DateTimeFilter<"PaySlip"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlip"> | Date | string
     deletedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
@@ -63725,6 +57915,8 @@ export namespace Prisma {
     signatureHash?: SortOrderInput | SortOrder
     signedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -63774,6 +57966,8 @@ export namespace Prisma {
     signatureHash?: StringNullableFilter<"PaySlip"> | string | null
     signedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
     status?: StringFilter<"PaySlip"> | string
+    closedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
+    closedBy?: StringNullableFilter<"PaySlip"> | string | null
     createdAt?: DateTimeFilter<"PaySlip"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlip"> | Date | string
     deletedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
@@ -63818,6 +58012,8 @@ export namespace Prisma {
     signatureHash?: SortOrderInput | SortOrder
     signedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    closedAt?: SortOrderInput | SortOrder
+    closedBy?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
@@ -63866,6 +58062,8 @@ export namespace Prisma {
     signatureHash?: StringNullableWithAggregatesFilter<"PaySlip"> | string | null
     signedAt?: DateTimeNullableWithAggregatesFilter<"PaySlip"> | Date | string | null
     status?: StringWithAggregatesFilter<"PaySlip"> | string
+    closedAt?: DateTimeNullableWithAggregatesFilter<"PaySlip"> | Date | string | null
+    closedBy?: StringNullableWithAggregatesFilter<"PaySlip"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PaySlip"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PaySlip"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"PaySlip"> | Date | string | null
@@ -63888,6 +58086,7 @@ export namespace Prisma {
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
+    notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     paySlip?: XOR<PaySlipScalarRelationFilter, PaySlipWhereInput>
@@ -63907,6 +58106,7 @@ export namespace Prisma {
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
     formulaExplanation?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     paySlip?: PaySlipOrderByWithRelationInput
@@ -63930,6 +58130,7 @@ export namespace Prisma {
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
+    notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     paySlip?: XOR<PaySlipScalarRelationFilter, PaySlipWhereInput>
@@ -63949,6 +58150,7 @@ export namespace Prisma {
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
     formulaExplanation?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: PaySlipItemCountOrderByAggregateInput
@@ -63975,8 +58177,149 @@ export namespace Prisma {
     amount?: DecimalWithAggregatesFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PaySlipItem"> | Date | string
+  }
+
+  export type PayrollClosingAuditWhereInput = {
+    AND?: PayrollClosingAuditWhereInput | PayrollClosingAuditWhereInput[]
+    OR?: PayrollClosingAuditWhereInput[]
+    NOT?: PayrollClosingAuditWhereInput | PayrollClosingAuditWhereInput[]
+    id?: StringFilter<"PayrollClosingAudit"> | string
+    scope?: StringFilter<"PayrollClosingAudit"> | string
+    fiscalPeriodId?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    payrollPeriodId?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    year?: IntFilter<"PayrollClosingAudit"> | number
+    month?: IntFilter<"PayrollClosingAudit"> | number
+    closedPeriodIds?: JsonFilter<"PayrollClosingAudit">
+    totalSlipsClosed?: IntFilter<"PayrollClosingAudit"> | number
+    totalGross?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFilter<"PayrollClosingAudit"> | number
+    purgedNoveltiesSummary?: JsonNullableFilter<"PayrollClosingAudit">
+    terminatedEmployeesCount?: IntFilter<"PayrollClosingAudit"> | number
+    terminatedEmployees?: JsonNullableFilter<"PayrollClosingAudit">
+    additionalActions?: JsonNullableFilter<"PayrollClosingAudit">
+    warningsAccepted?: JsonNullableFilter<"PayrollClosingAudit">
+    checksumHash?: StringFilter<"PayrollClosingAudit"> | string
+    closedBy?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    closedByName?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    notes?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    closedAt?: DateTimeFilter<"PayrollClosingAudit"> | Date | string
+  }
+
+  export type PayrollClosingAuditOrderByWithRelationInput = {
+    id?: SortOrder
+    scope?: SortOrder
+    fiscalPeriodId?: SortOrderInput | SortOrder
+    payrollPeriodId?: SortOrderInput | SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    closedPeriodIds?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    purgedNoveltiesSummary?: SortOrderInput | SortOrder
+    terminatedEmployeesCount?: SortOrder
+    terminatedEmployees?: SortOrderInput | SortOrder
+    additionalActions?: SortOrderInput | SortOrder
+    warningsAccepted?: SortOrderInput | SortOrder
+    checksumHash?: SortOrder
+    closedBy?: SortOrderInput | SortOrder
+    closedByName?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    closedAt?: SortOrder
+    _relevance?: PayrollClosingAuditOrderByRelevanceInput
+  }
+
+  export type PayrollClosingAuditWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PayrollClosingAuditWhereInput | PayrollClosingAuditWhereInput[]
+    OR?: PayrollClosingAuditWhereInput[]
+    NOT?: PayrollClosingAuditWhereInput | PayrollClosingAuditWhereInput[]
+    scope?: StringFilter<"PayrollClosingAudit"> | string
+    fiscalPeriodId?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    payrollPeriodId?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    year?: IntFilter<"PayrollClosingAudit"> | number
+    month?: IntFilter<"PayrollClosingAudit"> | number
+    closedPeriodIds?: JsonFilter<"PayrollClosingAudit">
+    totalSlipsClosed?: IntFilter<"PayrollClosingAudit"> | number
+    totalGross?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFilter<"PayrollClosingAudit"> | number
+    purgedNoveltiesSummary?: JsonNullableFilter<"PayrollClosingAudit">
+    terminatedEmployeesCount?: IntFilter<"PayrollClosingAudit"> | number
+    terminatedEmployees?: JsonNullableFilter<"PayrollClosingAudit">
+    additionalActions?: JsonNullableFilter<"PayrollClosingAudit">
+    warningsAccepted?: JsonNullableFilter<"PayrollClosingAudit">
+    checksumHash?: StringFilter<"PayrollClosingAudit"> | string
+    closedBy?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    closedByName?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    notes?: StringNullableFilter<"PayrollClosingAudit"> | string | null
+    closedAt?: DateTimeFilter<"PayrollClosingAudit"> | Date | string
+  }, "id">
+
+  export type PayrollClosingAuditOrderByWithAggregationInput = {
+    id?: SortOrder
+    scope?: SortOrder
+    fiscalPeriodId?: SortOrderInput | SortOrder
+    payrollPeriodId?: SortOrderInput | SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    closedPeriodIds?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    purgedNoveltiesSummary?: SortOrderInput | SortOrder
+    terminatedEmployeesCount?: SortOrder
+    terminatedEmployees?: SortOrderInput | SortOrder
+    additionalActions?: SortOrderInput | SortOrder
+    warningsAccepted?: SortOrderInput | SortOrder
+    checksumHash?: SortOrder
+    closedBy?: SortOrderInput | SortOrder
+    closedByName?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    closedAt?: SortOrder
+    _count?: PayrollClosingAuditCountOrderByAggregateInput
+    _avg?: PayrollClosingAuditAvgOrderByAggregateInput
+    _max?: PayrollClosingAuditMaxOrderByAggregateInput
+    _min?: PayrollClosingAuditMinOrderByAggregateInput
+    _sum?: PayrollClosingAuditSumOrderByAggregateInput
+  }
+
+  export type PayrollClosingAuditScalarWhereWithAggregatesInput = {
+    AND?: PayrollClosingAuditScalarWhereWithAggregatesInput | PayrollClosingAuditScalarWhereWithAggregatesInput[]
+    OR?: PayrollClosingAuditScalarWhereWithAggregatesInput[]
+    NOT?: PayrollClosingAuditScalarWhereWithAggregatesInput | PayrollClosingAuditScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayrollClosingAudit"> | string
+    scope?: StringWithAggregatesFilter<"PayrollClosingAudit"> | string
+    fiscalPeriodId?: StringNullableWithAggregatesFilter<"PayrollClosingAudit"> | string | null
+    payrollPeriodId?: StringNullableWithAggregatesFilter<"PayrollClosingAudit"> | string | null
+    year?: IntWithAggregatesFilter<"PayrollClosingAudit"> | number
+    month?: IntWithAggregatesFilter<"PayrollClosingAudit"> | number
+    closedPeriodIds?: JsonWithAggregatesFilter<"PayrollClosingAudit">
+    totalSlipsClosed?: IntWithAggregatesFilter<"PayrollClosingAudit"> | number
+    totalGross?: DecimalWithAggregatesFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalWithAggregatesFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalWithAggregatesFilter<"PayrollClosingAudit"> | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntWithAggregatesFilter<"PayrollClosingAudit"> | number
+    purgedNoveltiesSummary?: JsonNullableWithAggregatesFilter<"PayrollClosingAudit">
+    terminatedEmployeesCount?: IntWithAggregatesFilter<"PayrollClosingAudit"> | number
+    terminatedEmployees?: JsonNullableWithAggregatesFilter<"PayrollClosingAudit">
+    additionalActions?: JsonNullableWithAggregatesFilter<"PayrollClosingAudit">
+    warningsAccepted?: JsonNullableWithAggregatesFilter<"PayrollClosingAudit">
+    checksumHash?: StringWithAggregatesFilter<"PayrollClosingAudit"> | string
+    closedBy?: StringNullableWithAggregatesFilter<"PayrollClosingAudit"> | string | null
+    closedByName?: StringNullableWithAggregatesFilter<"PayrollClosingAudit"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"PayrollClosingAudit"> | string | null
+    closedAt?: DateTimeWithAggregatesFilter<"PayrollClosingAudit"> | Date | string
   }
 
   export type PaySlipBasisWhereInput = {
@@ -66107,434 +60450,18 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
-  export type ArcaCctCreateInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionCreateNestedManyWithoutCctInput
-    salaryScales?: SalaryScaleCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctUncheckedCreateInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionUncheckedCreateNestedManyWithoutCctInput
-    salaryScales?: SalaryScaleUncheckedCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUpdateManyWithoutCctNestedInput
-    salaryScales?: SalaryScaleUpdateManyWithoutCctNestedInput
-  }
-
-  export type ArcaCctUncheckedUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUncheckedUpdateManyWithoutCctNestedInput
-    salaryScales?: SalaryScaleUncheckedUpdateManyWithoutCctNestedInput
-  }
-
-  export type ArcaCctCreateManyInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaCctUpdateManyMutationInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCctUncheckedUpdateManyInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCategoryCreateInput = {
-    code: string
-    name: string
-    cct?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionCreateNestedManyWithoutCategoryInput
-  }
-
-  export type ArcaCategoryUncheckedCreateInput = {
-    code: string
-    name: string
-    cct?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionUncheckedCreateNestedManyWithoutCategoryInput
-  }
-
-  export type ArcaCategoryUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUpdateManyWithoutCategoryNestedInput
-  }
-
-  export type ArcaCategoryUncheckedUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUncheckedUpdateManyWithoutCategoryNestedInput
-  }
-
-  export type ArcaCategoryCreateManyInput = {
-    code: string
-    name: string
-    cct?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaCategoryUpdateManyMutationInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCategoryUncheckedUpdateManyInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaPositionCreateInput = {
-    code: string
-    name: string
-    groupCode?: string | null
-    groupName?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionCreateNestedManyWithoutArcaPositionInput
-  }
-
-  export type ArcaPositionUncheckedCreateInput = {
-    code: string
-    name: string
-    groupCode?: string | null
-    groupName?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionUncheckedCreateNestedManyWithoutArcaPositionInput
-  }
-
-  export type ArcaPositionUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUpdateManyWithoutArcaPositionNestedInput
-  }
-
-  export type ArcaPositionUncheckedUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUncheckedUpdateManyWithoutArcaPositionNestedInput
-  }
-
-  export type ArcaPositionCreateManyInput = {
-    code: string
-    name: string
-    groupCode?: string | null
-    groupName?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaPositionUpdateManyMutationInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaPositionUncheckedUpdateManyInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaServiceTypeCreateInput = {
-    code: string
-    name: string
-    regime?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionCreateNestedManyWithoutServiceTypeInput
-  }
-
-  export type ArcaServiceTypeUncheckedCreateInput = {
-    code: string
-    name: string
-    regime?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionUncheckedCreateNestedManyWithoutServiceTypeInput
-  }
-
-  export type ArcaServiceTypeUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUpdateManyWithoutServiceTypeNestedInput
-  }
-
-  export type ArcaServiceTypeUncheckedUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUncheckedUpdateManyWithoutServiceTypeNestedInput
-  }
-
-  export type ArcaServiceTypeCreateManyInput = {
-    code: string
-    name: string
-    regime?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaServiceTypeUpdateManyMutationInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaServiceTypeUncheckedUpdateManyInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCctCategoryPositionCreateInput = {
-    id?: string
-    cctCode: string
-    categoryCode: string
-    positionCode: string
-    createdAt?: Date | string
-  }
-
-  export type ArcaCctCategoryPositionUncheckedCreateInput = {
-    id?: string
-    cctCode: string
-    categoryCode: string
-    positionCode: string
-    createdAt?: Date | string
-  }
-
-  export type ArcaCctCategoryPositionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cctCode?: StringFieldUpdateOperationsInput | string
-    categoryCode?: StringFieldUpdateOperationsInput | string
-    positionCode?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCctCategoryPositionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cctCode?: StringFieldUpdateOperationsInput | string
-    categoryCode?: StringFieldUpdateOperationsInput | string
-    positionCode?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCctCategoryPositionCreateManyInput = {
-    id?: string
-    cctCode: string
-    categoryCode: string
-    positionCode: string
-    createdAt?: Date | string
-  }
-
-  export type ArcaCctCategoryPositionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cctCode?: StringFieldUpdateOperationsInput | string
-    categoryCode?: StringFieldUpdateOperationsInput | string
-    positionCode?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCctCategoryPositionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    cctCode?: StringFieldUpdateOperationsInput | string
-    categoryCode?: StringFieldUpdateOperationsInput | string
-    positionCode?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaContractModalityCreateInput = {
-    code: string
-    name: string
-    periodFrom?: string | null
-    periodTo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    employees?: EmployeeCreateNestedManyWithoutContractModalityInput
-  }
-
-  export type ArcaContractModalityUncheckedCreateInput = {
-    code: string
-    name: string
-    periodFrom?: string | null
-    periodTo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    employees?: EmployeeUncheckedCreateNestedManyWithoutContractModalityInput
-  }
-
-  export type ArcaContractModalityUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    employees?: EmployeeUpdateManyWithoutContractModalityNestedInput
-  }
-
-  export type ArcaContractModalityUncheckedUpdateInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    employees?: EmployeeUncheckedUpdateManyWithoutContractModalityNestedInput
-  }
-
-  export type ArcaContractModalityCreateManyInput = {
-    code: string
-    name: string
-    periodFrom?: string | null
-    periodTo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaContractModalityUpdateManyMutationInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaContractModalityUncheckedUpdateManyInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type JobPositionCreateInput = {
     id?: string
     name: string
     code?: string | null
+    cctCode?: string | null
+    categoryCode?: string | null
+    positionCode?: string | null
+    serviceTypeCode?: string | null
     activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutJobPositionsInput
-    category?: ArcaCategoryCreateNestedOneWithoutJobPositionsInput
-    arcaPosition?: ArcaPositionCreateNestedOneWithoutJobPositionsInput
-    serviceType?: ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput
     employees?: EmployeeCreateNestedManyWithoutJobPositionInput
   }
 
@@ -66557,14 +60484,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
+    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
     activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutJobPositionsNestedInput
-    category?: ArcaCategoryUpdateOneWithoutJobPositionsNestedInput
-    arcaPosition?: ArcaPositionUpdateOneWithoutJobPositionsNestedInput
-    serviceType?: ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput
     employees?: EmployeeUpdateManyWithoutJobPositionNestedInput
   }
 
@@ -66601,6 +60528,10 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
+    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
     activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -67205,6 +61136,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -67222,7 +61154,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -67321,6 +61252,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -67338,7 +61270,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -67484,6 +61415,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -67616,6 +61548,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    cctCode?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
@@ -67623,7 +61556,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutSalaryScalesInput
     employees?: EmployeeCreateNestedManyWithoutSalaryScaleInput
     periods?: SalaryScalePeriodCreateNestedManyWithoutSalaryScaleInput
   }
@@ -67648,6 +61580,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
@@ -67655,7 +61588,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutSalaryScalesNestedInput
     employees?: EmployeeUpdateManyWithoutSalaryScaleNestedInput
     periods?: SalaryScalePeriodUpdateManyWithoutSalaryScaleNestedInput
   }
@@ -67694,6 +61626,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
@@ -68757,6 +62690,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
@@ -68784,6 +62718,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
@@ -68809,6 +62744,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
@@ -68836,6 +62772,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
@@ -68862,6 +62799,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -68885,6 +62823,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68909,6 +62848,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -68946,6 +62886,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -68990,6 +62932,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69030,6 +62974,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69074,6 +63020,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69116,6 +63064,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -69154,6 +63104,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69194,6 +63146,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -69212,6 +63166,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlip: PaySlipCreateNestedOneWithoutItemsInput
@@ -69231,6 +63186,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -69248,6 +63204,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlip?: PaySlipUpdateOneRequiredWithoutItemsNestedInput
@@ -69267,6 +63224,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69285,6 +63243,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -69302,6 +63261,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -69320,8 +63280,184 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollClosingAuditCreateInput = {
+    id?: string
+    scope: string
+    fiscalPeriodId?: string | null
+    payrollPeriodId?: string | null
+    year: number
+    month: number
+    closedPeriodIds: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: number
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash: string
+    closedBy?: string | null
+    closedByName?: string | null
+    notes?: string | null
+    closedAt?: Date | string
+  }
+
+  export type PayrollClosingAuditUncheckedCreateInput = {
+    id?: string
+    scope: string
+    fiscalPeriodId?: string | null
+    payrollPeriodId?: string | null
+    year: number
+    month: number
+    closedPeriodIds: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: number
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash: string
+    closedBy?: string | null
+    closedByName?: string | null
+    notes?: string | null
+    closedAt?: Date | string
+  }
+
+  export type PayrollClosingAuditUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scope?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    payrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    closedPeriodIds?: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: IntFieldUpdateOperationsInput | number
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFieldUpdateOperationsInput | number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: IntFieldUpdateOperationsInput | number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash?: StringFieldUpdateOperationsInput | string
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    closedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    closedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollClosingAuditUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scope?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    payrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    closedPeriodIds?: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: IntFieldUpdateOperationsInput | number
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFieldUpdateOperationsInput | number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: IntFieldUpdateOperationsInput | number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash?: StringFieldUpdateOperationsInput | string
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    closedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    closedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollClosingAuditCreateManyInput = {
+    id?: string
+    scope: string
+    fiscalPeriodId?: string | null
+    payrollPeriodId?: string | null
+    year: number
+    month: number
+    closedPeriodIds: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: number
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash: string
+    closedBy?: string | null
+    closedByName?: string | null
+    notes?: string | null
+    closedAt?: Date | string
+  }
+
+  export type PayrollClosingAuditUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scope?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    payrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    closedPeriodIds?: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: IntFieldUpdateOperationsInput | number
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFieldUpdateOperationsInput | number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: IntFieldUpdateOperationsInput | number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash?: StringFieldUpdateOperationsInput | string
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    closedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    closedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollClosingAuditUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    scope?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    payrollPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    closedPeriodIds?: JsonNullValueInput | InputJsonValue
+    totalSlipsClosed?: IntFieldUpdateOperationsInput | number
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    purgedNoveltiesCount?: IntFieldUpdateOperationsInput | number
+    purgedNoveltiesSummary?: NullableJsonNullValueInput | InputJsonValue
+    terminatedEmployeesCount?: IntFieldUpdateOperationsInput | number
+    terminatedEmployees?: NullableJsonNullValueInput | InputJsonValue
+    additionalActions?: NullableJsonNullValueInput | InputJsonValue
+    warningsAccepted?: NullableJsonNullValueInput | InputJsonValue
+    checksumHash?: StringFieldUpdateOperationsInput | string
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    closedByName?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    closedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaySlipBasisCreateInput = {
@@ -71707,269 +65843,6 @@ export namespace Prisma {
     deletedAt?: SortOrder
   }
 
-  export type JobPositionListRelationFilter = {
-    every?: JobPositionWhereInput
-    some?: JobPositionWhereInput
-    none?: JobPositionWhereInput
-  }
-
-  export type SalaryScaleListRelationFilter = {
-    every?: SalaryScaleWhereInput
-    some?: SalaryScaleWhereInput
-    none?: SalaryScaleWhereInput
-  }
-
-  export type JobPositionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type SalaryScaleOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type ArcaCctOrderByRelevanceInput = {
-    fields: ArcaCctOrderByRelevanceFieldEnum | ArcaCctOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaCctCountOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    sector?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCctMaxOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    sector?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCctMinOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    sector?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCategoryOrderByRelevanceInput = {
-    fields: ArcaCategoryOrderByRelevanceFieldEnum | ArcaCategoryOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaCategoryCountOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    cct?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCategoryMaxOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    cct?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCategoryMinOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    cct?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaPositionOrderByRelevanceInput = {
-    fields: ArcaPositionOrderByRelevanceFieldEnum | ArcaPositionOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaPositionCountOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    groupCode?: SortOrder
-    groupName?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaPositionMaxOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    groupCode?: SortOrder
-    groupName?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaPositionMinOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    groupCode?: SortOrder
-    groupName?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaServiceTypeOrderByRelevanceInput = {
-    fields: ArcaServiceTypeOrderByRelevanceFieldEnum | ArcaServiceTypeOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaServiceTypeCountOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    regime?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaServiceTypeMaxOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    regime?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaServiceTypeMinOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    regime?: SortOrder
-    description?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaCctCategoryPositionOrderByRelevanceInput = {
-    fields: ArcaCctCategoryPositionOrderByRelevanceFieldEnum | ArcaCctCategoryPositionOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaCctCategoryPositionCctCodeCategoryCodePositionCodeCompoundUniqueInput = {
-    cctCode: string
-    categoryCode: string
-    positionCode: string
-  }
-
-  export type ArcaCctCategoryPositionCountOrderByAggregateInput = {
-    id?: SortOrder
-    cctCode?: SortOrder
-    categoryCode?: SortOrder
-    positionCode?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type ArcaCctCategoryPositionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    cctCode?: SortOrder
-    categoryCode?: SortOrder
-    positionCode?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type ArcaCctCategoryPositionMinOrderByAggregateInput = {
-    id?: SortOrder
-    cctCode?: SortOrder
-    categoryCode?: SortOrder
-    positionCode?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type ArcaContractModalityOrderByRelevanceInput = {
-    fields: ArcaContractModalityOrderByRelevanceFieldEnum | ArcaContractModalityOrderByRelevanceFieldEnum[]
-    sort: SortOrder
-    search: string
-  }
-
-  export type ArcaContractModalityCountOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    periodFrom?: SortOrder
-    periodTo?: SortOrder
-    description?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaContractModalityMaxOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    periodFrom?: SortOrder
-    periodTo?: SortOrder
-    description?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type ArcaContractModalityMinOrderByAggregateInput = {
-    code?: SortOrder
-    name?: SortOrder
-    periodFrom?: SortOrder
-    periodTo?: SortOrder
-    description?: SortOrder
-    isActive?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type ArcaCctNullableScalarRelationFilter = {
-    is?: ArcaCctWhereInput | null
-    isNot?: ArcaCctWhereInput | null
-  }
-
-  export type ArcaCategoryNullableScalarRelationFilter = {
-    is?: ArcaCategoryWhereInput | null
-    isNot?: ArcaCategoryWhereInput | null
-  }
-
-  export type ArcaPositionNullableScalarRelationFilter = {
-    is?: ArcaPositionWhereInput | null
-    isNot?: ArcaPositionWhereInput | null
-  }
-
-  export type ArcaServiceTypeNullableScalarRelationFilter = {
-    is?: ArcaServiceTypeWhereInput | null
-    isNot?: ArcaServiceTypeWhereInput | null
-  }
-
   export type JobPositionOrderByRelevanceInput = {
     fields: JobPositionOrderByRelevanceFieldEnum | JobPositionOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -72027,6 +65900,11 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type WorkShiftDetailListRelationFilter = {
@@ -72126,6 +66004,14 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type IntNullableFilter<$PrismaModel = never> = {
@@ -72490,11 +66376,6 @@ export namespace Prisma {
   export type MutualNullableScalarRelationFilter = {
     is?: MutualWhereInput | null
     isNot?: MutualWhereInput | null
-  }
-
-  export type ArcaContractModalityNullableScalarRelationFilter = {
-    is?: ArcaContractModalityWhereInput | null
-    isNot?: ArcaContractModalityWhereInput | null
   }
 
   export type SalaryScaleNullableScalarRelationFilter = {
@@ -73568,6 +67449,7 @@ export namespace Prisma {
     totalNet?: SortOrder
     totalEmployerCost?: SortOrder
     closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73601,6 +67483,7 @@ export namespace Prisma {
     totalNet?: SortOrder
     totalEmployerCost?: SortOrder
     closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73625,6 +67508,7 @@ export namespace Prisma {
     totalNet?: SortOrder
     totalEmployerCost?: SortOrder
     closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73704,6 +67588,8 @@ export namespace Prisma {
     signatureHash?: SortOrder
     signedAt?: SortOrder
     status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -73770,6 +67656,8 @@ export namespace Prisma {
     signatureHash?: SortOrder
     signedAt?: SortOrder
     status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -73810,6 +67698,8 @@ export namespace Prisma {
     signatureHash?: SortOrder
     signedAt?: SortOrder
     status?: SortOrder
+    closedAt?: SortOrder
+    closedBy?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     deletedAt?: SortOrder
@@ -73866,6 +67756,7 @@ export namespace Prisma {
     amount?: SortOrder
     arcaConceptCode?: SortOrder
     formulaExplanation?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73891,6 +67782,7 @@ export namespace Prisma {
     amount?: SortOrder
     arcaConceptCode?: SortOrder
     formulaExplanation?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73909,6 +67801,7 @@ export namespace Prisma {
     amount?: SortOrder
     arcaConceptCode?: SortOrder
     formulaExplanation?: SortOrder
+    notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -73918,6 +67811,197 @@ export namespace Prisma {
     rate?: SortOrder
     baseAmount?: SortOrder
     amount?: SortOrder
+  }
+  export type JsonFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type PayrollClosingAuditOrderByRelevanceInput = {
+    fields: PayrollClosingAuditOrderByRelevanceFieldEnum | PayrollClosingAuditOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PayrollClosingAuditCountOrderByAggregateInput = {
+    id?: SortOrder
+    scope?: SortOrder
+    fiscalPeriodId?: SortOrder
+    payrollPeriodId?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    closedPeriodIds?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    purgedNoveltiesSummary?: SortOrder
+    terminatedEmployeesCount?: SortOrder
+    terminatedEmployees?: SortOrder
+    additionalActions?: SortOrder
+    warningsAccepted?: SortOrder
+    checksumHash?: SortOrder
+    closedBy?: SortOrder
+    closedByName?: SortOrder
+    notes?: SortOrder
+    closedAt?: SortOrder
+  }
+
+  export type PayrollClosingAuditAvgOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    terminatedEmployeesCount?: SortOrder
+  }
+
+  export type PayrollClosingAuditMaxOrderByAggregateInput = {
+    id?: SortOrder
+    scope?: SortOrder
+    fiscalPeriodId?: SortOrder
+    payrollPeriodId?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    terminatedEmployeesCount?: SortOrder
+    checksumHash?: SortOrder
+    closedBy?: SortOrder
+    closedByName?: SortOrder
+    notes?: SortOrder
+    closedAt?: SortOrder
+  }
+
+  export type PayrollClosingAuditMinOrderByAggregateInput = {
+    id?: SortOrder
+    scope?: SortOrder
+    fiscalPeriodId?: SortOrder
+    payrollPeriodId?: SortOrder
+    year?: SortOrder
+    month?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    terminatedEmployeesCount?: SortOrder
+    checksumHash?: SortOrder
+    closedBy?: SortOrder
+    closedByName?: SortOrder
+    notes?: SortOrder
+    closedAt?: SortOrder
+  }
+
+  export type PayrollClosingAuditSumOrderByAggregateInput = {
+    year?: SortOrder
+    month?: SortOrder
+    totalSlipsClosed?: SortOrder
+    totalGross?: SortOrder
+    totalNet?: SortOrder
+    totalEmployerCost?: SortOrder
+    purgedNoveltiesCount?: SortOrder
+    terminatedEmployeesCount?: SortOrder
+  }
+  export type JsonWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedJsonFilter<$PrismaModel>
+    _max?: NestedJsonFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue
+    lte?: InputJsonValue
+    gt?: InputJsonValue
+    gte?: InputJsonValue
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type PaySlipBasisOrderByRelevanceInput = {
@@ -74752,29 +68836,6 @@ export namespace Prisma {
     month?: SortOrder
     amount?: SortOrder
   }
-  export type JsonNullableFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type SiradigImportOrderByRelevanceInput = {
     fields: SiradigImportOrderByRelevanceFieldEnum | SiradigImportOrderByRelevanceFieldEnum[]
@@ -74832,32 +68893,6 @@ export namespace Prisma {
     fiscalYear?: SortOrder
     totalRecords?: SortOrder
     processedEmployees?: SortOrder
-  }
-  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedJsonNullableFilter<$PrismaModel>
-    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type IncomeTaxSettlementOrderByRelevanceInput = {
@@ -75064,29 +69099,6 @@ export namespace Prisma {
     priorMonthsWithheldTax?: SortOrder
     netMonthlyWithholding?: SortOrder
   }
-  export type JsonFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-  }
 
   export type ReportTemplateOrderByRelevanceInput = {
     fields: ReportTemplateOrderByRelevanceFieldEnum | ReportTemplateOrderByRelevanceFieldEnum[]
@@ -75123,32 +69135,6 @@ export namespace Prisma {
     isSystem?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-  export type JsonWithAggregatesFilter<$PrismaModel = never> =
-    | PatchUndefined<
-        Either<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
-        Required<JsonWithAggregatesFilterBase<$PrismaModel>>
-      >
-    | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
-
-  export type JsonWithAggregatesFilterBase<$PrismaModel = never> = {
-    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    path?: string
-    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
-    string_contains?: string | StringFieldRefInput<$PrismaModel>
-    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
-    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
-    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
-    lt?: InputJsonValue
-    lte?: InputJsonValue
-    gt?: InputJsonValue
-    gte?: InputJsonValue
-    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedJsonFilter<$PrismaModel>
-    _max?: NestedJsonFilter<$PrismaModel>
   }
 
   export type IncidentTypeOrderByRelevanceInput = {
@@ -75446,286 +69432,6 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
-  export type JobPositionCreateNestedManyWithoutCctInput = {
-    create?: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput> | JobPositionCreateWithoutCctInput[] | JobPositionUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCctInput | JobPositionCreateOrConnectWithoutCctInput[]
-    createMany?: JobPositionCreateManyCctInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type SalaryScaleCreateNestedManyWithoutCctInput = {
-    create?: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput> | SalaryScaleCreateWithoutCctInput[] | SalaryScaleUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: SalaryScaleCreateOrConnectWithoutCctInput | SalaryScaleCreateOrConnectWithoutCctInput[]
-    createMany?: SalaryScaleCreateManyCctInputEnvelope
-    connect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-  }
-
-  export type JobPositionUncheckedCreateNestedManyWithoutCctInput = {
-    create?: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput> | JobPositionCreateWithoutCctInput[] | JobPositionUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCctInput | JobPositionCreateOrConnectWithoutCctInput[]
-    createMany?: JobPositionCreateManyCctInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type SalaryScaleUncheckedCreateNestedManyWithoutCctInput = {
-    create?: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput> | SalaryScaleCreateWithoutCctInput[] | SalaryScaleUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: SalaryScaleCreateOrConnectWithoutCctInput | SalaryScaleCreateOrConnectWithoutCctInput[]
-    createMany?: SalaryScaleCreateManyCctInputEnvelope
-    connect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-  }
-
-  export type JobPositionUpdateManyWithoutCctNestedInput = {
-    create?: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput> | JobPositionCreateWithoutCctInput[] | JobPositionUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCctInput | JobPositionCreateOrConnectWithoutCctInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutCctInput | JobPositionUpsertWithWhereUniqueWithoutCctInput[]
-    createMany?: JobPositionCreateManyCctInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutCctInput | JobPositionUpdateWithWhereUniqueWithoutCctInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutCctInput | JobPositionUpdateManyWithWhereWithoutCctInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type SalaryScaleUpdateManyWithoutCctNestedInput = {
-    create?: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput> | SalaryScaleCreateWithoutCctInput[] | SalaryScaleUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: SalaryScaleCreateOrConnectWithoutCctInput | SalaryScaleCreateOrConnectWithoutCctInput[]
-    upsert?: SalaryScaleUpsertWithWhereUniqueWithoutCctInput | SalaryScaleUpsertWithWhereUniqueWithoutCctInput[]
-    createMany?: SalaryScaleCreateManyCctInputEnvelope
-    set?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    disconnect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    delete?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    connect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    update?: SalaryScaleUpdateWithWhereUniqueWithoutCctInput | SalaryScaleUpdateWithWhereUniqueWithoutCctInput[]
-    updateMany?: SalaryScaleUpdateManyWithWhereWithoutCctInput | SalaryScaleUpdateManyWithWhereWithoutCctInput[]
-    deleteMany?: SalaryScaleScalarWhereInput | SalaryScaleScalarWhereInput[]
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutCctNestedInput = {
-    create?: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput> | JobPositionCreateWithoutCctInput[] | JobPositionUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCctInput | JobPositionCreateOrConnectWithoutCctInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutCctInput | JobPositionUpsertWithWhereUniqueWithoutCctInput[]
-    createMany?: JobPositionCreateManyCctInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutCctInput | JobPositionUpdateWithWhereUniqueWithoutCctInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutCctInput | JobPositionUpdateManyWithWhereWithoutCctInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type SalaryScaleUncheckedUpdateManyWithoutCctNestedInput = {
-    create?: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput> | SalaryScaleCreateWithoutCctInput[] | SalaryScaleUncheckedCreateWithoutCctInput[]
-    connectOrCreate?: SalaryScaleCreateOrConnectWithoutCctInput | SalaryScaleCreateOrConnectWithoutCctInput[]
-    upsert?: SalaryScaleUpsertWithWhereUniqueWithoutCctInput | SalaryScaleUpsertWithWhereUniqueWithoutCctInput[]
-    createMany?: SalaryScaleCreateManyCctInputEnvelope
-    set?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    disconnect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    delete?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    connect?: SalaryScaleWhereUniqueInput | SalaryScaleWhereUniqueInput[]
-    update?: SalaryScaleUpdateWithWhereUniqueWithoutCctInput | SalaryScaleUpdateWithWhereUniqueWithoutCctInput[]
-    updateMany?: SalaryScaleUpdateManyWithWhereWithoutCctInput | SalaryScaleUpdateManyWithWhereWithoutCctInput[]
-    deleteMany?: SalaryScaleScalarWhereInput | SalaryScaleScalarWhereInput[]
-  }
-
-  export type JobPositionCreateNestedManyWithoutCategoryInput = {
-    create?: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput> | JobPositionCreateWithoutCategoryInput[] | JobPositionUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCategoryInput | JobPositionCreateOrConnectWithoutCategoryInput[]
-    createMany?: JobPositionCreateManyCategoryInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUncheckedCreateNestedManyWithoutCategoryInput = {
-    create?: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput> | JobPositionCreateWithoutCategoryInput[] | JobPositionUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCategoryInput | JobPositionCreateOrConnectWithoutCategoryInput[]
-    createMany?: JobPositionCreateManyCategoryInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUpdateManyWithoutCategoryNestedInput = {
-    create?: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput> | JobPositionCreateWithoutCategoryInput[] | JobPositionUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCategoryInput | JobPositionCreateOrConnectWithoutCategoryInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutCategoryInput | JobPositionUpsertWithWhereUniqueWithoutCategoryInput[]
-    createMany?: JobPositionCreateManyCategoryInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutCategoryInput | JobPositionUpdateWithWhereUniqueWithoutCategoryInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutCategoryInput | JobPositionUpdateManyWithWhereWithoutCategoryInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutCategoryNestedInput = {
-    create?: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput> | JobPositionCreateWithoutCategoryInput[] | JobPositionUncheckedCreateWithoutCategoryInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutCategoryInput | JobPositionCreateOrConnectWithoutCategoryInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutCategoryInput | JobPositionUpsertWithWhereUniqueWithoutCategoryInput[]
-    createMany?: JobPositionCreateManyCategoryInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutCategoryInput | JobPositionUpdateWithWhereUniqueWithoutCategoryInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutCategoryInput | JobPositionUpdateManyWithWhereWithoutCategoryInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type JobPositionCreateNestedManyWithoutArcaPositionInput = {
-    create?: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput> | JobPositionCreateWithoutArcaPositionInput[] | JobPositionUncheckedCreateWithoutArcaPositionInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutArcaPositionInput | JobPositionCreateOrConnectWithoutArcaPositionInput[]
-    createMany?: JobPositionCreateManyArcaPositionInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUncheckedCreateNestedManyWithoutArcaPositionInput = {
-    create?: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput> | JobPositionCreateWithoutArcaPositionInput[] | JobPositionUncheckedCreateWithoutArcaPositionInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutArcaPositionInput | JobPositionCreateOrConnectWithoutArcaPositionInput[]
-    createMany?: JobPositionCreateManyArcaPositionInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUpdateManyWithoutArcaPositionNestedInput = {
-    create?: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput> | JobPositionCreateWithoutArcaPositionInput[] | JobPositionUncheckedCreateWithoutArcaPositionInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutArcaPositionInput | JobPositionCreateOrConnectWithoutArcaPositionInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutArcaPositionInput | JobPositionUpsertWithWhereUniqueWithoutArcaPositionInput[]
-    createMany?: JobPositionCreateManyArcaPositionInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutArcaPositionInput | JobPositionUpdateWithWhereUniqueWithoutArcaPositionInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutArcaPositionInput | JobPositionUpdateManyWithWhereWithoutArcaPositionInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutArcaPositionNestedInput = {
-    create?: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput> | JobPositionCreateWithoutArcaPositionInput[] | JobPositionUncheckedCreateWithoutArcaPositionInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutArcaPositionInput | JobPositionCreateOrConnectWithoutArcaPositionInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutArcaPositionInput | JobPositionUpsertWithWhereUniqueWithoutArcaPositionInput[]
-    createMany?: JobPositionCreateManyArcaPositionInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutArcaPositionInput | JobPositionUpdateWithWhereUniqueWithoutArcaPositionInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutArcaPositionInput | JobPositionUpdateManyWithWhereWithoutArcaPositionInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type JobPositionCreateNestedManyWithoutServiceTypeInput = {
-    create?: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput> | JobPositionCreateWithoutServiceTypeInput[] | JobPositionUncheckedCreateWithoutServiceTypeInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutServiceTypeInput | JobPositionCreateOrConnectWithoutServiceTypeInput[]
-    createMany?: JobPositionCreateManyServiceTypeInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUncheckedCreateNestedManyWithoutServiceTypeInput = {
-    create?: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput> | JobPositionCreateWithoutServiceTypeInput[] | JobPositionUncheckedCreateWithoutServiceTypeInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutServiceTypeInput | JobPositionCreateOrConnectWithoutServiceTypeInput[]
-    createMany?: JobPositionCreateManyServiceTypeInputEnvelope
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-  }
-
-  export type JobPositionUpdateManyWithoutServiceTypeNestedInput = {
-    create?: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput> | JobPositionCreateWithoutServiceTypeInput[] | JobPositionUncheckedCreateWithoutServiceTypeInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutServiceTypeInput | JobPositionCreateOrConnectWithoutServiceTypeInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutServiceTypeInput | JobPositionUpsertWithWhereUniqueWithoutServiceTypeInput[]
-    createMany?: JobPositionCreateManyServiceTypeInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutServiceTypeInput | JobPositionUpdateWithWhereUniqueWithoutServiceTypeInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutServiceTypeInput | JobPositionUpdateManyWithWhereWithoutServiceTypeInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutServiceTypeNestedInput = {
-    create?: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput> | JobPositionCreateWithoutServiceTypeInput[] | JobPositionUncheckedCreateWithoutServiceTypeInput[]
-    connectOrCreate?: JobPositionCreateOrConnectWithoutServiceTypeInput | JobPositionCreateOrConnectWithoutServiceTypeInput[]
-    upsert?: JobPositionUpsertWithWhereUniqueWithoutServiceTypeInput | JobPositionUpsertWithWhereUniqueWithoutServiceTypeInput[]
-    createMany?: JobPositionCreateManyServiceTypeInputEnvelope
-    set?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    disconnect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    delete?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    connect?: JobPositionWhereUniqueInput | JobPositionWhereUniqueInput[]
-    update?: JobPositionUpdateWithWhereUniqueWithoutServiceTypeInput | JobPositionUpdateWithWhereUniqueWithoutServiceTypeInput[]
-    updateMany?: JobPositionUpdateManyWithWhereWithoutServiceTypeInput | JobPositionUpdateManyWithWhereWithoutServiceTypeInput[]
-    deleteMany?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-  }
-
-  export type EmployeeCreateNestedManyWithoutContractModalityInput = {
-    create?: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput> | EmployeeCreateWithoutContractModalityInput[] | EmployeeUncheckedCreateWithoutContractModalityInput[]
-    connectOrCreate?: EmployeeCreateOrConnectWithoutContractModalityInput | EmployeeCreateOrConnectWithoutContractModalityInput[]
-    createMany?: EmployeeCreateManyContractModalityInputEnvelope
-    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-  }
-
-  export type EmployeeUncheckedCreateNestedManyWithoutContractModalityInput = {
-    create?: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput> | EmployeeCreateWithoutContractModalityInput[] | EmployeeUncheckedCreateWithoutContractModalityInput[]
-    connectOrCreate?: EmployeeCreateOrConnectWithoutContractModalityInput | EmployeeCreateOrConnectWithoutContractModalityInput[]
-    createMany?: EmployeeCreateManyContractModalityInputEnvelope
-    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-  }
-
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type EmployeeUpdateManyWithoutContractModalityNestedInput = {
-    create?: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput> | EmployeeCreateWithoutContractModalityInput[] | EmployeeUncheckedCreateWithoutContractModalityInput[]
-    connectOrCreate?: EmployeeCreateOrConnectWithoutContractModalityInput | EmployeeCreateOrConnectWithoutContractModalityInput[]
-    upsert?: EmployeeUpsertWithWhereUniqueWithoutContractModalityInput | EmployeeUpsertWithWhereUniqueWithoutContractModalityInput[]
-    createMany?: EmployeeCreateManyContractModalityInputEnvelope
-    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    update?: EmployeeUpdateWithWhereUniqueWithoutContractModalityInput | EmployeeUpdateWithWhereUniqueWithoutContractModalityInput[]
-    updateMany?: EmployeeUpdateManyWithWhereWithoutContractModalityInput | EmployeeUpdateManyWithWhereWithoutContractModalityInput[]
-    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
-  }
-
-  export type EmployeeUncheckedUpdateManyWithoutContractModalityNestedInput = {
-    create?: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput> | EmployeeCreateWithoutContractModalityInput[] | EmployeeUncheckedCreateWithoutContractModalityInput[]
-    connectOrCreate?: EmployeeCreateOrConnectWithoutContractModalityInput | EmployeeCreateOrConnectWithoutContractModalityInput[]
-    upsert?: EmployeeUpsertWithWhereUniqueWithoutContractModalityInput | EmployeeUpsertWithWhereUniqueWithoutContractModalityInput[]
-    createMany?: EmployeeCreateManyContractModalityInputEnvelope
-    set?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    disconnect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    delete?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-    update?: EmployeeUpdateWithWhereUniqueWithoutContractModalityInput | EmployeeUpdateWithWhereUniqueWithoutContractModalityInput[]
-    updateMany?: EmployeeUpdateManyWithWhereWithoutContractModalityInput | EmployeeUpdateManyWithWhereWithoutContractModalityInput[]
-    deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
-  }
-
-  export type ArcaCctCreateNestedOneWithoutJobPositionsInput = {
-    create?: XOR<ArcaCctCreateWithoutJobPositionsInput, ArcaCctUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaCctCreateOrConnectWithoutJobPositionsInput
-    connect?: ArcaCctWhereUniqueInput
-  }
-
-  export type ArcaCategoryCreateNestedOneWithoutJobPositionsInput = {
-    create?: XOR<ArcaCategoryCreateWithoutJobPositionsInput, ArcaCategoryUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaCategoryCreateOrConnectWithoutJobPositionsInput
-    connect?: ArcaCategoryWhereUniqueInput
-  }
-
-  export type ArcaPositionCreateNestedOneWithoutJobPositionsInput = {
-    create?: XOR<ArcaPositionCreateWithoutJobPositionsInput, ArcaPositionUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaPositionCreateOrConnectWithoutJobPositionsInput
-    connect?: ArcaPositionWhereUniqueInput
-  }
-
-  export type ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput = {
-    create?: XOR<ArcaServiceTypeCreateWithoutJobPositionsInput, ArcaServiceTypeUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaServiceTypeCreateOrConnectWithoutJobPositionsInput
-    connect?: ArcaServiceTypeWhereUniqueInput
-  }
-
   export type EmployeeCreateNestedManyWithoutJobPositionInput = {
     create?: XOR<EmployeeCreateWithoutJobPositionInput, EmployeeUncheckedCreateWithoutJobPositionInput> | EmployeeCreateWithoutJobPositionInput[] | EmployeeUncheckedCreateWithoutJobPositionInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutJobPositionInput | EmployeeCreateOrConnectWithoutJobPositionInput[]
@@ -75738,46 +69444,6 @@ export namespace Prisma {
     connectOrCreate?: EmployeeCreateOrConnectWithoutJobPositionInput | EmployeeCreateOrConnectWithoutJobPositionInput[]
     createMany?: EmployeeCreateManyJobPositionInputEnvelope
     connect?: EmployeeWhereUniqueInput | EmployeeWhereUniqueInput[]
-  }
-
-  export type ArcaCctUpdateOneWithoutJobPositionsNestedInput = {
-    create?: XOR<ArcaCctCreateWithoutJobPositionsInput, ArcaCctUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaCctCreateOrConnectWithoutJobPositionsInput
-    upsert?: ArcaCctUpsertWithoutJobPositionsInput
-    disconnect?: ArcaCctWhereInput | boolean
-    delete?: ArcaCctWhereInput | boolean
-    connect?: ArcaCctWhereUniqueInput
-    update?: XOR<XOR<ArcaCctUpdateToOneWithWhereWithoutJobPositionsInput, ArcaCctUpdateWithoutJobPositionsInput>, ArcaCctUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaCategoryUpdateOneWithoutJobPositionsNestedInput = {
-    create?: XOR<ArcaCategoryCreateWithoutJobPositionsInput, ArcaCategoryUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaCategoryCreateOrConnectWithoutJobPositionsInput
-    upsert?: ArcaCategoryUpsertWithoutJobPositionsInput
-    disconnect?: ArcaCategoryWhereInput | boolean
-    delete?: ArcaCategoryWhereInput | boolean
-    connect?: ArcaCategoryWhereUniqueInput
-    update?: XOR<XOR<ArcaCategoryUpdateToOneWithWhereWithoutJobPositionsInput, ArcaCategoryUpdateWithoutJobPositionsInput>, ArcaCategoryUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaPositionUpdateOneWithoutJobPositionsNestedInput = {
-    create?: XOR<ArcaPositionCreateWithoutJobPositionsInput, ArcaPositionUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaPositionCreateOrConnectWithoutJobPositionsInput
-    upsert?: ArcaPositionUpsertWithoutJobPositionsInput
-    disconnect?: ArcaPositionWhereInput | boolean
-    delete?: ArcaPositionWhereInput | boolean
-    connect?: ArcaPositionWhereUniqueInput
-    update?: XOR<XOR<ArcaPositionUpdateToOneWithWhereWithoutJobPositionsInput, ArcaPositionUpdateWithoutJobPositionsInput>, ArcaPositionUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput = {
-    create?: XOR<ArcaServiceTypeCreateWithoutJobPositionsInput, ArcaServiceTypeUncheckedCreateWithoutJobPositionsInput>
-    connectOrCreate?: ArcaServiceTypeCreateOrConnectWithoutJobPositionsInput
-    upsert?: ArcaServiceTypeUpsertWithoutJobPositionsInput
-    disconnect?: ArcaServiceTypeWhereInput | boolean
-    delete?: ArcaServiceTypeWhereInput | boolean
-    connect?: ArcaServiceTypeWhereUniqueInput
-    update?: XOR<XOR<ArcaServiceTypeUpdateToOneWithWhereWithoutJobPositionsInput, ArcaServiceTypeUpdateWithoutJobPositionsInput>, ArcaServiceTypeUncheckedUpdateWithoutJobPositionsInput>
   }
 
   export type EmployeeUpdateManyWithoutJobPositionNestedInput = {
@@ -75842,6 +69508,10 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type WorkShiftDetailUpdateManyWithoutWorkShiftNestedInput = {
@@ -76258,12 +69928,6 @@ export namespace Prisma {
     connect?: MutualWhereUniqueInput
   }
 
-  export type ArcaContractModalityCreateNestedOneWithoutEmployeesInput = {
-    create?: XOR<ArcaContractModalityCreateWithoutEmployeesInput, ArcaContractModalityUncheckedCreateWithoutEmployeesInput>
-    connectOrCreate?: ArcaContractModalityCreateOrConnectWithoutEmployeesInput
-    connect?: ArcaContractModalityWhereUniqueInput
-  }
-
   export type SalaryScaleCreateNestedOneWithoutEmployeesInput = {
     create?: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
     connectOrCreate?: SalaryScaleCreateOrConnectWithoutEmployeesInput
@@ -76484,16 +70148,6 @@ export namespace Prisma {
     delete?: MutualWhereInput | boolean
     connect?: MutualWhereUniqueInput
     update?: XOR<XOR<MutualUpdateToOneWithWhereWithoutEmployeesInput, MutualUpdateWithoutEmployeesInput>, MutualUncheckedUpdateWithoutEmployeesInput>
-  }
-
-  export type ArcaContractModalityUpdateOneWithoutEmployeesNestedInput = {
-    create?: XOR<ArcaContractModalityCreateWithoutEmployeesInput, ArcaContractModalityUncheckedCreateWithoutEmployeesInput>
-    connectOrCreate?: ArcaContractModalityCreateOrConnectWithoutEmployeesInput
-    upsert?: ArcaContractModalityUpsertWithoutEmployeesInput
-    disconnect?: ArcaContractModalityWhereInput | boolean
-    delete?: ArcaContractModalityWhereInput | boolean
-    connect?: ArcaContractModalityWhereUniqueInput
-    update?: XOR<XOR<ArcaContractModalityUpdateToOneWithWhereWithoutEmployeesInput, ArcaContractModalityUpdateWithoutEmployeesInput>, ArcaContractModalityUncheckedUpdateWithoutEmployeesInput>
   }
 
   export type SalaryScaleUpdateOneWithoutEmployeesNestedInput = {
@@ -76876,12 +70530,6 @@ export namespace Prisma {
     deleteMany?: EmployeeScalarWhereInput | EmployeeScalarWhereInput[]
   }
 
-  export type ArcaCctCreateNestedOneWithoutSalaryScalesInput = {
-    create?: XOR<ArcaCctCreateWithoutSalaryScalesInput, ArcaCctUncheckedCreateWithoutSalaryScalesInput>
-    connectOrCreate?: ArcaCctCreateOrConnectWithoutSalaryScalesInput
-    connect?: ArcaCctWhereUniqueInput
-  }
-
   export type EmployeeCreateNestedManyWithoutSalaryScaleInput = {
     create?: XOR<EmployeeCreateWithoutSalaryScaleInput, EmployeeUncheckedCreateWithoutSalaryScaleInput> | EmployeeCreateWithoutSalaryScaleInput[] | EmployeeUncheckedCreateWithoutSalaryScaleInput[]
     connectOrCreate?: EmployeeCreateOrConnectWithoutSalaryScaleInput | EmployeeCreateOrConnectWithoutSalaryScaleInput[]
@@ -76908,16 +70556,6 @@ export namespace Prisma {
     connectOrCreate?: SalaryScalePeriodCreateOrConnectWithoutSalaryScaleInput | SalaryScalePeriodCreateOrConnectWithoutSalaryScaleInput[]
     createMany?: SalaryScalePeriodCreateManySalaryScaleInputEnvelope
     connect?: SalaryScalePeriodWhereUniqueInput | SalaryScalePeriodWhereUniqueInput[]
-  }
-
-  export type ArcaCctUpdateOneWithoutSalaryScalesNestedInput = {
-    create?: XOR<ArcaCctCreateWithoutSalaryScalesInput, ArcaCctUncheckedCreateWithoutSalaryScalesInput>
-    connectOrCreate?: ArcaCctCreateOrConnectWithoutSalaryScalesInput
-    upsert?: ArcaCctUpsertWithoutSalaryScalesInput
-    disconnect?: ArcaCctWhereInput | boolean
-    delete?: ArcaCctWhereInput | boolean
-    connect?: ArcaCctWhereUniqueInput
-    update?: XOR<XOR<ArcaCctUpdateToOneWithWhereWithoutSalaryScalesInput, ArcaCctUpdateWithoutSalaryScalesInput>, ArcaCctUncheckedUpdateWithoutSalaryScalesInput>
   }
 
   export type EmployeeUpdateManyWithoutSalaryScaleNestedInput = {
@@ -78348,19 +71986,6 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedDecimalFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     in?: Decimal[] | DecimalJsLike[] | number[] | string[]
@@ -78370,6 +71995,11 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
@@ -78386,6 +72016,14 @@ export namespace Prisma {
     _sum?: NestedDecimalFilter<$PrismaModel>
     _min?: NestedDecimalFilter<$PrismaModel>
     _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -78468,14 +72106,14 @@ export namespace Prisma {
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
-  export type NestedJsonNullableFilter<$PrismaModel = never> =
+  export type NestedJsonFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonFilterBase<$PrismaModel>>
       >
-    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
 
-  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+  export type NestedJsonFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -78491,14 +72129,14 @@ export namespace Prisma {
     gte?: InputJsonValue
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
-  export type NestedJsonFilter<$PrismaModel = never> =
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
     | PatchUndefined<
-        Either<Required<NestedJsonFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>,
-        Required<NestedJsonFilterBase<$PrismaModel>>
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
       >
-    | OptionalFlat<Omit<Required<NestedJsonFilterBase<$PrismaModel>>, 'path'>>
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type NestedJsonFilterBase<$PrismaModel = never> = {
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
     equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     path?: string
     mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
@@ -78539,6 +72177,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -78555,7 +72194,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -78705,548 +72343,6 @@ export namespace Prisma {
     bankAccountType?: StringNullableFilter<"Employee"> | string | null
   }
 
-  export type JobPositionCreateWithoutCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    category?: ArcaCategoryCreateNestedOneWithoutJobPositionsInput
-    arcaPosition?: ArcaPositionCreateNestedOneWithoutJobPositionsInput
-    serviceType?: ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput
-    employees?: EmployeeCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionUncheckedCreateWithoutCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    categoryCode?: string | null
-    positionCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeUncheckedCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionCreateOrConnectWithoutCctInput = {
-    where: JobPositionWhereUniqueInput
-    create: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput>
-  }
-
-  export type JobPositionCreateManyCctInputEnvelope = {
-    data: JobPositionCreateManyCctInput | JobPositionCreateManyCctInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type SalaryScaleCreateWithoutCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    description?: string | null
-    amount?: Decimal | DecimalJsLike | number | string
-    isInternOnly?: boolean
-    isDirectorOnly?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeCreateNestedManyWithoutSalaryScaleInput
-    periods?: SalaryScalePeriodCreateNestedManyWithoutSalaryScaleInput
-  }
-
-  export type SalaryScaleUncheckedCreateWithoutCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    description?: string | null
-    amount?: Decimal | DecimalJsLike | number | string
-    isInternOnly?: boolean
-    isDirectorOnly?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeUncheckedCreateNestedManyWithoutSalaryScaleInput
-    periods?: SalaryScalePeriodUncheckedCreateNestedManyWithoutSalaryScaleInput
-  }
-
-  export type SalaryScaleCreateOrConnectWithoutCctInput = {
-    where: SalaryScaleWhereUniqueInput
-    create: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput>
-  }
-
-  export type SalaryScaleCreateManyCctInputEnvelope = {
-    data: SalaryScaleCreateManyCctInput | SalaryScaleCreateManyCctInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobPositionUpsertWithWhereUniqueWithoutCctInput = {
-    where: JobPositionWhereUniqueInput
-    update: XOR<JobPositionUpdateWithoutCctInput, JobPositionUncheckedUpdateWithoutCctInput>
-    create: XOR<JobPositionCreateWithoutCctInput, JobPositionUncheckedCreateWithoutCctInput>
-  }
-
-  export type JobPositionUpdateWithWhereUniqueWithoutCctInput = {
-    where: JobPositionWhereUniqueInput
-    data: XOR<JobPositionUpdateWithoutCctInput, JobPositionUncheckedUpdateWithoutCctInput>
-  }
-
-  export type JobPositionUpdateManyWithWhereWithoutCctInput = {
-    where: JobPositionScalarWhereInput
-    data: XOR<JobPositionUpdateManyMutationInput, JobPositionUncheckedUpdateManyWithoutCctInput>
-  }
-
-  export type JobPositionScalarWhereInput = {
-    AND?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-    OR?: JobPositionScalarWhereInput[]
-    NOT?: JobPositionScalarWhereInput | JobPositionScalarWhereInput[]
-    id?: StringFilter<"JobPosition"> | string
-    name?: StringFilter<"JobPosition"> | string
-    code?: StringNullableFilter<"JobPosition"> | string | null
-    cctCode?: StringNullableFilter<"JobPosition"> | string | null
-    categoryCode?: StringNullableFilter<"JobPosition"> | string | null
-    positionCode?: StringNullableFilter<"JobPosition"> | string | null
-    serviceTypeCode?: StringNullableFilter<"JobPosition"> | string | null
-    activityCode?: StringNullableFilter<"JobPosition"> | string | null
-    createdAt?: DateTimeFilter<"JobPosition"> | Date | string
-    updatedAt?: DateTimeFilter<"JobPosition"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"JobPosition"> | Date | string | null
-  }
-
-  export type SalaryScaleUpsertWithWhereUniqueWithoutCctInput = {
-    where: SalaryScaleWhereUniqueInput
-    update: XOR<SalaryScaleUpdateWithoutCctInput, SalaryScaleUncheckedUpdateWithoutCctInput>
-    create: XOR<SalaryScaleCreateWithoutCctInput, SalaryScaleUncheckedCreateWithoutCctInput>
-  }
-
-  export type SalaryScaleUpdateWithWhereUniqueWithoutCctInput = {
-    where: SalaryScaleWhereUniqueInput
-    data: XOR<SalaryScaleUpdateWithoutCctInput, SalaryScaleUncheckedUpdateWithoutCctInput>
-  }
-
-  export type SalaryScaleUpdateManyWithWhereWithoutCctInput = {
-    where: SalaryScaleScalarWhereInput
-    data: XOR<SalaryScaleUpdateManyMutationInput, SalaryScaleUncheckedUpdateManyWithoutCctInput>
-  }
-
-  export type SalaryScaleScalarWhereInput = {
-    AND?: SalaryScaleScalarWhereInput | SalaryScaleScalarWhereInput[]
-    OR?: SalaryScaleScalarWhereInput[]
-    NOT?: SalaryScaleScalarWhereInput | SalaryScaleScalarWhereInput[]
-    id?: StringFilter<"SalaryScale"> | string
-    name?: StringFilter<"SalaryScale"> | string
-    code?: StringNullableFilter<"SalaryScale"> | string | null
-    cctCode?: StringNullableFilter<"SalaryScale"> | string | null
-    description?: StringNullableFilter<"SalaryScale"> | string | null
-    amount?: DecimalFilter<"SalaryScale"> | Decimal | DecimalJsLike | number | string
-    isInternOnly?: BoolFilter<"SalaryScale"> | boolean
-    isDirectorOnly?: BoolFilter<"SalaryScale"> | boolean
-    createdAt?: DateTimeFilter<"SalaryScale"> | Date | string
-    updatedAt?: DateTimeFilter<"SalaryScale"> | Date | string
-    deletedAt?: DateTimeNullableFilter<"SalaryScale"> | Date | string | null
-  }
-
-  export type JobPositionCreateWithoutCategoryInput = {
-    id?: string
-    name: string
-    code?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutJobPositionsInput
-    arcaPosition?: ArcaPositionCreateNestedOneWithoutJobPositionsInput
-    serviceType?: ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput
-    employees?: EmployeeCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionUncheckedCreateWithoutCategoryInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    positionCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeUncheckedCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionCreateOrConnectWithoutCategoryInput = {
-    where: JobPositionWhereUniqueInput
-    create: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput>
-  }
-
-  export type JobPositionCreateManyCategoryInputEnvelope = {
-    data: JobPositionCreateManyCategoryInput | JobPositionCreateManyCategoryInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobPositionUpsertWithWhereUniqueWithoutCategoryInput = {
-    where: JobPositionWhereUniqueInput
-    update: XOR<JobPositionUpdateWithoutCategoryInput, JobPositionUncheckedUpdateWithoutCategoryInput>
-    create: XOR<JobPositionCreateWithoutCategoryInput, JobPositionUncheckedCreateWithoutCategoryInput>
-  }
-
-  export type JobPositionUpdateWithWhereUniqueWithoutCategoryInput = {
-    where: JobPositionWhereUniqueInput
-    data: XOR<JobPositionUpdateWithoutCategoryInput, JobPositionUncheckedUpdateWithoutCategoryInput>
-  }
-
-  export type JobPositionUpdateManyWithWhereWithoutCategoryInput = {
-    where: JobPositionScalarWhereInput
-    data: XOR<JobPositionUpdateManyMutationInput, JobPositionUncheckedUpdateManyWithoutCategoryInput>
-  }
-
-  export type JobPositionCreateWithoutArcaPositionInput = {
-    id?: string
-    name: string
-    code?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutJobPositionsInput
-    category?: ArcaCategoryCreateNestedOneWithoutJobPositionsInput
-    serviceType?: ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput
-    employees?: EmployeeCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionUncheckedCreateWithoutArcaPositionInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    categoryCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeUncheckedCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionCreateOrConnectWithoutArcaPositionInput = {
-    where: JobPositionWhereUniqueInput
-    create: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput>
-  }
-
-  export type JobPositionCreateManyArcaPositionInputEnvelope = {
-    data: JobPositionCreateManyArcaPositionInput | JobPositionCreateManyArcaPositionInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobPositionUpsertWithWhereUniqueWithoutArcaPositionInput = {
-    where: JobPositionWhereUniqueInput
-    update: XOR<JobPositionUpdateWithoutArcaPositionInput, JobPositionUncheckedUpdateWithoutArcaPositionInput>
-    create: XOR<JobPositionCreateWithoutArcaPositionInput, JobPositionUncheckedCreateWithoutArcaPositionInput>
-  }
-
-  export type JobPositionUpdateWithWhereUniqueWithoutArcaPositionInput = {
-    where: JobPositionWhereUniqueInput
-    data: XOR<JobPositionUpdateWithoutArcaPositionInput, JobPositionUncheckedUpdateWithoutArcaPositionInput>
-  }
-
-  export type JobPositionUpdateManyWithWhereWithoutArcaPositionInput = {
-    where: JobPositionScalarWhereInput
-    data: XOR<JobPositionUpdateManyMutationInput, JobPositionUncheckedUpdateManyWithoutArcaPositionInput>
-  }
-
-  export type JobPositionCreateWithoutServiceTypeInput = {
-    id?: string
-    name: string
-    code?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutJobPositionsInput
-    category?: ArcaCategoryCreateNestedOneWithoutJobPositionsInput
-    arcaPosition?: ArcaPositionCreateNestedOneWithoutJobPositionsInput
-    employees?: EmployeeCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionUncheckedCreateWithoutServiceTypeInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    categoryCode?: string | null
-    positionCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    employees?: EmployeeUncheckedCreateNestedManyWithoutJobPositionInput
-  }
-
-  export type JobPositionCreateOrConnectWithoutServiceTypeInput = {
-    where: JobPositionWhereUniqueInput
-    create: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput>
-  }
-
-  export type JobPositionCreateManyServiceTypeInputEnvelope = {
-    data: JobPositionCreateManyServiceTypeInput | JobPositionCreateManyServiceTypeInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type JobPositionUpsertWithWhereUniqueWithoutServiceTypeInput = {
-    where: JobPositionWhereUniqueInput
-    update: XOR<JobPositionUpdateWithoutServiceTypeInput, JobPositionUncheckedUpdateWithoutServiceTypeInput>
-    create: XOR<JobPositionCreateWithoutServiceTypeInput, JobPositionUncheckedCreateWithoutServiceTypeInput>
-  }
-
-  export type JobPositionUpdateWithWhereUniqueWithoutServiceTypeInput = {
-    where: JobPositionWhereUniqueInput
-    data: XOR<JobPositionUpdateWithoutServiceTypeInput, JobPositionUncheckedUpdateWithoutServiceTypeInput>
-  }
-
-  export type JobPositionUpdateManyWithWhereWithoutServiceTypeInput = {
-    where: JobPositionScalarWhereInput
-    data: XOR<JobPositionUpdateManyMutationInput, JobPositionUncheckedUpdateManyWithoutServiceTypeInput>
-  }
-
-  export type EmployeeCreateWithoutContractModalityInput = {
-    id?: string
-    fileNumber: string
-    lastName: string
-    firstName: string
-    photo?: string | null
-    hireDate: Date | string
-    birthDate: Date | string
-    documentType?: string
-    documentNumber: string
-    cuil: string
-    gender?: string
-    street?: string | null
-    streetNumber?: string | null
-    floor?: string | null
-    apartment?: string | null
-    city?: string | null
-    postalCode?: string | null
-    province?: string | null
-    email?: string | null
-    phone?: string | null
-    status?: string
-    terminationDate?: Date | string | null
-    terminationReason?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    payrollGroup?: string
-    isPartTime?: boolean
-    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
-    partTimePercentage?: Decimal | DecimalJsLike | number | string
-    basicSalary?: Decimal | DecimalJsLike | number | string
-    hourlyRate?: Decimal | DecimalJsLike | number | string
-    cbu?: string | null
-    bankAccountType?: string | null
-    department?: DepartmentCreateNestedOneWithoutEmployeesInput
-    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
-    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
-    union?: UnionCreateNestedOneWithoutEmployeesInput
-    mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
-    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
-    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
-    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
-    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
-    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
-    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
-    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
-    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
-    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
-    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
-    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
-    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
-    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
-  }
-
-  export type EmployeeUncheckedCreateWithoutContractModalityInput = {
-    id?: string
-    fileNumber: string
-    lastName: string
-    firstName: string
-    photo?: string | null
-    hireDate: Date | string
-    birthDate: Date | string
-    documentType?: string
-    documentNumber: string
-    cuil: string
-    gender?: string
-    street?: string | null
-    streetNumber?: string | null
-    floor?: string | null
-    apartment?: string | null
-    city?: string | null
-    postalCode?: string | null
-    province?: string | null
-    email?: string | null
-    phone?: string | null
-    status?: string
-    terminationDate?: Date | string | null
-    terminationReason?: string | null
-    departmentId?: string | null
-    jobPositionId?: string | null
-    healthInsuranceId?: string | null
-    unionId?: string | null
-    mutualId?: string | null
-    salaryScaleId?: string | null
-    workShiftId?: string | null
-    paymentMethodId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    payrollGroup?: string
-    isPartTime?: boolean
-    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
-    partTimePercentage?: Decimal | DecimalJsLike | number | string
-    basicSalary?: Decimal | DecimalJsLike | number | string
-    hourlyRate?: Decimal | DecimalJsLike | number | string
-    cbu?: string | null
-    bankAccountType?: string | null
-    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
-    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
-    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
-    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
-    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
-    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
-    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
-    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
-    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
-    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
-    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
-  }
-
-  export type EmployeeCreateOrConnectWithoutContractModalityInput = {
-    where: EmployeeWhereUniqueInput
-    create: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput>
-  }
-
-  export type EmployeeCreateManyContractModalityInputEnvelope = {
-    data: EmployeeCreateManyContractModalityInput | EmployeeCreateManyContractModalityInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type EmployeeUpsertWithWhereUniqueWithoutContractModalityInput = {
-    where: EmployeeWhereUniqueInput
-    update: XOR<EmployeeUpdateWithoutContractModalityInput, EmployeeUncheckedUpdateWithoutContractModalityInput>
-    create: XOR<EmployeeCreateWithoutContractModalityInput, EmployeeUncheckedCreateWithoutContractModalityInput>
-  }
-
-  export type EmployeeUpdateWithWhereUniqueWithoutContractModalityInput = {
-    where: EmployeeWhereUniqueInput
-    data: XOR<EmployeeUpdateWithoutContractModalityInput, EmployeeUncheckedUpdateWithoutContractModalityInput>
-  }
-
-  export type EmployeeUpdateManyWithWhereWithoutContractModalityInput = {
-    where: EmployeeScalarWhereInput
-    data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutContractModalityInput>
-  }
-
-  export type ArcaCctCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    salaryScales?: SalaryScaleCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctUncheckedCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    salaryScales?: SalaryScaleUncheckedCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctCreateOrConnectWithoutJobPositionsInput = {
-    where: ArcaCctWhereUniqueInput
-    create: XOR<ArcaCctCreateWithoutJobPositionsInput, ArcaCctUncheckedCreateWithoutJobPositionsInput>
-  }
-
-  export type ArcaCategoryCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    cct?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaCategoryUncheckedCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    cct?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaCategoryCreateOrConnectWithoutJobPositionsInput = {
-    where: ArcaCategoryWhereUniqueInput
-    create: XOR<ArcaCategoryCreateWithoutJobPositionsInput, ArcaCategoryUncheckedCreateWithoutJobPositionsInput>
-  }
-
-  export type ArcaPositionCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    groupCode?: string | null
-    groupName?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaPositionUncheckedCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    groupCode?: string | null
-    groupName?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaPositionCreateOrConnectWithoutJobPositionsInput = {
-    where: ArcaPositionWhereUniqueInput
-    create: XOR<ArcaPositionCreateWithoutJobPositionsInput, ArcaPositionUncheckedCreateWithoutJobPositionsInput>
-  }
-
-  export type ArcaServiceTypeCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    regime?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaServiceTypeUncheckedCreateWithoutJobPositionsInput = {
-    code: string
-    name: string
-    regime?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaServiceTypeCreateOrConnectWithoutJobPositionsInput = {
-    where: ArcaServiceTypeWhereUniqueInput
-    create: XOR<ArcaServiceTypeCreateWithoutJobPositionsInput, ArcaServiceTypeUncheckedCreateWithoutJobPositionsInput>
-  }
-
   export type EmployeeCreateWithoutJobPositionInput = {
     id?: string
     fileNumber: string
@@ -79271,6 +72367,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -79287,7 +72384,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -79369,126 +72465,6 @@ export namespace Prisma {
   export type EmployeeCreateManyJobPositionInputEnvelope = {
     data: EmployeeCreateManyJobPositionInput | EmployeeCreateManyJobPositionInput[]
     skipDuplicates?: boolean
-  }
-
-  export type ArcaCctUpsertWithoutJobPositionsInput = {
-    update: XOR<ArcaCctUpdateWithoutJobPositionsInput, ArcaCctUncheckedUpdateWithoutJobPositionsInput>
-    create: XOR<ArcaCctCreateWithoutJobPositionsInput, ArcaCctUncheckedCreateWithoutJobPositionsInput>
-    where?: ArcaCctWhereInput
-  }
-
-  export type ArcaCctUpdateToOneWithWhereWithoutJobPositionsInput = {
-    where?: ArcaCctWhereInput
-    data: XOR<ArcaCctUpdateWithoutJobPositionsInput, ArcaCctUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaCctUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    salaryScales?: SalaryScaleUpdateManyWithoutCctNestedInput
-  }
-
-  export type ArcaCctUncheckedUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    salaryScales?: SalaryScaleUncheckedUpdateManyWithoutCctNestedInput
-  }
-
-  export type ArcaCategoryUpsertWithoutJobPositionsInput = {
-    update: XOR<ArcaCategoryUpdateWithoutJobPositionsInput, ArcaCategoryUncheckedUpdateWithoutJobPositionsInput>
-    create: XOR<ArcaCategoryCreateWithoutJobPositionsInput, ArcaCategoryUncheckedCreateWithoutJobPositionsInput>
-    where?: ArcaCategoryWhereInput
-  }
-
-  export type ArcaCategoryUpdateToOneWithWhereWithoutJobPositionsInput = {
-    where?: ArcaCategoryWhereInput
-    data: XOR<ArcaCategoryUpdateWithoutJobPositionsInput, ArcaCategoryUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaCategoryUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaCategoryUncheckedUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    cct?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaPositionUpsertWithoutJobPositionsInput = {
-    update: XOR<ArcaPositionUpdateWithoutJobPositionsInput, ArcaPositionUncheckedUpdateWithoutJobPositionsInput>
-    create: XOR<ArcaPositionCreateWithoutJobPositionsInput, ArcaPositionUncheckedCreateWithoutJobPositionsInput>
-    where?: ArcaPositionWhereInput
-  }
-
-  export type ArcaPositionUpdateToOneWithWhereWithoutJobPositionsInput = {
-    where?: ArcaPositionWhereInput
-    data: XOR<ArcaPositionUpdateWithoutJobPositionsInput, ArcaPositionUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaPositionUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaPositionUncheckedUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    groupCode?: NullableStringFieldUpdateOperationsInput | string | null
-    groupName?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaServiceTypeUpsertWithoutJobPositionsInput = {
-    update: XOR<ArcaServiceTypeUpdateWithoutJobPositionsInput, ArcaServiceTypeUncheckedUpdateWithoutJobPositionsInput>
-    create: XOR<ArcaServiceTypeCreateWithoutJobPositionsInput, ArcaServiceTypeUncheckedCreateWithoutJobPositionsInput>
-    where?: ArcaServiceTypeWhereInput
-  }
-
-  export type ArcaServiceTypeUpdateToOneWithWhereWithoutJobPositionsInput = {
-    where?: ArcaServiceTypeWhereInput
-    data: XOR<ArcaServiceTypeUpdateWithoutJobPositionsInput, ArcaServiceTypeUncheckedUpdateWithoutJobPositionsInput>
-  }
-
-  export type ArcaServiceTypeUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaServiceTypeUncheckedUpdateWithoutJobPositionsInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    regime?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EmployeeUpsertWithWhereUniqueWithoutJobPositionInput = {
@@ -79573,6 +72549,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -79590,7 +72567,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
@@ -79837,6 +72813,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -79853,7 +72830,6 @@ export namespace Prisma {
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -80098,6 +73074,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -80114,7 +73091,6 @@ export namespace Prisma {
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -80754,6 +73730,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -80770,7 +73747,6 @@ export namespace Prisma {
     jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -81292,14 +74268,14 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    cctCode?: string | null
+    categoryCode?: string | null
+    positionCode?: string | null
+    serviceTypeCode?: string | null
     activityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutJobPositionsInput
-    category?: ArcaCategoryCreateNestedOneWithoutJobPositionsInput
-    arcaPosition?: ArcaPositionCreateNestedOneWithoutJobPositionsInput
-    serviceType?: ArcaServiceTypeCreateNestedOneWithoutJobPositionsInput
   }
 
   export type JobPositionUncheckedCreateWithoutEmployeesInput = {
@@ -81398,37 +74374,11 @@ export namespace Prisma {
     create: XOR<MutualCreateWithoutEmployeesInput, MutualUncheckedCreateWithoutEmployeesInput>
   }
 
-  export type ArcaContractModalityCreateWithoutEmployeesInput = {
-    code: string
-    name: string
-    periodFrom?: string | null
-    periodTo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaContractModalityUncheckedCreateWithoutEmployeesInput = {
-    code: string
-    name: string
-    periodFrom?: string | null
-    periodTo?: string | null
-    description?: string | null
-    isActive?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type ArcaContractModalityCreateOrConnectWithoutEmployeesInput = {
-    where: ArcaContractModalityWhereUniqueInput
-    create: XOR<ArcaContractModalityCreateWithoutEmployeesInput, ArcaContractModalityUncheckedCreateWithoutEmployeesInput>
-  }
-
   export type SalaryScaleCreateWithoutEmployeesInput = {
     id?: string
     name: string
     code?: string | null
+    cctCode?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
@@ -81436,7 +74386,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutSalaryScalesInput
     periods?: SalaryScalePeriodCreateNestedManyWithoutSalaryScaleInput
   }
 
@@ -81557,6 +74506,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -81599,6 +74550,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -82084,14 +75037,14 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
+    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
+    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
     activityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutJobPositionsNestedInput
-    category?: ArcaCategoryUpdateOneWithoutJobPositionsNestedInput
-    arcaPosition?: ArcaPositionUpdateOneWithoutJobPositionsNestedInput
-    serviceType?: ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput
   }
 
   export type JobPositionUncheckedUpdateWithoutEmployeesInput = {
@@ -82203,39 +75156,6 @@ export namespace Prisma {
     mutualConcepts?: MutualConceptUncheckedUpdateManyWithoutMutualNestedInput
   }
 
-  export type ArcaContractModalityUpsertWithoutEmployeesInput = {
-    update: XOR<ArcaContractModalityUpdateWithoutEmployeesInput, ArcaContractModalityUncheckedUpdateWithoutEmployeesInput>
-    create: XOR<ArcaContractModalityCreateWithoutEmployeesInput, ArcaContractModalityUncheckedCreateWithoutEmployeesInput>
-    where?: ArcaContractModalityWhereInput
-  }
-
-  export type ArcaContractModalityUpdateToOneWithWhereWithoutEmployeesInput = {
-    where?: ArcaContractModalityWhereInput
-    data: XOR<ArcaContractModalityUpdateWithoutEmployeesInput, ArcaContractModalityUncheckedUpdateWithoutEmployeesInput>
-  }
-
-  export type ArcaContractModalityUpdateWithoutEmployeesInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type ArcaContractModalityUncheckedUpdateWithoutEmployeesInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    periodFrom?: NullableStringFieldUpdateOperationsInput | string | null
-    periodTo?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    isActive?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type SalaryScaleUpsertWithoutEmployeesInput = {
     update: XOR<SalaryScaleUpdateWithoutEmployeesInput, SalaryScaleUncheckedUpdateWithoutEmployeesInput>
     create: XOR<SalaryScaleCreateWithoutEmployeesInput, SalaryScaleUncheckedCreateWithoutEmployeesInput>
@@ -82251,6 +75171,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
@@ -82258,7 +75179,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutSalaryScalesNestedInput
     periods?: SalaryScalePeriodUpdateManyWithoutSalaryScaleNestedInput
   }
 
@@ -82407,6 +75327,8 @@ export namespace Prisma {
     signatureHash?: StringNullableFilter<"PaySlip"> | string | null
     signedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
     status?: StringFilter<"PaySlip"> | string
+    closedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
+    closedBy?: StringNullableFilter<"PaySlip"> | string | null
     createdAt?: DateTimeFilter<"PaySlip"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlip"> | Date | string
     deletedAt?: DateTimeNullableFilter<"PaySlip"> | Date | string | null
@@ -82795,6 +75717,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -82812,7 +75735,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
@@ -82911,31 +75833,6 @@ export namespace Prisma {
     data: XOR<EmployeeUpdateManyMutationInput, EmployeeUncheckedUpdateManyWithoutPaymentMethodInput>
   }
 
-  export type ArcaCctCreateWithoutSalaryScalesInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctUncheckedCreateWithoutSalaryScalesInput = {
-    code: string
-    name: string
-    sector?: string | null
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    jobPositions?: JobPositionUncheckedCreateNestedManyWithoutCctInput
-  }
-
-  export type ArcaCctCreateOrConnectWithoutSalaryScalesInput = {
-    where: ArcaCctWhereUniqueInput
-    create: XOR<ArcaCctCreateWithoutSalaryScalesInput, ArcaCctUncheckedCreateWithoutSalaryScalesInput>
-  }
-
   export type EmployeeCreateWithoutSalaryScaleInput = {
     id?: string
     fileNumber: string
@@ -82960,6 +75857,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -82977,7 +75875,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
     paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
@@ -83096,37 +75993,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type ArcaCctUpsertWithoutSalaryScalesInput = {
-    update: XOR<ArcaCctUpdateWithoutSalaryScalesInput, ArcaCctUncheckedUpdateWithoutSalaryScalesInput>
-    create: XOR<ArcaCctCreateWithoutSalaryScalesInput, ArcaCctUncheckedCreateWithoutSalaryScalesInput>
-    where?: ArcaCctWhereInput
-  }
-
-  export type ArcaCctUpdateToOneWithWhereWithoutSalaryScalesInput = {
-    where?: ArcaCctWhereInput
-    data: XOR<ArcaCctUpdateWithoutSalaryScalesInput, ArcaCctUncheckedUpdateWithoutSalaryScalesInput>
-  }
-
-  export type ArcaCctUpdateWithoutSalaryScalesInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUpdateManyWithoutCctNestedInput
-  }
-
-  export type ArcaCctUncheckedUpdateWithoutSalaryScalesInput = {
-    code?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    sector?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    jobPositions?: JobPositionUncheckedUpdateManyWithoutCctNestedInput
-  }
-
   export type EmployeeUpsertWithWhereUniqueWithoutSalaryScaleInput = {
     where: EmployeeWhereUniqueInput
     update: XOR<EmployeeUpdateWithoutSalaryScaleInput, EmployeeUncheckedUpdateWithoutSalaryScaleInput>
@@ -83180,6 +76046,7 @@ export namespace Prisma {
     id?: string
     name: string
     code?: string | null
+    cctCode?: string | null
     description?: string | null
     amount?: Decimal | DecimalJsLike | number | string
     isInternOnly?: boolean
@@ -83187,7 +76054,6 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
-    cct?: ArcaCctCreateNestedOneWithoutSalaryScalesInput
     employees?: EmployeeCreateNestedManyWithoutSalaryScaleInput
   }
 
@@ -83226,6 +76092,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     code?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
     description?: NullableStringFieldUpdateOperationsInput | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     isInternOnly?: BoolFieldUpdateOperationsInput | boolean
@@ -83233,7 +76100,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutSalaryScalesNestedInput
     employees?: EmployeeUpdateManyWithoutSalaryScaleNestedInput
   }
 
@@ -83346,6 +76212,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -83363,7 +76230,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -83499,6 +76365,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -83516,7 +76383,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -84064,6 +76930,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -84081,7 +76948,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -84293,6 +77159,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -84310,7 +77177,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -84671,6 +77537,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
@@ -84696,6 +77563,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
@@ -84751,6 +77619,7 @@ export namespace Prisma {
     totalNet?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFilter<"PayrollPeriod"> | Decimal | DecimalJsLike | number | string
     closedAt?: DateTimeNullableFilter<"PayrollPeriod"> | Date | string | null
+    closedBy?: StringNullableFilter<"PayrollPeriod"> | string | null
     createdAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
     updatedAt?: DateTimeFilter<"PayrollPeriod"> | Date | string
   }
@@ -84817,6 +77686,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -84859,6 +77730,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -84994,6 +77867,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
@@ -85020,6 +77894,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
@@ -85054,6 +77929,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -85071,7 +77947,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -85162,6 +78037,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85179,6 +78055,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -85286,6 +78163,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
@@ -85312,6 +78190,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
@@ -85352,6 +78231,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -85369,7 +78249,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -85475,6 +78354,7 @@ export namespace Prisma {
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
+    notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
     updatedAt?: DateTimeFilter<"PaySlipItem"> | Date | string
   }
@@ -85581,6 +78461,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -85624,6 +78506,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -85679,6 +78563,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -85722,6 +78608,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -85761,6 +78649,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -85804,6 +78694,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -85859,6 +78751,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -85902,6 +78796,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -85927,6 +78823,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
@@ -85953,6 +78850,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
@@ -85987,6 +78885,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -86004,7 +78903,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -86211,6 +79109,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
@@ -86237,6 +79136,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
@@ -86277,6 +79177,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -86294,7 +79195,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -86496,6 +79396,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -86513,7 +79414,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -86648,6 +79548,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -86665,7 +79566,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -87078,6 +79978,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -87095,7 +79996,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -87208,6 +80108,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -87225,7 +80126,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -87322,6 +80222,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -87339,7 +80240,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -87452,6 +80352,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -87469,7 +80370,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -87566,6 +80466,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -87583,7 +80484,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -87696,6 +80596,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -87713,7 +80614,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -87925,6 +80825,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -87942,7 +80843,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -88104,6 +81004,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -88121,7 +81022,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -88320,6 +81220,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -88337,7 +81238,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -88501,6 +81401,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -88518,7 +81419,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -88676,6 +81576,7 @@ export namespace Prisma {
     status?: string
     terminationDate?: Date | string | null
     terminationReason?: string | null
+    contractModalityCode?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -88693,7 +81594,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
     union?: UnionCreateNestedOneWithoutEmployeesInput
     mutual?: MutualCreateNestedOneWithoutEmployeesInput
-    contractModality?: ArcaContractModalityCreateNestedOneWithoutEmployeesInput
     salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
     workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
     paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
@@ -88857,6 +81757,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -88874,7 +81775,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -89200,6 +82100,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -89216,7 +82117,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -89336,484 +82236,6 @@ export namespace Prisma {
     bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type JobPositionCreateManyCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    categoryCode?: string | null
-    positionCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type SalaryScaleCreateManyCctInput = {
-    id?: string
-    name: string
-    code?: string | null
-    description?: string | null
-    amount?: Decimal | DecimalJsLike | number | string
-    isInternOnly?: boolean
-    isDirectorOnly?: boolean
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type JobPositionUpdateWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    category?: ArcaCategoryUpdateOneWithoutJobPositionsNestedInput
-    arcaPosition?: ArcaPositionUpdateOneWithoutJobPositionsNestedInput
-    serviceType?: ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput
-    employees?: EmployeeUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUncheckedUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type SalaryScaleUpdateWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
-    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUpdateManyWithoutSalaryScaleNestedInput
-    periods?: SalaryScalePeriodUpdateManyWithoutSalaryScaleNestedInput
-  }
-
-  export type SalaryScaleUncheckedUpdateWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
-    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUncheckedUpdateManyWithoutSalaryScaleNestedInput
-    periods?: SalaryScalePeriodUncheckedUpdateManyWithoutSalaryScaleNestedInput
-  }
-
-  export type SalaryScaleUncheckedUpdateManyWithoutCctInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    isInternOnly?: BoolFieldUpdateOperationsInput | boolean
-    isDirectorOnly?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type JobPositionCreateManyCategoryInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    positionCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type JobPositionUpdateWithoutCategoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutJobPositionsNestedInput
-    arcaPosition?: ArcaPositionUpdateOneWithoutJobPositionsNestedInput
-    serviceType?: ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput
-    employees?: EmployeeUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateWithoutCategoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUncheckedUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutCategoryInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type JobPositionCreateManyArcaPositionInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    categoryCode?: string | null
-    serviceTypeCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type JobPositionUpdateWithoutArcaPositionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutJobPositionsNestedInput
-    category?: ArcaCategoryUpdateOneWithoutJobPositionsNestedInput
-    serviceType?: ArcaServiceTypeUpdateOneWithoutJobPositionsNestedInput
-    employees?: EmployeeUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateWithoutArcaPositionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUncheckedUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutArcaPositionInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    serviceTypeCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type JobPositionCreateManyServiceTypeInput = {
-    id?: string
-    name: string
-    code?: string | null
-    cctCode?: string | null
-    categoryCode?: string | null
-    positionCode?: string | null
-    activityCode?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-  }
-
-  export type JobPositionUpdateWithoutServiceTypeInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    cct?: ArcaCctUpdateOneWithoutJobPositionsNestedInput
-    category?: ArcaCategoryUpdateOneWithoutJobPositionsNestedInput
-    arcaPosition?: ArcaPositionUpdateOneWithoutJobPositionsNestedInput
-    employees?: EmployeeUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateWithoutServiceTypeInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    employees?: EmployeeUncheckedUpdateManyWithoutJobPositionNestedInput
-  }
-
-  export type JobPositionUncheckedUpdateManyWithoutServiceTypeInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    code?: NullableStringFieldUpdateOperationsInput | string | null
-    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
-    categoryCode?: NullableStringFieldUpdateOperationsInput | string | null
-    positionCode?: NullableStringFieldUpdateOperationsInput | string | null
-    activityCode?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  }
-
-  export type EmployeeCreateManyContractModalityInput = {
-    id?: string
-    fileNumber: string
-    lastName: string
-    firstName: string
-    photo?: string | null
-    hireDate: Date | string
-    birthDate: Date | string
-    documentType?: string
-    documentNumber: string
-    cuil: string
-    gender?: string
-    street?: string | null
-    streetNumber?: string | null
-    floor?: string | null
-    apartment?: string | null
-    city?: string | null
-    postalCode?: string | null
-    province?: string | null
-    email?: string | null
-    phone?: string | null
-    status?: string
-    terminationDate?: Date | string | null
-    terminationReason?: string | null
-    departmentId?: string | null
-    jobPositionId?: string | null
-    healthInsuranceId?: string | null
-    unionId?: string | null
-    mutualId?: string | null
-    salaryScaleId?: string | null
-    workShiftId?: string | null
-    paymentMethodId?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    deletedAt?: Date | string | null
-    payrollGroup?: string
-    isPartTime?: boolean
-    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
-    partTimePercentage?: Decimal | DecimalJsLike | number | string
-    basicSalary?: Decimal | DecimalJsLike | number | string
-    hourlyRate?: Decimal | DecimalJsLike | number | string
-    cbu?: string | null
-    bankAccountType?: string | null
-  }
-
-  export type EmployeeUpdateWithoutContractModalityInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fileNumber?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    photo?: NullableStringFieldUpdateOperationsInput | string | null
-    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    documentType?: StringFieldUpdateOperationsInput | string
-    documentNumber?: StringFieldUpdateOperationsInput | string
-    cuil?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    street?: NullableStringFieldUpdateOperationsInput | string | null
-    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableStringFieldUpdateOperationsInput | string | null
-    apartment?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    payrollGroup?: StringFieldUpdateOperationsInput | string
-    isPartTime?: BoolFieldUpdateOperationsInput | boolean
-    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    cbu?: NullableStringFieldUpdateOperationsInput | string | null
-    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
-    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
-    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
-    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
-    union?: UnionUpdateOneWithoutEmployeesNestedInput
-    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
-    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
-    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
-    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
-    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
-    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
-    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
-    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
-    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
-    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
-    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
-    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
-    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
-    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
-  }
-
-  export type EmployeeUncheckedUpdateWithoutContractModalityInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fileNumber?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    photo?: NullableStringFieldUpdateOperationsInput | string | null
-    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    documentType?: StringFieldUpdateOperationsInput | string
-    documentNumber?: StringFieldUpdateOperationsInput | string
-    cuil?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    street?: NullableStringFieldUpdateOperationsInput | string | null
-    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableStringFieldUpdateOperationsInput | string | null
-    apartment?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
-    unionId?: NullableStringFieldUpdateOperationsInput | string | null
-    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
-    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
-    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    payrollGroup?: StringFieldUpdateOperationsInput | string
-    isPartTime?: BoolFieldUpdateOperationsInput | boolean
-    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    cbu?: NullableStringFieldUpdateOperationsInput | string | null
-    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
-    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
-    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
-    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
-    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
-    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
-    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
-    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
-    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
-    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
-    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
-    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
-  }
-
-  export type EmployeeUncheckedUpdateManyWithoutContractModalityInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fileNumber?: StringFieldUpdateOperationsInput | string
-    lastName?: StringFieldUpdateOperationsInput | string
-    firstName?: StringFieldUpdateOperationsInput | string
-    photo?: NullableStringFieldUpdateOperationsInput | string | null
-    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    documentType?: StringFieldUpdateOperationsInput | string
-    documentNumber?: StringFieldUpdateOperationsInput | string
-    cuil?: StringFieldUpdateOperationsInput | string
-    gender?: StringFieldUpdateOperationsInput | string
-    street?: NullableStringFieldUpdateOperationsInput | string | null
-    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    floor?: NullableStringFieldUpdateOperationsInput | string | null
-    apartment?: NullableStringFieldUpdateOperationsInput | string | null
-    city?: NullableStringFieldUpdateOperationsInput | string | null
-    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
-    province?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    phone?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
-    unionId?: NullableStringFieldUpdateOperationsInput | string | null
-    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
-    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
-    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
-    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    payrollGroup?: StringFieldUpdateOperationsInput | string
-    isPartTime?: BoolFieldUpdateOperationsInput | boolean
-    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
-    cbu?: NullableStringFieldUpdateOperationsInput | string | null
-    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type EmployeeCreateManyJobPositionInput = {
     id?: string
     fileNumber: string
@@ -89884,6 +82306,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -89900,7 +82323,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -90154,6 +82576,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -90171,7 +82594,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
@@ -90360,6 +82782,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -90376,7 +82799,6 @@ export namespace Prisma {
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -90590,6 +83012,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -90606,7 +83029,6 @@ export namespace Prisma {
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -90820,6 +83242,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -90836,7 +83259,6 @@ export namespace Prisma {
     jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
@@ -90990,6 +83412,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -91187,6 +83611,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91229,6 +83655,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91270,6 +83698,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91828,6 +84258,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -91845,7 +84276,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
@@ -92047,6 +84477,7 @@ export namespace Prisma {
     status?: StringFieldUpdateOperationsInput | string
     terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -92064,7 +84495,6 @@ export namespace Prisma {
     healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
     union?: UnionUpdateOneWithoutEmployeesNestedInput
     mutual?: MutualUpdateOneWithoutEmployeesNestedInput
-    contractModality?: ArcaContractModalityUpdateOneWithoutEmployeesNestedInput
     workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
     paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
     paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
@@ -92751,6 +85181,7 @@ export namespace Prisma {
     totalNet?: Decimal | DecimalJsLike | number | string
     totalEmployerCost?: Decimal | DecimalJsLike | number | string
     closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -92774,6 +85205,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
@@ -92799,6 +85231,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
@@ -92824,6 +85257,7 @@ export namespace Prisma {
     totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -92862,6 +85296,8 @@ export namespace Prisma {
     signatureHash?: string | null
     signedAt?: Date | string | null
     status?: string
+    closedAt?: Date | string | null
+    closedBy?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
@@ -92911,6 +85347,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -92953,6 +85391,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -92994,6 +85434,8 @@ export namespace Prisma {
     signatureHash?: NullableStringFieldUpdateOperationsInput | string | null
     signedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: StringFieldUpdateOperationsInput | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -93045,6 +85487,7 @@ export namespace Prisma {
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
     formulaExplanation?: string | null
+    notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -93062,6 +85505,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -93079,6 +85523,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -93096,6 +85541,7 @@ export namespace Prisma {
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

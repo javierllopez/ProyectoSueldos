@@ -47,106 +47,19 @@ model Department {
   @@map("departments")
 }
 
-model ArcaCct {
-  code        String        @id @db.VarChar(50)
-  name        String        @map("name")
-  sector      String?       @map("sector")
-  description String?       @db.Text @map("description")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  jobPositions JobPosition[]
-  salaryScales SalaryScale[]
-
-  @@map("arca_ccts")
-}
-
-model ArcaCategory {
-  code        String        @id @db.VarChar(50)
-  name        String        @map("name")
-  cct         String?       @map("cct")
-  description String?       @db.Text @map("description")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  jobPositions JobPosition[]
-
-  @@map("arca_categories")
-}
-
-model ArcaPosition {
-  code        String        @id @db.VarChar(50)
-  name        String        @map("name")
-  groupCode   String?       @map("group_code")
-  groupName   String?       @map("group_name")
-  description String?       @db.Text @map("description")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  jobPositions JobPosition[]
-
-  @@map("arca_positions")
-}
-
-model ArcaServiceType {
-  code        String        @id @db.VarChar(50)
-  name        String        @map("name")
-  regime      String?       @map("regime")
-  description String?       @db.Text @map("description")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  jobPositions JobPosition[]
-
-  @@map("arca_service_types")
-}
-
-model ArcaCctCategoryPosition {
-  id           String   @id @default(uuid())
-  cctCode      String   @map("cct_code") @db.VarChar(50)
-  categoryCode String   @map("category_code") @db.VarChar(50)
-  positionCode String   @map("position_code") @db.VarChar(50)
-  createdAt    DateTime @default(now()) @map("created_at")
-
-  @@unique([cctCode, categoryCode, positionCode], map: "uniq_cct_cat_pos")
-  @@index([cctCode], map: "idx_cct_code")
-  @@index([categoryCode], map: "idx_cat_code")
-  @@index([positionCode], map: "idx_pos_code")
-  @@map("arca_cct_category_positions")
-}
-
-model ArcaContractModality {
-  code        String        @id @db.VarChar(50)
-  name        String        @map("name")
-  periodFrom  String?       @map("period_from") @db.VarChar(10)
-  periodTo    String?       @map("period_to") @db.VarChar(10)
-  description String?       @db.Text @map("description")
-  isActive    Boolean       @default(true) @map("is_active")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime      @updatedAt @map("updated_at")
-
-  employees   Employee[]
-
-  @@map("arca_contract_modalities")
-}
-
 model JobPosition {
-  id              String           @id @default(uuid())
-  name            String           @map("name")
-  code            String?          @map("code")
-  cctCode         String?          @map("cct_code") @db.VarChar(50)
-  categoryCode    String?          @map("category_code") @db.VarChar(50)
-  positionCode    String?          @map("position_code") @db.VarChar(50)
-  serviceTypeCode String?          @map("service_type_code") @db.VarChar(50)
-  activityCode    String?          @default("049") @map("activity_code") @db.VarChar(10)
-  createdAt       DateTime         @default(now()) @map("created_at")
-  updatedAt       DateTime         @updatedAt @map("updated_at")
-  deletedAt       DateTime?        @map("deleted_at")
+  id              String     @id @default(uuid())
+  name            String     @map("name")
+  code            String?    @map("code")
+  cctCode         String?    @map("cct_code") @db.VarChar(50)
+  categoryCode    String?    @map("category_code") @db.VarChar(50)
+  positionCode    String?    @map("position_code") @db.VarChar(50)
+  serviceTypeCode String?    @map("service_type_code") @db.VarChar(50)
+  activityCode    String?    @default("049") @map("activity_code") @db.VarChar(10)
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  deletedAt       DateTime?  @map("deleted_at")
 
-  cct             ArcaCct?         @relation(fields: [cctCode], references: [code])
-  category        ArcaCategory?    @relation(fields: [categoryCode], references: [code])
-  arcaPosition    ArcaPosition?    @relation(fields: [positionCode], references: [code])
-  serviceType     ArcaServiceType? @relation(fields: [serviceTypeCode], references: [code])
   employees       Employee[]
 
   @@index([cctCode])
@@ -337,7 +250,6 @@ model Employee {
   healthInsurance      HealthInsurance?      @relation(fields: [healthInsuranceId], references: [id])
   union                Union?                @relation(fields: [unionId], references: [id])
   mutual               Mutual?               @relation(fields: [mutualId], references: [id])
-  contractModality     ArcaContractModality? @relation(fields: [contractModalityCode], references: [code])
   salaryScale          SalaryScale?          @relation(fields: [salaryScaleId], references: [id])
   workShift            WorkShift?            @relation(fields: [workShiftId], references: [id])
   paymentMethod        PaymentMethod?        @relation(fields: [paymentMethodId], references: [id], onDelete: SetNull)
@@ -391,7 +303,6 @@ model SalaryScale {
   updatedAt      DateTime  @updatedAt @map("updated_at")
   deletedAt      DateTime? @map("deleted_at")
 
-  cct         ArcaCct?            @relation(fields: [cctCode], references: [code])
   employees   Employee[]
   periods     SalaryScalePeriod[]
 
@@ -610,6 +521,7 @@ model PayrollPeriod {
   totalNet         Decimal   @default(0.00) @db.Decimal(14, 2) @map("total_net")
   totalEmployerCost Decimal  @default(0.00) @db.Decimal(14, 2) @map("total_employer_cost")
   closedAt         DateTime? @map("closed_at")
+  closedBy         String?   @db.VarChar(191) @map("closed_by")
   createdAt        DateTime  @default(now()) @map("created_at")
   updatedAt        DateTime  @updatedAt @map("updated_at")
 
@@ -619,6 +531,7 @@ model PayrollPeriod {
 
   @@unique([year, month, periodType, settlementNumber])
   @@index([fiscalPeriodId])
+  @@index([status, year, month])
   @@map("payroll_periods")
 }
 
@@ -661,7 +574,9 @@ model PaySlip {
   
   signatureHash       String?   @db.VarChar(64) @map("signature_hash")
   signedAt            DateTime? @map("signed_at")
-  status              String    @default("DRAFT") @map("status") // DRAFT, ISSUED, SIGNED
+  status              String    @default("DRAFT") @map("status") // DRAFT, ISSUED, SIGNED, CLOSED
+  closedAt            DateTime? @map("closed_at")
+  closedBy            String?   @db.VarChar(191) @map("closed_by")
 
   createdAt           DateTime  @default(now()) @map("created_at")
   updatedAt           DateTime  @updatedAt @map("updated_at")
@@ -675,6 +590,8 @@ model PaySlip {
   @@unique([payrollPeriodId, employeeId])
   @@index([payrollPeriodId])
   @@index([employeeId])
+  @@index([payrollPeriodId, status, deletedAt])
+  @@index([employeeId, status, deletedAt])
   @@map("pay_slips")
 }
 
@@ -692,6 +609,7 @@ model PaySlipItem {
   amount          Decimal  @db.Decimal(12, 2) @map("amount")
   arcaConceptCode String?  @db.VarChar(10) @map("arca_concept_code")
   formulaExplanation String? @db.Text @map("formula_explanation")
+  notes           String?  @db.VarChar(255) @map("notes")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
@@ -699,6 +617,37 @@ model PaySlipItem {
 
   @@index([paySlipId])
   @@map("pay_slip_items")
+}
+
+model PayrollClosingAudit {
+  id                       String   @id @default(uuid())
+  scope                    String   @db.VarChar(30) @map("scope") // FISCAL_PERIOD, PAYROLL_PERIOD
+  fiscalPeriodId           String?  @db.VarChar(191) @map("fiscal_period_id")
+  payrollPeriodId          String?  @db.VarChar(191) @map("payroll_period_id")
+  year                     Int      @map("year")
+  month                    Int      @map("month")
+  closedPeriodIds          Json     @map("closed_period_ids")
+  totalSlipsClosed         Int      @default(0) @map("total_slips_closed")
+  totalGross               Decimal  @default(0.00) @db.Decimal(14, 2) @map("total_gross")
+  totalNet                 Decimal  @default(0.00) @db.Decimal(14, 2) @map("total_net")
+  totalEmployerCost        Decimal  @default(0.00) @db.Decimal(14, 2) @map("total_employer_cost")
+  purgedNoveltiesCount     Int      @default(0) @map("purged_novelties_count")
+  purgedNoveltiesSummary   Json?    @map("purged_novelties_summary")
+  terminatedEmployeesCount Int      @default(0) @map("terminated_employees_count")
+  terminatedEmployees      Json?    @map("terminated_employees")
+  additionalActions        Json?    @map("additional_actions")
+  warningsAccepted         Json?    @map("warnings_accepted")
+  checksumHash             String   @db.VarChar(64) @map("checksum_hash")
+  closedBy                 String?  @db.VarChar(191) @map("closed_by")
+  closedByName             String?  @db.VarChar(191) @map("closed_by_name")
+  notes                    String?  @db.VarChar(500) @map("notes")
+  closedAt                 DateTime @default(now()) @map("closed_at")
+
+  @@index([year, month])
+  @@index([fiscalPeriodId])
+  @@index([payrollPeriodId])
+  @@index([closedAt])
+  @@map("payroll_closing_audits")
 }
 
 model PaySlipBasis {

@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from '../api.js';
+import { apiRequest, storage, showToast } from '../api.js?v=2.0';
 import {
   isValidCuit,
   formatCuit,
@@ -1269,50 +1269,6 @@ class SalaryScalesMethods {
       }
     } finally {
       if (applyBtn) applyBtn.disabled = false;
-    }
-  }
-
-  // --- Períodos de Liquidación ---
-
-  async loadPayrollPeriods() {
-    const spinner = document.getElementById('payroll-periods-spinner');
-    if (spinner) spinner.classList.remove('d-none');
-
-    const searchInput = document.getElementById('payroll-period-search');
-    const typeFilter = document.getElementById('payroll-period-type-filter');
-
-    const query = new URLSearchParams({
-      page: String(this.payrollPeriodsPage),
-      limit: String(this.payrollPeriodsPageSize),
-    });
-    if (searchInput?.value?.trim()) query.append('search', searchInput.value.trim());
-    if (typeFilter?.value && typeFilter.value !== 'ALL') {
-      query.append('type', typeFilter.value);
-      query.append('periodType', typeFilter.value);
-    }
-
-    try {
-      const res = await apiRequest(`/payroll/periods?${query.toString()}`);
-      this.payrollPeriods = res.data || [];
-      const totalFiltered = res.meta?.total ?? this.payrollPeriods.length;
-      const badge = document.getElementById('payroll-badge-periods-count');
-      if (badge) badge.textContent = totalFiltered;
-
-      this.renderPayrollPeriodsTable(this.payrollPeriods);
-      this.renderPayrollPeriodsPagination(res.meta || { total: totalFiltered, page: 1, totalPages: 1 });
-      this.syncPayrollPeriodSelectors();
-      await this.loadActiveFiscalPeriod?.();
-
-      const activeSettlementsBadge = document.getElementById('payroll-active-settlements-badge');
-      const hasActiveFilter =
-        Boolean(searchInput?.value?.trim()) || Boolean(typeFilter?.value && typeFilter.value !== 'ALL');
-      if (activeSettlementsBadge && hasActiveFilter) {
-        activeSettlementsBadge.textContent = `${totalFiltered} liquidación(es)`;
-      }
-    } catch (err) {
-      showToast(err.message || 'Error al cargar períodos de liquidación', 'danger');
-    } finally {
-      if (spinner) spinner.classList.add('d-none');
     }
   }
 

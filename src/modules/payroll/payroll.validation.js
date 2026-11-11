@@ -277,3 +277,13 @@ export const calculateBatchSchema = z.object({
 export const updatePaySlipWorkedDaysSchema = z.object({
   workedDays: z.coerce.number().int().min(0, 'Los días no pueden ser negativos').max(30, 'Los días no pueden superar 30'),
 });
+
+export const closePeriodSchema = z
+  .object({
+    confirmWarnings: z.boolean().optional(),
+    notes: z.string().trim().max(500).optional().nullable(),
+    deactivateExpiredConcepts: z.boolean().optional(),
+    suspendTerminatedEmbargoes: z.boolean().optional(),
+  })
+  .optional()
+  .default({});

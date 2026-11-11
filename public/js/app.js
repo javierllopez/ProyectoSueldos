@@ -1,20 +1,20 @@
-import { apiRequest, storage, showToast } from './api.js';
-import { logout } from './auth.js';
+import { apiRequest, storage, showToast, escapeHtml } from './api.js?v=2.0';
+import { logout } from './auth.js?v=2.0';
 import { formatCuit } from './utils/helpers.js';
 import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 
 // Submódulos desacoplados de vistas
-import { registerAdminMethods } from './modules/admin.view.js';
-import { registerCompanyProfileMethods } from './modules/companyProfile.view.js';
-import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-2.7';
-import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.1';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-3.2';
-import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.2';
-import { registerConceptsMethods } from './modules/concepts.view.js';
-import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js';
-import { registerEmbargoesMethods } from './modules/embargoes.view.js';
-import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.4';
-import { registerReportsMethods } from './modules/reports.view.js?v=reports-2.4';
+import { registerAdminMethods } from './modules/admin.view.js?v=admin-2.0';
+import { registerCompanyProfileMethods } from './modules/companyProfile.view.js?v=profile-2.0';
+import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-3.1';
+import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.2';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-4.1';
+import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.4';
+import { registerConceptsMethods } from './modules/concepts.view.js?v=concepts-2.0';
+import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js?v=matrices-2.0';
+import { registerEmbargoesMethods } from './modules/embargoes.view.js?v=embargoes-2.0';
+import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.5';
+import { registerReportsMethods } from './modules/reports.view.js?v=reports-2.5';
 
 export { ARCA_T03_ACTIVITIES, getArcaActivityInfo };
 
@@ -95,6 +95,61 @@ class AppController {
     this.novedadesList = [];
   }
 
+  async loadAppPartials() {
+    if (this._partialsLoaded) return;
+    if (this._partialsPromise) return this._partialsPromise;
+
+    const PARTIALS_VERSION = 'partials-3.1';
+    const viewFiles = [
+      '/partials/core-views.html',
+      '/partials/personnel-view.html',
+      '/partials/payroll-view.html',
+    ];
+    const modalFiles = [
+      '/partials/personnel-modals.html',
+      '/partials/payroll-modals.html',
+      '/partials/reports-disciplinary-modals.html',
+    ];
+
+    const fetchHtml = async (url) => {
+      const res = await fetch(`${url}?v=${PARTIALS_VERSION}`);
+      if (!res.ok) {
+        throw new Error(`No se pudo cargar ${url} (HTTP ${res.status})`);
+      }
+      return res.text();
+    };
+
+    this._partialsPromise = (async () => {
+      const [viewsHtml, modalsHtml] = await Promise.all([
+        Promise.all(viewFiles.map(fetchHtml)),
+        Promise.all(modalFiles.map(fetchHtml)),
+      ]);
+
+      const loader = document.getElementById('app-bootstrap-loader');
+      if (loader) loader.remove();
+
+      const viewsContainer = document.getElementById('app-views-container');
+      if (viewsContainer) {
+        viewsContainer.insertAdjacentHTML('beforeend', viewsHtml.join('\n'));
+      }
+
+      const modalsAnchor = document.getElementById('app-modals-anchor');
+      if (modalsAnchor) {
+        modalsAnchor.insertAdjacentHTML('afterend', modalsHtml.join('\n'));
+        modalsAnchor.remove();
+      } else {
+        document.body.insertAdjacentHTML('beforeend', modalsHtml.join('\n'));
+      }
+
+      this._partialsLoaded = true;
+    })().catch((err) => {
+      this._partialsPromise = null;
+      throw err;
+    });
+
+    return this._partialsPromise;
+  }
+
   async init() {
     // 1. Verificar sesión
     const token = storage.getToken();
@@ -104,8 +159,11 @@ class AppController {
     }
 
     try {
-      // 2. Obtener perfil de usuario
-      const meRes = await apiRequest('/auth/me');
+      // 2. Obtener perfil de usuario y cargar vistas/modales HTML en paralelo
+      const [meRes] = await Promise.all([
+        apiRequest('/auth/me'),
+        this.loadAppPartials(),
+      ]);
       this.user = meRes.data.user;
       this.account = this.user.account;
       storage.setUser(this.user);
@@ -133,6 +191,14 @@ class AppController {
         storage.clearSession();
         window.location.href = '/login.html';
       } else {
+        const loader = document.getElementById('app-bootstrap-loader');
+        if (loader) {
+          loader.innerHTML = '';
+          const alertEl = document.createElement('div');
+          alertEl.className = 'alert alert-danger d-inline-block text-start';
+          alertEl.textContent = err.message || 'Error al cargar los módulos del sistema.';
+          loader.appendChild(alertEl);
+        }
         showToast(err.message || 'Error al conectar con el servidor', 'danger');
       }
     }
@@ -226,7 +292,7 @@ class AppController {
     selectorBtn.innerHTML = `
       <span class="d-flex align-items-center text-truncate" style="max-width: 180px;">
         <span class="company-badge-indicator"></span>
-        <strong class="text-truncate">${this.activeCompany.name}</strong>
+        <strong class="text-truncate">${escapeHtml(this.activeCompany.name)}</strong>
       </span>
     `;
 
@@ -258,9 +324,9 @@ class AppController {
       item.innerHTML = `
         <span class="d-flex align-items-center gap-2">
           <i class="ti ti-building"></i>
-          <span>${company.name}</span>
+          <span>${escapeHtml(company.name)}</span>
         </span>
-        <small class="text-muted">${formatCuit(company.cuit)}</small>
+        <small class="text-muted">${escapeHtml(formatCuit(company.cuit))}</small>
       `;
 
       item.addEventListener('click', (e) => {
@@ -295,6 +361,12 @@ class AppController {
     this.arcaCcts = [];
     this._arcaCctsCompanyId = null;
     this._arcaCctsPromise = null;
+    this._arcaRefCompanyId = null;
+    this._arcaRefPromise = null;
+    this._empModalAuxCompanyId = null;
+    this._empModalAuxPromise = null;
+    this._affilConceptsCompanyId = null;
+    this._affilConceptsPromise = null;
     this.salaryScales = [];
     this.payrollSalaryScales = [];
     this.renderCompanySelector();

@@ -5,6 +5,9 @@
 
 const API_BASE = '/api/v1';
 
+let refreshInFlightPromise = null;
+let redirectingToLogin = false;
+
 export const storage = {
   getToken: () => localStorage.getItem('ps_access_token'),
   getRefreshToken: () => localStorage.getItem('ps_refresh_token'),
@@ -90,8 +93,13 @@ export async function apiRequest(endpoint, options = {}) {
         });
       } else {
         storage.clearSession();
-        window.location.href = '/login.html?expired=1';
-        return;
+        if (!redirectingToLogin) {
+          redirectingToLogin = true;
+          window.location.href = '/login.html?expired=1';
+        }
+        const authError = new Error('Tu sesión ha expirado. Por favor, iniciá sesión nuevamente.');
+        authError.status = 401;
+        throw authError;
       }
     }
 
@@ -129,34 +137,47 @@ export async function apiRequest(endpoint, options = {}) {
 
 /**
  * Intenta refrescar el Access Token usando el Refresh Token almacenado.
+ * Implementa Mutex con promesa compartida para evitar carreras ante múltiples 401 simultáneos.
  */
 async function attemptTokenRefresh() {
   const refreshToken = storage.getRefreshToken();
   if (!refreshToken) return false;
 
-  try {
-    const res = await fetch(`${API_BASE}/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
-    });
-
-    if (!res.ok) return false;
-
-    const data = await res.json();
-    storage.setSession({
-      accessToken: data.data.accessToken,
-      refreshToken: data.data.refreshToken,
-    });
-
-    return true;
-  } catch {
-    return false;
+  if (refreshInFlightPromise) {
+    return refreshInFlightPromise;
   }
+
+  refreshInFlightPromise = (async () => {
+    try {
+      const res = await fetch(`${API_BASE}/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ refreshToken }),
+      });
+
+      if (!res.ok) return false;
+
+      const data = await res.json();
+      if (!storage.getRefreshToken()) return false;
+
+      storage.setSession({
+        accessToken: data.data.accessToken,
+        refreshToken: data.data.refreshToken,
+      });
+
+      return true;
+    } catch {
+      return false;
+    } finally {
+      refreshInFlightPromise = null;
+    }
+  })();
+
+  return refreshInFlightPromise;
 }
 
 /**
- * Muestra una notificación flotante (Toast) usando clases de Tabler/Bootstrap.
+ * Muestra una notificación flotante (Toast) usando clases de Tabler/Bootstrap sin HTML inyectado.
  */
 export function showToast(message, type = 'success') {
   let container = document.getElementById('toast-container');
@@ -173,15 +194,29 @@ export function showToast(message, type = 'success') {
 
   toastEl.className = `toast align-items-center ${bgClass} border-0 show mb-2 shadow`;
   toastEl.setAttribute('role', 'alert');
-  toastEl.innerHTML = `
-    <div class="d-flex">
-      <div class="toast-body d-flex align-items-center gap-2">
-        <i class="ti ${icon}"></i>
-        <span>${message}</span>
-      </div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-    </div>
-  `;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'd-flex';
+
+  const body = document.createElement('div');
+  body.className = 'toast-body d-flex align-items-center gap-2';
+
+  const iconEl = document.createElement('i');
+  iconEl.className = `ti ${icon}`;
+
+  const msgSpan = document.createElement('span');
+  msgSpan.textContent = message === null || message === undefined ? '' : String(message);
+
+  const closeBtn = document.createElement('button');
+  closeBtn.type = 'button';
+  closeBtn.className = 'btn-close btn-close-white me-2 m-auto';
+  closeBtn.setAttribute('data-bs-dismiss', 'toast');
+
+  body.appendChild(iconEl);
+  body.appendChild(msgSpan);
+  wrapper.appendChild(body);
+  wrapper.appendChild(closeBtn);
+  toastEl.appendChild(wrapper);
 
   container.appendChild(toastEl);
 

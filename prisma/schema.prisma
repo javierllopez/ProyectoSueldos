@@ -168,3 +168,79 @@ model AuditLog {
   @@index([userId])
   @@map("audit_logs")
 }
+
+// =========================================================================
+// CATÁLOGOS OFICIALES GLOBALES ARCA (Compartidos entre todos los Tenants)
+// =========================================================================
+
+model ArcaCct {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  sector      String?  @map("sector")
+  description String?  @db.Text @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("arca_ccts")
+}
+
+model ArcaCategory {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  cct         String?  @map("cct")
+  description String?  @db.Text @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("arca_categories")
+}
+
+model ArcaPosition {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  groupCode   String?  @map("group_code")
+  groupName   String?  @map("group_name")
+  description String?  @db.Text @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("arca_positions")
+}
+
+model ArcaServiceType {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  regime      String?  @map("regime")
+  description String?  @db.Text @map("description")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("arca_service_types")
+}
+
+model ArcaCctCategoryPosition {
+  id           String   @id @default(uuid())
+  cctCode      String   @map("cct_code") @db.VarChar(50)
+  categoryCode String   @map("category_code") @db.VarChar(50)
+  positionCode String   @map("position_code") @db.VarChar(50)
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([cctCode, categoryCode, positionCode], map: "uniq_cct_cat_pos")
+  @@index([cctCode], map: "idx_cct_code")
+  @@index([categoryCode], map: "idx_cat_code")
+  @@index([positionCode], map: "idx_pos_code")
+  @@map("arca_cct_category_positions")
+}
+
+model ArcaContractModality {
+  code        String   @id @db.VarChar(50)
+  name        String   @map("name")
+  periodFrom  String?  @map("period_from") @db.VarChar(10)
+  periodTo    String?  @map("period_to") @db.VarChar(10)
+  description String?  @db.Text @map("description")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("arca_contract_modalities")
+}

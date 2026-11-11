@@ -101,13 +101,49 @@ class TenantConnectionManager {
 
   /**
    * Libera una referencia de uso del cliente tenant cuando termina una petición HTTP.
-   * @param {string} dbName - Nombre de la base de datos del tenant.
+   * @param {string|object} dbNameOrCompany - Nombre de la base de datos o metadata de la empresa.
    */
-  releaseClient(dbName) {
+  releaseClient(dbNameOrCompany) {
+    const dbName = typeof dbNameOrCompany === 'string' ? dbNameOrCompany : dbNameOrCompany?.dbName;
     if (dbName && this.pool.has(dbName)) {
       const entry = this.pool.get(dbName);
       entry.inUseCount = Math.max(0, entry.inUseCount - 1);
       entry.lastAccessed = Date.now();
+    }
+  }
+
+  /**
+   * Ejecuta una operación puntual contra el cliente Prisma del tenant y garantiza
+   * la liberación de la referencia en el pool al finalizar (incluso ante errores).
+   * @param {object} company - Metadata de conexión del tenant ({ dbName, dbHost, dbPort }).
+   * @param {(client: TenantPrismaClient) => Promise<any>} fn - Callback asíncrono.
+   */
+  async withTenantClient(company, fn) {
+    const client = await this.getTenantClient(company);
+    try {
+      return await fn(client);
+    } finally {
+      this.releaseClient(company);
+    }
+  }
+
+  /**
+   * Desconecta y remueve un cliente tenant específico del pool (ej. al eliminar empresa).
+   * @param {string|object} dbNameOrCompany - Nombre de la base de datos o metadata de la empresa.
+   */
+  async disposeClient(dbNameOrCompany) {
+    const dbName = typeof dbNameOrCompany === 'string' ? dbNameOrCompany : dbNameOrCompany?.dbName;
+    if (!dbName) return;
+
+    this.pendingConnections.delete(dbName);
+    const entry = this.pool.get(dbName);
+    if (!entry) return;
+
+    this.pool.delete(dbName);
+    try {
+      await entry.client.$disconnect();
+    } catch (err) {
+      console.error(`Error al desconectar cliente tenant para ${dbName}:`, err);
     }
   }
 

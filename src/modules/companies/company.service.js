@@ -1,7 +1,42 @@
 import prisma from '../../config/prisma.js';
 import { provisionTenantDatabase, ensureTenantProfileSchema } from '../../services/tenantProvisioner.service.js';
 import tenantConnectionManager from '../../services/tenantConnectionManager.js';
+import { invalidateTenantCache } from '../../middlewares/tenant.middleware.js';
 import crypto from 'crypto';
+
+/**
+ * Verifica que la empresa exista, no esté eliminada y pertenezca a la cuenta indicada.
+ */
+async function assertCompanyInAccount(accountId, companyId) {
+  const company = await prisma.companyRegistry.findFirst({
+    where: { id: companyId, accountId, deletedAt: null },
+  });
+
+  if (!company) {
+    const error = new Error('Empresa no encontrada');
+    error.status = 404;
+    throw error;
+  }
+
+  return company;
+}
+
+/**
+ * Verifica que el usuario objetivo pertenezca a la misma cuenta.
+ */
+async function assertUserInAccount(accountId, targetUserId) {
+  const targetUser = await prisma.user.findFirst({
+    where: { id: targetUserId, accountId, deletedAt: null },
+  });
+
+  if (!targetUser) {
+    const error = new Error('El usuario no pertenece a tu cuenta');
+    error.status = 404;
+    throw error;
+  }
+
+  return targetUser;
+}
 
 /**
  * Lista las empresas pertenecientes a la cuenta del usuario autenticado con paginación.
@@ -209,15 +244,7 @@ export async function createCompany({ accountId, userId, name, tradeName, cuit, 
  * Actualiza la información básica de una empresa.
  */
 export async function updateCompany(accountId, companyId, { name, tradeName, activityCode }) {
-  const company = await prisma.companyRegistry.findFirst({
-    where: { id: companyId, accountId, deletedAt: null },
-  });
-
-  if (!company) {
-    const error = new Error('Empresa no encontrada');
-    error.status = 404;
-    throw error;
-  }
+  const company = await assertCompanyInAccount(accountId, companyId);
 
   const updated = await prisma.companyRegistry.update({
     where: { id: companyId },
@@ -228,34 +255,36 @@ export async function updateCompany(accountId, companyId, { name, tradeName, act
     },
   });
 
-  // Sincronizar en la base de datos física de la empresa
+  // Sincronizar en la base de datos física de la empresa liberando la conexión del pool
   try {
-    const tenantClient = await tenantConnectionManager.getTenantClient(company);
-    await ensureTenantProfileSchema(tenantClient);
+    await tenantConnectionManager.withTenantClient(company, async (tenantClient) => {
+      await ensureTenantProfileSchema(tenantClient);
 
-    const updateData = {};
-    if (name) updateData.legalName = name;
-    if (tradeName !== undefined) updateData.tradeName = tradeName;
+      const updateData = {};
+      if (name) updateData.legalName = name;
+      if (tradeName !== undefined) updateData.tradeName = tradeName;
 
-    if (activityCode !== undefined) {
-      updateData.activityCode = activityCode || null;
-      if (activityCode) {
-        const clae = await prisma.claeActivity.findUnique({ where: { code: activityCode } });
-        updateData.activityDescription = clae ? clae.description : null;
-      } else {
-        updateData.activityDescription = null;
+      if (activityCode !== undefined) {
+        updateData.activityCode = activityCode || null;
+        if (activityCode) {
+          const clae = await prisma.claeActivity.findUnique({ where: { code: activityCode } });
+          updateData.activityDescription = clae ? clae.description : null;
+        } else {
+          updateData.activityDescription = null;
+        }
       }
-    }
 
-    if (Object.keys(updateData).length > 0) {
-      await tenantClient.companyProfile.updateMany({
-        data: updateData,
-      });
-    }
+      if (Object.keys(updateData).length > 0) {
+        await tenantClient.companyProfile.updateMany({
+          data: updateData,
+        });
+      }
+    });
   } catch (err) {
     console.warn(`No se pudo sincronizar los datos en la base física de ${company.dbName}:`, err.message);
   }
 
+  invalidateTenantCache(companyId);
   return updated;
 }
 
@@ -263,15 +292,7 @@ export async function updateCompany(accountId, companyId, { name, tradeName, act
  * Realiza un borrado lógico de una empresa.
  */
 export async function deleteCompany(accountId, companyId, userId) {
-  const company = await prisma.companyRegistry.findFirst({
-    where: { id: companyId, accountId, deletedAt: null },
-  });
-
-  if (!company) {
-    const error = new Error('Empresa no encontrada');
-    error.status = 404;
-    throw error;
-  }
+  const company = await assertCompanyInAccount(accountId, companyId);
 
   await prisma.$transaction([
     prisma.companyRegistry.update({
@@ -291,24 +312,21 @@ export async function deleteCompany(accountId, companyId, userId) {
       },
     }),
   ]);
+
+  invalidateTenantCache(companyId);
+  await tenantConnectionManager.disposeClient(company);
 }
 
 /**
  * Asigna o actualiza el rol de un usuario en una empresa.
  */
 export async function assignUserToCompany({ accountId, companyId, targetUserId, role }) {
-  // Verificar que el usuario pertenezca a la misma cuenta
-  const targetUser = await prisma.user.findFirst({
-    where: { id: targetUserId, accountId, deletedAt: null },
-  });
+  await Promise.all([
+    assertCompanyInAccount(accountId, companyId),
+    assertUserInAccount(accountId, targetUserId),
+  ]);
 
-  if (!targetUser) {
-    const error = new Error('El usuario no pertenece a tu cuenta');
-    error.status = 404;
-    throw error;
-  }
-
-  return prisma.userCompanyAccess.upsert({
+  const access = await prisma.userCompanyAccess.upsert({
     where: {
       userId_companyId: {
         userId: targetUserId,
@@ -324,18 +342,28 @@ export async function assignUserToCompany({ accountId, companyId, targetUserId, 
       role,
     },
   });
+
+  invalidateTenantCache(companyId);
+  return access;
 }
 
 /**
  * Quita el acceso de un usuario a una empresa.
  */
-export async function removeUserFromCompany({ companyId, targetUserId }) {
+export async function removeUserFromCompany({ accountId, companyId, targetUserId }) {
+  await Promise.all([
+    assertCompanyInAccount(accountId, companyId),
+    assertUserInAccount(accountId, targetUserId),
+  ]);
+
   await prisma.userCompanyAccess.deleteMany({
     where: {
       userId: targetUserId,
       companyId,
     },
   });
+
+  invalidateTenantCache(companyId);
 }
 
 /**
@@ -418,6 +446,7 @@ export async function updateCompanyProfile(tenantPrisma, accountId, company, dat
       where: { id: company.id },
       data: masterUpdateData,
     });
+    invalidateTenantCache(company.id);
   }
 
   return updatedProfile;

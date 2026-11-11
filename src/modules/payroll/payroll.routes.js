@@ -17,6 +17,7 @@ import {
   batchPeriodNoveltiesSchema,
   calculateBatchSchema,
   updatePaySlipWorkedDaysSchema,
+  closePeriodSchema,
 } from './payroll.validation.js';
 import {
   createSalaryScaleSchema,
@@ -42,9 +43,15 @@ router.post(
   validate(createFiscalPeriodSchema),
   payrollController.createFiscalPeriod
 );
+router.get(
+  '/fiscal-periods/:id/close-preview',
+  requireCompanyRole('ADMIN'),
+  payrollController.getFiscalPeriodClosePreview
+);
 router.post(
   '/fiscal-periods/:id/close',
-  requireCompanyRole('ADMIN', 'OPERATOR'),
+  requireCompanyRole('ADMIN'),
+  validate(closePeriodSchema),
   payrollController.closeFiscalPeriod
 );
 
@@ -63,11 +70,18 @@ router.patch(
   validate(createPeriodSchema.partial()),
   payrollController.updatePeriod
 );
+router.get(
+  '/periods/:id/close-preview',
+  requireCompanyRole('ADMIN'),
+  payrollController.getPeriodClosePreview
+);
 router.post(
   '/periods/:id/close',
-  requireCompanyRole('ADMIN', 'OPERATOR'),
+  requireCompanyRole('ADMIN'),
+  validate(closePeriodSchema),
   payrollController.closePeriod
 );
+router.get('/closing-audits', payrollController.listClosingAudits);
 router.delete(
   '/periods/:id',
   requireCompanyRole('ADMIN'),

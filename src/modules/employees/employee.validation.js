@@ -51,6 +51,8 @@ export const createEmployeeSchema = z.object({
   email: z.string().trim().email('Formato de correo electrónico inválido').nullable().optional().or(z.literal('')),
   phone: z.string().trim().nullable().optional().or(z.literal('')),
   status: z.enum(['ACTIVE', 'INACTIVE', 'ON_LEAVE']).default('ACTIVE'),
+  terminationDate: z.union([z.coerce.date(), z.literal('')]).nullable().optional(),
+  terminationReason: z.string().trim().max(255).nullable().optional().or(z.literal('')),
 
   // Relaciones Obligatorias
   departmentId: z.string({ required_error: 'El sector es obligatorio' }).min(1, 'Debes seleccionar un sector'),

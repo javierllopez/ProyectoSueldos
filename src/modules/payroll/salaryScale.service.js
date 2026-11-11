@@ -1,24 +1,16 @@
 import crypto from 'crypto';
 import { ensureTenantPersonnelSchema } from '../../services/tenantProvisioner.service.js';
+import {
+  assertMasterArcaCctExists,
+  hydrateSalaryScale,
+  hydrateSalaryScales,
+} from '../../services/arcaCatalog.service.js';
 
 /**
- * Valida y normaliza el código de Convenio Colectivo (CCT) para una nómina.
+ * Valida y normaliza el código de Convenio Colectivo (CCT) contra el catálogo MASTER de ARCA.
  */
-async function resolveValidCctCode(tenantPrisma, rawCctCode) {
-  if (rawCctCode === undefined) return undefined;
-  const trimmed = rawCctCode !== null ? String(rawCctCode).trim() : '';
-  if (!trimmed || trimmed === 'NO_CCT' || trimmed === 'ALL') return null;
-
-  const found = await tenantPrisma.arcaCct.findUnique({
-    where: { code: trimmed },
-    select: { code: true },
-  });
-  if (!found) {
-    const err = new Error(`El Convenio Colectivo "${trimmed}" no existe en el catálogo ARCA.`);
-    err.status = 400;
-    throw err;
-  }
-  return found.code;
+async function resolveValidCctCode(rawCctCode) {
+  return assertMasterArcaCctExists(rawCctCode);
 }
 
 /**
@@ -51,8 +43,6 @@ function buildSalaryScaleWhere({ search, cctCode, isInternOnly, isDirectorOnly, 
   return where;
 }
 
-const SCALE_CCT_SELECT = { code: true, name: true, sector: true };
-
 /**
  * Lista las nóminas / escalas salariales activas con conteo de colaboradores asignados.
  */
@@ -61,10 +51,9 @@ export async function listSalaryScales(tenantPrisma, { search, cctCode, isIntern
 
   const where = buildSalaryScaleWhere({ search, cctCode, isInternOnly, isDirectorOnly });
 
-  const scales = await tenantPrisma.salaryScale.findMany({
+  const rawScales = await tenantPrisma.salaryScale.findMany({
     where,
     include: {
-      cct: { select: SCALE_CCT_SELECT },
       periods: {
         orderBy: { validFrom: 'asc' },
       },
@@ -79,12 +68,14 @@ export async function listSalaryScales(tenantPrisma, { search, cctCode, isIntern
     orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
   });
 
+  const scales = await hydrateSalaryScales(rawScales);
+
   return scales.map((scale) => ({
     id: scale.id,
     name: scale.name,
     code: scale.code,
     cctCode: scale.cctCode || null,
-    cct: scale.cct ? { code: scale.cct.code, name: scale.cct.name, sector: scale.cct.sector || null } : null,
+    cct: scale.cct || null,
     description: scale.description,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
@@ -112,10 +103,9 @@ export async function listSalaryScales(tenantPrisma, { search, cctCode, isIntern
 export async function getSalaryScaleById(tenantPrisma, id) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  const scale = await tenantPrisma.salaryScale.findFirst({
+  const rawScale = await tenantPrisma.salaryScale.findFirst({
     where: { id, deletedAt: null },
     include: {
-      cct: { select: SCALE_CCT_SELECT },
       employees: {
         where: { deletedAt: null },
         select: {
@@ -130,16 +120,18 @@ export async function getSalaryScaleById(tenantPrisma, id) {
     },
   });
 
-  if (!scale) {
+  if (!rawScale) {
     const err = new Error('Nómina no encontrada');
     err.status = 404;
     throw err;
   }
 
+  const scale = await hydrateSalaryScale(rawScale);
+
   return {
     ...scale,
     cctCode: scale.cctCode || null,
-    cct: scale.cct ? { code: scale.cct.code, name: scale.cct.name, sector: scale.cct.sector || null } : null,
+    cct: scale.cct || null,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
     isDirectorOnly: Boolean(scale.isDirectorOnly),
@@ -156,9 +148,9 @@ export async function getSalaryScaleById(tenantPrisma, id) {
 export async function createSalaryScale(tenantPrisma, data) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  const cctCode = await resolveValidCctCode(tenantPrisma, data.cctCode);
+  const cctCode = await resolveValidCctCode(data.cctCode);
 
-  const scale = await tenantPrisma.salaryScale.create({
+  const rawScale = await tenantPrisma.salaryScale.create({
     data: {
       name: data.name.trim(),
       code: data.code?.trim() || null,
@@ -168,15 +160,14 @@ export async function createSalaryScale(tenantPrisma, data) {
       isInternOnly: Boolean(data.isInternOnly),
       isDirectorOnly: Boolean(data.isDirectorOnly),
     },
-    include: {
-      cct: { select: SCALE_CCT_SELECT },
-    },
   });
+
+  const scale = await hydrateSalaryScale(rawScale);
 
   return {
     ...scale,
     cctCode: scale.cctCode || null,
-    cct: scale.cct ? { code: scale.cct.code, name: scale.cct.name, sector: scale.cct.sector || null } : null,
+    cct: scale.cct || null,
     amount: Number(scale.amount),
     isInternOnly: Boolean(scale.isInternOnly),
     isDirectorOnly: Boolean(scale.isDirectorOnly),
@@ -199,7 +190,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
     throw err;
   }
 
-  const cctCode = await resolveValidCctCode(tenantPrisma, data.cctCode);
+  const cctCode = await resolveValidCctCode(data.cctCode);
 
   const updateData = {};
   if (data.name !== undefined) updateData.name = data.name.trim();
@@ -210,13 +201,12 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
   if (data.isInternOnly !== undefined) updateData.isInternOnly = Boolean(data.isInternOnly);
   if (data.isDirectorOnly !== undefined) updateData.isDirectorOnly = Boolean(data.isDirectorOnly);
 
-  const updated = await tenantPrisma.salaryScale.update({
+  const rawUpdated = await tenantPrisma.salaryScale.update({
     where: { id },
     data: updateData,
-    include: {
-      cct: { select: SCALE_CCT_SELECT },
-    },
   });
+
+  const updated = await hydrateSalaryScale(rawUpdated);
 
   // Si se modificó el monto, sincronizar los básicos de todos los colaboradores asignados
   let affectedEmployeesCount = 0;
@@ -231,7 +221,7 @@ export async function updateSalaryScale(tenantPrisma, id, data) {
   return {
     ...updated,
     cctCode: updated.cctCode || null,
-    cct: updated.cct ? { code: updated.cct.code, name: updated.cct.name, sector: updated.cct.sector || null } : null,
+    cct: updated.cct || null,
     amount: Number(updated.amount),
     isInternOnly: Boolean(updated.isInternOnly),
     isDirectorOnly: Boolean(updated.isDirectorOnly),
@@ -351,10 +341,9 @@ export async function previewMassScaleIncrease(tenantPrisma, options) {
 
   const where = buildSalaryScaleWhere({ cctCode, scaleIds });
 
-  const scales = await tenantPrisma.salaryScale.findMany({
+  const rawScales = await tenantPrisma.salaryScale.findMany({
     where,
     include: {
-      cct: { select: SCALE_CCT_SELECT },
       _count: {
         select: {
           employees: {
@@ -365,6 +354,8 @@ export async function previewMassScaleIncrease(tenantPrisma, options) {
     },
     orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
   });
+
+  const scales = await hydrateSalaryScales(rawScales);
 
   let totalEmployeesAffected = 0;
 
@@ -454,7 +445,6 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
     tenantPrisma.salaryScale.findMany({
       where,
       include: {
-        cct: { select: SCALE_CCT_SELECT },
         periods: true,
         _count: {
           select: {

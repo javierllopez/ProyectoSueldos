@@ -1,25 +1,22 @@
 import prisma from '../config/prisma.js';
-import tenantConnectionManager from '../services/tenantConnectionManager.js';
 
-async function checkCompanies() {
-  const companies = await prisma.companyRegistry.findMany();
-  console.log('Companies count:', companies.length);
-  for (const c of companies) {
-    console.log(`Company: ${c.name}, DB: ${c.dbName}`);
-    try {
-      const tenantPrisma = await tenantConnectionManager.getTenantClient({
-        dbName: c.dbName,
-        dbHost: c.dbHost,
-        dbPort: c.dbPort,
-      });
-      const count = await tenantPrisma.arcaCategory.count();
-      console.log(`  arcaCategory count: ${count}`);
-    } catch (e) {
-      console.log(`  Error: ${e.message}`);
-    }
-  }
+async function checkMasterCategories() {
+  const [ccts, categories, positions, relations, modalities] = await Promise.all([
+    prisma.arcaCct.count(),
+    prisma.arcaCategory.count(),
+    prisma.arcaPosition.count(),
+    prisma.arcaCctCategoryPosition.count(),
+    prisma.arcaContractModality.count(),
+  ]);
+
+  console.log('Catálogos oficiales ARCA en base MASTER:');
+  console.log(`  arcaCct count: ${ccts}`);
+  console.log(`  arcaCategory count: ${categories}`);
+  console.log(`  arcaPosition count: ${positions}`);
+  console.log(`  arcaCctCategoryPosition count: ${relations}`);
+  console.log(`  arcaContractModality count: ${modalities}`);
 }
 
-checkCompanies()
+checkMasterCategories()
   .catch(console.error)
   .finally(() => prisma.$disconnect());

@@ -1,4 +1,4 @@
-import { apiRequest, showToast } from '../api.js';
+import { apiRequest, showToast } from '../api.js?v=2.0';
 import { formatNumber, formatCuit, escapeHtml } from '../utils/helpers.js';
 
 function formatCurrency(val) {

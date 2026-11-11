@@ -1,3 +1,5 @@
+import { evaluateMathExpression } from '../../../utils/mathParser.js';
+
 /**
  * Evaluador de fórmulas seguras para columnas calculadas personalizadas.
  * Permite sumar/restar conceptos o campos numéricos por cada empleado/liquidación.
@@ -83,11 +85,10 @@ export function getConceptAmount(row, conceptCode) {
 }
 
 const TOKEN_REGEX = /\{([a-zA-Z0-9_.:-]+)\}|(\b(?:emp|employee|slip|payslip|concept)\.[a-zA-Z0-9_.:-]+)/g;
-const SAFE_MATH_REGEX = /^[0-9+\-*/().\s]+$/;
 
 /**
  * Evalúa una fórmula de columna calculada compuesta por términos con signo (+ / -) y factor,
- * o una expresión aritmética segura (customFormula) usando expresiones regulares precompiladas.
+ * o una expresión aritmética segura (customFormula) usando el parser RPN sin `Function()`.
  * Ej: Sueldo Conformado = (+ 1.0 * Básico) + (+ 1.0 * Antigüedad)
  * @param {Object} formula Definición de la fórmula: { terms: [ { conceptCode, sign, factor } ], customFormula?: string }
  * @param {Object} row Datos de la fila actual
@@ -103,15 +104,9 @@ export function evaluateCalculatedColumn(formula, row) {
       return `(${val})`;
     });
 
-    if (SAFE_MATH_REGEX.test(expr)) {
-      try {
-        const evaluated = Function(`"use strict"; return (${expr});`)();
-        if (Number.isFinite(evaluated)) {
-          return Math.round((evaluated + Number.EPSILON) * 100) / 100;
-        }
-      } catch {
-        // Fallback a evaluación por términos
-      }
+    const evaluated = evaluateMathExpression(expr, { arithmeticOnly: true, fallback: null });
+    if (evaluated !== null && Number.isFinite(evaluated)) {
+      return Math.round((evaluated + Number.EPSILON) * 100) / 100;
     }
   }
 

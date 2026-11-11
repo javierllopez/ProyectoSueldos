@@ -1,5 +1,15 @@
 import crypto from 'crypto';
 import { ensureTenantPersonnelSchema, getArcaActivitiesData, DEFAULT_PAYMENT_METHODS } from '../../services/tenantProvisioner.service.js';
+import {
+  hydrateJobPosition,
+  hydrateJobPositions,
+  getMasterArcaValidationSets,
+  listMasterArcaCcts,
+  listMasterArcaCategories,
+  listMasterArcaPositions,
+  listMasterArcaServiceTypes,
+  listMasterArcaContractModalities,
+} from '../../services/arcaCatalog.service.js';
 
 // --- SECTORES (DEPARTMENTS) ---
 
@@ -216,19 +226,17 @@ export async function deleteDepartment(tenantPrisma, id) {
 export async function listJobPositions(tenantPrisma) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  const positions = await tenantPrisma.jobPosition.findMany({
+  const rawPositions = await tenantPrisma.jobPosition.findMany({
     where: { deletedAt: null },
     include: {
-      cct: true,
-      category: true,
-      arcaPosition: true,
-      serviceType: true,
       _count: {
         select: { employees: { where: { deletedAt: null } } },
       },
     },
     orderBy: { name: 'asc' },
   });
+
+  const positions = await hydrateJobPositions(rawPositions);
 
   return positions.map((p) => ({
     id: p.id,
@@ -252,32 +260,26 @@ export async function listJobPositions(tenantPrisma) {
 export async function getJobPositionById(tenantPrisma, id) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  const position = await tenantPrisma.jobPosition.findFirst({
+  const rawPosition = await tenantPrisma.jobPosition.findFirst({
     where: { id, deletedAt: null },
     include: {
-      cct: true,
-      category: true,
-      arcaPosition: true,
-      serviceType: true,
       _count: {
         select: { employees: { where: { deletedAt: null } } },
       },
     },
   });
 
-  if (!position) {
+  if (!rawPosition) {
     const error = new Error('Puesto de trabajo no encontrado');
     error.status = 404;
     throw error;
   }
 
+  const position = await hydrateJobPosition(rawPosition);
+
   return {
     ...position,
     activityCode: position.activityCode || '049',
-    cct: position.cct ? { code: position.cct.code, name: position.cct.name, sector: position.cct.sector } : null,
-    category: position.category ? { code: position.category.code, name: position.category.name, cct: position.category.cct } : null,
-    arcaPosition: position.arcaPosition ? { code: position.arcaPosition.code, name: position.arcaPosition.name, groupName: position.arcaPosition.groupName } : null,
-    serviceType: position.serviceType ? { code: position.serviceType.code, name: position.serviceType.name, regime: position.serviceType.regime } : null,
     employeeCount: position._count.employees,
   };
 }
@@ -285,7 +287,7 @@ export async function getJobPositionById(tenantPrisma, id) {
 export async function createJobPosition(tenantPrisma, data) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  return tenantPrisma.jobPosition.create({
+  const created = await tenantPrisma.jobPosition.create({
     data: {
       id: crypto.randomUUID(),
       name: data.name,
@@ -296,13 +298,9 @@ export async function createJobPosition(tenantPrisma, data) {
       serviceTypeCode: data.serviceTypeCode || null,
       activityCode: data.activityCode || '049',
     },
-    include: {
-      cct: true,
-      category: true,
-      arcaPosition: true,
-      serviceType: true,
-    },
   });
+
+  return hydrateJobPosition(created);
 }
 
 /**
@@ -335,23 +333,17 @@ export async function importJobPositions(tenantPrisma, jobPositions) {
       .map((p) => p.code.trim().toLowerCase())
   );
 
-  // 2. Pre-cargar catálogos ARCA para validación referencial en caso de que vengan códigos opcionales
-  const [ccts, categories, arcaPositions, serviceTypes] = await Promise.all([
-    tenantPrisma.arcaCct.findMany({ select: { code: true } }),
-    tenantPrisma.arcaCategory.findMany({ select: { code: true } }),
-    tenantPrisma.arcaPosition.findMany({ select: { code: true } }),
-    tenantPrisma.arcaServiceType.findMany({ select: { code: true } }),
-  ]);
-
-  const validCctCodes = new Set(ccts.map((c) => c.code.toLowerCase()));
-  const validCategoryCodes = new Set(categories.map((c) => c.code.toLowerCase()));
-  const validArcaPosCodes = new Set(arcaPositions.map((p) => p.code.toLowerCase()));
-  const validServiceTypeCodes = new Set(serviceTypes.map((s) => s.code.toLowerCase()));
-
-  const cctOriginalMap = new Map(ccts.map((c) => [c.code.toLowerCase(), c.code]));
-  const categoryOriginalMap = new Map(categories.map((c) => [c.code.toLowerCase(), c.code]));
-  const posOriginalMap = new Map(arcaPositions.map((p) => [p.code.toLowerCase(), p.code]));
-  const servOriginalMap = new Map(serviceTypes.map((s) => [s.code.toLowerCase(), s.code]));
+  // 2. Pre-cargar catálogos ARCA desde base MASTER para validación referencial
+  const {
+    validCctCodes,
+    validCategoryCodes,
+    validArcaPosCodes,
+    validServiceTypeCodes,
+    cctOriginalMap,
+    categoryOriginalMap,
+    posOriginalMap,
+    servOriginalMap,
+  } = await getMasterArcaValidationSets();
 
   const toCreate = [];
   const skipped = [];
@@ -530,7 +522,7 @@ export async function updateJobPosition(tenantPrisma, id, data) {
   await ensureTenantPersonnelSchema(tenantPrisma);
   await getJobPositionById(tenantPrisma, id);
 
-  return tenantPrisma.jobPosition.update({
+  const updated = await tenantPrisma.jobPosition.update({
     where: { id },
     data: {
       ...(data.name !== undefined ? { name: data.name } : {}),
@@ -541,13 +533,9 @@ export async function updateJobPosition(tenantPrisma, id, data) {
       ...(data.serviceTypeCode !== undefined ? { serviceTypeCode: data.serviceTypeCode || null } : {}),
       ...(data.activityCode !== undefined ? { activityCode: data.activityCode || '049' } : {}),
     },
-    include: {
-      cct: true,
-      category: true,
-      arcaPosition: true,
-      serviceType: true,
-    },
   });
+
+  return hydrateJobPosition(updated);
 }
 
 export async function deleteJobPosition(tenantPrisma, id) {
@@ -565,171 +553,26 @@ export async function deleteJobPosition(tenantPrisma, id) {
   });
 }
 
-// --- CATÁLOGOS ARCA (SIMPLIFICACIÓN REGISTRAL) ---
+// --- CATÁLOGOS ARCA (SIMPLIFICACIÓN REGISTRAL DESDE MASTER DB) ---
 
-export async function listArcaCcts(tenantPrisma, { search = '', limit } = {}) {
-  await ensureTenantPersonnelSchema(tenantPrisma);
-  const where = {};
-  if (search && search.trim()) {
-    const q = search.trim();
-    where.OR = [
-      { code: { contains: q } },
-      { name: { contains: q } },
-      { sector: { contains: q } },
-      { description: { contains: q } },
-    ];
-  }
-  const queryOptions = {
-    where,
-    orderBy: [{ code: 'asc' }],
-  };
-  if (limit && Number(limit) > 0) {
-    queryOptions.take = Number(limit);
-  }
-  return tenantPrisma.arcaCct.findMany(queryOptions);
+export async function listArcaCcts(_tenantPrisma, opts = {}) {
+  return listMasterArcaCcts(opts);
 }
 
-export async function listArcaCategories(tenantPrisma, { search = '', limit = 200, cctCode } = {}) {
-  await ensureTenantPersonnelSchema(tenantPrisma);
-  const conditions = [];
-
-  if (cctCode && cctCode.trim()) {
-    const trimmedCct = cctCode.trim();
-    if (trimmedCct.toUpperCase() === 'FC') {
-      conditions.push({
-        OR: [
-          { code: { startsWith: 'FC' } },
-          { name: { contains: 'Fuera de Convenio' } },
-        ],
-      });
-    } else {
-      const relations = await tenantPrisma.arcaCctCategoryPosition.findMany({
-        where: { cctCode: trimmedCct },
-        select: { categoryCode: true },
-        distinct: ['categoryCode'],
-      });
-      const categoryCodes = relations.map((r) => r.categoryCode);
-      if (categoryCodes.length > 0) {
-        conditions.push({ code: { in: categoryCodes } });
-      } else {
-        // Fallback si no hay matriz explícita: buscar por campo cct
-        conditions.push({
-          OR: [
-            { cct: { contains: trimmedCct } },
-            { code: { in: [] } },
-          ],
-        });
-      }
-    }
-  }
-
-  if (search && search.trim()) {
-    const q = search.trim();
-    conditions.push({
-      OR: [
-        { code: { contains: q } },
-        { name: { contains: q } },
-        { cct: { contains: q } },
-        { description: { contains: q } },
-      ],
-    });
-  }
-
-  const where = conditions.length === 1 ? conditions[0] : conditions.length > 1 ? { AND: conditions } : {};
-
-  const queryOptions = {
-    where,
-    orderBy: [{ code: 'asc' }],
-  };
-
-  const effectiveLimit = cctCode && (!limit || limit === 200) ? 500 : limit;
-  if (effectiveLimit && effectiveLimit !== 'all' && Number(effectiveLimit) > 0) {
-    queryOptions.take = Number(effectiveLimit);
-  }
-
-  return tenantPrisma.arcaCategory.findMany(queryOptions);
+export async function listArcaCategories(_tenantPrisma, opts = {}) {
+  return listMasterArcaCategories(opts);
 }
 
-export async function listArcaPositions(tenantPrisma, { search = '', limit, cctCode } = {}) {
-  await ensureTenantPersonnelSchema(tenantPrisma);
-  const conditions = [];
-
-  if (cctCode && cctCode.trim()) {
-    const trimmedCct = cctCode.trim();
-    if (trimmedCct.toUpperCase() !== 'FC') {
-      const relations = await tenantPrisma.arcaCctCategoryPosition.findMany({
-        where: { cctCode: trimmedCct },
-        select: { positionCode: true },
-        distinct: ['positionCode'],
-      });
-      const positionCodes = relations.map((r) => r.positionCode);
-      if (positionCodes.length > 0) {
-        conditions.push({ code: { in: positionCodes } });
-      }
-    }
-  }
-
-  if (search && search.trim()) {
-    const q = search.trim();
-    conditions.push({
-      OR: [
-        { code: { contains: q } },
-        { name: { contains: q } },
-        { groupName: { contains: q } },
-        { description: { contains: q } },
-      ],
-    });
-  }
-
-  const where = conditions.length === 1 ? conditions[0] : conditions.length > 1 ? { AND: conditions } : {};
-
-  const queryOptions = {
-    where,
-    orderBy: [{ groupCode: 'asc' }, { name: 'asc' }],
-  };
-
-  if (limit && limit !== 'all' && Number(limit) > 0) {
-    queryOptions.take = Number(limit);
-  }
-
-  return tenantPrisma.arcaPosition.findMany(queryOptions);
+export async function listArcaPositions(_tenantPrisma, opts = {}) {
+  return listMasterArcaPositions(opts);
 }
 
-export async function listArcaServiceTypes(tenantPrisma) {
-  await ensureTenantPersonnelSchema(tenantPrisma);
-  return tenantPrisma.arcaServiceType.findMany({
-    orderBy: { code: 'asc' },
-  });
+export async function listArcaServiceTypes(_tenantPrisma) {
+  return listMasterArcaServiceTypes();
 }
 
-export async function listArcaContractModalities(tenantPrisma, { search = '', onlyActive = false } = {}) {
-  await ensureTenantPersonnelSchema(tenantPrisma);
-  const conditions = [];
-
-  if (onlyActive) {
-    conditions.push({ isActive: true });
-  }
-
-  if (search && search.trim()) {
-    const q = search.trim();
-    conditions.push({
-      OR: [
-        { code: { contains: q } },
-        { name: { contains: q } },
-        { description: { contains: q } },
-      ],
-    });
-  }
-
-  const where = conditions.length === 1 ? conditions[0] : conditions.length > 1 ? { AND: conditions } : {};
-
-  return tenantPrisma.arcaContractModality.findMany({
-    where,
-    orderBy: [
-      { isActive: 'desc' },
-      { code: 'asc' },
-    ],
-  });
+export async function listArcaContractModalities(_tenantPrisma, opts = {}) {
+  return listMasterArcaContractModalities(opts);
 }
 
 export async function listArcaActivities() {

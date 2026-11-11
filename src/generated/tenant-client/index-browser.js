@@ -154,62 +154,6 @@ exports.Prisma.DepartmentScalarFieldEnum = {
   deletedAt: 'deletedAt'
 };
 
-exports.Prisma.ArcaCctScalarFieldEnum = {
-  code: 'code',
-  name: 'name',
-  sector: 'sector',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ArcaCategoryScalarFieldEnum = {
-  code: 'code',
-  name: 'name',
-  cct: 'cct',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ArcaPositionScalarFieldEnum = {
-  code: 'code',
-  name: 'name',
-  groupCode: 'groupCode',
-  groupName: 'groupName',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ArcaServiceTypeScalarFieldEnum = {
-  code: 'code',
-  name: 'name',
-  regime: 'regime',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.ArcaCctCategoryPositionScalarFieldEnum = {
-  id: 'id',
-  cctCode: 'cctCode',
-  categoryCode: 'categoryCode',
-  positionCode: 'positionCode',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.ArcaContractModalityScalarFieldEnum = {
-  code: 'code',
-  name: 'name',
-  periodFrom: 'periodFrom',
-  periodTo: 'periodTo',
-  description: 'description',
-  isActive: 'isActive',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.JobPositionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -532,6 +476,7 @@ exports.Prisma.PayrollPeriodScalarFieldEnum = {
   totalNet: 'totalNet',
   totalEmployerCost: 'totalEmployerCost',
   closedAt: 'closedAt',
+  closedBy: 'closedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -571,6 +516,8 @@ exports.Prisma.PaySlipScalarFieldEnum = {
   signatureHash: 'signatureHash',
   signedAt: 'signedAt',
   status: 'status',
+  closedAt: 'closedAt',
+  closedBy: 'closedBy',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -590,8 +537,34 @@ exports.Prisma.PaySlipItemScalarFieldEnum = {
   amount: 'amount',
   arcaConceptCode: 'arcaConceptCode',
   formulaExplanation: 'formulaExplanation',
+  notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PayrollClosingAuditScalarFieldEnum = {
+  id: 'id',
+  scope: 'scope',
+  fiscalPeriodId: 'fiscalPeriodId',
+  payrollPeriodId: 'payrollPeriodId',
+  year: 'year',
+  month: 'month',
+  closedPeriodIds: 'closedPeriodIds',
+  totalSlipsClosed: 'totalSlipsClosed',
+  totalGross: 'totalGross',
+  totalNet: 'totalNet',
+  totalEmployerCost: 'totalEmployerCost',
+  purgedNoveltiesCount: 'purgedNoveltiesCount',
+  purgedNoveltiesSummary: 'purgedNoveltiesSummary',
+  terminatedEmployeesCount: 'terminatedEmployeesCount',
+  terminatedEmployees: 'terminatedEmployees',
+  additionalActions: 'additionalActions',
+  warningsAccepted: 'warningsAccepted',
+  checksumHash: 'checksumHash',
+  closedBy: 'closedBy',
+  closedByName: 'closedByName',
+  notes: 'notes',
+  closedAt: 'closedAt'
 };
 
 exports.Prisma.PaySlipBasisScalarFieldEnum = {
@@ -904,12 +877,12 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.NullableJsonNullValueInput = {
-  DbNull: Prisma.DbNull,
+exports.Prisma.JsonNullValueInput = {
   JsonNull: Prisma.JsonNull
 };
 
-exports.Prisma.JsonNullValueInput = {
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
   JsonNull: Prisma.JsonNull
 };
 
@@ -942,50 +915,6 @@ exports.Prisma.DepartmentOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   code: 'code'
-};
-
-exports.Prisma.ArcaCctOrderByRelevanceFieldEnum = {
-  code: 'code',
-  name: 'name',
-  sector: 'sector',
-  description: 'description'
-};
-
-exports.Prisma.ArcaCategoryOrderByRelevanceFieldEnum = {
-  code: 'code',
-  name: 'name',
-  cct: 'cct',
-  description: 'description'
-};
-
-exports.Prisma.ArcaPositionOrderByRelevanceFieldEnum = {
-  code: 'code',
-  name: 'name',
-  groupCode: 'groupCode',
-  groupName: 'groupName',
-  description: 'description'
-};
-
-exports.Prisma.ArcaServiceTypeOrderByRelevanceFieldEnum = {
-  code: 'code',
-  name: 'name',
-  regime: 'regime',
-  description: 'description'
-};
-
-exports.Prisma.ArcaCctCategoryPositionOrderByRelevanceFieldEnum = {
-  id: 'id',
-  cctCode: 'cctCode',
-  categoryCode: 'categoryCode',
-  positionCode: 'positionCode'
-};
-
-exports.Prisma.ArcaContractModalityOrderByRelevanceFieldEnum = {
-  code: 'code',
-  name: 'name',
-  periodFrom: 'periodFrom',
-  periodTo: 'periodTo',
-  description: 'description'
 };
 
 exports.Prisma.JobPositionOrderByRelevanceFieldEnum = {
@@ -1179,7 +1108,8 @@ exports.Prisma.PayrollPeriodOrderByRelevanceFieldEnum = {
   settlementType: 'settlementType',
   paymentPlace: 'paymentPlace',
   depositBank: 'depositBank',
-  status: 'status'
+  status: 'status',
+  closedBy: 'closedBy'
 };
 
 exports.Prisma.PaySlipOrderByRelevanceFieldEnum = {
@@ -1191,7 +1121,8 @@ exports.Prisma.PaySlipOrderByRelevanceFieldEnum = {
   bankName: 'bankName',
   cbu: 'cbu',
   signatureHash: 'signatureHash',
-  status: 'status'
+  status: 'status',
+  closedBy: 'closedBy'
 };
 
 exports.Prisma.PaySlipItemOrderByRelevanceFieldEnum = {
@@ -1203,7 +1134,30 @@ exports.Prisma.PaySlipItemOrderByRelevanceFieldEnum = {
   type: 'type',
   unitLabel: 'unitLabel',
   arcaConceptCode: 'arcaConceptCode',
-  formulaExplanation: 'formulaExplanation'
+  formulaExplanation: 'formulaExplanation',
+  notes: 'notes'
+};
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+};
+
+exports.Prisma.PayrollClosingAuditOrderByRelevanceFieldEnum = {
+  id: 'id',
+  scope: 'scope',
+  fiscalPeriodId: 'fiscalPeriodId',
+  payrollPeriodId: 'payrollPeriodId',
+  checksumHash: 'checksumHash',
+  closedBy: 'closedBy',
+  closedByName: 'closedByName',
+  notes: 'notes'
 };
 
 exports.Prisma.PaySlipBasisOrderByRelevanceFieldEnum = {
@@ -1294,17 +1248,6 @@ exports.Prisma.EmployeeIncomeTaxPaymentOnAccountOrderByRelevanceFieldEnum = {
   source: 'source'
 };
 
-exports.Prisma.JsonNullValueFilter = {
-  DbNull: Prisma.DbNull,
-  JsonNull: Prisma.JsonNull,
-  AnyNull: Prisma.AnyNull
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
-};
-
 exports.Prisma.SiradigImportOrderByRelevanceFieldEnum = {
   id: 'id',
   filename: 'filename',
@@ -1375,12 +1318,6 @@ exports.Prisma.SanctionIncidentLinkOrderByRelevanceFieldEnum = {
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
   Department: 'Department',
-  ArcaCct: 'ArcaCct',
-  ArcaCategory: 'ArcaCategory',
-  ArcaPosition: 'ArcaPosition',
-  ArcaServiceType: 'ArcaServiceType',
-  ArcaCctCategoryPosition: 'ArcaCctCategoryPosition',
-  ArcaContractModality: 'ArcaContractModality',
   JobPosition: 'JobPosition',
   WorkShift: 'WorkShift',
   WorkShiftDetail: 'WorkShiftDetail',
@@ -1403,6 +1340,7 @@ exports.Prisma.ModelName = {
   PayrollPeriod: 'PayrollPeriod',
   PaySlip: 'PaySlip',
   PaySlipItem: 'PaySlipItem',
+  PayrollClosingAudit: 'PayrollClosingAudit',
   PaySlipBasis: 'PaySlipBasis',
   PayrollSetting: 'PayrollSetting',
   PeriodNovelty: 'PeriodNovelty',

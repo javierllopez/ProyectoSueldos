@@ -1,0 +1,2632 @@
+          <!-- VISTA: MÓDULO DE LIQUIDACIÓN DE SUELDOS & LIBRO DE SUELDOS DIGITAL (ARCA) -->
+          <div id="view-payroll" class="app-view d-none">
+            <!-- Cabecera Ejecutiva Temática de Sueldos (Royal Indigo & Electric Violet) -->
+            <div class="payroll-executive-header theme-payroll-header mb-2">
+              <div class="payroll-header-top-row">
+                <div class="payroll-header-title-wrap">
+                  <div class="payroll-header-icon-box shadow-sm">
+                    <i class="ti ti-calculator"></i>
+                  </div>
+                  <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                      <span class="payroll-header-badge">
+                        <i class="ti ti-receipt-2"></i> LIQUIDACIÓN & LIBRO DIGITAL ARCA
+                      </span>
+                      <span class="badge bg-white-lt text-white"
+                        style="font-size: 12px; border: 1px solid rgba(255,255,255,0.2);">Ley N° 27.802 &bull;
+                        F.931</span>
+                    </div>
+                    <h2 class="payroll-header-title">Gestión de Sueldos & Liquidación de Haberes</h2>
+                    <div class="payroll-header-subtitle">
+                      Motor de fórmulas, novedades de nómina, Libro de Sueldos Digital (ARCA) y recibos con firma legal
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="payroll-tenant-pill"
+                    title="Aislamiento físico multitenant de base de datos MySQL por razón social">
+                    <span class="payroll-pulse-dot"></span>
+                    <span>Empresa Activa: <strong class="payroll-active-company-name-sync"
+                        id="payroll-header-company-name">Cargando...</strong> &bull; [Nómina Aislada]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Layout con Barra Lateral Izquierda (Sidebar) y Área de Contenido -->
+            <div class="row gx-3 gy-0 module-layout-row">
+              <!-- BARRA LATERAL IZQUIERDA CON SUBMENÚES DE SUELDOS -->
+              <div class="col-lg-3 col-md-4 sidebar-col-container">
+                <div class="payroll-sidebar-card mb-0">
+                  <div class="payroll-sidebar-header">
+                    <div class="text-uppercase text-muted fw-bold" style="font-size: 0.75rem; letter-spacing: 0.05em;">
+                      <i class="ti ti-layout-sidebar me-1 text-primary"></i> Navegación de Nómina
+                    </div>
+                  </div>
+                  <div class="payroll-nav-group py-2" id="payroll-sidebar-nav">
+                    <!-- 1. ALÍCUOTAS PATRONALES -->
+                    <a href="#pane-payroll-settings" class="payroll-nav-item" id="side-payroll-settings"
+                      data-bs-target="#pane-payroll-settings">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-settings-automation text-cyan"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div>Alícuotas Patronales</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">SUSS, ART, topes ANSES</small>
+                      </div>
+                    </a>
+
+                    <!-- 1b. NÓMINA (SUELDOS BÁSICOS) -->
+                    <a href="#pane-payroll-salary-scales" class="payroll-nav-item" id="side-payroll-salary-scales"
+                      data-bs-target="#pane-payroll-salary-scales">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-cash-banknote text-teal"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div>Nómina (Sueldos Básicos)</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">Escalas salariales y
+                          básicos</small>
+                      </div>
+                      <span class="badge bg-teal-lt ms-auto" id="payroll-badge-scales-count">0</span>
+                    </a>
+
+                    <!-- 2. CONCEPTOS Y FÓRMULAS (SUBMENÚ DESPLEGABLE) -->
+                    <div class="payroll-nav-dropdown">
+                      <a href="#submenu-payroll-concepts"
+                        class="payroll-nav-item d-flex align-items-center justify-content-between"
+                        id="side-payroll-concepts-menu" data-bs-toggle="collapse"
+                        data-bs-target="#submenu-payroll-concepts" role="button" aria-expanded="false">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="payroll-nav-icon">
+                            <i class="ti ti-variable text-purple"></i>
+                          </div>
+                          <div>
+                            <div>Conceptos y Fórmulas</div>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">Conceptos, fórmulas y
+                              matrices</small>
+                          </div>
+                        </div>
+                        <i class="ti ti-chevron-down submenu-caret text-muted"
+                          style="transition: transform 0.2s ease;"></i>
+                      </a>
+                      <div class="collapse payroll-submenu" id="submenu-payroll-concepts">
+                        <a href="#pane-payroll-concepts" class="payroll-nav-subitem" id="side-payroll-concepts"
+                          data-bs-target="#pane-payroll-concepts">
+                          <i class="ti ti-list-details"></i>
+                          <span class="flex-fill">Conceptos de Liquidación</span>
+                          <span class="badge bg-purple-lt ms-auto" id="payroll-badge-concepts-count">0</span>
+                        </a>
+                        <a href="#pane-payroll-matrices" class="payroll-nav-subitem" id="side-payroll-matrices"
+                          data-bs-target="#pane-payroll-matrices">
+                          <i class="ti ti-table"></i>
+                          <span class="flex-fill">Matrices de Liquidación</span>
+                          <span class="badge bg-indigo-lt ms-auto" id="payroll-badge-matrices-count">0</span>
+                        </a>
+                        <a href="#pane-payroll-fixed-values" class="payroll-nav-subitem" id="side-payroll-fixed-values"
+                          data-bs-target="#pane-payroll-fixed-values">
+                          <i class="ti ti-pinned"></i>
+                          <span class="flex-fill">Valores Fijos</span>
+                          <span class="badge bg-azure-lt ms-auto" id="payroll-badge-fixed-values-count">0</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- 3. NOVEDADES PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
+                    <div class="payroll-nav-dropdown">
+                      <a href="#submenu-novedades-persistentes"
+                        class="payroll-nav-item d-flex align-items-center justify-content-between"
+                        id="side-nov-pers-menu" data-bs-toggle="collapse"
+                        data-bs-target="#submenu-novedades-persistentes" role="button" aria-expanded="false">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="payroll-nav-icon">
+                            <i class="ti ti-pin text-indigo"></i>
+                          </div>
+                          <div>
+                            <div>Novedades persistentes</div>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">Conceptos fijos del
+                              legajo</small>
+                          </div>
+                        </div>
+                        <i class="ti ti-chevron-down submenu-caret text-muted"
+                          style="transition: transform 0.2s ease;"></i>
+                      </a>
+                      <div class="collapse payroll-submenu" id="submenu-novedades-persistentes">
+                        <a href="#pane-nov-pers-emp" class="payroll-nav-subitem" id="side-nov-pers-emp"
+                          data-bs-target="#pane-nov-pers-emp">
+                          <i class="ti ti-user-check"></i>
+                          <span class="flex-fill">Conceptos por empleado</span>
+                        </a>
+                        <a href="#pane-nov-pers-con" class="payroll-nav-subitem" id="side-nov-pers-con"
+                          data-bs-target="#pane-nov-pers-con">
+                          <i class="ti ti-users-group"></i>
+                          <span class="flex-fill">Empleados por concepto</span>
+                        </a>
+                        <a href="#pane-payroll-embargoes" class="payroll-nav-subitem" id="side-payroll-embargoes"
+                          data-bs-target="#pane-payroll-embargoes">
+                          <i class="ti ti-scale text-primary"></i>
+                          <span class="flex-fill">Embargos de Haberes</span>
+                          <span class="badge bg-primary-lt ms-auto" id="payroll-badge-embargoes-count">0</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- 4. NOVEDADES NO PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
+                    <div class="payroll-nav-dropdown">
+                      <a href="#submenu-novedades-no-persistentes"
+                        class="payroll-nav-item d-flex align-items-center justify-content-between"
+                        id="side-nov-nopers-menu" data-bs-toggle="collapse"
+                        data-bs-target="#submenu-novedades-no-persistentes" role="button" aria-expanded="false">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="payroll-nav-icon">
+                            <i class="ti ti-calendar-event text-azure"></i>
+                          </div>
+                          <div>
+                            <div>Novedades no persistentes</div>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">Horas, ausencias del
+                              período</small>
+                          </div>
+                        </div>
+                        <i class="ti ti-chevron-down submenu-caret text-muted"
+                          style="transition: transform 0.2s ease;"></i>
+                      </a>
+                      <div class="collapse payroll-submenu" id="submenu-novedades-no-persistentes">
+                        <a href="#pane-nov-nopers-emp" class="payroll-nav-subitem" id="side-nov-nopers-emp"
+                          data-bs-target="#pane-nov-nopers-emp">
+                          <i class="ti ti-user-edit"></i>
+                          <span class="flex-fill">Conceptos por empleado</span>
+                        </a>
+                        <a href="#pane-nov-nopers-con" class="payroll-nav-subitem" id="side-nov-nopers-con"
+                          data-bs-target="#pane-nov-nopers-con">
+                          <i class="ti ti-list-numbers"></i>
+                          <span class="flex-fill">Empleados por concepto</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- 7. PERÍODOS Y LIQUIDACIONES -->
+                    <a href="#pane-payroll-periods" class="payroll-nav-item active" id="side-payroll-periods"
+                      data-bs-target="#pane-payroll-periods">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-calendar-time text-secondary"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div>Períodos y Liquidaciones</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">Mensual, quincenas, SAC</small>
+                      </div>
+                      <span class="badge bg-primary-lt ms-auto" id="payroll-badge-periods-count">0</span>
+                    </a>
+
+                    <!-- 8. LIBRO DIGITAL ARCA -->
+                    <a href="#pane-payroll-lsd" class="payroll-nav-item" id="side-payroll-lsd"
+                      data-bs-target="#pane-payroll-lsd">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-file-certificate text-warning"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div>Libro Digital (ARCA)</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">Archivos 195 y 999 chars
+                          F.931</small>
+                      </div>
+                    </a>
+
+                    <!-- 9. IMPUESTO A LAS GANANCIAS 4TA CATEGORÍA -->
+                    <a href="#pane-payroll-income-tax" class="payroll-nav-item" id="side-payroll-income-tax"
+                      data-bs-target="#pane-payroll-income-tax">
+                      <div class="payroll-nav-icon">
+                        <i class="ti ti-receipt-tax text-danger"></i>
+                      </div>
+                      <div class="flex-fill">
+                        <div>Impuesto a las Ganancias</div>
+                        <small class="text-muted d-block" style="font-size: 0.7rem;">4ta Categoría, SiRADIG y
+                          F.1359</small>
+                      </div>
+                    </a>
+
+                    <!-- 10. GENERADOR DE INFORMES PERSONALIZADOS (SUBMENÚ DESPLEGABLE) -->
+                    <div class="payroll-nav-dropdown">
+                      <a href="#submenu-payroll-reports"
+                        class="payroll-nav-item d-flex align-items-center justify-content-between"
+                        id="side-payroll-reports-menu" data-bs-toggle="collapse"
+                        data-bs-target="#submenu-payroll-reports" role="button" aria-expanded="false">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="payroll-nav-icon">
+                            <i class="ti ti-chart-dots-3 text-cyan"></i>
+                          </div>
+                          <div>
+                            <div>Generador de Informes</div>
+                            <small class="text-muted d-block" style="font-size: 0.7rem;">Diseño, emisión y
+                              gráficos</small>
+                          </div>
+                        </div>
+                        <i class="ti ti-chevron-down submenu-caret text-muted"
+                          style="transition: transform 0.2s ease;"></i>
+                      </a>
+                      <div class="collapse payroll-submenu" id="submenu-payroll-reports">
+                        <a href="#pane-reports-runner" class="payroll-nav-subitem" id="side-reports-runner"
+                          data-bs-target="#pane-reports-runner">
+                          <i class="ti ti-file-analytics"></i>
+                          <span class="flex-fill">Emisión de Informes</span>
+                        </a>
+                        <a href="#pane-reports-builder" class="payroll-nav-subitem" id="side-reports-builder"
+                          data-bs-target="#pane-reports-builder">
+                          <i class="ti ti-layout-grid-add"></i>
+                          <span class="flex-fill">Diseñador de Plantillas</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div> <!-- /#payroll-sidebar-nav -->
+                </div> <!-- /.payroll-sidebar-card -->
+              </div> <!-- /.sidebar-col-container -->
+
+              <!-- ÁREA DERECHA DE CONTENIDO -->
+              <div class="col-lg-9 col-md-8 content-col-container">
+                <div class="tab-content" id="payroll-tab-content">
+                  <!-- PANE: NÓMINA (SUELDOS BÁSICOS) -->
+                  <div class="tab-pane fade" id="pane-payroll-salary-scales" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-lg-4 col-md-12">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-primary"></i></span>
+                              <input type="text" id="payroll-scale-search" class="form-control"
+                                placeholder="Buscar por nómina, código, CCT o descripción..." />
+                            </div>
+                          </div>
+                          <div class="col-lg-3 col-md-6">
+                            <select id="payroll-scale-cct-filter" class="form-select"
+                              aria-label="Filtrar por convenio laboral">
+                              <option value="ALL">Todos los Convenios</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-2 col-md-6">
+                            <label class="form-check form-switch mb-0 d-flex align-items-center gap-2 cursor-pointer"
+                              title="Agrupar los ítems de nómina por su Convenio Colectivo de Trabajo">
+                              <input class="form-check-input m-0" type="checkbox" id="payroll-scale-group-by-cct" />
+                              <span class="form-check-label small fw-bold text-dark text-nowrap">Agrupar por CCT</span>
+                            </label>
+                          </div>
+                          <div class="col-lg-3 col-md-12 d-flex justify-content-lg-end gap-2">
+                            <button type="button" class="btn btn-outline-teal text-nowrap"
+                              id="btn-open-mass-scale-increase" title="Actualización Masiva de Sueldos Básicos">
+                              <i class="ti ti-trending-up me-1"></i> Actualización Masiva
+                            </button>
+                            <button type="button" class="btn btn-payroll text-nowrap" id="btn-open-new-scale-modal">
+                              <i class="ti ti-plus me-1"></i> Nueva Nómina
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Nóminas / Escalas Salariales -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="payroll-scales-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Nómina / Denominación</th>
+                              <th style="width: 110px;">Código</th>
+                              <th style="width: 210px;">Convenio (CCT)</th>
+                              <th>Descripción</th>
+                              <th class="text-end text-nowrap" style="width: 150px;">Sueldo Básico ($)</th>
+                              <th class="text-center" style="width: 135px;">Colaboradores</th>
+                              <th class="w-1 text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="payroll-scales-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Nóminas -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top"
+                        id="payroll-scales-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="payroll-scales-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="payroll-scales-pagination-info">Mostrando 0
+                            nóminas</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="payroll-scales-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 1: PERÍODOS Y LIQUIDACIONES -->
+                  <div class="tab-pane fade show active" id="pane-payroll-periods" role="tabpanel">
+                    <!-- Tarjeta de Período Habilitado -->
+                    <div class="card shadow-xs mb-3 card-payroll-accent border-start border-4 border-success">
+                      <div class="card-body py-3">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                          <div>
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                              <span class="badge bg-success-lt text-success fw-bold px-2 py-1 fs-6">
+                                <i class="ti ti-lock-open me-1"></i> PERÍODO HABILITADO
+                              </span>
+                              <h3 class="mb-0 fw-bold text-dark" id="active-fiscal-period-title">Septiembre 2026</h3>
+                            </div>
+                            <div class="text-muted small" id="active-fiscal-period-subtitle">
+                              <i class="ti ti-info-circle me-1"></i> Período abierto para modificaciones, altas y
+                              liquidación.
+                            </div>
+                          </div>
+                          <div class="d-flex flex-wrap gap-2 align-items-center">
+                            <button type="button" class="btn btn-outline-secondary text-nowrap"
+                              id="btn-new-fiscal-period">
+                              <i class="ti ti-calendar-plus me-1"></i> Nuevo Período
+                            </button>
+                            <button type="button" class="btn btn-outline-danger text-nowrap d-none"
+                              id="btn-close-fiscal-period" title="Cerrar período fiscal activo (bloquea recibos, depura novedades y aplica bajas de liquidaciones finales)">
+                              <i class="ti ti-lock-check me-1"></i> Cerrar Período
+                            </button>
+                            <button type="button" class="btn btn-outline-info text-nowrap"
+                              id="btn-open-closing-audits" title="Consultar historial de actas de cierre de períodos">
+                              <i class="ti ti-shield-check me-1"></i> Actas de Cierre
+                            </button>
+                            <button type="button" class="btn btn-payroll text-nowrap" id="btn-new-period-header">
+                              <i class="ti ti-plus me-1"></i> Nueva Liquidación
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Filtros de Liquidaciones -->
+                    <div class="card shadow-xs mb-2 screen-fixed-header payroll-filter-bar">
+                      <div class="card-body py-2 px-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-4">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-primary"></i></span>
+                              <input type="text" id="payroll-period-search" class="form-control form-control-sm"
+                                placeholder="Buscar liquidación por denominación o tipo..." />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <select id="payroll-period-type-filter" class="form-select form-select-sm">
+                              <option value="ALL">Todos los Tipos</option>
+                              <option value="MONTHLY">Mensual</option>
+                              <option value="VACATIONS">Vacaciones</option>
+                              <option value="QUINCE_1">1ra Quincena</option>
+                              <option value="QUINCE_2">2da Quincena</option>
+                              <option value="SAC_1">1er SAC (Aguinaldo)</option>
+                              <option value="SAC_2">2do SAC (Aguinaldo)</option>
+                              <option value="FINAL">Liquidación Final</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3">
+                            <select id="payroll-period-status-filter" class="form-select form-select-sm">
+                              <option value="ALL">Todos los Estados</option>
+                              <option value="OPEN">En Curso / Abiertas</option>
+                              <option value="CLOSED">Histórico Cerradas</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2 text-end">
+                            <span class="badge bg-purple-lt" id="payroll-active-settlements-badge">0
+                              liquidación(es)</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Períodos -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="payroll-periods-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th>Período</th>
+                              <th>Liquidación</th>
+                              <th>Tipo</th>
+                              <th class="text-center">Recibos</th>
+                              <th class="text-end">Total Bruto</th>
+                              <th class="text-end">Total Neto</th>
+                              <th class="text-center">Estado</th>
+                              <th class="w-1 text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="payroll-periods-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Períodos -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top"
+                        id="payroll-periods-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="payroll-periods-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="payroll-periods-pagination-info">Mostrando 0
+                            liquidaciones</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="payroll-periods-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: NOVEDADES PERSISTENTES - CONCEPTOS POR EMPLEADO -->
+                  <div class="tab-pane fade" id="pane-nov-pers-emp" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-5">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-user me-1 text-primary"></i> Seleccionar Colaborador:
+                            </label>
+                            <select id="nov-pers-emp-select" class="form-select">
+                              <option value="">Seleccione un colaborador...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-7">
+                            <div id="nov-pers-emp-card"
+                              class="d-none bg-light p-2 rounded border d-flex justify-content-between align-items-center flex-wrap gap-2">
+                              <div>
+                                <span class="fw-bold fs-4 text-dark" id="nov-pers-emp-name">-</span>
+                                <div class="text-muted small">
+                                  Legajo: <strong id="nov-pers-emp-file">-</strong> | CUIL: <span
+                                    id="nov-pers-emp-cuil">-</span>
+                                </div>
+                              </div>
+                              <div class="text-end">
+                                <span class="badge bg-purple-lt fw-bold" id="nov-pers-emp-dept">-</span>
+                                <div class="text-muted small mt-1">Básico: <strong class="text-success"
+                                    id="nov-pers-emp-basic">-</strong></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla Browse de Conceptos Persistentes -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="nov-pers-emp-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div
+                        class="card-header bg-light py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <h4 class="card-title mb-0 fs-4">
+                            <i class="ti ti-pin me-1 text-indigo"></i> Conceptos Fijos y Recurrentes Asignados
+                          </h4>
+                          <span class="badge bg-indigo-lt text-nowrap fw-bold" id="nov-pers-emp-count">0
+                            conceptos</span>
+                        </div>
+                        <div>
+                          <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-pers-emp-add" disabled>
+                            <i class="ti ti-plus me-1"></i> Asignar Concepto
+                          </button>
+                        </div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 85px;">Código</th>
+                              <th style="min-width: 220px;">Concepto</th>
+                              <th style="width: 110px;">Tipo</th>
+                              <th style="width: 100px;" class="text-center">Ámbito</th>
+                              <th style="width: 140px;" class="text-end">Valor Asignado</th>
+                              <th style="width: 90px;" class="text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="nov-pers-emp-table-body">
+                            <tr>
+                              <td colspan="6" class="text-center py-4 text-muted">
+                                Seleccione un colaborador para visualizar sus conceptos persistentes.
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: NOVEDADES PERSISTENTES - EMPLEADOS POR CONCEPTO -->
+                  <div class="tab-pane fade" id="pane-nov-pers-con" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-5">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-variable me-1 text-primary"></i> Seleccionar Concepto Individual
+                              Persistente:
+                            </label>
+                            <select id="nov-pers-con-select" class="form-select">
+                              <option value="">Seleccione un concepto...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-7">
+                            <div id="nov-pers-con-card"
+                              class="d-none bg-light p-2 rounded border d-flex justify-content-between align-items-center flex-wrap gap-2">
+                              <div>
+                                <span class="fw-bold fs-4 text-dark" id="nov-pers-con-title">-</span>
+                                <div class="text-muted small">
+                                  Tipo: <span class="badge bg-blue-lt" id="nov-pers-con-type">-</span> | Entrada:
+                                  <strong id="nov-pers-con-datatype">-</strong>
+                                </div>
+                              </div>
+                              <div class="text-end">
+                                <span class="badge bg-azure-lt fw-bold" id="nov-pers-con-calctype">-</span>
+                                <div class="text-muted small mt-1 font-monospace" id="nov-pers-con-formula">-</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla Browse de Empleados con el Concepto -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="nov-pers-con-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div
+                        class="card-header bg-light py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <h4 class="card-title mb-0 fs-4">
+                            <i class="ti ti-users-group me-1 text-indigo"></i> Colaboradores con este Concepto Asignado
+                          </h4>
+                          <span class="badge bg-indigo-lt text-nowrap fw-bold" id="nov-pers-con-count">0
+                            colaboradores</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-1 flex-wrap">
+                          <button type="button" class="btn btn-outline-success btn-sm py-1 px-2 text-nowrap"
+                            id="btn-nov-pers-con-excel" disabled title="Importar novedades desde archivo Excel">
+                            <i class="ti ti-file-spreadsheet me-1"></i> Importar Excel
+                          </button>
+                          <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 text-nowrap"
+                            id="btn-nov-pers-con-cct" disabled title="Asignar concepto a todo un Convenio Colectivo">
+                            <i class="ti ti-certificate me-1"></i> Asignar por CCT
+                          </button>
+                          <button type="button" class="btn btn-payroll btn-sm py-1 px-2 text-nowrap"
+                            id="btn-nov-pers-con-add" disabled title="Asignar a colaborador(es) específico(s)">
+                            <i class="ti ti-user-plus me-1"></i> Asignar Colaborador(es)
+                          </button>
+                        </div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 85px;">Legajo</th>
+                              <th style="min-width: 220px;">Colaborador</th>
+                              <th style="width: 120px;">CUIL</th>
+                              <th style="width: 140px;">Sector</th>
+                              <th style="width: 140px;" class="text-end">Valor Asignado</th>
+                              <th style="width: 90px;" class="text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="nov-pers-con-table-body">
+                            <tr>
+                              <td colspan="6" class="text-center py-4 text-muted">
+                                Seleccione un concepto persistente para listar los colaboradores asignados.
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: NOVEDADES PERSISTENTES - EMBARGOS DE HABERES -->
+                  <div class="tab-pane fade" id="pane-payroll-embargoes" role="tabpanel">
+                    <!-- Tarjetas de Métricas Resumen -->
+                    <!-- Tarjetas de Métricas Resumen -->
+                    <div class="row g-2 mb-3">
+                      <div class="col-sm-6 col-lg-3">
+                        <div class="card card-sm shadow-xs border-0 border-start border-primary border-3">
+                          <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-center">
+                              <span class="avatar avatar-sm bg-primary-lt text-primary me-3 rounded">
+                                <i class="ti ti-scale fs-2"></i>
+                              </span>
+                              <div>
+                                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.68rem;">
+                                  Embargos Activos</div>
+                                <div class="fs-3 fw-bold text-dark" id="embargo-metric-active-count">0</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div class="card card-sm shadow-xs border-0 border-start border-azure border-3">
+                          <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-center">
+                              <span class="avatar avatar-sm bg-azure-lt text-azure me-3 rounded">
+                                <i class="ti ti-file-dollar fs-2"></i>
+                              </span>
+                              <div>
+                                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.68rem;">Deuda
+                                  Bajo Oficios</div>
+                                <div class="fs-3 fw-bold text-dark font-monospace" id="embargo-metric-total-debt">$ 0,00
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div class="card card-sm shadow-xs border-0 border-start border-success border-3">
+                          <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-center">
+                              <span class="avatar avatar-sm bg-success-lt text-success me-3 rounded">
+                                <i class="ti ti-cash fs-2"></i>
+                              </span>
+                              <div>
+                                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.68rem;">
+                                  Retenido Amortizado</div>
+                                <div class="fs-3 fw-bold text-dark font-monospace" id="embargo-metric-amortized">$ 0,00
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-6 col-lg-3">
+                        <div class="card card-sm shadow-xs border-0 border-start border-indigo border-3">
+                          <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-center">
+                              <span class="avatar avatar-sm bg-indigo-lt text-indigo me-3 rounded">
+                                <i class="ti ti-heart-handshake fs-2"></i>
+                              </span>
+                              <div>
+                                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.68rem;">Cuotas
+                                  Alimentarias</div>
+                                <div class="fs-3 fw-bold text-dark" id="embargo-metric-alimony-count">0</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Card Principal de Gestión y Browse -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="embargoes-table-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+
+                      <div
+                        class="card-header bg-light py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <h4 class="card-title mb-0 fs-4 text-dark fw-bold">
+                            <i class="ti ti-scale text-primary me-1"></i> Órdenes Judiciales y Retenciones de Haberes
+                          </h4>
+                          <span class="badge bg-primary-lt fw-bold" id="embargoes-badge-total">0 registros</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                          <div class="input-icon" style="min-width: 220px;">
+                            <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+                            <input type="text" class="form-control form-control-sm" id="embargoes-search-input"
+                              placeholder="Buscar por autos, juzgado, legajo..." />
+                          </div>
+                          <select class="form-select form-select-sm" id="embargoes-filter-status" style="width: 140px;">
+                            <option value="ALL">Todos los Estados</option>
+                            <option value="ACTIVE" selected>Activos</option>
+                            <option value="COMPLETED">Completados</option>
+                            <option value="SUSPENDED">Suspendidos</option>
+                            <option value="CANCELLED">Cancelados</option>
+                          </select>
+                          <button type="button" class="btn btn-primary btn-sm" id="btn-new-embargo">
+                            <i class="ti ti-plus me-1"></i> Registrar Embargo
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 20%; min-width: 180px;">Colaborador</th>
+                              <th style="min-width: 220px;">Juicio / Carátula y Juzgado</th>
+                              <th style="width: 17%; min-width: 150px;">Tipo / Conceptos</th>
+                              <th style="width: 20%; min-width: 180px;">Deuda y Amortización</th>
+                              <th style="width: 80px;" class="text-center">Estado</th>
+                              <th style="width: 145px;" class="text-end pe-2">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="embargoes-table-body">
+                            <tr>
+                              <td colspan="6" class="text-center py-4 text-muted">
+                                Cargando órdenes judiciales de embargo...
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 bg-light">
+                        <small class="text-muted" id="embargoes-pagination-info">Mostrando 0 de 0 embargos</small>
+                        <div class="btn-group btn-group-sm" id="embargoes-pagination-btns"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: NOVEDADES NO PERSISTENTES - CONCEPTOS POR EMPLEADO -->
+                  <div class="tab-pane fade" id="pane-nov-nopers-emp" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-4">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-calendar-time me-1 text-primary"></i> Liquidación / Período:
+                            </label>
+                            <select id="nov-nopers-emp-period-select" class="form-select">
+                              <option value="">Seleccione una liquidación...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-user me-1 text-primary"></i> Colaborador:
+                            </label>
+                            <select id="nov-nopers-emp-select" class="form-select">
+                              <option value="">Seleccione un colaborador...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-end pt-3">
+                            <button type="button" class="btn btn-outline-success btn-sm"
+                              id="btn-nov-nopers-emp-simulate" disabled
+                              title="Calcular y ver recibo provisorio en vivo">
+                              <i class="ti ti-receipt me-1"></i> Simular Recibo
+                            </button>
+                            <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-nopers-emp-add" disabled>
+                              <i class="ti ti-plus me-1"></i> Agregar Novedad
+                            </button>
+                          </div>
+                        </div>
+                        <div id="nov-nopers-emp-readonly-alert" class="alert alert-warning py-2 small mb-0 mt-3 d-none">
+                          <i class="ti ti-lock me-1"></i> <strong>Período Cerrado:</strong> Las novedades no persistentes
+                          fueron consolidadas en los recibos y depuradas al cierre del período (ver Recibos).
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla Browse de Novedades del Período -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="nov-nopers-emp-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div
+                        class="card-header bg-light py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <h4 class="card-title mb-0 fs-4">
+                          <i class="ti ti-calendar-event me-1 text-azure"></i> Novedades del Período para el Colaborador
+                        </h4>
+                        <span class="badge bg-azure-lt text-nowrap fw-bold" id="nov-nopers-emp-count">0 novedades</span>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 85px;">Código</th>
+                              <th style="min-width: 240px;">Concepto</th>
+                              <th style="width: 110px;">Tipo</th>
+                              <th style="width: 140px;" class="text-end">Valor Novedad</th>
+                              <th style="width: 90px;" class="text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="nov-nopers-emp-table-body">
+                            <tr>
+                              <td colspan="5" class="text-center py-4 text-muted">
+                                Seleccione una liquidación activa y un colaborador para gestionar sus novedades.
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: NOVEDADES NO PERSISTENTES - EMPLEADOS POR CONCEPTO -->
+                  <div class="tab-pane fade" id="pane-nov-nopers-con" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-3 align-items-center">
+                          <div class="col-md-4">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-calendar-time me-1 text-primary"></i> Liquidación / Período:
+                            </label>
+                            <select id="nov-nopers-con-period-select" class="form-select">
+                              <option value="">Seleccione una liquidación...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label class="form-label small fw-bold mb-1">
+                              <i class="ti ti-variable me-1 text-primary"></i> Concepto No Persistente:
+                            </label>
+                            <select id="nov-nopers-con-select" class="form-select">
+                              <option value="">Seleccione un concepto...</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-end pt-3">
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                              id="btn-nov-nopers-con-import-excel" disabled
+                              title="Importar novedades de archivo Excel o CSV">
+                              <i class="ti ti-file-spreadsheet me-1 text-success"></i> Importar Excel
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                              id="btn-nov-nopers-con-batch-sheet" disabled
+                              title="Carga rápida de nómina continua en lista">
+                              <i class="ti ti-table-shortcut me-1"></i> Planilla Ágil
+                            </button>
+                            <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-nopers-con-add" disabled>
+                              <i class="ti ti-user-plus me-1"></i> Agregar
+                            </button>
+                          </div>
+                        </div>
+                        <div id="nov-nopers-con-readonly-alert" class="alert alert-warning py-2 small mb-0 mt-3 d-none">
+                          <i class="ti ti-lock me-1"></i> <strong>Período Cerrado:</strong> Las novedades no persistentes
+                          fueron consolidadas en los recibos y depuradas al cierre del período (ver Recibos).
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla Browse de Colaboradores con esta Novedad -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="nov-nopers-con-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div
+                        class="card-header bg-light py-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <h4 class="card-title mb-0 fs-4">
+                            <i class="ti ti-list-numbers me-1 text-azure"></i> Nómina con este Concepto en el Período
+                          </h4>
+                          <span class="badge bg-azure-lt text-nowrap fw-bold" id="nov-nopers-con-count">0
+                            colaboradores</span>
+                        </div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                          <thead>
+                            <tr>
+                              <th style="width: 85px;">Legajo</th>
+                              <th style="min-width: 220px;">Colaborador</th>
+                              <th style="width: 120px;">CUIL</th>
+                              <th style="width: 140px;">Sector</th>
+                              <th style="width: 140px;" class="text-end">Valor Novedad</th>
+                              <th style="width: 90px;" class="text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="nov-nopers-con-table-body">
+                            <tr>
+                              <td colspan="6" class="text-center py-4 text-muted">
+                                Seleccione una liquidación y un concepto no persistente para visualizar las novedades
+                                cargadas.
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: PROCESO DE LIQUIDACIÓN (NUEVA INTERFAZ) -->
+                  <div class="tab-pane fade" id="pane-payroll-settlement" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <input type="hidden" id="settlement-period-select" value="" />
+                        <div
+                          class="d-flex flex-wrap align-items-center justify-content-between gap-2 pb-2 mb-2 border-bottom">
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="avatar avatar-sm bg-primary-lt text-primary rounded">
+                              <i class="ti ti-calculator"></i>
+                            </span>
+                            <div>
+                              <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span class="text-muted small text-uppercase fw-bold"
+                                  style="font-size: 0.68rem; letter-spacing: 0.04em;">Liquidación Seleccionada:</span>
+                                <span id="settlement-period-context-badge" class="badge bg-blue-lt">-</span>
+                                <span id="settlement-period-context-status" class="badge bg-secondary-lt">-</span>
+                              </div>
+                              <div class="fw-bold fs-3 text-dark" id="settlement-period-context-title">Sin liquidación
+                                seleccionada</div>
+                              <div class="text-muted small" id="settlement-period-context-subtitle">Seleccione una
+                                liquidación desde Períodos y Liquidaciones</div>
+                            </div>
+                          </div>
+                          <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                              id="btn-back-from-settlement">
+                              <i class="ti ti-arrow-left me-1"></i> Volver a Períodos y Liquidaciones
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row g-2 align-items-center">
+                          <div class="col-12">
+                            <div class="row g-2 text-center" id="settlement-metrics-bar">
+                              <div class="col-3">
+                                <div class="bg-light p-2 rounded border">
+                                  <div class="text-muted small">Nómina Total</div>
+                                  <div class="fs-3 fw-bold text-dark" id="settlement-stat-total">0</div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div class="bg-light p-2 rounded border">
+                                  <div class="text-muted small">Liquidados</div>
+                                  <div class="fs-3 fw-bold text-success" id="settlement-stat-liquidated">0</div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div class="bg-light p-2 rounded border">
+                                  <div class="text-muted small">Pendientes</div>
+                                  <div class="fs-3 fw-bold text-warning" id="settlement-stat-pending">0</div>
+                                </div>
+                              </div>
+                              <div class="col-3">
+                                <div class="bg-light p-2 rounded border">
+                                  <div class="text-muted small">Total Neto</div>
+                                  <div class="fs-3 fw-bold text-primary font-monospace" id="settlement-stat-net">$0
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div id="settlement-readonly-alert" class="alert alert-warning py-2 small mb-0 mt-3 d-none">
+                          <i class="ti ti-lock me-1"></i> <strong>Período Cerrado:</strong> La liquidación se encuentra
+                          cerrada. No es posible re-calcular ni modificar recibos.
+                        </div>
+                        <div id="settlement-omitted-alert" class="alert alert-info py-2 small mb-0 mt-3 d-none">
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div class="d-flex align-items-center gap-2">
+                              <span class="avatar avatar-xs bg-info-lt text-info rounded"><i
+                                  class="ti ti-info-circle"></i></span>
+                              <div>
+                                <strong id="settlement-omitted-alert-title">Liquidación completada:</strong>
+                                <span id="settlement-omitted-alert-text"></span>
+                              </div>
+                            </div>
+                            <button type="button" class="btn btn-outline-primary btn-sm py-0 px-2"
+                              id="btn-view-omitted-employees" style="font-size: 11px;">
+                              <i class="ti ti-list-details me-1"></i> Ver Colaboradores Omitidos (<span
+                                id="settlement-omitted-badge-count">0</span>)
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Pestañas de Modalidades de Liquidación -->
+                    <div class="card shadow-xs">
+                      <div class="card-header border-bottom-0 pb-0 bg-light">
+                        <ul class="nav nav-tabs card-header-tabs" role="tablist">
+                          <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#tab-settlement-single" role="tab">
+                              <i class="ti ti-user me-1 text-primary"></i> 1. Liquidar un solo empleado
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#tab-settlement-batch" role="tab">
+                              <i class="ti ti-checkbox me-1 text-indigo"></i> 2. Selección en lote (Checkboxes)
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#tab-settlement-all" role="tab">
+                              <i class="ti ti-users me-1 text-success"></i> 3. Liquidación General (Toda la nómina)
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="card-body tab-content">
+                        <!-- MODALIDAD 1: UN SOLO EMPLEADO -->
+                        <div class="tab-pane fade show active" id="tab-settlement-single" role="tabpanel">
+                          <div class="row g-3">
+                            <div class="col-md-6">
+                              <label class="form-label fw-bold">Seleccione el colaborador a liquidar o
+                                reliquidar:</label>
+                              <select id="settlement-single-emp-select" class="form-select mb-3">
+                                <option value="">Seleccionar colaborador...</option>
+                              </select>
+                              <div id="settlement-single-emp-info" class="card card-sm bg-light border p-3 d-none mb-3">
+                                <div class="fw-bold fs-4" id="settlement-single-name">-</div>
+                                <div class="text-muted small">Legajo: <span id="settlement-single-file">-</span> | CUIL:
+                                  <span id="settlement-single-cuil">-</span></div>
+                                <div class="text-muted small">Sector: <span id="settlement-single-dept">-</span> |
+                                  Básico: <span id="settlement-single-basic" class="text-success fw-bold">-</span></div>
+                              </div>
+                              <button type="button" class="btn btn-payroll w-100" id="btn-settlement-calc-single"
+                                disabled>
+                                <i class="ti ti-calculator me-1"></i> Liquidar / Reliquidar Colaborador
+                              </button>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="card border bg-light h-100 p-3">
+                                <h4 class="card-title mb-2"><i class="ti ti-receipt-2 me-1 text-primary"></i> Resultado
+                                  de la Liquidación</h4>
+                                <div id="settlement-single-result-placeholder" class="text-muted text-center py-4">
+                                  Seleccione un colaborador y presione liquidar para ver el desglose en vivo.
+                                </div>
+                                <div id="settlement-single-result" class="d-none">
+                                  <div class="d-flex justify-content-between py-1 border-bottom">
+                                    <span>Remunerativo:</span>
+                                    <strong class="font-monospace text-primary" id="res-single-rem">-</strong>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-1 border-bottom">
+                                    <span>No Remunerativo:</span>
+                                    <strong class="font-monospace text-azure" id="res-single-nonrem">-</strong>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-1 border-bottom">
+                                    <span>Deducciones:</span>
+                                    <strong class="font-monospace text-danger" id="res-single-ded">-</strong>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-2 border-bottom fs-3">
+                                    <span class="fw-bold">Neto a Cobrar:</span>
+                                    <strong class="font-monospace text-success fw-bold" id="res-single-net">-</strong>
+                                  </div>
+                                  <div class="d-flex justify-content-between py-1 text-muted small mt-2">
+                                    <span>Costo Laboral Total:</span>
+                                    <span class="font-monospace" id="res-single-cost">-</span>
+                                  </div>
+                                  <div class="mt-3 text-end">
+                                    <button type="button" class="btn btn-outline-primary btn-sm"
+                                      id="btn-settlement-single-view-slip">
+                                      <i class="ti ti-file-text me-1"></i> Ver Recibo Completo
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- MODALIDAD 2: SELECCIÓN EN LOTE -->
+                        <div class="tab-pane fade" id="tab-settlement-batch" role="tabpanel">
+                          <div class="row g-2 align-items-center mb-3">
+                            <div class="col-md-3">
+                              <select id="settlement-batch-dept-filter" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Sectores</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <select id="settlement-batch-status-filter" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Estados</option>
+                                <option value="PENDING">Solo Pendientes de Liquidar</option>
+                                <option value="LIQUIDATED">Ya Liquidados</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <input type="text" id="settlement-batch-search" class="form-control form-control-sm"
+                                placeholder="Buscar por legajo o apellido..." />
+                            </div>
+                            <div class="col-md-3 text-end">
+                              <button type="button" class="btn btn-outline-secondary btn-sm"
+                                id="btn-settlement-batch-select-all">
+                                <i class="ti ti-checks me-1"></i> Todos
+                              </button>
+                              <button type="button" class="btn btn-outline-secondary btn-sm"
+                                id="btn-settlement-batch-deselect-all">
+                                Desmarcar
+                              </button>
+                            </div>
+                          </div>
+
+                          <div class="table-responsive flex-fill" id="settlement-batch-table-container"
+                            style="max-height: calc(100vh - 430px); min-height: 180px; overflow-y: auto;">
+                            <table class="table table-vcenter card-table table-hover table-striped mb-0">
+                              <thead class="sticky-top bg-light">
+                                <tr>
+                                  <th style="width: 40px;" class="text-center">
+                                    <input type="checkbox" class="form-check-input"
+                                      id="settlement-batch-master-check" />
+                                  </th>
+                                  <th style="width: 80px;">Legajo</th>
+                                  <th>Colaborador</th>
+                                  <th>CUIL</th>
+                                  <th>Sector</th>
+                                  <th class="text-center">Estado</th>
+                                  <th class="text-end">Neto Actual</th>
+                                </tr>
+                              </thead>
+                              <tbody id="settlement-batch-table-body">
+                                <tr>
+                                  <td colspan="7" class="text-center py-4 text-muted">
+                                    Seleccione una liquidación activa para cargar la nómina seleccionable.
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+
+                          <div
+                            class="d-flex justify-content-between align-items-center mt-2 pt-2 pb-1 border-top bg-white position-sticky bottom-0 z-index-10 shadow-xs px-1"
+                            id="settlement-batch-sticky-footer">
+                            <div>
+                              <span class="fw-bold" id="settlement-batch-selected-count">0</span> colaboradores
+                              seleccionados para liquidar
+                            </div>
+                            <button type="button" class="btn btn-payroll shadow-sm" id="btn-settlement-calc-batch"
+                              disabled>
+                              <i class="ti ti-calculator me-1"></i> Liquidar Selección
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- MODALIDAD 3: GENERAL -->
+                        <div class="tab-pane fade text-center py-4" id="tab-settlement-all" role="tabpanel">
+                          <div
+                            class="avatar avatar-xl bg-primary-lt text-primary rounded-circle mb-3 mx-auto shadow-xs">
+                            <i class="ti ti-building-community fs-1"></i>
+                          </div>
+                          <h3 class="fw-bold mb-1">Liquidación General de toda la Nómina</h3>
+                          <p class="text-muted max-w-md mx-auto mb-4" style="max-width: 500px;">
+                            Este proceso tomará todas las novedades persistentes y del período cargadas en el sistema,
+                            y calculará los recibos de sueldo para todos los colaboradores activos de la empresa.
+                          </p>
+                          <div class="d-flex justify-content-center gap-3">
+                            <button type="button" class="btn btn-payroll btn-lg px-5" id="btn-settlement-calc-all"
+                              disabled>
+                              <i class="ti ti-calculator me-2"></i> Iniciar Liquidación General
+                            </button>
+                          </div>
+                          <div id="settlement-all-progress" class="progress progress-sm max-w-md mx-auto mt-4 d-none"
+                            style="max-width: 450px;">
+                            <div class="progress-bar progress-bar-indeterminate bg-primary"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 3: RECIBOS DE HABERES -->
+                  <div class="tab-pane fade" id="pane-payroll-slips" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <input type="hidden" id="slips-period-select" value="" />
+                        <div
+                          class="d-flex flex-wrap align-items-center justify-content-between gap-2 pb-2 mb-3 border-bottom">
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <span class="avatar avatar-sm bg-green-lt text-success rounded">
+                              <i class="ti ti-receipt-2"></i>
+                            </span>
+                            <div>
+                              <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span class="text-muted small text-uppercase fw-bold"
+                                  style="font-size: 0.68rem; letter-spacing: 0.04em;">Recibos de la Liquidación:</span>
+                                <span id="slips-period-context-badge" class="badge bg-blue-lt">-</span>
+                                <span id="slips-period-context-status" class="badge bg-secondary-lt">-</span>
+                                <span class="badge bg-green-lt" id="payroll-badge-slips-count"
+                                  title="Total de recibos generados">0</span>
+                              </div>
+                              <div class="fw-bold fs-3 text-dark" id="slips-period-context-title">Sin liquidación
+                                seleccionada</div>
+                              <div class="text-muted small" id="slips-period-context-subtitle">Seleccione una
+                                liquidación desde Períodos y Liquidaciones</div>
+                            </div>
+                          </div>
+                          <div>
+                            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-back-from-slips">
+                              <i class="ti ti-arrow-left me-1"></i> Volver a Períodos y Liquidaciones
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-4">
+                            <label class="form-label small fw-bold mb-1">Sector:</label>
+                            <select id="slips-department-filter" class="form-select form-select-sm">
+                              <option value="ALL">Todos los Sectores</option>
+                            </select>
+                          </div>
+                          <div class="col-md-5">
+                            <label class="form-label small fw-bold mb-1">Buscar:</label>
+                            <input type="text" id="slips-search-input" class="form-control form-control-sm"
+                              placeholder="Legajo, Nombre, CUIL..." />
+                          </div>
+                          <div class="col-md-3 text-end d-flex align-items-end pt-3">
+                            <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                              id="btn-export-slips-batch" title="Imprimir / Exportar lote de recibos">
+                              <i class="ti ti-printer me-1"></i> Imprimir Lote
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Recibos -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="slips-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover table-slips-compact">
+                          <thead>
+                            <tr>
+                              <th>Colaborador / Legajo</th>
+                              <th>Sector / Puesto</th>
+                              <th class="text-end">Bruto / Ret. ($)</th>
+                              <th class="text-end text-success fw-bold">Neto a Cobrar ($)</th>
+                              <th class="col-slip-status">Estado</th>
+                              <th class="col-slip-action">Acción</th>
+                            </tr>
+                          </thead>
+                          <tbody id="slips-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Recibos -->
+                      <div
+                        class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-2 py-2 border-top"
+                        id="slips-pagination-container">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="slips-page-size-select" class="form-select form-select-sm" style="width: 75px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="50">50</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="slips-pagination-info">Mostrando 0 recibos</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 flex-wrap justify-content-end"
+                          id="slips-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 4: LIBRO DE SUELDOS DIGITAL (ARCA) -->
+                  <div class="tab-pane fade" id="pane-payroll-lsd" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-7">
+                            <label class="form-label small fw-bold mb-1">Período Mensual a Presentar (LSD -
+                              F.931):</label>
+                            <select id="lsd-period-select" class="form-select">
+                              <!-- Dinámico vía app.js -->
+                            </select>
+                            <div class="small text-muted mt-1" id="lsd-period-helper-text">
+                              <i class="ti ti-info-circle me-1"></i> Se consolidarán automáticamente todas las
+                              liquidaciones del mes en un único archivo (.txt).
+                            </div>
+                          </div>
+                          <div class="col-md-5 text-end pt-3">
+                            <button type="button" class="btn btn-primary" id="btn-validate-lsd">
+                              <i class="ti ti-checkup-list me-1"></i> Auditar Consistencia ARCA
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Panel de Auditoría y Tarjetas de Descarga Scrollables -->
+                    <div class="screen-scroll-body">
+                      <!-- Panel de Auditoría ARCA -->
+                      <div id="lsd-validation-box" class="card shadow-xs mb-3 border-0 bg-light-subtle">
+                        <div class="card-body p-3">
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                              <i class="ti ti-shield-check fs-2 text-success" id="lsd-status-icon"></i>
+                              <div>
+                                <h4 class="card-title mb-0" id="lsd-status-title">Consistencia de Liquidación</h4>
+                                <div class="text-muted small" id="lsd-status-desc">Seleccione un período para auditar
+                                  los 999 caracteres por registro.</div>
+                              </div>
+                            </div>
+                            <div id="lsd-modal-launch-btn-container" class="d-none">
+                              <button type="button" class="btn btn-outline-danger btn-sm"
+                                id="btn-open-lsd-errors-modal">
+                                <i class="ti ti-list-details me-1"></i> Ver y Exportar Errores (<span
+                                  id="lsd-errors-badge-count">0</span>)
+                              </button>
+                            </div>
+                          </div>
+                          <div id="lsd-errors-list" class="alert alert-danger py-2 small d-none mb-0 mt-2"></div>
+                        </div>
+                      </div>
+
+                      <!-- Tarjetas de Descarga de Archivos Planos ARCA -->
+                      <div class="row g-3">
+                        <!-- ARCHIVO 1: CONCEPTOS -->
+                        <div class="col-md-6">
+                          <div class="card h-100 shadow-xs">
+                            <div class="card-body">
+                              <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="avatar bg-blue-lt text-blue"><i class="ti ti-file-text fs-2"></i></span>
+                                <div>
+                                  <h4 class="card-title mb-0">Archivo 1: Parametrización de Conceptos</h4>
+                                  <small class="text-muted">Longitud estricta: 195 caracteres / registro</small>
+                                </div>
+                              </div>
+                              <p class="text-muted small mb-3">
+                                Exporta el catálogo de conceptos del sistema con sus correspondencias a los subsistemas
+                                de Seguridad Social, Obra Social, FSR y LRT de ARCA.
+                              </p>
+                              <button type="button" class="btn btn-outline-primary w-100"
+                                id="btn-download-lsd-concepts">
+                                <i class="ti ti-download me-1"></i> Descargar Conceptos ARCA (.txt)
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- ARCHIVO 2: LIQUIDACIÓN DE HABERES F.931 -->
+                        <div class="col-md-6">
+                          <div class="card h-100 shadow-xs">
+                            <div class="card-body">
+                              <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="avatar bg-purple-lt text-purple"><i
+                                    class="ti ti-database-export fs-2"></i></span>
+                                <div>
+                                  <h4 class="card-title mb-0">Archivo 2: Liquidación de Sueldos (F.931)</h4>
+                                  <small class="text-muted">Longitud estricta: 999 caracteres / registro</small>
+                                </div>
+                              </div>
+                              <p class="text-muted small mb-3">
+                                Genera los Registros 01 (Encabezado), 02 (Datos de Empleado), 03 (Conceptos liquidados)
+                                y 04 (Bases Imponibles 1 a 10 y atributos de revista).
+                              </p>
+                              <button type="button" class="btn btn-payroll w-100" id="btn-download-lsd-payroll">
+                                <i class="ti ti-download me-1"></i> Descargar Libro de Sueldos Digital (.txt)
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 5: CONCEPTOS Y FÓRMULAS -->
+                  <div class="tab-pane fade" id="pane-payroll-concepts" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-3">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-primary"></i></span>
+                              <input type="text" id="concepts-search-input" class="form-control"
+                                placeholder="Buscar por código, nombre o código ARCA..." />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <select id="concepts-type-filter" class="form-select">
+                              <option value="ALL">Todos los Tipos</option>
+                              <option value="REMUNERATIVE">Remunerativo</option>
+                              <option value="NON_REMUNERATIVE">No Remunerativo</option>
+                              <option value="DEDUCTION">Retención / Deducción</option>
+                              <option value="AUXILIARY">Auxiliar de Cálculo</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+                            <select id="concepts-period-type-filter" class="form-select">
+                              <option value="ALL">Todas las Liquidaciones</option>
+                              <option value="MONTHLY">Mensual</option>
+                              <option value="QUINCE_1">1ra Quincena</option>
+                              <option value="QUINCE_2">2da Quincena</option>
+                              <option value="SAC_1">1er SAC (Junio)</option>
+                              <option value="SAC_2">2do SAC (Diciembre)</option>
+                              <option value="SAC">Ambos SAC (Aguinaldo)</option>
+                              <option value="VACATIONS">Vacaciones</option>
+                              <option value="FINAL">Liquidación Final</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+                            <select id="concepts-persistent-filter" class="form-select">
+                              <option value="ALL">Toda Persistencia</option>
+                              <option value="true">Persistentes</option>
+                              <option value="false">No Persistentes</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2 d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-outline-primary text-nowrap"
+                              id="btn-open-mass-assign-concept" title="Asignación Masiva de Concepto a Nómina">
+                              <i class="ti ti-users-plus me-1"></i> Asignar
+                            </button>
+                            <button type="button" class="btn btn-payroll text-nowrap" id="btn-open-new-concept-modal">
+                              <i class="ti ti-plus me-1"></i> Nuevo
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Conceptos de Nómina -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="concepts-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th style="width: 80px;">Código</th>
+                              <th>Denominación</th>
+                              <th>Tipo</th>
+                              <th>Alcance</th>
+                              <th>Liquidación</th>
+                              <th>Persistencia</th>
+                              <th>Cálculo</th>
+                              <th class="text-center">Estado</th>
+                              <th class="w-1 text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="concepts-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Conceptos -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top"
+                        id="concepts-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="concepts-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="concepts-pagination-info">Mostrando 0 conceptos</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="concepts-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 6: MATRICES DE LIQUIDACIÓN -->
+                  <div class="tab-pane fade" id="pane-payroll-matrices" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-5">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-primary"></i></span>
+                              <input type="text" id="matrices-search-input" class="form-control"
+                                placeholder="Buscar por código, nombre o concepto asignado..." />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <select id="matrices-type-filter" class="form-select">
+                              <option value="ALL">Todas las Coincidencias</option>
+                              <option value="RANGE">Por Rangos Numéricos</option>
+                              <option value="EXACT">Por Valor Exacto</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-center">
+                            <button type="button" class="btn btn-payroll text-nowrap" id="btn-open-new-matrix-modal">
+                              <i class="ti ti-plus me-1"></i> Nueva Matriz
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Matrices -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="matrices-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th style="width: 140px;">Código</th>
+                              <th>Denominación y Descripción</th>
+                              <th>Concepto Asignado (Entrada)</th>
+                              <th style="width: 140px;">Modalidad</th>
+                              <th style="width: 110px;" class="text-center">Valores Fijos</th>
+                              <th style="width: 90px;" class="text-center">Estado</th>
+                              <th class="w-1 text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="matrices-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Matrices -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top"
+                        id="matrices-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="matrices-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="matrices-pagination-info">Mostrando 0 matrices</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="matrices-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: VALORES GLOBALES FIJOS -->
+                  <div class="tab-pane fade" id="pane-payroll-fixed-values" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-center">
+                          <div class="col-md-5">
+                            <div class="input-icon">
+                              <span class="input-icon-addon"><i class="ti ti-search text-primary"></i></span>
+                              <input type="text" id="fixed-values-search-input" class="form-control"
+                                placeholder="Buscar por código, nombre o descripción..." />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <select id="fixed-values-status-filter" class="form-select">
+                              <option value="ALL">Todos los Estados</option>
+                              <option value="true" selected>Solo Activos</option>
+                              <option value="false">Solo Inactivos</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-center">
+                            <button type="button" class="btn btn-payroll text-nowrap"
+                              id="btn-open-new-fixed-value-modal">
+                              <i class="ti ti-plus me-1"></i> Nuevo Valor Fijo
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Valores Fijos -->
+                    <div class="card shadow-xs position-relative">
+                      <div id="fixed-values-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+                      <div class="table-responsive">
+                        <table class="table table-vcenter card-table table-hover">
+                          <thead>
+                            <tr>
+                              <th style="width: 150px;">Código</th>
+                              <th>Denominación y Descripción</th>
+                              <th style="width: 160px;" class="text-end">Valor Numérico</th>
+                              <th style="width: 100px;" class="text-center">Unidad</th>
+                              <th style="width: 100px;" class="text-center">Estado</th>
+                              <th class="w-1 text-end">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="fixed-values-table-body">
+                            <!-- Dinámico vía app.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginador de Valores Fijos -->
+                      <div class="card-footer d-flex align-items-center justify-content-between py-2 border-top"
+                        id="fixed-values-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="fixed-values-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px;">
+                            <option value="5" selected>5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="fixed-values-pagination-info">Mostrando 0 valores
+                            fijos</span>
+                        </div>
+                        <ul class="pagination pagination-sm m-0 ms-auto" id="fixed-values-pagination-list">
+                          <!-- Dinámico vía app.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 7: PARÁMETROS Y ALÍCUOTAS PATRONALES (PESTAÑA DEDICADA) -->
+                  <div class="tab-pane fade" id="pane-payroll-settings" role="tabpanel">
+                    <form id="form-payroll-settings">
+                      <div class="card shadow-xs card-payroll-accent">
+
+                        <!-- CARD HEADER COMPACTO CON TÍTULO -->
+                        <div
+                          class="card-header bg-light py-2 px-3 d-flex align-items-center justify-content-between flex-shrink-0">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="avatar avatar-sm bg-primary-lt text-primary rounded">
+                              <i class="ti ti-settings-automation fs-3"></i>
+                            </span>
+                            <div>
+                              <h4 class="card-title mb-0 fs-3 fw-bold">
+                                Alícuotas Patronales SUSS, ART y Topes Legales
+                              </h4>
+                              <div class="text-muted small" style="font-size: 0.72rem;">
+                                Parámetros de contribuciones de seguridad social, ART, seguro colectivo y topes ANSES
+                              </div>
+                            </div>
+                          </div>
+                          <span class="badge bg-primary-lt px-2 py-1" style="font-size: 0.75rem;">
+                            <i class="ti ti-building me-1"></i> F.931 & LSD ARCA
+                          </span>
+                        </div>
+
+                        <!-- CARD BODY EN 2 COLUMNAS SIN SCROLL VERTICAL -->
+                        <div class="card-body p-3">
+                          <div id="payroll-settings-alert" class="alert alert-danger py-2 px-3 mb-2 d-none"></div>
+
+                          <div class="row g-3">
+
+                            <!-- COLUMNA IZQUIERDA: RÉGIMEN LEY 27.541 Y CONTRIBUCIONES SUSS -->
+                            <div class="col-lg-6 d-flex flex-column gap-2">
+
+                              <!-- 1. Régimen de Empleador & Detracción -->
+                              <div class="payroll-settings-section">
+                                <div class="fw-bold text-dark d-flex align-items-center gap-1 mb-2"
+                                  style="font-size: 0.82rem;">
+                                  <i class="ti ti-building text-primary"></i> Régimen Empleador (Ley 27.541)
+                                </div>
+                                <div class="row g-2 align-items-center">
+                                  <div class="col-sm-7">
+                                    <label class="form-label mb-1 small fw-semibold text-muted">Tipo de
+                                      Empleador</label>
+                                    <select id="settings-employer-type" class="form-select form-select-sm"
+                                      title="Determina la escala general de contribuciones patronales al SUSS">
+                                      <option value="SERVICIOS_COMERCIO" selected>Servicios y Comercio (Ley 27.541 Art.
+                                        19 Inc. a - 20.40%)</option>
+                                      <option value="INDUSTRIA_PRODUCCION">Industria y Resto de Actividades (Ley 27.541
+                                        Art. 19 Inc. b - 18.00%)</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-sm-5">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Monto no imponible de detracción para SIPA Contribuciones (Base Imponible 10)">
+                                      Detracción Art. 22 ($)
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text">$</span>
+                                      <input type="number" step="0.01" id="settings-detraction-base"
+                                        class="form-control form-control-sm font-monospace text-end" value="7003.68"
+                                        title="Monto no imponible detracción SIPA (Base 10)" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- 2. Tabla Compacta de Contribuciones Patronales SUSS (%) -->
+                              <div class="payroll-settings-section p-0 overflow-hidden flex-fill">
+                                <div
+                                  class="py-2 px-3 bg-light border-bottom d-flex align-items-center justify-content-between">
+                                  <div class="fw-bold text-dark d-flex align-items-center gap-1"
+                                    style="font-size: 0.82rem;">
+                                    <i class="ti ti-receipt-2 text-azure"></i> Distribución de Contribuciones Patronales
+                                    SUSS (%)
+                                  </div>
+                                  <span class="badge bg-azure-lt font-monospace px-2 py-1"
+                                    id="settings-suss-total-badge" style="font-size: 0.72rem;">
+                                    Total SUSS: 23.99%
+                                  </span>
+                                </div>
+                                <div class="table-responsive">
+                                  <table
+                                    class="table table-sm table-vcenter payroll-settings-table card-table table-hover mb-0">
+                                    <thead>
+                                      <tr>
+                                        <th>Subsistema de Seguridad Social</th>
+                                        <th class="text-muted small">Marco Legal</th>
+                                        <th style="width: 110px;" class="text-end">Alícuota</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td>
+                                          <div class="fw-semibold text-dark">SIPA Jubilación Patronal</div>
+                                        </td>
+                                        <td class="text-muted small">Ley 24.241</td>
+                                        <td>
+                                          <div class="input-group input-group-sm ms-auto" style="width: 95px;">
+                                            <input type="number" step="0.01" id="settings-sipa-rate"
+                                              class="form-control form-control-sm font-monospace text-end px-1"
+                                              value="10.77" required />
+                                            <span class="input-group-text px-1">%</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="fw-semibold text-dark">INSSJyP / PAMI Patronal</div>
+                                        </td>
+                                        <td class="text-muted small">Ley 19.032</td>
+                                        <td>
+                                          <div class="input-group input-group-sm ms-auto" style="width: 95px;">
+                                            <input type="number" step="0.01" id="settings-inssjyp-rate"
+                                              class="form-control form-control-sm font-monospace text-end px-1"
+                                              value="1.58" required />
+                                            <span class="input-group-text px-1">%</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="fw-semibold text-dark">Fondo Nacional de Empleo (FNE)</div>
+                                        </td>
+                                        <td class="text-muted small">Ley 24.013</td>
+                                        <td>
+                                          <div class="input-group input-group-sm ms-auto" style="width: 95px;">
+                                            <input type="number" step="0.01" id="settings-fne-rate"
+                                              class="form-control form-control-sm font-monospace text-end px-1"
+                                              value="0.94" required />
+                                            <span class="input-group-text px-1">%</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr>
+                                        <td>
+                                          <div class="fw-semibold text-dark">Asignaciones Familiares (AAFF)</div>
+                                        </td>
+                                        <td class="text-muted small">Ley 24.714</td>
+                                        <td>
+                                          <div class="input-group input-group-sm ms-auto" style="width: 95px;">
+                                            <input type="number" step="0.01" id="settings-aaff-rate"
+                                              class="form-control form-control-sm font-monospace text-end px-1"
+                                              value="4.70" required />
+                                            <span class="input-group-text px-1">%</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                      <tr class="table-light">
+                                        <td>
+                                          <div class="fw-semibold text-primary">Obra Social Patronal</div>
+                                        </td>
+                                        <td class="text-muted small">Ley 23.660</td>
+                                        <td>
+                                          <div class="input-group input-group-sm ms-auto" style="width: 95px;">
+                                            <input type="number" step="0.01" id="settings-os-rate"
+                                              class="form-control form-control-sm font-monospace text-end px-1"
+                                              value="6.00" required />
+                                            <span class="input-group-text px-1">%</span>
+                                          </div>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+
+                            </div>
+
+                            <!-- COLUMNA DERECHA: ART, SCVO, TOPES ANSES Y JORNADA NORMAL -->
+                            <div class="col-lg-6 d-flex flex-column gap-2">
+
+                              <!-- 3. Riesgos del Trabajo (ART) y Seguros -->
+                              <div class="payroll-settings-section">
+                                <div class="fw-bold text-dark d-flex align-items-center gap-1 mb-2"
+                                  style="font-size: 0.82rem;">
+                                  <i class="ti ti-shield-check text-teal"></i> Riesgos del Trabajo (ART) y SCVO
+                                </div>
+                                <div class="row g-2">
+                                  <div class="col-4">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Porcentaje sobre masa salarial (Base 9)">
+                                      Alícuota ART (%)
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                      <input type="number" step="0.01" id="settings-art-rate"
+                                        class="form-control form-control-sm font-monospace text-end px-1" value="3.50"
+                                        required />
+                                      <span class="input-group-text px-1">%</span>
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate"
+                                      title="Porcentaje sobre masa salarial (Base 9)">Base 9 masa sal.</div>
+                                  </div>
+                                  <div class="col-4">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Cuota Fija ART ($ / empleado)">
+                                      Cuota Fija ART ($)
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text px-1">$</span>
+                                      <input type="number" step="0.01" id="settings-art-fixed"
+                                        class="form-control form-control-sm font-monospace text-end px-1" value="850.00"
+                                        required />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate"
+                                      title="Fondo Fiduciario de Enfermedades Profesionales">FFEP / empleado</div>
+                                  </div>
+                                  <div class="col-4">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Seguro Colectivo SCVO ($)">
+                                      Seguro SCVO ($)
+                                    </label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text px-1">$</span>
+                                      <input type="number" step="0.01" id="settings-scvo-fee"
+                                        class="form-control form-control-sm font-monospace text-end px-1" value="650.00"
+                                        required />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate" title="Cuota mensual fija por empleado">
+                                      Fijo por empleado</div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- 4. Topes Previsionales ANSES -->
+                              <div class="payroll-settings-section">
+                                <div class="fw-bold text-dark d-flex align-items-center gap-1 mb-2"
+                                  style="font-size: 0.82rem;">
+                                  <i class="ti ti-arrows-vertical text-indigo"></i> Topes Previsionales ANSES (Bases
+                                  Límites)
+                                </div>
+                                <div class="row g-2">
+                                  <div class="col-6">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Base Imponible Mínima ANSES ($)">Base Mínima ANSES ($)</label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text">$</span>
+                                      <input type="number" step="0.01" id="settings-anses-min"
+                                        class="form-control form-control-sm font-monospace text-end" value="82287.12"
+                                        required />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate">Piso jubilatorio para aportes y contr.
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Base Imponible Máxima ANSES ($)">Base Máxima ANSES ($)</label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text">$</span>
+                                      <input type="number" step="0.01" id="settings-anses-max"
+                                        class="form-control form-control-sm font-monospace text-end" value="2674292.72"
+                                        required />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate">Tope jubilatorio máximo (Base 1 a 8)
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- 5. Jornada Laboral Estándar de la Empresa -->
+                              <div class="payroll-settings-section">
+                                <div class="fw-bold text-dark d-flex align-items-center gap-1 mb-2"
+                                  style="font-size: 0.82rem;">
+                                  <i class="ti ti-clock text-orange"></i> Jornada Normal de Referencia (Empresa)
+                                </div>
+                                <div class="row g-2">
+                                  <div class="col-6">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Horas Semanales Normales (HH:MM)">Horas Semanales (HH:MM)</label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text"><i class="ti ti-clock"></i></span>
+                                      <input type="text" id="settings-standard-weekly-hours"
+                                        class="form-control form-control-sm font-monospace text-center"
+                                        placeholder="48:00" value="48:00" />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate">Referencia para cálculo tiempo parcial
+                                    </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <label class="form-label mb-1 small fw-semibold text-muted text-truncate"
+                                      title="Horas Mensuales Normales (HH:MM)">Horas Mensuales (HH:MM)</label>
+                                    <div class="input-group input-group-sm">
+                                      <span class="input-group-text"><i class="ti ti-calendar-time"></i></span>
+                                      <input type="text" id="settings-standard-monthly-hours"
+                                        class="form-control form-control-sm font-monospace text-center"
+                                        placeholder="200:00" value="200:00" />
+                                    </div>
+                                    <div class="payroll-sub-hint text-truncate">Divisor mensual estándar valor hora
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- CARD FOOTER COMPACTO CON BOTÓN DE GUARDADO -->
+                        <div
+                          class="card-footer bg-light py-2 px-3 border-top d-flex align-items-center justify-content-between flex-shrink-0">
+                          <span class="text-muted small" style="font-size: 0.73rem;">
+                            <i class="ti ti-info-circle me-1 text-primary"></i> Rige para el cálculo de liquidaciones y
+                            generación del F.931 (LSD).
+                          </span>
+                          <button type="submit" id="btn-save-payroll-settings" class="btn btn-payroll px-4 py-1"
+                            style="font-size: 0.85rem;">
+                            <i class="ti ti-device-floppy me-1"></i> Guardar Parámetros y Alícuotas
+                          </button>
+                        </div>
+
+                      </div>
+                    </form>
+                  </div>
+
+                  <!-- PANE 9: IMPUESTO A LAS GANANCIAS CUARTA CATEGORÍA -->
+                  <div class="tab-pane fade" id="pane-payroll-income-tax" role="tabpanel">
+                    <div class="card shadow-xs mb-2 card-payroll-accent flex-shrink-0">
+                      <div class="card-body py-2 px-3">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="avatar avatar-sm bg-danger-lt text-danger"><i
+                                class="ti ti-receipt-tax fs-2"></i></span>
+                            <div>
+                              <h3 class="card-title mb-0" style="font-size: 1rem;">Impuesto a las Ganancias (4ta
+                                Categoría)</h3>
+                              <div class="text-muted small" style="font-size: 0.73rem;">Régimen de Retención Ley 27.743
+                                y RG AFIP/ARCA 4003/2017</div>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center gap-2">
+                            <label class="form-label small fw-bold mb-0 text-muted">Período Fiscal:</label>
+                            <select id="it-global-year-select"
+                              class="form-select form-select-sm font-monospace py-0 px-2"
+                              style="width: 100px; height: 30px;">
+                              <option value="2026" selected>2026</option>
+                              <option value="2025">2025</option>
+                              <option value="2024">2024</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Subpestañas de Navegación del Módulo de Ganancias -->
+                    <div class="card shadow-xs flex-grow-1 d-flex flex-column overflow-hidden mb-0"
+                      style="min-height: 0;">
+                      <div class="card-header border-bottom p-0 flex-shrink-0">
+                        <ul class="nav nav-tabs card-header-tabs m-0 border-0" id="income-tax-subtabs" role="tablist">
+                          <li class="nav-item">
+                            <button class="nav-link active py-2 px-3 fw-bold" id="tab-it-monthly" data-bs-toggle="tab"
+                              data-bs-target="#it-pane-monthly" type="button" role="tab">
+                              <i class="ti ti-calculator me-1 text-primary"></i> Liquidación Mensual
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-profile" data-bs-toggle="tab"
+                              data-bs-target="#it-pane-profile" type="button" role="tab">
+                              <i class="ti ti-user-scan me-1 text-teal"></i> Legajo Fiscal 360°
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-siradig" data-bs-toggle="tab"
+                              data-bs-target="#it-pane-siradig" type="button" role="tab">
+                              <i class="ti ti-file-upload me-1 text-azure"></i> SiRADIG (F. 572)
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-tables" data-bs-toggle="tab"
+                              data-bs-target="#it-pane-tables" type="button" role="tab">
+                              <i class="ti ti-table me-1 text-indigo"></i> Tablas Impositivas
+                            </button>
+                          </li>
+                          <li class="nav-item">
+                            <button class="nav-link py-2 px-3 fw-bold" id="tab-it-annual" data-bs-toggle="tab"
+                              data-bs-target="#it-pane-annual" type="button" role="tab">
+                              <i class="ti ti-file-certificate me-1 text-warning"></i> Anual & F. 1359
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="card-body p-2 d-flex flex-column flex-grow-1 overflow-hidden" style="min-height: 0;">
+                        <div class="tab-content flex-grow-1 d-flex flex-column overflow-hidden"
+                          id="income-tax-subtab-content" style="min-height: 0; height: 100%;">
+                          <!-- SUB-PANE 1: LIQUIDACIÓN MENSUAL -->
+                          <div class="tab-pane fade show active h-100 flex-column overflow-hidden" id="it-pane-monthly"
+                            role="tabpanel" style="min-height: 0;">
+                            <div class="d-flex flex-column h-100 flex-grow-1 overflow-hidden" style="min-height: 0;">
+                              <!-- Barra Unificada de Filtros, Totales y Acciones (Sin aumentar altura vertical) -->
+                              <div
+                                class="d-flex flex-wrap align-items-center justify-content-between gap-2 p-2 bg-light rounded border mb-2 flex-shrink-0"
+                                id="it-monthly-toolbar">
+                                <!-- Controles y Filtros Izquierda -->
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                  <div class="d-flex align-items-center gap-1">
+                                    <label class="form-label small fw-bold mb-0 text-nowrap"><i
+                                        class="ti ti-calendar me-1"></i>Mes:</label>
+                                    <select id="it-monthly-month-select" class="form-select form-select-sm py-1"
+                                      style="width: 135px; height: 32px;">
+                                      <option value="1">Enero</option>
+                                      <option value="2">Febrero</option>
+                                      <option value="3">Marzo</option>
+                                      <option value="4">Abril</option>
+                                      <option value="5">Mayo</option>
+                                      <option value="6">Junio (SAC)</option>
+                                      <option value="7">Julio</option>
+                                      <option value="8">Agosto</option>
+                                      <option value="9">Septiembre</option>
+                                      <option value="10">Octubre</option>
+                                      <option value="11">Noviembre</option>
+                                      <option value="12">Diciembre (SAC)</option>
+                                    </select>
+                                  </div>
+                                  <div class="input-icon" style="width: 180px;">
+                                    <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+                                    <input type="text" id="it-monthly-search-employee"
+                                      class="form-control form-control-sm py-1" placeholder="Buscar colaborador..."
+                                      style="height: 32px;" />
+                                  </div>
+                                  <div class="form-check form-switch mb-0 d-flex align-items-center gap-1 ps-0">
+                                    <input class="form-check-input ms-0 me-1" type="checkbox"
+                                      id="it-monthly-filter-withholding-only" role="switch" style="cursor: pointer;" />
+                                    <label class="form-check-label small fw-semibold text-nowrap cursor-pointer"
+                                      for="it-monthly-filter-withholding-only" style="cursor: pointer;">Solo con
+                                      saldo</label>
+                                  </div>
+                                </div>
+
+                                <!-- Totales Resumen Integrados -->
+                                <div class="d-flex align-items-center flex-wrap gap-2" id="it-monthly-summary-badges">
+                                  <span class="badge bg-white text-dark border py-1 px-2 text-nowrap shadow-2xs"
+                                    title="Total colaboradores evaluados en el período">
+                                    <span class="text-muted fw-normal">Eval:</span> <strong
+                                      id="it-kpi-evaluated">0</strong>
+                                  </span>
+                                  <span class="badge bg-danger-lt border border-danger-subtle py-1 px-2 text-nowrap"
+                                    title="Total retenciones a practicar">
+                                    <span>Ret:</span> <strong id="it-kpi-withheld-amount" class="font-monospace">$
+                                      0,00</strong>
+                                  </span>
+                                  <span class="badge bg-teal-lt border border-teal-subtle py-1 px-2 text-nowrap"
+                                    title="Total reintegros a favor del colaborador">
+                                    <span>Reint:</span> <strong id="it-kpi-refund-amount" class="font-monospace">$
+                                      0,00</strong>
+                                  </span>
+                                  <span class="badge bg-primary-lt border border-primary-subtle py-1 px-2 text-nowrap"
+                                    title="Colaboradores con retención o reintegro">
+                                    <span>Con Saldo:</span> <strong id="it-kpi-withheld-count">0</strong>
+                                  </span>
+                                </div>
+
+                                <!-- Botones Reducidos Derecha -->
+                                <div class="d-flex align-items-center gap-1">
+                                  <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2 text-nowrap"
+                                    id="btn-it-calculate-monthly" title="Calcular Liquidación de Ganancias">
+                                    <i class="ti ti-calculator me-1"></i> Calcular
+                                  </button>
+                                  <button type="button" class="btn btn-primary btn-sm py-1 px-2 text-nowrap"
+                                    id="btn-it-open-export-modal" disabled title="Exportar a Nómina del Período">
+                                    <i class="ti ti-file-upload me-1"></i> Exportar
+                                  </button>
+                                </div>
+                              </div>
+
+                              <!-- Tabla de Liquidación sin scroll horizontal -->
+                              <div class="income-tax-table-container border rounded flex-grow-1"
+                                style="overflow-y: auto; overflow-x: auto; width: 100%; min-height: 0; flex: 1 1 0;">
+                                <table
+                                  class="table table-sm table-vcenter table-hover table-striped mb-0 income-tax-main-table"
+                                  id="it-monthly-table" style="width: 100%; table-layout: fixed;">
+                                  <thead class="table-light sticky-top shadow-2xs">
+                                    <tr style="font-size: 0.75rem;">
+                                      <th style="width: 24%;">Colaborador</th>
+                                      <th class="text-end" style="width: 14%;">Remuneraciones</th>
+                                      <th class="text-end" style="width: 14%;">Deduc. Ley / Gral</th>
+                                      <th class="text-end" style="width: 13%;">Deduc. Art. 30</th>
+                                      <th class="text-end" style="width: 13%;">Base Imponible</th>
+                                      <th class="text-end" style="width: 11%;">Impuesto / Prev.</th>
+                                      <th class="text-end" style="width: 11%;">Saldo Mes</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="it-monthly-table-body" style="font-size: 0.80rem;">
+                                    <tr>
+                                      <td colspan="7" class="text-center py-4 text-muted">
+                                        <i class="ti ti-calculator fs-2 text-muted mb-2 d-block"></i>
+                                        Seleccione un mes y haga click en "Calcular".
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+
+                              <!-- Paginación del Browse Fijada al Pie -->
+                              <div
+                                class="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2 px-1 flex-shrink-0 border-top bg-white mt-1"
+                                id="it-monthly-pagination-bar">
+                                <div class="d-flex align-items-center gap-2">
+                                  <small class="text-muted">Mostrar:</small>
+                                  <select id="it-monthly-page-size" class="form-select form-select-sm py-0 px-2"
+                                    style="width: 70px; height: 28px;">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                  </select>
+                                  <small class="text-muted" id="it-monthly-pagination-info">Mostrando 0 a 0 de 0
+                                    colaboradores</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                  <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2"
+                                    id="btn-it-monthly-prev" style="height: 28px;" disabled title="Página anterior">
+                                    <i class="ti ti-chevron-left"></i> Anterior
+                                  </button>
+                                  <span class="badge bg-light text-dark border px-2 py-1 small font-monospace"
+                                    id="it-monthly-pagination-pages">Pág. 1 / 1</span>
+                                  <button type="button" class="btn btn-outline-secondary btn-sm py-0 px-2"
+                                    id="btn-it-monthly-next" style="height: 28px;" disabled title="Página siguiente">
+                                    Siguiente <i class="ti ti-chevron-right"></i>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 2: LEGAJO FISCAL 360° -->
+                          <div class="tab-pane fade h-100 flex-column overflow-hidden" id="it-pane-profile"
+                            role="tabpanel" style="min-height: 0;">
+                            <!-- Encabezado Unificado: Selector de Colaborador y Datos del Empleado Lado a Lado -->
+                            <div class="card shadow-xs mb-2 border bg-light-subtle flex-shrink-0">
+                              <div class="card-body p-2 p-md-3">
+                                <div class="row g-2 align-items-center">
+                                  <div class="col-12 col-md-5 col-lg-4">
+                                    <label
+                                      class="form-label small fw-bold mb-1 d-flex align-items-center gap-1 text-primary">
+                                      <i class="ti ti-user-search"></i> Seleccionar Colaborador:
+                                    </label>
+                                    <select id="it-profile-employee-select" class="form-select form-select-sm">
+                                      <option value="">Cargando colaboradores...</option>
+                                    </select>
+                                  </div>
+                                  <div class="col-12 col-md-7 col-lg-8">
+                                    <div
+                                      class="d-flex align-items-center justify-content-between p-2 rounded bg-white border flex-wrap gap-2 shadow-2xs"
+                                      id="it-profile-header-summary">
+                                      <div class="d-flex align-items-center gap-2 text-truncate" style="min-width: 0;">
+                                        <span class="avatar avatar-sm bg-teal-lt text-teal rounded-circle"><i
+                                            class="ti ti-user-check fs-2"></i></span>
+                                        <div class="text-truncate" style="min-width: 0;">
+                                          <h4 class="card-title mb-0 text-truncate fw-bold text-dark"
+                                            id="it-profile-emp-name" style="font-size: 0.95rem;">Seleccione un
+                                            colaborador</h4>
+                                          <div class="text-muted small text-truncate" id="it-profile-emp-meta"
+                                            style="font-size: 0.75rem;">CUIL: - | Legajo: - | Puesto: -</div>
+                                        </div>
+                                      </div>
+                                      <div class="d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2"
+                                          id="btn-it-profile-open-detail" disabled
+                                          title="Ver Detalle Completo de Deducciones, Cargas y Pluriempleo">
+                                          <i class="ti ti-file-text me-1"></i> Ver Detalle
+                                        </button>
+                                        <span class="badge bg-primary-lt fw-bold px-2 py-1"
+                                          id="it-profile-fiscal-year-badge">Período Fiscal 2026</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Contenedor dinámico del legajo fiscal -->
+                            <div id="it-profile-details-container" class="flex-grow-1 overflow-auto pe-1"
+                              style="min-height: 0; flex: 1 1 0;">
+                              <div class="text-center py-4 text-muted">
+                                <i class="ti ti-user-scan fs-1 text-muted mb-2 d-block"></i>
+                                Seleccione un colaborador para visualizar su legajo impositivo 360°.
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 3: SIRADIG (F. 572 WEB) -->
+                          <div class="tab-pane fade h-100 flex-column overflow-auto pe-1" id="it-pane-siradig"
+                            role="tabpanel" style="min-height: 0;">
+                            <div class="card shadow-xs mb-3 border border-azure-lt bg-azure-lt-subtle">
+                              <div class="card-body p-3">
+                                <h4 class="card-title d-flex align-items-center gap-2 mb-2 text-azure">
+                                  <i class="ti ti-file-upload fs-2"></i> Importar Formulario 572 Web (SiRADIG Empleador)
+                                </h4>
+                                <p class="text-muted small mb-3">
+                                  Cargue el archivo XML descargado de la página de ARCA (ex-AFIP) con las declaraciones
+                                  juradas de cargas de familia, deducciones generales, otros empleos y percepciones
+                                  presentadas por los trabajadores.
+                                </p>
+                                <div class="row g-2 align-items-center">
+                                  <div class="col-md-8">
+                                    <input type="file" id="siradig-file-input" class="form-control"
+                                      accept=".xml,text/xml" />
+                                  </div>
+                                  <div class="col-md-4">
+                                    <button type="button" class="btn btn-azure w-100" id="btn-siradig-process">
+                                      <i class="ti ti-checkup-list me-1"></i> Procesar F. 572 Web
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div id="siradig-result-box" class="d-none"></div>
+
+                            <!-- Historial de Importaciones -->
+                            <div class="card shadow-xs">
+                              <div class="card-header py-2">
+                                <h5 class="card-title mb-0">Historial de Importaciones SiRADIG</h5>
+                              </div>
+                              <div class="table-responsive">
+                                <table class="table table-sm table-vcenter mb-0">
+                                  <thead class="table-light">
+                                    <tr>
+                                      <th>Archivo</th>
+                                      <th>Período Fiscal</th>
+                                      <th>Fecha Presentación</th>
+                                      <th>Colaboradores</th>
+                                      <th>Estado</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="siradig-history-table-body">
+                                    <tr>
+                                      <td colspan="5" class="text-center py-3 text-muted">Cargando historial...</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 4: TABLAS IMPOSITIVAS OFICIALES -->
+                          <div class="tab-pane fade h-100 flex-column overflow-hidden" id="it-pane-tables"
+                            role="tabpanel" style="min-height: 0;">
+                            <div class="d-flex flex-column h-100 flex-grow-1 overflow-hidden" style="min-height: 0;">
+                              <div
+                                class="d-flex align-items-center justify-content-between mb-2 flex-wrap gap-2 flex-shrink-0">
+                                <div>
+                                  <h4 class="mb-0" style="font-size: 0.95rem;">Tablas Oficiales del Impuesto a las
+                                    Ganancias</h4>
+                                  <small class="text-muted" style="font-size: 0.72rem;">Art. 30 (Deducciones
+                                    Personales), Art. 94 (Escalas Progresivas) y Límites</small>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm py-1 px-2"
+                                  id="btn-it-open-adjust-ipc-modal" data-bs-toggle="modal"
+                                  data-bs-target="#modal-income-tax-adjust-ipc">
+                                  <i class="ti ti-adjustments-alt me-1"></i> Proyectar / Ajustar por IPC
+                                </button>
+                              </div>
+
+                              <!-- SUB-PESTAÑAS TIPO PÍLDORAS PARA TABLAS IMPOSITIVAS -->
+                              <ul class="nav nav-pills gap-2 mb-2 bg-light p-1 rounded border flex-shrink-0"
+                                id="it-tax-tables-pills" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link active py-2 px-3 fw-bold small" id="pill-tax-art30-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pill-tax-art30" type="button" role="tab"
+                                    aria-selected="true">
+                                    <i class="ti ti-user-check me-1 text-primary"></i> Art. 30: Deducciones Personales
+                                  </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link py-2 px-3 fw-bold small" id="pill-tax-art94-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pill-tax-art94" type="button" role="tab"
+                                    aria-selected="false">
+                                    <i class="ti ti-chart-arrows me-1 text-teal"></i> Art. 94: Escalas Progresivas
+                                  </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button class="nav-link py-2 px-3 fw-bold small" id="pill-tax-limits-tab"
+                                    data-bs-toggle="pill" data-bs-target="#pill-tax-limits" type="button" role="tab"
+                                    aria-selected="false">
+                                    <i class="ti ti-receipt me-1 text-indigo"></i> Topes y Límites (RG 4003)
+                                  </button>
+                                </li>
+                              </ul>
+
+                              <div class="tab-content flex-grow-1 overflow-hidden d-flex flex-column"
+                                id="it-tax-tables-pills-content" style="min-height: 0;">
+                                <!-- PÍLDORA 1: ART. 30 DEDUCCIONES PERSONALES -->
+                                <div class="tab-pane fade show active h-100 flex-column" id="pill-tax-art30"
+                                  role="tabpanel" style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0"
+                                    style="min-height: 0;">
+                                    <div
+                                      class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-shrink-0">
+                                      <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                        <i class="ti ti-user-check me-1 text-primary"></i> Art. 30: Deducciones
+                                        Personales Acumuladas (Meses 1 a 12)
+                                      </h5>
+                                      <span class="badge bg-primary-lt">Valores Oficiales Ley 27.743</span>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table
+                                        class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th>Mes Acumulado</th>
+                                            <th class="text-end">Ganancia No Imp. (MNI)</th>
+                                            <th class="text-end">Deducción Especial</th>
+                                            <th class="text-end">Cónyuge</th>
+                                            <th class="text-end">Hijo</th>
+                                            <th class="text-end">Hijo Incapacitado</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-art30-tbody" style="font-size: 0.80rem;">
+                                          <tr>
+                                            <td colspan="6" class="text-center py-3 text-muted">Cargando tabla Art.
+                                              30...</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- PÍLDORA 2: ART. 94 ESCALA PROGRESIVA DE ALÍCUOTAS -->
+                                <div class="tab-pane fade h-100 flex-column" id="pill-tax-art94" role="tabpanel"
+                                  style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0"
+                                    style="min-height: 0;">
+                                    <div
+                                      class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-wrap gap-2 flex-shrink-0">
+                                      <div class="d-flex align-items-center gap-2">
+                                        <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                          <i class="ti ti-chart-arrows me-1 text-teal"></i> Art. 94: Escala Progresiva
+                                          de Alícuotas (Escalones 1 al 9)
+                                        </h5>
+                                        <span class="badge bg-teal-lt">Alícuotas 5% a 35%</span>
+                                      </div>
+                                      <div class="d-flex align-items-center gap-2">
+                                        <label class="form-label small fw-bold mb-0 text-nowrap"
+                                          for="it-tables-art94-month-select">
+                                          <i class="ti ti-calendar me-1"></i>Mes Acumulado:
+                                        </label>
+                                        <select id="it-tables-art94-month-select"
+                                          class="form-select form-select-sm py-0 px-2"
+                                          style="width: 145px; height: 30px;">
+                                          <option value="1">Mes 1 (Enero)</option>
+                                          <option value="2">Mes 2 (Febrero)</option>
+                                          <option value="3">Mes 3 (Marzo)</option>
+                                          <option value="4">Mes 4 (Abril)</option>
+                                          <option value="5">Mes 5 (Mayo)</option>
+                                          <option value="6">Mes 6 (Junio)</option>
+                                          <option value="7">Mes 7 (Julio)</option>
+                                          <option value="8">Mes 8 (Agosto)</option>
+                                          <option value="9">Mes 9 (Septiembre)</option>
+                                          <option value="10">Mes 10 (Octubre)</option>
+                                          <option value="11">Mes 11 (Noviembre)</option>
+                                          <option value="12" selected>Mes 12 (Anual / Dic)</option>
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table
+                                        class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th class="text-center" style="width: 80px;">Escalón</th>
+                                            <th class="text-end">Desde ($)</th>
+                                            <th class="text-end">Hasta ($)</th>
+                                            <th class="text-end">Fijo ($)</th>
+                                            <th class="text-end" style="width: 120px;">Alícuota (%)</th>
+                                            <th>Fórmula / Tramo</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-art94-tbody" style="font-size: 0.80rem;">
+                                          <tr>
+                                            <td colspan="6" class="text-center py-3 text-muted">Cargando escala Art.
+                                              94...</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <!-- PÍLDORA 3: TOPES Y LÍMITES DEDUCCIONES GENERALES -->
+                                <div class="tab-pane fade h-100 flex-column" id="pill-tax-limits" role="tabpanel"
+                                  style="min-height: 0;">
+                                  <div class="card border shadow-xs h-100 d-flex flex-column mb-0"
+                                    style="min-height: 0;">
+                                    <div
+                                      class="card-header py-2 bg-light d-flex align-items-center justify-content-between flex-shrink-0">
+                                      <h5 class="mb-0 fw-bold text-dark" style="font-size: 0.85rem;">
+                                        <i class="ti ti-receipt me-1 text-indigo"></i> Límites y Topes de Deducciones
+                                        Generales (RG 4003 y modif.)
+                                      </h5>
+                                      <span class="badge bg-indigo-lt">Topes Legales y Prorrateos</span>
+                                    </div>
+                                    <div class="table-responsive flex-grow-1 overflow-auto" style="min-height: 0;">
+                                      <table
+                                        class="table table-sm table-vcenter table-striped table-hover mb-0 text-nowrap">
+                                        <thead class="table-light sticky-top shadow-2xs">
+                                          <tr style="font-size: 0.75rem;">
+                                            <th>Concepto Deducible</th>
+                                            <th>Código</th>
+                                            <th>Tipo de Tope</th>
+                                            <th class="text-end">Límite Aplicable</th>
+                                            <th>Fundamento / Detalle</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody id="it-tables-limits-tbody" style="font-size: 0.80rem;">
+                                          <tr>
+                                            <td colspan="5" class="text-center py-3 text-muted">Cargando límites...</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- SUB-PANE 5: LIQUIDACIÓN ANUAL Y F. 1359 -->
+                          <div class="tab-pane fade h-100 flex-column overflow-auto pe-1" id="it-pane-annual"
+                            role="tabpanel" style="min-height: 0;">
+                            <div class="card shadow-xs mb-3 border border-warning-lt bg-warning-lt-subtle">
+                              <div class="card-body p-3">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                  <div>
+                                    <h4 class="card-title d-flex align-items-center gap-2 mb-1 text-warning">
+                                      <i class="ti ti-file-certificate fs-2"></i> Declaración Jurada Anual F. 1359
+                                      (ARCA)
+                                    </h4>
+                                    <p class="text-muted small mb-0">
+                                      Generación de la liquidación anual de cierre (Mes 12) y exportación del archivo
+                                      plano oficial de presentación ante ARCA conforme manual F.1359 V2.0.
+                                    </p>
+                                  </div>
+                                  <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-warning" id="btn-it-calc-annual">
+                                      <i class="ti ti-calculator me-1"></i> Calcular Liquidación Anual
+                                    </button>
+                                    <button type="button" class="btn btn-outline-warning" id="btn-it-download-f1359">
+                                      <i class="ti ti-download me-1"></i> Descargar F.1359 (.txt)
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div id="it-f1359-preview-box" class="card shadow-xs d-none">
+                              <div class="card-header py-2 d-flex align-items-center justify-content-between">
+                                <h5 class="card-title mb-0">Vista Previa Registros Planos ARCA F. 1359</h5>
+                              </div>
+                              <div class="card-body p-2 bg-dark rounded-bottom">
+                                <pre class="font-monospace text-success small mb-0"
+                                  style="max-height: 320px; overflow-y: auto; white-space: pre;"></pre>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE: EMISIÓN DE INFORMES PERSONALIZADOS (REPORT RUNNER) -->
+                  <div class="tab-pane fade" id="pane-reports-runner" role="tabpanel">
+                    <div class="card shadow-xs mb-2 card-payroll-accent">
+                      <div class="card-body py-2 px-3">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                          <div class="d-flex align-items-center gap-2">
+                            <span class="avatar avatar-sm bg-cyan-lt text-cyan"><i
+                                class="ti ti-report-analytics fs-2"></i></span>
+                            <div>
+                              <h3 class="card-title mb-0" style="font-size: 1.02rem;">Emisión de Informes Personalizados
+                              </h3>
+                              <div class="text-muted small" style="font-size: 0.75rem;">Listados tabulados, subtotales
+                                agrupados, exportación contable y gráficos ejecutivos</div>
+                            </div>
+                          </div>
+                          <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-primary btn-sm fw-bold"
+                              id="btn-open-report-runner-modal">
+                              <i class="ti ti-adjustments-horizontal me-1"></i> Configurar / Emitir Informe
+                            </button>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+                              id="btn-reports-runner-new-template">
+                              <i class="ti ti-plus me-1"></i> Diseñar Nueva Plantilla
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                              id="btn-reports-runner-edit-template">
+                              <i class="ti ti-edit me-1"></i> Editar Plantilla Actual
+                            </button>
+                          </div>
+                        </div>
+                        <div
+                          class="mt-2 pt-2 border-top d-flex align-items-center justify-content-between flex-wrap gap-2">
+                          <div class="small text-muted" id="reports-runner-active-filters-summary">
+                            Seleccioná un informe y los filtros de períodos, grupos y legajos haciendo clic en
+                            <strong>Configurar / Emitir Informe</strong>.
+                          </div>
+                        </div>
+                        <div class="d-none">
+                          <select id="reports-runner-template-select"></select>
+                          <select id="reports-runner-period-select"></select>
+                          <button type="button" id="btn-reports-runner-execute"></button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ÁREA DESPLAZABLE DE RESULTADOS DEL INFORME -->
+                    <div class="screen-scroll-body">
+                      <!-- SPINNER DE CARGA -->
+                      <div id="reports-runner-loading" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status"></div>
+                        <div class="text-muted small mt-2">Procesando y agrupando datos de nómina...</div>
+                      </div>
+
+                      <!-- RESULTADOS DEL INFORME -->
+                      <div id="reports-runner-results-container" class="d-none">
+                        <!-- BARRA DE ACCIONES DE EXPORTACIÓN -->
+                        <div class="card shadow-xs mb-2 bg-light-subtle">
+                          <div
+                            class="card-body py-2 px-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div>
+                              <strong id="reports-result-company-title" class="text-dark">EMPRESA</strong>
+                              <div class="text-muted small" id="reports-result-subtitle">-</div>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                              <span class="badge bg-blue-lt fw-bold px-2 py-1" id="reports-result-count-badge">0
+                                registros</span>
+                              <button type="button" class="btn btn-success btn-sm" id="btn-reports-runner-export-excel">
+                                <i class="ti ti-file-spreadsheet me-1"></i> Exportar a Excel (.xlsx)
+                              </button>
+                              <button type="button" class="btn btn-danger btn-sm" id="btn-reports-runner-export-pdf">
+                                <i class="ti ti-file-text me-1"></i> Exportar a PDF
+                              </button>
+                              <button type="button" class="btn btn-secondary btn-sm" id="btn-reports-runner-print">
+                                <i class="ti ti-printer me-1"></i> Imprimir
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- GRÁFICO (SI ESTÁ HABILITADO) -->
+                        <div class="card shadow-xs mb-2 d-none" id="reports-result-chart-card">
+                          <div class="card-body p-3">
+                            <div id="reports-result-chart-container" style="min-height: 300px;"></div>
+                          </div>
+                        </div>
+
+                        <!-- TABLA PRINCIPAL DEL INFORME -->
+                        <div class="card shadow-xs mb-2">
+                          <div class="table-responsive" style="max-height: 480px; overflow-y: auto;">
+                            <table class="table table-vcenter table-hover table-bordered table-sm card-table mb-0"
+                              id="reports-result-table">
+                              <thead id="reports-result-table-header" class="sticky-top"></thead>
+                              <tbody id="reports-result-table-body"></tbody>
+                              <tfoot id="reports-result-table-foot" class="sticky-bottom"></tfoot>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div> <!-- /#pane-reports-runner -->
+
+                  <!-- PANE: DISEÑADOR DE PLANTILLAS (REPORT BUILDER) -->
+                  <div class="tab-pane fade" id="pane-reports-builder" role="tabpanel">
+                    <div class="card shadow-xs mb-2 card-payroll-accent">
+                      <div class="card-body py-4 px-4 text-center">
+                        <span class="avatar avatar-lg bg-purple-lt text-purple mb-2"><i
+                            class="ti ti-wand fs-1"></i></span>
+                        <h3 class="card-title mb-1">Asistente Guiado de Diseño de Informes</h3>
+                        <p class="text-muted small mb-3">Diseñá o editá plantillas de informes en 6 pasos simples sin
+                          salir de la pantalla de emisión.</p>
+                        <div class="d-flex justify-content-center gap-2">
+                          <button type="button" class="btn btn-primary btn-sm" id="btn-launch-wizard-from-pane">
+                            <i class="ti ti-wand me-1"></i> Abrir Asistente de Nueva Plantilla
+                          </button>
+                          <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-cancel-report-builder">
+                            <i class="ti ti-arrow-left me-1"></i> Ir a Emisión de Informes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> <!-- /#pane-reports-builder -->
+                </div> <!-- /#payroll-tab-content -->
+              </div> <!-- /.content-col-container -->
+            </div> <!-- /.module-layout-row -->
+          </div> <!-- /#view-payroll -->

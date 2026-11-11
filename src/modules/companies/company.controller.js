@@ -60,6 +60,7 @@ export async function assignUser(req, res) {
 
 export async function removeUser(req, res) {
   await companyService.removeUserFromCompany({
+    accountId: req.user.accountId,
     companyId: req.params.id,
     targetUserId: req.params.userId,
   });

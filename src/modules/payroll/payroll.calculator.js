@@ -1354,6 +1354,7 @@ export function calculateEmployeePayroll({
         formula: concept.formula || null,
         formulaExplanation: resolveFormulaExplanation(concept, inputOverride, null),
         arcaConceptCode: null,
+        notes: inputOverride?.notes || null,
       });
     } else if (concept.type === 'REMUNERATIVE') {
       const rawAmount = resolveConceptValue(concept, inputOverride);
@@ -1400,6 +1401,7 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false)),
           arcaConceptCode: concept.arcaConceptCode || '110000',
+          notes: inputOverride?.notes || null,
         });
       }
     } else if (concept.type === 'NON_REMUNERATIVE') {
@@ -1439,6 +1441,7 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, false, false, isInternStimulus)),
           arcaConceptCode: concept.arcaConceptCode || '550000',
+          notes: inputOverride?.notes || null,
         });
       }
     } else if (concept.type === 'DEDUCTION') {
@@ -1531,6 +1534,7 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: explanation,
           arcaConceptCode: concept.arcaConceptCode || '810012',
+          notes: inputOverride?.notes || null,
         });
       }
     }

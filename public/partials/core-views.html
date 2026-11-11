@@ -1,0 +1,925 @@
+          <!-- VISTA 1: DASHBOARD / INICIO (ELITE LUXURY DARK) -->
+          <div id="view-dashboard" class="app-view">
+            <div class="dash-scroll-container">
+              <div class="dash-content-wrap">
+
+                <!-- Saludo Ejecutivo y Banner de Tenant Activo -->
+                <div class="dash-executive-header">
+                  <div class="dash-header-row">
+                    <div>
+                      <h1 class="dash-welcome-title">¡Hola de nuevo, <span class="user-fullname"></span>!</h1>
+                      <div class="dash-welcome-subtitle">
+                        <span>Panel general de gestión para la cuenta <strong
+                            class="account-name dash-account-pill"></strong>.</span>
+                        <span class="user-role-badge badge bg-primary-lt">...</span>
+                      </div>
+                    </div>
+
+                    <div class="dash-tenant-live-pill"
+                      title="Aislamiento físico total de base de datos MySQL por razón social">
+                      <span class="dash-pulse-dot"></span>
+                      <span>Empresa Activa: <strong class="dash-active-company-name-sync"
+                          id="stat-active-company">Cargando...</strong> &bull; [MySQL Dedicado]</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Métricas Clave Cuantificables -->
+                <div class="dash-metrics-grid">
+                  <div class="dash-metric-card">
+                    <div class="dash-metric-icon metric-icon-blue">
+                      <i class="ti ti-building"></i>
+                    </div>
+                    <div>
+                      <div class="dash-metric-label">Empresas Registradas</div>
+                      <div class="dash-metric-val" id="stat-companies-count">0</div>
+                    </div>
+                  </div>
+
+                  <div class="dash-metric-card">
+                    <div class="dash-metric-icon metric-icon-emerald">
+                      <i class="ti ti-users"></i>
+                    </div>
+                    <div>
+                      <div class="dash-metric-label">Colaboradores en Cuenta</div>
+                      <div class="dash-metric-val" id="stat-users-count">0</div>
+                    </div>
+                  </div>
+
+                  <div class="dash-metric-card">
+                    <div class="dash-metric-icon metric-icon-sky">
+                      <i class="ti ti-certificate"></i>
+                    </div>
+                    <div>
+                      <div class="dash-metric-label">Estado Normativo</div>
+                      <div class="dash-metric-val" style="font-size: 1.125rem; color: var(--dash-emerald-400);">
+                        <i class="ti ti-circle-check"></i> ARCA LSD &bull; F.931 OK
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Distribución Principal de Módulos y Consola Lateral -->
+                <div class="dash-main-layout">
+
+                  <!-- Columna Izquierda: Centros de Operación y Accesos Rápidos -->
+                  <div class="dash-modules-stack">
+
+                    <!-- MÓDULOS OPERATIVOS PRIMARIOS (Sueldos y Personal) -->
+                    <div>
+                      <div class="dash-section-title-wrap">
+                        <h2 class="dash-section-title">
+                          <i class="ti ti-layout-grid"></i> Centros Operativos Principales
+                        </h2>
+                      </div>
+
+                      <div class="dash-primary-cards-grid">
+                        <!-- Tarjeta 1: Liquidación de Sueldos -->
+                        <div class="dash-primary-feature-card card-theme-payroll">
+                          <div>
+                            <div class="dash-card-icon-header">
+                              <div class="dash-module-avatar avatar-payroll">
+                                <i class="ti ti-calculator"></i>
+                              </div>
+                              <span class="dash-module-badge badge-payroll">ARCA LSD v54</span>
+                            </div>
+
+                            <h3 class="dash-card-title">Liquidación de Sueldos</h3>
+                            <p class="dash-card-desc">
+                              Procesamiento de nóminas, conceptos remunerativos y no remunerativos, auditoría pericial y
+                              Libro de Sueldos Digital.
+                            </p>
+
+                            <ul class="dash-feature-bullet-list">
+                              <li><i class="ti ti-check"></i> Recibos Oficiales A4 (Ley 20.744 &amp; 27.802)</li>
+                              <li><i class="ti ti-check"></i> Exportación nativa F.931 ARCA (Registros 01-04)</li>
+                              <li><i class="ti ti-check"></i> Resiliencia inflacionaria a 12 dígitos</li>
+                            </ul>
+                          </div>
+
+                          <button class="dash-card-action-btn btn-action-payroll" data-view-target="payroll"
+                            aria-label="Ingresar al módulo de Liquidación de Sueldos">
+                            <i class="ti ti-calculator"></i> Ingresar a Liquidación de Sueldos
+                          </button>
+                        </div>
+
+                        <!-- Tarjeta 2: Personal y Nómina -->
+                        <div class="dash-primary-feature-card card-theme-personnel">
+                          <div>
+                            <div class="dash-card-icon-header">
+                              <div class="dash-module-avatar avatar-personnel">
+                                <i class="ti ti-users-group"></i>
+                              </div>
+                              <span class="dash-module-badge badge-personnel">Censo &amp; RRHH</span>
+                            </div>
+
+                            <h3 class="dash-card-title">Personal y Nómina</h3>
+                            <p class="dash-card-desc">
+                              Administración centralizada de legajos, categorías salariales, convenios colectivos CCT y
+                              novedades de colaboradores.
+                            </p>
+
+                            <ul class="dash-feature-bullet-list">
+                              <li><i class="ti ti-check"></i> Búsqueda en tiempo real por CUIL y legajo</li>
+                              <li><i class="ti ti-check"></i> Convenios CCT (Comercio 130/75, UOCRA, etc.)</li>
+                              <li><i class="ti ti-check"></i> Importación masiva desde planillas Excel</li>
+                            </ul>
+                          </div>
+
+                          <button class="dash-card-action-btn btn-action-personnel" data-view-target="employees"
+                            aria-label="Ingresar al módulo de Personal y Nómina">
+                            <i class="ti ti-users"></i> Gestionar Personal y Nómina
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- ACCESOS DIRECTOS DE GOBERNANZA Y GESTIÓN -->
+                    <div>
+                      <div class="dash-section-title-wrap">
+                        <h2 class="dash-section-title">
+                          <i class="ti ti-adjustments"></i> Gobernanza y Configuración de Cuenta
+                        </h2>
+                      </div>
+
+                      <div class="dash-secondary-shortcuts-grid">
+                        <!-- Shortcut 1: Empresas -->
+                        <a href="#" class="dash-shortcut-card" data-view-target="companies"
+                          aria-label="Gestionar empresas registradas">
+                          <div class="dash-shortcut-icon icon-blue">
+                            <i class="ti ti-building"></i>
+                          </div>
+                          <div>
+                            <div class="dash-shortcut-title">Empresas Registradas</div>
+                            <div class="dash-shortcut-desc">Razones sociales y bases MySQL aisladas</div>
+                          </div>
+                        </a>
+
+                        <!-- Shortcut 2: Usuarios / Permisos (admin-only) -->
+                        <a href="#" class="dash-shortcut-card admin-only" data-view-target="users"
+                          aria-label="Gestionar colaboradores y permisos">
+                          <div class="dash-shortcut-icon icon-purple">
+                            <i class="ti ti-user-plus"></i>
+                          </div>
+                          <div>
+                            <div class="dash-shortcut-title">Operadores y Roles RBAC</div>
+                            <div class="dash-shortcut-desc">Control de acceso granular por empresa</div>
+                          </div>
+                        </a>
+
+                        <!-- Shortcut 3: Perfil Empresa Activa -->
+                        <a href="#" class="dash-shortcut-card" data-view-target="company-profile"
+                          aria-label="Configuración de empresa activa">
+                          <div class="dash-shortcut-icon icon-amber">
+                            <i class="ti ti-shield-check"></i>
+                          </div>
+                          <div>
+                            <div class="dash-shortcut-title">Perfil de Empresa Activa</div>
+                            <div class="dash-shortcut-desc">CUIT, CLAE, ART y alícuotas patronales</div>
+                          </div>
+                        </a>
+
+                        <!-- Shortcut 4: Mi Cuenta -->
+                        <a href="#" class="dash-shortcut-card" data-view-target="account"
+                          aria-label="Configurar suscripción y cuenta">
+                          <div class="dash-shortcut-icon icon-blue">
+                            <i class="ti ti-credit-card"></i>
+                          </div>
+                          <div>
+                            <div class="dash-shortcut-title">Mi Cuenta y Suscripción</div>
+                            <div class="dash-shortcut-desc">Plan contable: <strong id="stat-plan-name"
+                                style="color: var(--dash-emerald-400);">TRIAL</strong></div>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <!-- Columna Derecha: Consola de Empresa Activa y Seguridad -->
+                  <aside class="dash-sidebar-stack" aria-label="Información de empresa activa y seguridad">
+
+                    <!-- Card 1: Empresa Activa Dedicada -->
+                    <div class="dash-sidebar-card">
+                      <div class="dash-sidebar-header">
+                        <h3>Empresa Activa</h3>
+                        <span class="badge"
+                          style="background: rgba(16,185,129,0.15); color: var(--dash-emerald-400); border: 1px solid rgba(16,185,129,0.3); font-size: 0.75rem;">Base
+                          Aislada</span>
+                      </div>
+
+                      <div class="dash-active-tenant-box">
+                        <div class="dash-company-avatar" id="dash-active-company-avatar">PS</div>
+                        <div>
+                          <div class="dash-company-name dash-active-company-name-sync" id="dash-active-company-name">
+                            Cargando...</div>
+                          <div class="dash-company-cuit dash-active-company-cuit-sync" id="dash-active-company-cuit">-
+                          </div>
+                        </div>
+                      </div>
+
+                      <p>
+                        Estás operando sobre la base de datos MySQL físicamente aislada de esta empresa. Los cambios y
+                        liquidaciones son 100% privados e independientes.
+                      </p>
+
+                      <button class="btn-sidebar-action" data-view-target="company-profile"
+                        aria-label="Cargar o modificar datos de empresa">
+                        <i class="ti ti-edit"></i> Configurar Datos de Empresa
+                      </button>
+                    </div>
+
+                    <!-- Card 2: Equipo de Trabajo (Admin Only) -->
+                    <div class="dash-sidebar-card admin-only">
+                      <div class="dash-sidebar-header">
+                        <h3><i class="ti ti-users text-purple me-1"></i> Equipo de Trabajo</h3>
+                      </div>
+
+                      <p>
+                        Invita a otros operadores o contadores a tu cuenta y asignales acceso selectivo a una o varias
+                        empresas con permisos RBAC.
+                      </p>
+
+                      <button class="btn-sidebar-action" data-view-target="users"
+                        aria-label="Administrar operadores contables">
+                        <i class="ti ti-user-plus"></i> Administrar Colaboradores
+                      </button>
+                    </div>
+
+                    <!-- Card 3: Garantía Normativa y Seguridad -->
+                    <div class="dash-sidebar-card">
+                      <div class="dash-sidebar-header">
+                        <h3>Seguridad Multi-Tenant</h3>
+                      </div>
+
+                      <p>
+                        Arquitectura validada para estudios contables en Argentina. Protocolo TLS 1.3, cifrado en reposo
+                        AES-256 y resiliencia inflacionaria.
+                      </p>
+
+                      <div
+                        style="font-size: 0.8125rem; color: var(--dash-emerald-400); font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                        <i class="ti ti-shield-check"></i> Cero cruce de datos &bull; Uptime 99.98%
+                      </div>
+                    </div>
+
+                  </aside>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VISTA 2: ABM DE EMPRESAS (OBSIDIAN LUXURY DARK) -->
+          <div id="view-companies" class="app-view d-none">
+            <div class="adm-content-wrap">
+              <!-- Encabezado Ejecutivo de Empresas -->
+              <div class="adm-executive-header">
+                <div class="adm-header-row">
+                  <div class="adm-header-title-box">
+                    <div class="adm-header-icon">
+                      <i class="ti ti-building-community"></i>
+                    </div>
+                    <div>
+                      <h1 class="adm-header-title">Empresas Registradas</h1>
+                      <div class="adm-header-subtitle">
+                        Administración centralizada de razones sociales y bases de datos físicas independientes
+                        (Multi-Tenant).
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <span class="adm-tenant-live-pill">
+                      <span class="adm-pulse-dot"></span>
+                      <span id="adm-active-tenant-indicator">Empresa Activa: Cargando...</span>
+                    </span>
+                    <button id="btn-open-new-company-form" class="adm-btn-primary owner-only" type="button"
+                      aria-label="Crear nueva empresa">
+                      <i class="ti ti-plus"></i> Nueva Empresa
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tarjetas de Métricas KPI de Empresas -->
+              <div class="adm-kpi-grid">
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Total Empresas</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-blue">
+                      <i class="ti ti-building"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-total-companies">0</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-check text-success"></i> Razón social y CUIT validados
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Empresa en Foco</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-emerald">
+                      <i class="ti ti-target"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value text-truncate" id="adm-kpi-active-company" style="font-size: 1.25rem;">-
+                  </div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-database text-info"></i> Contexto operativo actual
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Cupo Disponible</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-purple">
+                      <i class="ti ti-chart-pie"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-quota-companies">-</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-shield-check text-purple"></i> Plan corporativo vigente
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Bases Aprovisionadas</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-amber">
+                      <i class="ti ti-server-2"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-db-status">100%</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-lock text-success"></i> Aislamiento físico de datos
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barra de Búsqueda y Filtros de Empresas -->
+              <div class="adm-toolbar-card">
+                <div class="adm-search-wrap">
+                  <i class="ti ti-search adm-search-icon"></i>
+                  <input type="text" id="companies-search-input" class="adm-search-input"
+                    placeholder="Buscar por razón social, nombre comercial o CUIT..." aria-label="Buscar empresa">
+                </div>
+                <div class="adm-filter-group">
+                  <select id="companies-status-filter" class="adm-filter-select" aria-label="Filtrar por estado">
+                    <option value="ALL">Todas las empresas</option>
+                    <option value="ACTIVE">Solo activas</option>
+                    <option value="WITH_CLAE">Con actividad CLAE</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Tabla Glassmorphic de Empresas -->
+              <div class="adm-table-card">
+                <div class="adm-table-responsive">
+                  <table class="adm-table">
+                    <thead>
+                      <tr>
+                        <th>Empresa / Razón Social</th>
+                        <th>CUIT</th>
+                        <th>Actividad (CLAE)</th>
+                        <th>Estado &amp; Base de Datos</th>
+                        <th>Contexto Operativo</th>
+                        <th class="text-end">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="companies-table-body">
+                      <!-- Renderizado reactivo vía admin.view.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VISTA 3: ABM DE USUARIOS (OBSIDIAN LUXURY DARK) -->
+          <div id="view-users" class="app-view d-none">
+            <div class="adm-content-wrap">
+              <!-- Encabezado Ejecutivo de Colaboradores -->
+              <div class="adm-executive-header">
+                <div class="adm-header-row">
+                  <div class="adm-header-title-box">
+                    <div class="adm-header-icon" style="background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);">
+                      <i class="ti ti-users-group"></i>
+                    </div>
+                    <div>
+                      <h1 class="adm-header-title">Colaboradores y Permisos</h1>
+                      <div class="adm-header-subtitle">
+                        Control centralizado de accesos de tu equipo, roles de cuenta y derechos operativos por empresa.
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button id="btn-open-new-user-modal" class="adm-btn-primary" type="button" data-bs-toggle="modal"
+                      data-bs-target="#modal-user-form" aria-label="Nuevo colaborador">
+                      <i class="ti ti-user-plus"></i> Nuevo Colaborador
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tarjetas de Métricas KPI de Usuarios -->
+              <div class="adm-kpi-grid">
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Total Colaboradores</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-purple">
+                      <i class="ti ti-users"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-total-users">0</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-id text-purple"></i> Usuarios en la cuenta
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Administradores</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-blue">
+                      <i class="ti ti-shield-check"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-admin-users">0</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-crown text-primary"></i> Acceso global total
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Operadores / Miembros</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-emerald">
+                      <i class="ti ti-user-check"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-operator-users">0</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-lock text-success"></i> Permisos por empresa
+                  </div>
+                </div>
+
+                <div class="adm-kpi-card">
+                  <div class="adm-kpi-header">
+                    <span class="adm-kpi-label">Cuentas Activas</span>
+                    <div class="adm-kpi-icon-wrap adm-icon-amber">
+                      <i class="ti ti-activity"></i>
+                    </div>
+                  </div>
+                  <div class="adm-kpi-value" id="adm-kpi-active-users">0</div>
+                  <div class="adm-kpi-desc">
+                    <i class="ti ti-check text-success"></i> Habilitados para operar
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barra de Búsqueda y Filtros de Usuarios -->
+              <div class="adm-toolbar-card">
+                <div class="adm-search-wrap">
+                  <i class="ti ti-search adm-search-icon"></i>
+                  <input type="text" id="users-search-input" class="adm-search-input"
+                    placeholder="Buscar por nombre, apellido, email, cargo o CUIL..." aria-label="Buscar colaborador">
+                </div>
+                <div class="adm-filter-group">
+                  <select id="users-role-filter" class="adm-filter-select" aria-label="Filtrar por rol">
+                    <option value="ALL">Todos los roles</option>
+                    <option value="OWNER">Propietarios</option>
+                    <option value="ADMIN">Administradores</option>
+                    <option value="MEMBER">Operadores / Miembros</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Tabla Glassmorphic de Usuarios -->
+              <div class="adm-table-card">
+                <div class="adm-table-responsive">
+                  <table class="adm-table">
+                    <thead>
+                      <tr>
+                        <th>Colaborador</th>
+                        <th>Rol en Cuenta</th>
+                        <th>Estado de Acceso</th>
+                        <th>Empresas Asignadas & Derechos</th>
+                        <th class="text-end">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="users-table-body">
+                      <!-- Renderizado reactivo vía admin.view.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VISTA 4: MI CUENTA Y SUSCRIPCIÓN (OBSIDIAN LUXURY DARK) -->
+          <div id="view-account" class="app-view d-none">
+            <div class="adm-content-wrap">
+              <!-- Encabezado Ejecutivo de Cuenta -->
+              <div class="adm-executive-header">
+                <div class="adm-header-row">
+                  <div class="adm-header-title-box">
+                    <div class="adm-header-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                      <i class="ti ti-shield-check"></i>
+                    </div>
+                    <div>
+                      <h1 class="adm-header-title">Mi Cuenta y Suscripción</h1>
+                      <div class="adm-header-subtitle">
+                        Información corporativa del titular, cupos de licenciamiento y parámetros de infraestructura
+                        Multi-Tenant.
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <span class="adm-badge adm-badge-active px-3 py-2 fs-6">
+                      <i class="ti ti-circle-check"></i> Licencia Conforme
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Panel Dividido de Cuenta y Seguridad -->
+              <div class="adm-account-grid">
+                <!-- Columna Izquierda: Datos del Cliente y Cupo -->
+                <div class="adm-account-card">
+                  <div class="d-flex align-items-center justify-content-between mb-4">
+                    <h2 class="h3 fw-bold text-white mb-0">Datos del Titular</h2>
+                    <span class="adm-badge adm-badge-active" id="account-view-plan">TRIAL</span>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="adm-form-label">Nombre de la Cuenta o Estudio Contable</label>
+                    <div class="adm-kpi-value text-truncate" id="account-view-name">-</div>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="adm-form-label">Cupo de Empresas Registradas</label>
+                    <div class="fs-4 text-white fw-bold" id="account-view-limit">-</div>
+                    <div class="adm-quota-bar-wrap">
+                      <div class="adm-quota-bar-fill" id="account-view-quota-bar" style="width: 20%;"></div>
+                    </div>
+                    <div class="d-flex justify-content-between small text-muted">
+                      <span id="account-view-quota-text">Calculando cupo...</span>
+                      <span id="account-view-quota-pct">0%</span>
+                    </div>
+                  </div>
+
+                  <div class="pt-3 border-top border-secondary-subtle">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <span class="text-muted small">ID de Cuenta / Tenant Master</span>
+                      <code class="adm-cuit-chip" id="account-view-tenant-id">MASTER</code>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Columna Derecha: Seguridad y Arquitectura de Datos -->
+                <div class="adm-account-card">
+                  <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="adm-kpi-icon-wrap adm-icon-blue">
+                      <i class="ti ti-server-2"></i>
+                    </div>
+                    <div>
+                      <h2 class="h3 fw-bold text-white mb-0">Arquitectura & Seguridad</h2>
+                      <div class="small text-muted">Garantía de aislamiento físico normativo</div>
+                    </div>
+                  </div>
+
+                  <div class="d-flex flex-column gap-3">
+                    <div class="p-3 rounded"
+                      style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--adm-border-subtle);">
+                      <div class="d-flex align-items-start gap-3">
+                        <i class="ti ti-database-check fs-2 text-info mt-1"></i>
+                        <div>
+                          <strong class="text-white d-block">Base de Datos Física Independiente por Empresa</strong>
+                          <div class="small text-muted mt-1">
+                            A diferencia de sistemas SaaS tradicionales que usan una columna común, cada una de tus
+                            empresas posee una base MySQL aislada. Imposibilidad criptográfica de fuga o mezcla de datos
+                            entre clientes.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-3 rounded"
+                      style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--adm-border-subtle);">
+                      <div class="d-flex align-items-start gap-3">
+                        <i class="ti ti-certificate fs-2 text-success mt-1"></i>
+                        <div>
+                          <strong class="text-white d-block">Conformidad Legal y Previsional (ARCA / AFIP LSD)</strong>
+                          <div class="small text-muted mt-1">
+                            Exportaciones automáticas validadas con Libro de Sueldos Digital, matriz F.931 y topes
+                            previsionales de la Ley de Contrato de Trabajo (Ley 20.744 y Ley 27.742).
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-3 rounded"
+                      style="background: rgba(255, 255, 255, 0.04); border: 1px solid var(--adm-border-subtle);">
+                      <div class="d-flex align-items-start gap-3">
+                        <i class="ti ti-shield-lock fs-2 text-purple mt-1"></i>
+                        <div>
+                          <strong class="text-white d-block">Control RBAC Granular por Empresa</strong>
+                          <div class="small text-muted mt-1">
+                            Asignación diferenciada de privilegios (Administrador, Operador o Solo Lectura) por cada
+                            razón social sin comprometer la auditoría global.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- VISTA: DATOS DE LA EMPRESA (OBSIDIAN LUXURY DARK) -->
+          <div id="view-company-profile" class="app-view d-none">
+            <div class="adm-content-wrap">
+              <!-- Encabezado Ejecutivo de Ficha de Empresa -->
+              <div class="adm-executive-header">
+                <div class="adm-header-row">
+                  <div class="adm-header-title-box">
+                    <div class="adm-header-icon" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);">
+                      <i class="ti ti-file-text"></i>
+                    </div>
+                    <div>
+                      <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <h1 class="adm-header-title" id="profile-company-title">Cargando datos...</h1>
+                        <span class="adm-badge adm-badge-active"><i class="ti ti-check"></i> Empresa Activa</span>
+                      </div>
+                      <div class="adm-header-subtitle">
+                        Ficha fiscal, domicilio legal y parámetros laborales para la liquidación de haberes y Libro de
+                        Sueldos Digital.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-print-none">
+                    <button type="button" class="adm-btn-secondary" data-view-target="companies"
+                      aria-label="Volver al listado de empresas">
+                      <i class="ti ti-arrow-left"></i> Volver a Empresas
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="profile-alert" class="alert alert-danger d-none mb-3"></div>
+              <div id="profile-readonly-notice" class="alert alert-info d-none mb-3"
+                style="background: rgba(56, 189, 248, 0.12); border-color: rgba(56, 189, 248, 0.32); color: #ffffff;">
+                <i class="ti ti-lock me-2"></i>
+                <strong>Modo de solo lectura:</strong> Solo el Propietario (Owner) de la cuenta posee permisos para
+                modificar los datos de la empresa.
+              </div>
+
+              <form id="form-company-profile">
+                <div class="adm-profile-card">
+                  <!-- Barra de Pestañas Superior Glassmorphic -->
+                  <div class="adm-tabs-header">
+                    <ul class="nav nav-tabs border-0 flex-nowrap" id="company-profile-tabs" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-company-fiscal" class="adm-tab-link active" data-bs-toggle="tab" role="tab"
+                          id="tab-btn-fiscal">
+                          <i class="ti ti-receipt-2 text-primary"></i> 1. Identificación y Fiscal
+                        </a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-company-address" class="adm-tab-link" data-bs-toggle="tab" role="tab"
+                          id="tab-btn-address">
+                          <i class="ti ti-map-pin text-info"></i> 2. Domicilio y Contacto
+                        </a>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a href="#tab-company-payroll" class="adm-tab-link" data-bs-toggle="tab" role="tab"
+                          id="tab-btn-payroll">
+                          <i class="ti ti-briefcase text-success"></i> 3. Laboral y Bancario
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <!-- Contenido de las Pestañas -->
+                  <div class="p-4">
+                    <div class="tab-content" id="company-profile-tab-content">
+                      <!-- PESTAÑA 1: DATOS FISCALES Y CLAE -->
+                      <div class="tab-pane fade show active" id="tab-company-fiscal" role="tabpanel"
+                        aria-labelledby="tab-btn-fiscal">
+                        <div class="row g-3">
+                          <div class="col-md-5">
+                            <label class="adm-form-label required" for="profile-legal-name">Razón Social</label>
+                            <input type="text" id="profile-legal-name" class="adm-form-control"
+                              placeholder="Razón Social Oficial" required>
+                          </div>
+                          <div class="col-md-4">
+                            <label class="adm-form-label" for="profile-trade-name">Nombre de Fantasía</label>
+                            <input type="text" id="profile-trade-name" class="adm-form-control"
+                              placeholder="Nombre Comercial">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="adm-form-label required" for="profile-cuit">CUIT (AFIP/ARCA)</label>
+                            <div class="input-group">
+                              <input type="text" id="profile-cuit" class="adm-form-control" placeholder="30712345678"
+                                maxlength="11" required>
+                              <span id="profile-cuit-status" class="input-group-text"
+                                style="background: var(--adm-bg-input); border-color: var(--adm-border-medium); color: var(--adm-slate-400);"><i
+                                  class="ti ti-id"></i></span>
+                            </div>
+                            <div id="profile-cuit-feedback" class="adm-form-hint">11 dígitos numéricos sin guiones.
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="adm-form-label required" for="profile-tax-condition">Condición frente al
+                              IVA</label>
+                            <select id="profile-tax-condition" class="adm-form-select">
+                              <option value="RESPONSABLE_INSCRIPTO">IVA Responsable Inscripto</option>
+                              <option value="MONOTRIBUTO">Monotributo</option>
+                              <option value="EXENTO">IVA Exento</option>
+                            </select>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="adm-form-label" for="profile-gross-income">N° de Inscripción en Ingresos
+                              Brutos (IIBB)</label>
+                            <input type="text" id="profile-gross-income" class="adm-form-control"
+                              placeholder="Ej. 901-123456-7 o Convenio Multilateral">
+                          </div>
+                          <div class="col-12">
+                            <label class="adm-form-label" for="profile-activity-input">Actividad Económica Principal
+                              (Código CLAE - AFIP / ARCA)</label>
+                            <div class="input-group">
+                              <span class="input-group-text"
+                                style="background: var(--adm-bg-input); border-color: var(--adm-border-medium); color: var(--adm-sky-400);"><i
+                                  class="ti ti-briefcase"></i></span>
+                              <input type="text" id="profile-activity-input" class="adm-form-control"
+                                list="clae-suggestions"
+                                placeholder="Escribe el código (ej. 620100) o palabras clave del rubro para buscar...">
+                              <button class="adm-btn-secondary" type="button" id="btn-clear-clae"
+                                title="Limpiar selección"
+                                style="border-radius: 0 var(--adm-radius-sm) var(--adm-radius-sm) 0;">
+                                <i class="ti ti-x"></i>
+                              </button>
+                              <datalist id="clae-suggestions">
+                                <!-- Dinámico vía app.js -->
+                              </datalist>
+                            </div>
+                            <input type="hidden" id="profile-activity-code">
+                            <input type="hidden" id="profile-activity-description">
+                            <div id="profile-activity-badge" class="mt-2 d-none">
+                              <div class="adm-clae-badge-card">
+                                <div class="d-flex align-items-center gap-2">
+                                  <i class="ti ti-certificate fs-3 text-info"></i>
+                                  <div>
+                                    <strong class="text-white">Código <span id="badge-clae-code"></span></strong>: <span
+                                      class="text-light" id="badge-clae-desc"></span>
+                                  </div>
+                                </div>
+                                <span class="adm-badge adm-badge-clae">CLAE F.883</span>
+                              </div>
+                            </div>
+                            <div class="adm-form-hint">Clasificador de Actividades Económicas (F. 883). Busca por número
+                              o palabras como <em>software</em>, <em>comercio</em>, <em>transporte</em>, etc.</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- PESTAÑA 2: DOMICILIO Y CONTACTO -->
+                      <div class="tab-pane fade" id="tab-company-address" role="tabpanel"
+                        aria-labelledby="tab-btn-address">
+                        <div class="row g-3">
+                          <div class="col-md-6">
+                            <label class="adm-form-label" for="profile-address">Dirección (Calle, N° y
+                              Piso/Depto)</label>
+                            <input type="text" id="profile-address" class="adm-form-control"
+                              placeholder="Ej. Av. Corrientes 1234, Piso 4, Of. A">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="adm-form-label" for="profile-city">Ciudad / Localidad</label>
+                            <input type="text" id="profile-city" class="adm-form-control" placeholder="Ej. Rosario">
+                          </div>
+                          <div class="col-md-3">
+                            <label class="adm-form-label" for="profile-postal-code">Código Postal</label>
+                            <input type="text" id="profile-postal-code" class="adm-form-control"
+                              placeholder="Ej. S2000">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="adm-form-label" for="profile-province">Provincia</label>
+                            <select id="profile-province" class="adm-form-select">
+                              <option value="">Seleccionar provincia...</option>
+                              <option value="Ciudad Autónoma de Buenos Aires">Ciudad Autónoma de Buenos Aires</option>
+                              <option value="Buenos Aires">Buenos Aires</option>
+                              <option value="Catamarca">Catamarca</option>
+                              <option value="Chaco">Chaco</option>
+                              <option value="Chubut">Chubut</option>
+                              <option value="Córdoba">Córdoba</option>
+                              <option value="Corrientes">Corrientes</option>
+                              <option value="Entre Ríos">Entre Ríos</option>
+                              <option value="Formosa">Formosa</option>
+                              <option value="Jujuy">Jujuy</option>
+                              <option value="La Pampa">La Pampa</option>
+                              <option value="La Rioja">La Rioja</option>
+                              <option value="Mendoza">Mendoza</option>
+                              <option value="Misiones">Misiones</option>
+                              <option value="Neuquén">Neuquén</option>
+                              <option value="Río Negro">Río Negro</option>
+                              <option value="Salta">Salta</option>
+                              <option value="San Juan">San Juan</option>
+                              <option value="San Luis">San Luis</option>
+                              <option value="Santa Cruz">Santa Cruz</option>
+                              <option value="Santa Fe">Santa Fe</option>
+                              <option value="Santiago del Estero">Santiago del Estero</option>
+                              <option value="Tierra del Fuego">Tierra del Fuego</option>
+                              <option value="Tucumán">Tucumán</option>
+                            </select>
+                          </div>
+                          <div class="col-md-4">
+                            <label class="adm-form-label" for="profile-phone">Teléfono de Contacto</label>
+                            <input type="tel" id="profile-phone" class="adm-form-control"
+                              placeholder="Ej. 0341 425-6789">
+                          </div>
+                          <div class="col-md-4">
+                            <label class="adm-form-label" for="profile-email">Email de RRHH / Contacto</label>
+                            <input type="email" id="profile-email" class="adm-form-control"
+                              placeholder="rrhh@empresa.com">
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- PESTAÑA 3: PARÁMETROS LABORALES Y BANCARIOS -->
+                      <div class="tab-pane fade" id="tab-company-payroll" role="tabpanel"
+                        aria-labelledby="tab-btn-payroll">
+                        <div class="row g-3">
+                          <div class="col-md-4">
+                            <label class="adm-form-label" for="profile-activity-start">Fecha de Inicio de
+                              Actividades</label>
+                            <input type="date" id="profile-activity-start" class="adm-form-control">
+                          </div>
+                          <div class="col-md-8">
+                            <label class="adm-form-label" for="profile-art-name">Aseguradora de Riesgos del Trabajo
+                              (ART)</label>
+                            <input type="text" id="profile-art-name" class="adm-form-control" list="art-suggestions"
+                              placeholder="Ej. Prevención ART">
+                            <datalist id="art-suggestions">
+                              <option value="Prevención ART">
+                              <option value="Provincia ART">
+                              <option value="La Segunda ART">
+                              <option value="Galeno ART">
+                              <option value="Asociart ART">
+                              <option value="Experta ART">
+                              <option value="Swiss Medical ART">
+                              <option value="Federación Patronal ART">
+                              <option value="Berkley ART">
+                            </datalist>
+                          </div>
+                          <div class="col-md-5">
+                            <label class="adm-form-label" for="profile-bank-name">Banco para Pago de Haberes</label>
+                            <input type="text" id="profile-bank-name" class="adm-form-control" list="bank-suggestions"
+                              placeholder="Ej. Banco de la Nación Argentina">
+                            <datalist id="bank-suggestions">
+                              <option value="Banco de la Nación Argentina">
+                              <option value="Banco Santander">
+                              <option value="Banco Galicia">
+                              <option value="Banco BBVA">
+                              <option value="Banco de la Provincia de Buenos Aires">
+                              <option value="Banco Macro">
+                              <option value="Banco Ciudad">
+                              <option value="Banco Credicoop">
+                              <option value="ICBC">
+                              <option value="Banco Patagonia">
+                            </datalist>
+                          </div>
+                          <div class="col-md-7">
+                            <label class="adm-form-label" for="profile-bank-cbu">CBU de la Cuenta Sueldos (22
+                              dígitos)</label>
+                            <input type="text" id="profile-bank-cbu" class="adm-form-control"
+                              placeholder="0000000000000000000000" maxlength="22">
+                            <div class="adm-form-hint">Clave Bancaria Uniforme utilizada para el débito automático de
+                              haberes.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Barra de Acciones y Navegación Inferior -->
+                  <div class="p-3 border-top d-flex align-items-center justify-content-between flex-wrap gap-3"
+                    style="background: rgba(11, 18, 34, 0.95); border-color: var(--adm-border-medium) !important;">
+                    <div class="d-flex gap-2">
+                      <button type="button" class="adm-btn-secondary d-none" id="btn-company-tab-prev">
+                        <i class="ti ti-arrow-left"></i> Anterior
+                      </button>
+                      <button type="button" class="adm-btn-secondary" id="btn-company-tab-next">
+                        Siguiente <i class="ti ti-arrow-right"></i>
+                      </button>
+                    </div>
+                    <div>
+                      <button type="submit" id="btn-save-profile" class="adm-btn-primary">
+                        <i class="ti ti-device-floppy"></i> Guardar Datos de la Empresa
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>

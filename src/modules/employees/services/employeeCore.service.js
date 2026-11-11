@@ -1,0 +1,1340 @@
+import crypto from 'crypto';
+import { ensureTenantPersonnelSchema } from '../../../services/tenantProvisioner.service.js';
+import {
+  hydrateEmployee,
+  hydrateEmployees,
+  assertMasterArcaContractModalityExists,
+  listMasterArcaContractModalities,
+} from '../../../services/arcaCatalog.service.js';
+import { isValidCuit } from '../../companies/company.validation.js';
+import { hoursToDecimal, decimalToHours } from '../../../utils/timeFormat.js';
+import { normalizeUtcNoonDate } from '../../../utils/dateFormat.js';
+
+/**
+ * Lista empleados de la base de datos de la empresa activa con filtros y paginación.
+ */
+export async function listEmployees(tenantPrisma, { page = 1, limit = 50, search, departmentId, status } = {}) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const where = {
+    deletedAt: null,
+  };
+
+  if (status && status !== 'ALL') {
+    where.status = status;
+  }
+
+  if (departmentId && departmentId !== 'ALL') {
+    where.departmentId = departmentId;
+  }
+
+  if (search && search.trim()) {
+    const q = search.trim();
+    where.OR = [
+      { lastName: { contains: q } },
+      { firstName: { contains: q } },
+      { cuil: { contains: q } },
+      { fileNumber: { contains: q } },
+      { documentNumber: { contains: q } },
+    ];
+  }
+
+  const [employees, total] = await Promise.all([
+    tenantPrisma.employee.findMany({
+      where,
+      skip,
+      take: Number(limit),
+      orderBy: [{ lastName: 'asc' }, { firstName: 'asc' }],
+      select: {
+        id: true,
+        fileNumber: true,
+        lastName: true,
+        firstName: true,
+        photo: true,
+        hireDate: true,
+        birthDate: true,
+        documentType: true,
+        documentNumber: true,
+        cuil: true,
+        gender: true,
+        street: true,
+        streetNumber: true,
+        floor: true,
+        apartment: true,
+        city: true,
+        postalCode: true,
+        province: true,
+        email: true,
+        phone: true,
+        status: true,
+        terminationDate: true,
+        terminationReason: true,
+        departmentId: true,
+        jobPositionId: true,
+        healthInsuranceId: true,
+        unionId: true,
+        mutualId: true,
+        contractModalityCode: true,
+        salaryScaleId: true,
+        workShiftId: true,
+        paymentMethodId: true,
+        createdAt: true,
+        updatedAt: true,
+        deletedAt: true,
+        payrollGroup: true,
+        isPartTime: true,
+        weeklyWorkingHours: true,
+        monthlyWorkingHours: true,
+        partTimePercentage: true,
+        basicSalary: true,
+        hourlyRate: true,
+        cbu: true,
+        bankAccountType: true,
+        department: { select: { id: true, name: true, code: true } },
+        jobPosition: {
+          select: {
+            id: true,
+            name: true,
+            code: true,
+            cctCode: true,
+            categoryCode: true,
+            positionCode: true,
+            serviceTypeCode: true,
+          },
+        },
+        healthInsurance: { select: { id: true, name: true, code: true } },
+        union: { select: { id: true, name: true, code: true } },
+        mutual: { select: { id: true, name: true, code: true } },
+        salaryScale: { select: { id: true, name: true, code: true, cctCode: true, amount: true } },
+        workShift: { select: { id: true, name: true, code: true, dailyHours: true, weeklyHours: true, monthlyHours: true, monthlyDays: true, cycleType: true } },
+        paymentMethod: { select: { id: true, name: true, description: true } },
+      },
+    }),
+    tenantPrisma.employee.count({ where }),
+  ]);
+
+  const hydratedEmployees = await hydrateEmployees(employees);
+
+  return {
+    data: hydratedEmployees,
+    meta: {
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      totalPages: Math.ceil(total / Number(limit)) || 1,
+    },
+  };
+}
+
+/**
+ * Obtiene el detalle de un empleado por ID en la base del tenant.
+ */
+export async function getEmployeeById(tenantPrisma, employeeId) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  const rawEmployee = await tenantPrisma.employee.findFirst({
+    where: { id: employeeId, deletedAt: null },
+    include: {
+      department: true,
+      jobPosition: true,
+      healthInsurance: true,
+      union: true,
+      mutual: true,
+      salaryScale: true,
+      workShift: {
+        include: {
+          details: {
+            orderBy: [{ dayOfWeek: 'asc' }, { cycleDayNumber: 'asc' }],
+          },
+        },
+      },
+      paymentMethod: true,
+      relatives: {
+        where: { deletedAt: null },
+        include: { kinship: true },
+        orderBy: { createdAt: 'asc' },
+      },
+      assignedConcepts: {
+        where: {
+          concept: { deletedAt: null },
+        },
+        include: { concept: true },
+        orderBy: { createdAt: 'asc' },
+      },
+    },
+  });
+
+  if (!rawEmployee) {
+    const error = new Error('Empleado no encontrado');
+    error.status = 404;
+    throw error;
+  }
+
+  const hydrated = await hydrateEmployee(rawEmployee);
+
+  return {
+    ...hydrated,
+    weeklyWorkingHoursFormatted: decimalToHours(hydrated.weeklyWorkingHours),
+    monthlyWorkingHoursFormatted: decimalToHours(hydrated.monthlyWorkingHours),
+  };
+}
+
+/**
+ * Sincroniza novedades persistentes de deducción sindical y mutual cuando cambia la afiliación del empleado.
+ */
+export async function syncAffiliationConcepts(tenantPrisma, employeeId, { unionId, mutualId, previousUnionId, previousMutualId } = {}) {
+  // 1. Sincronizar Sindicato
+  if (previousUnionId !== undefined && previousUnionId !== unionId) {
+    if (previousUnionId) {
+      const prevUnion = await tenantPrisma.union.findUnique({
+        where: { id: previousUnionId },
+        include: { unionConcepts: true },
+      });
+      const prevConceptIds = (prevUnion?.unionConcepts && prevUnion.unionConcepts.length > 0)
+        ? prevUnion.unionConcepts.map((uc) => uc.conceptId)
+        : (prevUnion?.conceptId ? [prevUnion.conceptId] : []);
+
+      let nextConceptIds = [];
+      if (unionId) {
+        const nextUnion = await tenantPrisma.union.findUnique({
+          where: { id: unionId },
+          include: { unionConcepts: true },
+        });
+        nextConceptIds = (nextUnion?.unionConcepts && nextUnion.unionConcepts.length > 0)
+          ? nextUnion.unionConcepts.map((uc) => uc.conceptId)
+          : (nextUnion?.conceptId ? [nextUnion.conceptId] : []);
+      }
+
+      const conceptsToRemove = prevConceptIds.filter((cid) => !nextConceptIds.includes(cid));
+
+      for (const oldConceptId of conceptsToRemove) {
+        // Opción B: Eliminar físicamente si aún no fue liquidado en período cerrado
+        const inClosedPaySlip = await tenantPrisma.paySlipItem.findFirst({
+          where: {
+            conceptId: oldConceptId,
+            paySlip: {
+              employeeId,
+              status: { in: ['ISSUED', 'SIGNED'] },
+              payrollPeriod: { status: 'CLOSED' },
+            },
+          },
+        });
+        if (!inClosedPaySlip) {
+          await tenantPrisma.employeeConcept.deleteMany({
+            where: { employeeId, conceptId: oldConceptId },
+          });
+        } else {
+          await tenantPrisma.employeeConcept.updateMany({
+            where: { employeeId, conceptId: oldConceptId },
+            data: { isActive: false },
+          });
+        }
+      }
+    }
+  }
+
+  if (unionId) {
+    const currentUnion = await tenantPrisma.union.findFirst({
+      where: { id: unionId, deletedAt: null },
+      include: { unionConcepts: true },
+    });
+    const unionConceptIds = (currentUnion?.unionConcepts && currentUnion.unionConcepts.length > 0)
+      ? currentUnion.unionConcepts.map((uc) => uc.conceptId)
+      : (currentUnion?.conceptId ? [currentUnion.conceptId] : []);
+
+    for (const conceptId of unionConceptIds) {
+      const existing = await tenantPrisma.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId,
+            conceptId,
+          },
+        },
+      });
+      if (!existing) {
+        await tenantPrisma.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId,
+            conceptId,
+            amount: null,
+            units: null,
+            notes: `Afiliación a ${currentUnion.name}`,
+            isActive: true,
+          },
+        });
+      } else if (!existing.isActive) {
+        await tenantPrisma.employeeConcept.update({
+          where: { id: existing.id },
+          data: { isActive: true },
+        });
+      }
+    }
+  }
+
+  // 2. Sincronizar Mutual
+  if (previousMutualId !== undefined && previousMutualId !== mutualId) {
+    if (previousMutualId) {
+      const prevMutual = await tenantPrisma.mutual.findUnique({
+        where: { id: previousMutualId },
+        include: { mutualConcepts: true },
+      });
+      const prevConceptIds = (prevMutual?.mutualConcepts && prevMutual.mutualConcepts.length > 0)
+        ? prevMutual.mutualConcepts.map((mc) => mc.conceptId)
+        : (prevMutual?.conceptId ? [prevMutual.conceptId] : []);
+
+      let nextConceptIds = [];
+      if (mutualId) {
+        const nextMutual = await tenantPrisma.mutual.findUnique({
+          where: { id: mutualId },
+          include: { mutualConcepts: true },
+        });
+        nextConceptIds = (nextMutual?.mutualConcepts && nextMutual.mutualConcepts.length > 0)
+          ? nextMutual.mutualConcepts.map((mc) => mc.conceptId)
+          : (nextMutual?.conceptId ? [nextMutual.conceptId] : []);
+      }
+
+      const conceptsToRemove = prevConceptIds.filter((cid) => !nextConceptIds.includes(cid));
+
+      for (const oldConceptId of conceptsToRemove) {
+        const inClosedPaySlip = await tenantPrisma.paySlipItem.findFirst({
+          where: {
+            conceptId: oldConceptId,
+            paySlip: {
+              employeeId,
+              status: { in: ['ISSUED', 'SIGNED'] },
+              payrollPeriod: { status: 'CLOSED' },
+            },
+          },
+        });
+        if (!inClosedPaySlip) {
+          await tenantPrisma.employeeConcept.deleteMany({
+            where: { employeeId, conceptId: oldConceptId },
+          });
+        } else {
+          await tenantPrisma.employeeConcept.updateMany({
+            where: { employeeId, conceptId: oldConceptId },
+            data: { isActive: false },
+          });
+        }
+      }
+    }
+  }
+
+  if (mutualId) {
+    const currentMutual = await tenantPrisma.mutual.findFirst({
+      where: { id: mutualId, deletedAt: null },
+      include: { mutualConcepts: true },
+    });
+    const mutualConceptIds = (currentMutual?.mutualConcepts && currentMutual.mutualConcepts.length > 0)
+      ? currentMutual.mutualConcepts.map((mc) => mc.conceptId)
+      : (currentMutual?.conceptId ? [currentMutual.conceptId] : []);
+
+    for (const conceptId of mutualConceptIds) {
+      const existing = await tenantPrisma.employeeConcept.findUnique({
+        where: {
+          employeeId_conceptId: {
+            employeeId,
+            conceptId,
+          },
+        },
+      });
+      if (!existing) {
+        await tenantPrisma.employeeConcept.create({
+          data: {
+            id: crypto.randomUUID(),
+            employeeId,
+            conceptId,
+            amount: null,
+            units: null,
+            notes: `Afiliación a ${currentMutual.name}`,
+            isActive: true,
+          },
+        });
+      } else if (!existing.isActive) {
+        await tenantPrisma.employeeConcept.update({
+          where: { id: existing.id },
+          data: { isActive: true },
+        });
+      }
+    }
+  }
+}
+
+/**
+ * Verifica que la nómina asignada sea compatible con la modalidad de contrato
+ * y con el Convenio Colectivo de Trabajo (CCT) del puesto laboral.
+ */
+function assertSalaryScaleCompatibility(scale, { isInternModality, isDirectorModality, jobCctCode }) {
+  if (!scale) return;
+  if (isInternModality && !scale.isInternOnly) {
+    const err = new Error('Para colaboradores bajo el régimen de pasantías (modalidad 27 o 51), la nómina asignada debe ser exclusiva para pasantes (Ley 26.427).');
+    err.status = 400;
+    throw err;
+  }
+  if (!isInternModality && scale.isInternOnly) {
+    const err = new Error('La nómina seleccionada es exclusiva para pasantes y no puede asignarse a personal en relación de dependencia.');
+    err.status = 400;
+    throw err;
+  }
+  if (isDirectorModality && !scale.isDirectorOnly) {
+    const err = new Error('Para directores / autoridades bajo el régimen de LRT (modalidad 099), la nómina asignada debe ser exclusiva para directores.');
+    err.status = 400;
+    throw err;
+  }
+  if (!isDirectorModality && scale.isDirectorOnly) {
+    const err = new Error('La nómina seleccionada es exclusiva para Directores / LRT (modalidad 099) y no puede asignarse a personal en relación de dependencia.');
+    err.status = 400;
+    throw err;
+  }
+  if (!scale.isInternOnly && !scale.isDirectorOnly && scale.cctCode && jobCctCode && scale.cctCode !== jobCctCode) {
+    const err = new Error(
+      `La nómina seleccionada (${scale.name}) pertenece al convenio "${scale.cctCode}" y no coincide con el convenio "${jobCctCode}" asignado al puesto de trabajo.`
+    );
+    err.status = 400;
+    throw err;
+  }
+}
+
+/**
+ * Da de alta un nuevo empleado en la base de datos de la empresa activa.
+ */
+export async function createEmployee(tenantPrisma, employeeData) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  const cleanCuil = employeeData.cuil.replace(/\D/g, '');
+  const cleanDoc = employeeData.documentNumber ? employeeData.documentNumber.trim() : '';
+
+  // Verificar unicidad de CUIL y Legajo
+  const existing = await tenantPrisma.employee.findFirst({
+    where: {
+      OR: [
+        { cuil: cleanCuil },
+        { fileNumber: employeeData.fileNumber.trim() },
+      ],
+      deletedAt: null,
+    },
+  });
+
+  if (existing) {
+    const error = new Error(
+      existing.cuil === cleanCuil
+        ? 'Ya existe un empleado registrado con ese CUIL en esta empresa'
+        : 'Ya existe un empleado registrado con ese número de legajo en esta empresa'
+    );
+    error.status = 409;
+    throw error;
+  }
+
+  // Validar existencia de Sector
+  const department = await tenantPrisma.department.findFirst({
+    where: { id: employeeData.departmentId, deletedAt: null },
+  });
+  if (!department) {
+    const error = new Error('El sector seleccionado no existe');
+    error.status = 400;
+    throw error;
+  }
+
+  // Validar existencia de Puesto
+  const jobPosition = await tenantPrisma.jobPosition.findFirst({
+    where: { id: employeeData.jobPositionId, deletedAt: null },
+  });
+  if (!jobPosition) {
+    const error = new Error('El puesto de trabajo seleccionado no existe');
+    error.status = 400;
+    throw error;
+  }
+
+  // Validar existencia de Obra Social
+  const healthInsurance = await tenantPrisma.healthInsurance.findFirst({
+    where: { id: employeeData.healthInsuranceId, deletedAt: null },
+  });
+  if (!healthInsurance) {
+    const error = new Error('La obra social seleccionada no existe');
+    error.status = 400;
+    throw error;
+  }
+
+  // Validar Sindicato si fue provisto
+  if (employeeData.unionId && employeeData.unionId.trim() !== '') {
+    const union = await tenantPrisma.union.findFirst({
+      where: { id: employeeData.unionId.trim(), deletedAt: null },
+    });
+    if (!union) {
+      const error = new Error('El sindicato seleccionado no existe');
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  // Validar Mutual si fue provista
+  if (employeeData.mutualId && employeeData.mutualId.trim() !== '') {
+    const mutual = await tenantPrisma.mutual.findFirst({
+      where: { id: employeeData.mutualId.trim(), deletedAt: null },
+    });
+    if (!mutual) {
+      const error = new Error('La mutual seleccionada no existe');
+      error.status = 400;
+      throw error;
+    }
+  }
+
+  // Validar Modalidad de Contratación contra el catálogo MASTER ARCA si fue provista
+  if (employeeData.contractModalityCode && employeeData.contractModalityCode.trim() !== '') {
+    await assertMasterArcaContractModalityExists(employeeData.contractModalityCode);
+  }
+
+  const relativesData =
+    employeeData.relatives && Array.isArray(employeeData.relatives) && employeeData.relatives.length > 0
+      ? {
+          create: employeeData.relatives.map((r) => ({
+            id: crypto.randomUUID(),
+            kinshipId: r.kinshipId,
+            lastName: r.lastName.trim(),
+            firstName: r.firstName.trim(),
+            documentType: r.documentType || 'DNI',
+            documentNumber: r.documentNumber.trim(),
+            cuil: r.cuil ? r.cuil.replace(/\D/g, '') : null,
+            birthDate: new Date(r.birthDate),
+            isAdherent: Boolean(r.isAdherent),
+            appliesIncomeTax: Boolean(r.appliesIncomeTax),
+            incomeTaxDeductionType: r.incomeTaxDeductionType || null,
+            deductionPercentage: r.deductionPercentage !== undefined ? Number(r.deductionPercentage) : 100.00,
+            isDisability: Boolean(r.isDisability),
+            hasNoIncomeOrBelowMni: r.hasNoIncomeOrBelowMni !== undefined ? Boolean(r.hasNoIncomeOrBelowMni) : true,
+            validFromMonth: r.validFromMonth !== undefined ? parseInt(r.validFromMonth, 10) : 1,
+            validToMonth: r.validToMonth !== undefined ? parseInt(r.validToMonth, 10) : 12,
+          })),
+        }
+      : undefined;
+
+  let assignedBasicSalary = employeeData.basicSalary !== undefined && employeeData.basicSalary !== null ? Number(employeeData.basicSalary) : 0.00;
+  const modCode = employeeData.contractModalityCode ? employeeData.contractModalityCode.trim() : null;
+  const isInternModality = modCode === '27' || modCode === '51';
+  const isDirectorModality = modCode === '99';
+  const scaleId = employeeData.salaryScaleId ? employeeData.salaryScaleId.trim() : null;
+
+  if (scaleId) {
+    const scale = await tenantPrisma.salaryScale.findFirst({
+      where: { id: scaleId, deletedAt: null },
+    });
+    if (scale) {
+      assertSalaryScaleCompatibility(scale, {
+        isInternModality,
+        isDirectorModality,
+        jobCctCode: jobPosition?.cctCode || null,
+      });
+      assignedBasicSalary = Number(scale.amount);
+    }
+  }
+
+  let assignedWorkShiftId = employeeData.workShiftId ? employeeData.workShiftId.trim() : null;
+  let finalWeeklyHours = hoursToDecimal(employeeData.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
+  let finalMonthlyHours = hoursToDecimal(employeeData.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
+  let finalIsPartTime = employeeData.isPartTime ?? false;
+  let finalPartTimePct = employeeData.partTimePercentage !== undefined && employeeData.partTimePercentage !== null ? Number(employeeData.partTimePercentage) : 100.00;
+
+  if (assignedWorkShiftId) {
+    const ws = await tenantPrisma.workShift.findFirst({
+      where: { id: assignedWorkShiftId, deletedAt: null },
+    });
+    if (ws) {
+      finalWeeklyHours = Number(ws.weeklyHours || 48.00);
+      finalMonthlyHours = Number(ws.monthlyHours || 200.00);
+      finalIsPartTime = finalWeeklyHours < 48;
+      finalPartTimePct = ws.percentage !== undefined && ws.percentage !== null
+        ? Number(ws.percentage)
+        : Math.min(100, Math.round((finalWeeklyHours / 48) * 10000) / 100);
+    } else {
+      assignedWorkShiftId = null;
+    }
+  }
+
+  const createPayload = {
+    data: {
+      id: crypto.randomUUID(),
+      fileNumber: employeeData.fileNumber.trim(),
+      lastName: employeeData.lastName.trim(),
+      firstName: employeeData.firstName.trim(),
+      photo: employeeData.photo ? employeeData.photo.trim() : null,
+      documentType: employeeData.documentType || 'DNI',
+      documentNumber: cleanDoc,
+      cuil: cleanCuil,
+      gender: employeeData.gender || 'M',
+      birthDate: new Date(employeeData.birthDate),
+      hireDate: new Date(employeeData.hireDate),
+      street: employeeData.street ? employeeData.street.trim() : null,
+      streetNumber: employeeData.streetNumber ? employeeData.streetNumber.trim() : null,
+      floor: employeeData.floor ? employeeData.floor.trim() : null,
+      apartment: employeeData.apartment ? employeeData.apartment.trim() : null,
+      city: employeeData.city ? employeeData.city.trim() : null,
+      postalCode: employeeData.postalCode ? employeeData.postalCode.trim() : null,
+      province: employeeData.province ? employeeData.province.trim() : null,
+      email: employeeData.email ? employeeData.email.trim() : null,
+      phone: employeeData.phone ? employeeData.phone.trim() : null,
+      status: employeeData.status || 'ACTIVE',
+      terminationDate: employeeData.terminationDate ? normalizeUtcNoonDate(employeeData.terminationDate) : null,
+      terminationReason: employeeData.terminationReason ? employeeData.terminationReason.trim() : null,
+      departmentId: employeeData.departmentId,
+      jobPositionId: employeeData.jobPositionId,
+      healthInsuranceId: employeeData.healthInsuranceId,
+      unionId: employeeData.unionId ? employeeData.unionId.trim() : null,
+      mutualId: employeeData.mutualId ? employeeData.mutualId.trim() : null,
+      contractModalityCode: modCode,
+      salaryScaleId: scaleId,
+      workShiftId: assignedWorkShiftId,
+      paymentMethodId: employeeData.paymentMethodId ? employeeData.paymentMethodId.trim() : null,
+      payrollGroup: employeeData.payrollGroup ? employeeData.payrollGroup.trim() : 'MENSUAL',
+      isPartTime: finalIsPartTime,
+      weeklyWorkingHours: finalWeeklyHours,
+      monthlyWorkingHours: finalMonthlyHours,
+      partTimePercentage: finalPartTimePct,
+      basicSalary: assignedBasicSalary,
+      hourlyRate: employeeData.hourlyRate !== undefined && employeeData.hourlyRate !== null ? Number(employeeData.hourlyRate) : 0.00,
+      cbu: employeeData.cbu ? employeeData.cbu.trim() : null,
+      bankAccountType: employeeData.bankAccountType ? employeeData.bankAccountType.trim() : null,
+      relatives: relativesData,
+    },
+    include: {
+      department: true,
+      jobPosition: true,
+      healthInsurance: true,
+      union: true,
+      mutual: true,
+      salaryScale: true,
+      workShift: true,
+      paymentMethod: true,
+      relatives: {
+        include: { kinship: true },
+      },
+      assignedConcepts: {
+        include: { concept: true },
+        orderBy: { createdAt: 'asc' },
+      },
+    },
+  };
+
+  let employee;
+  try {
+    employee = await tenantPrisma.employee.create(createPayload);
+  } catch (err) {
+    if (err.code === 'P2011' || err.code === 'P2021' || err.code === 'P2022') {
+      await ensureTenantPersonnelSchema(tenantPrisma, { force: true });
+      employee = await tenantPrisma.employee.create(createPayload);
+    } else {
+      throw err;
+    }
+  }
+
+  if (employee.unionId || employee.mutualId) {
+    await syncAffiliationConcepts(tenantPrisma, employee.id, {
+      unionId: employee.unionId,
+      mutualId: employee.mutualId,
+    });
+    employee.assignedConcepts = await tenantPrisma.employeeConcept.findMany({
+      where: {
+        employeeId: employee.id,
+        concept: { deletedAt: null },
+      },
+      include: { concept: true },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
+
+  const hydrated = await hydrateEmployee(employee);
+
+  return {
+    ...hydrated,
+    weeklyWorkingHoursFormatted: decimalToHours(hydrated.weeklyWorkingHours),
+    monthlyWorkingHoursFormatted: decimalToHours(hydrated.monthlyWorkingHours),
+  };
+}
+
+/**
+ * Actualiza un empleado en la base del tenant.
+ */
+export async function updateEmployee(tenantPrisma, employeeId, data) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+  const current = await getEmployeeById(tenantPrisma, employeeId);
+
+  const cleanCuil = data.cuil ? data.cuil.replace(/\D/g, '') : undefined;
+  const cleanDoc = data.documentNumber ? data.documentNumber.trim() : undefined;
+  const fileNum = data.fileNumber ? data.fileNumber.trim() : undefined;
+
+  // Si se modificó el CUIL o el legajo, validar unicidad
+  if ((cleanCuil && cleanCuil !== current.cuil) || (fileNum && fileNum !== current.fileNumber)) {
+    const existing = await tenantPrisma.employee.findFirst({
+      where: {
+        OR: [
+          ...(cleanCuil ? [{ cuil: cleanCuil }] : []),
+          ...(fileNum ? [{ fileNumber: fileNum }] : []),
+        ],
+        NOT: { id: employeeId },
+        deletedAt: null,
+      },
+    });
+
+    if (existing) {
+      const error = new Error(
+        existing.cuil === cleanCuil
+          ? 'Ya existe otro empleado registrado con ese CUIL en esta empresa'
+          : 'Ya existe otro empleado con ese número de legajo en esta empresa'
+      );
+      error.status = 409;
+      throw error;
+    }
+  }
+
+  const updatePayload = {};
+  if (fileNum !== undefined) updatePayload.fileNumber = fileNum;
+  if (data.lastName !== undefined) updatePayload.lastName = data.lastName.trim();
+  if (data.firstName !== undefined) updatePayload.firstName = data.firstName.trim();
+  if (data.photo !== undefined) updatePayload.photo = data.photo ? data.photo.trim() : null;
+  if (data.documentType !== undefined) updatePayload.documentType = data.documentType;
+  if (cleanDoc !== undefined) updatePayload.documentNumber = cleanDoc;
+  if (cleanCuil !== undefined) updatePayload.cuil = cleanCuil;
+  if (data.gender !== undefined) updatePayload.gender = data.gender;
+  if (data.birthDate !== undefined) updatePayload.birthDate = new Date(data.birthDate);
+  if (data.hireDate !== undefined) updatePayload.hireDate = new Date(data.hireDate);
+  if (data.street !== undefined) updatePayload.street = data.street ? data.street.trim() : null;
+  if (data.streetNumber !== undefined) updatePayload.streetNumber = data.streetNumber ? data.streetNumber.trim() : null;
+  if (data.floor !== undefined) updatePayload.floor = data.floor ? data.floor.trim() : null;
+  if (data.apartment !== undefined) updatePayload.apartment = data.apartment ? data.apartment.trim() : null;
+  if (data.city !== undefined) updatePayload.city = data.city ? data.city.trim() : null;
+  if (data.postalCode !== undefined) updatePayload.postalCode = data.postalCode ? data.postalCode.trim() : null;
+  if (data.province !== undefined) updatePayload.province = data.province ? data.province.trim() : null;
+  if (data.email !== undefined) updatePayload.email = data.email ? data.email.trim() : null;
+  if (data.phone !== undefined) updatePayload.phone = data.phone ? data.phone.trim() : null;
+  if (data.status !== undefined) updatePayload.status = data.status;
+  if (data.terminationDate !== undefined) {
+    updatePayload.terminationDate = data.terminationDate ? normalizeUtcNoonDate(data.terminationDate) : null;
+  }
+  if (data.terminationReason !== undefined) {
+    updatePayload.terminationReason = data.terminationReason ? data.terminationReason.trim() : null;
+  }
+  if (data.status === 'ACTIVE' && data.terminationDate === undefined) {
+    updatePayload.terminationDate = null;
+    updatePayload.terminationReason = null;
+  }
+  
+  if (data.departmentId !== undefined) {
+    const dept = await tenantPrisma.department.findFirst({ where: { id: data.departmentId, deletedAt: null } });
+    if (!dept) {
+      const error = new Error('El sector seleccionado no existe');
+      error.status = 400;
+      throw error;
+    }
+    updatePayload.departmentId = data.departmentId;
+  }
+  
+  let resolvedJobCctCode = current.jobPosition?.cctCode || null;
+  if (data.jobPositionId !== undefined) {
+    const job = await tenantPrisma.jobPosition.findFirst({ where: { id: data.jobPositionId, deletedAt: null } });
+    if (!job) {
+      const error = new Error('El puesto de trabajo seleccionado no existe');
+      error.status = 400;
+      throw error;
+    }
+    updatePayload.jobPositionId = data.jobPositionId;
+    resolvedJobCctCode = job.cctCode || null;
+  }
+  
+  if (data.healthInsuranceId !== undefined) {
+    const hi = await tenantPrisma.healthInsurance.findFirst({ where: { id: data.healthInsuranceId, deletedAt: null } });
+    if (!hi) {
+      const error = new Error('La obra social seleccionada no existe');
+      error.status = 400;
+      throw error;
+    }
+    updatePayload.healthInsuranceId = data.healthInsuranceId;
+  }
+
+  if (data.unionId !== undefined) {
+    if (data.unionId && data.unionId.trim()) {
+      const un = await tenantPrisma.union.findFirst({ where: { id: data.unionId.trim(), deletedAt: null } });
+      if (!un) {
+        const error = new Error('El sindicato seleccionado no existe');
+        error.status = 400;
+        throw error;
+      }
+      updatePayload.unionId = data.unionId.trim();
+    } else {
+      updatePayload.unionId = null;
+    }
+  }
+
+  if (data.mutualId !== undefined) {
+    if (data.mutualId && data.mutualId.trim()) {
+      const mut = await tenantPrisma.mutual.findFirst({ where: { id: data.mutualId.trim(), deletedAt: null } });
+      if (!mut) {
+        const error = new Error('La mutual seleccionada no existe');
+        error.status = 400;
+        throw error;
+      }
+      updatePayload.mutualId = data.mutualId.trim();
+    } else {
+      updatePayload.mutualId = null;
+    }
+  }
+
+  if (data.contractModalityCode !== undefined) {
+    if (data.contractModalityCode && data.contractModalityCode.trim()) {
+      updatePayload.contractModalityCode = await assertMasterArcaContractModalityExists(data.contractModalityCode);
+    } else {
+      updatePayload.contractModalityCode = null;
+    }
+  }
+
+  const targetModality = updatePayload.contractModalityCode !== undefined ? updatePayload.contractModalityCode : current.contractModalityCode;
+  const isInternModality = targetModality === '27' || targetModality === '51';
+  const isDirectorModality = targetModality === '99';
+
+  if (data.salaryScaleId !== undefined) {
+    updatePayload.salaryScaleId = data.salaryScaleId ? data.salaryScaleId.trim() : null;
+    if (updatePayload.salaryScaleId) {
+      const scale = await tenantPrisma.salaryScale.findFirst({
+        where: { id: updatePayload.salaryScaleId, deletedAt: null },
+      });
+      if (scale) {
+        assertSalaryScaleCompatibility(scale, {
+          isInternModality,
+          isDirectorModality,
+          jobCctCode: resolvedJobCctCode,
+        });
+        updatePayload.basicSalary = Number(scale.amount);
+      }
+    }
+  } else if (
+    (updatePayload.contractModalityCode !== undefined || updatePayload.jobPositionId !== undefined) &&
+    current.salaryScaleId
+  ) {
+    const scale = await tenantPrisma.salaryScale.findFirst({
+      where: { id: current.salaryScaleId, deletedAt: null },
+    });
+    if (scale) {
+      assertSalaryScaleCompatibility(scale, {
+        isInternModality,
+        isDirectorModality,
+        jobCctCode: resolvedJobCctCode,
+      });
+    }
+  }
+
+  if (data.workShiftId !== undefined) {
+    const wsId = data.workShiftId ? data.workShiftId.trim() : null;
+    updatePayload.workShiftId = wsId;
+    if (wsId) {
+      const ws = await tenantPrisma.workShift.findFirst({
+        where: { id: wsId, deletedAt: null },
+      });
+      if (ws) {
+        const wHours = Number(ws.weeklyHours || 48.00);
+        const mHours = Number(ws.monthlyHours || 200.00);
+        updatePayload.weeklyWorkingHours = wHours;
+        updatePayload.monthlyWorkingHours = mHours;
+        updatePayload.isPartTime = wHours < 48;
+        updatePayload.partTimePercentage = ws.percentage !== undefined && ws.percentage !== null
+          ? Number(ws.percentage)
+          : Math.min(100, Math.round((wHours / 48) * 10000) / 100);
+      }
+    }
+  }
+
+  if (data.paymentMethodId !== undefined) {
+    if (data.paymentMethodId && data.paymentMethodId.trim()) {
+      const pm = await tenantPrisma.paymentMethod.findFirst({
+        where: { id: data.paymentMethodId.trim(), deletedAt: null },
+      });
+      if (!pm) {
+        const error = new Error('La forma de pago seleccionada no existe');
+        error.status = 400;
+        throw error;
+      }
+      updatePayload.paymentMethodId = data.paymentMethodId.trim();
+    } else {
+      updatePayload.paymentMethodId = null;
+    }
+  }
+
+  if (data.payrollGroup !== undefined) updatePayload.payrollGroup = data.payrollGroup ? data.payrollGroup.trim() : 'MENSUAL';
+  if (data.isPartTime !== undefined && data.workShiftId === undefined) updatePayload.isPartTime = Boolean(data.isPartTime);
+  if (data.weeklyWorkingHours !== undefined && data.workShiftId === undefined) updatePayload.weeklyWorkingHours = hoursToDecimal(data.weeklyWorkingHours, isInternModality ? 20.00 : 48.00);
+  if (data.monthlyWorkingHours !== undefined && data.workShiftId === undefined) updatePayload.monthlyWorkingHours = hoursToDecimal(data.monthlyWorkingHours, isInternModality ? 80.00 : 200.00);
+  if (data.partTimePercentage !== undefined && data.workShiftId === undefined) updatePayload.partTimePercentage = Number(data.partTimePercentage);
+  if (data.basicSalary !== undefined) updatePayload.basicSalary = Number(data.basicSalary);
+  if (data.hourlyRate !== undefined) updatePayload.hourlyRate = Number(data.hourlyRate);
+  if (data.cbu !== undefined) updatePayload.cbu = data.cbu ? data.cbu.trim() : null;
+  if (data.bankAccountType !== undefined) updatePayload.bankAccountType = data.bankAccountType ? data.bankAccountType.trim() : null;
+
+  if (isInternModality) {
+    // Para pasantes (Ley 26.427), desactivar conceptos asignados residuales de código 1001, remunerativos o eliminados
+    await tenantPrisma.employeeConcept.updateMany({
+      where: {
+        employeeId,
+        OR: [
+          { concept: { code: '1001' } },
+          { concept: { type: 'REMUNERATIVE' } },
+          { concept: { deletedAt: { not: null } } },
+        ],
+      },
+      data: { isActive: false },
+    });
+  }
+
+  const employee = await tenantPrisma.employee.update({
+    where: { id: employeeId },
+    data: updatePayload,
+    include: {
+      department: true,
+      jobPosition: true,
+      healthInsurance: true,
+      union: true,
+      mutual: true,
+      salaryScale: true,
+      workShift: true,
+      paymentMethod: true,
+      assignedConcepts: {
+        where: {
+          concept: { deletedAt: null },
+        },
+        include: { concept: true },
+        orderBy: { createdAt: 'asc' },
+      },
+    },
+  });
+
+  if (data.unionId !== undefined || data.mutualId !== undefined) {
+    await syncAffiliationConcepts(tenantPrisma, employeeId, {
+      unionId: updatePayload.unionId !== undefined ? updatePayload.unionId : current.unionId,
+      mutualId: updatePayload.mutualId !== undefined ? updatePayload.mutualId : current.mutualId,
+      previousUnionId: current.unionId,
+      previousMutualId: current.mutualId,
+    });
+    employee.assignedConcepts = await tenantPrisma.employeeConcept.findMany({
+      where: {
+        employeeId,
+        concept: { deletedAt: null },
+      },
+      include: { concept: true },
+      orderBy: { createdAt: 'asc' },
+    });
+  }
+
+  const hydrated = await hydrateEmployee(employee);
+
+  return {
+    ...hydrated,
+    weeklyWorkingHoursFormatted: decimalToHours(hydrated.weeklyWorkingHours),
+    monthlyWorkingHoursFormatted: decimalToHours(hydrated.monthlyWorkingHours),
+  };
+}
+
+/**
+ * Da de baja lógica a un empleado.
+ */
+export async function deleteEmployee(tenantPrisma, employeeId) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+  await getEmployeeById(tenantPrisma, employeeId);
+
+  return tenantPrisma.employee.update({
+    where: { id: employeeId },
+    data: {
+      status: 'INACTIVE',
+      deletedAt: new Date(),
+      terminationDate: new Date(),
+    },
+  });
+}
+
+/**
+ * Importa empleados masivamente desde un listado (ej. Excel).
+ * Columnas requeridas:
+ * Legajo, Apellido, Nombres, Tipo de documento, Número de documento, CUIL, Género,
+ * Fecha de nacimiento, Fecha de ingreso, Sector, Puesto de Trabajo, Obra Social,
+ * Calle, Número, Localidad, Provincia, E-mail, Teléfono.
+ * Columnas opcionales (pueden estar vacías):
+ * Sindicato, Mutual, Modalidad de contratación, Piso, Departamento, Código Postal, Fecha de baja, Motivo de baja.
+ * Claves foráneas: busca por código o por descripción/nombre.
+ * Bajas: si viene Fecha de baja, se da de alta con status 'INACTIVE', fecha y motivo.
+ */
+export async function importEmployees(tenantPrisma, employees) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  if (!Array.isArray(employees) || employees.length === 0) {
+    const error = new Error('No se enviaron empleados para importar');
+    error.status = 400;
+    throw error;
+  }
+
+  // 1. Pre-cargar entidades relacionadas para búsqueda inteligente por código o por nombre
+  const [
+    departments,
+    jobPositions,
+    healthInsurances,
+    unions,
+    mutuals,
+    contractModalities,
+    existingEmployees,
+  ] = await Promise.all([
+    tenantPrisma.department.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true },
+    }),
+    tenantPrisma.jobPosition.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true },
+    }),
+    tenantPrisma.healthInsurance.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true },
+    }),
+    tenantPrisma.union.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true },
+    }),
+    tenantPrisma.mutual.findMany({
+      where: { deletedAt: null },
+      select: { id: true, code: true, name: true },
+    }),
+    listMasterArcaContractModalities(),
+    tenantPrisma.employee.findMany({
+      where: { deletedAt: null },
+      select: { id: true, fileNumber: true, cuil: true },
+    }),
+  ]);
+
+  // Mapas normalizados en minúsculas (código y nombre)
+  const deptMap = new Map();
+  for (const d of departments) {
+    if (d.code) deptMap.set(d.code.trim().toLowerCase(), d.id);
+    if (d.name) deptMap.set(d.name.trim().toLowerCase(), d.id);
+  }
+
+  const jobMap = new Map();
+  for (const j of jobPositions) {
+    if (j.code) jobMap.set(j.code.trim().toLowerCase(), j.id);
+    if (j.name) jobMap.set(j.name.trim().toLowerCase(), j.id);
+  }
+
+  const hiMap = new Map();
+  for (const h of healthInsurances) {
+    if (h.code) hiMap.set(h.code.trim().toLowerCase(), h.id);
+    if (h.name) hiMap.set(h.name.trim().toLowerCase(), h.id);
+  }
+
+  const unionMap = new Map();
+  for (const u of unions) {
+    if (u.code) unionMap.set(u.code.trim().toLowerCase(), u.id);
+    if (u.name) unionMap.set(u.name.trim().toLowerCase(), u.id);
+  }
+
+  const mutualMap = new Map();
+  for (const m of mutuals) {
+    if (m.code) mutualMap.set(m.code.trim().toLowerCase(), m.id);
+    if (m.name) mutualMap.set(m.name.trim().toLowerCase(), m.id);
+  }
+
+  const modalityMap = new Map();
+  for (const mod of contractModalities) {
+    if (mod.code) modalityMap.set(mod.code.trim().toLowerCase(), mod.code);
+    if (mod.name) modalityMap.set(mod.name.trim().toLowerCase(), mod.code);
+  }
+
+  // Conjuntos existentes en base de datos para unicidad
+  const existingFilesSet = new Set(
+    existingEmployees.map((e) => (e.fileNumber || '').trim().toLowerCase())
+  );
+  const existingCuilsSet = new Set(
+    existingEmployees.map((e) => (e.cuil || '').trim())
+  );
+
+  const toCreate = [];
+  const skipped = [];
+  const batchFilesSet = new Set();
+  const batchCuilsSet = new Set();
+
+  const parseDate = (val) => {
+    if (!val) return null;
+    if (val instanceof Date) return isNaN(val.getTime()) ? null : val;
+    if (typeof val === 'number') {
+      const d = new Date(Math.round((val - 25569) * 86400 * 1000));
+      return isNaN(d.getTime()) ? null : d;
+    }
+    const str = String(val).trim();
+    if (!str) return null;
+    const dmyMatch = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+    if (dmyMatch) {
+      const day = parseInt(dmyMatch[1], 10);
+      const month = parseInt(dmyMatch[2], 10) - 1;
+      const year = parseInt(dmyMatch[3], 10);
+      const d = new Date(year, month, day);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    const d = new Date(str);
+    return isNaN(d.getTime()) ? null : d;
+  };
+
+  for (let idx = 0; idx < employees.length; idx++) {
+    const item = employees[idx];
+    const fileNumber = item.fileNumber !== undefined && item.fileNumber !== null ? String(item.fileNumber).trim() : '';
+    const lastName = item.lastName !== undefined && item.lastName !== null ? String(item.lastName).trim() : '';
+    const firstName = item.firstName !== undefined && item.firstName !== null ? String(item.firstName).trim() : '';
+    const documentType = item.documentType !== undefined && item.documentType !== null ? String(item.documentType).trim().toUpperCase() : 'DNI';
+    const documentNumber = item.documentNumber !== undefined && item.documentNumber !== null ? String(item.documentNumber).trim().replace(/\./g, '') : '';
+    const rawCuil = item.cuil !== undefined && item.cuil !== null ? String(item.cuil).trim() : '';
+    const cleanCuil = rawCuil.replace(/\D/g, '');
+    const gender = item.gender !== undefined && item.gender !== null ? String(item.gender).trim().toUpperCase() : 'M';
+    const street = item.street !== undefined && item.street !== null ? String(item.street).trim() : '';
+    const streetNumber = item.streetNumber !== undefined && item.streetNumber !== null ? String(item.streetNumber).trim() : '';
+    const floor = item.floor !== undefined && item.floor !== null ? String(item.floor).trim() : null;
+    const apartment = item.apartment !== undefined && item.apartment !== null ? String(item.apartment).trim() : null;
+    const city = item.city !== undefined && item.city !== null ? String(item.city).trim() : '';
+    const postalCode = item.postalCode !== undefined && item.postalCode !== null ? String(item.postalCode).trim() : null;
+    const province = item.province !== undefined && item.province !== null ? String(item.province).trim() : '';
+    const email = item.email !== undefined && item.email !== null ? String(item.email).trim() : '';
+    const phone = item.phone !== undefined && item.phone !== null ? String(item.phone).trim() : '';
+
+    const rawDept = item.department !== undefined && item.department !== null ? String(item.department).trim() : '';
+    const rawJob = item.jobPosition !== undefined && item.jobPosition !== null ? String(item.jobPosition).trim() : '';
+    const rawHi = item.healthInsurance !== undefined && item.healthInsurance !== null ? String(item.healthInsurance).trim() : '';
+    const rawUnion = item.union !== undefined && item.union !== null ? String(item.union).trim() : '';
+    const rawMutual = item.mutual !== undefined && item.mutual !== null ? String(item.mutual).trim() : '';
+    const rawModality = item.contractModality !== undefined && item.contractModality !== null ? String(item.contractModality).trim() : '';
+
+    const labelName = lastName || firstName ? `${lastName}, ${firstName}`.trim() : '(Sin nombre)';
+
+    // Validaciones de obligatoriedad de campos de texto
+    if (!fileNumber) {
+      skipped.push({ fileNumber: '-', name: labelName, reason: 'El número de legajo es obligatorio' });
+      continue;
+    }
+    if (!lastName || lastName.length < 2) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El apellido es obligatorio (mínimo 2 caracteres)' });
+      continue;
+    }
+    if (!firstName || firstName.length < 2) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El nombre es obligatorio (mínimo 2 caracteres)' });
+      continue;
+    }
+    if (!documentNumber) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El número de documento es obligatorio' });
+      continue;
+    }
+    if (!cleanCuil || cleanCuil.length !== 11 || !isValidCuit(cleanCuil)) {
+      skipped.push({ fileNumber, name: labelName, reason: `CUIL inválido ("${rawCuil}"). Debe tener 11 dígitos y cumplir algoritmo AFIP/ARCA` });
+      continue;
+    }
+    if (!gender) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El género es obligatorio' });
+      continue;
+    }
+
+    const birthDate = parseDate(item.birthDate);
+    if (!birthDate) {
+      skipped.push({ fileNumber, name: labelName, reason: 'Fecha de nacimiento inválida u obligatoria' });
+      continue;
+    }
+
+    const hireDate = parseDate(item.hireDate);
+    if (!hireDate) {
+      skipped.push({ fileNumber, name: labelName, reason: 'Fecha de ingreso inválida u obligatoria' });
+      continue;
+    }
+
+    if (!street) {
+      skipped.push({ fileNumber, name: labelName, reason: 'La calle del domicilio es obligatoria' });
+      continue;
+    }
+    if (!streetNumber) {
+      skipped.push({ fileNumber, name: labelName, reason: 'La altura / número de calle es obligatoria' });
+      continue;
+    }
+    if (!city) {
+      skipped.push({ fileNumber, name: labelName, reason: 'La localidad es obligatoria' });
+      continue;
+    }
+    if (!province) {
+      skipped.push({ fileNumber, name: labelName, reason: 'La provincia es obligatoria' });
+      continue;
+    }
+    if (!email) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El e-mail es obligatorio' });
+      continue;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      skipped.push({ fileNumber, name: labelName, reason: `Formato de e-mail inválido ("${email}")` });
+      continue;
+    }
+    if (!phone) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El teléfono es obligatorio' });
+      continue;
+    }
+
+    // Validación y resolución de Claves Foráneas Obligatorias
+    if (!rawDept) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El sector es obligatorio' });
+      continue;
+    }
+    const departmentId = deptMap.get(rawDept.toLowerCase());
+    if (!departmentId) {
+      skipped.push({ fileNumber, name: labelName, reason: `El sector "${rawDept}" no existe en el sistema (código o denominación)` });
+      continue;
+    }
+
+    if (!rawJob) {
+      skipped.push({ fileNumber, name: labelName, reason: 'El puesto de trabajo es obligatorio' });
+      continue;
+    }
+    const jobPositionId = jobMap.get(rawJob.toLowerCase());
+    if (!jobPositionId) {
+      skipped.push({ fileNumber, name: labelName, reason: `El puesto de trabajo "${rawJob}" no existe en el sistema (código o denominación)` });
+      continue;
+    }
+
+    if (!rawHi) {
+      skipped.push({ fileNumber, name: labelName, reason: 'La obra social es obligatoria' });
+      continue;
+    }
+    const healthInsuranceId = hiMap.get(rawHi.toLowerCase());
+    if (!healthInsuranceId) {
+      skipped.push({ fileNumber, name: labelName, reason: `La obra social "${rawHi}" no existe en el sistema (código o denominación)` });
+      continue;
+    }
+
+    // Resolución de Claves Foráneas Opcionales
+    let unionId = null;
+    if (rawUnion) {
+      unionId = unionMap.get(rawUnion.toLowerCase());
+      if (!unionId) {
+        skipped.push({ fileNumber, name: labelName, reason: `El sindicato "${rawUnion}" no existe en el sistema` });
+        continue;
+      }
+    }
+
+    let mutualId = null;
+    if (rawMutual) {
+      mutualId = mutualMap.get(rawMutual.toLowerCase());
+      if (!mutualId) {
+        skipped.push({ fileNumber, name: labelName, reason: `La mutual "${rawMutual}" no existe en el sistema` });
+        continue;
+      }
+    }
+
+    let contractModalityCode = null;
+    if (rawModality) {
+      contractModalityCode = modalityMap.get(rawModality.toLowerCase());
+      if (!contractModalityCode) {
+        skipped.push({ fileNumber, name: labelName, reason: `La modalidad de contratación "${rawModality}" no existe en el catálogo ARCA` });
+        continue;
+      }
+    }
+
+    // Control de Duplicados contra BD
+    const fileLower = fileNumber.toLowerCase();
+    if (existingFilesSet.has(fileLower)) {
+      skipped.push({ fileNumber, name: labelName, reason: `Ya existe un empleado con el legajo "${fileNumber}" en esta empresa` });
+      continue;
+    }
+    if (existingCuilsSet.has(cleanCuil)) {
+      skipped.push({ fileNumber, name: labelName, reason: `Ya existe un empleado registrado con el CUIL "${rawCuil}" en esta empresa` });
+      continue;
+    }
+
+    // Control de Duplicados dentro del Lote
+    if (batchFilesSet.has(fileLower)) {
+      skipped.push({ fileNumber, name: labelName, reason: `Legajo "${fileNumber}" repetido dentro del mismo archivo Excel` });
+      continue;
+    }
+    if (batchCuilsSet.has(cleanCuil)) {
+      skipped.push({ fileNumber, name: labelName, reason: `CUIL "${rawCuil}" repetido dentro del mismo archivo Excel` });
+      continue;
+    }
+
+    // Manejo de Bajas
+    let status = 'ACTIVE';
+    let terminationDate = null;
+    let terminationReason = null;
+    if (item.terminationDate !== undefined && item.terminationDate !== null && String(item.terminationDate).trim()) {
+      const parsedTerm = parseDate(item.terminationDate);
+      if (!parsedTerm) {
+        skipped.push({ fileNumber, name: labelName, reason: 'Fecha de baja inválida' });
+        continue;
+      }
+      if (parsedTerm < hireDate) {
+        skipped.push({ fileNumber, name: labelName, reason: 'La fecha de baja no puede ser anterior a la fecha de ingreso' });
+        continue;
+      }
+      status = 'INACTIVE';
+      terminationDate = parsedTerm;
+      terminationReason = item.terminationReason !== undefined && item.terminationReason !== null && String(item.terminationReason).trim()
+        ? String(item.terminationReason).trim()
+        : 'Baja informada en importación';
+    }
+
+    batchFilesSet.add(fileLower);
+    batchCuilsSet.add(cleanCuil);
+
+    toCreate.push({
+      id: crypto.randomUUID(),
+      fileNumber,
+      lastName,
+      firstName,
+      photo: null,
+      documentType,
+      documentNumber,
+      cuil: cleanCuil,
+      gender,
+      birthDate,
+      hireDate,
+      street,
+      streetNumber,
+      floor: floor || null,
+      apartment: apartment || null,
+      city,
+      postalCode: postalCode || null,
+      province,
+      email,
+      phone,
+      status,
+      terminationDate,
+      terminationReason,
+      departmentId,
+      jobPositionId,
+      healthInsuranceId,
+      unionId,
+      mutualId,
+      contractModalityCode,
+    });
+  }
+
+  // Inserción en transacción
+  if (toCreate.length > 0) {
+    const createdEmployees = await tenantPrisma.$transaction(
+      toCreate.map((emp) =>
+        tenantPrisma.employee.create({
+          data: emp,
+        })
+      )
+    );
+
+    for (const emp of createdEmployees) {
+      if (emp.unionId || emp.mutualId) {
+        await syncAffiliationConcepts(tenantPrisma, emp.id, {
+          unionId: emp.unionId,
+          mutualId: emp.mutualId,
+        });
+      }
+    }
+  }
+
+  return {
+    totalProcessed: employees.length,
+    createdCount: toCreate.length,
+    skippedCount: skipped.length,
+    created: toCreate,
+    skipped,
+  };
+}

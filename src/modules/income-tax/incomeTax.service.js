@@ -20,6 +20,30 @@ export async function calculateMonthlyIncomeTax(
   const year = parseInt(fiscalYear, 10);
   const targetMonth = parseInt(month, 10);
 
+  // 0. Rechazar recálculo inmediato si la liquidación impositiva o el período fiscal del mes ya fueron cerrados
+  const [fiscalPeriod, existingSettlement] = await Promise.all([
+    tenantPrisma.payrollFiscalPeriod?.findUnique
+      ? tenantPrisma.payrollFiscalPeriod.findUnique({
+          where: { year_month: { year, month: targetMonth } },
+        })
+      : Promise.resolve(null),
+    tenantPrisma.incomeTaxSettlement.findUnique({
+      where: {
+        fiscalYear_month_settlementType: {
+          fiscalYear: year,
+          month: targetMonth,
+          settlementType,
+        },
+      },
+    }),
+  ]);
+  let settlement = existingSettlement;
+  if (fiscalPeriod?.status === 'CLOSED' || settlement?.status === 'CLOSED') {
+    const error = new Error(`La liquidación de Ganancias ${targetMonth}/${year} (${settlementType}) pertenece a un período cerrado y no puede recalcularse`);
+    error.status = 400;
+    throw error;
+  }
+
   // 1. Asegurar tablas impositivas
   await seedIncomeTaxDefaultsForYear(tenantPrisma, year);
   const taxTable = await getIncomeTaxTableByPeriod(tenantPrisma, year, targetMonth);
@@ -50,16 +74,6 @@ export async function calculateMonthlyIncomeTax(
   });
 
   // 3. Crear o resetear cabecera de IncomeTaxSettlement
-  let settlement = await tenantPrisma.incomeTaxSettlement.findUnique({
-    where: {
-      fiscalYear_month_settlementType: {
-        fiscalYear: year,
-        month: targetMonth,
-        settlementType,
-      },
-    },
-  });
-
   if (settlement) {
     // Si ya existía, limpiar detalles previos para recalcular limpiamente
     await tenantPrisma.incomeTaxSettlementDetail.deleteMany({
@@ -84,10 +98,11 @@ export async function calculateMonthlyIncomeTax(
   const calculatedDetails = [];
 
   for (const emp of employees) {
-    // A. Recibos de sueldo del año hasta el mes actual
+    // A. Recibos de sueldo del año hasta el mes actual (solo recibos vigentes)
     const paySlips = await tenantPrisma.paySlip.findMany({
       where: {
         employeeId: emp.id,
+        deletedAt: null,
         payrollPeriod: {
           year,
           month: { lte: targetMonth },
@@ -378,7 +393,7 @@ export async function exportSettlementToPayroll(
   // 1. Validar período de liquidación destino
   const payrollPeriod = await tenantPrisma.payrollPeriod.findUnique({
     where: { id: targetPeriodId },
-    include: { paySlips: true },
+    include: { fiscalPeriod: true, paySlips: { where: { deletedAt: null } } },
   });
 
   if (!payrollPeriod) {
@@ -387,7 +402,7 @@ export async function exportSettlementToPayroll(
     throw error;
   }
 
-  if (payrollPeriod.status === 'CLOSED') {
+  if (payrollPeriod.status === 'CLOSED' || payrollPeriod.fiscalPeriod?.status === 'CLOSED') {
     const error = new Error('No se pueden exportar novedades a un período de sueldos cerrado');
     error.status = 400;
     throw error;

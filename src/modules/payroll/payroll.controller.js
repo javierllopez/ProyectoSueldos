@@ -20,8 +20,13 @@ export async function createFiscalPeriod(req, res) {
   });
 }
 
+export async function getFiscalPeriodClosePreview(req, res) {
+  const preview = await payrollService.getFiscalPeriodClosePreview(req.tenantPrisma, req.params.id);
+  return res.status(200).json({ data: preview });
+}
+
 export async function closeFiscalPeriod(req, res) {
-  const closed = await payrollService.closeFiscalPeriod(req.tenantPrisma, req.params.id);
+  const closed = await payrollService.closeFiscalPeriod(req.tenantPrisma, req.params.id, req.body || {}, req.user || {});
   return res.status(200).json({
     message: 'Período fiscal cerrado exitosamente',
     data: closed,
@@ -56,12 +61,22 @@ export async function updatePeriod(req, res) {
   });
 }
 
+export async function getPeriodClosePreview(req, res) {
+  const preview = await payrollService.getPeriodClosePreview(req.tenantPrisma, req.params.id);
+  return res.status(200).json({ data: preview });
+}
+
 export async function closePeriod(req, res) {
-  const closed = await payrollService.closePeriod(req.tenantPrisma, req.params.id);
+  const closed = await payrollService.closePeriod(req.tenantPrisma, req.params.id, req.body || {}, req.user || {});
   return res.status(200).json({
     message: 'Liquidación cerrada exitosamente',
     data: closed,
   });
+}
+
+export async function listClosingAudits(req, res) {
+  const result = await payrollService.listClosingAudits(req.tenantPrisma, req.query);
+  return res.status(200).json(result);
 }
 
 export async function deletePeriod(req, res) {

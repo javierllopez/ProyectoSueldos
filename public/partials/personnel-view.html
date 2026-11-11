@@ -1,0 +1,1137 @@
+          <!-- VISTA 2: MÓDULO DE PERSONAL & TALENTO (EMERALD TITANIUM & JADE SAGE) -->
+          <div id="view-employees" class="app-view d-none">
+            <!-- Cabecera Ejecutiva Temática de Personal -->
+            <div class="pers-executive-header theme-personnel-header mb-2">
+              <div class="pers-header-top-row">
+                <div class="pers-header-title-wrap">
+                  <div class="pers-header-icon-box shadow-sm">
+                    <i class="ti ti-users-group"></i>
+                  </div>
+                  <div>
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                      <span class="pers-header-badge">
+                        <i class="ti ti-id-badge-2"></i> Recursos Humanos & Nómina
+                      </span>
+                      <span class="badge bg-white-lt text-white"
+                        style="font-size: 12px; border: 1px solid rgba(255,255,255,0.2);">ARCA LSD &bull; Legajos</span>
+                    </div>
+                    <h2 class="pers-header-title">Administración de Personal & Talento</h2>
+                    <div class="pers-header-subtitle">
+                      Gestión centralizada de colaboradores, legajos, estructura funcional, convenios y coberturas
+                    </div>
+                  </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="pers-tenant-pill"
+                    title="Aislamiento físico multitenant de base de datos MySQL por razón social">
+                    <span class="pers-pulse-dot"></span>
+                    <span>Empresa Activa: <strong class="personnel-active-company-name-sync"
+                        id="personnel-header-company-name">Cargando...</strong> &bull; [Legajos Aislados]</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Layout Modular: Barra Lateral y Área de Contenido -->
+            <div class="row gx-3 gy-0 module-layout-row">
+              <!-- BARRA LATERAL IZQUIERDA CON SUBMENÚES -->
+              <div class="col-lg-3 col-md-4 sidebar-col-container">
+                <div class="pers-sidebar-card personnel-sidebar-card mb-0">
+                  <div class="pers-sidebar-header">
+                    <i class="ti ti-layout-sidebar" style="font-size: 16px; color: var(--pers-emerald-600);"></i>
+                    <span class="pers-sidebar-header-title">Navegación de Personal</span>
+                  </div>
+                  <div class="pers-nav-group" id="personnel-sidebar-nav">
+                    <!-- SECCIÓN 1: NÓMINA DE PERSONAL -->
+                    <a href="#pane-personnel-employees" class="pers-nav-link personnel-nav-item active"
+                      id="side-personnel-employees" data-bs-toggle="tab" data-bs-target="#pane-personnel-employees"
+                      role="tab" aria-label="Nómina de Personal">
+                      <div class="pers-nav-icon">
+                        <i class="ti ti-users"></i>
+                      </div>
+                      <div class="pers-nav-text-col">
+                        <span class="pers-nav-text">Nómina de Personal</span>
+                        <span class="pers-nav-subtext">Legajos y colaboradores</span>
+                      </div>
+                      <span class="pers-nav-badge ms-auto" id="personnel-badge-emp-count">0</span>
+                    </a>
+
+                    <!-- SECCIÓN 2: ESTRUCTURA ORGANIZACIONAL (ACORDEÓN) -->
+                    <div class="pers-nav-parent personnel-parent-item collapsed" id="parent-personnel-org"
+                      data-bs-toggle="collapse" data-bs-target="#submenu-organization" role="button"
+                      aria-expanded="false" aria-label="Desplegar Estructura Organizacional">
+                      <div class="pers-nav-icon">
+                        <i class="ti ti-building-community"></i>
+                      </div>
+                      <div class="pers-nav-text-col">
+                        <span class="pers-nav-text">Estructura Organizacional</span>
+                        <span class="pers-nav-subtext">Sectores, puestos y jornadas</span>
+                      </div>
+                      <i class="ti ti-chevron-right pers-chevron chevron-icon"></i>
+                    </div>
+                    <div class="collapse" id="submenu-organization" data-bs-parent="#personnel-sidebar-nav">
+                      <div class="pers-submenu-wrap">
+                        <a href="#pane-personnel-departments" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-departments" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-departments" role="tab" aria-label="Sectores de Empresa">
+                          <i class="ti ti-sitemap me-1"></i>
+                          <span class="pers-text-truncate">Sectores de Empresa</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-dept-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-job-positions" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-job-positions" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-job-positions" role="tab" aria-label="Puestos de Trabajo">
+                          <i class="ti ti-briefcase me-1"></i>
+                          <span class="pers-text-truncate">Puestos de Trabajo</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-job-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-work-shifts" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-work-shifts" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-work-shifts" role="tab" aria-label="Jornadas y Horarios">
+                          <i class="ti ti-clock-hour-4 me-1"></i>
+                          <span class="pers-text-truncate">Jornadas y Horarios</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-shifts-count">0</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- SECCIÓN 3: AFILIACIONES Y COBERTURAS (ACORDEÓN) -->
+                    <div class="pers-nav-parent personnel-parent-item collapsed" id="parent-personnel-aff"
+                      data-bs-toggle="collapse" data-bs-target="#submenu-affiliations" role="button"
+                      aria-expanded="false" aria-label="Desplegar Afiliaciones">
+                      <div class="pers-nav-icon">
+                        <i class="ti ti-first-aid-kit"></i>
+                      </div>
+                      <div class="pers-nav-text-col">
+                        <span class="pers-nav-text">Afiliaciones y Coberturas</span>
+                        <span class="pers-nav-subtext">Obras sociales, gremios</span>
+                      </div>
+                      <i class="ti ti-chevron-right pers-chevron chevron-icon"></i>
+                    </div>
+                    <div class="collapse" id="submenu-affiliations" data-bs-parent="#personnel-sidebar-nav">
+                      <div class="pers-submenu-wrap">
+                        <a href="#pane-personnel-health-insurances" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-health-insurances" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-health-insurances" role="tab" aria-label="Obras Sociales">
+                          <i class="ti ti-heart-plus me-1"></i>
+                          <span class="pers-text-truncate">Obras Sociales</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-hi-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-unions" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-unions" data-bs-toggle="tab" data-bs-target="#pane-personnel-unions"
+                          role="tab" aria-label="Sindicatos">
+                          <i class="ti ti-building-bank me-1"></i>
+                          <span class="pers-text-truncate">Sindicatos</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-union-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-mutuals" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-mutuals" data-bs-toggle="tab" data-bs-target="#pane-personnel-mutuals"
+                          role="tab" aria-label="Mutuales">
+                          <i class="ti ti-certificate me-1"></i>
+                          <span class="pers-text-truncate">Mutuales</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-mutual-count">0</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- SECCIÓN 4: FAMILIA Y VÍNCULOS (ACORDEÓN) -->
+                    <div class="pers-nav-parent personnel-parent-item collapsed" id="parent-personnel-kin"
+                      data-bs-toggle="collapse" data-bs-target="#submenu-kinships" role="button" aria-expanded="false"
+                      aria-label="Desplegar Parentescos">
+                      <div class="pers-nav-icon">
+                        <i class="ti ti-heart-handshake"></i>
+                      </div>
+                      <div class="pers-nav-text-col">
+                        <span class="pers-nav-text">Familia y Vínculos</span>
+                        <span class="pers-nav-subtext">Parentescos y familiares</span>
+                      </div>
+                      <i class="ti ti-chevron-right pers-chevron chevron-icon"></i>
+                    </div>
+                    <div class="collapse" id="submenu-kinships" data-bs-parent="#personnel-sidebar-nav">
+                      <div class="pers-submenu-wrap">
+                        <a href="#pane-personnel-kinships" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-kinships" data-bs-toggle="tab" data-bs-target="#pane-personnel-kinships"
+                          role="tab" aria-label="Tabla de Parentescos">
+                          <i class="ti ti-users-plus me-1"></i>
+                          <span class="pers-text-truncate">Tabla de Parentescos</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-kin-count">0</span>
+                        </a>
+                      </div>
+                    </div>
+
+                    <!-- SECCIÓN 5: RÉGIMEN DISCIPLINARIO (ACORDEÓN) -->
+                    <div class="pers-nav-parent personnel-parent-item collapsed" id="parent-personnel-disciplinary"
+                      data-bs-toggle="collapse" data-bs-target="#submenu-disciplinary" role="button"
+                      aria-expanded="false" aria-label="Desplegar Régimen Disciplinario">
+                      <div class="pers-nav-icon">
+                        <i class="ti ti-gavel"></i>
+                      </div>
+                      <div class="pers-nav-text-col">
+                        <span class="pers-nav-text">Régimen Disciplinario</span>
+                        <span class="pers-nav-subtext">Incidentes y sanciones</span>
+                      </div>
+                      <i class="ti ti-chevron-right pers-chevron chevron-icon"></i>
+                    </div>
+                    <div class="collapse" id="submenu-disciplinary" data-bs-parent="#personnel-sidebar-nav">
+                      <div class="pers-submenu-wrap">
+                        <a href="#pane-personnel-disc-tables" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-disc-tables" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-disc-tables" role="tab" aria-label="Tablas Disciplinarias">
+                          <i class="ti ti-table-options me-1"></i>
+                          <span class="pers-text-truncate">Tablas</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-disc-tables-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-disc-records" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-disc-records" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-disc-records" role="tab"
+                          aria-label="Novedades Disciplinarias">
+                          <i class="ti ti-file-alert me-1"></i>
+                          <span class="pers-text-truncate">Novedades</span>
+                          <span class="pers-nav-badge ms-auto" id="personnel-badge-disc-records-count">0</span>
+                        </a>
+                        <a href="#pane-personnel-disc-reports" class="pers-sub-link personnel-sub-item"
+                          id="side-personnel-disc-reports" data-bs-toggle="tab"
+                          data-bs-target="#pane-personnel-disc-reports" role="tab" aria-label="Informes Disciplinarios">
+                          <i class="ti ti-chart-infographic me-1"></i>
+                          <span class="pers-text-truncate">Informes</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ÁREA DERECHA DE CONTENIDO -->
+              <div class="col-lg-9 col-md-8 content-col-container">
+                <div class="tab-content" id="personnel-tab-content">
+
+                  <!-- PANE 1: NÓMINA DE PERSONAL -->
+                  <div class="tab-pane fade show active" id="pane-personnel-employees" role="tabpanel">
+                    <!-- Barra de Búsqueda y Filtros de Nómina -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-4">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="employee-search-input" class="pers-form-control"
+                              placeholder="Buscar por Apellido, Nombre, Legajo, DNI o CUIL..."
+                              aria-label="Buscar colaborador" />
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <select id="employee-filter-department" class="pers-form-select"
+                            aria-label="Filtrar por sector">
+                            <option value="ALL">Todos los Sectores</option>
+                          </select>
+                        </div>
+                        <div class="col-md-2">
+                          <select id="employee-filter-status" class="pers-form-select" aria-label="Filtrar por estado">
+                            <option value="ALL">Todos los Estados</option>
+                            <option value="ACTIVE" selected>Solo Activos</option>
+                            <option value="INACTIVE">Inactivos / Bajas</option>
+                            <option value="ON_LEAVE">Con Licencia</option>
+                          </select>
+                        </div>
+                        <div class="col-md-3 text-end d-flex gap-2 justify-content-end align-items-center ms-auto">
+                          <button type="button" class="btn-pers-icon" id="btn-open-import-employees-modal"
+                            title="Importar colaboradores desde un archivo Excel" data-bs-toggle="tooltip"
+                            data-bs-placement="top" aria-label="Importar Excel">
+                            <i class="ti ti-file-spreadsheet"></i>
+                          </button>
+                          <button type="button" class="btn-pers-primary" id="btn-open-new-employee-modal"
+                            title="Nuevo Empleado / Legajo" data-bs-toggle="tooltip" data-bs-placement="top"
+                            aria-label="Crear Nuevo Colaborador">
+                            <i class="ti ti-user-plus"></i>
+                            <span>Nuevo Legajo</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Personal -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 100px;">Legajo</th>
+                              <th>Colaborador / Foto</th>
+                              <th>Doc / CUIL</th>
+                              <th>Sector / Puesto</th>
+                              <th>Ingreso</th>
+                              <th>Estado</th>
+                              <th class="text-end" style="width: 110px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="employees-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Nómina de Personal -->
+                      <div class="pers-pagination-footer" id="employees-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="employees-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="employees-pagination-info">Mostrando 0
+                            colaboradores</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="employees-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 2: SECTORES DE LA EMPRESA -->
+                  <div class="tab-pane fade" id="pane-personnel-departments" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Sectores -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="department-search-input" class="pers-form-control"
+                              placeholder="Buscar por nombre o código de sector..." aria-label="Buscar sector" />
+                          </div>
+                        </div>
+                        <div class="col-md-3 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="departments-count-label" class="text-dark">0</strong> sectores registrados
+                          </span>
+                        </div>
+                        <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-center">
+                          <button type="button" class="btn-pers-outline" id="btn-open-import-departments-modal"
+                            title="Importar sectores desde un archivo Excel" aria-label="Importar sectores">
+                            <i class="ti ti-file-spreadsheet"></i>
+                            <span>Importar</span>
+                          </button>
+                          <button type="button" class="btn-pers-primary" id="btn-open-new-department-modal"
+                            aria-label="Nuevo Sector">
+                            <i class="ti ti-plus"></i>
+                            <span>Nuevo Sector</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Sectores -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 140px;">Código</th>
+                              <th>Nombre del Sector</th>
+                              <th class="text-center" style="width: 180px;">Empleados Asignados</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="departments-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Sectores -->
+                      <div class="pers-pagination-footer" id="departments-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="departments-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="departments-pagination-info">Mostrando 0
+                            sectores</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="departments-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 3: PUESTOS DE TRABAJO -->
+                  <div class="tab-pane fade" id="pane-personnel-job-positions" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Puestos -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="job-position-search-input" class="pers-form-control"
+                              placeholder="Buscar por denominación o código de puesto..." aria-label="Buscar puesto" />
+                          </div>
+                        </div>
+                        <div class="col-md-3 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="job-positions-count-label" class="text-dark">0</strong> puestos registrados
+                          </span>
+                        </div>
+                        <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-center">
+                          <button type="button" class="btn-pers-outline" id="btn-open-import-job-positions-modal"
+                            title="Importar puestos de trabajo desde un archivo Excel" aria-label="Importar puestos">
+                            <i class="ti ti-file-spreadsheet"></i>
+                            <span>Importar</span>
+                          </button>
+                          <button type="button" class="btn-pers-primary" id="btn-open-new-job-position-modal"
+                            aria-label="Nuevo Puesto">
+                            <i class="ti ti-plus"></i>
+                            <span>Nuevo Puesto</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Puestos de Trabajo -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 120px;">Código</th>
+                              <th>Nombre de Puesto</th>
+                              <th>Convenio (CCT)</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="job-positions-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Puestos de Trabajo -->
+                      <div class="pers-pagination-footer" id="job-positions-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="job-positions-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="job-positions-pagination-info">Mostrando 0
+                            puestos</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="job-positions-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 4: JORNADAS DE TRABAJO -->
+                  <div class="tab-pane fade" id="pane-personnel-work-shifts" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Jornadas -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="work-shift-search-input" class="pers-form-control"
+                              placeholder="Buscar por denominación o código de jornada..."
+                              aria-label="Buscar jornada" />
+                          </div>
+                        </div>
+                        <div class="col-md-4 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="work-shifts-count-label" class="text-dark">0</strong> jornadas registradas
+                          </span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                          <button type="button" class="btn-pers-primary w-100" id="btn-open-new-work-shift-modal"
+                            aria-label="Nueva Jornada">
+                            <i class="ti ti-plus"></i>
+                            <span>Nueva Jornada</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Jornadas de Trabajo -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 90px;">Código</th>
+                              <th>Denominación</th>
+                              <th style="width: 110px;">Régimen</th>
+                              <th class="text-center" style="width: 85px;">% Jorn.</th>
+                              <th class="text-center" style="width: 80px;">Hs. Día</th>
+                              <th class="text-center" style="width: 80px;">Hs. Sem.</th>
+                              <th class="text-center" style="width: 80px;">Hs. Mes</th>
+                              <th class="text-center" style="width: 75px;">Días/M</th>
+                              <th class="text-center" style="width: 90px;">Empleados</th>
+                              <th class="text-end" style="width: 110px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="work-shifts-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Jornadas de Trabajo -->
+                      <div class="pers-pagination-footer" id="work-shifts-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="work-shifts-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="work-shifts-pagination-info">Mostrando 0
+                            jornadas</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="work-shifts-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 5: OBRAS SOCIALES -->
+                  <div class="tab-pane fade" id="pane-personnel-health-insurances" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Obras Sociales -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="health-insurance-search-input" class="pers-form-control"
+                              placeholder="Buscar por nombre o código RNOS..." aria-label="Buscar obra social" />
+                          </div>
+                        </div>
+                        <div class="col-md-4 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="health-insurances-count-label" class="text-dark">0</strong> obras sociales
+                          </span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                          <button type="button" class="btn-pers-primary w-100" id="btn-open-new-health-insurance-modal"
+                            aria-label="Nueva Obra Social">
+                            <i class="ti ti-plus"></i>
+                            <span>Nueva Obra Social</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Obras Sociales -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 140px;">Código RNOS</th>
+                              <th>Denominación / Razón Social</th>
+                              <th class="text-center" style="width: 180px;">Empleados Afiliados</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="health-insurances-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Obras Sociales -->
+                      <div class="pers-pagination-footer" id="health-insurances-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="health-insurances-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="health-insurances-pagination-info">Mostrando 0 obras
+                            sociales</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="health-insurances-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 6: SINDICATOS -->
+                  <div class="tab-pane fade" id="pane-personnel-unions" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Sindicatos -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="union-search-input" class="pers-form-control"
+                              placeholder="Buscar por nombre o CCT / código..." aria-label="Buscar sindicato" />
+                          </div>
+                        </div>
+                        <div class="col-md-4 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="unions-count-label" class="text-dark">0</strong> sindicatos registrados
+                          </span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                          <button type="button" class="btn-pers-primary w-100" id="btn-open-new-union-modal"
+                            aria-label="Nuevo Sindicato">
+                            <i class="ti ti-plus"></i>
+                            <span>Nuevo Sindicato</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Sindicatos -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 130px;">Convenio / Cód.</th>
+                              <th>Nombre del Sindicato / Gremio</th>
+                              <th>Concepto de Descuento (ARCA)</th>
+                              <th class="text-center" style="width: 160px;">Empleados Afiliados</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="unions-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Sindicatos -->
+                      <div class="pers-pagination-footer" id="unions-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="unions-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="unions-pagination-info">Mostrando 0 sindicatos</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="unions-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 7: MUTUALES -->
+                  <div class="tab-pane fade" id="pane-personnel-mutuals" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Mutuales -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="mutual-search-input" class="pers-form-control"
+                              placeholder="Buscar por denominación o código..." aria-label="Buscar mutual" />
+                          </div>
+                        </div>
+                        <div class="col-md-4 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="mutuals-count-label" class="text-dark">0</strong> mutuales registradas
+                          </span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                          <button type="button" class="btn-pers-primary w-100" id="btn-open-new-mutual-modal"
+                            aria-label="Nueva Mutual">
+                            <i class="ti ti-plus"></i>
+                            <span>Nueva Mutual</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Mutuales -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 130px;">Código de Registro</th>
+                              <th>Nombre de la Asociación Mutual</th>
+                              <th>Concepto de Descuento (ARCA)</th>
+                              <th class="text-center" style="width: 160px;">Empleados Afiliados</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="mutuals-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Mutuales -->
+                      <div class="pers-pagination-footer" id="mutuals-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="mutuals-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="mutuals-pagination-info">Mostrando 0 mutuales</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="mutuals-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 8: PARENTESCOS DE FAMILIA -->
+                  <div class="tab-pane fade" id="pane-personnel-kinships" role="tabpanel">
+                    <!-- Barra de Búsqueda y Control de Parentescos -->
+                    <div class="pers-filter-card">
+                      <div class="row g-2 align-items-center">
+                        <div class="col-md-5">
+                          <div class="pers-input-icon-wrap">
+                            <i class="ti ti-search pers-input-icon"></i>
+                            <input type="text" id="kinship-search-input" class="pers-form-control"
+                              placeholder="Buscar por nombre o código de parentesco..."
+                              aria-label="Buscar parentesco" />
+                          </div>
+                        </div>
+                        <div class="col-md-4 text-md-start">
+                          <span class="text-muted small">
+                            <i class="ti ti-info-circle me-1" style="color: var(--pers-emerald-600);"></i> Total:
+                            <strong id="kinships-count-label" class="text-dark">0</strong> parentescos configurados
+                          </span>
+                        </div>
+                        <div class="col-md-3 text-end">
+                          <button type="button" class="btn-pers-primary w-100" id="btn-open-new-kinship-modal"
+                            aria-label="Nuevo Parentesco">
+                            <i class="ti ti-plus"></i>
+                            <span>Nuevo Parentesco</span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Tabla de Parentescos -->
+                    <div class="pers-table-card">
+                      <div class="table-responsive">
+                        <table class="pers-table table-vcenter">
+                          <thead>
+                            <tr>
+                              <th style="width: 140px;">Código</th>
+                              <th>Tipo de Parentesco / Vínculo</th>
+                              <th class="text-center" style="width: 180px;">Familiares Asignados</th>
+                              <th class="text-end" style="width: 140px;">Acciones</th>
+                            </tr>
+                          </thead>
+                          <tbody id="kinships-table-body">
+                            <!-- Dinámico vía personnel.view.js -->
+                          </tbody>
+                        </table>
+                      </div>
+                      <!-- Paginación de Parentescos -->
+                      <div class="pers-pagination-footer" id="kinships-pagination-container">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="text-muted small">Mostrar:</span>
+                          <select id="kinships-page-size-select" class="form-select form-select-sm"
+                            style="width: 70px; min-height: 44px;" aria-label="Seleccionar tamaño de página">
+                            <option value="5" selected>5</option>
+                            <option value="8">8</option>
+                            <option value="12">12</option>
+                            <option value="20">20</option>
+                          </select>
+                          <span class="text-muted small ms-1" id="kinships-pagination-info">Mostrando 0
+                            parentescos</span>
+                        </div>
+                        <ul class="pers-pagination-list ms-auto" id="kinships-pagination-list">
+                          <!-- Dinámico vía personnel.view.js -->
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 8: RÉGIMEN DISCIPLINARIO -> TABLAS (ABM TIPOS DE INCIDENTES Y SANCIONES) -->
+                  <div class="tab-pane fade" id="pane-personnel-disc-tables" role="tabpanel">
+                    <div class="pers-table-card mb-3">
+                      <div
+                        class="card-header bg-light-subtle py-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="avatar avatar-sm bg-teal-lt text-teal rounded">
+                            <i class="ti ti-table-options fs-3"></i>
+                          </div>
+                          <div>
+                            <h4 class="mb-0 fw-bold" style="color: var(--pers-forest-900); font-size: 1rem;">Tablas del
+                              Régimen Disciplinario</h4>
+                            <div class="text-muted small">Catálogos tipificados de incidentes y sanciones aplicables al
+                              personal</div>
+                          </div>
+                        </div>
+                        <ul class="nav nav-pills card-header-pills gap-1" id="disc-tables-subtabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-semibold py-1 px-3" id="subtab-btn-incident-types"
+                              data-bs-toggle="tab" data-bs-target="#subpane-disc-incident-types" type="button"
+                              role="tab">
+                              <i class="ti ti-alert-triangle me-1"></i> 1. Tipos de Incidentes (<span
+                                id="badge-disc-incident-types-count">0</span>)
+                            </button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold py-1 px-3" id="subtab-btn-sanction-types"
+                              data-bs-toggle="tab" data-bs-target="#subpane-disc-sanction-types" type="button"
+                              role="tab">
+                              <i class="ti ti-gavel me-1"></i> 2. Tipos de Sanciones (<span
+                                id="badge-disc-sanction-types-count">0</span>)
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="tab-content p-3">
+                        <!-- SUB-PESTAÑA 1: ABM TIPOS DE INCIDENTES -->
+                        <div class="tab-pane fade show active" id="subpane-disc-incident-types" role="tabpanel">
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                            <div class="pers-input-icon-wrap" style="min-width: 280px; max-width: 400px;">
+                              <i class="ti ti-search pers-input-icon"></i>
+                              <input type="text" id="disc-incident-type-search" class="pers-form-control"
+                                placeholder="Buscar tipo de incidente por código o nombre...">
+                            </div>
+                            <button type="button" id="btn-new-disc-incident-type" class="btn-pers-primary">
+                              <i class="ti ti-plus"></i>
+                              <span>Nuevo Tipo de Incidente</span>
+                            </button>
+                          </div>
+                          <div class="table-responsive border rounded">
+                            <table class="pers-table mb-0">
+                              <thead>
+                                <tr>
+                                  <th style="width: 110px;">Código</th>
+                                  <th>Denominación del Incidente</th>
+                                  <th>Descripción</th>
+                                  <th class="text-center" style="width: 110px;">Gravedad</th>
+                                  <th class="text-center" style="width: 110px;">Incidentes</th>
+                                  <th class="text-center" style="width: 100px;">Estado</th>
+                                  <th class="text-end" style="width: 110px;">Acciones</th>
+                                </tr>
+                              </thead>
+                              <tbody id="disc-incident-types-tbody">
+                                <tr>
+                                  <td colspan="7" class="text-center py-4 text-muted">Cargando tipos de incidentes...
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- SUB-PESTAÑA 2: ABM TIPOS DE SANCIONES -->
+                        <div class="tab-pane fade" id="subpane-disc-sanction-types" role="tabpanel">
+                          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                            <div class="pers-input-icon-wrap" style="min-width: 280px; max-width: 400px;">
+                              <i class="ti ti-search pers-input-icon"></i>
+                              <input type="text" id="disc-sanction-type-search" class="pers-form-control"
+                                placeholder="Buscar tipo de sanción por código o nombre...">
+                            </div>
+                            <button type="button" id="btn-new-disc-sanction-type" class="btn-pers-primary">
+                              <i class="ti ti-plus"></i>
+                              <span>Nuevo Tipo de Sanción</span>
+                            </button>
+                          </div>
+                          <div class="table-responsive border rounded">
+                            <table class="pers-table mb-0">
+                              <thead>
+                                <tr>
+                                  <th style="width: 110px;">Código</th>
+                                  <th>Denominación de la Sanción</th>
+                                  <th>Descripción</th>
+                                  <th class="text-center" style="width: 110px;">Gravedad</th>
+                                  <th class="text-center" style="width: 130px;">¿Días Susp.?</th>
+                                  <th class="text-center" style="width: 100px;">Sanciones</th>
+                                  <th class="text-center" style="width: 100px;">Estado</th>
+                                  <th class="text-end" style="width: 110px;">Acciones</th>
+                                </tr>
+                              </thead>
+                              <tbody id="disc-sanction-types-tbody">
+                                <tr>
+                                  <td colspan="8" class="text-center py-4 text-muted">Cargando tipos de sanciones...
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 9: RÉGIMEN DISCIPLINARIO -> NOVEDADES (CARGA DE INCIDENTES Y SANCIONES) -->
+                  <div class="tab-pane fade" id="pane-personnel-disc-records" role="tabpanel">
+                    <div class="pers-table-card mb-3">
+                      <div
+                        class="card-header bg-light-subtle py-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="avatar avatar-sm bg-amber-lt text-amber rounded">
+                            <i class="ti ti-file-alert fs-3"></i>
+                          </div>
+                          <div>
+                            <h4 class="mb-0 fw-bold" style="color: var(--pers-forest-900); font-size: 1rem;">Novedades:
+                              Registro de Incidentes y Sanciones</h4>
+                            <div class="text-muted small">Carga de hechos disciplinarios, medidas sancionatorias y
+                              documentación de respaldo</div>
+                          </div>
+                        </div>
+                        <ul class="nav nav-pills card-header-pills gap-1" id="disc-records-subtabs" role="tablist">
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link active fw-semibold py-1 px-3" id="subtab-btn-incidents-record"
+                              data-bs-toggle="tab" data-bs-target="#subpane-disc-incidents-record" type="button"
+                              role="tab">
+                              <i class="ti ti-alert-circle me-1"></i> 1. Registro de Incidentes (<span
+                                id="badge-disc-incidents-count">0</span>)
+                            </button>
+                          </li>
+                          <li class="nav-item" role="presentation">
+                            <button class="nav-link fw-semibold py-1 px-3" id="subtab-btn-sanctions-record"
+                              data-bs-toggle="tab" data-bs-target="#subpane-disc-sanctions-record" type="button"
+                              role="tab">
+                              <i class="ti ti-gavel me-1"></i> 2. Registro de Sanciones (<span
+                                id="badge-disc-sanctions-count">0</span>)
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div class="tab-content p-3">
+                        <!-- SUB-PESTAÑA 1: CARGA Y GESTIÓN DE INCIDENTES -->
+                        <div class="tab-pane fade show active" id="subpane-disc-incidents-record" role="tabpanel">
+                          <div class="row g-2 align-items-end mb-3 bg-light-subtle p-2 rounded border">
+                            <div class="col-md-3">
+                              <label class="form-label small fw-bold mb-1">Colaborador</label>
+                              <select id="disc-filter-incident-emp" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Colaboradores</option>
+                              </select>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="form-label small fw-bold mb-1">Tipo de Incidente</label>
+                              <select id="disc-filter-incident-type" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Tipos</option>
+                              </select>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="form-label small fw-bold mb-1">Estado Sanción</label>
+                              <select id="disc-filter-incident-status" class="form-select form-select-sm">
+                                <option value="ALL">Todos</option>
+                                <option value="UNSANCTIONED">Sin sancionar</option>
+                                <option value="SANCTIONED">Sancionados</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="row g-1">
+                                <div class="col-6">
+                                  <label class="form-label small fw-bold mb-1">Desde</label>
+                                  <input type="date" id="disc-filter-incident-from"
+                                    class="form-control form-control-sm">
+                                </div>
+                                <div class="col-6">
+                                  <label class="form-label small fw-bold mb-1">Hasta</label>
+                                  <input type="date" id="disc-filter-incident-to" class="form-control form-control-sm">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-2 text-end d-flex justify-content-end">
+                              <button type="button" id="btn-new-disc-incident"
+                                class="btn-pers-primary w-100 justify-content-center" title="Registrar Nuevo Incidente">
+                                <i class="ti ti-plus"></i>
+                                <span>Nuevo Incidente</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div class="table-responsive border rounded">
+                            <table class="pers-table mb-0">
+                              <thead>
+                                <tr>
+                                  <th style="width: 100px;">Fecha</th>
+                                  <th style="width: 90px;">Legajo</th>
+                                  <th>Colaborador / Sector</th>
+                                  <th>Tipo de Incidente</th>
+                                  <th>Observaciones</th>
+                                  <th class="text-center" style="width: 100px;">Adjuntos</th>
+                                  <th class="text-center" style="width: 130px;">Estado</th>
+                                  <th class="text-end" style="width: 110px;">Acciones</th>
+                                </tr>
+                              </thead>
+                              <tbody id="disc-incidents-tbody">
+                                <tr>
+                                  <td colspan="8" class="text-center py-4 text-muted">Cargando incidentes registrados...
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+
+                        <!-- SUB-PESTAÑA 2: CARGA Y GESTIÓN DE SANCIONES -->
+                        <div class="tab-pane fade" id="subpane-disc-sanctions-record" role="tabpanel">
+                          <div class="row g-2 align-items-end mb-3 bg-light-subtle p-2 rounded border">
+                            <div class="col-md-3">
+                              <label class="form-label small fw-bold mb-1">Colaborador</label>
+                              <select id="disc-filter-sanction-emp" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Colaboradores</option>
+                              </select>
+                            </div>
+                            <div class="col-md-3">
+                              <label class="form-label small fw-bold mb-1">Tipo de Sanción</label>
+                              <select id="disc-filter-sanction-type" class="form-select form-select-sm">
+                                <option value="ALL">Todos los Tipos</option>
+                              </select>
+                            </div>
+                            <div class="col-md-2">
+                              <label class="form-label small fw-bold mb-1">Desde</label>
+                              <input type="date" id="disc-filter-sanction-from" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-md-2">
+                              <label class="form-label small fw-bold mb-1">Hasta</label>
+                              <input type="date" id="disc-filter-sanction-to" class="form-control form-control-sm">
+                            </div>
+                            <div class="col-md-2 text-end d-flex justify-content-end">
+                              <button type="button" id="btn-new-disc-sanction"
+                                class="btn-pers-primary w-100 justify-content-center">
+                                <i class="ti ti-plus"></i>
+                                <span>Nueva Sanción</span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <div class="table-responsive border rounded">
+                            <table class="pers-table mb-0">
+                              <thead>
+                                <tr>
+                                  <th style="width: 100px;">Fecha</th>
+                                  <th style="width: 90px;">Legajo</th>
+                                  <th>Colaborador / Sector</th>
+                                  <th>Tipo de Sanción</th>
+                                  <th>Incidentes Asociados</th>
+                                  <th>Observaciones</th>
+                                  <th class="text-center" style="width: 100px;">Adjuntos</th>
+                                  <th class="text-end" style="width: 110px;">Acciones</th>
+                                </tr>
+                              </thead>
+                              <tbody id="disc-sanctions-tbody">
+                                <tr>
+                                  <td colspan="8" class="text-center py-4 text-muted">Cargando sanciones emitidas...
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- PANE 10: RÉGIMEN DISCIPLINARIO -> INFORMES Y ESTADÍSTICAS -->
+                  <div class="tab-pane fade" id="pane-personnel-disc-reports" role="tabpanel">
+                    <div class="pers-table-card mb-3">
+                      <div
+                        class="card-header bg-light-subtle py-2 px-3 border-bottom d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2">
+                          <div class="avatar avatar-sm bg-indigo-lt text-indigo rounded">
+                            <i class="ti ti-chart-infographic fs-3"></i>
+                          </div>
+                          <div>
+                            <h4 class="mb-0 fw-bold" style="color: var(--pers-forest-900); font-size: 1rem;">Informes y
+                              Estadísticas Disciplinarias</h4>
+                            <div class="text-muted small">Emisión en pantalla, impresión A4 optimizada y exportación
+                              nativa a PDF</div>
+                          </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                          <button type="button" id="btn-disc-report-print"
+                            class="btn btn-outline-secondary btn-sm d-none">
+                            <i class="ti ti-printer me-1"></i> Imprimir A4
+                          </button>
+                          <button type="button" id="btn-disc-report-pdf" class="btn btn-outline-danger btn-sm d-none">
+                            <i class="ti ti-file-type-pdf me-1"></i> Descargar PDF A4
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="card-body p-3">
+                        <!-- Selector de Informe y Parámetros de Emisión -->
+                        <div class="row g-2 align-items-end bg-light-subtle p-3 rounded border mb-3">
+                          <div class="col-md-5">
+                            <label class="form-label fw-bold small mb-1">1. Seleccione el Informe a Emitir <span
+                                class="text-danger">*</span></label>
+                            <select id="disc-report-type-select" class="form-select">
+                              <option value="INCIDENTS_DETAIL">1) Detalle de incidentes registrados entre fechas
+                                (Agrupado por tipo)</option>
+                              <option value="INCIDENTS_STATS">2) Cantidades totales y estadísticas de incidentes
+                                (Gráficos de distribución y evolución)</option>
+                              <option value="SANCTIONS_DETAIL">3) Detalle de sanciones registradas entre fechas
+                                (Agrupado por tipo)</option>
+                              <option value="SANCTIONS_STATS">4) Cantidades totales y estadísticas de sanciones
+                                (Gráficos de distribución y evolución)</option>
+                            </select>
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label fw-bold small mb-1">2. Fecha Desde <span
+                                class="text-danger">*</span></label>
+                            <input type="date" id="disc-report-date-from" class="form-control">
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label fw-bold small mb-1">3. Fecha Hasta <span
+                                class="text-danger">*</span></label>
+                            <input type="date" id="disc-report-date-to" class="form-control">
+                          </div>
+                          <div class="col-md-2">
+                            <label class="form-label fw-bold small mb-1">4. Colaborador</label>
+                            <select id="disc-report-employee-select" class="form-select">
+                              <option value="ALL">Todos los Colaboradores</option>
+                            </select>
+                          </div>
+                          <div class="col-md-1">
+                            <button type="button" id="btn-disc-report-execute"
+                              class="btn-pers-primary w-100 justify-content-center"
+                              style="min-height: 38px; padding: 0.45rem 0.65rem;" title="Emitir Informe en Pantalla">
+                              <i class="ti ti-player-play"></i>
+                              <span>Emitir</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Área de Resultados del Informe en Pantalla -->
+                        <div id="disc-reports-results-container">
+                          <div class="text-center py-5 text-muted border rounded bg-light-subtle">
+                            <i class="ti ti-chart-bar fs-1 d-block mb-2 text-teal"></i>
+                            <div class="fw-bold text-dark">Seleccione un informe y rango de fechas y presione "Emitir"
+                            </div>
+                            <div class="small">Podrá visualizar el informe interactivo en pantalla, imprimirlo en hoja
+                              A4 o descargarlo en formato .PDF.</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>

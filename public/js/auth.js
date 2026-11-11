@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from './api.js';
+import { apiRequest, storage, showToast } from './api.js?v=2.0';
 
 // Si el usuario ya está autenticado y accede a login o register, redirigir a app.html
 export function checkAlreadyAuthenticated() {
