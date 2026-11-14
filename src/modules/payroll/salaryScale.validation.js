@@ -31,7 +31,7 @@ const massScaleIncreasePeriodItemSchema = z.object({
     errorMap: () => ({ message: 'Tipo de aumento inválido (PERCENTAGE o FIXED_AMOUNT)' }),
   }),
   calculationBase: z.enum(['CURRENT_BASE', 'PREVIOUS_PERIOD']).default('CURRENT_BASE').optional(),
-  value: z.coerce.number().positive('El valor de aumento debe ser un número positivo mayor a 0'),
+  value: z.coerce.number().min(0, 'El valor de aumento debe ser mayor o igual a 0'),
   rounding: z.enum(['NONE', 'INTEGER', 'DECIMAL_2']).default('DECIMAL_2').optional(),
 });
 
@@ -45,7 +45,7 @@ export const massScaleIncreaseSchema = z
         errorMap: () => ({ message: 'Tipo de aumento inválido (PERCENTAGE o FIXED_AMOUNT)' }),
       })
       .optional(),
-    value: z.coerce.number().positive('El valor de aumento debe ser un número positivo mayor a 0').optional(),
+    value: z.coerce.number().min(0, 'El valor de aumento debe ser mayor o igual a 0').optional(),
     rounding: z.enum(['NONE', 'INTEGER', 'DECIMAL_2']).default('DECIMAL_2').optional(),
     cctCode: z.string().max(50).nullable().optional(),
     scaleIds: z.array(z.string()).optional(),

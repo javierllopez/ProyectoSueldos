@@ -1,6 +1,12 @@
 import crypto from 'crypto';
 import { ensureTenantPayrollSchema } from '../../../services/tenantProvisioner.service.js';
-import { calculateEmployeePayroll, findBasicSalaryConcept, buildPayrollIndices } from '../payroll.calculator.js';
+import {
+  calculateEmployeePayroll,
+  findBasicSalaryConcept,
+  buildPayrollIndices,
+  EMPLOYER_CONTRIBUTION_DEFINITIONS,
+} from '../payroll.calculator.js';
+import { validateAndSyncSalaryScalesForPeriod } from '../salaryScale.service.js';
 import { hoursToDecimal, decimalToHours } from '../../../utils/timeFormat.js';
 import { getPayrollSettings } from './conceptsAndRules.service.js';
 
@@ -26,16 +32,44 @@ export async function getActiveFiscalPeriod(tenantPrisma) {
 export async function listFiscalPeriods(tenantPrisma) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  return tenantPrisma.payrollFiscalPeriod.findMany({
-    orderBy: [{ year: 'desc' }, { month: 'desc' }],
-    include: {
-      settlements: {
-        orderBy: { settlementNumber: 'asc' },
-        include: {
-          _count: { select: { paySlips: { where: { deletedAt: null } } } },
+  const [periods, closingAudits] = await Promise.all([
+    tenantPrisma.payrollFiscalPeriod.findMany({
+      orderBy: [{ year: 'desc' }, { month: 'desc' }],
+      include: {
+        settlements: {
+          orderBy: { settlementNumber: 'asc' },
+          include: {
+            _count: { select: { paySlips: { where: { deletedAt: null } } } },
+          },
         },
       },
-    },
+    }),
+    tenantPrisma.payrollClosingAudit?.findMany
+      ? tenantPrisma.payrollClosingAudit.findMany({
+          where: { scope: 'FISCAL_PERIOD' },
+          select: { fiscalPeriodId: true, year: true, month: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const auditedKeys = new Set();
+  for (const audit of closingAudits || []) {
+    if (audit.fiscalPeriodId) auditedKeys.add(audit.fiscalPeriodId);
+    if (audit.year && audit.month) auditedKeys.add(`${audit.year}-${audit.month}`);
+  }
+
+  return periods.map((fp) => {
+    const hasClosingAudit = auditedKeys.has(fp.id) || auditedKeys.has(`${fp.year}-${fp.month}`);
+    const isOrphanClosed =
+      fp.status === 'CLOSED' &&
+      !fp.closedBy &&
+      (fp.settlements?.length || 0) === 0 &&
+      !hasClosingAudit;
+    return {
+      ...fp,
+      hasClosingAudit,
+      isOrphanClosed,
+    };
   });
 }
 
@@ -61,13 +95,66 @@ export async function createFiscalPeriod(tenantPrisma, data) {
   // Verificar si ya existe este período
   const existingPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
     where: { year_month: { year, month } },
+    include: {
+      settlements: { select: { id: true } },
+    },
   });
 
   if (existingPeriod) {
-    const err = new Error(`El período ${String(month).padStart(2, '0')}/${year} ya se encuentra registrado.`);
+    const closingAudit = tenantPrisma.payrollClosingAudit?.findFirst
+      ? await tenantPrisma.payrollClosingAudit.findFirst({
+          where: {
+            scope: 'FISCAL_PERIOD',
+            OR: [{ fiscalPeriodId: existingPeriod.id }, { year, month }],
+          },
+          select: { id: true },
+        })
+      : null;
+
+    const settlementsCount = existingPeriod.settlements?.length || 0;
+    const isOrphanClosed =
+      existingPeriod.status === 'CLOSED' &&
+      !existingPeriod.closedBy &&
+      settlementsCount === 0 &&
+      !closingAudit;
+
+    if (isOrphanClosed) {
+      await validateAndSyncSalaryScalesForPeriod(tenantPrisma, {
+        year,
+        month,
+        requireExplicitPeriodMatch: true,
+      });
+
+      return tenantPrisma.payrollFiscalPeriod.update({
+        where: { id: existingPeriod.id },
+        data: {
+          status: 'OPEN',
+          closedAt: null,
+          closedBy: null,
+          notes: data.notes ? String(data.notes).trim() : existingPeriod.notes,
+        },
+        include: {
+          settlements: true,
+        },
+      });
+    }
+
+    const mm = String(month).padStart(2, '0');
+    const closedDateStr = existingPeriod.closedAt
+      ? new Date(existingPeriod.closedAt).toLocaleDateString('es-AR')
+      : null;
+    const err = new Error(
+      `El período ${mm}/${year} ya fue cerrado${closedDateStr ? ` el ${closedDateStr}` : ''} (${settlementsCount} liquidación(es) registrada(s)) y no puede volver a abrirse.`
+    );
     err.status = 400;
     throw err;
   }
+
+  await validateAndSyncSalaryScalesForPeriod(tenantPrisma, {
+    year,
+    month,
+    requireExplicitPeriodMatch: true,
+  });
 
   return tenantPrisma.payrollFiscalPeriod.create({
     data: {
@@ -969,10 +1056,10 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
 
   const company = await tenantPrisma.companyProfile.findFirst();
 
-  const [items, allConcepts] = await Promise.all([
+  const [items, allConcepts, paySlips, payrollSettings] = await Promise.all([
     tenantPrisma.paySlipItem.findMany({
       where: {
-        paySlip: { payrollPeriodId: periodId },
+        paySlip: { payrollPeriodId: periodId, deletedAt: null },
         type: { in: ['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'DISCOUNT'] },
       },
       include: {
@@ -985,6 +1072,24 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
       where: { deletedAt: null },
       select: { code: true, calculationOrder: true, type: true },
     }),
+    tenantPrisma.paySlip?.findMany
+      ? tenantPrisma.paySlip.findMany({
+          where: { payrollPeriodId: periodId, deletedAt: null },
+          select: {
+            employeeId: true,
+            sipaContrib: true,
+            inssjypContrib: true,
+            osContrib: true,
+            fneContrib: true,
+            aaffContrib: true,
+            artContrib: true,
+            scvoContrib: true,
+            unionContrib: true,
+            totalEmployerContrib: true,
+          },
+        })
+      : Promise.resolve([]),
+    getPayrollSettings(tenantPrisma).catch(() => ({})),
   ]);
 
   const conceptOrderMap = new Map(allConcepts.map((c) => [c.code, c.calculationOrder ?? 999]));
@@ -1006,6 +1111,7 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
         remunerativeAmount: 0,
         nonRemunerativeAmount: 0,
         deductionAmount: 0,
+        employerContribAmount: 0,
         totalAmount: 0,
         employeeIds: new Set(),
         totalUnits: 0,
@@ -1031,6 +1137,45 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
     entry.totalAmount += amountNum;
   }
 
+  // Agregar los rubros consolidados de contribuciones patronales a pagar (F.931 + ART + SCVO + Sindical)
+  for (const def of EMPLOYER_CONTRIBUTION_DEFINITIONS) {
+    const empIds = new Set();
+    let contribSum = 0;
+
+    for (const slip of paySlips || []) {
+      const val = Number(slip[def.field] || 0);
+      if (val > 0) {
+        contribSum += val;
+        if (slip.employeeId) empIds.add(slip.employeeId);
+      }
+    }
+
+    const roundedSum = Math.round(contribSum * 100) / 100;
+    if (roundedSum > 0) {
+      const refRate = def.isFixedOnly
+        ? Number(payrollSettings?.[def.fixedSettingKey] ?? def.defaultFixed ?? 0)
+        : Number(
+            def.settingKey && payrollSettings?.[def.settingKey] !== undefined
+              ? payrollSettings[def.settingKey]
+              : def.defaultRate
+          );
+      conceptsMap.set(def.code, {
+        code: def.code,
+        name: def.name,
+        type: 'EMPLOYER_CONTRIB',
+        calculationOrder: def.order,
+        remunerativeAmount: 0,
+        nonRemunerativeAmount: 0,
+        deductionAmount: 0,
+        employerContribAmount: roundedSum,
+        totalAmount: roundedSum,
+        employeeIds: empIds,
+        totalUnits: refRate,
+        unitLabel: def.isFixedOnly ? 'Fijo' : '%',
+      });
+    }
+  }
+
   const conceptsList = Array.from(conceptsMap.values()).map((c) => ({
     code: c.code,
     conceptCode: c.code,
@@ -1045,6 +1190,8 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
     nonRemunerativeTotal: Math.round(c.nonRemunerativeAmount * 100) / 100,
     deductionAmount: Math.round(c.deductionAmount * 100) / 100,
     deductionsTotal: Math.round(c.deductionAmount * 100) / 100,
+    employerContribAmount: Math.round((c.employerContribAmount || 0) * 100) / 100,
+    employerContribTotal: Math.round((c.employerContribAmount || 0) * 100) / 100,
     totalAmount: Math.round(c.totalAmount * 100) / 100,
     totalUnits: Math.round(c.totalUnits * 100) / 100,
     unitLabel: c.unitLabel,
@@ -1054,6 +1201,7 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
     REMUNERATIVE: 1,
     NON_REMUNERATIVE: 2,
     DEDUCTION: 3,
+    EMPLOYER_CONTRIB: 4,
   };
 
   conceptsList.sort((a, b) => {
@@ -1067,18 +1215,22 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
   let totalRemunerative = 0;
   let totalNonRemunerative = 0;
   let totalDeductions = 0;
+  let totalEmployerContrib = 0;
 
   for (const c of conceptsList) {
     totalRemunerative += c.remunerativeAmount;
     totalNonRemunerative += c.nonRemunerativeAmount;
     totalDeductions += c.deductionAmount;
+    totalEmployerContrib += c.employerContribAmount || 0;
   }
 
   totalRemunerative = Math.round(totalRemunerative * 100) / 100;
   totalNonRemunerative = Math.round(totalNonRemunerative * 100) / 100;
   totalDeductions = Math.round(totalDeductions * 100) / 100;
+  totalEmployerContrib = Math.round(totalEmployerContrib * 100) / 100;
   const totalGross = Math.round((totalRemunerative + totalNonRemunerative) * 100) / 100;
   const totalNet = Math.round((totalGross - totalDeductions) * 100) / 100;
+  const totalLaborCost = Math.round((totalGross + totalEmployerContrib) * 100) / 100;
 
   return {
     period: {
@@ -1102,7 +1254,11 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
       totalGross,
       totalDeductions,
       totalNet,
+      totalEmployerContrib,
+      totalEmployerContributions: totalEmployerContrib,
+      totalLaborCost,
       totalSlips: period._count.paySlips,
+      totalEmployeesCount: period._count.paySlips,
       conceptsCount: conceptsList.length,
     },
   };

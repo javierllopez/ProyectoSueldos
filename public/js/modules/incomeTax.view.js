@@ -1,4 +1,4 @@
-import { apiRequest, showToast } from '../api.js?v=2.0';
+import { apiRequest, showToast } from '../api.js?v=2.1';
 import { formatNumber, formatCuit, escapeHtml } from '../utils/helpers.js';
 
 function formatCurrency(val) {
@@ -37,6 +37,7 @@ export function registerIncomeTaxMethods(proto) {
   proto.incomeTaxState = {
     selectedYear: new Date().getFullYear(),
     selectedMonth: new Date().getMonth() + 1,
+    userChangedPeriod: false,
     currentSettlement: null,
     currentDetail: null,
     currentProfile: null,
@@ -56,11 +57,36 @@ export function registerIncomeTaxMethods(proto) {
    * Inicializa y carga la vista principal de Ganancias 4ta Categoría.
    */
   proto.renderIncomeTaxView = async function () {
+    if (!this.activeFiscalPeriod && typeof this.loadActiveFiscalPeriod === 'function') {
+      try {
+        await this.loadActiveFiscalPeriod();
+      } catch (e) {
+        // fallback silencioso a fecha actual
+      }
+    }
+
+    if (!this.incomeTaxState.userChangedPeriod) {
+      const targetYear = Number(this.activeFiscalPeriod?.year) || new Date().getFullYear();
+      const targetMonth = Number(this.activeFiscalPeriod?.month) || (new Date().getMonth() + 1);
+      this.incomeTaxState.selectedYear = targetYear;
+      this.incomeTaxState.selectedMonth = targetMonth;
+    }
+
     const yearSelect = document.getElementById('it-global-year-select');
-    if (yearSelect && !yearSelect.value) {
-      const currentYear = new Date().getFullYear();
-      yearSelect.value = currentYear.toString();
-      this.incomeTaxState.selectedYear = currentYear;
+    if (yearSelect) {
+      const yearStr = String(this.incomeTaxState.selectedYear);
+      if (!Array.from(yearSelect.options).some((opt) => opt.value === yearStr)) {
+        const opt = document.createElement('option');
+        opt.value = yearStr;
+        opt.textContent = yearStr;
+        yearSelect.prepend(opt);
+      }
+      yearSelect.value = yearStr;
+    }
+
+    const monthSelect = document.getElementById('it-monthly-month-select');
+    if (monthSelect) {
+      monthSelect.value = String(this.incomeTaxState.selectedMonth);
     }
 
     // Configurar listeners de tabs internas si aún no se configuraron
@@ -81,6 +107,7 @@ export function registerIncomeTaxMethods(proto) {
     const yearSelect = document.getElementById('it-global-year-select');
     if (yearSelect) {
       yearSelect.addEventListener('change', async (e) => {
+        this.incomeTaxState.userChangedPeriod = true;
         this.incomeTaxState.selectedYear = parseInt(e.target.value, 10);
         await this.refreshActiveIncomeTaxTab();
       });
@@ -109,6 +136,7 @@ export function registerIncomeTaxMethods(proto) {
     const monthSelect = document.getElementById('it-monthly-month-select');
     if (monthSelect) {
       monthSelect.addEventListener('change', async (e) => {
+        this.incomeTaxState.userChangedPeriod = true;
         this.incomeTaxState.selectedMonth = parseInt(e.target.value, 10);
         this.incomeTaxState.monthlyFilters.page = 1;
         await this.loadMonthlyIncomeTaxView();
@@ -214,7 +242,11 @@ export function registerIncomeTaxMethods(proto) {
       });
     }
 
-    // Selectores de conceptos en el modal de exportación (validación en tiempo real de ARCA)
+    // Selectores de conceptos y período en el modal de exportación (validación en tiempo real)
+    const selExportPeriod = document.getElementById('it-export-period-select');
+    if (selExportPeriod) {
+      selExportPeriod.addEventListener('change', () => this.updateExportPeriodMatchUi());
+    }
     const selWithholding = document.getElementById('it-export-withholding-concept');
     if (selWithholding) {
       selWithholding.addEventListener('change', () => this.validateExportConceptsUi());
@@ -379,6 +411,48 @@ export function registerIncomeTaxMethods(proto) {
     }
   };
 
+  proto.updateSettlementStatusBadge = function (settlement, year, month) {
+    const badge = document.getElementById('it-settlement-status-badge');
+    if (!badge) return;
+
+    const mm = String(month || settlement?.month || 1).padStart(2, '0');
+    const yyyy = year || settlement?.fiscalYear || '';
+
+    if (!settlement) {
+      badge.className = 'badge bg-secondary-lt border py-1 px-2 text-nowrap shadow-2xs';
+      badge.innerHTML = `<i class="ti ti-circle-dashed me-1"></i> Sin calcular (${mm}/${yyyy})`;
+      return;
+    }
+
+    if (settlement.status === 'CLOSED') {
+      badge.className = 'badge bg-secondary-lt border py-1 px-2 text-nowrap shadow-2xs';
+      badge.innerHTML = `<i class="ti ti-lock me-1"></i> Cerrado (${mm}/${yyyy})`;
+      return;
+    }
+
+    if (settlement.status === 'EXPORTED_TO_PAYROLL') {
+      const pName = settlement.exportedPayrollPeriod?.settlementName
+        ? ` a ${escapeHtml(settlement.exportedPayrollPeriod.settlementName)}`
+        : '';
+      badge.className = 'badge bg-success-lt border border-success-subtle py-1 px-2 text-nowrap shadow-2xs';
+      badge.innerHTML = `<i class="ti ti-check me-1"></i> Exportado${pName} (${mm}/${yyyy})`;
+      return;
+    }
+
+    const hasBalance =
+      Number(settlement.totalWithheldAmount || 0) !== 0 ||
+      Number(settlement.totalRefundAmount || 0) !== 0 ||
+      Number(settlement.totalEmployeesWithheld || 0) > 0;
+
+    if (!hasBalance) {
+      badge.className = 'badge bg-azure-lt border border-azure-subtle py-1 px-2 text-nowrap shadow-2xs';
+      badge.innerHTML = `<i class="ti ti-check me-1"></i> Calculado ${mm}/${yyyy} • Sin saldo ($ 0,00)`;
+    } else {
+      badge.className = 'badge bg-warning-lt border border-warning-subtle py-1 px-2 text-nowrap shadow-2xs';
+      badge.innerHTML = `<i class="ti ti-clock me-1"></i> Calculado ${mm}/${yyyy} • Pendiente exportar`;
+    }
+  };
+
   proto.renderSettlementDetails = function (settlement) {
     // Totales integrados en la barra superior
     const elEvaluated = document.getElementById('it-kpi-evaluated');
@@ -391,11 +465,16 @@ export function registerIncomeTaxMethods(proto) {
     if (elRefund) elRefund.textContent = formatCurrency(settlement.totalRefundAmount || 0);
     if (elCount) elCount.textContent = settlement.totalEmployeesWithheld || 0;
 
-    // Habilitar botón de exportación
+    this.updateSettlementStatusBadge(settlement, settlement.fiscalYear, settlement.month);
+
+    // Habilitar botón de exportación (salvo si la liquidación ya está cerrada)
     const btnExport = document.getElementById('btn-it-open-export-modal');
     if (btnExport) {
-      btnExport.disabled = false;
-      if (settlement.status === 'EXPORTED_TO_PAYROLL') {
+      btnExport.disabled = settlement.status === 'CLOSED';
+      if (settlement.status === 'CLOSED') {
+        btnExport.className = 'btn btn-outline-secondary btn-sm py-1 px-2 text-nowrap';
+        btnExport.innerHTML = '<i class="ti ti-lock me-1"></i> Cerrado';
+      } else if (settlement.status === 'EXPORTED_TO_PAYROLL') {
         btnExport.className = 'btn btn-outline-success btn-sm py-1 px-2 text-nowrap';
         btnExport.innerHTML = '<i class="ti ti-check me-1"></i> Exportado (Reexportar)';
       } else {
@@ -574,6 +653,8 @@ export function registerIncomeTaxMethods(proto) {
     if (elWithheld) elWithheld.textContent = '$ 0,00';
     if (elRefund) elRefund.textContent = '$ 0,00';
     if (elCount) elCount.textContent = '0';
+
+    this.updateSettlementStatusBadge(null, year, month);
 
     const btnExport = document.getElementById('btn-it-open-export-modal');
     if (btnExport) btnExport.disabled = true;
@@ -1057,25 +1138,48 @@ export function registerIncomeTaxMethods(proto) {
       return;
     }
 
-    // 1. Cargar períodos de sueldos abiertos
+    const srcMM = String(settlement.month).padStart(2, '0');
+    const srcYYYY = settlement.fiscalYear;
+
+    // 1. Cargar períodos de sueldos abiertos (priorizando coincidencia exacta de año y mes)
     const periodSelect = document.getElementById('it-export-period-select');
     if (periodSelect) {
       periodSelect.innerHTML = '<option value="">Cargando períodos...</option>';
       try {
         const pRes = await apiRequest('/payroll/periods');
         const periods = (pRes.data || []).filter((p) => p.status !== 'CLOSED');
+        const matchingPeriods = periods.filter(
+          (p) => Number(p.month) === Number(settlement.month) && Number(p.year) === Number(settlement.fiscalYear)
+        );
+        const otherPeriods = periods.filter(
+          (p) => Number(p.month) !== Number(settlement.month) || Number(p.year) !== Number(settlement.fiscalYear)
+        );
+
         if (periods.length === 0) {
           periodSelect.innerHTML = '<option value="">No hay períodos de sueldos abiertos</option>';
         } else {
-          periodSelect.innerHTML = periods
-            .map(
-              (p) => `
-              <option value="${p.id}" ${p.month === settlement.month && p.year === settlement.fiscalYear ? 'selected' : ''}>
-                ${p.settlementName || `Período ${p.month}/${p.year} (${p.periodType})`} - Estado: ${p.status}
+          const buildOption = (p, isCompatible, selected) => {
+            const dstPeriod = `${String(p.month).padStart(2, '0')}/${p.year}`;
+            const label = escapeHtml(p.settlementName || `Período ${dstPeriod} (${p.periodType})`);
+            const suffix = isCompatible
+              ? `Estado: ${escapeHtml(p.status)}`
+              : `Período ${dstPeriod} — No compatible con Ganancias ${srcMM}/${srcYYYY}`;
+            return `
+              <option value="${escapeHtml(p.id)}" data-year="${p.year}" data-month="${p.month}" ${isCompatible ? '' : 'disabled'} ${selected ? 'selected' : ''}>
+                ${label} (${suffix})
               </option>
-            `
-            )
-            .join('');
+            `;
+          };
+
+          const opts = [];
+          if (matchingPeriods.length === 0) {
+            opts.push(
+              `<option value="" selected>-- No hay liquidaciones de sueldos abiertas para ${srcMM}/${srcYYYY} --</option>`
+            );
+          }
+          matchingPeriods.forEach((p, idx) => opts.push(buildOption(p, true, idx === 0)));
+          otherPeriods.forEach((p) => opts.push(buildOption(p, false, false)));
+          periodSelect.innerHTML = opts.join('');
         }
       } catch (e) {
         periodSelect.innerHTML = '<option value="">Error al cargar períodos</option>';
@@ -1097,7 +1201,7 @@ export function registerIncomeTaxMethods(proto) {
             const isDefault = c.code === 'SU8200' || isArcaMatch;
             return `
               <option value="${c.id}" data-arca="${c.arcaConceptCode || ''}" ${isDefault ? 'selected' : ''}>
-                ${c.code} - ${c.name} [ARCA: ${c.arcaConceptCode || 'S/D'}] ${isArcaMatch ? '✅ (Válido ARCA)' : '⚠️ (No oficial)'}
+                ${escapeHtml(c.code)} - ${escapeHtml(c.name)} [ARCA: ${escapeHtml(c.arcaConceptCode || 'S/D')}] ${isArcaMatch ? '✅ (Válido ARCA)' : '⚠️ (No oficial)'}
               </option>
             `;
           })
@@ -1111,7 +1215,7 @@ export function registerIncomeTaxMethods(proto) {
             const isDefault = c.code === 'SU5200' || isArcaMatch;
             return `
               <option value="${c.id}" data-arca="${c.arcaConceptCode || ''}" ${isDefault ? 'selected' : ''}>
-                ${c.code} - ${c.name} [ARCA: ${c.arcaConceptCode || 'S/D'}] ${isArcaMatch ? '✅ (Válido ARCA)' : '⚠️ (No oficial)'}
+                ${escapeHtml(c.code)} - ${escapeHtml(c.name)} [ARCA: ${escapeHtml(c.arcaConceptCode || 'S/D')}] ${isArcaMatch ? '✅ (Válido ARCA)' : '⚠️ (No oficial)'}
               </option>
             `;
           })
@@ -1121,18 +1225,26 @@ export function registerIncomeTaxMethods(proto) {
       console.warn('Error al cargar conceptos para exportación:', e.message);
     }
 
-    // 3. Validar visualmente los conceptos preseleccionados
+    // 3. Validar visualmente los conceptos y compatibilidad de período
     this.validateExportConceptsUi();
+    this.updateExportPeriodMatchUi();
 
-    // 4. Actualizar contadores del modal
-    const countWithheld = settlement.details.filter((d) => Number(d.netMonthlyWithholding) > 0).length;
-    const countRefund = settlement.details.filter((d) => Number(d.netMonthlyWithholding) < 0).length;
+    // 4. Actualizar contadores del modal e indicar período origen
+    const details = settlement.details || [];
+    const countWithheld = details.filter((d) => Number(d.netMonthlyWithholding) > 0).length;
+    const countRefund = details.filter((d) => Number(d.netMonthlyWithholding) < 0).length;
     const elSummary = document.getElementById('it-export-modal-summary');
     if (elSummary) {
       elSummary.innerHTML = `
-        <div class="d-flex align-items-center justify-content-between p-2 rounded bg-light border">
-          <div><i class="ti ti-arrow-down-right text-danger me-1"></i> Retenciones a generar: <strong>${countWithheld}</strong> ($${formatCurrency(settlement.totalWithheldAmount)})</div>
-          <div><i class="ti ti-arrow-up-right text-teal me-1"></i> Reintegros a generar: <strong>${countRefund}</strong> ($${formatCurrency(settlement.totalRefundAmount)})</div>
+        <div class="d-flex flex-column gap-2 p-2 rounded bg-light border">
+          <div class="d-flex align-items-center justify-content-between small">
+            <span class="text-muted">Período de Ganancias a exportar:</span>
+            <span class="badge bg-primary-lt fw-bold">Ganancias ${srcMM}/${srcYYYY}</span>
+          </div>
+          <div class="d-flex align-items-center justify-content-between border-top pt-2">
+            <div><i class="ti ti-arrow-down-right text-danger me-1"></i> Retenciones a generar: <strong>${countWithheld}</strong> (${formatCurrency(settlement.totalWithheldAmount)})</div>
+            <div><i class="ti ti-arrow-up-right text-teal me-1"></i> Reintegros a generar: <strong>${countRefund}</strong> (${formatCurrency(settlement.totalRefundAmount)})</div>
+          </div>
         </div>
       `;
     }
@@ -1141,6 +1253,43 @@ export function registerIncomeTaxMethods(proto) {
     if (modalEl && window.bootstrap) {
       const modal = new window.bootstrap.Modal(modalEl);
       modal.show();
+    }
+  };
+
+  proto.updateExportPeriodMatchUi = function () {
+    const settlement = this.incomeTaxState.currentSettlement;
+    const periodSelect = document.getElementById('it-export-period-select');
+    const mismatchBox = document.getElementById('it-export-period-mismatch-box');
+    const submitBtn = document.getElementById('btn-submit-export-payroll');
+    if (!periodSelect || !settlement) return;
+
+    const opt = periodSelect.options[periodSelect.selectedIndex];
+    const selectedId = periodSelect.value;
+    const optYear = Number(opt?.getAttribute('data-year') || 0);
+    const optMonth = Number(opt?.getAttribute('data-month') || 0);
+    const srcPeriod = `${String(settlement.month).padStart(2, '0')}/${settlement.fiscalYear}`;
+
+    const isMatch =
+      Boolean(selectedId) &&
+      optYear === Number(settlement.fiscalYear) &&
+      optMonth === Number(settlement.month);
+
+    if (mismatchBox) {
+      if (!selectedId) {
+        mismatchBox.innerHTML = `<i class="ti ti-ban me-1"></i> No hay ningún período de sueldos abierto correspondiente a <strong>${srcPeriod}</strong>. Habilité una liquidación de <strong>${srcPeriod}</strong> en Sueldos antes de exportar.`;
+        mismatchBox.classList.remove('d-none');
+      } else if (!isMatch) {
+        const dstPeriod = `${String(optMonth).padStart(2, '0')}/${optYear}`;
+        mismatchBox.innerHTML = `<i class="ti ti-ban me-1"></i> El período seleccionado corresponde a <strong>${dstPeriod}</strong> y la liquidación de Ganancias es de <strong>${srcPeriod}</strong>. Solo se permite exportar al mismo mes y año fiscal.`;
+        mismatchBox.classList.remove('d-none');
+      } else {
+        mismatchBox.classList.add('d-none');
+        mismatchBox.innerHTML = '';
+      }
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = !isMatch;
     }
   };
 
@@ -1178,12 +1327,22 @@ export function registerIncomeTaxMethods(proto) {
     const settlement = this.incomeTaxState.currentSettlement;
     if (!settlement) return;
 
-    const periodId = document.getElementById('it-export-period-select')?.value;
+    const periodSelect = document.getElementById('it-export-period-select');
+    const periodId = periodSelect?.value;
+    const opt = periodSelect?.options[periodSelect.selectedIndex];
+    const optYear = Number(opt?.getAttribute('data-year') || 0);
+    const optMonth = Number(opt?.getAttribute('data-month') || 0);
     const withholdingId = document.getElementById('it-export-withholding-concept')?.value;
     const refundId = document.getElementById('it-export-refund-concept')?.value;
 
     if (!periodId) {
       showToast('Debe seleccionar un período de nómina destino', 'warning');
+      return;
+    }
+
+    if (optYear !== Number(settlement.fiscalYear) || optMonth !== Number(settlement.month)) {
+      const srcPeriod = `${String(settlement.month).padStart(2, '0')}/${settlement.fiscalYear}`;
+      showToast(`Solo se puede exportar Ganancias ${srcPeriod} hacia una liquidación de sueldos del mismo período.`, 'danger');
       return;
     }
 

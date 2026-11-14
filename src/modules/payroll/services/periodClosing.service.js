@@ -17,6 +17,11 @@ function resolveUserMeta(userContext = {}) {
   return { closedBy, closedByName };
 }
 
+function normalizeBriefTerminationReason(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).replace(/\s+/g, ' ').trim().slice(0, 255);
+}
+
 function buildNoveltiesSummary(novelties) {
   const byConcept = new Map();
   for (const nov of novelties) {
@@ -117,9 +122,10 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
   let novelties = [];
   let expiredConceptsCount = 0;
   let incomeTaxSettlements = [];
+  let crossExportedIncomeTax = [];
 
   if (closingPeriodIds.length > 0) {
-    const [fetchedSlips, fetchedDeletedCount, fetchedNovelties] = await Promise.all([
+    const [fetchedSlips, fetchedDeletedCount, fetchedNovelties, fetchedCrossIt] = await Promise.all([
       dbClient.paySlip.findMany({
         where: { payrollPeriodId: { in: closingPeriodIds }, deletedAt: null },
         select: {
@@ -152,13 +158,42 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
         where: { payrollPeriodId: { in: closingPeriodIds } },
         include: {
           concept: { select: { id: true, code: true, name: true, type: true } },
-          employee: { select: { id: true, fileNumber: true, firstName: true, lastName: true } },
+          employee: {
+            select: {
+              id: true,
+              fileNumber: true,
+              firstName: true,
+              lastName: true,
+              status: true,
+              deletedAt: true,
+            },
+          },
         },
       }),
+      dbClient.incomeTaxSettlement?.findMany
+        ? dbClient.incomeTaxSettlement.findMany({
+            where: {
+              exportedPayrollPeriodId: { in: closingPeriodIds },
+              OR: [{ fiscalYear: { not: targetYear } }, { month: { not: targetMonth } }],
+            },
+            select: {
+              id: true,
+              fiscalYear: true,
+              month: true,
+              settlementType: true,
+              status: true,
+              totalEmployeesWithheld: true,
+              totalWithheldAmount: true,
+              totalRefundAmount: true,
+              exportedPayrollPeriodId: true,
+            },
+          })
+        : Promise.resolve([]),
     ]);
     validSlips = fetchedSlips;
     deletedSlipsCount = fetchedDeletedCount;
     novelties = fetchedNovelties;
+    crossExportedIncomeTax = fetchedCrossIt || [];
   }
 
   if (scope === 'FISCAL_PERIOD') {
@@ -171,7 +206,18 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
       dbClient.incomeTaxSettlement?.findMany
         ? dbClient.incomeTaxSettlement.findMany({
             where: { fiscalYear: targetYear, month: targetMonth },
-            select: { id: true, settlementType: true, status: true, description: true },
+            select: {
+              id: true,
+              fiscalYear: true,
+              month: true,
+              settlementType: true,
+              status: true,
+              description: true,
+              totalEmployeesWithheld: true,
+              totalWithheldAmount: true,
+              totalRefundAmount: true,
+              exportedPayrollPeriodId: true,
+            },
           })
         : Promise.resolve([]),
     ]);
@@ -209,12 +255,39 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
         employeeId: nov.employeeId,
         employeeName: nov.employee ? `${nov.employee.lastName}, ${nov.employee.firstName}` : '-',
         fileNumber: nov.employee?.fileNumber || '-',
+        employeeStatus: nov.employee?.status || 'UNKNOWN',
+        employeeDeleted: Boolean(nov.employee?.deletedAt),
         conceptCode: nov.concept?.code || '-',
         conceptName: nov.concept?.name || '-',
+        conceptType: nov.concept?.type || null,
+        units: nov.units !== null && nov.units !== undefined ? Number(nov.units) : null,
+        amount: nov.amount !== null && nov.amount !== undefined ? Number(nov.amount) : null,
+        notes: nov.notes || null,
+        noveltyUpdatedAt: nov.updatedAt ? new Date(nov.updatedAt).toISOString() : null,
+        slipUpdatedAt: matchingSlip?.updatedAt ? new Date(matchingSlip.updatedAt).toISOString() : null,
         reason: !matchingSlip ? 'SIN_RECIBO_CALCULADO' : 'MODIFICADA_TRAS_CALCULO',
       });
     }
   }
+
+  staleNovelties.sort((a, b) => {
+    const settlementCmp = String(a.settlementName || '').localeCompare(String(b.settlementName || ''), 'es', {
+      numeric: true,
+      sensitivity: 'base',
+    });
+    if (settlementCmp !== 0) return settlementCmp;
+
+    const legajoCmp = String(a.fileNumber || '').localeCompare(String(b.fileNumber || ''), 'es', {
+      numeric: true,
+      sensitivity: 'base',
+    });
+    if (legajoCmp !== 0) return legajoCmp;
+
+    return String(a.conceptCode || '').localeCompare(String(b.conceptCode || ''), 'es', {
+      numeric: true,
+      sensitivity: 'base',
+    });
+  });
 
   const blockingErrors = [];
   const warnings = [];
@@ -222,7 +295,7 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
   if (staleNovelties.length > 0) {
     blockingErrors.push({
       code: 'STALE_NOVELTIES',
-      message: `Existen ${staleNovelties.length} novedad(es) no persistente(s) cargadas o modificadas sin recalcular los recibos correspondientes. Recalcule la liquidación o elimine esas novedades antes de cerrar para evitar pérdida de datos.`,
+      message: `Existen ${staleNovelties.length} novedad(es) no persistente(s) cargadas o modificadas sin recalcular los recibos correspondientes. Revisá el detalle por legajo y concepto debajo para recalcular o eliminar esas novedades antes de cerrar.`,
       count: staleNovelties.length,
     });
   }
@@ -297,7 +370,12 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     }
   }
 
-  const terminationsPreview = Array.from(terminationsMap.values());
+  const terminationsPreview = Array.from(terminationsMap.values()).sort((a, b) =>
+    String(a.fileNumber || '').localeCompare(String(b.fileNumber || ''), 'es', {
+      numeric: true,
+      sensitivity: 'base',
+    })
+  );
   let activeEmbargoesOnTerminated = 0;
 
   if (terminationsPreview.length > 0) {
@@ -339,13 +417,58 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
   }
 
   // Ganancias 4ta Categoría
+  const hasIncomeTaxBalance = (it) =>
+    Number(it.totalWithheldAmount || 0) !== 0 ||
+    Number(it.totalRefundAmount || 0) !== 0 ||
+    Number(it.totalEmployeesWithheld || 0) > 0;
+
+  const formatItAmt = (val) =>
+    Number(val || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const formatIncomeTaxLabel = (it) => {
+    const typeMap = { MONTHLY: 'Mensual', FINAL: 'Final', ANNUAL: 'Anual' };
+    const typeLabel = typeMap[it.settlementType] || it.settlementType || 'Mensual';
+    const ret = Number(it.totalWithheldAmount || 0);
+    const reint = Number(it.totalRefundAmount || 0);
+    const parts = [];
+    if (ret !== 0 || Number(it.totalEmployeesWithheld || 0) > 0) {
+      parts.push(`${Number(it.totalEmployeesWithheld || 0)} ret. ($${formatItAmt(ret)})`);
+    }
+    if (reint !== 0) {
+      parts.push(`reintegros $${formatItAmt(reint)}`);
+    }
+    return parts.length > 0 ? `${typeLabel} (${parts.join(', ')})` : typeLabel;
+  };
+
   const openIncomeTax = incomeTaxSettlements.filter((it) => it.status !== 'CLOSED');
-  const unexportedIncomeTax = openIncomeTax.filter((it) => it.status === 'CALCULATED');
+  const unexportedIncomeTax = openIncomeTax.filter(
+    (it) => it.status === 'CALCULATED' && hasIncomeTaxBalance(it)
+  );
+  const zeroBalanceIncomeTax = openIncomeTax.filter(
+    (it) => it.status === 'CALCULATED' && !hasIncomeTaxBalance(it)
+  );
+
   if (unexportedIncomeTax.length > 0) {
+    const detailsText = unexportedIncomeTax.map(formatIncomeTaxLabel).join('; ');
     warnings.push({
       code: 'INCOME_TAX_NOT_EXPORTED',
-      message: `Existen ${unexportedIncomeTax.length} liquidación(es) de Ganancias 4ta Categoría calculada(s) para ${String(targetMonth).padStart(2, '0')}/${targetYear} sin exportar a nómina.`,
+      message: `Existen ${unexportedIncomeTax.length} liquidación(es) de Ganancias 4ta Categoría calculada(s) para ${String(targetMonth).padStart(2, '0')}/${targetYear} sin exportar a nómina: ${detailsText}.`,
       count: unexportedIncomeTax.length,
+    });
+  }
+
+  if (crossExportedIncomeTax.length > 0) {
+    const crossDetails = crossExportedIncomeTax
+      .map((it) => {
+        const src = `${String(it.month).padStart(2, '0')}/${it.fiscalYear}`;
+        const pName = periodById.get(it.exportedPayrollPeriodId)?.settlementName || 'Nómina del período';
+        return `${src} → "${pName}" (${formatIncomeTaxLabel(it)})`;
+      })
+      .join('; ');
+    warnings.push({
+      code: 'INCOME_TAX_CROSS_PERIOD_EXPORT',
+      message: `Se detectó exportación de Ganancias 4ta Categoría correspondiente a otro mes fiscal aplicada sobre este cierre: ${crossDetails}.`,
+      count: crossExportedIncomeTax.length,
     });
   }
 
@@ -433,6 +556,8 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
       totalForPeriod: incomeTaxSettlements.length,
       openToCloseCount: openIncomeTax.length,
       unexportedCount: unexportedIncomeTax.length,
+      zeroBalanceCount: zeroBalanceIncomeTax.length,
+      crossPeriodExportsCount: crossExportedIncomeTax.length,
     },
     lsdValidationSummary,
     blockingErrors,
@@ -473,6 +598,8 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
   const deactivateExpiredConcepts = options?.deactivateExpiredConcepts !== false;
   const suspendTerminatedEmbargoes = options?.suspendTerminatedEmbargoes !== false;
   const closingNotes = options?.notes ? String(options.notes).trim().slice(0, 500) : null;
+  const defaultTerminationReason = normalizeBriefTerminationReason(options?.defaultTerminationReason);
+  const terminationReasonsInput = Array.isArray(options?.terminationReasons) ? options.terminationReasons : [];
 
   return tenantPrisma.$transaction(
     async (tx) => {
@@ -581,12 +708,30 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
       }
 
       // 4. Tarea 3: Dar de baja al personal incluido en liquidaciones FINAL con fecha = liquidationDate
+      const allowedTermEmpIds = new Set(evaluation.terminationsPreview.map((t) => t.employeeId));
+      const terminationReasonOverrideMap = new Map();
+      for (const item of terminationReasonsInput) {
+        if (!item || typeof item !== 'object') continue;
+        const empId = item.employeeId ? String(item.employeeId).trim() : '';
+        if (!empId || !allowedTermEmpIds.has(empId)) continue;
+        const cleaned = normalizeBriefTerminationReason(item.terminationReason);
+        if (cleaned) {
+          terminationReasonOverrideMap.set(empId, cleaned);
+        }
+      }
+
       const terminatedEmployeesAudit = [];
       const terminatedEmpIds = [];
       for (let i = 0; i < evaluation.terminationsPreview.length; i += 20) {
         const chunk = evaluation.terminationsPreview.slice(i, i + 20);
         await Promise.all(
           chunk.map((t) => {
+            const rowOverride = terminationReasonOverrideMap.get(t.employeeId) || '';
+            const effectiveTerminationReason = normalizeBriefTerminationReason(
+              rowOverride ||
+                (!t.existingTerminationReason && defaultTerminationReason ? defaultTerminationReason : '') ||
+                t.proposedTerminationReason
+            );
             terminatedEmpIds.push(t.employeeId);
             terminatedEmployeesAudit.push({
               employeeId: t.employeeId,
@@ -594,7 +739,7 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
               fullName: t.fullName,
               previousStatus: t.previousStatus,
               terminationDate: t.proposedTerminationDate.toISOString(),
-              terminationReason: t.proposedTerminationReason,
+              terminationReason: effectiveTerminationReason,
               sourcePeriodId: t.sourcePeriodId,
               sourceSettlementName: t.sourceSettlementName,
             });
@@ -603,7 +748,7 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
               data: {
                 status: 'INACTIVE',
                 terminationDate: t.proposedTerminationDate,
-                terminationReason: t.proposedTerminationReason,
+                terminationReason: effectiveTerminationReason,
               },
             });
           })
@@ -660,6 +805,10 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
         totalEmployerCost: evaluation.totals.totalEmployerCost,
         purgedNoveltiesCount,
         terminatedEmpIds,
+        terminatedEmployeesReasons: terminatedEmployeesAudit.map((t) => ({
+          employeeId: t.employeeId,
+          terminationReason: t.terminationReason,
+        })),
       };
       const checksumHash = crypto
         .createHash('sha256')

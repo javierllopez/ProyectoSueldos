@@ -239,9 +239,31 @@ export const normalizePayrollKey = (str) => {
 };
 
 /**
+ * Extrae Año y Mes (YYYYMM) sin desfase horario UTC vs local para vigencias de escalas salariales.
+ */
+export function extractScalePeriodYearMonth(dateVal) {
+  if (!dateVal) return null;
+  const isoStr = dateVal instanceof Date ? dateVal.toISOString() : String(dateVal);
+  const match = isoStr.match(/^(\d{4})-(\d{2})/);
+  if (match) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    if (year > 1900 && month >= 1 && month <= 12) {
+      return { year, month, ym: year * 100 + month };
+    }
+  }
+  const d = new Date(dateVal);
+  if (isNaN(d.getTime())) return null;
+  const year = d.getUTCFullYear();
+  const month = d.getUTCMonth() + 1;
+  return { year, month, ym: year * 100 + month };
+}
+
+/**
  * Resuelve el monto vigente de una nómina/escala salarial para un año y mes determinados,
  * buscando en sus períodos registrados (salary_scale_periods) aquel cuyo rango [validFrom, validTo]
- * incluya ese mes y año. Si ninguno coincide, devuelve el monto nominal base de la nómina.
+ * incluya ese mes y año. Si ninguno coincide pero existen vigencias previas hasta ese período,
+ * toma la última vigencia aplicable conocida; caso contrario devuelve el monto nominal base.
  */
 export function resolveSalaryScaleAmountForPeriod(scale, year, month) {
   if (!scale) return 0;
@@ -256,20 +278,25 @@ export function resolveSalaryScaleAmountForPeriod(scale, year, month) {
 
   const targetYM = numYear * 100 + numMonth;
   let matchedAmount = null;
+  let latestPriorAmount = null;
+  let latestPriorToYM = -1;
 
   for (const p of scale.periods) {
-    if (!p.validFrom || !p.validTo) continue;
-    const fromD = new Date(p.validFrom);
-    const toD = new Date(p.validTo);
-    if (isNaN(fromD.getTime()) || isNaN(toD.getTime())) continue;
-    const fromYM = fromD.getFullYear() * 100 + (fromD.getMonth() + 1);
-    const toYM = toD.getFullYear() * 100 + (toD.getMonth() + 1);
-    if (fromYM <= targetYM && targetYM <= toYM) {
+    const fromInfo = extractScalePeriodYearMonth(p.validFrom);
+    const toInfo = extractScalePeriodYearMonth(p.validTo);
+    if (!fromInfo || !toInfo) continue;
+
+    if (fromInfo.ym <= targetYM && targetYM <= toInfo.ym) {
       matchedAmount = Number(p.amount);
+    } else if (toInfo.ym <= targetYM && toInfo.ym >= latestPriorToYM) {
+      latestPriorToYM = toInfo.ym;
+      latestPriorAmount = Number(p.amount);
     }
   }
 
-  return matchedAmount !== null && !isNaN(matchedAmount) ? matchedAmount : fallback;
+  if (matchedAmount !== null && !isNaN(matchedAmount)) return matchedAmount;
+  if (latestPriorAmount !== null && !isNaN(latestPriorAmount)) return latestPriorAmount;
+  return fallback;
 }
 
 /**
@@ -1738,4 +1765,178 @@ export function calculateEmployeePayroll({
     cbu: employee.cbu && String(employee.cbu).trim() ? String(employee.cbu).trim() : null,
     bankName: employee.cbu && String(employee.cbu).trim() ? (employee.bankName || 'Acreditación Bancaria') : null,
   };
+}
+
+function fmtArNum(val) {
+  return Number(val || 0).toLocaleString('es-AR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+/**
+ * Definición canónica de los 8 subsistemas de contribuciones patronales (F.931 + ART + SCVO + Sindical).
+ */
+export const EMPLOYER_CONTRIBUTION_DEFINITIONS = [
+  {
+    code: 'CP9100',
+    field: 'sipaContrib',
+    name: 'SIPA - Régimen Previsional Patronal',
+    shortName: 'SIPA (Previsional)',
+    settingKey: 'sipaRate',
+    defaultRate: 10.77,
+    order: 9100,
+    basisLabel: 'BI 10 (SIPA c/ detracción)',
+  },
+  {
+    code: 'CP9101',
+    field: 'inssjypContrib',
+    name: 'INSSJyP / PAMI - Contrib. Patronal',
+    shortName: 'INSSJyP / PAMI',
+    settingKey: 'inssjypRate',
+    defaultRate: 1.58,
+    order: 9101,
+    basisLabel: 'BI 2 (Contribución SIPA)',
+  },
+  {
+    code: 'CP9102',
+    field: 'osContrib',
+    name: 'Obra Social Patronal',
+    shortName: 'Obra Social Patronal',
+    settingKey: 'osRate',
+    defaultRate: 6.0,
+    order: 9102,
+    basisLabel: 'BI 4 (Obra Social)',
+  },
+  {
+    code: 'CP9103',
+    field: 'fneContrib',
+    name: 'Fondo Nacional de Empleo (FNE)',
+    shortName: 'FNE (Fondo Nac. Empleo)',
+    settingKey: 'fneRate',
+    defaultRate: 0.94,
+    order: 9103,
+    basisLabel: 'BI 2 (Contribución SIPA)',
+  },
+  {
+    code: 'CP9104',
+    field: 'aaffContrib',
+    name: 'Asignaciones Familiares (AAFF)',
+    shortName: 'AAFF (Asig. Familiares)',
+    settingKey: 'aaffRate',
+    defaultRate: 4.7,
+    order: 9104,
+    basisLabel: 'BI 2 (Contribución SIPA)',
+  },
+  {
+    code: 'CP9105',
+    field: 'artContrib',
+    name: 'ART - Aseguradora de Riesgos del Trabajo',
+    shortName: 'ART (Riesgos del Trabajo)',
+    settingKey: 'artRate',
+    defaultRate: 3.5,
+    fixedSettingKey: 'artFixedFee',
+    defaultFixed: 850.0,
+    order: 9105,
+    basisLabel: 'BI 9 (LRT / ART)',
+  },
+  {
+    code: 'CP9106',
+    field: 'scvoContrib',
+    name: 'SCVO - Seguro Colectivo de Vida Obligatorio',
+    shortName: 'SCVO (Seguro Vida Oblig.)',
+    fixedSettingKey: 'scvoFee',
+    defaultFixed: 650.0,
+    isFixedOnly: true,
+    order: 9106,
+    basisLabel: 'Cuota Fija Mensual',
+  },
+  {
+    code: 'CP9107',
+    field: 'unionContrib',
+    name: 'Contribución Patronal Sindical / Convencional',
+    shortName: 'Contribución Sindical',
+    defaultRate: 0.5,
+    order: 9107,
+    basisLabel: 'Total Remunerativo',
+  },
+];
+
+/**
+ * Construye el detalle auditado de cada contribución patronal generada (`amount > 0`)
+ * para un recibo de sueldo (`PaySlip`) usando sus bases F.931 y los parámetros patronales vigentes.
+ */
+export function buildEmployerContributionAuditItems(slip, payrollSettings = {}) {
+  if (!slip) return [];
+  const f931 = slip.f931Basis || slip.basis || {};
+  const totalRem = Number(slip.totalRemunerative || 0);
+  const gross = Number(slip.grossSalary || 0);
+  const bi2 = f931.baseImponible2 !== undefined ? Number(f931.baseImponible2) : totalRem;
+  const bi4 = Number(f931.baseImponible4 !== undefined ? f931.baseImponible4 : totalRem)
+    + Number(f931.baseDifContribOs || 0);
+  const bi9 = f931.baseImponible9 !== undefined ? Number(f931.baseImponible9) : gross;
+  const detraction = Number(f931.detractionAmount || 0);
+  const bi10 = f931.baseImponible10 !== undefined
+    ? Number(f931.baseImponible10)
+    : Math.max(0, bi2 - detraction);
+
+  const items = [];
+  for (const def of EMPLOYER_CONTRIBUTION_DEFINITIONS) {
+    const amount = Math.round(Number(slip[def.field] || 0) * 100) / 100;
+    if (amount <= 0) continue;
+
+    const ratePct = def.isFixedOnly
+      ? 0
+      : Number(
+          def.settingKey && payrollSettings[def.settingKey] !== undefined
+            ? payrollSettings[def.settingKey]
+            : def.defaultRate
+        );
+    const fixedFee = def.fixedSettingKey
+      ? Number(
+          payrollSettings[def.fixedSettingKey] !== undefined
+            ? payrollSettings[def.fixedSettingKey]
+            : def.defaultFixed
+        )
+      : 0;
+
+    let baseAmount = totalRem;
+    if (def.field === 'sipaContrib') baseAmount = bi10;
+    else if (def.field === 'inssjypContrib' || def.field === 'fneContrib' || def.field === 'aaffContrib') baseAmount = bi2;
+    else if (def.field === 'osContrib') baseAmount = bi4;
+    else if (def.field === 'artContrib') baseAmount = bi9;
+    else if (def.field === 'scvoContrib') baseAmount = amount;
+
+    let formulaExplanation = '';
+    if (def.isFixedOnly) {
+      formulaExplanation = `Suma fija obligatoria Dec. 1567/74 ($ ${fmtArNum(amount)})`;
+    } else if (def.fixedSettingKey) {
+      formulaExplanation = `${def.basisLabel}: $ ${fmtArNum(baseAmount)} × ${fmtArNum(ratePct)}% + Fijo ART $ ${fmtArNum(fixedFee)} = $ ${fmtArNum(amount)}`;
+    } else if (def.field === 'sipaContrib' && detraction > 0) {
+      formulaExplanation = `${def.basisLabel}: ($ ${fmtArNum(bi2)} − Detrac. $ ${fmtArNum(detraction)} = $ ${fmtArNum(baseAmount)}) × ${fmtArNum(ratePct)}% = $ ${fmtArNum(amount)}`;
+    } else {
+      formulaExplanation = `${def.basisLabel}: $ ${fmtArNum(baseAmount)} × ${fmtArNum(ratePct)}% = $ ${fmtArNum(amount)}`;
+    }
+
+    items.push({
+      id: `contrib-${def.field}`,
+      conceptCode: def.code,
+      conceptName: def.name,
+      shortName: def.shortName,
+      field: def.field,
+      type: 'EMPLOYER_CONTRIB',
+      units: ratePct > 0 ? ratePct : 1,
+      unitLabel: ratePct > 0 ? '%' : 'Fijo',
+      ratePct,
+      fixedFee,
+      baseAmount: Math.round(baseAmount * 100) / 100,
+      basisLabel: def.basisLabel,
+      detractionAmount: def.field === 'sipaContrib' ? detraction : 0,
+      amount,
+      calculationOrder: def.order,
+      formulaExplanation,
+    });
+  }
+
+  return items;
 }

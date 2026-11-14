@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from '../../api.js?v=2.0';
+import { apiRequest, storage, showToast } from '../../api.js?v=2.1';
 import {
   isValidCuit,
   formatCuit,
@@ -235,6 +235,38 @@ class MixinMethods {
       formCloseConfirm.addEventListener('submit', async (e) => {
         e.preventDefault();
         await this.executePayrollClose();
+      });
+    }
+
+    const applyDefaultReasonBtn = document.getElementById('btn-apply-default-termination-reason');
+    if (applyDefaultReasonBtn) {
+      applyDefaultReasonBtn.addEventListener('click', () => {
+        const defaultInput = document.getElementById('payroll-close-default-termination-reason');
+        const reasonText = defaultInput?.value?.replace(/\s+/g, ' ').trim().slice(0, 255) || '';
+        if (!reasonText) {
+          showToast('Ingresá un motivo general breve antes de aplicarlo a las filas.', 'warning');
+          defaultInput?.focus();
+          return;
+        }
+        const rowInputs = document.querySelectorAll('#payroll-close-terminations-tbody .payroll-close-term-reason-input');
+        let appliedCount = 0;
+        let skippedManualCount = 0;
+        rowInputs.forEach((inputEl) => {
+          const hasExistingManual = inputEl.dataset.hasManualReason === '1';
+          const currentVal = String(inputEl.value || '').trim();
+          if (hasExistingManual || currentVal.length > 0) {
+            skippedManualCount += 1;
+            return;
+          }
+          inputEl.value = reasonText;
+          appliedCount += 1;
+        });
+        if (appliedCount > 0) {
+          const skipSuffix = skippedManualCount > 0 ? ` (${skippedManualCount} con motivo previo/cargado conservado)` : '';
+          showToast(`Motivo aplicado a ${appliedCount} legajo(s)${skipSuffix}.`, 'success');
+        } else {
+          showToast('Todas las filas ya tienen un motivo cargado o manual en ficha. Editá individualmente si querés reemplazarlo.', 'info');
+        }
       });
     }
 
@@ -1100,42 +1132,162 @@ class MixinMethods {
     }
   }
 
-  openNewFiscalPeriodModal() {
-    const form = document.getElementById('form-fiscal-period');
-    form?.reset();
-    const alertBox = document.getElementById('fiscal-period-form-alert');
-    if (alertBox) alertBox.classList.add('d-none');
+  syncFiscalPeriodModalMonthOptions(selectedYear, preferredMonth = null) {
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    const monthInput = document.getElementById('fiscal-period-input-month');
+    const notesInput = document.getElementById('fiscal-period-input-notes');
+    const submitBtn = document.getElementById('btn-save-fiscal-period');
+    if (!monthInput) return;
 
-    if (this.activeFiscalPeriod) {
-      const monthNames = [
-        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-      ];
-      const activeName = `${monthNames[this.activeFiscalPeriod.month - 1]} ${this.activeFiscalPeriod.year}`;
-      if (alertBox) {
-        alertBox.innerHTML = `
-          <div class="d-flex align-items-start gap-2 text-start">
-            <i class="ti ti-lock fs-3 flex-shrink-0 mt-1"></i>
-            <div>
-              <strong>Atención:</strong> Ya existe un período abierto (<strong>${activeName}</strong>). Solamente puede haber un período abierto a la vez. No podrá habilitar un nuevo período hasta que el actual sea cerrado.
-            </div>
-          </div>`;
-        alertBox.classList.remove('d-none');
+    const closedSet = new Set(
+      (this.fiscalPeriodsList || [])
+        .filter((fp) => fp.status === 'CLOSED' && !fp.isOrphanClosed)
+        .map((fp) => `${Number(fp.year)}-${Number(fp.month)}`)
+    );
+
+    let firstEnabledMonth = null;
+    Array.from(monthInput.options).forEach((opt) => {
+      const m = Number(opt.value);
+      const mm = String(m).padStart(2, '0');
+      const mName = monthNames[m - 1] || opt.textContent;
+      const isClosed = closedSet.has(`${Number(selectedYear)}-${m}`);
+      opt.disabled = isClosed;
+      opt.textContent = isClosed ? `${mName} (${mm}) — Cerrado` : `${mName} (${mm})`;
+      if (!isClosed && firstEnabledMonth === null) {
+        firstEnabledMonth = m;
       }
-      const submitBtn = document.getElementById('btn-save-fiscal-period');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.title = 'Ya existe un período abierto activo';
-      }
-    } else {
-      const submitBtn = document.getElementById('btn-save-fiscal-period');
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.title = '';
-      }
+    });
+
+    let chosenMonth = firstEnabledMonth || Number(monthInput.value) || 1;
+    if (preferredMonth && !closedSet.has(`${Number(selectedYear)}-${Number(preferredMonth)}`)) {
+      chosenMonth = Number(preferredMonth);
+    }
+    monthInput.value = String(chosenMonth);
+
+    if (notesInput) {
+      notesInput.placeholder = `Ej. Período regular ${monthNames[chosenMonth - 1] || ''} ${selectedYear}`.trim();
     }
 
-    getBootstrapModal(document.getElementById('modal-fiscal-period-form'))?.show();
+    if (submitBtn && !this.activeFiscalPeriod) {
+      const allYearClosed = firstEnabledMonth === null;
+      submitBtn.disabled = allYearClosed;
+      submitBtn.title = allYearClosed ? `Todos los meses de ${selectedYear} ya se encuentran cerrados` : '';
+    }
+  }
+
+  async openNewFiscalPeriodModal() {
+    if (this._openingFiscalModal) return;
+    this._openingFiscalModal = true;
+
+    try {
+      const form = document.getElementById('form-fiscal-period');
+      form?.reset();
+      const alertBox = document.getElementById('fiscal-period-form-alert');
+      if (alertBox) alertBox.classList.add('d-none');
+
+      const yearInput = document.getElementById('fiscal-period-input-year');
+      const monthInput = document.getElementById('fiscal-period-input-month');
+      const submitBtn = document.getElementById('btn-save-fiscal-period');
+
+      try {
+        const res = await apiRequest('/payroll/fiscal-periods');
+        this.fiscalPeriodsList = res?.data || [];
+      } catch (_) {
+        this.fiscalPeriodsList = this.fiscalPeriodsList || [];
+      }
+
+      const closedFormal = (this.fiscalPeriodsList || []).filter(
+        (fp) => fp.status === 'CLOSED' && !fp.isOrphanClosed
+      );
+      const closedKeys = new Set(closedFormal.map((fp) => `${Number(fp.year)}-${Number(fp.month)}`));
+
+      let suggestedYear = new Date().getFullYear();
+      let suggestedMonth = new Date().getMonth() + 1;
+
+      if (closedFormal.length > 0) {
+        const latest = [...closedFormal].sort(
+          (a, b) => Number(b.year) * 12 + Number(b.month) - (Number(a.year) * 12 + Number(a.month))
+        )[0];
+        let nextY = Number(latest.year);
+        let nextM = Number(latest.month) + 1;
+        if (nextM > 12) {
+          nextM = 1;
+          nextY += 1;
+        }
+        // Avanzar mientras exista ya cerrado legalmente
+        for (let i = 0; i < 24 && closedKeys.has(`${nextY}-${nextM}`); i++) {
+          nextM += 1;
+          if (nextM > 12) {
+            nextM = 1;
+            nextY += 1;
+          }
+        }
+        suggestedYear = nextY;
+        suggestedMonth = nextM;
+      }
+
+      if (yearInput) {
+        yearInput.value = String(suggestedYear);
+        if (!yearInput.dataset.fiscalYearBound) {
+          yearInput.dataset.fiscalYearBound = 'true';
+          yearInput.addEventListener('change', () => {
+            this.syncFiscalPeriodModalMonthOptions(Number(yearInput.value) || new Date().getFullYear());
+          });
+        }
+      }
+
+      if (monthInput && !monthInput.dataset.fiscalMonthBound) {
+        monthInput.dataset.fiscalMonthBound = 'true';
+        monthInput.addEventListener('change', () => {
+          const monthNames = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+          ];
+          const notesEl = document.getElementById('fiscal-period-input-notes');
+          const yVal = Number(document.getElementById('fiscal-period-input-year')?.value) || suggestedYear;
+          const mVal = Number(monthInput.value) || suggestedMonth;
+          if (notesEl) {
+            notesEl.placeholder = `Ej. Período regular ${monthNames[mVal - 1] || ''} ${yVal}`.trim();
+          }
+        });
+      }
+
+      if (this.activeFiscalPeriod) {
+        const monthNames = [
+          'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        const activeName = `${monthNames[this.activeFiscalPeriod.month - 1]} ${this.activeFiscalPeriod.year}`;
+        if (alertBox) {
+          alertBox.innerHTML = `
+            <div class="d-flex align-items-start gap-2 text-start">
+              <i class="ti ti-lock fs-3 flex-shrink-0 mt-1"></i>
+              <div>
+                <strong>Atención:</strong> Ya existe un período abierto (<strong>${activeName}</strong>). Solamente puede haber un período abierto a la vez. No podrá habilitar un nuevo período hasta que el actual sea cerrado.
+              </div>
+            </div>`;
+          alertBox.classList.remove('d-none');
+        }
+        this.syncFiscalPeriodModalMonthOptions(suggestedYear, suggestedMonth);
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.title = 'Ya existe un período abierto activo';
+        }
+      } else {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.title = '';
+        }
+        this.syncFiscalPeriodModalMonthOptions(suggestedYear, suggestedMonth);
+      }
+
+      getBootstrapModal(document.getElementById('modal-fiscal-period-form'))?.show();
+    } finally {
+      this._openingFiscalModal = false;
+    }
   }
 
   async saveFiscalPeriod() {
@@ -1160,6 +1312,9 @@ class MixinMethods {
       getBootstrapModal(document.getElementById('modal-fiscal-period-form'))?.hide();
       await this.loadActiveFiscalPeriod();
       await this.loadPayrollPeriods();
+      if (typeof this.loadPayrollSalaryScales === 'function') {
+        await this.loadPayrollSalaryScales();
+      }
     } catch (err) {
       if (alertBox) {
         alertBox.textContent = err.message || 'Error al habilitar el período fiscal';
@@ -2298,7 +2453,7 @@ class MixinMethods {
     if (!modalEl) return;
 
     if (tableBody) {
-      tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando resumen de liquidación...</td></tr>';
+      tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando resumen de liquidación...</td></tr>';
     }
 
     const modal = window.bootstrap?.Modal ? window.bootstrap.Modal.getOrCreateInstance(modalEl) : null;
@@ -2310,6 +2465,8 @@ class MixinMethods {
       this.activePeriodSummaryData = summaryData;
 
       const { period, totals, concepts } = summaryData;
+      const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
+      const totalLaborCost = Number(totals.totalLaborCost ?? ((Number(totals.totalGross || 0)) + totalEmployerContrib));
 
       // Actualizar cabecera
       const titleEl = document.getElementById('modal-period-summary-title');
@@ -2345,10 +2502,13 @@ class MixinMethods {
       const netEl = document.getElementById('summary-total-net');
       if (netEl) netEl.textContent = `$ ${formatNumber(totals.totalNet)}`;
 
+      const contribEl = document.getElementById('summary-total-employer-contrib');
+      if (contribEl) contribEl.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
+
       // Filas de la tabla
       if (tableBody) {
         if (!concepts || concepts.length === 0) {
-          tableBody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No se registran conceptos liquidados en esta liquidación.</td></tr>';
+          tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No se registran conceptos liquidados en esta liquidación.</td></tr>';
         } else {
           tableBody.innerHTML = concepts
             .map((c) => {
@@ -2363,6 +2523,9 @@ class MixinMethods {
               } else if (c.type === 'DEDUCTION' || c.type === 'DISCOUNT') {
                 badgeClass = 'bg-danger-lt text-danger';
                 typeLabel = 'DED';
+              } else if (c.type === 'EMPLOYER_CONTRIB') {
+                badgeClass = 'bg-indigo-lt text-indigo';
+                typeLabel = 'PAT';
               }
 
               const code = c.conceptCode || c.code || '';
@@ -2370,10 +2533,12 @@ class MixinMethods {
               const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
               const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
               const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+              const contribVal = Number(c.employerContribTotal ?? c.employerContribAmount ?? 0);
 
               const remStr = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
               const nremStr = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
               const dedStr = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
+              const contribStr = contribVal > 0 ? `$ ${formatNumber(contribVal)}` : '-';
 
               return `
                 <tr>
@@ -2390,6 +2555,7 @@ class MixinMethods {
                   <td class="text-end font-monospace text-nowrap">${remStr}</td>
                   <td class="text-end font-monospace text-nowrap">${nremStr}</td>
                   <td class="text-end font-monospace text-danger text-nowrap">${dedStr}</td>
+                  <td class="text-end font-monospace text-indigo text-nowrap">${contribStr}</td>
                 </tr>
               `;
             })
@@ -2410,15 +2576,18 @@ class MixinMethods {
       const footDed = document.getElementById('summary-foot-ded');
       if (footDed) footDed.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
 
+      const footContrib = document.getElementById('summary-foot-contrib');
+      if (footContrib) footContrib.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
+
       const footInfo = document.getElementById('modal-period-summary-footinfo');
       if (footInfo) {
-        footInfo.innerHTML = `<i class="ti ti-check text-success me-1"></i> Total Bruto: <strong>$ ${formatNumber(totals.totalGross)}</strong> • Neto Total a Pagar: <strong>$ ${formatNumber(totals.totalNet)}</strong> • ${concepts.length} conceptos agrupados por naturaleza`;
+        footInfo.innerHTML = `<i class="ti ti-check text-success me-1"></i> Total Bruto: <strong>$ ${formatNumber(totals.totalGross)}</strong> • Neto a Pagar: <strong>$ ${formatNumber(totals.totalNet)}</strong> • Contribuciones Patronales: <strong class="text-indigo">$ ${formatNumber(totalEmployerContrib)}</strong> • Costo Laboral Total: <strong>$ ${formatNumber(totalLaborCost)}</strong>`;
       }
     } catch (err) {
       console.error('Error al cargar resumen de liquidación:', err);
       showToast(err.message || 'Error al obtener el resumen de liquidación', 'danger');
       if (tableBody) {
-        tableBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">Error: ${escapeHtml(err.message || 'No se pudo cargar el resumen')}</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error: ${escapeHtml(err.message || 'No se pudo cargar el resumen')}</td></tr>`;
       }
     }
   }
@@ -2436,6 +2605,8 @@ class MixinMethods {
 
     const { period, totals, concepts } = this.activePeriodSummaryData;
     const company = this.activeCompany || {};
+    const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
+    const totalLaborCost = Number(totals.totalLaborCost ?? ((Number(totals.totalGross || 0)) + totalEmployerContrib));
 
     const rows = [
       ['RESUMEN DE LIQUIDACIÓN DE HABERES — TOTALES POR CONCEPTO'],
@@ -2443,19 +2614,21 @@ class MixinMethods {
       ['Liquidación:', period.settlementName || 'Liquidación', 'Período:', `${period.month}/${period.year}`, 'Liq. N°:', period.settlementNumber || 1],
       ['Fecha de Emisión:', `${new Date().toLocaleDateString('es-AR')} ${new Date().toLocaleTimeString('es-AR')}`],
       [],
-      ['Código', 'Naturaleza', 'Concepto / Denominación', 'Cant. Casos', 'Remunerativo ($)', 'No Remunerativo ($)', 'Deducciones ($)'],
+      ['Código', 'Naturaleza', 'Concepto / Denominación', 'Cant. Casos', 'Remunerativo ($)', 'No Remunerativo ($)', 'Deducciones ($)', 'Contribuciones Patronales ($)'],
     ];
 
     concepts.forEach((c) => {
       let natLabel = 'Deducción';
       if (c.type === 'REMUNERATIVE') natLabel = 'Remunerativo';
       else if (c.type === 'NON_REMUNERATIVE') natLabel = 'No Remunerativo';
+      else if (c.type === 'EMPLOYER_CONTRIB') natLabel = 'Contribución Patronal';
 
       const code = c.conceptCode || c.code || '';
       const name = c.conceptName || c.name || '';
       const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
       const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
       const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+      const contribVal = Number(c.employerContribTotal ?? c.employerContribAmount ?? 0);
 
       rows.push([
         code,
@@ -2465,6 +2638,7 @@ class MixinMethods {
         remVal,
         nremVal,
         dedVal,
+        contribVal,
       ]);
     });
 
@@ -2477,6 +2651,7 @@ class MixinMethods {
       Number(totals.totalRemunerative || 0),
       Number(totals.totalNonRemunerative || 0),
       Number(totals.totalDeductions || 0),
+      totalEmployerContrib,
     ]);
     rows.push([
       'NETO TOTAL A PAGAR',
@@ -2486,6 +2661,17 @@ class MixinMethods {
       '',
       '',
       Number(totals.totalNet || 0),
+      '',
+    ]);
+    rows.push([
+      'COSTO LABORAL TOTAL (BRUTO + CONTRIBUCIONES)',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      totalLaborCost,
     ]);
 
     const ws = window.XLSX.utils.aoa_to_sheet(rows);
@@ -2493,12 +2679,13 @@ class MixinMethods {
     // Ajustar anchos de columnas
     ws['!cols'] = [
       { wch: 12 }, // Código
-      { wch: 18 }, // Naturaleza
+      { wch: 22 }, // Naturaleza
       { wch: 40 }, // Concepto
       { wch: 14 }, // Casos
       { wch: 20 }, // Remunerativo
       { wch: 20 }, // No Remunerativo
       { wch: 20 }, // Deducciones
+      { wch: 26 }, // Contribuciones Patronales
     ];
 
     const wb = window.XLSX.utils.book_new();
@@ -2518,6 +2705,7 @@ class MixinMethods {
 
     const { period, totals, concepts } = this.activePeriodSummaryData;
     const company = this.activeCompany || {};
+    const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
 
     const typeLabels = {
       MONTHLY: 'Mensual Normal',
@@ -2544,16 +2732,19 @@ class MixinMethods {
           let natBadge = '<span style="color: #666;">DED</span>';
           if (c.type === 'REMUNERATIVE') natBadge = '<strong style="color: #0054a6;">REM</strong>';
           else if (c.type === 'NON_REMUNERATIVE') natBadge = '<strong style="color: #0ca678;">NO REM</strong>';
+          else if (c.type === 'EMPLOYER_CONTRIB') natBadge = '<strong style="color: #4263eb;">PAT</strong>';
 
           const code = c.conceptCode || c.code || '';
           const name = c.conceptName || c.name || '';
           const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
           const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
           const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+          const contribVal = Number(c.employerContribTotal ?? c.employerContribAmount ?? 0);
 
           const rem = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
           const nrem = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
           const ded = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
+          const contrib = contribVal > 0 ? `$ ${formatNumber(contribVal)}` : '-';
 
           return `
             <tr>
@@ -2564,10 +2755,11 @@ class MixinMethods {
               <td style="text-align: right; font-family: monospace; white-space: nowrap;">${rem}</td>
               <td style="text-align: right; font-family: monospace; white-space: nowrap;">${nrem}</td>
               <td style="text-align: right; font-family: monospace; color: #dc3545; white-space: nowrap;">${ded}</td>
+              <td style="text-align: right; font-family: monospace; color: #4263eb; white-space: nowrap;">${contrib}</td>
             </tr>
           `;
         }).join('')
-      : '<tr><td colspan="7" style="text-align: center; padding: 20px; color: #666;">No hay conceptos registrados.</td></tr>';
+      : '<tr><td colspan="8" style="text-align: center; padding: 20px; color: #666;">No hay conceptos registrados.</td></tr>';
 
     const printHtml = `
       <!DOCTYPE html>
@@ -2628,10 +2820,10 @@ class MixinMethods {
             gap: 6px 16px;
             font-size: 9pt;
           }
-          .grid-4 {
+          .grid-5 {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 8px;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 6px;
             text-align: center;
             background: #eef2f6;
             padding: 8px;
@@ -2639,35 +2831,35 @@ class MixinMethods {
             margin-bottom: 12px;
           }
           .stat-label {
-            font-size: 7pt;
+            font-size: 6.5pt;
             font-weight: 700;
             text-transform: uppercase;
             color: #555;
             margin-bottom: 2px;
           }
           .stat-val {
-            font-size: 11pt;
+            font-size: 10pt;
             font-weight: 800;
             font-family: monospace;
           }
           table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8.5pt;
+            font-size: 8pt;
             margin-top: 6px;
           }
           th {
             background-color: #0054a6;
             color: #fff;
-            padding: 6px 8px;
+            padding: 5px 6px;
             text-align: left;
-            font-size: 7.5pt;
+            font-size: 7pt;
             font-weight: 700;
             text-transform: uppercase;
             border: 1px solid #0054a6;
           }
           td {
-            padding: 4.5px 8px;
+            padding: 4px 6px;
             border: 1px solid #e1e4e8;
             vertical-align: middle;
           }
@@ -2710,7 +2902,7 @@ class MixinMethods {
         <div class="header-box">
           <div>
             <h1 class="title">Resumen de Liquidación de Haberes</h1>
-            <div class="subtitle">Totales por Concepto • Cuadre Contable y Libro de Sueldos Digital (Ley 20.744)</div>
+            <div class="subtitle">Totales por Concepto • Cuadre Contable, Contribuciones Patronales y LSD (Ley 20.744)</div>
           </div>
           <div class="meta-box">
             <div><strong>Emisión:</strong> ${new Date().toLocaleDateString('es-AR')} ${new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' })}</div>
@@ -2733,13 +2925,13 @@ class MixinMethods {
           </div>
         </div>
 
-        <div class="grid-4">
+        <div class="grid-5">
           <div>
             <div class="stat-label">TOTAL REMUNERATIVO</div>
             <div class="stat-val" style="color: #0054a6;">$ ${formatNumber(totals.totalRemunerative)}</div>
           </div>
           <div>
-            <div class="stat-label">TOTAL NO REMUNERATIVO</div>
+            <div class="stat-label">NO REMUNERATIVO</div>
             <div class="stat-val" style="color: #0ca678;">$ ${formatNumber(totals.totalNonRemunerative)}</div>
           </div>
           <div>
@@ -2747,21 +2939,26 @@ class MixinMethods {
             <div class="stat-val" style="color: #dc3545;">$ ${formatNumber(totals.totalDeductions)}</div>
           </div>
           <div>
-            <div class="stat-label">NETO TOTAL A PAGAR</div>
+            <div class="stat-label">NETO A PAGAR</div>
             <div class="stat-val" style="color: #198754;">$ ${formatNumber(totals.totalNet)}</div>
+          </div>
+          <div>
+            <div class="stat-label">CONTRIB. PATRONALES</div>
+            <div class="stat-val" style="color: #4263eb;">$ ${formatNumber(totalEmployerContrib)}</div>
           </div>
         </div>
 
         <table>
           <thead>
             <tr>
-              <th style="width: 10%;">Código</th>
-              <th style="width: 8%; text-align: center;">Tipo</th>
-              <th style="width: 38%;">Concepto / Denominación</th>
-              <th style="width: 8%; text-align: center;">Casos</th>
-              <th style="width: 12%; text-align: right;">Remunerativo ($)</th>
-              <th style="width: 12%; text-align: right;">No Remunerativo ($)</th>
-              <th style="width: 12%; text-align: right;">Deducciones ($)</th>
+              <th style="width: 9%;">Código</th>
+              <th style="width: 7%; text-align: center;">Tipo</th>
+              <th style="width: 31%;">Concepto / Denominación</th>
+              <th style="width: 7%; text-align: center;">Casos</th>
+              <th style="width: 11.5%; text-align: right;">Remunerat. ($)</th>
+              <th style="width: 11.5%; text-align: right;">No Remun. ($)</th>
+              <th style="width: 11.5%; text-align: right;">Deducc. ($)</th>
+              <th style="width: 11.5%; text-align: right;">Contrib. ($)</th>
             </tr>
           </thead>
           <tbody>
@@ -2774,6 +2971,7 @@ class MixinMethods {
               <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalRemunerative)}</td>
               <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalNonRemunerative)}</td>
               <td style="text-align: right; font-family: monospace; color: #dc3545;">$ ${formatNumber(totals.totalDeductions)}</td>
+              <td style="text-align: right; font-family: monospace; color: #4263eb;">$ ${formatNumber(totalEmployerContrib)}</td>
             </tr>
           </tfoot>
         </table>
@@ -2903,6 +3101,9 @@ class MixinMethods {
           : 'Bloqueará recibos de esta liquidación, depurará sus novedades no persistentes y aplicará bajas si es Final.';
     }
     if (notesEl) notesEl.value = '';
+    const defaultReasonEl = document.getElementById('payroll-close-default-termination-reason');
+    if (defaultReasonEl) defaultReasonEl.value = '';
+    this.renderPayrollCloseBlockers([], []);
     if (loadingEl) loadingEl.classList.remove('d-none');
     if (contentEl) contentEl.classList.add('d-none');
     if (confirmBtn) confirmBtn.disabled = true;
@@ -2923,27 +3124,22 @@ class MixinMethods {
       if (err?.name === 'AbortError') return;
       if (loadingEl) loadingEl.classList.add('d-none');
       if (contentEl) contentEl.classList.remove('d-none');
-      const blockEl = document.getElementById('payroll-close-blocking-alert');
-      if (blockEl) {
-        blockEl.innerHTML = `<i class="ti ti-alert-octagon me-1"></i> ${escapeHtml(err.message || 'No se pudo obtener la pre-evaluación de cierre')}`;
-        blockEl.classList.remove('d-none');
-      }
+      this.renderPayrollCloseBlockers(
+        [{ message: err.message || 'No se pudo obtener la pre-evaluación de cierre' }],
+        err?.details?.staleNovelties || []
+      );
       showToast(err.message || 'Error al pre-evaluar cierre', 'danger');
     }
   }
 
-  renderPayrollClosePreview(preview, scope) {
-    const loadingEl = document.getElementById('payroll-close-loading');
-    const contentEl = document.getElementById('payroll-close-content');
+  renderPayrollCloseBlockers(blockingErrors = [], staleNovelties = []) {
     const blockEl = document.getElementById('payroll-close-blocking-alert');
-    const warnEl = document.getElementById('payroll-close-warnings-alert');
-    const confirmBtn = document.getElementById('btn-confirm-payroll-close');
+    const staleSectionEl = document.getElementById('payroll-close-stale-novelties-section');
+    const staleCountEl = document.getElementById('payroll-close-stale-novelties-count');
+    const staleTbodyEl = document.getElementById('payroll-close-stale-novelties-tbody');
 
-    if (loadingEl) loadingEl.classList.add('d-none');
-    if (contentEl) contentEl.classList.remove('d-none');
-
-    const blocking = preview?.blockingErrors || [];
-    const warnings = preview?.warnings || [];
+    const blocking = Array.isArray(blockingErrors) ? blockingErrors : [];
+    const stale = Array.isArray(staleNovelties) ? staleNovelties : [];
 
     if (blockEl) {
       if (blocking.length > 0) {
@@ -2959,6 +3155,85 @@ class MixinMethods {
         blockEl.innerHTML = '';
       }
     }
+
+    if (staleSectionEl && staleTbodyEl) {
+      staleSectionEl.classList.toggle('d-none', stale.length === 0);
+      if (staleCountEl) {
+        staleCountEl.textContent = String(stale.length);
+      }
+
+      staleTbodyEl.innerHTML = stale
+        .map((sn) => {
+          const valParts = [];
+          if (sn.units !== null && sn.units !== undefined) {
+            valParts.push(`${formatNumber(sn.units)} u.`);
+          }
+          if (sn.amount !== null && sn.amount !== undefined) {
+            valParts.push(`$${formatNumber(sn.amount)}`);
+          }
+          const valueStr = valParts.length > 0 ? valParts.join(' / ') : 'Sin importe/cant.';
+
+          const empBadges = [];
+          if (sn.employeeDeleted) {
+            empBadges.push('<span class="badge bg-dark-lt text-dark ms-1">Eliminado</span>');
+          } else if (sn.employeeStatus && sn.employeeStatus !== 'ACTIVE') {
+            empBadges.push(`<span class="badge bg-secondary-lt text-secondary ms-1">${escapeHtml(sn.employeeStatus)}</span>`);
+          }
+
+          const isMissingSlip = sn.reason === 'SIN_RECIBO_CALCULADO';
+          const reasonTitle = isMissingSlip
+            ? 'Sin recibo calculado (legajo omitido)'
+            : 'Novedad cargada/modificada tras cálculo';
+          const novDateStr = sn.noveltyUpdatedAt
+            ? new Date(sn.noveltyUpdatedAt).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })
+            : '';
+          const slipDateStr = sn.slipUpdatedAt
+            ? new Date(sn.slipUpdatedAt).toLocaleString('es-AR', { dateStyle: 'short', timeStyle: 'short' })
+            : '';
+          const dateDetail = isMissingSlip
+            ? novDateStr
+              ? `Nov: ${novDateStr} • Recibo: inexistente`
+              : 'Recibo inexistente en la liquidación'
+            : `Nov: ${novDateStr}${slipDateStr ? ` > Recibo: ${slipDateStr}` : ''}`;
+
+          return `
+            <tr>
+              <td class="small fw-semibold">${escapeHtml(sn.settlementName || 'Liquidación')}</td>
+              <td><span class="badge bg-danger-lt text-danger font-monospace fw-bold">${escapeHtml(sn.fileNumber || '-')}</span></td>
+              <td>
+                <span class="fw-semibold">${escapeHtml(sn.employeeName || '-')}</span>${empBadges.join('')}
+              </td>
+              <td>
+                <span class="font-monospace fw-semibold">${escapeHtml(sn.conceptCode || '-')}</span>
+                <span class="text-muted">- ${escapeHtml(sn.conceptName || '-')}</span>
+                ${sn.notes ? `<div class="text-muted text-truncate" style="max-width: 220px; font-size: 0.72rem;" title="${escapeHtml(sn.notes)}">Obs: ${escapeHtml(sn.notes)}</div>` : ''}
+              </td>
+              <td class="text-end font-monospace text-nowrap small">${escapeHtml(valueStr)}</td>
+              <td class="small">
+                <div class="fw-semibold ${isMissingSlip ? 'text-danger' : 'text-warning-emphasis'}">${escapeHtml(reasonTitle)}</div>
+                <div class="text-muted" style="font-size: 0.72rem;">${escapeHtml(dateDetail)}</div>
+              </td>
+            </tr>
+          `;
+        })
+        .join('');
+    }
+  }
+
+  renderPayrollClosePreview(preview, scope) {
+    const loadingEl = document.getElementById('payroll-close-loading');
+    const contentEl = document.getElementById('payroll-close-content');
+    const warnEl = document.getElementById('payroll-close-warnings-alert');
+    const confirmBtn = document.getElementById('btn-confirm-payroll-close');
+
+    if (loadingEl) loadingEl.classList.add('d-none');
+    if (contentEl) contentEl.classList.remove('d-none');
+
+    const blocking = preview?.blockingErrors || [];
+    const staleNovelties = preview?.staleNovelties || [];
+    const warnings = preview?.warnings || [];
+
+    this.renderPayrollCloseBlockers(blocking, staleNovelties);
 
     if (warnEl) {
       if (warnings.length > 0) {
@@ -3045,19 +3320,37 @@ class MixinMethods {
             ? new Date(`${String(t.proposedTerminationDate).slice(0, 10)}T12:00:00`).toLocaleDateString('es-AR')
             : '-';
           const obs = [];
-          if (t.previousStatus !== 'ACTIVE') obs.push('Ya estaba inactivo');
-          if (t.activeEmbargoesCount > 0) obs.push(`${t.activeEmbargoesCount} embargo(s) activo(s)`);
+          if (t.existingTerminationReason) obs.push('<span class="badge bg-azure-lt text-azure">Cargado en ficha</span>');
+          if (t.previousStatus !== 'ACTIVE') obs.push('<span class="text-warning-emphasis">Ya estaba inactivo</span>');
+          if (t.activeEmbargoesCount > 0) obs.push(`<span class="text-danger">${t.activeEmbargoesCount} embargo(s) activo(s)</span>`);
+          const obsHtml = obs.length
+            ? obs.join(' <span class="text-muted">•</span> ')
+            : '<span class="text-muted">Vacío = usará motivo automático por defecto</span>';
           return `
             <tr>
               <td class="font-monospace">${escapeHtml(t.fileNumber || '-')}</td>
               <td class="fw-semibold">${escapeHtml(t.fullName || '-')}</td>
               <td>${escapeHtml(t.sourceSettlementName || 'Final')}</td>
               <td class="text-nowrap fw-bold text-danger">${termDateStr}</td>
-              <td class="small text-muted">${obs.length ? escapeHtml(obs.join(' • ')) : 'Pasará a Inactivo / Baja'}</td>
+              <td>
+                <input type="text" class="form-control form-control-sm payroll-close-term-reason-input" maxlength="255" style="min-width: 240px;" />
+                <div class="mt-1" style="font-size: 0.72rem;">${obsHtml}</div>
+              </td>
             </tr>
           `;
         })
         .join('');
+
+      const rowInputs = tTbody.querySelectorAll('.payroll-close-term-reason-input');
+      rowInputs.forEach((inputEl, idx) => {
+        const term = terminations[idx];
+        if (!term) return;
+        inputEl.dataset.employeeId = String(term.employeeId || '');
+        const hasManual = Boolean(term.existingTerminationReason && String(term.existingTerminationReason).trim());
+        inputEl.dataset.hasManualReason = hasManual ? '1' : '0';
+        inputEl.value = hasManual ? String(term.existingTerminationReason).trim().slice(0, 255) : '';
+        inputEl.placeholder = String(term.proposedTerminationReason || 'Motivo breve de baja...').slice(0, 255);
+      });
     }
 
     const expiredWrap = document.getElementById('payroll-close-opt-expired-wrap');
@@ -3088,12 +3381,25 @@ class MixinMethods {
     const notesEl = document.getElementById('payroll-close-notes');
     const optExp = document.getElementById('payroll-close-opt-expired-concepts');
     const optEmb = document.getElementById('payroll-close-opt-suspend-embargoes');
+    const defaultReasonEl = document.getElementById('payroll-close-default-termination-reason');
+    const defaultTerminationReason = defaultReasonEl?.value?.replace(/\s+/g, ' ').trim().slice(0, 255) || null;
+
+    const terminationReasons = [];
+    document.querySelectorAll('#payroll-close-terminations-tbody .payroll-close-term-reason-input').forEach((inputEl) => {
+      const employeeId = inputEl.dataset.employeeId;
+      const reason = String(inputEl.value || '').replace(/\s+/g, ' ').trim().slice(0, 255);
+      if (employeeId && reason) {
+        terminationReasons.push({ employeeId, terminationReason: reason });
+      }
+    });
 
     const payload = {
       confirmWarnings: true,
       notes: notesEl?.value?.trim() || null,
       deactivateExpiredConcepts: optExp ? Boolean(optExp.checked) : true,
       suspendTerminatedEmbargoes: optEmb ? Boolean(optEmb.checked) : true,
+      ...(defaultTerminationReason ? { defaultTerminationReason } : {}),
+      ...(terminationReasons.length > 0 ? { terminationReasons } : {}),
     };
 
     const endpoint =
@@ -3106,6 +3412,7 @@ class MixinMethods {
       confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Cerrando...';
     }
 
+    let keepConfirmDisabled = false;
     try {
       const res = await apiRequest(endpoint, {
         method: 'POST',
@@ -3131,10 +3438,19 @@ class MixinMethods {
       ]);
       this.syncPayrollPeriodSelectors();
     } catch (err) {
+      const details = err?.details && !Array.isArray(err.details) ? err.details : null;
+      const blockers = Array.isArray(details?.blockingErrors) ? details.blockingErrors : [];
+      const stale = Array.isArray(details?.staleNovelties) ? details.staleNovelties : [];
+      if (blockers.length > 0 || stale.length > 0) {
+        this.renderPayrollCloseBlockers(blockers, stale);
+        keepConfirmDisabled = true;
+        const modalBody = document.querySelector('#modal-payroll-close-confirm .modal-body');
+        if (modalBody) modalBody.scrollTop = 0;
+      }
       showToast(err.message || 'Error al ejecutar el cierre', 'danger');
     } finally {
       if (confirmBtn) {
-        confirmBtn.disabled = false;
+        confirmBtn.disabled = keepConfirmDisabled;
         confirmBtn.innerHTML = '<i class="ti ti-lock-check me-1"></i> Confirmar Cierre Definitivo';
       }
     }
@@ -3162,6 +3478,16 @@ class MixinMethods {
                 const scopeLabel = a.scope === 'FISCAL_PERIOD' ? 'Período Fiscal' : 'Liquidación';
                 const periodLabel = `${String(a.month).padStart(2, '0')}/${a.year}`;
                 const hashShort = a.checksumHash ? String(a.checksumHash).slice(0, 12) : '-';
+                const termList = Array.isArray(a.terminatedEmployees) ? a.terminatedEmployees : [];
+                const termDetailsHtml =
+                  termList.length > 0
+                    ? `<div class="mt-1 text-start" style="max-width: 240px;">${termList
+                        .map(
+                          (te) =>
+                            `<div class="text-truncate" style="font-size: 0.7rem;" title="${escapeHtml(`${te.fileNumber || '-'} ${te.fullName || ''}: ${te.terminationReason || '-'}`)}"><span class="font-monospace fw-semibold">${escapeHtml(te.fileNumber || '-')}</span>: ${escapeHtml(te.terminationReason || '-')}</div>`
+                        )
+                        .join('')}</div>`
+                    : '';
                 return `
                   <tr>
                     <td class="text-nowrap small">${escapeHtml(dateStr)}</td>
@@ -3169,7 +3495,10 @@ class MixinMethods {
                     <td class="font-monospace fw-bold">${periodLabel}</td>
                     <td class="text-center font-monospace">${a.totalSlipsClosed}</td>
                     <td class="text-center font-monospace">${a.purgedNoveltiesCount}</td>
-                    <td class="text-center font-monospace">${a.terminatedEmployeesCount}</td>
+                    <td class="text-center font-monospace">
+                      <div>${a.terminatedEmployeesCount}</div>
+                      ${termDetailsHtml}
+                    </td>
                     <td class="text-end font-monospace text-nowrap">$${formatNumber(a.totalNet || 0)}</td>
                     <td class="small">
                       <div>${escapeHtml(a.closedByName || a.closedBy || 'Sistema')}</div>

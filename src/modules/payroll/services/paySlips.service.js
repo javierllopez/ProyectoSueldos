@@ -1,5 +1,7 @@
 import { ensureTenantPayrollSchema } from '../../../services/tenantProvisioner.service.js';
 import { hydratePaySlips } from '../../../services/arcaCatalog.service.js';
+import { buildEmployerContributionAuditItems } from '../payroll.calculator.js';
+import { getPayrollSettings } from './conceptsAndRules.service.js';
 
 
 // --- RECIBOS DE SUELDO ---
@@ -82,9 +84,12 @@ export async function getBatchPaySlipsForPrint(tenantPrisma, periodId, { departm
     throw err;
   }
 
-  const companyProfile = await tenantPrisma.companyProfile.findFirst({
-    where: { deletedAt: null },
-  });
+  const [companyProfile, payrollSettings] = await Promise.all([
+    tenantPrisma.companyProfile.findFirst({
+      where: { deletedAt: null },
+    }),
+    getPayrollSettings(tenantPrisma).catch(() => ({})),
+  ]);
 
   const where = {
     payrollPeriodId: periodId,
@@ -146,6 +151,7 @@ export async function getBatchPaySlipsForPrint(tenantPrisma, periodId, { departm
         return String(a.conceptCode).localeCompare(String(b.conceptCode), undefined, { numeric: true });
       });
     }
+    s.employerContributionItems = buildEmployerContributionAuditItems(s, payrollSettings);
   }
 
   return {
@@ -190,9 +196,12 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
   const [slip] = await hydratePaySlips([rawSlip]);
 
   // Obtener perfil de la empresa
-  const companyProfile = await tenantPrisma.companyProfile.findFirst({
-    where: { deletedAt: null },
-  });
+  const [companyProfile, payrollSettings] = await Promise.all([
+    tenantPrisma.companyProfile.findFirst({
+      where: { deletedAt: null },
+    }),
+    getPayrollSettings(tenantPrisma).catch(() => ({})),
+  ]);
 
   // Organizar items en bloques según normativa Decreto 407/2026 y auditoría
   const typePriority = {
@@ -214,6 +223,8 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
   const auxiliaryItems = slip.items.filter((i) => i.type === 'AUXILIARY');
   const visibleItems = slip.items.filter((i) => i.type !== 'AUXILIARY');
   const allItems = slip.items;
+  const employerContributionItems = buildEmployerContributionAuditItems(slip, payrollSettings);
+  slip.employerContributionItems = employerContributionItems;
 
   const costDistribution = {
     netPercentage: Number(slip.pctNetSalary) || 0,
@@ -241,6 +252,7 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
     slip,
     netSalaryWords: slip.netSalaryWords,
     company: companyProfile,
+    employerContributionItems,
     breakdown: {
       remunerativeItems,
       nonRemunerativeItems,
@@ -248,6 +260,7 @@ export async function getPaySlipDetail(tenantPrisma, slipId) {
       auxiliaryItems,
       visibleItems,
       allItems,
+      employerContributionItems,
     },
     costDistribution,
   };

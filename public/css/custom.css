@@ -1272,6 +1272,15 @@ body {
     color: #4c1d95 !important;
   }
 
+  .audit-print-table td.ap-val-contrib,
+  .audit-print-kv-table td.ap-val-contrib {
+    color: #3730a3 !important;
+  }
+
+  .audit-print-table tr.ap-row-contrib td {
+    background-color: #f8faff !important;
+  }
+
   /* Bloque de Resumen Final sin recuadros ni contornos de pantalla */
   .audit-print-summary-section {
     margin-top: 8px !important;

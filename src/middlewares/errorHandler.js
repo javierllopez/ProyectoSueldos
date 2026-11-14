@@ -107,6 +107,7 @@ export default function errorHandler(err, req, res, next) {
     error: {
       message,
       status,
+      ...(err.status && status < 500 && err.details !== undefined ? { details: err.details } : {}),
       ...(env.NODE_ENV === 'development' && status >= 500 ? { stack: err.stack } : {}),
     },
   });

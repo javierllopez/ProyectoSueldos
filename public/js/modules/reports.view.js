@@ -1,4 +1,4 @@
-import { apiRequest, showToast, storage } from '../api.js?v=2.0';
+import { apiRequest, showToast, storage } from '../api.js?v=2.1';
 
 let reportsChartInstance = null;
 let wizardPreviewChartInstance = null;

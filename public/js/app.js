@@ -1,20 +1,20 @@
-import { apiRequest, storage, showToast, escapeHtml } from './api.js?v=2.0';
-import { logout } from './auth.js?v=2.0';
+import { apiRequest, storage, showToast, escapeHtml } from './api.js?v=2.1';
+import { logout } from './auth.js?v=2.1';
 import { formatCuit } from './utils/helpers.js';
 import { ARCA_T03_ACTIVITIES, getArcaActivityInfo } from './utils/helpers.js';
 
 // Submódulos desacoplados de vistas
-import { registerAdminMethods } from './modules/admin.view.js?v=admin-2.0';
-import { registerCompanyProfileMethods } from './modules/companyProfile.view.js?v=profile-2.0';
-import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-3.1';
-import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.2';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-4.1';
-import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.4';
-import { registerConceptsMethods } from './modules/concepts.view.js?v=concepts-2.0';
-import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js?v=matrices-2.0';
-import { registerEmbargoesMethods } from './modules/embargoes.view.js?v=embargoes-2.0';
-import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.5';
-import { registerReportsMethods } from './modules/reports.view.js?v=reports-2.5';
+import { registerAdminMethods } from './modules/admin.view.js?v=admin-2.1';
+import { registerCompanyProfileMethods } from './modules/companyProfile.view.js?v=profile-2.1';
+import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-3.2';
+import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.3';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-4.4';
+import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.6';
+import { registerConceptsMethods } from './modules/concepts.view.js?v=concepts-2.1';
+import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js?v=matrices-2.1';
+import { registerEmbargoesMethods } from './modules/embargoes.view.js?v=embargoes-2.1';
+import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.7';
+import { registerReportsMethods } from './modules/reports.view.js?v=reports-2.6';
 
 export { ARCA_T03_ACTIVITIES, getArcaActivityInfo };
 
@@ -87,6 +87,7 @@ class AppController {
 
     this.salaryScales = [];
     this.payrollSalaryScales = [];
+    this.activeFiscalPeriod = null;
     this.payrollSalaryScalesPage = 1;
     this.payrollSalaryScalesPageSize = 5;
     this.currentScaleMassIncreasePreview = [];
@@ -99,7 +100,7 @@ class AppController {
     if (this._partialsLoaded) return;
     if (this._partialsPromise) return this._partialsPromise;
 
-    const PARTIALS_VERSION = 'partials-3.1';
+    const PARTIALS_VERSION = 'partials-3.4';
     const viewFiles = [
       '/partials/core-views.html',
       '/partials/personnel-view.html',
@@ -369,6 +370,12 @@ class AppController {
     this._affilConceptsPromise = null;
     this.salaryScales = [];
     this.payrollSalaryScales = [];
+    this.activeFiscalPeriod = null;
+    this.fiscalPeriodsList = [];
+    if (this.incomeTaxState) {
+      this.incomeTaxState.userChangedPeriod = false;
+      this.incomeTaxState.currentSettlement = null;
+    }
     this.renderCompanySelector();
     showToast(`Empresa activa: ${company.name}`);
     if (refresh && this.currentView !== 'company-profile') {

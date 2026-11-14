@@ -225,46 +225,50 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       await tenantClient.$executeRawUnsafe(`ALTER TABLE \`payroll_periods\` ADD COLUMN \`fiscal_period_id\` VARCHAR(191) NULL;`);
     }
 
-    // 1.6 Migración y Backfill inicial: Asegurar período Septiembre 2026 como único OPEN
+    // 1.6 Backfill no destructivo: vincular únicamente liquidaciones existentes sin fiscal_period_id
     try {
-      let sepFiscal = await tenantClient.payrollFiscalPeriod.findUnique({
-        where: { year_month: { year: 2026, month: 9 } },
+      const orphanPeriods = await tenantClient.payrollPeriod.findMany({
+        where: { fiscalPeriodId: null },
+        select: { id: true, year: true, month: true, status: true },
       });
-      if (!sepFiscal) {
-        sepFiscal = await tenantClient.payrollFiscalPeriod.create({
-          data: {
-            id: crypto.randomUUID(),
-            year: 2026,
-            month: 9,
-            status: 'OPEN',
-            notes: 'Período inicial habilitado Septiembre 2026',
-          },
-        });
+
+      if (orphanPeriods.length > 0) {
+        const hasOpenFiscal =
+          (await tenantClient.payrollFiscalPeriod.count({ where: { status: 'OPEN' } })) > 0;
+        const groupedYm = new Map();
+        for (const p of orphanPeriods) {
+          const key = `${p.year}-${p.month}`;
+          if (!groupedYm.has(key)) groupedYm.set(key, { year: p.year, month: p.month, allClosed: true });
+          if (p.status !== 'CLOSED') groupedYm.get(key).allClosed = false;
+        }
+
+        let assignedOpenDuringBackfill = false;
+        for (const { year, month, allClosed } of groupedYm.values()) {
+          let fp = await tenantClient.payrollFiscalPeriod.findUnique({
+            where: { year_month: { year, month } },
+          });
+          if (!fp) {
+            const shouldBeOpen = !allClosed && !hasOpenFiscal && !assignedOpenDuringBackfill;
+            fp = await tenantClient.payrollFiscalPeriod.create({
+              data: {
+                id: crypto.randomUUID(),
+                year,
+                month,
+                status: shouldBeOpen ? 'OPEN' : 'CLOSED',
+                closedAt: shouldBeOpen ? null : new Date(),
+                notes: `Período migrado automáticamente ${String(month).padStart(2, '0')}/${year}`,
+              },
+            });
+            if (shouldBeOpen) assignedOpenDuringBackfill = true;
+          }
+          await tenantClient.payrollPeriod.updateMany({
+            where: { year, month, fiscalPeriodId: null },
+            data: { fiscalPeriodId: fp.id },
+          });
+        }
       }
-      // Vincular liquidaciones existentes de Septiembre 2026 que no tengan fiscalPeriodId
-      await tenantClient.payrollPeriod.updateMany({
-        where: {
-          year: 2026,
-          month: 9,
-          fiscalPeriodId: null,
-        },
-        data: {
-          fiscalPeriodId: sepFiscal.id,
-        },
-      });
-      // Asegurar que solo Septiembre 2026 quede OPEN
-      await tenantClient.payrollFiscalPeriod.updateMany({
-        where: {
-          NOT: { id: sepFiscal.id },
-          status: 'OPEN',
-        },
-        data: {
-          status: 'CLOSED',
-          closedAt: new Date(),
-        },
-      });
     } catch (e) {
-      console.warn('Aviso al migrar fiscal_periods:', e.message);
+      console.warn('Aviso al vincular fiscal_periods huérfanos:', e.message);
     }
 
     // 2. Columnas en concepts
@@ -648,6 +652,64 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
           AND ps.\`status\` != 'CLOSED';
       `);
     } catch (_) {}
+
+    // 12. Saneamiento idempotente de períodos fiscales cerrados en falso por migraciones heredadas
+    // Solo actúa sobre períodos CLOSED con closedBy=null, 0 liquidaciones y 0 actas de cierre.
+    try {
+      const [allFiscalPeriods, closingAudits] = await Promise.all([
+        tenantClient.payrollFiscalPeriod.findMany({
+          orderBy: [{ year: 'asc' }, { month: 'asc' }],
+          include: {
+            _count: { select: { settlements: true } },
+          },
+        }),
+        tenantClient.payrollClosingAudit.findMany({
+          where: { scope: 'FISCAL_PERIOD' },
+          select: { fiscalPeriodId: true, year: true, month: true },
+        }),
+      ]);
+
+      const auditedKeys = new Set();
+      for (const a of closingAudits || []) {
+        if (a.fiscalPeriodId) auditedKeys.add(a.fiscalPeriodId);
+        if (a.year && a.month) auditedKeys.add(`${a.year}-${a.month}`);
+      }
+
+      const isOrphanClosed = (fp) =>
+        fp.status === 'CLOSED' &&
+        !fp.closedBy &&
+        (fp._count?.settlements || 0) === 0 &&
+        !auditedKeys.has(fp.id) &&
+        !auditedKeys.has(`${fp.year}-${fp.month}`);
+
+      const orphanClosedFps = allFiscalPeriods.filter(isOrphanClosed);
+      if (orphanClosedFps.length > 0) {
+        const hasOpenFp = allFiscalPeriods.some((fp) => fp.status === 'OPEN');
+        let restoredId = null;
+
+        if (!hasOpenFp) {
+          const formalClosedFps = allFiscalPeriods.filter((fp) => fp.status === 'CLOSED' && !isOrphanClosed(fp));
+          const maxFormalYm = formalClosedFps.reduce((max, fp) => Math.max(max, fp.year * 12 + fp.month), 0);
+          const candidate = orphanClosedFps.find((fp) => fp.year * 12 + fp.month > maxFormalYm);
+          if (candidate) {
+            await tenantClient.payrollFiscalPeriod.update({
+              where: { id: candidate.id },
+              data: { status: 'OPEN', closedAt: null, closedBy: null },
+            });
+            restoredId = candidate.id;
+          }
+        }
+
+        const staleOrphanIds = orphanClosedFps.filter((fp) => fp.id !== restoredId).map((fp) => fp.id);
+        if (staleOrphanIds.length > 0) {
+          await tenantClient.payrollFiscalPeriod.deleteMany({
+            where: { id: { in: staleOrphanIds }, status: 'CLOSED', closedBy: null },
+          });
+        }
+      }
+    } catch (repairErr) {
+      console.warn('Aviso al sanear períodos fiscales huérfanos:', repairErr.message);
+    }
 
     return true;
   } catch (err) {

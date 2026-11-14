@@ -1,4 +1,4 @@
-import { apiRequest, showToast, escapeHtml } from '../api.js?v=2.0';
+import { apiRequest, showToast, escapeHtml } from '../api.js?v=2.1';
 
 function formatNumber(num) {
   if (num === null || num === undefined || isNaN(num)) return '0,00';

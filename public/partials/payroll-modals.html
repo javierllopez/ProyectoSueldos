@@ -2367,28 +2367,34 @@
         <!-- Tarjetas resumen fijas -->
         <div class="p-3 bg-light-subtle border-bottom flex-shrink-0">
           <div class="row g-2 text-center">
-            <div class="col-md-3 col-6">
+            <div class="col-md col-6">
               <div class="p-2 border rounded bg-white">
                 <div class="text-muted small fw-bold" style="font-size: 0.7rem;">TOTAL REMUNERATIVO</div>
                 <div class="fs-3 fw-bold text-dark font-monospace" id="summary-total-remunerative">$ 0,00</div>
               </div>
             </div>
-            <div class="col-md-3 col-6">
+            <div class="col-md col-6">
               <div class="p-2 border rounded bg-white">
                 <div class="text-muted small fw-bold" style="font-size: 0.7rem;">TOTAL NO REMUNERATIVO</div>
                 <div class="fs-3 fw-bold text-dark font-monospace" id="summary-total-non-remunerative">$ 0,00</div>
               </div>
             </div>
-            <div class="col-md-3 col-6">
+            <div class="col-md col-6">
               <div class="p-2 border rounded bg-white">
                 <div class="text-muted small fw-bold text-danger" style="font-size: 0.7rem;">TOTAL DEDUCCIONES</div>
                 <div class="fs-3 fw-bold text-danger font-monospace" id="summary-total-deductions">$ 0,00</div>
               </div>
             </div>
-            <div class="col-md-3 col-6">
+            <div class="col-md col-6">
               <div class="p-2 border rounded bg-white border-success">
                 <div class="text-muted small fw-bold text-success" style="font-size: 0.7rem;">NETO TOTAL A PAGAR</div>
                 <div class="fs-3 fw-bold text-success font-monospace" id="summary-total-net">$ 0,00</div>
+              </div>
+            </div>
+            <div class="col-md col-12">
+              <div class="p-2 border rounded bg-white border-indigo">
+                <div class="text-muted small fw-bold text-indigo" style="font-size: 0.7rem;">CONTRIBUCIONES PATRONALES</div>
+                <div class="fs-3 fw-bold text-indigo font-monospace" id="summary-total-employer-contrib">$ 0,00</div>
               </div>
             </div>
           </div>
@@ -2398,20 +2404,21 @@
         <div class="modal-body p-0 overflow-auto flex-grow-1" style="max-height: calc(90vh - 230px);">
           <div class="table-responsive m-0">
             <table class="table table-vcenter card-table table-striped table-hover mb-0"
-              style="table-layout: fixed; width: 100%;">
+              style="table-layout: fixed; min-width: 840px; width: 100%;">
               <thead class="sticky-top bg-light border-bottom" style="z-index: 2;">
                 <tr>
                   <th style="width: 12%;">Código</th>
-                  <th style="width: 32%;">Concepto / Denominación</th>
-                  <th style="width: 8%;" class="text-center">Casos</th>
-                  <th style="width: 16%;" class="text-end text-nowrap">Remunerativo ($)</th>
-                  <th style="width: 16%;" class="text-end text-nowrap">No Remunerativo ($)</th>
-                  <th style="width: 16%;" class="text-end text-nowrap">Deducciones ($)</th>
+                  <th style="width: 27%;">Concepto / Denominación</th>
+                  <th style="width: 6%;" class="text-center">Casos</th>
+                  <th style="width: 14%;" class="text-end text-nowrap">Remunerativo ($)</th>
+                  <th style="width: 13%;" class="text-end text-nowrap">No Remunerativo ($)</th>
+                  <th style="width: 13%;" class="text-end text-nowrap">Deducciones ($)</th>
+                  <th style="width: 15%;" class="text-end text-nowrap">Contribuciones ($)</th>
                 </tr>
               </thead>
               <tbody id="period-summary-table-body">
                 <tr>
-                  <td colspan="6" class="text-center py-4 text-muted">Cargando resumen de liquidación...</td>
+                  <td colspan="7" class="text-center py-4 text-muted">Cargando resumen de liquidación...</td>
                 </tr>
               </tbody>
               <tfoot class="sticky-bottom bg-light border-top border-2" style="z-index: 2; font-weight: bold;">
@@ -2421,6 +2428,7 @@
                   <td class="text-end font-monospace text-nowrap" id="summary-foot-rem">$ 0,00</td>
                   <td class="text-end font-monospace text-nowrap" id="summary-foot-nrem">$ 0,00</td>
                   <td class="text-end font-monospace text-danger text-nowrap" id="summary-foot-ded">$ 0,00</td>
+                  <td class="text-end font-monospace text-indigo text-nowrap" id="summary-foot-contrib">$ 0,00</td>
                 </tr>
               </tfoot>
             </table>
@@ -2978,8 +2986,9 @@
                 <option value="">Cargando períodos...</option>
               </select>
               <div class="form-hint text-muted small">
-                Se generarán Novedades de Período para cada colaborador evaluado con saldo en este período.
+                Solo se permite exportar a una liquidación de sueldos abierta del mismo mes y año fiscal que Ganancias.
               </div>
+              <div id="it-export-period-mismatch-box" class="alert alert-danger py-2 px-3 small mt-2 mb-0 d-none"></div>
             </div>
 
             <div class="card mb-3 bg-light border">
@@ -3276,6 +3285,36 @@
 
           <div id="payroll-close-content" class="d-none">
             <div id="payroll-close-blocking-alert" class="alert alert-danger d-none mb-3"></div>
+
+            <!-- Detalle de Novedades No Persistentes Omitidas o Modificadas tras el Cálculo -->
+            <div id="payroll-close-stale-novelties-section" class="mb-3 d-none">
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-1">
+                <div class="fw-bold small text-uppercase text-danger">
+                  <i class="ti ti-file-alert me-1"></i> Detalle de Legajos y Conceptos a Corregir / Recalcular
+                </div>
+                <span class="badge bg-danger-lt text-danger font-monospace" id="payroll-close-stale-novelties-count">0</span>
+              </div>
+              <div class="card border border-danger-subtle">
+                <div class="card-body p-0">
+                  <div class="table-responsive" style="max-height: 230px; overflow: auto;">
+                    <table class="table table-sm table-vcenter table-hover mb-0">
+                      <thead class="table-light sticky-top" style="z-index: 2;">
+                        <tr>
+                          <th>Liquidación</th>
+                          <th>Legajo</th>
+                          <th>Colaborador</th>
+                          <th>Concepto</th>
+                          <th class="text-end text-nowrap">Valor Inf.</th>
+                          <th>Motivo / Estado</th>
+                        </tr>
+                      </thead>
+                      <tbody id="payroll-close-stale-novelties-tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div id="payroll-close-warnings-alert" class="alert alert-warning d-none mb-3"></div>
 
             <!-- Tarjetas Resumen -->
@@ -3345,10 +3384,27 @@
 
             <!-- Tabla de Bajas por Liquidación Final -->
             <div class="mb-3" id="payroll-close-terminations-section">
-              <div class="fw-bold small text-uppercase text-danger mb-1">3. Bajas Automáticas por Liquidación Final (Fecha de Baja = Fecha de Liquidación)</div>
+              <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2">
+                <div class="fw-bold small text-uppercase text-danger">
+                  3. Bajas Automáticas por Liquidación Final (Fecha de Baja = Fecha de Liquidación)
+                </div>
+                <div class="text-muted small">Completá un motivo breve individual por legajo (máx. 255 car.)</div>
+              </div>
+              <div class="p-2 border rounded bg-light mb-2">
+                <label class="form-label small fw-semibold mb-1" for="payroll-close-default-termination-reason">
+                  Motivo general rápido <span class="text-muted fw-normal">(opcional: aplica solo a filas sin motivo previo)</span>
+                </label>
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control" id="payroll-close-default-termination-reason" maxlength="255"
+                    placeholder="Ej: Renuncia, Despido sin causa Art. 245, Fin de contrato..." />
+                  <button type="button" class="btn btn-outline-danger text-nowrap" id="btn-apply-default-termination-reason">
+                    <i class="ti ti-copy-check me-1"></i> Aplicar a filas sin motivo
+                  </button>
+                </div>
+              </div>
               <div class="card border border-danger-subtle">
                 <div class="card-body p-0">
-                  <div class="table-responsive" style="max-height: 180px; overflow: auto;">
+                  <div class="table-responsive" style="max-height: 240px; overflow: auto;">
                     <table class="table table-sm table-vcenter table-hover mb-0">
                       <thead class="table-light sticky-top" style="z-index: 2;">
                         <tr>
@@ -3356,7 +3412,7 @@
                           <th>Colaborador</th>
                           <th>Liq. Final Origen</th>
                           <th class="text-nowrap">Fecha de Baja</th>
-                          <th>Observaciones</th>
+                          <th style="min-width: 240px;">Motivo de Baja</th>
                         </tr>
                       </thead>
                       <tbody id="payroll-close-terminations-tbody"></tbody>

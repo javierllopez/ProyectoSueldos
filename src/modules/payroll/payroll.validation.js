@@ -278,12 +278,29 @@ export const updatePaySlipWorkedDaysSchema = z.object({
   workedDays: z.coerce.number().int().min(0, 'Los días no pueden ser negativos').max(30, 'Los días no pueden superar 30'),
 });
 
+const terminationReasonItemSchema = z.object({
+  employeeId: z.string().trim().min(1, 'El ID de empleado es obligatorio').max(64),
+  terminationReason: z
+    .string()
+    .trim()
+    .max(255, 'El motivo de baja no puede superar los 255 caracteres')
+    .optional()
+    .nullable(),
+});
+
 export const closePeriodSchema = z
   .object({
     confirmWarnings: z.boolean().optional(),
     notes: z.string().trim().max(500).optional().nullable(),
     deactivateExpiredConcepts: z.boolean().optional(),
     suspendTerminatedEmbargoes: z.boolean().optional(),
+    defaultTerminationReason: z
+      .string()
+      .trim()
+      .max(255, 'El motivo de baja general no puede superar los 255 caracteres')
+      .optional()
+      .nullable(),
+    terminationReasons: z.array(terminationReasonItemSchema).max(500).optional(),
   })
   .optional()
   .default({});

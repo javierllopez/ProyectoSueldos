@@ -5,6 +5,324 @@ import {
   hydrateSalaryScale,
   hydrateSalaryScales,
 } from '../../services/arcaCatalog.service.js';
+import {
+  extractScalePeriodYearMonth,
+  resolveSalaryScaleAmountForPeriod,
+} from './payroll.calculator.js';
+
+/**
+ * Determina el período de referencia vigente:
+ * - Si se pasa year/month explícitos, usa ese período.
+ * - Caso contrario, usa el período fiscal OPEN más reciente.
+ * - Si no hay ningún período OPEN, usa la fecha actual del servidor.
+ */
+export async function resolveEffectiveScaleReferencePeriod(tenantPrisma, { year, month } = {}) {
+  if (year && month) {
+    const y = Number(year);
+    const m = Number(month);
+    return {
+      year: y,
+      month: m,
+      ym: y * 100 + m,
+      source: 'EXPLICIT_PERIOD',
+      fiscalPeriodId: null,
+    };
+  }
+
+  const activeFiscal = tenantPrisma.payrollFiscalPeriod?.findFirst
+    ? await tenantPrisma.payrollFiscalPeriod.findFirst({
+        where: { status: 'OPEN' },
+        orderBy: [{ year: 'desc' }, { month: 'desc' }],
+      })
+    : null;
+
+  if (activeFiscal) {
+    const y = Number(activeFiscal.year);
+    const m = Number(activeFiscal.month);
+    return {
+      year: y,
+      month: m,
+      ym: y * 100 + m,
+      source: 'OPEN_FISCAL_PERIOD',
+      fiscalPeriodId: activeFiscal.id,
+    };
+  }
+
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = now.getMonth() + 1;
+  return {
+    year: y,
+    month: m,
+    ym: y * 100 + m,
+    source: 'CURRENT_DATE',
+    fiscalPeriodId: null,
+  };
+}
+
+/**
+ * Obtiene el conjunto de períodos Año-Mes (YYYYMM) cerrados formalmente en la empresa.
+ */
+async function getClosedYearMonthSet(tenantPrisma) {
+  const closedYMSet = new Set();
+
+  const [closedFiscalPeriods, closingAudits, closedPayrollPeriods, openFiscalPeriods] = await Promise.all([
+    tenantPrisma.payrollFiscalPeriod?.findMany
+      ? tenantPrisma.payrollFiscalPeriod.findMany({
+          where: { status: 'CLOSED' },
+          include: {
+            settlements: { select: { id: true } },
+          },
+        })
+      : Promise.resolve([]),
+    tenantPrisma.payrollClosingAudit?.findMany
+      ? tenantPrisma.payrollClosingAudit.findMany({
+          where: { scope: 'FISCAL_PERIOD' },
+          select: { fiscalPeriodId: true, year: true, month: true },
+        })
+      : Promise.resolve([]),
+    tenantPrisma.payrollPeriod?.findMany
+      ? tenantPrisma.payrollPeriod.findMany({
+          where: { status: 'CLOSED' },
+          select: { year: true, month: true },
+        })
+      : Promise.resolve([]),
+    tenantPrisma.payrollFiscalPeriod?.findMany
+      ? tenantPrisma.payrollFiscalPeriod.findMany({
+          where: { status: 'OPEN' },
+          select: { year: true, month: true },
+        })
+      : Promise.resolve([]),
+  ]);
+
+  const openYMSet = new Set(openFiscalPeriods.map((fp) => Number(fp.year) * 100 + Number(fp.month)));
+  const auditedKeys = new Set();
+  for (const audit of closingAudits || []) {
+    if (audit.fiscalPeriodId) auditedKeys.add(audit.fiscalPeriodId);
+    if (audit.year && audit.month) auditedKeys.add(`${audit.year}-${audit.month}`);
+  }
+
+  for (const fp of closedFiscalPeriods || []) {
+    const hasAudit = auditedKeys.has(fp.id) || auditedKeys.has(`${fp.year}-${fp.month}`);
+    const hasSettlements = (fp.settlements?.length || 0) > 0;
+    // Ignorar registros CLOSED huérfanos sin liquidaciones, sin closedBy y sin acta
+    if (hasSettlements || fp.closedBy || hasAudit) {
+      closedYMSet.add(Number(fp.year) * 100 + Number(fp.month));
+    }
+  }
+
+  for (const pp of closedPayrollPeriods || []) {
+    const ym = Number(pp.year) * 100 + Number(pp.month);
+    if (!openYMSet.has(ym)) {
+      closedYMSet.add(ym);
+    }
+  }
+
+  return closedYMSet;
+}
+
+function isRangeFullyClosed(fromYM, toYM, closedYMSet) {
+  if (!fromYM || !toYM || fromYM > toYM || closedYMSet.size === 0) return false;
+  let y = Math.floor(fromYM / 100);
+  let m = fromYM % 100;
+  const endY = Math.floor(toYM / 100);
+  const endM = toYM % 100;
+  let guard = 0;
+
+  while ((y < endY || (y === endY && m <= endM)) && guard < 120) {
+    if (!closedYMSet.has(y * 100 + m)) {
+      return false;
+    }
+    m += 1;
+    if (m > 12) {
+      m = 1;
+      y += 1;
+    }
+    guard += 1;
+  }
+  return guard > 0;
+}
+
+function enrichScalePeriodStatus(period, refYM, closedYMSet) {
+  const fromInfo = extractScalePeriodYearMonth(period.validFrom);
+  const toInfo = extractScalePeriodYearMonth(period.validTo);
+  const fromYM = fromInfo?.ym || 0;
+  const toYM = toInfo?.ym || 0;
+
+  const isClosedPeriod = Boolean(
+    fromYM &&
+      toYM &&
+      ((toYM < refYM && !(fromYM <= refYM && refYM <= toYM)) || isRangeFullyClosed(fromYM, toYM, closedYMSet))
+  );
+  const isCurrentPeriod = !isClosedPeriod && Boolean(fromYM && toYM && fromYM <= refYM && refYM <= toYM);
+  const isFuturePeriod = !isClosedPeriod && Boolean(fromYM && fromYM > refYM);
+
+  return {
+    id: period.id,
+    validFrom: period.validFrom,
+    validTo: period.validTo,
+    fromYM,
+    toYM,
+    amount: Number(period.amount),
+    increaseType: period.increaseType,
+    increaseValue: period.increaseValue !== null && period.increaseValue !== undefined ? Number(period.increaseValue) : null,
+    rounding: period.rounding,
+    isClosedPeriod,
+    isCurrentPeriod,
+    isFuturePeriod,
+    periodStatus: isClosedPeriod ? 'CLOSED' : (isCurrentPeriod ? 'CURRENT' : 'FUTURE'),
+  };
+}
+
+/**
+ * Valida opcionalmente que los colaboradores activos cuenten con una nómina asignada y con vigencia
+ * cargada para el período indicado, y sincroniza `salary_scales.amount` y `employees.basic_salary`
+ * con el básico vigente del período de referencia (período fiscal OPEN o fecha actual).
+ */
+export async function validateAndSyncSalaryScalesForPeriod(
+  tenantPrisma,
+  { year, month, requireExplicitPeriodMatch = false } = {}
+) {
+  await ensureTenantPersonnelSchema(tenantPrisma);
+
+  if (!tenantPrisma.salaryScale?.findMany || !tenantPrisma.employee?.findMany) {
+    return { syncedScales: 0, syncedEmployees: 0, skipped: true };
+  }
+
+  const refPeriod = await resolveEffectiveScaleReferencePeriod(tenantPrisma, { year, month });
+  const targetYM = refPeriod.ym;
+  const mm = String(refPeriod.month).padStart(2, '0');
+
+  const [scales, activeEmployees] = await Promise.all([
+    tenantPrisma.salaryScale.findMany({
+      where: { deletedAt: null },
+      include: {
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
+      },
+      orderBy: [{ name: 'asc' }],
+    }),
+    tenantPrisma.employee.findMany({
+      where: { deletedAt: null, status: 'ACTIVE' },
+      select: {
+        id: true,
+        fileNumber: true,
+        firstName: true,
+        lastName: true,
+        salaryScaleId: true,
+        basicSalary: true,
+      },
+    }),
+  ]);
+
+  const validScaleIds = new Set(scales.map((s) => s.id));
+  const activeCountByScaleId = new Map();
+  for (const emp of activeEmployees) {
+    if (emp.salaryScaleId && validScaleIds.has(emp.salaryScaleId)) {
+      activeCountByScaleId.set(emp.salaryScaleId, (activeCountByScaleId.get(emp.salaryScaleId) || 0) + 1);
+    }
+  }
+
+  if (requireExplicitPeriodMatch) {
+    if (scales.length === 0) {
+      const err = new Error(
+        `No se puede habilitar el período ${mm}/${refPeriod.year} porque no existen nóminas de sueldo básico configuradas en la empresa. Registre al menos una nómina en Sueldos → Nómina (Sueldos Básicos).`
+      );
+      err.status = 400;
+      throw err;
+    }
+
+    const employeesWithoutScale = activeEmployees.filter(
+      (e) => !e.salaryScaleId || !validScaleIds.has(e.salaryScaleId)
+    );
+    if (employeesWithoutScale.length > 0) {
+      const sample = employeesWithoutScale
+        .slice(0, 5)
+        .map((e) => `Leg. ${e.fileNumber || '-'} (${e.lastName || ''}, ${e.firstName || ''})`)
+        .join(', ');
+      const extra = employeesWithoutScale.length > 5 ? ` y ${employeesWithoutScale.length - 5} más` : '';
+      const err = new Error(
+        `No se puede habilitar el período ${mm}/${refPeriod.year} porque ${employeesWithoutScale.length} colaborador(es) activo(s) no tienen una nómina asignada para el período de la liquidación (${sample}${extra}). Asigne una nómina en Personal antes de abrir el período.`
+      );
+      err.status = 400;
+      throw err;
+    }
+
+    // Validar que las nóminas activas que utilizan tramos por vigencia tengan asignado un tramo para el período que se abre
+    const scalesWithPeriodsMissingTarget = scales.filter((scale) => {
+      const hasPeriods = Array.isArray(scale.periods) && scale.periods.length > 0;
+      const activeAssigned = activeCountByScaleId.get(scale.id) || 0;
+      if (!hasPeriods || activeAssigned === 0) return false;
+      return !scale.periods.some((p) => {
+        const f = extractScalePeriodYearMonth(p.validFrom);
+        const t = extractScalePeriodYearMonth(p.validTo);
+        return f && t && f.ym <= targetYM && targetYM <= t.ym;
+      });
+    });
+
+    if (scalesWithPeriodsMissingTarget.length > 0) {
+      const sample = scalesWithPeriodsMissingTarget
+        .slice(0, 5)
+        .map((s) => `${s.name}${s.cctCode ? ` [CCT ${s.cctCode}]` : ''}`)
+        .join(', ');
+      const extra =
+        scalesWithPeriodsMissingTarget.length > 5
+          ? ` y ${scalesWithPeriodsMissingTarget.length - 5} más`
+          : '';
+      const err = new Error(
+        `No se puede habilitar el período ${mm}/${refPeriod.year} porque ${scalesWithPeriodsMissingTarget.length} nómina(s) con escalas por período no tienen vigencia salarial cargada para ${mm}/${refPeriod.year} (${sample}${extra}). Cargue el tramo correspondiente en Sueldos → Nómina (Sueldos Básicos) → Actualización Masiva.`
+      );
+      err.status = 400;
+      throw err;
+    }
+  }
+
+  let syncedScales = 0;
+  let syncedEmployees = 0;
+  const syncOps = [];
+
+  for (const scale of scales) {
+    const effectiveAmount = resolveSalaryScaleAmountForPeriod(scale, refPeriod.year, refPeriod.month);
+    const nominalAmount = Number(scale.amount || 0);
+    const scaleNeedsUpdate = Math.abs(nominalAmount - effectiveAmount) > 0.009;
+    const hasOutdatedEmployees = activeEmployees.some(
+      (e) => e.salaryScaleId === scale.id && Math.abs(Number(e.basicSalary || 0) - effectiveAmount) > 0.009
+    );
+
+    if (scaleNeedsUpdate) {
+      syncedScales += 1;
+      syncOps.push(
+        tenantPrisma.salaryScale.update({
+          where: { id: scale.id },
+          data: { amount: effectiveAmount },
+        })
+      );
+    }
+
+    if (scaleNeedsUpdate || hasOutdatedEmployees) {
+      syncedEmployees += activeEmployees.filter(
+        (e) => e.salaryScaleId === scale.id && Math.abs(Number(e.basicSalary || 0) - effectiveAmount) > 0.009
+      ).length;
+      syncOps.push(
+        tenantPrisma.employee.updateMany({
+          where: { salaryScaleId: scale.id, deletedAt: null },
+          data: { basicSalary: effectiveAmount },
+        })
+      );
+    }
+  }
+
+  if (syncOps.length > 0) {
+    await Promise.all(syncOps);
+  }
+
+  return {
+    referencePeriod: refPeriod,
+    syncedScales,
+    syncedEmployees,
+  };
+}
 
 /**
  * Valida y normaliza el código de Convenio Colectivo (CCT) contra el catálogo MASTER de ARCA.
@@ -49,52 +367,61 @@ function buildSalaryScaleWhere({ search, cctCode, isInternOnly, isDirectorOnly, 
 export async function listSalaryScales(tenantPrisma, { search, cctCode, isInternOnly, isDirectorOnly } = {}) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
+  // Sincronizar en BD cualquier desfasaje respecto al período fiscal abierto (o fecha actual)
+  await validateAndSyncSalaryScalesForPeriod(tenantPrisma, { requireExplicitPeriodMatch: false });
+
   const where = buildSalaryScaleWhere({ search, cctCode, isInternOnly, isDirectorOnly });
 
-  const rawScales = await tenantPrisma.salaryScale.findMany({
-    where,
-    include: {
-      periods: {
-        orderBy: { validFrom: 'asc' },
-      },
-      _count: {
-        select: {
-          employees: {
-            where: { deletedAt: null, status: 'ACTIVE' },
+  const [rawScales, refPeriod, closedYMSet] = await Promise.all([
+    tenantPrisma.salaryScale.findMany({
+      where,
+      include: {
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
+        _count: {
+          select: {
+            employees: {
+              where: { deletedAt: null, status: 'ACTIVE' },
+            },
           },
         },
       },
-    },
-    orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
-  });
+      orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
+    }),
+    resolveEffectiveScaleReferencePeriod(tenantPrisma),
+    getClosedYearMonthSet(tenantPrisma),
+  ]);
 
   const scales = await hydrateSalaryScales(rawScales);
 
-  return scales.map((scale) => ({
-    id: scale.id,
-    name: scale.name,
-    code: scale.code,
-    cctCode: scale.cctCode || null,
-    cct: scale.cct || null,
-    description: scale.description,
-    amount: Number(scale.amount),
-    isInternOnly: Boolean(scale.isInternOnly),
-    isDirectorOnly: Boolean(scale.isDirectorOnly),
-    assignedEmployeesCount: scale._count?.employees || 0,
-    employeesCount: scale._count?.employees || 0,
-    _count: scale._count,
-    periods: (scale.periods || []).map((p) => ({
-      id: p.id,
-      validFrom: p.validFrom,
-      validTo: p.validTo,
-      amount: Number(p.amount),
-      increaseType: p.increaseType,
-      increaseValue: p.increaseValue !== null && p.increaseValue !== undefined ? Number(p.increaseValue) : null,
-      rounding: p.rounding,
-    })),
-    createdAt: scale.createdAt,
-    updatedAt: scale.updatedAt,
-  }));
+  return scales.map((scale) => {
+    const effectiveAmount = resolveSalaryScaleAmountForPeriod(scale, refPeriod.year, refPeriod.month);
+    const nominalAmount = Number(scale.amount);
+    const enrichedPeriods = (scale.periods || []).map((p) => enrichScalePeriodStatus(p, refPeriod.ym, closedYMSet));
+    const visiblePeriods = enrichedPeriods.filter((p) => !p.isClosedPeriod);
+
+    return {
+      id: scale.id,
+      name: scale.name,
+      code: scale.code,
+      cctCode: scale.cctCode || null,
+      cct: scale.cct || null,
+      description: scale.description,
+      amount: effectiveAmount,
+      nominalAmount,
+      referencePeriod: refPeriod,
+      isInternOnly: Boolean(scale.isInternOnly),
+      isDirectorOnly: Boolean(scale.isDirectorOnly),
+      assignedEmployeesCount: scale._count?.employees || 0,
+      employeesCount: scale._count?.employees || 0,
+      _count: scale._count,
+      periods: enrichedPeriods,
+      visiblePeriods,
+      createdAt: scale.createdAt,
+      updatedAt: scale.updatedAt,
+    };
+  });
 }
 
 /**
@@ -103,22 +430,29 @@ export async function listSalaryScales(tenantPrisma, { search, cctCode, isIntern
 export async function getSalaryScaleById(tenantPrisma, id) {
   await ensureTenantPersonnelSchema(tenantPrisma);
 
-  const rawScale = await tenantPrisma.salaryScale.findFirst({
-    where: { id, deletedAt: null },
-    include: {
-      employees: {
-        where: { deletedAt: null },
-        select: {
-          id: true,
-          fileNumber: true,
-          lastName: true,
-          firstName: true,
-          status: true,
-          basicSalary: true,
+  const [rawScale, refPeriod, closedYMSet] = await Promise.all([
+    tenantPrisma.salaryScale.findFirst({
+      where: { id, deletedAt: null },
+      include: {
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
+        employees: {
+          where: { deletedAt: null },
+          select: {
+            id: true,
+            fileNumber: true,
+            lastName: true,
+            firstName: true,
+            status: true,
+            basicSalary: true,
+          },
         },
       },
-    },
-  });
+    }),
+    resolveEffectiveScaleReferencePeriod(tenantPrisma),
+    getClosedYearMonthSet(tenantPrisma),
+  ]);
 
   if (!rawScale) {
     const err = new Error('Nómina no encontrada');
@@ -127,12 +461,18 @@ export async function getSalaryScaleById(tenantPrisma, id) {
   }
 
   const scale = await hydrateSalaryScale(rawScale);
+  const effectiveAmount = resolveSalaryScaleAmountForPeriod(scale, refPeriod.year, refPeriod.month);
+  const enrichedPeriods = (scale.periods || []).map((p) => enrichScalePeriodStatus(p, refPeriod.ym, closedYMSet));
 
   return {
     ...scale,
     cctCode: scale.cctCode || null,
     cct: scale.cct || null,
-    amount: Number(scale.amount),
+    amount: effectiveAmount,
+    nominalAmount: Number(scale.amount),
+    referencePeriod: refPeriod,
+    periods: enrichedPeriods,
+    visiblePeriods: enrichedPeriods.filter((p) => !p.isClosedPeriod),
     isInternOnly: Boolean(scale.isInternOnly),
     isDirectorOnly: Boolean(scale.isDirectorOnly),
     employees: scale.employees.map((e) => ({
@@ -341,26 +681,32 @@ export async function previewMassScaleIncrease(tenantPrisma, options) {
 
   const where = buildSalaryScaleWhere({ cctCode, scaleIds });
 
-  const rawScales = await tenantPrisma.salaryScale.findMany({
-    where,
-    include: {
-      _count: {
-        select: {
-          employees: {
-            where: { deletedAt: null, status: 'ACTIVE' },
+  const [rawScales, refPeriod] = await Promise.all([
+    tenantPrisma.salaryScale.findMany({
+      where,
+      include: {
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
+        _count: {
+          select: {
+            employees: {
+              where: { deletedAt: null, status: 'ACTIVE' },
+            },
           },
         },
       },
-    },
-    orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
-  });
+      orderBy: [{ cctCode: 'asc' }, { amount: 'asc' }, { name: 'asc' }],
+    }),
+    resolveEffectiveScaleReferencePeriod(tenantPrisma),
+  ]);
 
   const scales = await hydrateSalaryScales(rawScales);
 
   let totalEmployeesAffected = 0;
 
   const preview = scales.map((scale) => {
-    const currentAmount = Number(scale.amount);
+    const currentAmount = resolveSalaryScaleAmountForPeriod(scale, refPeriod.year, refPeriod.month);
     let runningAmount = currentAmount;
     const periodValues = normalizedPeriods.map((periodDef, idx) => {
       const previousPeriodAmount = runningAmount;
@@ -419,6 +765,7 @@ export async function previewMassScaleIncrease(tenantPrisma, options) {
 
   return {
     cctCode: cctCode || 'ALL',
+    referencePeriod: refPeriod,
     increaseType: firstPeriod.increaseType,
     value: firstPeriod.value,
     rounding: firstPeriod.rounding,
@@ -441,11 +788,13 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
 
   const where = buildSalaryScaleWhere({ cctCode, scaleIds });
 
-  const [scales, activeFiscal] = await Promise.all([
+  const [scales, refPeriod] = await Promise.all([
     tenantPrisma.salaryScale.findMany({
       where,
       include: {
-        periods: true,
+        periods: {
+          orderBy: { validFrom: 'asc' },
+        },
         _count: {
           select: {
             employees: {
@@ -455,10 +804,7 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
         },
       },
     }),
-    tenantPrisma.payrollFiscalPeriod.findFirst({
-      where: { status: 'OPEN' },
-      orderBy: [{ year: 'desc' }, { month: 'desc' }],
-    }),
+    resolveEffectiveScaleReferencePeriod(tenantPrisma),
   ]);
 
   if (scales.length === 0) {
@@ -467,10 +813,7 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
     throw err;
   }
 
-  const now = new Date();
-  const refYear = activeFiscal ? Number(activeFiscal.year) : now.getFullYear();
-  const refMonth = activeFiscal ? Number(activeFiscal.month) : now.getMonth() + 1;
-  const refYM = refYear * 100 + refMonth;
+  const refYM = refPeriod.ym;
   const batchId = crypto.randomUUID();
 
   const operations = [];
@@ -478,7 +821,7 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
   let totalEmployeesUpdated = 0;
 
   for (const scale of scales) {
-    const currentAmount = Number(scale.amount);
+    const currentAmount = resolveSalaryScaleAmountForPeriod(scale, refPeriod.year, refPeriod.month);
     let runningAmount = currentAmount;
     const assignedCount = scale._count?.employees || 0;
     totalEmployeesUpdated += assignedCount;
@@ -512,14 +855,12 @@ export async function applyMassScaleIncrease(tenantPrisma, options) {
       };
     });
 
-    // Determinar cuál de los períodos informados aplica como básico nominal vigente del período fiscal abierto
-    let nominalTargetAmount = periodValues[0]?.newAmount ?? currentAmount;
+    // Determinar cuál de los períodos informados aplica como básico nominal vigente del período fiscal abierto (o actual)
+    let nominalTargetAmount = currentAmount;
     for (const pv of periodValues) {
-      const [fy, fm] = pv.validFrom.split('-').map(Number);
-      const [ty, tm] = pv.validTo.split('-').map(Number);
-      const fromYM = fy * 100 + fm;
-      const toYM = ty * 100 + tm;
-      if (fromYM <= refYM && refYM <= toYM) {
+      const f = extractScalePeriodYearMonth(pv.validFrom);
+      const t = extractScalePeriodYearMonth(pv.validTo);
+      if (f && t && f.ym <= refYM && refYM <= t.ym) {
         nominalTargetAmount = pv.newAmount;
         break;
       }

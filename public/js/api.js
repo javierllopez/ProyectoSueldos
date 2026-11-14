@@ -117,7 +117,8 @@ export async function apiRequest(endpoint, options = {}) {
     }
 
     if (!response.ok) {
-      const detailsList = Array.isArray(data.error?.details) ? data.error.details : [];
+      const rawDetails = data.error?.details;
+      const detailsList = Array.isArray(rawDetails) ? rawDetails : [];
       const detailsText =
         detailsList.length > 0
           ? ` (${detailsList.map((d) => (d.field ? `${d.field}: ${d.message}` : d.message)).join('; ')})`
@@ -125,7 +126,7 @@ export async function apiRequest(endpoint, options = {}) {
       const baseMsg = data.error?.message || `Error ${response.status}: ${response.statusText}`;
       const error = new Error(`${baseMsg}${detailsText}`);
       error.status = response.status;
-      error.details = detailsList;
+      error.details = rawDetails !== undefined ? rawDetails : detailsList;
       throw error;
     }
 

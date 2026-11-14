@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from '../api.js?v=2.0';
+import { apiRequest, storage, showToast } from '../api.js?v=2.1';
 import {
   isValidCuit,
   formatCuit,
@@ -94,18 +94,94 @@ class SalaryScalesMethods {
     `;
   }
 
+  extractScalePeriodYmFront(dateVal) {
+    if (!dateVal) return 0;
+    const iso = String(dateVal).slice(0, 10);
+    const m = iso.match(/^(\d{4})-(\d{2})-/);
+    if (!m) return 0;
+    return Number(m[1]) * 100 + Number(m[2]);
+  }
+
+  resolveScaleEffectiveDisplay(scale) {
+    const now = new Date();
+    const openFp = this.activeFiscalPeriod && this.activeFiscalPeriod.status === 'OPEN'
+      ? this.activeFiscalPeriod
+      : null;
+    const refYear = Number(openFp?.year || scale.referencePeriod?.year || now.getFullYear());
+    const refMonth = Number(openFp?.month || scale.referencePeriod?.month || (now.getMonth() + 1));
+    const refYM = refYear * 100 + refMonth;
+    const refLabel = `${String(refMonth).padStart(2, '0')}/${refYear}`;
+    const isOpenFiscalRef = Boolean(openFp || scale.referencePeriod?.source === 'OPEN_FISCAL_PERIOD');
+
+    const allPeriods = Array.isArray(scale.periods) ? scale.periods : [];
+
+    // Calcular básico efectivo del período de referencia
+    let effectiveAmount = Number(scale.amount || 0);
+    if (allPeriods.length > 0) {
+      const exactMatch = allPeriods.find((p) => {
+        const fym = p.fromYM || this.extractScalePeriodYmFront(p.validFrom);
+        const tym = p.toYM || this.extractScalePeriodYmFront(p.validTo);
+        return fym && tym && fym <= refYM && refYM <= tym;
+      });
+      if (exactMatch) {
+        effectiveAmount = Number(exactMatch.amount);
+      } else {
+        const priorMatch = [...allPeriods]
+          .reverse()
+          .find((p) => {
+            const tym = p.toYM || this.extractScalePeriodYmFront(p.validTo);
+            return tym && tym <= refYM;
+          });
+        if (priorMatch) {
+          effectiveAmount = Number(priorMatch.amount);
+        }
+      }
+    }
+
+    // Ocultar vigencias de períodos cerrados/pasados; mostrar solo vigencia actual y futuras
+    const sourcePeriods = Array.isArray(scale.visiblePeriods) ? scale.visiblePeriods : allPeriods;
+    const visiblePeriods = sourcePeriods.filter((p) => {
+      if (p.isClosedPeriod === true) return false;
+      const fym = p.fromYM || this.extractScalePeriodYmFront(p.validFrom);
+      const tym = p.toYM || this.extractScalePeriodYmFront(p.validTo);
+      if (!fym || !tym) return true;
+      const coversRef = fym <= refYM && refYM <= tym;
+      if (tym < refYM && !coversRef) return false;
+      return true;
+    });
+
+    return {
+      refYear,
+      refMonth,
+      refYM,
+      refLabel,
+      isOpenFiscalRef,
+      effectiveAmount,
+      visiblePeriods,
+    };
+  }
+
   renderSalaryScaleRowHtml(scale) {
     const empCount = scale.assignedEmployeesCount ?? scale.employeesCount ?? scale._count?.employees ?? 0;
-    const scalePeriods = Array.isArray(scale.periods) ? scale.periods : [];
-    const periodsBadgesHtml = scalePeriods.length > 0
+    const { effectiveAmount, visiblePeriods, refLabel, isOpenFiscalRef, refYM } =
+      this.resolveScaleEffectiveDisplay(scale);
+
+    const periodsBadgesHtml = visiblePeriods.length > 0
       ? `<div class="d-flex flex-wrap gap-1 mt-1">
-          ${scalePeriods
-            .slice(-4)
+          ${visiblePeriods
             .map((p) => {
               const fStr = String(p.validFrom || '').slice(0, 10).split('-').reverse().join('/');
               const tStr = String(p.validTo || '').slice(0, 10).split('-').reverse().join('/');
-              return `<span class="badge bg-teal-lt text-teal font-monospace" style="font-size: 0.7rem;" title="Vigencia: ${fStr} al ${tStr}">
-                ${fStr}–${tStr}: $ ${formatNumber(p.amount)}
+              const fym = p.fromYM || this.extractScalePeriodYmFront(p.validFrom);
+              const isFuture = Boolean(p.isFuturePeriod || (fym && fym > refYM));
+              const badgeCls = isFuture ? 'bg-indigo-lt text-indigo' : 'bg-teal-lt text-teal';
+              const iconCls = isFuture ? 'ti-calendar-event' : 'ti-check';
+              const tagLabel = isFuture ? 'Futura' : 'Vigente';
+              const titleText = isFuture
+                ? `Nómina futura: ${fStr} al ${tStr}`
+                : `Nómina vigente (${refLabel}): ${fStr} al ${tStr}`;
+              return `<span class="badge ${badgeCls} font-monospace" style="font-size: 0.7rem;" title="${escapeHtml(titleText)}">
+                <i class="ti ${iconCls} me-1"></i>${tagLabel} ${fStr}–${tStr}: $ ${formatNumber(p.amount)}
               </span>`;
             })
             .join('')}
@@ -132,7 +208,8 @@ class SalaryScalesMethods {
           <span class="text-muted small">${escapeHtml(scale.description || '-')}</span>
         </td>
         <td class="text-end font-monospace fw-bold fs-4 text-teal text-nowrap">
-          $ ${formatNumber(scale.amount)}
+          $ ${formatNumber(effectiveAmount)}
+          <div class="text-muted fw-normal" style="font-size: 0.68rem;">${isOpenFiscalRef ? 'Período' : 'Vigente al'} ${escapeHtml(refLabel)}</div>
         </td>
         <td class="text-center">
           <span class="badge ${empCount > 0 ? 'bg-blue-lt' : 'bg-secondary-lt'}">
@@ -923,7 +1000,7 @@ class SalaryScalesMethods {
       <td class="py-2 px-2 align-middle">
         <div class="input-group input-group-sm">
           <span class="input-group-text period-row-symbol">${isPct ? '%' : '$'}</span>
-          <input type="number" step="0.01" min="0.01" class="form-control font-monospace fw-bold period-row-value"
+          <input type="number" step="0.01" min="0" class="form-control font-monospace fw-bold period-row-value"
             value="${defaults.value !== undefined && defaults.value !== null ? escapeHtml(String(defaults.value)) : ''}"
             placeholder="${isPct ? 'Ej. 12.5' : 'Ej. 50000'}" required />
         </div>
@@ -1026,8 +1103,8 @@ class SalaryScalesMethods {
       if (validFrom > validTo) {
         return { error: `En el renglón #${i + 1}, la "Fecha desde" no puede ser posterior a la "Fecha hasta".` };
       }
-      if (isNaN(value) || value <= 0) {
-        return { error: `En el renglón #${i + 1}, por favor ingrese un valor numérico mayor a cero.` };
+      if (isNaN(value) || value < 0) {
+        return { error: `En el renglón #${i + 1}, por favor ingrese un valor numérico mayor o igual a cero.` };
       }
 
       periods.push({

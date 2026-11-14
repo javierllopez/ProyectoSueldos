@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from '../../api.js?v=2.0';
+import { apiRequest, storage, showToast } from '../../api.js?v=2.1';
 import {
   isValidCuit,
   formatCuit,
@@ -755,6 +755,71 @@ class MixinMethods {
     }, 80);
   }
 
+  getAuditEmployerContributions(data, slip, formatMoney) {
+    const precomputed =
+      data?.employerContributionItems ||
+      data?.breakdown?.employerContributionItems ||
+      slip?.employerContributionItems;
+    if (Array.isArray(precomputed) && precomputed.length > 0) {
+      return precomputed;
+    }
+
+    const basis = slip?.f931Basis || slip?.basis || {};
+    const totalRem = Number(slip?.remunerativeSalary ?? slip?.totalRemunerative ?? 0);
+    const gross = Number(slip?.grossSalary ?? 0);
+    const bi2 = basis.baseImponible2 !== undefined ? Number(basis.baseImponible2) : totalRem;
+    const bi4 = Number(basis.baseImponible4 !== undefined ? basis.baseImponible4 : totalRem)
+      + Number(basis.baseDifContribOs || 0);
+    const bi9 = basis.baseImponible9 !== undefined ? Number(basis.baseImponible9) : gross;
+    const detraction = Number(basis.detractionAmount || 0);
+    const bi10 = basis.baseImponible10 !== undefined
+      ? Number(basis.baseImponible10)
+      : Math.max(0, bi2 - detraction);
+
+    const defs = [
+      { code: 'CP9100', field: 'sipaContrib', name: 'SIPA - Régimen Previsional Patronal', shortName: 'SIPA (Previsional)', ratePct: 10.77, base: bi10, basisLabel: 'BI 10 (SIPA c/ detracción)' },
+      { code: 'CP9101', field: 'inssjypContrib', name: 'INSSJyP / PAMI - Contrib. Patronal', shortName: 'INSSJyP / PAMI', ratePct: 1.58, base: bi2, basisLabel: 'BI 2 (Contribución SIPA)' },
+      { code: 'CP9102', field: 'osContrib', name: 'Obra Social Patronal', shortName: 'Obra Social Patronal', ratePct: 6.0, base: bi4, basisLabel: 'BI 4 (Obra Social)' },
+      { code: 'CP9103', field: 'fneContrib', name: 'Fondo Nacional de Empleo (FNE)', shortName: 'FNE (Fondo Nac. Empleo)', ratePct: 0.94, base: bi2, basisLabel: 'BI 2 (Contribución SIPA)' },
+      { code: 'CP9104', field: 'aaffContrib', name: 'Asignaciones Familiares (AAFF)', shortName: 'AAFF (Asig. Familiares)', ratePct: 4.7, base: bi2, basisLabel: 'BI 2 (Contribución SIPA)' },
+      { code: 'CP9105', field: 'artContrib', name: 'ART - Aseguradora de Riesgos del Trabajo', shortName: 'ART (Riesgos del Trabajo)', ratePct: 3.5, base: bi9, basisLabel: 'BI 9 (LRT / ART)', fixedFee: 850 },
+      { code: 'CP9106', field: 'scvoContrib', name: 'SCVO - Seguro Colectivo de Vida Obligatorio', shortName: 'SCVO (Seguro Vida Oblig.)', ratePct: 0, base: 0, basisLabel: 'Cuota Fija Mensual', isFixedOnly: true },
+      { code: 'CP9107', field: 'unionContrib', name: 'Contribución Patronal Sindical / Convencional', shortName: 'Contribución Sindical', ratePct: 0.5, base: totalRem, basisLabel: 'Total Remunerativo' },
+    ];
+
+    const list = [];
+    defs.forEach((d, idx) => {
+      const amount = Math.round(Number(slip?.[d.field] || 0) * 100) / 100;
+      if (amount <= 0) return;
+      const baseAmount = d.isFixedOnly ? amount : d.base;
+      const formulaExplanation = d.isFixedOnly
+        ? `Suma fija obligatoria Dec. 1567/74 ($ ${formatMoney(amount)})`
+        : d.fixedFee
+          ? `${d.basisLabel}: $ ${formatMoney(baseAmount)} × ${formatMoney(d.ratePct)}% + Fijo ART $ ${formatMoney(d.fixedFee)} = $ ${formatMoney(amount)}`
+          : d.field === 'sipaContrib' && detraction > 0
+            ? `${d.basisLabel}: ($ ${formatMoney(bi2)} − Detrac. $ ${formatMoney(detraction)} = $ ${formatMoney(baseAmount)}) × ${formatMoney(d.ratePct)}% = $ ${formatMoney(amount)}`
+            : `${d.basisLabel}: $ ${formatMoney(baseAmount)} × ${formatMoney(d.ratePct)}% = $ ${formatMoney(amount)}`;
+
+      list.push({
+        id: `contrib-${d.field}`,
+        conceptCode: d.code,
+        conceptName: d.name,
+        shortName: d.shortName,
+        field: d.field,
+        type: 'EMPLOYER_CONTRIB',
+        units: d.ratePct > 0 ? d.ratePct : 1,
+        unitLabel: d.ratePct > 0 ? '%' : 'Fijo',
+        ratePct: d.ratePct,
+        baseAmount,
+        amount,
+        calculationOrder: 9100 + idx,
+        formulaExplanation,
+      });
+    });
+
+    return list;
+  }
+
   generatePayslipAuditPrintHtml(data) {
     const slip = data?.slip || data || {};
     const emp = slip.employee || {};
@@ -763,17 +828,20 @@ class MixinMethods {
     const items = slip.items || [];
     const basis = slip.basis || {};
     const formatMoney = (n) => Number(n || 0).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const contribItems = this.getAuditEmployerContributions(data, slip, formatMoney);
 
     const typeLabelsPlain = {
       REMUNERATIVE: 'Remunerativo',
       NON_REMUNERATIVE: 'No Remunerativo',
       DEDUCTION: 'Deducción / Retención',
       AUXILIARY: 'Auxiliar de Cálculo',
+      EMPLOYER_CONTRIB: 'Contribución Patronal',
     };
 
     const sortedItems = [...items].sort((a, b) =>
       String(a.conceptCode || '').localeCompare(String(b.conceptCode || ''), undefined, { numeric: true })
     );
+    const allAuditItems = [...sortedItems, ...contribItems];
 
     const compName = escapeHtml(comp.businessName || comp.legalName || comp.name || 'EMPRESA');
     const compCuit = formatCuit(comp.cuit);
@@ -801,14 +869,21 @@ class MixinMethods {
     const hashStr = escapeHtml(slip.signatureHash || 'SEC-VALID-PAYROLL-AUDIT');
 
     // Preparar filas e inferir peso vertical para paginación multipágina A4
-    const preparedRows = sortedItems.map((it, idx) => {
+    const preparedRows = allAuditItems.map((it, idx) => {
       const isAux = it.type === 'AUXILIARY';
       const isDed = it.type === 'DEDUCTION';
+      const isContrib = it.type === 'EMPLOYER_CONTRIB';
       const amountStr = `${isDed ? '-$ ' : '$ '}${formatMoney(it.amount)}`;
-      const unitsStr = it.units !== null && it.units !== undefined ? String(it.units) : '-';
-      const baseStr = it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : it.rate ? `${it.rate}%` : '-';
+      const unitsStr = isContrib
+        ? (it.ratePct > 0 ? `${formatMoney(it.ratePct)}%` : '1 cuota')
+        : (it.units !== null && it.units !== undefined ? String(it.units) : '-');
+      const baseStr = isContrib
+        ? (it.ratePct > 0 && it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : 'Fijo')
+        : (it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : it.rate ? `${it.rate}%` : '-');
       const typeStr = typeLabelsPlain[it.type] || String(it.type || '-');
-      const formulaExpl = this.resolveAuditItemFormula(it, slip, formatMoney);
+      const formulaExpl = isContrib
+        ? (it.formulaExplanation || '')
+        : this.resolveAuditItemFormula(it, slip, formatMoney);
 
       const nameLines = Math.max(1, Math.ceil(String(it.conceptName || '').length / 38));
       const formulaLines = formulaExpl ? Math.max(1, Math.ceil((formulaExpl.length + 9) / 48)) : 0;
@@ -816,8 +891,12 @@ class MixinMethods {
       const contentLines = Math.max(nameLines + formulaLines, typeLines);
       const heightMm = 4.2 + contentLines * 3.6;
 
+      const rowCls = isAux ? 'ap-row-aux' : isContrib ? 'ap-row-contrib' : '';
+      const amtCls = isDed ? 'ap-val-ded' : isAux ? 'ap-val-aux' : isContrib ? 'ap-val-contrib' : '';
+      const arcaCell = isContrib ? 'F.931' : escapeHtml(it.arcaConceptCode || '-');
+
       const html = `
-        <tr class="${isAux ? 'ap-row-aux' : ''}">
+        <tr class="${rowCls}">
           <td class="ap-col-idx">${idx + 1}</td>
           <td class="ap-col-code">${escapeHtml(it.conceptCode || '-')}</td>
           <td class="ap-col-name">
@@ -827,8 +906,8 @@ class MixinMethods {
           <td class="ap-col-type">${escapeHtml(typeStr)}</td>
           <td class="ap-col-units">${escapeHtml(unitsStr)}</td>
           <td class="ap-col-base">${escapeHtml(baseStr)}</td>
-          <td class="ap-col-amount ${isDed ? 'ap-val-ded' : isAux ? 'ap-val-aux' : ''}">${amountStr}</td>
-          <td class="ap-col-arca">${escapeHtml(it.arcaConceptCode || '-')}</td>
+          <td class="ap-col-amount ${amtCls}">${amountStr}</td>
+          <td class="ap-col-arca">${arcaCell}</td>
         </tr>
       `;
       return { html, heightMm };
@@ -836,7 +915,7 @@ class MixinMethods {
 
     // Presupuesto vertical útil del cuerpo por página A4 (~212mm disponibles entre encabezado y pie)
     const MAX_BODY_HEIGHT_MM = 208;
-    const SUMMARY_HEIGHT_MM = 64;
+    const SUMMARY_HEIGHT_MM = 68 + contribItems.length * 4;
 
     const pages = [];
     let currentRows = [];
@@ -930,9 +1009,14 @@ class MixinMethods {
                   <td>SUELDO NETO DE BOLSILLO A COBRAR</td>
                   <td class="ap-kv-val">$ ${formatMoney(slip.netSalary)}</td>
                 </tr>
+                ${contribItems.map((c) => `
+                <tr>
+                  <td>&bull; ${escapeHtml(c.shortName || c.conceptName)}${c.ratePct > 0 ? ` (${formatMoney(c.ratePct)}%)` : ''}</td>
+                  <td class="ap-kv-val ap-val-contrib">$ ${formatMoney(c.amount)}</td>
+                </tr>`).join('')}
                 <tr>
                   <td>Total Contribuciones Patronales Empleador</td>
-                  <td class="ap-kv-val">$ ${formatMoney(slip.totalEmployerContrib)}</td>
+                  <td class="ap-kv-val ap-val-contrib">$ ${formatMoney(slip.totalEmployerContrib)}</td>
                 </tr>
                 <tr class="ap-kv-highlight">
                   <td>COSTO LABORAL TOTAL EMPRESA</td>
@@ -1039,30 +1123,40 @@ class MixinMethods {
     const items = slip.items || [];
     const basis = slip.basis || {};
     const formatMoney = (n) => Number(n || 0).toLocaleString('es-AR', { minimumFractionDigits: 2 });
+    const contribItems = this.getAuditEmployerContributions(data, slip, formatMoney);
 
     const typeBadges = {
       REMUNERATIVE: '<span class="badge bg-green-lt">Remunerativo</span>',
       NON_REMUNERATIVE: '<span class="badge bg-blue-lt">No Remunerativo</span>',
       DEDUCTION: '<span class="badge bg-danger-lt">Deducción / Retención</span>',
       AUXILIARY: '<span class="badge bg-purple text-white"><i class="ti ti-tools me-1"></i>Auxiliar de Cálculo</span>',
+      EMPLOYER_CONTRIB: '<span class="badge bg-indigo-lt text-indigo"><i class="ti ti-building-bank me-1"></i>Contribución Patronal</span>',
     };
 
     const sortedItems = [...items].sort((a, b) => {
       return String(a.conceptCode || '').localeCompare(String(b.conceptCode || ''), undefined, { numeric: true });
     });
+    const allAuditRows = [...sortedItems, ...contribItems];
 
     const cbuDisplay = emp.cbu && String(emp.cbu).trim()
       ? `CBU: <strong class="text-dark">${escapeHtml(String(emp.cbu).trim())}</strong>${emp.bankName ? ` (${escapeHtml(emp.bankName)})` : ''}`
       : `CBU: <span class="badge bg-warning-lt text-warning fw-normal">Sin CBU informado</span>`;
 
-    const itemRows = sortedItems.map((it, idx) => {
+    const itemRows = allAuditRows.map((it, idx) => {
       const isAux = it.type === 'AUXILIARY';
-      const rowClass = isAux ? 'bg-purple-lt bg-opacity-10' : '';
+      const isContrib = it.type === 'EMPLOYER_CONTRIB';
+      const rowClass = isAux ? 'bg-purple-lt bg-opacity-10' : isContrib ? 'bg-indigo-lt bg-opacity-10' : '';
       const amountStr = formatMoney(it.amount);
-      const unitsStr = it.units !== null && it.units !== undefined ? String(it.units) : '-';
-      const baseStr = it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : (it.rate ? `${it.rate}%` : '-');
+      const unitsStr = isContrib
+        ? (it.ratePct > 0 ? `${formatMoney(it.ratePct)}%` : '1 cuota')
+        : (it.units !== null && it.units !== undefined ? String(it.units) : '-');
+      const baseStr = isContrib
+        ? (it.ratePct > 0 && it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : 'Fijo')
+        : (it.baseAmount ? `$ ${formatMoney(it.baseAmount)}` : (it.rate ? `${it.rate}%` : '-'));
 
-      const formulaExpl = this.resolveAuditItemFormula(it, slip, formatMoney);
+      const formulaExpl = isContrib
+        ? (it.formulaExplanation || '')
+        : this.resolveAuditItemFormula(it, slip, formatMoney);
 
       const formulaExplHtml = formulaExpl ? `
         <div class="text-muted small font-monospace mt-1" style="font-size: 0.76rem;">
@@ -1070,22 +1164,28 @@ class MixinMethods {
         </div>
       ` : '';
 
+      const codeClass = isContrib ? 'text-indigo' : 'text-primary';
+      const amountClass = isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : isContrib ? 'text-indigo' : 'text-dark');
+      const arcaCellHtml = isContrib
+        ? '<span class="badge bg-indigo-lt text-indigo font-monospace">F.931</span>'
+        : `<code>${escapeHtml(it.arcaConceptCode || '-')}</code>`;
+
       return `
         <tr class="${rowClass}">
           <td class="text-center font-monospace text-muted small py-1 col-audit-idx">${idx + 1}</td>
-          <td class="font-monospace fw-bold text-primary py-1 col-audit-code" style="white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
+          <td class="font-monospace fw-bold ${codeClass} py-1 col-audit-code" style="white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
           <td class="py-1 col-audit-name">
             <span class="fw-semibold text-dark d-inline-block align-middle" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
             ${formulaExplHtml}
           </td>
           <td class="py-1 col-audit-type" style="white-space: nowrap;">${typeBadges[it.type] || it.type}</td>
-          <td class="text-center font-monospace py-1 col-audit-units" style="white-space: nowrap;">${unitsStr}</td>
-          <td class="text-end font-monospace text-muted py-1 col-audit-base" style="white-space: nowrap;">${baseStr}</td>
-          <td class="text-end font-monospace fw-bold py-1 col-audit-amount ${isAux ? 'text-purple' : (it.type === 'DEDUCTION' ? 'text-danger' : 'text-dark')}" style="white-space: nowrap;">
+          <td class="text-center font-monospace py-1 col-audit-units" style="white-space: nowrap;">${escapeHtml(unitsStr)}</td>
+          <td class="text-end font-monospace text-muted py-1 col-audit-base" style="white-space: nowrap;">${escapeHtml(baseStr)}</td>
+          <td class="text-end font-monospace fw-bold py-1 col-audit-amount ${amountClass}" style="white-space: nowrap;">
             ${it.type === 'DEDUCTION' ? '-' : ''}$ ${amountStr}
           </td>
           <td class="text-center py-1 col-audit-arca" style="white-space: nowrap;">
-            <code>${escapeHtml(it.arcaConceptCode || '-')}</code>
+            ${arcaCellHtml}
           </td>
         </tr>
       `;
@@ -1141,7 +1241,7 @@ class MixinMethods {
             <h5 class="card-title mb-0 text-dark">
               <i class="ti ti-list-details me-1 text-primary"></i> Secuencia Completa de Conceptos Liquidados
             </h5>
-            <span class="badge bg-primary-lt font-monospace">${items.length} conceptos</span>
+            <span class="badge bg-primary-lt font-monospace">${sortedItems.length} conceptos + ${contribItems.length} contrib.</span>
           </div>
           <div class="small text-muted d-flex align-items-center flex-wrap gap-1">
             <span class="badge bg-purple text-white"><i class="ti ti-tools me-1"></i>Auxiliar</span>
@@ -1242,9 +1342,22 @@ class MixinMethods {
                   <td class="fw-bold py-1">Sueldo Neto de Bolsillo:</td>
                   <td class="text-end font-monospace fw-bold fs-4 text-success py-1">$ ${formatMoney(slip.netSalary)}</td>
                 </tr>
+                ${contribItems.length > 0 ? `
+                <tr class="border-top">
+                  <td colspan="2" class="text-uppercase fw-bold text-indigo pt-2 pb-1" style="font-size: 0.7rem;">
+                    <i class="ti ti-building-bank me-1"></i>Detalle Contribuciones Patronales Generadas
+                  </td>
+                </tr>
+                ${contribItems.map((c) => `
                 <tr>
-                  <td class="text-muted py-0">Total Contribuciones Patronales:</td>
-                  <td class="text-end font-monospace fw-bold text-indigo py-0">$ ${formatMoney(slip.totalEmployerContrib)}</td>
+                  <td class="text-muted py-0 ps-2">
+                    <span class="font-monospace text-indigo me-1">${escapeHtml(c.conceptCode)}</span>${escapeHtml(c.shortName || c.conceptName)}${c.ratePct > 0 ? ` <span class="text-muted">(${formatMoney(c.ratePct)}%)</span>` : ''}
+                  </td>
+                  <td class="text-end font-monospace text-indigo py-0">$ ${formatMoney(c.amount)}</td>
+                </tr>`).join('')}` : ''}
+                <tr class="border-top">
+                  <td class="text-muted fw-semibold py-1">Total Contribuciones Patronales:</td>
+                  <td class="text-end font-monospace fw-bold text-indigo py-1">$ ${formatMoney(slip.totalEmployerContrib)}</td>
                 </tr>
                 <tr class="border-top">
                   <td class="fw-bold text-dark py-1">Costo Laboral Total Empresa:</td>

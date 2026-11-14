@@ -1,4 +1,4 @@
-import { apiRequest, storage, showToast } from '../../api.js?v=2.0';
+import { apiRequest, storage, showToast } from '../../api.js?v=2.1';
 import {
   isValidCuit,
   formatCuit,

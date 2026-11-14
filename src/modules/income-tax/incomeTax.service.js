@@ -298,6 +298,8 @@ export async function calculateMonthlyIncomeTax(
       totalWithheldAmount: Math.round(totalWithheldAmount * 100) / 100,
       totalRefundAmount: Math.round(totalRefundAmount * 100) / 100,
       status: 'CALCULATED',
+      exportedPayrollPeriodId: null,
+      exportedAt: null,
     },
   });
 
@@ -311,6 +313,21 @@ export async function calculateMonthlyIncomeTax(
   };
 }
 
+async function attachExportedPayrollPeriods(tenantPrisma, settlements) {
+  const periodIds = [...new Set(settlements.map((s) => s.exportedPayrollPeriodId).filter(Boolean))];
+  if (periodIds.length === 0) return settlements;
+
+  const periods = await tenantPrisma.payrollPeriod.findMany({
+    where: { id: { in: periodIds } },
+    select: { id: true, settlementName: true, month: true, year: true, status: true },
+  });
+  const byId = new Map(periods.map((p) => [p.id, p]));
+  return settlements.map((s) => ({
+    ...s,
+    exportedPayrollPeriod: s.exportedPayrollPeriodId ? byId.get(s.exportedPayrollPeriodId) || null : null,
+  }));
+}
+
 /**
  * Obtiene el listado de liquidaciones de Ganancias.
  */
@@ -319,10 +336,11 @@ export async function listSettlements(tenantPrisma, { fiscalYear } = {}) {
   const where = {};
   if (fiscalYear) where.fiscalYear = parseInt(fiscalYear, 10);
 
-  return tenantPrisma.incomeTaxSettlement.findMany({
+  const settlements = await tenantPrisma.incomeTaxSettlement.findMany({
     where,
     orderBy: [{ fiscalYear: 'desc' }, { month: 'desc' }],
   });
+  return attachExportedPayrollPeriods(tenantPrisma, settlements);
 }
 
 /**
@@ -361,7 +379,8 @@ export async function getSettlementById(tenantPrisma, settlementId) {
     throw error;
   }
 
-  return settlement;
+  const [enriched] = await attachExportedPayrollPeriods(tenantPrisma, [settlement]);
+  return enriched;
 }
 
 /**
@@ -404,6 +423,19 @@ export async function exportSettlementToPayroll(
 
   if (payrollPeriod.status === 'CLOSED' || payrollPeriod.fiscalPeriod?.status === 'CLOSED') {
     const error = new Error('No se pueden exportar novedades a un período de sueldos cerrado');
+    error.status = 400;
+    throw error;
+  }
+
+  if (
+    Number(settlement.fiscalYear) !== Number(payrollPeriod.year) ||
+    Number(settlement.month) !== Number(payrollPeriod.month)
+  ) {
+    const srcPeriod = `${String(settlement.month).padStart(2, '0')}/${settlement.fiscalYear}`;
+    const dstPeriod = `${String(payrollPeriod.month).padStart(2, '0')}/${payrollPeriod.year}`;
+    const error = new Error(
+      `La liquidación de Ganancias corresponde a ${srcPeriod} y el período de sueldos destino es ${dstPeriod} ("${payrollPeriod.settlementName || dstPeriod}"). Solo se permite exportar al mismo año y mes fiscal.`
+    );
     error.status = 400;
     throw error;
   }
