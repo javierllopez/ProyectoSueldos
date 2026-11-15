@@ -7,25 +7,52 @@ import {
   generateMonthlyLsdPayrollFile,
   validateMonthlyLsdConsistency,
 } from '../lsdExporter.service.js';
-import { getPayrollSettings } from './conceptsAndRules.service.js';
+import {
+  getPayrollSettings,
+  getSettlementTypeMap,
+  resolveSettlementTypeConfig,
+} from './conceptsAndRules.service.js';
 import { getPeriodById } from './periodsAndCalculation.service.js';
+
+function isPeriodIncludedInLsd(periodType, stMap) {
+  const key = String(periodType || 'MONTHLY').trim().toUpperCase();
+  if (key === 'ALL') return true;
+  const st = stMap.get(key);
+  return st ? st.includeInLsd !== false : true;
+}
 
 // --- EXPORTACIÓN LIBRO DE SUELDOS DIGITAL (ARCA) ---
 
 export async function exportLsdConcepts(tenantPrisma) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  const concepts = await tenantPrisma.concept.findMany({
-    where: { isActive: true, deletedAt: null },
-    orderBy: { code: 'asc' },
-  });
+  const [concepts, stMap] = await Promise.all([
+    tenantPrisma.concept.findMany({
+      where: { isActive: true, deletedAt: null },
+      orderBy: { code: 'asc' },
+    }),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
 
-  return generateLsdConceptsFile(concepts);
+  const lsdConcepts = concepts.filter((c) => isPeriodIncludedInLsd(c.periodType, stMap));
+  return generateLsdConceptsFile(lsdConcepts);
 }
 
 export async function exportLsdPayroll(tenantPrisma, periodId, company) {
   await ensureTenantPayrollSchema(tenantPrisma);
-  const period = await getPeriodById(tenantPrisma, periodId);
+  const [period, stMap] = await Promise.all([
+    getPeriodById(tenantPrisma, periodId),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
+
+  const stConfig = stMap.get(String(period.periodType || 'MONTHLY').trim().toUpperCase());
+  if (stConfig && stConfig.includeInLsd === false) {
+    const err = new Error(
+      `La liquidación "${period.settlementName || period.periodType}" corresponde al tipo "${stConfig.name}", que está excluido del Libro de Sueldos Digital ARCA.`
+    );
+    err.status = 400;
+    throw err;
+  }
 
   let companyProfile = company;
   if (!companyProfile?.cuit) {
@@ -68,7 +95,23 @@ export async function exportLsdPayroll(tenantPrisma, periodId, company) {
 
 export async function validateLsd(tenantPrisma, periodId) {
   await ensureTenantPayrollSchema(tenantPrisma);
-  const period = await getPeriodById(tenantPrisma, periodId);
+  const [period, stMap] = await Promise.all([
+    getPeriodById(tenantPrisma, periodId),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
+
+  const stConfig = stMap.get(String(period.periodType || 'MONTHLY').trim().toUpperCase());
+  if (stConfig && stConfig.includeInLsd === false) {
+    return {
+      isValid: true,
+      errors: [],
+      issues: [],
+      warnings: [
+        `El tipo de liquidación "${stConfig.name}" está excluido del Libro de Sueldos Digital ARCA.`,
+      ],
+      skipped: true,
+    };
+  }
 
   const paySlips = await tenantPrisma.paySlip.findMany({
     where: { payrollPeriodId: periodId, deletedAt: null },
@@ -91,9 +134,10 @@ export async function validateLsd(tenantPrisma, periodId) {
   const payrollSettings = await getPayrollSettings(tenantPrisma);
   const companyProfile = await tenantPrisma.companyProfile.findFirst({ where: { deletedAt: null } });
 
-  const settlements = await tenantPrisma.payrollPeriod.findMany({
+  const allSettlements = await tenantPrisma.payrollPeriod.findMany({
     where: { year: period.year, month: period.month },
   });
+  const settlements = allSettlements.filter((s) => isPeriodIncludedInLsd(s.periodType, stMap));
 
   return validateLsdConsistency({
     paySlips,
@@ -106,14 +150,19 @@ export async function validateLsd(tenantPrisma, periodId) {
 export async function getMonthlyLsdPeriods(tenantPrisma) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
-  const periods = await tenantPrisma.payrollPeriod.findMany({
-    orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'asc' }],
-    include: {
-      _count: {
-        select: { paySlips: { where: { deletedAt: null } } },
+  const [allPeriods, stMap] = await Promise.all([
+    tenantPrisma.payrollPeriod.findMany({
+      orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'asc' }],
+      include: {
+        _count: {
+          select: { paySlips: { where: { deletedAt: null } } },
+        },
       },
-    },
-  });
+    }),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
+
+  const periods = allPeriods.filter((p) => isPeriodIncludedInLsd(p.periodType, stMap));
 
   const monthNames = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -160,7 +209,7 @@ export async function getMonthlyLsdPeriods(tenantPrisma) {
       id: p.id,
       settlementName: p.settlementName,
       periodType: p.periodType,
-      periodTypeLabel: typeLabels[p.periodType] || p.periodType,
+      periodTypeLabel: stMap.get(String(p.periodType || '').toUpperCase())?.name || typeLabels[p.periodType] || p.periodType,
       settlementNumber: p.settlementNumber,
       settlementType: p.settlementType,
       status: p.status,
@@ -188,21 +237,31 @@ export async function getMonthlyLsdPreview(tenantPrisma, year, month) {
   const numYear = Number(year);
   const numMonth = Number(month);
 
-  const settlements = await tenantPrisma.payrollPeriod.findMany({
-    where: {
-      year: numYear,
-      month: numMonth,
-    },
-    orderBy: { settlementNumber: 'asc' },
-    include: {
-      _count: {
-        select: { paySlips: { where: { deletedAt: null } } },
+  const [allSettlements, stMap] = await Promise.all([
+    tenantPrisma.payrollPeriod.findMany({
+      where: {
+        year: numYear,
+        month: numMonth,
       },
-    },
-  });
+      orderBy: { settlementNumber: 'asc' },
+      include: {
+        _count: {
+          select: { paySlips: { where: { deletedAt: null } } },
+        },
+      },
+    }),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
 
-  if (settlements.length === 0) {
+  if (allSettlements.length === 0) {
     const err = new Error(`No se registraron liquidaciones para el período ${String(numMonth).padStart(2, '0')}/${numYear}`);
+    err.status = 404;
+    throw err;
+  }
+
+  const settlements = allSettlements.filter((s) => isPeriodIncludedInLsd(s.periodType, stMap));
+  if (settlements.length === 0) {
+    const err = new Error(`Ninguna liquidación del período ${String(numMonth).padStart(2, '0')}/${numYear} está marcada para incluir en el Libro de Sueldos Digital ARCA`);
     err.status = 404;
     throw err;
   }
@@ -262,7 +321,7 @@ export async function getMonthlyLsdPreview(tenantPrisma, year, month) {
       id: s.id,
       settlementName: s.settlementName,
       periodType: s.periodType,
-      periodTypeLabel: typeLabels[s.periodType] || s.periodType,
+      periodTypeLabel: stMap.get(String(s.periodType || '').toUpperCase())?.name || typeLabels[s.periodType] || s.periodType,
       settlementNumber: s.settlementNumber,
       settlementType: s.settlementType,
       status: s.status,
@@ -281,15 +340,31 @@ export async function validateMonthlyLsd(tenantPrisma, year, month) {
   const numYear = Number(year);
   const numMonth = Number(month);
 
-  const settlements = await tenantPrisma.payrollPeriod.findMany({
-    where: { year: numYear, month: numMonth },
-    orderBy: { settlementNumber: 'asc' },
-  });
+  const [allSettlements, stMap] = await Promise.all([
+    tenantPrisma.payrollPeriod.findMany({
+      where: { year: numYear, month: numMonth },
+      orderBy: { settlementNumber: 'asc' },
+    }),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
 
-  if (settlements.length === 0) {
+  if (allSettlements.length === 0) {
     const err = new Error(`No hay liquidaciones para auditar en el período ${String(numMonth).padStart(2, '0')}/${numYear}`);
     err.status = 400;
     throw err;
+  }
+
+  const settlements = allSettlements.filter((s) => isPeriodIncludedInLsd(s.periodType, stMap));
+  if (settlements.length === 0) {
+    return {
+      isValid: true,
+      errors: [],
+      issues: [],
+      warnings: [
+        `Las liquidaciones de ${String(numMonth).padStart(2, '0')}/${numYear} corresponden a tipos excluidos del Libro de Sueldos Digital ARCA.`,
+      ],
+      skipped: true,
+    };
   }
 
   const periodIds = settlements.map((s) => s.id);
@@ -339,13 +414,23 @@ export async function exportMonthlyLsdPayroll(tenantPrisma, year, month, company
     companyProfile = (await tenantPrisma.companyProfile.findFirst({ where: { deletedAt: null } })) || company || {};
   }
 
-  const settlements = await tenantPrisma.payrollPeriod.findMany({
-    where: { year: numYear, month: numMonth },
-    orderBy: { settlementNumber: 'asc' },
-  });
+  const [allSettlements, stMap] = await Promise.all([
+    tenantPrisma.payrollPeriod.findMany({
+      where: { year: numYear, month: numMonth },
+      orderBy: { settlementNumber: 'asc' },
+    }),
+    getSettlementTypeMap(tenantPrisma),
+  ]);
 
-  if (settlements.length === 0) {
+  if (allSettlements.length === 0) {
     const err = new Error(`No hay liquidaciones registradas para el período ${String(numMonth).padStart(2, '0')}/${numYear}`);
+    err.status = 400;
+    throw err;
+  }
+
+  const settlements = allSettlements.filter((s) => isPeriodIncludedInLsd(s.periodType, stMap));
+  if (settlements.length === 0) {
+    const err = new Error(`No hay liquidaciones incluidas en Libro de Sueldos Digital ARCA para el período ${String(numMonth).padStart(2, '0')}/${numYear}`);
     err.status = 400;
     throw err;
   }
@@ -447,6 +532,21 @@ function assertNoveltyConceptCompatible(concept, period) {
 
   const pType = (period.periodType || 'MONTHLY').toUpperCase();
   const cPeriodType = (concept.periodType || 'MONTHLY').toUpperCase();
+  const LEGACY_TYPES = new Set([
+    'ALL', 'MONTHLY', 'MENSUAL', 'QUINCE', 'QUINCENA', 'QUINCE_1', 'QUINCE_2',
+    'SAC', 'AGUINALDO', 'SAC_1', 'SAC_2', 'VACATIONS', 'VACACIONES', 'FINAL', 'LIQUIDACION_FINAL',
+  ]);
+
+  if (!LEGACY_TYPES.has(pType) || !LEGACY_TYPES.has(cPeriodType)) {
+    if (cPeriodType !== 'ALL' && cPeriodType !== pType) {
+      const err = new Error(
+        `El concepto ${concept.code} (${concept.name}) pertenece al tipo "${cPeriodType}" y no puede cargarse en una liquidación de tipo "${pType}".`
+      );
+      err.status = 400;
+      throw err;
+    }
+    return;
+  }
 
   if (pType === 'MONTHLY' && cPeriodType === 'VACATIONS') {
     const err = new Error(`No se pueden cargar conceptos de tipo VACACIONES (${concept.code} - ${concept.name}) en una liquidación de tipo MENSUAL.`);

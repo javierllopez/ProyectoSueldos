@@ -872,6 +872,24 @@ exports.Prisma.SanctionIncidentLinkScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PayrollSettlementTypeScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  conceptPrefix: 'conceptPrefix',
+  includeInLsd: 'includeInLsd',
+  arcaLsdType: 'arcaLsdType',
+  defaultWorkedDays: 'defaultWorkedDays',
+  appliesStatutoryDeductions: 'appliesStatutoryDeductions',
+  triggersEmployeeTermination: 'triggersEmployeeTermination',
+  isSystem: 'isSystem',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -1314,6 +1332,15 @@ exports.Prisma.SanctionIncidentLinkOrderByRelevanceFieldEnum = {
   incidentId: 'incidentId'
 };
 
+exports.Prisma.PayrollSettlementTypeOrderByRelevanceFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  conceptPrefix: 'conceptPrefix',
+  arcaLsdType: 'arcaLsdType'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -1360,7 +1387,8 @@ exports.Prisma.ModelName = {
   SanctionType: 'SanctionType',
   EmployeeIncident: 'EmployeeIncident',
   EmployeeSanction: 'EmployeeSanction',
-  SanctionIncidentLink: 'SanctionIncidentLink'
+  SanctionIncidentLink: 'SanctionIncidentLink',
+  PayrollSettlementType: 'PayrollSettlementType'
 };
 
 /**

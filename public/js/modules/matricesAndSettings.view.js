@@ -1072,6 +1072,489 @@ class MatricesAndSettingsMethods {
       submitBtn.innerHTML = '<i class="ti ti-device-floppy me-2"></i> Guardar Parámetros y Alícuotas';
     }
   }
+
+  // =========================================================================
+  // ABM DE TIPOS DE LIQUIDACIÓN (SETTLEMENT TYPES)
+  // =========================================================================
+
+  getSettlementTypeMap() {
+    const map = new Map();
+    const list = Array.isArray(this.payrollSettlementTypes) ? this.payrollSettlementTypes : [];
+    for (const st of list) {
+      map.set(String(st.code || '').toUpperCase(), st);
+    }
+    if (map.has('SAC_1') && !map.has('SAC')) map.set('SAC', { ...map.get('SAC_1'), name: 'Ambos SAC (Aguinaldo)' });
+    if (map.has('QUINCE_1') && !map.has('QUINCE')) map.set('QUINCE', { ...map.get('QUINCE_1'), name: 'Quincenal (Ambas Quincenas)' });
+    if (map.has('MONTHLY') && !map.has('MENSUAL')) map.set('MENSUAL', map.get('MONTHLY'));
+    if (map.has('VACATIONS') && !map.has('VACACIONES')) map.set('VACACIONES', map.get('VACATIONS'));
+    if (map.has('FINAL') && !map.has('LIQUIDACION_FINAL')) map.set('LIQUIDACION_FINAL', map.get('FINAL'));
+    return map;
+  }
+
+  getSettlementTypeConfig(periodType) {
+    const key = String(periodType || 'MONTHLY').trim().toUpperCase();
+    return this.getSettlementTypeMap().get(key) || null;
+  }
+
+  getSettlementTypeLabel(periodType) {
+    const key = String(periodType || 'MONTHLY').trim().toUpperCase();
+    const st = this.getSettlementTypeConfig(key);
+    if (st?.name) return st.name;
+    const fallbackLabels = {
+      MONTHLY: 'Mensual',
+      QUINCE_1: '1ra Quincena',
+      QUINCE_2: '2da Quincena',
+      QUINCE: 'Quincenal',
+      SAC: 'S.A.C.',
+      SAC_1: '1er SAC',
+      SAC_2: '2do SAC',
+      VACATIONS: 'Vacaciones',
+      FINAL: 'Liquidación Final',
+    };
+    return fallbackLabels[key] || periodType || 'Mensual';
+  }
+
+  async loadPayrollSettlementTypes() {
+    try {
+      const res = await apiRequest('/payroll/settlement-types');
+      this.payrollSettlementTypes = Array.isArray(res.data) ? res.data : [];
+
+      const activeCount = this.payrollSettlementTypes.filter((t) => t.isActive !== false).length;
+      const sideBadge = document.getElementById('payroll-badge-settlement-types-count');
+      if (sideBadge) sideBadge.textContent = activeCount;
+      const summaryBadge = document.getElementById('settlement-types-summary-badge');
+      if (summaryBadge) summaryBadge.textContent = `${this.payrollSettlementTypes.length} tipo(s)`;
+
+      this.renderPayrollSettlementTypesTable();
+      this.populateSettlementTypeSelects();
+      this.setupSettlementTypeModalListeners();
+    } catch (err) {
+      console.warn('Error al cargar tipos de liquidación:', err.message);
+    }
+  }
+
+  populateSettlementTypeSelects() {
+    const types = Array.isArray(this.payrollSettlementTypes) ? this.payrollSettlementTypes : [];
+    if (types.length === 0) return;
+
+    const activeTypes = types.filter((t) => t.isActive !== false);
+
+    // 1. Filtro de tabla de Liquidaciones (#payroll-period-type-filter)
+    const periodFilter = document.getElementById('payroll-period-type-filter');
+    if (periodFilter) {
+      const prev = periodFilter.value || 'ALL';
+      periodFilter.innerHTML = [
+        '<option value="ALL">Todos los Tipos</option>',
+        ...types.map((t) => `<option value="${escapeHtml(t.code)}">${escapeHtml(t.name)}${t.isActive === false ? ' (Inactivo)' : ''}</option>`),
+      ].join('');
+      periodFilter.value = Array.from(periodFilter.options).some((o) => o.value === prev) ? prev : 'ALL';
+    }
+
+    // 2. Filtro de tabla de Conceptos (#concepts-period-type-filter)
+    const conceptFilter = document.getElementById('concepts-period-type-filter');
+    if (conceptFilter) {
+      const prev = conceptFilter.value || 'ALL';
+      const opts = ['<option value="ALL">Todas las Liquidaciones</option>'];
+      for (const t of types) {
+        opts.push(`<option value="${escapeHtml(t.code)}">${escapeHtml(t.name)} (${escapeHtml(t.conceptPrefix)})</option>`);
+        if (t.code === 'SAC_2') {
+          opts.push('<option value="SAC">Ambos SAC (SA)</option>');
+        }
+        if (t.code === 'QUINCE_2') {
+          opts.push('<option value="QUINCE">Ambas Quincenas (QU)</option>');
+        }
+      }
+      conceptFilter.innerHTML = opts.join('');
+      conceptFilter.value = Array.from(conceptFilter.options).some((o) => o.value === prev) ? prev : 'ALL';
+    }
+
+    // 3. Selector del Modal de Nueva Liquidación (#period-input-type)
+    const periodInputType = document.getElementById('period-input-type');
+    if (periodInputType) {
+      const prev = periodInputType.value || 'MONTHLY';
+      periodInputType.innerHTML = activeTypes
+        .map((t) => `<option value="${escapeHtml(t.code)}">${escapeHtml(t.name)}</option>`)
+        .join('');
+      periodInputType.value = Array.from(periodInputType.options).some((o) => o.value === prev)
+        ? prev
+        : (activeTypes[0]?.code || 'MONTHLY');
+    }
+
+    // 4. Selector del Modal de Concepto (#concept-input-period-type)
+    const conceptPeriodSelect = document.getElementById('concept-input-period-type');
+    if (conceptPeriodSelect) {
+      const prev = conceptPeriodSelect.value || 'MONTHLY';
+      const opts = [];
+      for (const t of activeTypes) {
+        opts.push(
+          `<option value="${escapeHtml(t.code)}" data-prefix="${escapeHtml(t.conceptPrefix)}" data-include-lsd="${t.includeInLsd ? 'true' : 'false'}">${escapeHtml(t.name)} (${escapeHtml(t.conceptPrefix)})</option>`
+        );
+        if (t.code === 'QUINCE_1') {
+          opts.push(`<option value="QUINCE" data-prefix="${escapeHtml(t.conceptPrefix)}" data-include-lsd="${t.includeInLsd ? 'true' : 'false'}">Quincenal - Ambas Quincenas (${escapeHtml(t.conceptPrefix)})</option>`);
+        }
+        if (t.code === 'SAC_1') {
+          opts.push(`<option value="SAC" data-prefix="${escapeHtml(t.conceptPrefix)}" data-include-lsd="${t.includeInLsd ? 'true' : 'false'}">Ambos SAC - Aguinaldo (${escapeHtml(t.conceptPrefix)})</option>`);
+        }
+      }
+      conceptPeriodSelect.innerHTML = opts.join('');
+      conceptPeriodSelect.value = Array.from(conceptPeriodSelect.options).some((o) => o.value === prev)
+        ? prev
+        : (activeTypes[0]?.code || 'MONTHLY');
+    }
+  }
+
+  renderPayrollSettlementTypesTable() {
+    const tbody = document.getElementById('settlement-types-table-body');
+    if (!tbody) return;
+
+    const list = Array.isArray(this.payrollSettlementTypes) ? this.payrollSettlementTypes : [];
+    const searchInput = document.getElementById('settlement-types-search');
+    const query = (searchInput?.value || '').trim().toLowerCase();
+    const filtered = query
+      ? list.filter((t) =>
+          (t.name || '').toLowerCase().includes(query)
+          || (t.code || '').toLowerCase().includes(query)
+          || (t.conceptPrefix || '').toLowerCase().includes(query)
+          || (t.description || '').toLowerCase().includes(query)
+        )
+      : list;
+
+    const summaryBadge = document.getElementById('settlement-types-summary-badge');
+    if (summaryBadge) {
+      summaryBadge.textContent = query
+        ? `${filtered.length} de ${list.length} tipo${list.length === 1 ? '' : 's'}`
+        : `${list.length} tipo${list.length === 1 ? '' : 's'}`;
+    }
+
+    if (list.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" class="text-center py-4 text-muted">No hay tipos de liquidación configurados.</td>
+        </tr>
+      `;
+      return;
+    }
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="9" class="text-center py-4 text-muted">No se encontraron tipos de liquidación que coincidan con "${escapeHtml(query)}".</td>
+        </tr>
+      `;
+      return;
+    }
+
+    const arcaTypeNames = { M: 'Mensual', Q: 'Quincenal', D: 'Días', H: 'Horas' };
+
+    tbody.innerHTML = filtered.map((t) => {
+      const safeId = escapeHtml(t.id);
+      const lsdBadge = t.includeInLsd
+        ? `<span class="badge bg-success-lt text-success"><i class="ti ti-check me-1"></i>Sí (${escapeHtml(t.arcaLsdType || 'M')} - ${arcaTypeNames[t.arcaLsdType] || 'Mensual'})</span>`
+        : '<span class="badge bg-secondary-lt text-muted">No incluida</span>';
+
+      const statutoryBadge = t.appliesStatutoryDeductions !== false
+        ? '<span class="badge bg-blue-lt">Sí</span>'
+        : '<span class="badge bg-warning-lt text-warning">No (Neto directo)</span>';
+
+      const terminationBadge = t.triggersEmployeeTermination
+        ? '<span class="badge bg-danger-lt text-danger">Sí (Baja)</span>'
+        : '<span class="text-muted small">No</span>';
+
+      const statusBadge = t.isActive !== false
+        ? '<span class="badge bg-success text-white">Activo</span>'
+        : '<span class="badge bg-secondary">Inactivo</span>';
+
+      const noArcaAlert = !t.includeInLsd && Number(t.conceptsWithoutArcaCount || 0) > 0
+        ? `<span class="badge bg-yellow-lt text-yellow ms-1" title="Conceptos sin código ARCA vinculado">${Number(t.conceptsWithoutArcaCount)} sin ARCA</span>`
+        : '';
+
+      const usageHtml = `
+        <div class="small text-nowrap">
+          <span class="badge bg-purple-lt" title="Conceptos asociados">${Number(t.conceptsCount || 0)} conc.</span>
+          <span class="badge bg-azure-lt ms-1" title="Liquidaciones registradas">${Number(t.periodsCount || 0)} liq.</span>
+          ${noArcaAlert}
+        </div>
+      `;
+
+      const systemTag = t.isSystem
+        ? '<span class="badge bg-indigo-lt ms-1" title="Tipo nativo del sistema">Sistema</span>'
+        : '<span class="badge bg-cyan-lt ms-1">Personalizado</span>';
+
+      const canDelete = !t.isSystem && Number(t.conceptsCount || 0) === 0 && Number(t.periodsCount || 0) === 0;
+      const deleteTitle = t.isSystem
+        ? 'Los tipos nativos del sistema no se pueden eliminar'
+        : (canDelete ? 'Eliminar tipo de liquidación' : 'Tiene conceptos o liquidaciones asociadas (puede desactivarlo)');
+
+      return `
+        <tr>
+          <td>
+            <div class="fw-bold d-flex align-items-center flex-wrap gap-1">
+              <span>${escapeHtml(t.name)}</span>
+              ${systemTag}
+            </div>
+            <div class="text-muted small font-monospace">${escapeHtml(t.code)}</div>
+            ${t.description ? `<div class="text-muted small text-truncate" style="max-width: 300px;" title="${escapeHtml(t.description)}">${escapeHtml(t.description)}</div>` : ''}
+          </td>
+          <td class="text-center">
+            <span class="badge bg-dark text-white font-monospace fs-4 px-2">${escapeHtml(t.conceptPrefix)}</span>
+          </td>
+          <td class="text-center">${lsdBadge}</td>
+          <td class="text-center font-monospace fw-bold">${Number(t.defaultWorkedDays ?? 30)}</td>
+          <td class="text-center">${statutoryBadge}</td>
+          <td class="text-center">${terminationBadge}</td>
+          <td class="text-center">${usageHtml}</td>
+          <td class="text-center">${statusBadge}</td>
+          <td class="text-end text-nowrap">
+            <button type="button" class="btn btn-sm btn-outline-primary btn-edit-settlement-type" data-id="${safeId}" title="Editar Tipo de Liquidación">
+              <i class="ti ti-edit"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-outline-danger ms-1 btn-delete-settlement-type" data-id="${safeId}" title="${escapeHtml(deleteTitle)}" ${canDelete ? '' : 'disabled'}>
+              <i class="ti ti-trash"></i>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+
+    tbody.querySelectorAll('.btn-edit-settlement-type').forEach((btn) => {
+      btn.addEventListener('click', () => this.openEditSettlementTypeModal(btn.dataset.id));
+    });
+    tbody.querySelectorAll('.btn-delete-settlement-type').forEach((btn) => {
+      btn.addEventListener('click', () => this.deletePayrollSettlementType(btn.dataset.id));
+    });
+  }
+
+  setupSettlementTypeModalListeners() {
+    if (this._settlementTypeListenersAttached) return;
+    this._settlementTypeListenersAttached = true;
+
+    const searchInput = document.getElementById('settlement-types-search');
+    if (searchInput) {
+      let searchDebounce = null;
+      searchInput.addEventListener('input', () => {
+        clearTimeout(searchDebounce);
+        searchDebounce = setTimeout(() => this.renderPayrollSettlementTypesTable(), 200);
+      });
+    }
+
+    const newBtn = document.getElementById('btn-open-new-settlement-type');
+    if (newBtn) {
+      newBtn.addEventListener('click', () => this.openNewSettlementTypeModal());
+    }
+
+    const prefixInput = document.getElementById('st-input-prefix');
+    if (prefixInput) {
+      prefixInput.addEventListener('input', () => {
+        prefixInput.value = prefixInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 2);
+        if (prefixInput.value.length > 0) {
+          prefixInput.dataset.manualEdit = 'true';
+        } else {
+          delete prefixInput.dataset.manualEdit;
+        }
+      });
+    }
+
+    const nameInput = document.getElementById('st-input-name');
+    if (nameInput && prefixInput) {
+      const suggestPrefix = (rawName) => {
+        const clean = String(rawName || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toUpperCase();
+        const stopwords = new Set(['DE', 'DEL', 'LA', 'LAS', 'EL', 'LOS', 'Y', 'E', 'O', 'EN', 'A', 'AL', 'POR', 'PARA', 'CON', 'SIN']);
+        const words = (clean.match(/[A-Z]+/g) || []).filter((w) => !stopwords.has(w));
+        if (words.length >= 2) return `${words[0][0]}${words[1][0]}`;
+        if (words.length === 1) return words[0].slice(0, 2);
+        return clean.replace(/[^A-Z]/g, '').slice(0, 2);
+      };
+
+      nameInput.addEventListener('input', () => {
+        const currentId = document.getElementById('settlement-type-form-id')?.value;
+        if (currentId || prefixInput.readOnly || prefixInput.dataset.manualEdit) return;
+        prefixInput.value = suggestPrefix(nameInput.value);
+      });
+    }
+
+    const codeInput = document.getElementById('st-input-code');
+    if (codeInput) {
+      codeInput.addEventListener('input', () => {
+        codeInput.value = codeInput.value.toUpperCase().replace(/[^A-Z0-9_]/g, '').slice(0, 40);
+      });
+    }
+
+    const includeLsdCheck = document.getElementById('st-input-include-lsd');
+    const toggleArcaTypeBox = () => {
+      const box = document.getElementById('st-arca-type-box');
+      const sel = document.getElementById('st-input-arca-type');
+      const enabled = Boolean(includeLsdCheck?.checked);
+      if (box) box.style.opacity = enabled ? '1' : '0.5';
+      if (sel) sel.disabled = !enabled;
+    };
+    if (includeLsdCheck) {
+      includeLsdCheck.addEventListener('change', toggleArcaTypeBox);
+    }
+    this._toggleSettlementArcaTypeBox = toggleArcaTypeBox;
+
+    const form = document.getElementById('form-settlement-type');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await this.savePayrollSettlementType();
+      });
+    }
+  }
+
+  openNewSettlementTypeModal() {
+    this.setupSettlementTypeModalListeners();
+    const form = document.getElementById('form-settlement-type');
+    form?.reset();
+
+    document.getElementById('settlement-type-form-id').value = '';
+    document.getElementById('modal-settlement-type-title').textContent = 'Nuevo Tipo de Liquidación';
+    document.getElementById('settlement-type-form-alert')?.classList.add('d-none');
+
+    const codeInput = document.getElementById('st-input-code');
+    if (codeInput) {
+      codeInput.value = '';
+      codeInput.readOnly = false;
+      codeInput.classList.remove('bg-light');
+    }
+
+    const prefixInput = document.getElementById('st-input-prefix');
+    if (prefixInput) {
+      prefixInput.value = '';
+      prefixInput.readOnly = false;
+      prefixInput.classList.remove('bg-light');
+      delete prefixInput.dataset.manualEdit;
+    }
+    const prefixHint = document.getElementById('st-prefix-hint');
+    if (prefixHint) prefixHint.textContent = '2 letras mayúsculas (ej: AN1001)';
+
+    document.getElementById('st-input-include-lsd').checked = true;
+    document.getElementById('st-input-arca-type').value = 'M';
+    document.getElementById('st-input-worked-days').value = 30;
+    document.getElementById('st-input-applies-statutory').checked = true;
+    document.getElementById('st-input-triggers-termination').checked = false;
+    document.getElementById('st-input-active').checked = true;
+
+    this._toggleSettlementArcaTypeBox?.();
+
+    const modalEl = document.getElementById('modal-settlement-type-form');
+    getBootstrapModal(modalEl)?.show();
+  }
+
+  openEditSettlementTypeModal(id) {
+    this.setupSettlementTypeModalListeners();
+    const item = (this.payrollSettlementTypes || []).find((t) => t.id === id);
+    if (!item) return;
+
+    document.getElementById('settlement-type-form-id').value = item.id;
+    document.getElementById('modal-settlement-type-title').textContent = `Editar Tipo: ${item.name}`;
+    document.getElementById('settlement-type-form-alert')?.classList.add('d-none');
+
+    document.getElementById('st-input-name').value = item.name || '';
+    document.getElementById('st-input-description').value = item.description || '';
+
+    const codeInput = document.getElementById('st-input-code');
+    if (codeInput) {
+      codeInput.value = item.code || '';
+      codeInput.readOnly = true;
+      codeInput.classList.add('bg-light');
+    }
+
+    const hasConcepts = Number(item.conceptsCount || 0) > 0;
+    const prefixInput = document.getElementById('st-input-prefix');
+    const prefixHint = document.getElementById('st-prefix-hint');
+    if (prefixInput) {
+      prefixInput.value = item.conceptPrefix || '';
+      prefixInput.readOnly = hasConcepts;
+      prefixInput.classList.toggle('bg-light', hasConcepts);
+    }
+    if (prefixHint) {
+      prefixHint.textContent = hasConcepts
+        ? `Bloqueado: ya existen ${item.conceptsCount} concepto(s) usando este prefijo`
+        : '2 letras mayúsculas (ej: AN1001)';
+    }
+
+    document.getElementById('st-input-include-lsd').checked = item.includeInLsd !== false;
+    document.getElementById('st-input-arca-type').value = item.arcaLsdType || 'M';
+    document.getElementById('st-input-worked-days').value = Number(item.defaultWorkedDays ?? 30);
+    document.getElementById('st-input-applies-statutory').checked = item.appliesStatutoryDeductions !== false;
+    document.getElementById('st-input-triggers-termination').checked = Boolean(item.triggersEmployeeTermination);
+    document.getElementById('st-input-active').checked = item.isActive !== false;
+
+    this._toggleSettlementArcaTypeBox?.();
+
+    const modalEl = document.getElementById('modal-settlement-type-form');
+    getBootstrapModal(modalEl)?.show();
+  }
+
+  async savePayrollSettlementType() {
+    const id = document.getElementById('settlement-type-form-id').value;
+    const alertBox = document.getElementById('settlement-type-form-alert');
+    const submitBtn = document.getElementById('btn-save-settlement-type');
+    if (alertBox) alertBox.classList.add('d-none');
+
+    const payload = {
+      name: document.getElementById('st-input-name').value.trim(),
+      description: document.getElementById('st-input-description').value.trim() || null,
+      conceptPrefix: document.getElementById('st-input-prefix').value.trim().toUpperCase(),
+      includeInLsd: Boolean(document.getElementById('st-input-include-lsd').checked),
+      arcaLsdType: document.getElementById('st-input-arca-type').value || 'M',
+      defaultWorkedDays: Number(document.getElementById('st-input-worked-days').value || 0),
+      appliesStatutoryDeductions: Boolean(document.getElementById('st-input-applies-statutory').checked),
+      triggersEmployeeTermination: Boolean(document.getElementById('st-input-triggers-termination').checked),
+      isActive: Boolean(document.getElementById('st-input-active').checked),
+    };
+
+    const customCode = document.getElementById('st-input-code').value.trim().toUpperCase();
+    if (!id && customCode) {
+      payload.code = customCode;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Guardando...';
+
+    try {
+      const url = id ? `/payroll/settlement-types/${id}` : '/payroll/settlement-types';
+      const method = id ? 'PUT' : 'POST';
+      await apiRequest(url, {
+        method,
+        body: JSON.stringify(payload),
+      });
+
+      const modalEl = document.getElementById('modal-settlement-type-form');
+      getBootstrapModal(modalEl)?.hide();
+      showToast(id ? 'Tipo de liquidación actualizado exitosamente' : 'Tipo de liquidación creado exitosamente');
+      await this.loadPayrollSettlementTypes();
+      if (this.payrollConcepts) this.renderPayrollConceptsTable?.();
+      if (this.payrollPeriods) this.renderPayrollPeriodsTable?.(this.payrollPeriods);
+    } catch (err) {
+      if (alertBox) {
+        alertBox.textContent = err.message || 'Error al guardar el tipo de liquidación';
+        alertBox.classList.remove('d-none');
+      }
+      showToast(err.message, 'danger');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="ti ti-device-floppy me-1"></i> Guardar Tipo de Liquidación';
+    }
+  }
+
+  async deletePayrollSettlementType(id) {
+    const item = (this.payrollSettlementTypes || []).find((t) => t.id === id);
+    if (!item) return;
+
+    if (!confirm(`¿Desea eliminar el tipo de liquidación "${item.name}" (${item.code})?`)) return;
+
+    try {
+      await apiRequest(`/payroll/settlement-types/${id}`, { method: 'DELETE' });
+      showToast('Tipo de liquidación eliminado exitosamente');
+      await this.loadPayrollSettlementTypes();
+    } catch (err) {
+      showToast(err.message || 'No se pudo eliminar el tipo de liquidación', 'danger');
+    }
+  }
 }
 
 export function registerMatricesAndSettingsMethods(proto) {

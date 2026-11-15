@@ -7,6 +7,10 @@ import {
   listIncomeTaxScales,
   listGeneralDeductionLimits,
 } from './incomeTaxTable.service.js';
+import {
+  getSettlementTypeMap,
+  resolveSettlementTypeConfig,
+} from '../payroll/services/conceptsAndRules.service.js';
 
 /**
  * Ejecuta la liquidación mensual acumulativa de Impuesto a las Ganancias Cuarta Categoría.
@@ -92,6 +96,8 @@ export async function calculateMonthlyIncomeTax(
     });
   }
 
+  const settlementTypeMap = await getSettlementTypeMap(tenantPrisma);
+
   let totalWithheldAmount = 0;
   let totalRefundAmount = 0;
   let totalEmployeesWithheld = 0;
@@ -123,8 +129,15 @@ export async function calculateMonthlyIncomeTax(
     let actualSacAmount = 0;
 
     for (const slip of paySlips) {
+      const pTypeCode = String(slip.payrollPeriod?.periodType || 'MONTHLY').trim().toUpperCase();
+      const stCfg = settlementTypeMap.get(pTypeCode);
+      // Excluir liquidaciones cuyo tipo no calcula cargas sociales ni Ganancias (ej. Anticipos Art. 130 LCT)
+      if (stCfg && stCfg.appliesStatutoryDeductions === false) {
+        continue;
+      }
+
       const pMonth = slip.payrollPeriod.month;
-      const isSac = slip.payrollPeriod.periodType.startsWith('SAC');
+      const isSac = pTypeCode.startsWith('SAC');
       const gross = Number(slip.remunerativeSalary || slip.grossSalary || 0);
       const deductions = Number(slip.totalDeductions || 0);
 
@@ -435,6 +448,15 @@ export async function exportSettlementToPayroll(
     const dstPeriod = `${String(payrollPeriod.month).padStart(2, '0')}/${payrollPeriod.year}`;
     const error = new Error(
       `La liquidación de Ganancias corresponde a ${srcPeriod} y el período de sueldos destino es ${dstPeriod} ("${payrollPeriod.settlementName || dstPeriod}"). Solo se permite exportar al mismo año y mes fiscal.`
+    );
+    error.status = 400;
+    throw error;
+  }
+
+  const targetSettlementType = await resolveSettlementTypeConfig(tenantPrisma, payrollPeriod.periodType);
+  if (targetSettlementType && targetSettlementType.appliesStatutoryDeductions === false) {
+    const error = new Error(
+      `No se puede exportar Impuesto a las Ganancias a "${payrollPeriod.settlementName || payrollPeriod.periodType}" porque el tipo "${targetSettlementType.name}" está configurado sin retenciones ni cargas sociales.`
     );
     error.status = 400;
     throw error;

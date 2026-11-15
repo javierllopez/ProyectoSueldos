@@ -1082,5 +1082,27 @@ model SanctionIncidentLink {
   @@map("sanction_incident_links")
 }
 
+model PayrollSettlementType {
+  id                          String   @id @default(uuid())
+  code                        String   @unique @db.VarChar(40)
+  name                        String   @db.VarChar(191)
+  description                 String?  @db.Text
+  conceptPrefix               String   @map("concept_prefix") @db.VarChar(2)
+  includeInLsd                Boolean  @default(true) @map("include_in_lsd")
+  arcaLsdType                 String   @default("M") @map("arca_lsd_type") @db.VarChar(1)
+  defaultWorkedDays           Int      @default(30) @map("default_worked_days")
+  appliesStatutoryDeductions  Boolean  @default(true) @map("applies_statutory_deductions")
+  triggersEmployeeTermination Boolean  @default(false) @map("triggers_employee_termination")
+  isSystem                    Boolean  @default(false) @map("is_system")
+  isActive                    Boolean  @default(true) @map("is_active")
+  sortOrder                   Int      @default(0) @map("sort_order")
+  createdAt                   DateTime @default(now()) @map("created_at")
+  updatedAt                   DateTime @updatedAt @map("updated_at")
+
+  @@index([conceptPrefix])
+  @@index([isActive, sortOrder])
+  @@map("payroll_settlement_types")
+}
+
 
 

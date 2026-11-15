@@ -8,10 +8,10 @@ import { registerAdminMethods } from './modules/admin.view.js?v=admin-2.1';
 import { registerCompanyProfileMethods } from './modules/companyProfile.view.js?v=profile-2.1';
 import { registerPersonnelMethods } from './modules/personnel.view.js?v=personnel-3.2';
 import { registerDisciplinaryMethods } from './modules/disciplinary.view.js?v=disciplinary-1.3';
-import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-4.4';
+import { registerPayrollMethods } from './modules/payroll.view.js?v=payroll-4.6';
 import { registerSalaryScalesMethods } from './modules/salaryScales.view.js?v=scales-3.6';
-import { registerConceptsMethods } from './modules/concepts.view.js?v=concepts-2.1';
-import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js?v=matrices-2.1';
+import { registerConceptsMethods } from './modules/concepts.view.js?v=concepts-2.2';
+import { registerMatricesAndSettingsMethods } from './modules/matricesAndSettings.view.js?v=matrices-2.3';
 import { registerEmbargoesMethods } from './modules/embargoes.view.js?v=embargoes-2.1';
 import { registerIncomeTaxMethods } from './modules/incomeTax.view.js?v=payroll-2.7';
 import { registerReportsMethods } from './modules/reports.view.js?v=reports-2.6';
@@ -62,6 +62,7 @@ class AppController {
     this.currentMassIncreasePreview = [];
 
     // Estado del Módulo de Liquidación de Sueldos
+    this.payrollSettlementTypes = [];
     this.payrollPeriods = [];
     this.payrollPeriodsPage = 1;
     this.payrollPeriodsPageSize = 5;
@@ -100,7 +101,7 @@ class AppController {
     if (this._partialsLoaded) return;
     if (this._partialsPromise) return this._partialsPromise;
 
-    const PARTIALS_VERSION = 'partials-3.4';
+    const PARTIALS_VERSION = 'partials-3.6';
     const viewFiles = [
       '/partials/core-views.html',
       '/partials/personnel-view.html',

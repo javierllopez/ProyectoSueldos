@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 import { ensureTenantPayrollSchema } from '../../../services/tenantProvisioner.service.js';
 import { validateLsd, validateMonthlyLsd } from './noveltiesAndLsd.service.js';
+import { resolveSettlementTypeLookupCode } from './conceptsAndRules.service.js';
 import { normalizeUtcNoonDate } from '../../../utils/dateFormat.js';
 
 export { normalizeUtcNoonDate };
@@ -330,10 +331,23 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     });
   }
 
-  // Evaluar bajas por liquidaciones FINAL
+  let settlementTypesList = [];
+  if (dbClient.payrollSettlementType?.findMany) {
+    try {
+      settlementTypesList = await dbClient.payrollSettlementType.findMany();
+    } catch (_) {
+      settlementTypesList = [];
+    }
+  }
+  const settlementTypeMap = new Map(settlementTypesList.map((st) => [st.code, st]));
+
+  // Evaluar bajas por liquidaciones cuyo tipo tenga triggersEmployeeTermination = true (ej. FINAL)
   const terminationsMap = new Map();
   for (const p of openSettlements) {
-    if (!isFinalPeriodType(p.periodType)) continue;
+    const lookupCode = resolveSettlementTypeLookupCode(p.periodType);
+    const stCfg = settlementTypeMap.get(lookupCode);
+    const shouldTerminate = stCfg ? Boolean(stCfg.triggersEmployeeTermination) : isFinalPeriodType(p.periodType);
+    if (!shouldTerminate) continue;
     const finalSlips = slipsByPeriodId.get(p.id) || [];
     if (finalSlips.length === 0) continue;
 
@@ -341,12 +355,13 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     if (!normalizedDate) {
       blockingErrors.push({
         code: 'FINAL_MISSING_LIQUIDATION_DATE',
-        message: `La liquidación final "${p.settlementName}" no tiene definida la Fecha de Liquidación requerida para asignar la fecha de baja del personal.`,
+        message: `La liquidación "${p.settlementName}" (${stCfg?.name || p.periodType}) no tiene definida la Fecha de Liquidación requerida para asignar la fecha de baja del personal.`,
         payrollPeriodId: p.id,
       });
       continue;
     }
 
+    const reasonPrefix = stCfg?.name || 'Liquidación Final';
     for (const s of finalSlips) {
       const emp = s.employee;
       if (!emp) continue;
@@ -362,7 +377,7 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
         proposedTerminationReason:
           emp.terminationReason && String(emp.terminationReason).trim()
             ? String(emp.terminationReason).trim()
-            : `Baja por Liquidación Final (${p.settlementName || `${String(targetMonth).padStart(2, '0')}/${targetYear}`})`,
+            : `Baja por ${reasonPrefix} (${p.settlementName || `${String(targetMonth).padStart(2, '0')}/${targetYear}`})`,
         sourcePeriodId: p.id,
         sourceSettlementName: p.settlementName,
         activeEmbargoesCount: 0,
@@ -480,9 +495,18 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     });
   }
 
-  // Validación ARCA LSD (solo en pre-flight con recibos existentes)
+  // Validación ARCA LSD (solo en pre-flight con recibos existentes incluidos en LSD)
   let lsdValidationSummary = null;
-  if (includeLsdValidation && validSlips.length > 0) {
+  const targetStCfg = targetPeriod ? settlementTypeMap.get(resolveSettlementTypeLookupCode(targetPeriod.periodType)) : null;
+  const shouldRunLsdPreFlight =
+    scope === 'FISCAL_PERIOD'
+      ? openSettlements.some((s) => {
+          const cfg = settlementTypeMap.get(resolveSettlementTypeLookupCode(s.periodType));
+          return cfg ? cfg.includeInLsd !== false : true;
+        })
+      : (targetStCfg ? targetStCfg.includeInLsd !== false : true);
+
+  if (includeLsdValidation && shouldRunLsdPreFlight && validSlips.length > 0) {
     try {
       const lsdRes =
         scope === 'FISCAL_PERIOD'

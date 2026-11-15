@@ -7,6 +7,107 @@ import {
 import { DEFAULT_CONCEPTS } from './defaultCatalogs.js';
 import { ensureTenantIncomeTaxSchema } from './incomeTax.ensurer.js';
 
+export const DEFAULT_SETTLEMENT_TYPES = [
+  {
+    code: 'MONTHLY',
+    name: 'Mensual',
+    description: 'Liquidación mensual habitual de haberes (Art. 126 inc. a LCT).',
+    conceptPrefix: 'SU',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 30,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 10,
+  },
+  {
+    code: 'QUINCE_1',
+    name: '1ra Quincena',
+    description: 'Liquidación correspondiente a la primera quincena del período (jornalizados).',
+    conceptPrefix: 'QU',
+    includeInLsd: true,
+    arcaLsdType: 'Q',
+    defaultWorkedDays: 15,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 20,
+  },
+  {
+    code: 'QUINCE_2',
+    name: '2da Quincena',
+    description: 'Liquidación correspondiente a la segunda quincena del período (jornalizados).',
+    conceptPrefix: 'QU',
+    includeInLsd: true,
+    arcaLsdType: 'Q',
+    defaultWorkedDays: 15,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 30,
+  },
+  {
+    code: 'SAC_1',
+    name: '1er SAC',
+    description: 'Sueldo Anual Complementario - Primera Cuota (Junio, Ley 27.073).',
+    conceptPrefix: 'SA',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 0,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 40,
+  },
+  {
+    code: 'SAC_2',
+    name: '2do SAC',
+    description: 'Sueldo Anual Complementario - Segunda Cuota (Diciembre, Ley 27.073).',
+    conceptPrefix: 'SA',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 0,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 50,
+  },
+  {
+    code: 'VACATIONS',
+    name: 'Vacaciones',
+    description: 'Liquidación de Licencia Anual Ordinaria / Vacaciones (Art. 155 LCT).',
+    conceptPrefix: 'VA',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 0,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 60,
+  },
+  {
+    code: 'FINAL',
+    name: 'Liquidación Final',
+    description: 'Liquidación final por extinción del vínculo laboral (genera baja del legajo al cerrar).',
+    conceptPrefix: 'FI',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 0,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: true,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 70,
+  },
+];
+
 /**
  * Asegura la existencia de tablas, columnas y configuraciones del módulo de liquidación de sueldos.
  */
@@ -709,6 +810,50 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       }
     } catch (repairErr) {
       console.warn('Aviso al sanear períodos fiscales huérfanos:', repairErr.message);
+    }
+
+    // 12. Tabla de Tipos de Liquidación configurables (ABM) y siembra de los 7 tipos nativos
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`payroll_settlement_types\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`code\` VARCHAR(40) NOT NULL UNIQUE,
+        \`name\` VARCHAR(191) NOT NULL,
+        \`description\` TEXT NULL,
+        \`concept_prefix\` VARCHAR(2) NOT NULL,
+        \`include_in_lsd\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`arca_lsd_type\` VARCHAR(1) NOT NULL DEFAULT 'M',
+        \`default_worked_days\` INT NOT NULL DEFAULT 30,
+        \`applies_statutory_deductions\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`triggers_employee_termination\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`is_system\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`sort_order\` INT NOT NULL DEFAULT 0,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        INDEX \`payroll_settlement_types_concept_prefix_idx\` (\`concept_prefix\`),
+        INDEX \`payroll_settlement_types_is_active_sort_order_idx\` (\`is_active\`, \`sort_order\`)
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    for (const st of DEFAULT_SETTLEMENT_TYPES) {
+      await tenantClient.$executeRawUnsafe(
+        `INSERT IGNORE INTO \`payroll_settlement_types\`
+          (\`id\`, \`code\`, \`name\`, \`description\`, \`concept_prefix\`, \`include_in_lsd\`, \`arca_lsd_type\`, \`default_worked_days\`, \`applies_statutory_deductions\`, \`triggers_employee_termination\`, \`is_system\`, \`is_active\`, \`sort_order\`)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        crypto.randomUUID(),
+        st.code,
+        st.name,
+        st.description,
+        st.conceptPrefix,
+        st.includeInLsd ? 1 : 0,
+        st.arcaLsdType,
+        st.defaultWorkedDays,
+        st.appliesStatutoryDeductions ? 1 : 0,
+        st.triggersEmployeeTermination ? 1 : 0,
+        st.isSystem ? 1 : 0,
+        st.isActive ? 1 : 0,
+        st.sortOrder
+      );
     }
 
     return true;

@@ -6,15 +6,67 @@ export const createFiscalPeriodSchema = z.object({
   notes: z.string().trim().max(255).optional().nullable(),
 });
 
+const periodTypeCodeSchema = z
+  .string()
+  .trim()
+  .min(2, 'El tipo de liquidación es obligatorio')
+  .max(40, 'El código del tipo de liquidación no puede superar 40 caracteres')
+  .regex(/^[A-Z0-9_]+$/i, 'El tipo de liquidación solo admite letras, números y guion bajo')
+  .transform((val) => val.toUpperCase());
+
+const settlementTypeFieldsShape = {
+  code: periodTypeCodeSchema.optional(),
+  name: z.string().trim().min(2, 'La denominación debe tener al menos 2 caracteres').max(120),
+  description: z.string().trim().max(1000).optional().nullable(),
+  conceptPrefix: z
+    .string()
+    .trim()
+    .regex(/^[A-Za-z]{2}$/, 'El prefijo de conceptos debe tener exactamente 2 letras mayúsculas (ej: AN, BO, RE)')
+    .transform((val) => val.toUpperCase()),
+  includeInLsd: z.boolean(),
+  arcaLsdType: z.enum(['M', 'Q', 'D', 'H']),
+  defaultWorkedDays: z.coerce.number().int().min(0, 'Los días base deben estar entre 0 y 31').max(31, 'Los días base deben estar entre 0 y 31'),
+  appliesStatutoryDeductions: z.boolean(),
+  triggersEmployeeTermination: z.boolean(),
+  isActive: z.boolean(),
+  sortOrder: z.coerce.number().int().min(0).max(9999),
+};
+
+export const settlementTypeBaseSchema = z.object({
+  ...settlementTypeFieldsShape,
+  includeInLsd: settlementTypeFieldsShape.includeInLsd.default(true),
+  arcaLsdType: settlementTypeFieldsShape.arcaLsdType.default('M'),
+  defaultWorkedDays: settlementTypeFieldsShape.defaultWorkedDays.default(30),
+  appliesStatutoryDeductions: settlementTypeFieldsShape.appliesStatutoryDeductions.default(true),
+  triggersEmployeeTermination: settlementTypeFieldsShape.triggersEmployeeTermination.default(false),
+  isActive: settlementTypeFieldsShape.isActive.default(true),
+  sortOrder: settlementTypeFieldsShape.sortOrder.default(100),
+});
+
+export const createSettlementTypeSchema = settlementTypeBaseSchema.superRefine((data, ctx) => {
+  if (data.includeInLsd && !['M', 'Q', 'D', 'H'].includes(data.arcaLsdType)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: 'Debe indicar el Tipo ARCA Registro 01 (M, Q, D o H) cuando la liquidación se incluye en el Libro de Sueldos Digital',
+      path: ['arcaLsdType'],
+    });
+  }
+});
+
+export const updateSettlementTypeSchema = z
+  .object(settlementTypeFieldsShape)
+  .omit({ code: true })
+  .partial();
+
 export const createPeriodSchema = z.object({
   fiscalPeriodId: z.string().optional().nullable(),
   year: z.coerce.number().int().min(2000).max(2100).optional(),
   month: z.coerce.number().int().min(1).max(12).optional(),
-  periodType: z.enum(['MONTHLY', 'QUINCE_1', 'QUINCE_2', 'SAC_1', 'SAC_2', 'VACATIONS', 'FINAL']).optional(),
-  type: z.enum(['MONTHLY', 'QUINCE_1', 'QUINCE_2', 'SAC_1', 'SAC_2', 'VACATIONS', 'FINAL']).optional(),
+  periodType: periodTypeCodeSchema.optional(),
+  type: periodTypeCodeSchema.optional(),
   settlementName: z.string().trim().max(191).optional().nullable(),
   name: z.string().trim().max(191).optional().nullable(),
-  settlementType: z.enum(['M', 'Q']).optional().default('M'),
+  settlementType: z.enum(['M', 'Q', 'D', 'H']).optional(),
   startDate: z.coerce.date().optional().nullable(),
   endDate: z.coerce.date().optional().nullable(),
   liquidationDate: z.coerce.date().optional().nullable(),
@@ -151,10 +203,10 @@ function validateConceptCodeRange(code, type, ctx) {
   const prefix = match[1];
   const codeNum = parseInt(match[2], 10);
 
-  if (!VALID_CONCEPT_PREFIXES.has(prefix)) {
+  if (!/^[A-Z]{2}$/.test(prefix)) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
-      message: `El prefijo "${prefix}" no es válido. Prefijos permitidos: ${Array.from(VALID_CONCEPT_PREFIXES).join(', ')}`,
+      message: `El prefijo "${prefix}" debe estar compuesto por exactamente 2 letras mayúsculas`,
       path: ['code'],
     });
     return;

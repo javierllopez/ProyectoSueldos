@@ -1,6 +1,326 @@
+import crypto from 'crypto';
 import { ensureTenantPayrollSchema } from '../../../services/tenantProvisioner.service.js';
 import { validateConceptFormula } from '../formulaValidator.js';
 import { hoursToDecimal, decimalToHours } from '../../../utils/timeFormat.js';
+
+// --- TIPOS DE LIQUIDACIÓN (ABM) ---
+
+const LEGACY_TYPE_ALIASES = {
+  MENSUAL: 'MONTHLY',
+  QUINCE: 'QUINCE_1',
+  QUINCENA: 'QUINCE_1',
+  SAC: 'SAC_1',
+  AGUINALDO: 'SAC_1',
+  VACACIONES: 'VACATIONS',
+  LIQUIDACION_FINAL: 'FINAL',
+};
+
+export function resolveSettlementTypeLookupCode(periodType) {
+  const upper = String(periodType || 'MONTHLY').trim().toUpperCase();
+  return LEGACY_TYPE_ALIASES[upper] || upper;
+}
+
+export async function resolveSettlementTypeConfig(tenantPrisma, periodType) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+  const lookupCode = resolveSettlementTypeLookupCode(periodType);
+  let st = await tenantPrisma.payrollSettlementType.findUnique({
+    where: { code: lookupCode },
+  });
+  if (!st && lookupCode !== 'MONTHLY') {
+    st = await tenantPrisma.payrollSettlementType.findUnique({
+      where: { code: String(periodType || '').trim().toUpperCase() },
+    });
+  }
+  return st;
+}
+
+export async function getSettlementTypeMap(tenantPrisma) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+  const types = await tenantPrisma.payrollSettlementType.findMany({
+    orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+  });
+  const map = new Map();
+  for (const t of types) {
+    map.set(t.code, t);
+  }
+  for (const [alias, canonical] of Object.entries(LEGACY_TYPE_ALIASES)) {
+    if (map.has(canonical) && !map.has(alias)) {
+      map.set(alias, map.get(canonical));
+    }
+  }
+  return map;
+}
+
+async function generateUniqueSettlementTypeCode(tenantPrisma, name, prefix) {
+  const normalizedBase = String(name || prefix || 'CUSTOM')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 30) || String(prefix || 'CUSTOM').toUpperCase();
+
+  let candidate = normalizedBase;
+  let counter = 2;
+  while (await tenantPrisma.payrollSettlementType.findUnique({ where: { code: candidate }, select: { id: true } })) {
+    candidate = `${normalizedBase.slice(0, 26)}_${counter}`;
+    counter += 1;
+  }
+  return candidate;
+}
+
+export async function getSettlementTypes(tenantPrisma, { activeOnly = false } = {}) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const where = {};
+  if (activeOnly === true || activeOnly === 'true') {
+    where.isActive = true;
+  }
+
+  const [types, conceptsByType, periodsByType] = await Promise.all([
+    tenantPrisma.payrollSettlementType.findMany({
+      where,
+      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+    }),
+    tenantPrisma.concept.findMany({
+      where: { deletedAt: null },
+      select: { id: true, periodType: true, type: true, arcaConceptCode: true },
+    }),
+    tenantPrisma.payrollPeriod.groupBy({
+      by: ['periodType'],
+      _count: { id: true },
+    }),
+  ]);
+
+  const periodCountMap = new Map(periodsByType.map((p) => [String(p.periodType).toUpperCase(), p._count.id]));
+  const conceptStatsMap = new Map();
+
+  for (const c of conceptsByType) {
+    const key = resolveSettlementTypeLookupCode(c.periodType);
+    const stat = conceptStatsMap.get(key) || { conceptsCount: 0, conceptsWithoutArcaCount: 0 };
+    stat.conceptsCount += 1;
+    const hasValidArca = Boolean(c.arcaConceptCode && String(c.arcaConceptCode).trim().length > 0);
+    if (c.type !== 'AUXILIARY' && !hasValidArca) {
+      stat.conceptsWithoutArcaCount += 1;
+    }
+    conceptStatsMap.set(key, stat);
+  }
+
+  return types.map((t) => {
+    const stat = conceptStatsMap.get(t.code) || { conceptsCount: 0, conceptsWithoutArcaCount: 0 };
+    return {
+      ...t,
+      conceptsCount: stat.conceptsCount,
+      conceptsWithoutArcaCount: stat.conceptsWithoutArcaCount,
+      periodsCount: periodCountMap.get(t.code) || 0,
+    };
+  });
+}
+
+export async function createSettlementType(tenantPrisma, data) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const name = String(data.name || '').trim();
+  const conceptPrefix = String(data.conceptPrefix || '').trim().toUpperCase();
+  let code = data.code ? String(data.code).trim().toUpperCase() : '';
+  if (!code) {
+    code = await generateUniqueSettlementTypeCode(tenantPrisma, name, conceptPrefix);
+  } else {
+    const dupCode = await tenantPrisma.payrollSettlementType.findUnique({ where: { code } });
+    if (dupCode) {
+      const err = new Error(`Ya existe un tipo de liquidación con el código "${code}".`);
+      err.status = 409;
+      throw err;
+    }
+  }
+
+  const dupName = await tenantPrisma.payrollSettlementType.findFirst({
+    where: { name },
+  });
+  if (dupName) {
+    const err = new Error(`Ya existe un tipo de liquidación con la denominación "${name}".`);
+    err.status = 409;
+    throw err;
+  }
+
+  const includeInLsd = data.includeInLsd !== undefined ? Boolean(data.includeInLsd) : true;
+  const arcaLsdType = data.arcaLsdType || 'M';
+  if (includeInLsd && !['M', 'Q', 'D', 'H'].includes(arcaLsdType)) {
+    const err = new Error('Debe especificar un Tipo ARCA Registro 01 válido (M, Q, D o H) cuando el tipo se incluye en el Libro de Sueldos Digital.');
+    err.status = 400;
+    throw err;
+  }
+
+  return tenantPrisma.payrollSettlementType.create({
+    data: {
+      id: crypto.randomUUID(),
+      code,
+      name,
+      description: data.description ? String(data.description).trim() : null,
+      conceptPrefix,
+      includeInLsd,
+      arcaLsdType,
+      defaultWorkedDays: data.defaultWorkedDays !== undefined ? Number(data.defaultWorkedDays) : 30,
+      appliesStatutoryDeductions: data.appliesStatutoryDeductions !== undefined ? Boolean(data.appliesStatutoryDeductions) : true,
+      triggersEmployeeTermination: Boolean(data.triggersEmployeeTermination),
+      isSystem: false,
+      isActive: data.isActive !== undefined ? Boolean(data.isActive) : true,
+      sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : 100,
+    },
+  });
+}
+
+export async function updateSettlementType(tenantPrisma, id, data) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const existing = await tenantPrisma.payrollSettlementType.findUnique({ where: { id } });
+  if (!existing) {
+    const err = new Error('Tipo de liquidación no encontrado.');
+    err.status = 404;
+    throw err;
+  }
+
+  const nextName = data.name !== undefined ? String(data.name).trim() : existing.name;
+  if (nextName !== existing.name) {
+    const dupName = await tenantPrisma.payrollSettlementType.findFirst({
+      where: { name: nextName, id: { not: id } },
+    });
+    if (dupName) {
+      const err = new Error(`Ya existe otro tipo de liquidación con la denominación "${nextName}".`);
+      err.status = 409;
+      throw err;
+    }
+  }
+
+  const nextPrefix = data.conceptPrefix !== undefined
+    ? String(data.conceptPrefix).trim().toUpperCase()
+    : existing.conceptPrefix;
+
+  if (nextPrefix !== existing.conceptPrefix) {
+    const conceptsCount = await tenantPrisma.concept.count({
+      where: { deletedAt: null, periodType: existing.code },
+    });
+    if (conceptsCount > 0) {
+      const err = new Error(
+        `No se puede modificar el prefijo de conceptos de "${existing.conceptPrefix}" a "${nextPrefix}" porque ya existen ${conceptsCount} concepto(s) creado(s) para "${existing.name}".`
+      );
+      err.status = 400;
+      throw err;
+    }
+  }
+
+  const nextIncludeInLsd = data.includeInLsd !== undefined ? Boolean(data.includeInLsd) : existing.includeInLsd;
+  const nextArcaLsdType = data.arcaLsdType !== undefined ? data.arcaLsdType : existing.arcaLsdType;
+  if (nextIncludeInLsd && !['M', 'Q', 'D', 'H'].includes(nextArcaLsdType)) {
+    const err = new Error('Debe indicar un Tipo ARCA Registro 01 válido (M, Q, D o H) para liquidaciones incluidas en el Libro de Sueldos Digital.');
+    err.status = 400;
+    throw err;
+  }
+
+  // Decisión 3 Opción A: bloquear activación de LSD si existen conceptos liquidables sin código ARCA
+  if (!existing.includeInLsd && nextIncludeInLsd) {
+    const unlinkedConcepts = await tenantPrisma.concept.findMany({
+      where: {
+        deletedAt: null,
+        periodType: existing.code,
+        type: { not: 'AUXILIARY' },
+        OR: [{ arcaConceptCode: null }, { arcaConceptCode: '' }],
+      },
+      select: { code: true, name: true },
+      take: 10,
+    });
+    if (unlinkedConcepts.length > 0) {
+      const sample = unlinkedConcepts.map((c) => `${c.code} (${c.name})`).join(', ');
+      const err = new Error(
+        `No se puede activar "Incluye en Libro de Sueldos Digital" porque hay conceptos liquidables sin código ARCA vinculado: ${sample}. Asígneles un código ARCA primero o marque los cálculos internos como Auxiliares.`
+      );
+      err.status = 400;
+      throw err;
+    }
+  }
+
+  const nextIsActive = data.isActive !== undefined ? Boolean(data.isActive) : existing.isActive;
+  if (existing.isActive && !nextIsActive) {
+    const openPeriodsCount = await tenantPrisma.payrollPeriod.count({
+      where: {
+        periodType: existing.code,
+        status: { in: ['OPEN', 'CALCULATED'] },
+      },
+    });
+    if (openPeriodsCount > 0) {
+      const err = new Error(
+        `No se puede desactivar "${existing.name}" porque tiene ${openPeriodsCount} liquidación(es) abierta(s) o en curso.`
+      );
+      err.status = 400;
+      throw err;
+    }
+  }
+
+  return tenantPrisma.payrollSettlementType.update({
+    where: { id },
+    data: {
+      name: nextName,
+      description: data.description !== undefined ? (data.description ? String(data.description).trim() : null) : existing.description,
+      conceptPrefix: nextPrefix,
+      includeInLsd: nextIncludeInLsd,
+      arcaLsdType: nextArcaLsdType,
+      defaultWorkedDays: data.defaultWorkedDays !== undefined ? Number(data.defaultWorkedDays) : existing.defaultWorkedDays,
+      appliesStatutoryDeductions: data.appliesStatutoryDeductions !== undefined
+        ? Boolean(data.appliesStatutoryDeductions)
+        : existing.appliesStatutoryDeductions,
+      triggersEmployeeTermination: data.triggersEmployeeTermination !== undefined
+        ? Boolean(data.triggersEmployeeTermination)
+        : existing.triggersEmployeeTermination,
+      isActive: nextIsActive,
+      sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : existing.sortOrder,
+    },
+  });
+}
+
+export async function deleteSettlementType(tenantPrisma, id) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const existing = await tenantPrisma.payrollSettlementType.findUnique({ where: { id } });
+  if (!existing) {
+    const err = new Error('Tipo de liquidación no encontrado.');
+    err.status = 404;
+    throw err;
+  }
+
+  if (existing.isSystem) {
+    const err = new Error(`No se puede eliminar "${existing.name}" porque es un tipo de liquidación nativo del sistema.`);
+    err.status = 400;
+    throw err;
+  }
+
+  const [periodsCount, conceptsCount] = await Promise.all([
+    tenantPrisma.payrollPeriod.count({
+      where: { periodType: existing.code },
+    }),
+    tenantPrisma.concept.count({
+      where: { deletedAt: null, periodType: existing.code },
+    }),
+  ]);
+
+  if (periodsCount > 0) {
+    const err = new Error(
+      `No se puede eliminar "${existing.name}" porque ya existen ${periodsCount} liquidación(es) asociada(s). Puede desactivarlo en su lugar.`
+    );
+    err.status = 409;
+    throw err;
+  }
+
+  if (conceptsCount > 0) {
+    const err = new Error(
+      `No se puede eliminar "${existing.name}" porque existen ${conceptsCount} concepto(s) configurado(s) para este tipo. Elimine o reasigne esos conceptos primero.`
+    );
+    err.status = 409;
+    throw err;
+  }
+
+  await tenantPrisma.payrollSettlementType.delete({ where: { id } });
+  return { deleted: true, id };
+}
 
 // --- PARÁMETROS Y ALÍCUOTAS PATRONALES ---
 
@@ -144,17 +464,86 @@ export async function getConcepts(tenantPrisma, { search = '', page = 1, limit =
   };
 }
 
+async function validateConceptAgainstSettlementType(
+  tenantPrisma,
+  { code, type, periodType, arcaConceptCode, isUpdate = false, enforceArcaFormat = true }
+) {
+  const rawPeriodType = String(periodType || 'MONTHLY').trim().toUpperCase();
+  const stType = await resolveSettlementTypeConfig(tenantPrisma, rawPeriodType);
+  if (!stType) {
+    const err = new Error(`El tipo de liquidación "${rawPeriodType}" no existe en la configuración del sistema.`);
+    err.status = 400;
+    throw err;
+  }
+
+  if (!isUpdate && !stType.isActive) {
+    const err = new Error(`No se pueden crear conceptos para el tipo de liquidación "${stType.name}" porque está inactivo.`);
+    err.status = 400;
+    throw err;
+  }
+
+  const cleanCode = String(code || '').trim().toUpperCase();
+  const prefix = cleanCode.slice(0, 2);
+  const isLegacyUnchangedPrefix = isUpdate && (prefix === 'AJ' || prefix === 'GR');
+
+  if (!isLegacyUnchangedPrefix && prefix !== stType.conceptPrefix) {
+    const err = new Error(
+      `El código de concepto "${cleanCode}" debe comenzar con el prefijo "${stType.conceptPrefix}" asignado al tipo de liquidación "${stType.name}".`
+    );
+    err.status = 400;
+    throw err;
+  }
+
+  const cleanArca = arcaConceptCode !== undefined && arcaConceptCode !== null
+    ? String(arcaConceptCode).trim()
+    : '';
+  const normalizedArca = cleanArca.length > 0 ? cleanArca : null;
+
+  // Decisión 3 Opción A: vinculación obligatoria a ARCA cuando includeInLsd === true (salvo AUXILIARY)
+  if (stType.includeInLsd && type !== 'AUXILIARY') {
+    if (!normalizedArca) {
+      const err = new Error(
+        `Debe seleccionar un Concepto ARCA porque el tipo de liquidación "${stType.name}" se incluye en el Libro de Sueldos Digital (excepto conceptos Auxiliares de Cálculo).`
+      );
+      err.status = 400;
+      throw err;
+    }
+    if (enforceArcaFormat && !/^[0-9]{6}$/.test(normalizedArca)) {
+      const err = new Error(`El código de Concepto ARCA "${normalizedArca}" debe tener exactamente 6 dígitos numéricos.`);
+      err.status = 400;
+      throw err;
+    }
+  } else if (normalizedArca && enforceArcaFormat && !/^[0-9]{6}$/.test(normalizedArca)) {
+    const err = new Error(`El código de Concepto ARCA "${normalizedArca}" debe tener exactamente 6 dígitos numéricos.`);
+    err.status = 400;
+    throw err;
+  }
+
+  return { stType, normalizedArca };
+}
+
 export async function createConcept(tenantPrisma, data) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
+  const cleanCode = String(data.code || '').trim().toUpperCase();
   const existing = await tenantPrisma.concept.findUnique({
-    where: { code: data.code.trim() },
+    where: { code: cleanCode },
   });
   if (existing) {
-    const err = new Error(`Ya existe un concepto con el código "${data.code}"`);
+    const err = new Error(`Ya existe un concepto con el código "${cleanCode}"`);
     err.status = 409;
     throw err;
   }
+
+  const targetPeriodType = String(data.periodType || data.settlementType || 'MONTHLY').trim().toUpperCase();
+  const { stType, normalizedArca } = await validateConceptAgainstSettlementType(tenantPrisma, {
+    code: cleanCode,
+    type: data.type,
+    periodType: targetPeriodType,
+    arcaConceptCode: data.arcaConceptCode,
+    isUpdate: false,
+    enforceArcaFormat: true,
+  });
 
   // Cargar conceptos, valores fijos, matrices y escalas salariales en paralelo para auditoría y validación
   const [allOtherConcepts, fixedValues, matrices, salaryScales] = await Promise.all([
@@ -217,7 +606,7 @@ export async function createConcept(tenantPrisma, data) {
 
   return tenantPrisma.concept.create({
     data: {
-      code: data.code.trim(),
+      code: cleanCode,
       name: data.name.trim(),
       type: data.type,
       scope: data.scope || 'GENERAL',
@@ -225,13 +614,13 @@ export async function createConcept(tenantPrisma, data) {
       calculationOrder,
       noveltyDataType,
       quantitySource: data.quantitySource || 'AUTO',
-      periodType: data.periodType || data.settlementType || 'ALL',
+      periodType: stType.code,
       isPersistent: data.isPersistent !== undefined ? Boolean(data.isPersistent) : true,
       defaultValue: data.defaultValue !== undefined ? Number(data.defaultValue) : 0.00,
       formula: data.formula || null,
       matrixData: data.matrixData || null,
       matrixId: data.matrixId || null,
-      arcaConceptCode: data.arcaConceptCode || (data.type === 'DEDUCTION' ? '810000' : '110000'),
+      arcaConceptCode: normalizedArca,
       appliesSipaAporte: Boolean(data.appliesSipaAporte),
       appliesSipaContrib: Boolean(data.appliesSipaContrib),
       appliesInssjypAporte: Boolean(data.appliesInssjypAporte),
@@ -267,6 +656,20 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
   }
 
   const newPeriodType = data.periodType !== undefined ? data.periodType : data.settlementType;
+  const effectivePeriodType = newPeriodType !== undefined ? String(newPeriodType).trim().toUpperCase() : concept.periodType;
+  const effectiveType = data.type !== undefined ? data.type : concept.type;
+  const effectiveArcaInput = data.arcaConceptCode !== undefined ? data.arcaConceptCode : concept.arcaConceptCode;
+  const shouldCheckFormat = data.arcaConceptCode !== undefined || newPeriodType !== undefined || data.type !== undefined;
+
+  const { stType, normalizedArca } = await validateConceptAgainstSettlementType(tenantPrisma, {
+    code: concept.code,
+    type: effectiveType,
+    periodType: effectivePeriodType,
+    arcaConceptCode: effectiveArcaInput,
+    isUpdate: true,
+    enforceArcaFormat: shouldCheckFormat,
+  });
+
   const calcOrder = data.calculationOrder !== undefined && data.calculationOrder !== null
     ? Number(data.calculationOrder)
     : (concept.calculationOrder || 100);
@@ -320,13 +723,13 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
       calculationOrder: calcOrder,
       noveltyDataType: data.noveltyDataType !== undefined ? data.noveltyDataType : (concept.noveltyDataType || 'CANTIDAD'),
       quantitySource: data.quantitySource !== undefined ? (data.quantitySource || 'AUTO') : (concept.quantitySource || 'AUTO'),
-      periodType: newPeriodType !== undefined ? newPeriodType : concept.periodType,
+      periodType: newPeriodType !== undefined ? stType.code : concept.periodType,
       isPersistent: data.isPersistent !== undefined ? Boolean(data.isPersistent) : concept.isPersistent,
       defaultValue: data.defaultValue !== undefined ? Number(data.defaultValue) : concept.defaultValue,
       formula: data.formula !== undefined ? data.formula : concept.formula,
       matrixData: data.matrixData !== undefined ? data.matrixData : concept.matrixData,
       matrixId: data.matrixId !== undefined ? (data.matrixId || null) : concept.matrixId,
-      arcaConceptCode: data.arcaConceptCode !== undefined ? data.arcaConceptCode : concept.arcaConceptCode,
+      arcaConceptCode: data.arcaConceptCode !== undefined ? normalizedArca : concept.arcaConceptCode,
       appliesSipaAporte: data.appliesSipaAporte !== undefined ? Boolean(data.appliesSipaAporte) : concept.appliesSipaAporte,
       appliesSipaContrib: data.appliesSipaContrib !== undefined ? Boolean(data.appliesSipaContrib) : concept.appliesSipaContrib,
       appliesInssjypAporte: data.appliesInssjypAporte !== undefined ? Boolean(data.appliesInssjypAporte) : concept.appliesInssjypAporte,

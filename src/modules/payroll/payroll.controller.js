@@ -33,6 +33,11 @@ export async function closeFiscalPeriod(req, res) {
   });
 }
 
+export async function getFiscalPeriodConceptsSummary(req, res) {
+  const summary = await payrollService.getFiscalPeriodConceptsSummary(req.tenantPrisma, req.params.id);
+  return res.status(200).json({ data: summary });
+}
+
 // --- LIQUIDACIONES INDIVIDUALES ---
 
 export async function getPeriods(req, res) {
@@ -366,5 +371,37 @@ export async function deletePaySlip(req, res, next) {
   } catch (err) {
     next(err);
   }
+}
+
+// --- TIPOS DE LIQUIDACIÓN (ABM) ---
+
+export async function getSettlementTypes(req, res) {
+  const activeOnly = req.query.activeOnly === 'true' || req.query.activeOnly === '1';
+  const types = await payrollService.getSettlementTypes(req.tenantPrisma, { activeOnly });
+  return res.status(200).json({ data: types });
+}
+
+export async function createSettlementType(req, res) {
+  const created = await payrollService.createSettlementType(req.tenantPrisma, req.body);
+  return res.status(201).json({
+    message: 'Tipo de liquidación creado exitosamente',
+    data: created,
+  });
+}
+
+export async function updateSettlementType(req, res) {
+  const updated = await payrollService.updateSettlementType(req.tenantPrisma, req.params.id, req.body);
+  return res.status(200).json({
+    message: 'Tipo de liquidación actualizado exitosamente',
+    data: updated,
+  });
+}
+
+export async function deleteSettlementType(req, res) {
+  const result = await payrollService.deleteSettlementType(req.tenantPrisma, req.params.id);
+  return res.status(200).json({
+    message: 'Tipo de liquidación eliminado exitosamente',
+    data: result,
+  });
 }
 

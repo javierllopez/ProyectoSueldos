@@ -8,7 +8,10 @@ import {
 } from '../payroll.calculator.js';
 import { validateAndSyncSalaryScalesForPeriod } from '../salaryScale.service.js';
 import { hoursToDecimal, decimalToHours } from '../../../utils/timeFormat.js';
-import { getPayrollSettings } from './conceptsAndRules.service.js';
+import {
+  getPayrollSettings,
+  resolveSettlementTypeConfig,
+} from './conceptsAndRules.service.js';
 
 
 // --- PERÍODOS FISCALES (MENSUALES) ---
@@ -208,7 +211,7 @@ export async function getPeriods(
       where,
       skip,
       take,
-      orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'desc' }],
+      orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'asc' }],
       include: {
         fiscalPeriod: true,
         _count: {
@@ -289,7 +292,19 @@ export async function createPeriod(tenantPrisma, data) {
   fiscalPeriodId = fiscalPeriod.id;
   const year = fiscalPeriod.year;
   const month = fiscalPeriod.month;
-  const periodType = data.periodType || data.type || 'MONTHLY';
+  const rawPeriodType = String(data.periodType || data.type || 'MONTHLY').trim().toUpperCase();
+  const settlementTypeConfig = await resolveSettlementTypeConfig(tenantPrisma, rawPeriodType);
+  if (!settlementTypeConfig) {
+    const err = new Error(`El tipo de liquidación "${rawPeriodType}" no existe en la configuración del sistema.`);
+    err.status = 400;
+    throw err;
+  }
+  if (!settlementTypeConfig.isActive) {
+    const err = new Error(`El tipo de liquidación "${settlementTypeConfig.name}" está inactivo y no admite nuevas liquidaciones.`);
+    err.status = 400;
+    throw err;
+  }
+  const periodType = settlementTypeConfig.code;
 
   // Obtener el siguiente número correlativo de liquidación para el período fiscal (usando MAX + 1 para evitar colisiones tras bajas)
   const getNextSettlementNumber = async () => {
@@ -306,18 +321,9 @@ export async function createPeriod(tenantPrisma, data) {
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
-  const typeNames = {
-    MONTHLY: 'Mensual',
-    QUINCE_1: '1ra Quincena',
-    QUINCE_2: '2da Quincena',
-    SAC_1: '1er SAC',
-    SAC_2: '2do SAC',
-    VACATIONS: 'Vacaciones',
-    FINAL: 'Final',
-  };
   const customSettlementName = data.settlementName || data.name || null;
   const buildSettlementName = (num) =>
-    customSettlementName || `${typeNames[periodType] || periodType} - ${monthNames[month - 1]} ${year} (Liq. #${num})`;
+    customSettlementName || `${settlementTypeConfig.name} - ${monthNames[month - 1]} ${year} (Liq. #${num})`;
 
   let liquidationDate = data.liquidationDate ? new Date(data.liquidationDate) : null;
   if (!liquidationDate) {
@@ -336,7 +342,7 @@ export async function createPeriod(tenantPrisma, data) {
       periodType,
       settlementNumber: num,
       settlementName: buildSettlementName(num),
-      settlementType: data.settlementType || (periodType.startsWith('QUINCE') ? 'Q' : 'M'),
+      settlementType: data.settlementType || settlementTypeConfig.arcaLsdType || (periodType.startsWith('QUINCE') ? 'Q' : 'M'),
       liquidationDate,
       paymentDate: data.paymentDate ? new Date(data.paymentDate) : null,
       paymentPlace: data.paymentPlace || 'Casa Central',
@@ -415,9 +421,10 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     throw err;
   }
 
-  // 1. Obtener parámetros, conceptos, matrices, valores fijos y escalas salariales
-  const [payrollSettings, allConcepts, allMatrices, allFixedValues, allSalaryScales] = await Promise.all([
+  // 1. Obtener parámetros, tipo de liquidación, conceptos, matrices, valores fijos y escalas salariales
+  const [payrollSettings, settlementTypeConfig, allConcepts, allMatrices, allFixedValues, allSalaryScales] = await Promise.all([
     getPayrollSettings(tenantPrisma),
+    resolveSettlementTypeConfig(tenantPrisma, period.periodType),
     tenantPrisma.concept.findMany({
       where: { isActive: true, deletedAt: null },
       include: { matrix: true },
@@ -676,18 +683,25 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
   const activeResults = [];
   const omittedEmployees = [];
 
+  const appliesStatutoryDeductions = settlementTypeConfig
+    ? settlementTypeConfig.appliesStatutoryDeductions !== false
+    : true;
+
   for (const emp of employees) {
     const empNovedades = novedadesByEmp.get(emp.id) || [];
     const empHistory = historyByEmp.get(emp.id) || [];
-    const empEmbargoes = (embargoesByEmp.get(emp.id) || []).map((emb) => ({
-      ...emb,
-      conceptIds: new Set(emb.conceptIds),
-      conceptCodes: new Set(emb.conceptCodes),
-    }));
+    const empEmbargoes = appliesStatutoryDeductions
+      ? (embargoesByEmp.get(emp.id) || []).map((emb) => ({
+          ...emb,
+          conceptIds: new Set(emb.conceptIds),
+          conceptCodes: new Set(emb.conceptCodes),
+        }))
+      : [];
 
     const calculation = calculateEmployeePayroll({
       employee: emp,
       period,
+      settlementTypeConfig,
       payrollSettings,
       inputItems: empNovedades,
       allConcepts,
@@ -1035,68 +1049,15 @@ export async function calculateBatchEmployees(tenantPrisma, periodId, employeeId
   });
 }
 
-export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
-  await ensureTenantPayrollSchema(tenantPrisma);
-
-  const period = await tenantPrisma.payrollPeriod.findUnique({
-    where: { id: periodId },
-    include: {
-      fiscalPeriod: true,
-      _count: {
-        select: { paySlips: true },
-      },
-    },
-  });
-
-  if (!period) {
-    const err = new Error('La liquidación / período solicitado no existe');
-    err.status = 404;
-    throw err;
-  }
-
-  const company = await tenantPrisma.companyProfile.findFirst();
-
-  const [items, allConcepts, paySlips, payrollSettings] = await Promise.all([
-    tenantPrisma.paySlipItem.findMany({
-      where: {
-        paySlip: { payrollPeriodId: periodId, deletedAt: null },
-        type: { in: ['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'DISCOUNT'] },
-      },
-      include: {
-        paySlip: {
-          select: { employeeId: true },
-        },
-      },
-    }),
-    tenantPrisma.concept.findMany({
-      where: { deletedAt: null },
-      select: { code: true, calculationOrder: true, type: true },
-    }),
-    tenantPrisma.paySlip?.findMany
-      ? tenantPrisma.paySlip.findMany({
-          where: { payrollPeriodId: periodId, deletedAt: null },
-          select: {
-            employeeId: true,
-            sipaContrib: true,
-            inssjypContrib: true,
-            osContrib: true,
-            fneContrib: true,
-            aaffContrib: true,
-            artContrib: true,
-            scvoContrib: true,
-            unionContrib: true,
-            totalEmployerContrib: true,
-          },
-        })
-      : Promise.resolve([]),
-    getPayrollSettings(tenantPrisma).catch(() => ({})),
-  ]);
-
-  const conceptOrderMap = new Map(allConcepts.map((c) => [c.code, c.calculationOrder ?? 999]));
-
+/**
+ * Agrega en un resumen unificado los conceptos liquidados y las contribuciones patronales
+ * a partir de ítems de recibos y recibos de sueldo (de una o múltiples liquidaciones).
+ */
+function aggregateConceptsAndContributions({ items, allConcepts, paySlips, payrollSettings }) {
+  const conceptOrderMap = new Map((allConcepts || []).map((c) => [c.code, c.calculationOrder ?? 999]));
   const conceptsMap = new Map();
 
-  for (const it of items) {
+  for (const it of items || []) {
     const code = it.conceptCode;
     const rawType = (it.type || '').toUpperCase();
     const normalizedType = rawType === 'DISCOUNT' ? 'DEDUCTION' : rawType;
@@ -1233,6 +1194,86 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
   const totalLaborCost = Math.round((totalGross + totalEmployerContrib) * 100) / 100;
 
   return {
+    conceptsList,
+    totalsBase: {
+      totalRemunerative,
+      totalNonRemunerative,
+      totalGross,
+      totalDeductions,
+      totalNet,
+      totalEmployerContrib,
+      totalEmployerContributions: totalEmployerContrib,
+      totalLaborCost,
+      conceptsCount: conceptsList.length,
+    },
+  };
+}
+
+export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const period = await tenantPrisma.payrollPeriod.findUnique({
+    where: { id: periodId },
+    include: {
+      fiscalPeriod: true,
+      _count: {
+        select: { paySlips: { where: { deletedAt: null } } },
+      },
+    },
+  });
+
+  if (!period) {
+    const err = new Error('La liquidación / período solicitado no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const company = await tenantPrisma.companyProfile.findFirst();
+
+  const [items, allConcepts, paySlips, payrollSettings] = await Promise.all([
+    tenantPrisma.paySlipItem.findMany({
+      where: {
+        paySlip: { payrollPeriodId: periodId, deletedAt: null },
+        type: { in: ['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'DISCOUNT'] },
+      },
+      include: {
+        paySlip: {
+          select: { employeeId: true },
+        },
+      },
+    }),
+    tenantPrisma.concept.findMany({
+      where: { deletedAt: null },
+      select: { code: true, calculationOrder: true, type: true },
+    }),
+    tenantPrisma.paySlip?.findMany
+      ? tenantPrisma.paySlip.findMany({
+          where: { payrollPeriodId: periodId, deletedAt: null },
+          select: {
+            employeeId: true,
+            sipaContrib: true,
+            inssjypContrib: true,
+            osContrib: true,
+            fneContrib: true,
+            aaffContrib: true,
+            artContrib: true,
+            scvoContrib: true,
+            unionContrib: true,
+            totalEmployerContrib: true,
+          },
+        })
+      : Promise.resolve([]),
+    getPayrollSettings(tenantPrisma).catch(() => ({})),
+  ]);
+
+  const { conceptsList, totalsBase } = aggregateConceptsAndContributions({
+    items,
+    allConcepts,
+    paySlips,
+    payrollSettings,
+  });
+
+  return {
     period: {
       id: period.id,
       settlementName: period.settlementName,
@@ -1249,17 +1290,168 @@ export async function getPeriodConceptsSummary(tenantPrisma, periodId) {
     company: company || null,
     concepts: conceptsList,
     totals: {
-      totalRemunerative,
-      totalNonRemunerative,
-      totalGross,
-      totalDeductions,
-      totalNet,
-      totalEmployerContrib,
-      totalEmployerContributions: totalEmployerContrib,
-      totalLaborCost,
+      ...totalsBase,
       totalSlips: period._count.paySlips,
       totalEmployeesCount: period._count.paySlips,
-      conceptsCount: conceptsList.length,
+    },
+  };
+}
+
+/**
+ * Obtiene el informe resumen consolidado de TODAS las liquidaciones pertenecientes
+ * a un mismo Período Fiscal (por UUID de PayrollFiscalPeriod o clave YYYY-MM).
+ */
+export async function getFiscalPeriodConceptsSummary(tenantPrisma, fiscalPeriodIdOrKey) {
+  await ensureTenantPayrollSchema(tenantPrisma);
+
+  const rawKey = String(fiscalPeriodIdOrKey || '').trim();
+  const ymMatch = rawKey.match(/^(\d{4})-(\d{1,2})$/);
+
+  let fiscalPeriod = null;
+  let year = null;
+  let month = null;
+
+  if (ymMatch) {
+    year = Number(ymMatch[1]);
+    month = Number(ymMatch[2]);
+    fiscalPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
+      where: { year_month: { year, month } },
+    });
+  } else if (rawKey) {
+    fiscalPeriod = await tenantPrisma.payrollFiscalPeriod.findUnique({
+      where: { id: rawKey },
+    });
+    if (fiscalPeriod) {
+      year = fiscalPeriod.year;
+      month = fiscalPeriod.month;
+    }
+  }
+
+  const whereSettlements = fiscalPeriod?.id
+    ? { OR: [{ fiscalPeriodId: fiscalPeriod.id }, { year, month }] }
+    : year && month
+      ? { year, month }
+      : null;
+
+  if (!whereSettlements) {
+    const err = new Error('El período fiscal solicitado no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const settlements = await tenantPrisma.payrollPeriod.findMany({
+    where: whereSettlements,
+    orderBy: [{ settlementNumber: 'asc' }, { createdAt: 'asc' }],
+    include: {
+      _count: {
+        select: { paySlips: { where: { deletedAt: null } } },
+      },
+    },
+  });
+
+  if (!fiscalPeriod && settlements.length === 0) {
+    const err = new Error('El período fiscal solicitado no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const resolvedYear = fiscalPeriod?.year ?? settlements[0]?.year ?? year;
+  const resolvedMonth = fiscalPeriod?.month ?? settlements[0]?.month ?? month;
+  const monthStr = String(resolvedMonth).padStart(2, '0');
+  const settlementIds = settlements.map((s) => s.id);
+
+  const [company, items, allConcepts, paySlips, payrollSettings] = await Promise.all([
+    tenantPrisma.companyProfile.findFirst(),
+    settlementIds.length > 0
+      ? tenantPrisma.paySlipItem.findMany({
+          where: {
+            paySlip: { payrollPeriodId: { in: settlementIds }, deletedAt: null },
+            type: { in: ['REMUNERATIVE', 'NON_REMUNERATIVE', 'DEDUCTION', 'DISCOUNT'] },
+          },
+          include: {
+            paySlip: {
+              select: { employeeId: true },
+            },
+          },
+        })
+      : Promise.resolve([]),
+    tenantPrisma.concept.findMany({
+      where: { deletedAt: null },
+      select: { code: true, calculationOrder: true, type: true },
+    }),
+    settlementIds.length > 0 && tenantPrisma.paySlip?.findMany
+      ? tenantPrisma.paySlip.findMany({
+          where: { payrollPeriodId: { in: settlementIds }, deletedAt: null },
+          select: {
+            employeeId: true,
+            sipaContrib: true,
+            inssjypContrib: true,
+            osContrib: true,
+            fneContrib: true,
+            aaffContrib: true,
+            artContrib: true,
+            scvoContrib: true,
+            unionContrib: true,
+            totalEmployerContrib: true,
+          },
+        })
+      : Promise.resolve([]),
+    getPayrollSettings(tenantPrisma).catch(() => ({})),
+  ]);
+
+  const { conceptsList, totalsBase } = aggregateConceptsAndContributions({
+    items,
+    allConcepts,
+    paySlips,
+    payrollSettings,
+  });
+
+  const uniqueEmployeeIds = new Set((paySlips || []).map((s) => s.employeeId).filter(Boolean));
+  const totalSlips = (paySlips || []).length;
+  const totalEmployeesCount = uniqueEmployeeIds.size || totalSlips;
+
+  const lastSettlement = settlements[settlements.length - 1] || null;
+  const resolvedFiscalPeriod = fiscalPeriod || {
+    id: `${resolvedYear}-${monthStr}`,
+    year: resolvedYear,
+    month: resolvedMonth,
+    status: settlements.every((s) => s.status === 'CLOSED') ? 'CLOSED' : 'OPEN',
+  };
+
+  return {
+    isFiscalPeriodSummary: true,
+    fiscalPeriod: resolvedFiscalPeriod,
+    settlements: settlements.map((s) => ({
+      id: s.id,
+      settlementName: s.settlementName,
+      settlementNumber: s.settlementNumber,
+      periodType: s.periodType,
+      status: s.status,
+      liquidationDate: s.liquidationDate,
+      paymentDate: s.paymentDate,
+      paySlipsCount: s._count?.paySlips || 0,
+    })),
+    period: {
+      id: resolvedFiscalPeriod.id,
+      settlementName: `Período ${monthStr}/${resolvedYear}`,
+      settlementNumber: settlements.length,
+      periodType: 'FISCAL_PERIOD',
+      month: resolvedMonth,
+      year: resolvedYear,
+      status: resolvedFiscalPeriod.status,
+      liquidationDate: lastSettlement?.liquidationDate || null,
+      paymentDate: lastSettlement?.paymentDate || null,
+      fiscalPeriod: resolvedFiscalPeriod,
+      totalSlips,
+      totalEmployees: totalEmployeesCount,
+    },
+    company: company || null,
+    concepts: conceptsList,
+    totals: {
+      ...totalsBase,
+      totalSlips,
+      totalEmployeesCount,
+      settlementsCount: settlements.length,
     },
   };
 }

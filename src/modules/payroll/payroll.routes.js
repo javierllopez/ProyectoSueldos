@@ -18,6 +18,8 @@ import {
   calculateBatchSchema,
   updatePaySlipWorkedDaysSchema,
   closePeriodSchema,
+  createSettlementTypeSchema,
+  updateSettlementTypeSchema,
 } from './payroll.validation.js';
 import {
   createSalaryScaleSchema,
@@ -54,6 +56,7 @@ router.post(
   validate(closePeriodSchema),
   payrollController.closeFiscalPeriod
 );
+router.get('/fiscal-periods/:id/summary', payrollController.getFiscalPeriodConceptsSummary);
 
 // --- Liquidaciones Individuales ---
 router.get('/periods', payrollController.getPeriods);
@@ -275,6 +278,32 @@ router.post(
   requireCompanyRole('ADMIN', 'OPERATOR'),
   validate(massScaleIncreaseSchema),
   salaryScaleController.applyMassIncrease
+);
+
+// --- Tipos de Liquidación (ABM) ---
+router.get('/settlement-types', payrollController.getSettlementTypes);
+router.post(
+  '/settlement-types',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(createSettlementTypeSchema),
+  payrollController.createSettlementType
+);
+router.put(
+  '/settlement-types/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateSettlementTypeSchema),
+  payrollController.updateSettlementType
+);
+router.patch(
+  '/settlement-types/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(updateSettlementTypeSchema),
+  payrollController.updateSettlementType
+);
+router.delete(
+  '/settlement-types/:id',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.deleteSettlementType
 );
 
 // --- Exportación y Validación Libro de Sueldos Digital (ARCA) ---

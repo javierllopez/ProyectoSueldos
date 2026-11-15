@@ -53,12 +53,19 @@ class MixinMethods {
 
     if (targetPeriodType) {
       const pType = String(targetPeriodType).toUpperCase();
-      if (pType === 'MONTHLY') {
-        // En liquidación MENSUAL no se permiten conceptos de vacaciones
+      const LEGACY_TYPES = new Set(['ALL', 'MONTHLY', 'MENSUAL', 'QUINCE', 'QUINCENA', 'QUINCE_1', 'QUINCE_2', 'SAC', 'AGUINALDO', 'SAC_1', 'SAC_2', 'VACATIONS', 'VACACIONES', 'FINAL', 'LIQUIDACION_FINAL']);
+
+      if (!LEGACY_TYPES.has(pType)) {
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          return cPeriodType === pType || cPeriodType === 'ALL';
+        });
+      } else if (pType === 'MONTHLY') {
+        // En liquidación MENSUAL no se permiten conceptos de vacaciones ni de tipos personalizados
         list = list.filter((c) => {
           const cPeriodType = String(c.periodType || '').toUpperCase();
           const cCode = String(c.code || '').toUpperCase();
-          return cPeriodType !== 'VACATIONS' && !cCode.startsWith('VA');
+          return LEGACY_TYPES.has(cPeriodType) && cPeriodType !== 'VACATIONS' && !cCode.startsWith('VA');
         });
       } else if (pType === 'VACATIONS') {
         // En liquidación de VACACIONES solo se permiten conceptos de vacaciones
@@ -76,6 +83,11 @@ class MixinMethods {
         list = list.filter((c) => {
           const cPeriodType = String(c.periodType || '').toUpperCase();
           return cPeriodType === 'FINAL' || cPeriodType === 'MONTHLY';
+        });
+      } else if (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE') {
+        list = list.filter((c) => {
+          const cPeriodType = String(c.periodType || '').toUpperCase();
+          return cPeriodType === 'QUINCE' || cPeriodType === 'QUINCE_1' || cPeriodType === 'QUINCE_2' || cPeriodType === 'MONTHLY';
         });
       }
     }

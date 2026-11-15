@@ -108,6 +108,8 @@ class MixinMethods {
       this.loadPayrollMatrices();
     } else if (cleanId === '#pane-payroll-fixed-values') {
       this.loadPayrollFixedValues();
+    } else if (cleanId === '#pane-payroll-settlement-types') {
+      this.loadPayrollSettlementTypes();
     } else if (cleanId === '#pane-payroll-salary-scales') {
       this.loadPayrollSalaryScales();
     } else if (cleanId === '#pane-payroll-settings') {
@@ -192,12 +194,15 @@ class MixinMethods {
       this.switchPayrollPane('#pane-payroll-periods');
     }
 
-    await this.loadPayrollPeriods();
-    await this.loadPayrollSalaryScales();
-    await this.loadPayrollConcepts();
-    await this.loadPayrollMatrices();
-    await this.loadPayrollFixedValues();
-    await this.loadPayrollSettings();
+    await this.loadPayrollSettlementTypes();
+    await Promise.allSettled([
+      this.loadPayrollPeriods(),
+      this.loadPayrollSalaryScales(),
+      this.loadPayrollConcepts(),
+      this.loadPayrollMatrices(),
+      this.loadPayrollFixedValues(),
+      this.loadPayrollSettings(),
+    ]);
   }
 
   setupPayrollModals() {
@@ -325,6 +330,10 @@ class MixinMethods {
         this.payrollPeriodsPage = 1;
         this.loadPayrollPeriods();
       });
+    }
+    const btnToggleAllPeriodGroups = document.getElementById('btn-toggle-all-period-groups');
+    if (btnToggleAllPeriodGroups) {
+      btnToggleAllPeriodGroups.addEventListener('click', () => this.toggleAllPeriodGroups());
     }
 
     // --- Setup de Novedades y Liquidación ---
@@ -848,30 +857,102 @@ class MixinMethods {
     });
   }
 
+  togglePeriodGroup(groupKey, forceCollapsed = undefined) {
+    if (!groupKey) return;
+    if (!this._periodGroupCollapseState) {
+      this._periodGroupCollapseState = new Map();
+    }
+
+    const tbody = document.getElementById('payroll-periods-table-body');
+    if (!tbody) return;
+
+    const headerRow = Array.from(tbody.querySelectorAll('tr.period-group-header-row')).find(
+      (tr) => tr.dataset.periodGroup === groupKey
+    );
+    if (!headerRow) return;
+
+    const currentCollapsed = headerRow.getAttribute('aria-expanded') === 'false';
+    const nextCollapsed = typeof forceCollapsed === 'boolean' ? forceCollapsed : !currentCollapsed;
+
+    this._periodGroupCollapseState.set(groupKey, nextCollapsed);
+    headerRow.setAttribute('aria-expanded', String(!nextCollapsed));
+    headerRow.classList.toggle('period-group-collapsed', nextCollapsed);
+
+    const caret = headerRow.querySelector('.period-group-caret');
+    if (caret) {
+      caret.style.transform = nextCollapsed ? 'rotate(-90deg)' : 'rotate(0deg)';
+    }
+
+    Array.from(tbody.querySelectorAll('tr.period-group-child-row'))
+      .filter((tr) => tr.dataset.parentGroup === groupKey)
+      .forEach((tr) => tr.classList.toggle('d-none', nextCollapsed));
+
+    this.syncToggleAllPeriodGroupsButton();
+  }
+
+  toggleAllPeriodGroups() {
+    const tbody = document.getElementById('payroll-periods-table-body');
+    if (!tbody) return;
+
+    const headers = Array.from(tbody.querySelectorAll('tr.period-group-header-row'));
+    if (headers.length === 0) return;
+
+    const hasCollapsed = headers.some((tr) => tr.getAttribute('aria-expanded') === 'false');
+    const targetCollapsed = !hasCollapsed;
+    headers.forEach((tr) => {
+      if (tr.dataset.periodGroup) {
+        this.togglePeriodGroup(tr.dataset.periodGroup, targetCollapsed);
+      }
+    });
+  }
+
+  syncToggleAllPeriodGroupsButton() {
+    const btn = document.getElementById('btn-toggle-all-period-groups');
+    const icon = document.getElementById('icon-toggle-all-period-groups');
+    const tbody = document.getElementById('payroll-periods-table-body');
+    if (!btn || !tbody) return;
+
+    const headers = Array.from(tbody.querySelectorAll('tr.period-group-header-row'));
+    if (headers.length === 0) {
+      btn.disabled = true;
+      btn.title = 'Expandir / Colapsar todos los períodos';
+      if (icon) icon.className = 'ti ti-chevrons-down';
+      return;
+    }
+
+    btn.disabled = false;
+    const hasCollapsed = headers.some((tr) => tr.getAttribute('aria-expanded') === 'false');
+    btn.title = hasCollapsed ? 'Expandir todos los períodos' : 'Colapsar todos los períodos';
+    if (icon) {
+      icon.className = hasCollapsed ? 'ti ti-chevrons-down' : 'ti ti-chevrons-up';
+    }
+  }
+
   renderPayrollPeriodsTable(periods) {
     const tbody = document.getElementById('payroll-periods-table-body');
     if (!tbody) return;
 
-    if (periods.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="8" class="text-center py-4 text-muted">
-            <i class="ti ti-calendar-off fs-1 d-block mb-2 text-secondary"></i>
-            No se registraron liquidaciones aún. Hacé click en "Nueva Liquidación" para comenzar.
-          </td>
-        </tr>
-      `;
-      return;
+    if (!this._periodGroupCollapseState) {
+      this._periodGroupCollapseState = new Map();
     }
+
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+    ];
 
     const typeLabels = {
       MONTHLY: 'Mensual',
       QUINCE_1: '1ra Quincena',
       QUINCE_2: '2da Quincena',
+      FIRST_FORTNIGHT: '1ra Quincena',
+      SECOND_FORTNIGHT: '2da Quincena',
+      SAC: 'S.A.C.',
       SAC_1: '1er SAC',
       SAC_2: '2do SAC',
       VACATIONS: 'Vacaciones',
       FINAL: 'Final',
+      SPECIAL: 'Especial',
     };
 
     const statusBadges = {
@@ -880,31 +961,272 @@ class MixinMethods {
       CLOSED: '<span class="badge bg-success"><i class="ti ti-lock me-1"></i> Cerrada</span>',
     };
 
-    tbody.innerHTML = periods
-      .map((p) => {
+    const searchVal = document.getElementById('payroll-period-search')?.value?.trim() || '';
+    const typeVal = document.getElementById('payroll-period-type-filter')?.value || 'ALL';
+    const statusVal = document.getElementById('payroll-period-status-filter')?.value || 'OPEN';
+    const hasActiveSearchOrType = Boolean(searchVal) || (Boolean(typeVal) && typeVal !== 'ALL');
+
+    if (periods.length === 0) {
+      const active = this.activeFiscalPeriod;
+
+      // Decisión 2 (Opción A): Si hay un período abierto y el filtro está en OPEN sin otros filtros,
+      // mostrar el encabezado del Período Abierto y acceso rápido a "Ver todas las liquidaciones".
+      if (active && statusVal === 'OPEN' && !searchVal && typeVal === 'ALL') {
+        const monthStr = String(active.month).padStart(2, '0');
+        const monthName = monthNames[active.month - 1] || `Mes ${active.month}`;
+        const groupKey = `${active.year}-${monthStr}`;
+        const isCollapsed = this._periodGroupCollapseState.has(groupKey)
+          ? Boolean(this._periodGroupCollapseState.get(groupKey))
+          : false;
+        const allSetts = active.settlements || [];
+        const slipsSum = allSetts.reduce(
+          (acc, s) => acc + (s.paySlipsCount !== undefined ? s.paySlipsCount : s._count?.paySlips || 0),
+          0
+        );
+        const grossSum = allSetts.reduce((acc, s) => acc + Number(s.totalGross || 0), 0);
+        const netSum = allSetts.reduce((acc, s) => acc + Number(s.totalNet || 0), 0);
+        const canShowSummary = allSetts.length > 0 && slipsSum > 0;
+
+        tbody.innerHTML = `
+          <tr class="table-light border-top border-bottom period-group-header-row ${isCollapsed ? 'period-group-collapsed' : ''}"
+            data-period-group="${groupKey}"
+            role="button"
+            tabindex="0"
+            aria-expanded="${!isCollapsed}"
+            style="cursor: pointer;"
+            title="Hacé click para expandir o colapsar el período">
+            <td colspan="3" class="py-2">
+              <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="badge bg-white border text-secondary px-1 py-1 period-group-toggle-indicator" aria-hidden="true">
+                  <i class="ti ti-chevron-down period-group-caret" style="display: inline-block; transition: transform 0.2s ease; transform: rotate(${isCollapsed ? '-90deg' : '0deg'});"></i>
+                </span>
+                <i class="ti ti-calendar-event text-primary"></i>
+                <strong class="text-dark">${escapeHtml(monthName)} ${active.year}</strong>
+                <span class="badge bg-azure-lt font-monospace">${monthStr}/${active.year}</span>
+                <span class="badge bg-success-lt text-success"><i class="ti ti-lock-open me-1"></i>Período Abierto</span>
+                <span class="text-muted small">${allSetts.length} liquidación(es) registrada(s)</span>
+              </div>
+            </td>
+            <td class="text-center py-2">
+              <span class="badge bg-purple-lt fw-bold" title="Recibos del período">${slipsSum}</span>
+            </td>
+            <td class="text-end font-monospace fw-bold text-secondary py-2">$${grossSum.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td>
+            <td class="text-end font-monospace fw-bold text-success py-2">$${netSum.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td>
+            <td class="text-center py-2"></td>
+            <td class="text-end py-2">
+              <button type="button"
+                class="btn btn-sm btn-outline-info btn-summary-fiscal-period text-nowrap"
+                data-fiscal-id="${escapeHtml(active.id || groupKey)}"
+                data-period-key="${escapeHtml(groupKey)}"
+                ${canShowSummary ? '' : 'disabled'}
+                title="${canShowSummary ? `Informe resumen consolidado de todo el período ${monthStr}/${active.year}` : 'No hay liquidaciones con recibos en este período todavía'}">
+                <i class="ti ti-file-analytics me-1"></i> Informe resumen de período
+              </button>
+            </td>
+          </tr>
+          <tr class="period-empty-group-row period-group-child-row ${isCollapsed ? 'd-none' : ''}" data-parent-group="${groupKey}">
+            <td colspan="8" class="text-center py-4 text-muted bg-white">
+              <div class="d-flex flex-wrap align-items-center justify-content-center gap-2">
+                <span><i class="ti ti-info-circle me-1 text-azure"></i>No hay liquidaciones en curso en este período.</span>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btn-empty-view-all-periods">
+                  <i class="ti ti-list me-1"></i> Ver todas las liquidaciones
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+
+        const headerRow = tbody.querySelector('tr.period-group-header-row');
+        if (headerRow) {
+          headerRow.addEventListener('click', (e) => {
+            if (e.target.closest('.btn-summary-fiscal-period')) return;
+            this.togglePeriodGroup(headerRow.dataset.periodGroup);
+          });
+          headerRow.addEventListener('keydown', (e) => {
+            if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.btn-summary-fiscal-period')) {
+              e.preventDefault();
+              this.togglePeriodGroup(headerRow.dataset.periodGroup);
+            }
+          });
+        }
+
+        const viewAllBtn = document.getElementById('btn-empty-view-all-periods');
+        if (viewAllBtn) {
+          viewAllBtn.addEventListener('click', () => {
+            const statusFilter = document.getElementById('payroll-period-status-filter');
+            if (statusFilter) statusFilter.value = 'ALL';
+            this.payrollPeriodsPage = 1;
+            this.loadPayrollPeriods();
+          });
+        }
+
+        tbody.querySelectorAll('.btn-summary-fiscal-period:not([disabled])').forEach((btn) => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.openFiscalPeriodSummaryModal(btn.dataset.fiscalId || btn.dataset.periodKey);
+          });
+        });
+
+        this.syncToggleAllPeriodGroupsButton();
+        return;
+      }
+
+      const emptyMsg =
+        statusVal === 'OPEN' && !searchVal && typeVal === 'ALL'
+          ? 'No hay liquidaciones en curso/abiertas registradas. Hacé click en "Nuevo Período" o "Ver todas las liquidaciones" según corresponda.'
+          : 'No se encontraron liquidaciones con los filtros aplicados.';
+
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-4 text-muted">
+            <i class="ti ti-calendar-off fs-1 d-block mb-2 text-secondary"></i>
+            ${emptyMsg}
+          </td>
+        </tr>
+      `;
+      this.syncToggleAllPeriodGroupsButton();
+      return;
+    }
+
+    // Agrupar liquidaciones por Período (YYYY-MM) manteniendo el orden descendente de período
+    const groupsMap = new Map();
+    for (const p of periods) {
+      const monthStr = String(p.month).padStart(2, '0');
+      const groupKey = `${p.year}-${monthStr}`;
+      if (!groupsMap.has(groupKey)) {
+        const isCurrentActive =
+          this.activeFiscalPeriod &&
+          Number(this.activeFiscalPeriod.year) === Number(p.year) &&
+          Number(this.activeFiscalPeriod.month) === Number(p.month);
+
+        const fiscalStatus =
+          p.fiscalPeriod?.status ||
+          (isCurrentActive ? 'OPEN' : null);
+
+        groupsMap.set(groupKey, {
+          key: groupKey,
+          year: p.year,
+          month: p.month,
+          monthStr,
+          monthName: monthNames[p.month - 1] || `Mes ${p.month}`,
+          fiscalPeriodId: p.fiscalPeriodId || p.fiscalPeriod?.id || (isCurrentActive ? this.activeFiscalPeriod.id : null),
+          fiscalStatus,
+          items: [],
+        });
+      }
+      groupsMap.get(groupKey).items.push(p);
+    }
+
+    const groupsList = Array.from(groupsMap.values());
+    const htmlParts = [];
+
+    groupsList.forEach((group, groupIdx) => {
+      group.items.sort((a, b) => (Number(a.settlementNumber) || 1) - (Number(b.settlementNumber) || 1));
+
+      const effectiveFiscalStatus =
+        group.fiscalStatus ||
+        (group.items.some((item) => item.status !== 'CLOSED') ? 'OPEN' : 'CLOSED');
+
+      // Decisión 1 (Opción A):
+      // Con búsqueda/filtro de tipo activo se muestran expandidos para ver coincidencias;
+      // si hay preferencia manual en sesión se respeta; caso contrario: OPEN (o el más reciente si no hay OPEN) expandido, cerrados colapsados.
+      let isCollapsed;
+      if (hasActiveSearchOrType) {
+        isCollapsed = false;
+      } else if (this._periodGroupCollapseState.has(group.key)) {
+        isCollapsed = Boolean(this._periodGroupCollapseState.get(group.key));
+      } else if (effectiveFiscalStatus === 'OPEN') {
+        isCollapsed = false;
+      } else if (!this.activeFiscalPeriod && groupIdx === 0) {
+        isCollapsed = false;
+      } else {
+        isCollapsed = true;
+      }
+
+      const fiscalBadge =
+        effectiveFiscalStatus === 'OPEN'
+          ? '<span class="badge bg-success-lt text-success"><i class="ti ti-lock-open me-1"></i>Período Abierto</span>'
+          : '<span class="badge bg-secondary-lt text-secondary"><i class="ti ti-lock me-1"></i>Período Cerrado</span>';
+
+      const groupSlips = group.items.reduce(
+        (acc, item) => acc + (item.paySlipsCount !== undefined ? item.paySlipsCount : item._count?.paySlips || 0),
+        0
+      );
+      const groupGross = group.items.reduce((acc, item) => acc + Number(item.totalGross || 0), 0);
+      const groupNet = group.items.reduce((acc, item) => acc + Number(item.totalNet || 0), 0);
+
+      htmlParts.push(`
+        <tr class="table-light border-top border-bottom period-group-header-row ${isCollapsed ? 'period-group-collapsed' : ''}"
+          data-period-group="${escapeHtml(group.key)}"
+          role="button"
+          tabindex="0"
+          aria-expanded="${!isCollapsed}"
+          style="cursor: pointer;"
+          title="Hacé click para expandir o colapsar el período">
+          <td colspan="3" class="py-2">
+            <div class="d-flex flex-wrap align-items-center gap-2">
+              <span class="badge bg-white border text-secondary px-1 py-1 period-group-toggle-indicator" aria-hidden="true">
+                <i class="ti ti-chevron-down period-group-caret" style="display: inline-block; transition: transform 0.2s ease; transform: rotate(${isCollapsed ? '-90deg' : '0deg'});"></i>
+              </span>
+              <i class="ti ti-calendar-event text-primary"></i>
+              <strong class="text-dark">${escapeHtml(group.monthName)} ${group.year}</strong>
+              <span class="badge bg-azure-lt font-monospace">${group.monthStr}/${group.year}</span>
+              ${fiscalBadge}
+              <span class="text-muted small">${group.items.length} liquidación(es)</span>
+            </div>
+          </td>
+          <td class="text-center py-2">
+            <span class="badge bg-purple-lt fw-bold" title="Recibos del grupo">${groupSlips}</span>
+          </td>
+          <td class="text-end font-monospace fw-bold text-secondary py-2">$${groupGross.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td>
+          <td class="text-end font-monospace fw-bold text-success py-2">$${groupNet.toLocaleString('es-AR', { minimumFractionDigits: 2 })}</td>
+          <td class="text-center py-2"></td>
+          <td class="text-end py-2">
+            <button type="button"
+              class="btn btn-sm btn-outline-info btn-summary-fiscal-period text-nowrap"
+              data-fiscal-id="${escapeHtml(group.fiscalPeriodId || group.key)}"
+              data-period-key="${escapeHtml(group.key)}"
+              title="Informe resumen consolidado de todo el período ${group.monthStr}/${group.year}">
+              <i class="ti ti-file-analytics me-1"></i> Informe resumen de período
+            </button>
+          </td>
+        </tr>
+      `);
+
+      for (const p of group.items) {
         const monthStr = String(p.month).padStart(2, '0');
         const count = p.paySlipsCount !== undefined ? p.paySlipsCount : p._count?.paySlips || 0;
         const gross = Number(p.totalGross || 0).toLocaleString('es-AR', { minimumFractionDigits: 2 });
         const net = Number(p.totalNet || 0).toLocaleString('es-AR', { minimumFractionDigits: 2 });
         const isClosed = p.status === 'CLOSED';
 
-        return `
-          <tr>
-            <td><strong class="font-monospace">${monthStr}/${p.year}</strong></td>
+        htmlParts.push(`
+          <tr class="period-group-child-row ${isCollapsed ? 'd-none' : ''}" data-parent-group="${escapeHtml(group.key)}">
+            <td>
+              <div class="ps-4 text-muted font-monospace text-nowrap">
+                <i class="ti ti-corner-down-right me-1"></i><strong class="text-dark">${monthStr}/${p.year}</strong>
+              </div>
+            </td>
             <td>
               <div class="fw-bold">${escapeHtml(p.settlementName || 'Liquidación')}</div>
               <small class="text-muted">Liq. #${p.settlementNumber || 1}${p.liquidationDate ? ` • F. Liq: ${new Date(String(p.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}` : ''}</small>
             </td>
-            <td><span class="badge bg-blue-lt">${typeLabels[p.periodType] || p.periodType}</span></td>
+            <td><span class="badge bg-blue-lt">${escapeHtml(this.getSettlementTypeLabel ? this.getSettlementTypeLabel(p.periodType) : (typeLabels[p.periodType] || p.periodType))}</span></td>
             <td class="text-center"><span class="badge bg-purple-lt">${count}</span></td>
             <td class="text-end font-monospace">$${gross}</td>
             <td class="text-end font-monospace fw-bold text-success">$${net}</td>
             <td class="text-center">${statusBadges[p.status] || p.status}</td>
             <td class="text-end">
               <div class="btn-group btn-group-sm">
-                <button type="button" class="btn btn-outline-primary btn-calc-period" data-id="${p.id}" title="Cargar novedades y calcular">
-                  <i class="ti ti-calculator"></i>
-                </button>
+                ${
+                  !isClosed
+                    ? `
+                  <button type="button" class="btn btn-outline-primary btn-calc-period" data-id="${p.id}" title="Cargar novedades y calcular">
+                    <i class="ti ti-calculator"></i>
+                  </button>
+                `
+                    : ''
+                }
                 <button type="button" class="btn btn-outline-success btn-view-period-slips" data-id="${p.id}" title="Ver recibos generados">
                   <i class="ti ti-receipt-2"></i>
                 </button>
@@ -932,11 +1254,33 @@ class MixinMethods {
               </div>
             </td>
           </tr>
-        `;
-      })
-      .join('');
+        `);
+      }
+    });
 
-    // Listeners
+    tbody.innerHTML = htmlParts.join('');
+
+    // Listeners de colapso tipo menú y botones de acción
+    tbody.querySelectorAll('tr.period-group-header-row').forEach((headerRow) => {
+      headerRow.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-summary-fiscal-period')) return;
+        this.togglePeriodGroup(headerRow.dataset.periodGroup);
+      });
+      headerRow.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('.btn-summary-fiscal-period')) {
+          e.preventDefault();
+          this.togglePeriodGroup(headerRow.dataset.periodGroup);
+        }
+      });
+    });
+
+    tbody.querySelectorAll('.btn-summary-fiscal-period').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.openFiscalPeriodSummaryModal(btn.dataset.fiscalId || btn.dataset.periodKey);
+      });
+    });
+
     tbody.querySelectorAll('.btn-calc-period').forEach((btn) => {
       btn.addEventListener('click', () => {
         const periodId = btn.dataset.id;
@@ -978,6 +1322,8 @@ class MixinMethods {
         this.confirmDeletePeriod(btn.dataset.id, btn.dataset.name);
       });
     });
+
+    this.syncToggleAllPeriodGroupsButton();
   }
 
   renderPayrollPeriodsPagination(meta) {
@@ -1084,7 +1430,7 @@ class MixinMethods {
         subtitleEl.textContent = `Liquidación #${p.settlementNumber || 1}${liqDateStr}`;
       }
       if (badgeEl) {
-        badgeEl.textContent = typeLabels[p.periodType] || p.periodType;
+        badgeEl.textContent = this.getSettlementTypeLabel ? this.getSettlementTypeLabel(p.periodType) : (typeLabels[p.periodType] || p.periodType);
       }
       if (statusEl) {
         statusEl.className = statusClasses[p.status] || 'badge bg-secondary-lt';
@@ -1102,6 +1448,10 @@ class MixinMethods {
       const titleEl = document.getElementById('active-fiscal-period-title');
       const subtitleEl = document.getElementById('active-fiscal-period-subtitle');
       const countBadge = document.getElementById('payroll-active-settlements-badge');
+      const newFiscalBtn = document.getElementById('btn-new-fiscal-period');
+      if (newFiscalBtn) {
+        newFiscalBtn.classList.toggle('d-none', Boolean(active));
+      }
       const closeFiscalBtn = document.getElementById('btn-close-fiscal-period');
       if (closeFiscalBtn) {
         closeFiscalBtn.classList.toggle('d-none', !active || !this.canClosePayrollPeriods());
@@ -1363,7 +1713,12 @@ class MixinMethods {
     const fiscalLabel = document.getElementById('period-form-fiscal-label');
     if (fiscalLabel) fiscalLabel.textContent = `${monthNames[active.month - 1]} ${active.year}`;
 
-    document.getElementById('period-input-type').value = 'MONTHLY';
+    this.populateSettlementTypeSelects?.();
+    const periodTypeSel = document.getElementById('period-input-type');
+    if (periodTypeSel) {
+      const hasMonthly = Array.from(periodTypeSel.options).some((o) => o.value === 'MONTHLY');
+      periodTypeSel.value = hasMonthly ? 'MONTHLY' : (periodTypeSel.options[0]?.value || 'MONTHLY');
+    }
     document.getElementById('period-input-payment-place').value = 'Casa Central';
 
     // Sugerir fecha de liquidación: última fecha del mes o de la quincena dentro del período abierto
@@ -2444,7 +2799,7 @@ class MixinMethods {
   }
 
   // ==========================================================================
-  // INFORME RESUMEN DE LIQUIDACIÓN (TOTALES POR CONCEPTO Y CONTROL CONTABLE)
+  // INFORME RESUMEN DE LIQUIDACIÓN / PERÍODO (TOTALES POR CONCEPTO Y CONTROL CONTABLE)
   // ==========================================================================
 
   async openPeriodSummaryModal(periodId) {
@@ -2462,133 +2817,195 @@ class MixinMethods {
     try {
       const res = await apiRequest(`/payroll/periods/${periodId}/summary`);
       const summaryData = res.data || res;
-      this.activePeriodSummaryData = summaryData;
-
-      const { period, totals, concepts } = summaryData;
-      const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
-      const totalLaborCost = Number(totals.totalLaborCost ?? ((Number(totals.totalGross || 0)) + totalEmployerContrib));
-
-      // Actualizar cabecera
-      const titleEl = document.getElementById('modal-period-summary-title');
-      if (titleEl) {
-        titleEl.textContent = `Resumen: ${period.settlementName || 'Liquidación'}`;
-      }
-      const subtitleEl = document.getElementById('modal-period-summary-subtitle');
-      if (subtitleEl) {
-        const typeLabels = {
-          MONTHLY: 'Mensual Normal',
-          FIRST_FORTNIGHT: '1ra Quincena',
-          SECOND_FORTNIGHT: '2da Quincena',
-          SAC: 'S.A.C. (Aguinaldo)',
-          VACATIONS: 'Vacaciones Adelantadas',
-          FINAL: 'Liquidación Final',
-          SPECIAL: 'Liquidación Especial / Ajuste',
-        };
-        const pType = typeLabels[period.periodType] || period.periodType;
-        const pDate = period.liquidationDate ? ` • F. Liq: ${new Date(String(period.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}` : '';
-        subtitleEl.textContent = `Período ${period.month}/${period.year} • Liq. #${period.settlementNumber || 1} • Tipo: ${pType}${pDate}`;
-      }
-
-      // Tarjetas de totales
-      const remEl = document.getElementById('summary-total-remunerative');
-      if (remEl) remEl.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
-
-      const nremEl = document.getElementById('summary-total-non-remunerative');
-      if (nremEl) nremEl.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
-
-      const dedEl = document.getElementById('summary-total-deductions');
-      if (dedEl) dedEl.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
-
-      const netEl = document.getElementById('summary-total-net');
-      if (netEl) netEl.textContent = `$ ${formatNumber(totals.totalNet)}`;
-
-      const contribEl = document.getElementById('summary-total-employer-contrib');
-      if (contribEl) contribEl.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
-
-      // Filas de la tabla
-      if (tableBody) {
-        if (!concepts || concepts.length === 0) {
-          tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No se registran conceptos liquidados en esta liquidación.</td></tr>';
-        } else {
-          tableBody.innerHTML = concepts
-            .map((c) => {
-              let badgeClass = 'bg-secondary-lt';
-              let typeLabel = 'Desconocido';
-              if (c.type === 'REMUNERATIVE') {
-                badgeClass = 'bg-primary-lt text-primary';
-                typeLabel = 'REM';
-              } else if (c.type === 'NON_REMUNERATIVE') {
-                badgeClass = 'bg-teal-lt text-teal';
-                typeLabel = 'NO REM';
-              } else if (c.type === 'DEDUCTION' || c.type === 'DISCOUNT') {
-                badgeClass = 'bg-danger-lt text-danger';
-                typeLabel = 'DED';
-              } else if (c.type === 'EMPLOYER_CONTRIB') {
-                badgeClass = 'bg-indigo-lt text-indigo';
-                typeLabel = 'PAT';
-              }
-
-              const code = c.conceptCode || c.code || '';
-              const name = c.conceptName || c.name || '';
-              const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
-              const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
-              const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
-              const contribVal = Number(c.employerContribTotal ?? c.employerContribAmount ?? 0);
-
-              const remStr = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
-              const nremStr = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
-              const dedStr = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
-              const contribStr = contribVal > 0 ? `$ ${formatNumber(contribVal)}` : '-';
-
-              return `
-                <tr>
-                  <td>
-                    <span class="badge ${badgeClass} font-monospace me-1">${typeLabel}</span>
-                    <span class="font-monospace fw-bold">${escapeHtml(code)}</span>
-                  </td>
-                  <td>
-                    <div class="text-truncate fw-medium" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
-                  </td>
-                  <td class="text-center font-monospace">
-                    <span class="badge bg-light text-dark fw-bold">${c.casesCount || 0}</span>
-                  </td>
-                  <td class="text-end font-monospace text-nowrap">${remStr}</td>
-                  <td class="text-end font-monospace text-nowrap">${nremStr}</td>
-                  <td class="text-end font-monospace text-danger text-nowrap">${dedStr}</td>
-                  <td class="text-end font-monospace text-indigo text-nowrap">${contribStr}</td>
-                </tr>
-              `;
-            })
-            .join('');
-        }
-      }
-
-      // Totales en pie de tabla
-      const footCases = document.getElementById('summary-foot-cases');
-      if (footCases) footCases.textContent = `${totals.totalEmployeesCount || period.totalEmployees || '-'}`;
-
-      const footRem = document.getElementById('summary-foot-rem');
-      if (footRem) footRem.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
-
-      const footNrem = document.getElementById('summary-foot-nrem');
-      if (footNrem) footNrem.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
-
-      const footDed = document.getElementById('summary-foot-ded');
-      if (footDed) footDed.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
-
-      const footContrib = document.getElementById('summary-foot-contrib');
-      if (footContrib) footContrib.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
-
-      const footInfo = document.getElementById('modal-period-summary-footinfo');
-      if (footInfo) {
-        footInfo.innerHTML = `<i class="ti ti-check text-success me-1"></i> Total Bruto: <strong>$ ${formatNumber(totals.totalGross)}</strong> • Neto a Pagar: <strong>$ ${formatNumber(totals.totalNet)}</strong> • Contribuciones Patronales: <strong class="text-indigo">$ ${formatNumber(totalEmployerContrib)}</strong> • Costo Laboral Total: <strong>$ ${formatNumber(totalLaborCost)}</strong>`;
-      }
+      this.renderPeriodSummaryModalData(summaryData);
     } catch (err) {
       console.error('Error al cargar resumen de liquidación:', err);
       showToast(err.message || 'Error al obtener el resumen de liquidación', 'danger');
       if (tableBody) {
         tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error: ${escapeHtml(err.message || 'No se pudo cargar el resumen')}</td></tr>`;
       }
+    }
+  }
+
+  async openFiscalPeriodSummaryModal(fiscalPeriodIdOrKey) {
+    const modalEl = document.getElementById('modal-payroll-period-summary');
+    const tableBody = document.getElementById('period-summary-table-body');
+    if (!modalEl) return;
+
+    if (tableBody) {
+      tableBody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Cargando informe resumen de período...</td></tr>';
+    }
+
+    const modal = window.bootstrap?.Modal ? window.bootstrap.Modal.getOrCreateInstance(modalEl) : null;
+    if (modal) modal.show();
+
+    try {
+      const res = await apiRequest(`/payroll/fiscal-periods/${encodeURIComponent(fiscalPeriodIdOrKey)}/summary`);
+      const summaryData = res.data || res;
+      this.renderPeriodSummaryModalData(summaryData);
+    } catch (err) {
+      console.error('Error al cargar informe resumen de período:', err);
+      showToast(err.message || 'Error al obtener el informe resumen de período', 'danger');
+      if (tableBody) {
+        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error: ${escapeHtml(err.message || 'No se pudo cargar el informe')}</td></tr>`;
+      }
+    }
+  }
+
+  renderPeriodSummaryModalData(summaryData) {
+    this.activePeriodSummaryData = summaryData;
+
+    const { period, totals, concepts } = summaryData;
+    const isFiscalSummary = Boolean(summaryData.isFiscalPeriodSummary);
+    const settlements = Array.isArray(summaryData.settlements) ? summaryData.settlements : [];
+    const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
+    const totalLaborCost = Number(totals.totalLaborCost ?? (Number(totals.totalGross || 0) + totalEmployerContrib));
+
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+    ];
+    const monthStr = String(period.month || '').padStart(2, '0');
+    const monthName = monthNames[Number(period.month) - 1] || `Mes ${period.month}`;
+
+    const typeLabels = {
+      MONTHLY: 'Mensual Normal',
+      QUINCE_1: '1ra Quincena',
+      QUINCE_2: '2da Quincena',
+      FIRST_FORTNIGHT: '1ra Quincena',
+      SECOND_FORTNIGHT: '2da Quincena',
+      SAC: 'S.A.C. (Aguinaldo)',
+      SAC_1: '1er SAC (Aguinaldo)',
+      SAC_2: '2do SAC (Aguinaldo)',
+      VACATIONS: 'Vacaciones Adelantadas',
+      FINAL: 'Liquidación Final',
+      SPECIAL: 'Liquidación Especial / Ajuste',
+    };
+
+    // Actualizar cabecera
+    const titleEl = document.getElementById('modal-period-summary-title');
+    if (titleEl) {
+      titleEl.textContent = isFiscalSummary
+        ? `Informe Resumen de Período: ${monthName} ${period.year}`
+        : `Resumen: ${period.settlementName || 'Liquidación'}`;
+    }
+
+    const subtitleEl = document.getElementById('modal-period-summary-subtitle');
+    if (subtitleEl) {
+      if (isFiscalSummary) {
+        const settlementsCount = totals.settlementsCount ?? settlements.length;
+        const settlementNames = settlements
+          .map((s) => `#${s.settlementNumber || 1} ${s.settlementName || (this.getSettlementTypeLabel ? this.getSettlementTypeLabel(s.periodType) : (typeLabels[s.periodType] || s.periodType))}`)
+          .join(' • ');
+        subtitleEl.textContent = `Período ${monthStr}/${period.year} • Consolidado de ${settlementsCount} liquidación(es)${settlementNames ? ` (${settlementNames})` : ''}`;
+      } else {
+        const pType = this.getSettlementTypeLabel ? this.getSettlementTypeLabel(period.periodType) : (typeLabels[period.periodType] || period.periodType);
+        const pDate = period.liquidationDate
+          ? ` • F. Liq: ${new Date(String(period.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')}`
+          : '';
+        subtitleEl.textContent = `Período ${monthStr}/${period.year} • Liq. #${period.settlementNumber || 1} • Tipo: ${pType}${pDate}`;
+      }
+    }
+
+    // Tarjetas de totales
+    const remEl = document.getElementById('summary-total-remunerative');
+    if (remEl) remEl.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
+
+    const nremEl = document.getElementById('summary-total-non-remunerative');
+    if (nremEl) nremEl.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
+
+    const dedEl = document.getElementById('summary-total-deductions');
+    if (dedEl) dedEl.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
+
+    const netEl = document.getElementById('summary-total-net');
+    if (netEl) netEl.textContent = `$ ${formatNumber(totals.totalNet)}`;
+
+    const contribEl = document.getElementById('summary-total-employer-contrib');
+    if (contribEl) contribEl.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
+
+    // Filas de la tabla
+    const tableBody = document.getElementById('period-summary-table-body');
+    if (tableBody) {
+      if (!concepts || concepts.length === 0) {
+        tableBody.innerHTML = isFiscalSummary
+          ? '<tr><td colspan="7" class="text-center py-4 text-muted">No se registran conceptos liquidados en las liquidaciones de este período.</td></tr>'
+          : '<tr><td colspan="7" class="text-center py-4 text-muted">No se registran conceptos liquidados en esta liquidación.</td></tr>';
+      } else {
+        tableBody.innerHTML = concepts
+          .map((c) => {
+            let badgeClass = 'bg-secondary-lt';
+            let typeLabel = 'Desconocido';
+            if (c.type === 'REMUNERATIVE') {
+              badgeClass = 'bg-primary-lt text-primary';
+              typeLabel = 'REM';
+            } else if (c.type === 'NON_REMUNERATIVE') {
+              badgeClass = 'bg-teal-lt text-teal';
+              typeLabel = 'NO REM';
+            } else if (c.type === 'DEDUCTION' || c.type === 'DISCOUNT') {
+              badgeClass = 'bg-danger-lt text-danger';
+              typeLabel = 'DED';
+            } else if (c.type === 'EMPLOYER_CONTRIB') {
+              badgeClass = 'bg-indigo-lt text-indigo';
+              typeLabel = 'PAT';
+            }
+
+            const code = c.conceptCode || c.code || '';
+            const name = c.conceptName || c.name || '';
+            const remVal = Number(c.remunerativeTotal ?? c.remunerativeAmount ?? 0);
+            const nremVal = Number(c.nonRemunerativeTotal ?? c.nonRemunerativeAmount ?? 0);
+            const dedVal = Number(c.deductionsTotal ?? c.deductionAmount ?? 0);
+            const contribVal = Number(c.employerContribTotal ?? c.employerContribAmount ?? 0);
+
+            const remStr = remVal > 0 ? `$ ${formatNumber(remVal)}` : '-';
+            const nremStr = nremVal > 0 ? `$ ${formatNumber(nremVal)}` : '-';
+            const dedStr = dedVal > 0 ? `$ ${formatNumber(dedVal)}` : '-';
+            const contribStr = contribVal > 0 ? `$ ${formatNumber(contribVal)}` : '-';
+
+            return `
+              <tr>
+                <td>
+                  <span class="badge ${badgeClass} font-monospace me-1">${typeLabel}</span>
+                  <span class="font-monospace fw-bold">${escapeHtml(code)}</span>
+                </td>
+                <td>
+                  <div class="text-truncate fw-medium" title="${escapeHtml(name)}">${escapeHtml(name)}</div>
+                </td>
+                <td class="text-center font-monospace">
+                  <span class="badge bg-light text-dark fw-bold">${c.casesCount || 0}</span>
+                </td>
+                <td class="text-end font-monospace text-nowrap">${remStr}</td>
+                <td class="text-end font-monospace text-nowrap">${nremStr}</td>
+                <td class="text-end font-monospace text-danger text-nowrap">${dedStr}</td>
+                <td class="text-end font-monospace text-indigo text-nowrap">${contribStr}</td>
+              </tr>
+            `;
+          })
+          .join('');
+      }
+    }
+
+    // Totales en pie de tabla
+    const footCases = document.getElementById('summary-foot-cases');
+    if (footCases) footCases.textContent = `${totals.totalEmployeesCount ?? period.totalEmployees ?? '-'}`;
+
+    const footRem = document.getElementById('summary-foot-rem');
+    if (footRem) footRem.textContent = `$ ${formatNumber(totals.totalRemunerative)}`;
+
+    const footNrem = document.getElementById('summary-foot-nrem');
+    if (footNrem) footNrem.textContent = `$ ${formatNumber(totals.totalNonRemunerative)}`;
+
+    const footDed = document.getElementById('summary-foot-ded');
+    if (footDed) footDed.textContent = `$ ${formatNumber(totals.totalDeductions)}`;
+
+    const footContrib = document.getElementById('summary-foot-contrib');
+    if (footContrib) footContrib.textContent = `$ ${formatNumber(totalEmployerContrib)}`;
+
+    const footInfo = document.getElementById('modal-period-summary-footinfo');
+    if (footInfo) {
+      const settlementsPrefix = isFiscalSummary
+        ? `<i class="ti ti-layers-intersect text-info me-1"></i> Liquidaciones consolidadas: <strong>${totals.settlementsCount ?? settlements.length}</strong> (${totals.totalSlips ?? 0} recibos) • `
+        : '<i class="ti ti-check text-success me-1"></i> ';
+      footInfo.innerHTML = `${settlementsPrefix}Total Bruto: <strong>$ ${formatNumber(totals.totalGross)}</strong> • Neto a Pagar: <strong>$ ${formatNumber(totals.totalNet)}</strong> • Contribuciones Patronales: <strong class="text-indigo">$ ${formatNumber(totalEmployerContrib)}</strong> • Costo Laboral Total: <strong>$ ${formatNumber(totalLaborCost)}</strong>`;
     }
   }
 
@@ -2604,14 +3021,26 @@ class MixinMethods {
     }
 
     const { period, totals, concepts } = this.activePeriodSummaryData;
+    const isFiscalSummary = Boolean(this.activePeriodSummaryData.isFiscalPeriodSummary);
+    const settlements = Array.isArray(this.activePeriodSummaryData.settlements)
+      ? this.activePeriodSummaryData.settlements
+      : [];
     const company = this.activeCompany || {};
     const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
     const totalLaborCost = Number(totals.totalLaborCost ?? ((Number(totals.totalGross || 0)) + totalEmployerContrib));
+    const monthStr = String(period.month || '').padStart(2, '0');
+    const settlementNames = settlements
+      .map((s) => `#${s.settlementNumber || 1} ${s.settlementName || s.periodType}`)
+      .join(', ');
 
     const rows = [
-      ['RESUMEN DE LIQUIDACIÓN DE HABERES — TOTALES POR CONCEPTO'],
+      [isFiscalSummary
+        ? 'INFORME RESUMEN DE PERÍODO — TOTALES CONSOLIDADOS POR CONCEPTO'
+        : 'RESUMEN DE LIQUIDACIÓN DE HABERES — TOTALES POR CONCEPTO'],
       ['Empresa:', company.legalName || 'Empresa', 'CUIT:', company.cuit || ''],
-      ['Liquidación:', period.settlementName || 'Liquidación', 'Período:', `${period.month}/${period.year}`, 'Liq. N°:', period.settlementNumber || 1],
+      isFiscalSummary
+        ? ['Período:', `${monthStr}/${period.year}`, 'Liquidaciones Consolidadas:', `${settlements.length} (${settlementNames || 'Todas'})`, 'Recibos:', totals.totalSlips || 0]
+        : ['Liquidación:', period.settlementName || 'Liquidación', 'Período:', `${monthStr}/${period.year}`, 'Liq. N°:', period.settlementNumber || 1],
       ['Fecha de Emisión:', `${new Date().toLocaleDateString('es-AR')} ${new Date().toLocaleTimeString('es-AR')}`],
       [],
       ['Código', 'Naturaleza', 'Concepto / Denominación', 'Cant. Casos', 'Remunerativo ($)', 'No Remunerativo ($)', 'Deducciones ($)', 'Contribuciones Patronales ($)'],
@@ -2647,7 +3076,7 @@ class MixinMethods {
       'TOTALES CONSOLIDADOS',
       '',
       '',
-      totals.totalEmployeesCount || period.totalEmployees || 0,
+      totals.totalEmployeesCount ?? period.totalEmployees ?? 0,
       Number(totals.totalRemunerative || 0),
       Number(totals.totalNonRemunerative || 0),
       Number(totals.totalDeductions || 0),
@@ -2689,10 +3118,12 @@ class MixinMethods {
     ];
 
     const wb = window.XLSX.utils.book_new();
-    window.XLSX.utils.book_append_sheet(wb, ws, 'Resumen Liquidación');
+    window.XLSX.utils.book_append_sheet(wb, ws, isFiscalSummary ? 'Resumen Período' : 'Resumen Liquidación');
 
     const cleanName = (period.settlementName || 'Liquidacion').replace(/[^a-zA-Z0-9_-]/g, '_');
-    const fileName = `Resumen_${cleanName}_${period.year}_${String(period.month).padStart(2, '0')}.xlsx`;
+    const fileName = isFiscalSummary
+      ? `Resumen_Periodo_${period.year}_${monthStr}.xlsx`
+      : `Resumen_${cleanName}_${period.year}_${monthStr}.xlsx`;
     window.XLSX.writeFile(wb, fileName);
     showToast(`Planilla Excel descargada: ${fileName}`, 'success');
   }
@@ -2704,22 +3135,41 @@ class MixinMethods {
     }
 
     const { period, totals, concepts } = this.activePeriodSummaryData;
+    const isFiscalSummary = Boolean(this.activePeriodSummaryData.isFiscalPeriodSummary);
+    const settlements = Array.isArray(this.activePeriodSummaryData.settlements)
+      ? this.activePeriodSummaryData.settlements
+      : [];
     const company = this.activeCompany || {};
     const totalEmployerContrib = Number(totals.totalEmployerContrib ?? totals.totalEmployerContributions ?? 0);
 
+    const monthNames = [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
+    ];
+    const monthStr = String(period.month || '').padStart(2, '0');
+    const monthName = monthNames[Number(period.month) - 1] || `Mes ${period.month}`;
+
     const typeLabels = {
       MONTHLY: 'Mensual Normal',
+      QUINCE_1: '1ra Quincena',
+      QUINCE_2: '2da Quincena',
       FIRST_FORTNIGHT: '1ra Quincena',
       SECOND_FORTNIGHT: '2da Quincena',
       SAC: 'S.A.C. (Aguinaldo)',
+      SAC_1: '1er SAC (Aguinaldo)',
+      SAC_2: '2do SAC (Aguinaldo)',
       VACATIONS: 'Vacaciones Adelantadas',
       FINAL: 'Liquidación Final',
       SPECIAL: 'Liquidación Especial / Ajuste',
     };
-    const pTypeStr = typeLabels[period.periodType] || period.periodType;
+    const pTypeStr = this.getSettlementTypeLabel ? this.getSettlementTypeLabel(period.periodType) : (typeLabels[period.periodType] || period.periodType);
     const liqDateStr = period.liquidationDate
       ? new Date(String(period.liquidationDate).slice(0, 10) + 'T12:00:00').toLocaleDateString('es-AR')
       : '-';
+
+    const settlementsNamesStr = settlements
+      .map((s) => `#${s.settlementNumber || 1} ${s.settlementName || (this.getSettlementTypeLabel ? this.getSettlementTypeLabel(s.periodType) : (typeLabels[s.periodType] || s.periodType))}`)
+      .join(', ');
 
     const printWindow = window.open('', '_blank');
     if (!printWindow) {
@@ -2761,12 +3211,32 @@ class MixinMethods {
         }).join('')
       : '<tr><td colspan="8" style="text-align: center; padding: 20px; color: #666;">No hay conceptos registrados.</td></tr>';
 
+    const docTitle = isFiscalSummary
+      ? `Informe Resumen de Período — ${monthName} ${period.year}`
+      : `Resumen de Liquidación — ${period.settlementName || 'Liquidación'}`;
+
+    const headerTitle = isFiscalSummary
+      ? 'Informe Resumen de Período'
+      : 'Resumen de Liquidación de Haberes';
+
+    const rightMetaHtml = isFiscalSummary
+      ? `
+        <strong>Período Fiscal:</strong> ${escapeHtml(monthName)} ${period.year} (${monthStr}/${period.year})<br>
+        <strong>Liquidaciones (${totals.settlementsCount ?? settlements.length}):</strong> ${escapeHtml(settlementsNamesStr || 'Consolidado mensual')}<br>
+        <strong>Recibos Emitidos:</strong> ${totals.totalSlips ?? 0} • Colaboradores únicos: ${totals.totalEmployeesCount ?? '-'}
+      `
+      : `
+        <strong>Liquidación:</strong> ${escapeHtml(period.settlementName || 'Liquidación')} (#${period.settlementNumber || 1})<br>
+        <strong>Período:</strong> ${monthStr}/${period.year} • Tipo: ${escapeHtml(pTypeStr)}<br>
+        <strong>Fecha de Pago / Liq.:</strong> ${liqDateStr} • Colaboradores: ${totals.totalEmployeesCount || period.totalEmployees || '-'}
+      `;
+
     const printHtml = `
       <!DOCTYPE html>
       <html lang="es">
       <head>
         <meta charset="utf-8">
-        <title>Resumen de Liquidación — ${escapeHtml(period.settlementName || 'Liquidación')}</title>
+        <title>${escapeHtml(docTitle)}</title>
         <style>
           @page {
             size: A4 portrait;
@@ -2901,7 +3371,7 @@ class MixinMethods {
       <body>
         <div class="header-box">
           <div>
-            <h1 class="title">Resumen de Liquidación de Haberes</h1>
+            <h1 class="title">${escapeHtml(headerTitle)}</h1>
             <div class="subtitle">Totales por Concepto • Cuadre Contable, Contribuciones Patronales y LSD (Ley 20.744)</div>
           </div>
           <div class="meta-box">
@@ -2918,9 +3388,7 @@ class MixinMethods {
               <strong>Domicilio:</strong> ${escapeHtml(company.address || '-')}
             </div>
             <div>
-              <strong>Liquidación:</strong> ${escapeHtml(period.settlementName || 'Liquidación')} (#${period.settlementNumber || 1})<br>
-              <strong>Período:</strong> ${period.month}/${period.year} • Tipo: ${escapeHtml(pTypeStr)}<br>
-              <strong>Fecha de Pago / Liq.:</strong> ${liqDateStr} • Colaboradores: ${totals.totalEmployeesCount || period.totalEmployees || '-'}
+              ${rightMetaHtml}
             </div>
           </div>
         </div>
@@ -2967,7 +3435,7 @@ class MixinMethods {
           <tfoot>
             <tr>
               <td colspan="3" style="text-transform: uppercase;">TOTALES CONSOLIDADOS</td>
-              <td style="text-align: center; font-family: monospace;">${totals.totalEmployeesCount || period.totalEmployees || '-'}</td>
+              <td style="text-align: center; font-family: monospace;">${totals.totalEmployeesCount ?? period.totalEmployees ?? '-'}</td>
               <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalRemunerative)}</td>
               <td style="text-align: right; font-family: monospace;">$ ${formatNumber(totals.totalNonRemunerative)}</td>
               <td style="text-align: right; font-family: monospace; color: #dc3545;">$ ${formatNumber(totals.totalDeductions)}</td>
@@ -3040,9 +3508,12 @@ class MixinMethods {
     }
 
     try {
-      const res = await apiRequest(`/payroll/periods?${query.toString()}`, {
-        signal: this._periodsAbortCtrl.signal,
-      });
+      const [res] = await Promise.all([
+        apiRequest(`/payroll/periods?${query.toString()}`, {
+          signal: this._periodsAbortCtrl.signal,
+        }),
+        this.loadActiveFiscalPeriod?.(),
+      ]);
       this.payrollPeriods = res.data || [];
       const totalFiltered = res.meta?.total ?? this.payrollPeriods.length;
       const badge = document.getElementById('payroll-badge-periods-count');
@@ -3051,7 +3522,6 @@ class MixinMethods {
       this.renderPayrollPeriodsTable(this.payrollPeriods);
       this.renderPayrollPeriodsPagination(res.meta || { total: totalFiltered, page: 1, totalPages: 1 });
       this.syncPayrollPeriodSelectors();
-      await this.loadActiveFiscalPeriod?.();
 
       const activeSettlementsBadge = document.getElementById('payroll-active-settlements-badge');
       const hasActiveFilter =
@@ -3279,7 +3749,7 @@ class MixinMethods {
                 (s) => `
                   <tr>
                     <td class="fw-semibold">${escapeHtml(s.settlementName || 'Liquidación')}</td>
-                    <td><span class="badge bg-blue-lt">${escapeHtml(typeLabels[s.periodType] || s.periodType)}</span></td>
+                    <td><span class="badge bg-blue-lt">${escapeHtml(this.getSettlementTypeLabel ? this.getSettlementTypeLabel(s.periodType) : (typeLabels[s.periodType] || s.periodType))}</span></td>
                     <td class="text-center font-monospace">${s.slipsCount}</td>
                     <td class="text-end font-monospace text-nowrap">$${formatNumber(s.totalNet || 0)}</td>
                     <td class="text-center font-monospace">${s.noveltiesCount}</td>

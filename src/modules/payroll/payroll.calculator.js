@@ -460,6 +460,7 @@ export function resolveItemBaseAmount(concept, context, isBasic, isDirectorSalar
 export function calculateEmployeePayroll({
   employee,
   period,
+  settlementTypeConfig = null,
   payrollSettings,
   inputItems = [], // Novedades cargadas por el usuario: [{ conceptCode, units, amount, notes }]
   allConcepts = [], // Catálogo activo de conceptos
@@ -471,6 +472,12 @@ export function calculateEmployeePayroll({
   activeEmbargoes = [], // Embargos judiciales activos del empleado con control de topes y acumulados
   workedDaysOverride = null, // Override directo de días trabajados / días para proporcionar tope (Reg 02)
 }) {
+  const appliesStatutory = settlementTypeConfig
+    ? settlementTypeConfig.appliesStatutoryDeductions !== false
+    : true;
+  if (!appliesStatutory) {
+    activeEmbargoes = [];
+  }
   const isIntern = employee.contractModalityCode === '27' || employee.contractModalityCode === '027' || employee.contractModalityCode === '51' || employee.contractModalityCode === '051' || employee.salaryScale?.isInternOnly === true;
   const isDirector = employee.contractModalityCode === '99' || employee.contractModalityCode === '099' || employee.salaryScale?.isDirectorOnly === true;
 
@@ -717,11 +724,20 @@ export function calculateEmployeePayroll({
     }
   }
 
-  // Días y horas liquidadas según tipo de período y situación previsional
+  // Días y horas liquidadas según configuración del Tipo de Liquidación o reglas nativas
   let workedDays = 30;
   const pType = period?.periodType || 'MONTHLY';
 
-  if (pType === 'FINAL' || pType === 'LIQUIDACION_FINAL') {
+  if (settlementTypeConfig && settlementTypeConfig.defaultWorkedDays !== undefined && settlementTypeConfig.defaultWorkedDays !== null) {
+    workedDays = Number(settlementTypeConfig.defaultWorkedDays);
+    // Si es base 30 días y el empleado ingresó en el mes corriente, calcular días proporcionales desde su alta
+    if (workedDays === 30 && hireDateStr && hireDateStr >= monthStartStr && hireDateStr <= monthEndStr) {
+      const hireD = parseSafeDate(employee.hireDate);
+      if (hireD) {
+        workedDays = Math.max(1, Math.min(30, 30 - hireD.getDate() + 1));
+      }
+    }
+  } else if (pType === 'FINAL' || pType === 'LIQUIDACION_FINAL') {
     // Por defecto 0 días si es liquidación final indemnizatoria y no se liquidan días laborados del mes
     workedDays = 0;
   } else if (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC' || pType === 'AGUINALDO') {
@@ -1580,7 +1596,7 @@ export function calculateEmployeePayroll({
   const maxCap = Number(payrollSettings.ansesMaxCap || 2674292.72);
   const detraction = Number(payrollSettings.detractionBase || 7003.68);
 
-  const hasRemuneration = totalRemunerative > 0 || grossSalary > 0;
+  const hasRemuneration = appliesStatutory && (totalRemunerative > 0 || grossSalary > 0);
 
   // Base Imponible SIPA Contribuciones (Sin tope máximo)
   let biSipaContrib = 0;
@@ -1625,7 +1641,7 @@ export function calculateEmployeePayroll({
 
   // Base diferencial de Obra Social para jornada parcial (Art. 92 TER LCT / LSD Posición 101-130)
   let diffOs = 0.00;
-  if (isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
+  if (hasRemuneration && isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
     const fullTimeOs = Math.min(Math.max(Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100, minCap), maxCap);
     diffOs = Math.max(0, Math.round((fullTimeOs - biOsContrib) * 100) / 100);
   }
@@ -1649,7 +1665,8 @@ export function calculateEmployeePayroll({
   const aaffContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
   const artContrib = hasRemuneration ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
   const scvoContrib = hasRemuneration ? scvoFee : 0.00;
-  const unionContrib = (!isIntern && !isDirector && hasRemuneration && employee.unionId) ? Math.round(totalRemunerative * 0.005 * 100) / 100 : 0.00;
+  // Se elimina el cálculo automático oculto (0.5%); cualquier contribución sindical debe definirse explícitamente
+  const unionContrib = 0.00;
 
   const totalEmployerContrib = Math.round(
     (sipaContrib + inssjypContrib + osContrib + fneContrib + aaffContrib + artContrib + scvoContrib + unionContrib) * 100
@@ -1660,15 +1677,25 @@ export function calculateEmployeePayroll({
 
   // --- PASO 6: Distribución Porcentual del Costo Laboral Total (100%) (Bloque 5) ---
   const clt = totalLaborCost > 0 ? totalLaborCost : 1;
-  const pctNetSalary = Math.max(-999.99, Math.min(999.99, Math.round((netSalary / clt) * 10000) / 100));
+  let pctNetSalary = Math.max(-999.99, Math.min(999.99, Math.round((netSalary / clt) * 10000) / 100));
   const pctEmployeeDeductions = Math.max(0, Math.min(999.99, Math.round((totalDeductions / clt) * 10000) / 100));
-  const pctSocialSecurityContrib = Math.max(0, Math.min(999.99, Math.round(((sipaContrib + inssjypContrib + fneContrib + aaffContrib) / clt) * 10000) / 100));
+  let pctSocialSecurityContrib = Math.max(0, Math.min(999.99, Math.round(((sipaContrib + inssjypContrib + fneContrib + aaffContrib) / clt) * 10000) / 100));
   const pctHealthContrib = Math.max(0, Math.min(999.99, Math.round((osContrib / clt) * 10000) / 100));
   const pctArtAndInsurance = Math.max(0, Math.min(999.99, Math.round(((artContrib + scvoContrib) / clt) * 10000) / 100));
+  const pctUnionAndChambers = unionContrib > 0
+    ? Math.max(0, Math.min(999.99, Math.round((unionContrib / clt) * 10000) / 100))
+    : 0.00;
 
-  // Ajuste de redondeo para que la suma sea exactamente 100.00%
-  const currentSum = pctNetSalary + pctEmployeeDeductions + pctSocialSecurityContrib + pctHealthContrib + pctArtAndInsurance;
-  const pctUnionAndChambers = Math.max(0, Math.min(999.99, Math.round((100.00 - currentSum) * 100) / 100));
+  // Ajuste de redondeo para que la suma sea exactamente 100.00% sin atribuirlo a Sindicato Patronal
+  const currentSum = Math.round((pctNetSalary + pctEmployeeDeductions + pctSocialSecurityContrib + pctHealthContrib + pctArtAndInsurance + pctUnionAndChambers) * 100) / 100;
+  const roundingDiff = Math.round((100.00 - currentSum) * 100) / 100;
+  if (totalLaborCost > 0 && roundingDiff !== 0) {
+    if (pctSocialSecurityContrib > 0) {
+      pctSocialSecurityContrib = Math.max(0, Math.min(999.99, Math.round((pctSocialSecurityContrib + roundingDiff) * 100) / 100));
+    } else {
+      pctNetSalary = Math.max(-999.99, Math.min(999.99, Math.round((pctNetSalary + roundingDiff) * 100) / 100));
+    }
+  }
 
   // --- PASO 7: Bases Imponibles F.931 (LSD Registro 04) ---
   const biSipaAporte = (!isIntern && !isDirector && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
@@ -1699,8 +1726,8 @@ export function calculateEmployeePayroll({
     hasSpouse,
     childrenCount,
     adherentsCount,
-    hasScvo: true,
-    hasCct: (isIntern || isDirector) ? false : Boolean(employee.jobPosition?.cctCode),
+    hasScvo: appliesStatutory,
+    hasCct: (!appliesStatutory || isIntern || isDirector) ? false : Boolean(employee.jobPosition?.cctCode),
   };
 
   // --- PASO 8: Hash SHA-256 de Trazabilidad y Firma Electrónica ---

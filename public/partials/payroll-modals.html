@@ -843,11 +843,11 @@
 
             <div class="row g-3 mb-3">
               <div class="col-md-5">
-                <label class="form-label fw-bold">Código ARCA (Libro de Sueldos Digital)</label>
+                <label class="form-label fw-bold" id="concept-arca-code-label">Código ARCA (Libro de Sueldos Digital)</label>
                 <select class="form-select font-monospace" id="concept-input-arca-code">
-                  <option value="">-- Sin código ARCA / No aplica (Auxiliar) --</option>
+                  <option value="" id="concept-arca-empty-option">-- Seleccione un código ARCA --</option>
                   <optgroup label="1. Conceptos Remunerativos (110000 - 499999)">
-                    <option value="110000" selected>[110000] Sueldo / Sueldo Básico</option>
+                    <option value="110000">[110000] Sueldo / Sueldo Básico</option>
                     <option value="110001">[110001] Preaviso</option>
                     <option value="120000">[120000] Sueldo Anual Complementario (SAC)</option>
                     <option value="120001">[120001] SAC 1er Semestre (Junio)</option>
@@ -3502,5 +3502,113 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ABM TIPO DE LIQUIDACIÓN -->
+  <div class="modal modal-blur fade" id="modal-settlement-type-form" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <form class="modal-content shadow-lg d-flex flex-column flex-grow-1 m-0" style="min-height: 0; overflow: hidden;" id="form-settlement-type">
+        <div class="modal-header bg-light flex-shrink-0">
+          <div>
+            <h5 class="modal-title fw-bold" id="modal-settlement-type-title">Nuevo Tipo de Liquidación</h5>
+            <div class="text-muted small">Configure prefijo de conceptos, inclusión en ARCA LSD y comportamiento de cálculo</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 flex-grow-1 overflow-y-auto" style="min-height: 0;">
+          <input type="hidden" id="settlement-type-form-id" />
+          <div id="settlement-type-form-alert" class="alert alert-danger d-none mb-3"></div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label required fw-bold">Denominación</label>
+              <input type="text" class="form-control" id="st-input-name" required maxlength="120"
+                placeholder="Ej. Anticipo de Sueldos, Bono Anual, Retroactivo CCT" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label required fw-bold">Prefijo de Conceptos</label>
+              <input type="text" class="form-control font-monospace text-uppercase fw-bold" id="st-input-prefix"
+                required maxlength="2" minlength="2" pattern="[A-Za-z]{2}" placeholder="Ej. AN" />
+              <div class="form-hint" id="st-prefix-hint" style="font-size: 0.68rem;">2 letras mayúsculas (ej: AN1001)</div>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label fw-bold">Código Interno</label>
+              <input type="text" class="form-control font-monospace text-uppercase" id="st-input-code" maxlength="40"
+                placeholder="Auto si queda vacío" />
+              <div class="form-hint" style="font-size: 0.68rem;">Identificador único del sistema</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Descripción</label>
+            <textarea class="form-control" id="st-input-description" rows="2" maxlength="1000"
+              placeholder="Ej. Adelanto de haberes conforme Art. 130 LCT sin generación de aportes ni contribuciones..."></textarea>
+          </div>
+
+          <div class="card bg-light border mb-3">
+            <div class="card-body p-3">
+              <div class="row g-3 align-items-center">
+                <div class="col-md-6">
+                  <label class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="st-input-include-lsd" checked />
+                    <span class="form-check-label fw-bold">Incluye en Libro de Sueldos Digital (ARCA)</span>
+                  </label>
+                  <div class="text-muted small">
+                    Si está activo, todo concepto liquidable creado para este tipo deberá tener un <strong>Concepto ARCA</strong> vinculado obligatoriamente.
+                  </div>
+                </div>
+                <div class="col-md-3" id="st-arca-type-box">
+                  <label class="form-label required fw-bold mb-1">Tipo ARCA (Reg. 01)</label>
+                  <select class="form-select form-select-sm" id="st-input-arca-type">
+                    <option value="M">M - Mensual</option>
+                    <option value="Q">Q - Quincenal</option>
+                    <option value="D">D - Por Días</option>
+                    <option value="H">H - Por Horas</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label required fw-bold mb-1">Días Base por Defecto</label>
+                  <input type="number" class="form-control form-control-sm" id="st-input-worked-days" min="0" max="31" value="30" required />
+                  <div class="form-hint" style="font-size: 0.66rem;">Use 0 en adicionales (Anticipo/Bono/SAC)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="st-input-applies-statutory" checked />
+                <span class="form-check-label fw-semibold">Calcula Contribuciones Patronales y Ganancias</span>
+              </label>
+              <div class="text-muted small">
+                Desactívelo para Anticipos (Art. 130 LCT) que no deben duplicar F.931 ni base imponible de Ganancias.
+              </div>
+            </div>
+            <div class="col-md-4">
+              <label class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="st-input-triggers-termination" />
+                <span class="form-check-label fw-semibold">Genera baja del legajo al cerrar</span>
+              </label>
+              <div class="text-muted small">
+                Propone baja automática de personal (como Liquidación Final).
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="st-input-active" checked />
+                <span class="form-check-label fw-semibold">Activo</span>
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light d-flex justify-content-between flex-shrink-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" id="btn-save-settlement-type">
+            <i class="ti ti-device-floppy me-1"></i> Guardar Tipo de Liquidación
+          </button>
+        </div>
+      </form>
     </div>
   </div>

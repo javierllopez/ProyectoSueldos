@@ -238,6 +238,11 @@ export type EmployeeSanction = $Result.DefaultSelection<Prisma.$EmployeeSanction
  * 
  */
 export type SanctionIncidentLink = $Result.DefaultSelection<Prisma.$SanctionIncidentLinkPayload>
+/**
+ * Model PayrollSettlementType
+ * 
+ */
+export type PayrollSettlementType = $Result.DefaultSelection<Prisma.$PayrollSettlementTypePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -806,6 +811,16 @@ export class PrismaClient<
     * ```
     */
   get sanctionIncidentLink(): Prisma.SanctionIncidentLinkDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payrollSettlementType`: Exposes CRUD operations for the **PayrollSettlementType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PayrollSettlementTypes
+    * const payrollSettlementTypes = await prisma.payrollSettlementType.findMany()
+    * ```
+    */
+  get payrollSettlementType(): Prisma.PayrollSettlementTypeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1291,7 +1306,8 @@ export namespace Prisma {
     SanctionType: 'SanctionType',
     EmployeeIncident: 'EmployeeIncident',
     EmployeeSanction: 'EmployeeSanction',
-    SanctionIncidentLink: 'SanctionIncidentLink'
+    SanctionIncidentLink: 'SanctionIncidentLink',
+    PayrollSettlementType: 'PayrollSettlementType'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1310,7 +1326,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "payrollClosingAudit" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink"
+      modelProps: "companyProfile" | "department" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "payrollClosingAudit" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink" | "payrollSettlementType"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4284,6 +4300,72 @@ export namespace Prisma {
           }
         }
       }
+      PayrollSettlementType: {
+        payload: Prisma.$PayrollSettlementTypePayload<ExtArgs>
+        fields: Prisma.PayrollSettlementTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PayrollSettlementTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PayrollSettlementTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          findFirst: {
+            args: Prisma.PayrollSettlementTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PayrollSettlementTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          findMany: {
+            args: Prisma.PayrollSettlementTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>[]
+          }
+          create: {
+            args: Prisma.PayrollSettlementTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          createMany: {
+            args: Prisma.PayrollSettlementTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.PayrollSettlementTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          update: {
+            args: Prisma.PayrollSettlementTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.PayrollSettlementTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PayrollSettlementTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.PayrollSettlementTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PayrollSettlementTypePayload>
+          }
+          aggregate: {
+            args: Prisma.PayrollSettlementTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayrollSettlementType>
+          }
+          groupBy: {
+            args: Prisma.PayrollSettlementTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PayrollSettlementTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PayrollSettlementTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<PayrollSettlementTypeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4425,6 +4507,7 @@ export namespace Prisma {
     employeeIncident?: EmployeeIncidentOmit
     employeeSanction?: EmployeeSanctionOmit
     sanctionIncidentLink?: SanctionIncidentLinkOmit
+    payrollSettlementType?: PayrollSettlementTypeOmit
   }
 
   /* Types for Logging */
@@ -53987,6 +54070,1036 @@ export namespace Prisma {
 
 
   /**
+   * Model PayrollSettlementType
+   */
+
+  export type AggregatePayrollSettlementType = {
+    _count: PayrollSettlementTypeCountAggregateOutputType | null
+    _avg: PayrollSettlementTypeAvgAggregateOutputType | null
+    _sum: PayrollSettlementTypeSumAggregateOutputType | null
+    _min: PayrollSettlementTypeMinAggregateOutputType | null
+    _max: PayrollSettlementTypeMaxAggregateOutputType | null
+  }
+
+  export type PayrollSettlementTypeAvgAggregateOutputType = {
+    defaultWorkedDays: number | null
+    sortOrder: number | null
+  }
+
+  export type PayrollSettlementTypeSumAggregateOutputType = {
+    defaultWorkedDays: number | null
+    sortOrder: number | null
+  }
+
+  export type PayrollSettlementTypeMinAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    conceptPrefix: string | null
+    includeInLsd: boolean | null
+    arcaLsdType: string | null
+    defaultWorkedDays: number | null
+    appliesStatutoryDeductions: boolean | null
+    triggersEmployeeTermination: boolean | null
+    isSystem: boolean | null
+    isActive: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayrollSettlementTypeMaxAggregateOutputType = {
+    id: string | null
+    code: string | null
+    name: string | null
+    description: string | null
+    conceptPrefix: string | null
+    includeInLsd: boolean | null
+    arcaLsdType: string | null
+    defaultWorkedDays: number | null
+    appliesStatutoryDeductions: boolean | null
+    triggersEmployeeTermination: boolean | null
+    isSystem: boolean | null
+    isActive: boolean | null
+    sortOrder: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PayrollSettlementTypeCountAggregateOutputType = {
+    id: number
+    code: number
+    name: number
+    description: number
+    conceptPrefix: number
+    includeInLsd: number
+    arcaLsdType: number
+    defaultWorkedDays: number
+    appliesStatutoryDeductions: number
+    triggersEmployeeTermination: number
+    isSystem: number
+    isActive: number
+    sortOrder: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PayrollSettlementTypeAvgAggregateInputType = {
+    defaultWorkedDays?: true
+    sortOrder?: true
+  }
+
+  export type PayrollSettlementTypeSumAggregateInputType = {
+    defaultWorkedDays?: true
+    sortOrder?: true
+  }
+
+  export type PayrollSettlementTypeMinAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    conceptPrefix?: true
+    includeInLsd?: true
+    arcaLsdType?: true
+    defaultWorkedDays?: true
+    appliesStatutoryDeductions?: true
+    triggersEmployeeTermination?: true
+    isSystem?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayrollSettlementTypeMaxAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    conceptPrefix?: true
+    includeInLsd?: true
+    arcaLsdType?: true
+    defaultWorkedDays?: true
+    appliesStatutoryDeductions?: true
+    triggersEmployeeTermination?: true
+    isSystem?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PayrollSettlementTypeCountAggregateInputType = {
+    id?: true
+    code?: true
+    name?: true
+    description?: true
+    conceptPrefix?: true
+    includeInLsd?: true
+    arcaLsdType?: true
+    defaultWorkedDays?: true
+    appliesStatutoryDeductions?: true
+    triggersEmployeeTermination?: true
+    isSystem?: true
+    isActive?: true
+    sortOrder?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PayrollSettlementTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollSettlementType to aggregate.
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollSettlementTypes to fetch.
+     */
+    orderBy?: PayrollSettlementTypeOrderByWithRelationInput | PayrollSettlementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PayrollSettlementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollSettlementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollSettlementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PayrollSettlementTypes
+    **/
+    _count?: true | PayrollSettlementTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PayrollSettlementTypeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PayrollSettlementTypeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PayrollSettlementTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PayrollSettlementTypeMaxAggregateInputType
+  }
+
+  export type GetPayrollSettlementTypeAggregateType<T extends PayrollSettlementTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayrollSettlementType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayrollSettlementType[P]>
+      : GetScalarType<T[P], AggregatePayrollSettlementType[P]>
+  }
+
+
+
+
+  export type PayrollSettlementTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PayrollSettlementTypeWhereInput
+    orderBy?: PayrollSettlementTypeOrderByWithAggregationInput | PayrollSettlementTypeOrderByWithAggregationInput[]
+    by: PayrollSettlementTypeScalarFieldEnum[] | PayrollSettlementTypeScalarFieldEnum
+    having?: PayrollSettlementTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PayrollSettlementTypeCountAggregateInputType | true
+    _avg?: PayrollSettlementTypeAvgAggregateInputType
+    _sum?: PayrollSettlementTypeSumAggregateInputType
+    _min?: PayrollSettlementTypeMinAggregateInputType
+    _max?: PayrollSettlementTypeMaxAggregateInputType
+  }
+
+  export type PayrollSettlementTypeGroupByOutputType = {
+    id: string
+    code: string
+    name: string
+    description: string | null
+    conceptPrefix: string
+    includeInLsd: boolean
+    arcaLsdType: string
+    defaultWorkedDays: number
+    appliesStatutoryDeductions: boolean
+    triggersEmployeeTermination: boolean
+    isSystem: boolean
+    isActive: boolean
+    sortOrder: number
+    createdAt: Date
+    updatedAt: Date
+    _count: PayrollSettlementTypeCountAggregateOutputType | null
+    _avg: PayrollSettlementTypeAvgAggregateOutputType | null
+    _sum: PayrollSettlementTypeSumAggregateOutputType | null
+    _min: PayrollSettlementTypeMinAggregateOutputType | null
+    _max: PayrollSettlementTypeMaxAggregateOutputType | null
+  }
+
+  type GetPayrollSettlementTypeGroupByPayload<T extends PayrollSettlementTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PayrollSettlementTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PayrollSettlementTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PayrollSettlementTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], PayrollSettlementTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PayrollSettlementTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    conceptPrefix?: boolean
+    includeInLsd?: boolean
+    arcaLsdType?: boolean
+    defaultWorkedDays?: boolean
+    appliesStatutoryDeductions?: boolean
+    triggersEmployeeTermination?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["payrollSettlementType"]>
+
+
+
+  export type PayrollSettlementTypeSelectScalar = {
+    id?: boolean
+    code?: boolean
+    name?: boolean
+    description?: boolean
+    conceptPrefix?: boolean
+    includeInLsd?: boolean
+    arcaLsdType?: boolean
+    defaultWorkedDays?: boolean
+    appliesStatutoryDeductions?: boolean
+    triggersEmployeeTermination?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    sortOrder?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PayrollSettlementTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "conceptPrefix" | "includeInLsd" | "arcaLsdType" | "defaultWorkedDays" | "appliesStatutoryDeductions" | "triggersEmployeeTermination" | "isSystem" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollSettlementType"]>
+
+  export type $PayrollSettlementTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PayrollSettlementType"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      code: string
+      name: string
+      description: string | null
+      conceptPrefix: string
+      includeInLsd: boolean
+      arcaLsdType: string
+      defaultWorkedDays: number
+      appliesStatutoryDeductions: boolean
+      triggersEmployeeTermination: boolean
+      isSystem: boolean
+      isActive: boolean
+      sortOrder: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["payrollSettlementType"]>
+    composites: {}
+  }
+
+  type PayrollSettlementTypeGetPayload<S extends boolean | null | undefined | PayrollSettlementTypeDefaultArgs> = $Result.GetResult<Prisma.$PayrollSettlementTypePayload, S>
+
+  type PayrollSettlementTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PayrollSettlementTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PayrollSettlementTypeCountAggregateInputType | true
+    }
+
+  export interface PayrollSettlementTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PayrollSettlementType'], meta: { name: 'PayrollSettlementType' } }
+    /**
+     * Find zero or one PayrollSettlementType that matches the filter.
+     * @param {PayrollSettlementTypeFindUniqueArgs} args - Arguments to find a PayrollSettlementType
+     * @example
+     * // Get one PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PayrollSettlementTypeFindUniqueArgs>(args: SelectSubset<T, PayrollSettlementTypeFindUniqueArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PayrollSettlementType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PayrollSettlementTypeFindUniqueOrThrowArgs} args - Arguments to find a PayrollSettlementType
+     * @example
+     * // Get one PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PayrollSettlementTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, PayrollSettlementTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollSettlementType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeFindFirstArgs} args - Arguments to find a PayrollSettlementType
+     * @example
+     * // Get one PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PayrollSettlementTypeFindFirstArgs>(args?: SelectSubset<T, PayrollSettlementTypeFindFirstArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PayrollSettlementType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeFindFirstOrThrowArgs} args - Arguments to find a PayrollSettlementType
+     * @example
+     * // Get one PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PayrollSettlementTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, PayrollSettlementTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PayrollSettlementTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PayrollSettlementTypes
+     * const payrollSettlementTypes = await prisma.payrollSettlementType.findMany()
+     * 
+     * // Get first 10 PayrollSettlementTypes
+     * const payrollSettlementTypes = await prisma.payrollSettlementType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const payrollSettlementTypeWithIdOnly = await prisma.payrollSettlementType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PayrollSettlementTypeFindManyArgs>(args?: SelectSubset<T, PayrollSettlementTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PayrollSettlementType.
+     * @param {PayrollSettlementTypeCreateArgs} args - Arguments to create a PayrollSettlementType.
+     * @example
+     * // Create one PayrollSettlementType
+     * const PayrollSettlementType = await prisma.payrollSettlementType.create({
+     *   data: {
+     *     // ... data to create a PayrollSettlementType
+     *   }
+     * })
+     * 
+     */
+    create<T extends PayrollSettlementTypeCreateArgs>(args: SelectSubset<T, PayrollSettlementTypeCreateArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PayrollSettlementTypes.
+     * @param {PayrollSettlementTypeCreateManyArgs} args - Arguments to create many PayrollSettlementTypes.
+     * @example
+     * // Create many PayrollSettlementTypes
+     * const payrollSettlementType = await prisma.payrollSettlementType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PayrollSettlementTypeCreateManyArgs>(args?: SelectSubset<T, PayrollSettlementTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a PayrollSettlementType.
+     * @param {PayrollSettlementTypeDeleteArgs} args - Arguments to delete one PayrollSettlementType.
+     * @example
+     * // Delete one PayrollSettlementType
+     * const PayrollSettlementType = await prisma.payrollSettlementType.delete({
+     *   where: {
+     *     // ... filter to delete one PayrollSettlementType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PayrollSettlementTypeDeleteArgs>(args: SelectSubset<T, PayrollSettlementTypeDeleteArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PayrollSettlementType.
+     * @param {PayrollSettlementTypeUpdateArgs} args - Arguments to update one PayrollSettlementType.
+     * @example
+     * // Update one PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PayrollSettlementTypeUpdateArgs>(args: SelectSubset<T, PayrollSettlementTypeUpdateArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PayrollSettlementTypes.
+     * @param {PayrollSettlementTypeDeleteManyArgs} args - Arguments to filter PayrollSettlementTypes to delete.
+     * @example
+     * // Delete a few PayrollSettlementTypes
+     * const { count } = await prisma.payrollSettlementType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PayrollSettlementTypeDeleteManyArgs>(args?: SelectSubset<T, PayrollSettlementTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PayrollSettlementTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PayrollSettlementTypes
+     * const payrollSettlementType = await prisma.payrollSettlementType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PayrollSettlementTypeUpdateManyArgs>(args: SelectSubset<T, PayrollSettlementTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one PayrollSettlementType.
+     * @param {PayrollSettlementTypeUpsertArgs} args - Arguments to update or create a PayrollSettlementType.
+     * @example
+     * // Update or create a PayrollSettlementType
+     * const payrollSettlementType = await prisma.payrollSettlementType.upsert({
+     *   create: {
+     *     // ... data to create a PayrollSettlementType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PayrollSettlementType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PayrollSettlementTypeUpsertArgs>(args: SelectSubset<T, PayrollSettlementTypeUpsertArgs<ExtArgs>>): Prisma__PayrollSettlementTypeClient<$Result.GetResult<Prisma.$PayrollSettlementTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PayrollSettlementTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeCountArgs} args - Arguments to filter PayrollSettlementTypes to count.
+     * @example
+     * // Count the number of PayrollSettlementTypes
+     * const count = await prisma.payrollSettlementType.count({
+     *   where: {
+     *     // ... the filter for the PayrollSettlementTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends PayrollSettlementTypeCountArgs>(
+      args?: Subset<T, PayrollSettlementTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PayrollSettlementTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PayrollSettlementType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PayrollSettlementTypeAggregateArgs>(args: Subset<T, PayrollSettlementTypeAggregateArgs>): Prisma.PrismaPromise<GetPayrollSettlementTypeAggregateType<T>>
+
+    /**
+     * Group by PayrollSettlementType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PayrollSettlementTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PayrollSettlementTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PayrollSettlementTypeGroupByArgs['orderBy'] }
+        : { orderBy?: PayrollSettlementTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PayrollSettlementTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPayrollSettlementTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PayrollSettlementType model
+   */
+  readonly fields: PayrollSettlementTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PayrollSettlementType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PayrollSettlementTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PayrollSettlementType model
+   */
+  interface PayrollSettlementTypeFieldRefs {
+    readonly id: FieldRef<"PayrollSettlementType", 'String'>
+    readonly code: FieldRef<"PayrollSettlementType", 'String'>
+    readonly name: FieldRef<"PayrollSettlementType", 'String'>
+    readonly description: FieldRef<"PayrollSettlementType", 'String'>
+    readonly conceptPrefix: FieldRef<"PayrollSettlementType", 'String'>
+    readonly includeInLsd: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly arcaLsdType: FieldRef<"PayrollSettlementType", 'String'>
+    readonly defaultWorkedDays: FieldRef<"PayrollSettlementType", 'Int'>
+    readonly appliesStatutoryDeductions: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly triggersEmployeeTermination: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly isSystem: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly isActive: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly sortOrder: FieldRef<"PayrollSettlementType", 'Int'>
+    readonly createdAt: FieldRef<"PayrollSettlementType", 'DateTime'>
+    readonly updatedAt: FieldRef<"PayrollSettlementType", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PayrollSettlementType findUnique
+   */
+  export type PayrollSettlementTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollSettlementType to fetch.
+     */
+    where: PayrollSettlementTypeWhereUniqueInput
+  }
+
+  /**
+   * PayrollSettlementType findUniqueOrThrow
+   */
+  export type PayrollSettlementTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollSettlementType to fetch.
+     */
+    where: PayrollSettlementTypeWhereUniqueInput
+  }
+
+  /**
+   * PayrollSettlementType findFirst
+   */
+  export type PayrollSettlementTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollSettlementType to fetch.
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollSettlementTypes to fetch.
+     */
+    orderBy?: PayrollSettlementTypeOrderByWithRelationInput | PayrollSettlementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollSettlementTypes.
+     */
+    cursor?: PayrollSettlementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollSettlementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollSettlementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollSettlementTypes.
+     */
+    distinct?: PayrollSettlementTypeScalarFieldEnum | PayrollSettlementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollSettlementType findFirstOrThrow
+   */
+  export type PayrollSettlementTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollSettlementType to fetch.
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollSettlementTypes to fetch.
+     */
+    orderBy?: PayrollSettlementTypeOrderByWithRelationInput | PayrollSettlementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PayrollSettlementTypes.
+     */
+    cursor?: PayrollSettlementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollSettlementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollSettlementTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PayrollSettlementTypes.
+     */
+    distinct?: PayrollSettlementTypeScalarFieldEnum | PayrollSettlementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollSettlementType findMany
+   */
+  export type PayrollSettlementTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter, which PayrollSettlementTypes to fetch.
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PayrollSettlementTypes to fetch.
+     */
+    orderBy?: PayrollSettlementTypeOrderByWithRelationInput | PayrollSettlementTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PayrollSettlementTypes.
+     */
+    cursor?: PayrollSettlementTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PayrollSettlementTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PayrollSettlementTypes.
+     */
+    skip?: number
+    distinct?: PayrollSettlementTypeScalarFieldEnum | PayrollSettlementTypeScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollSettlementType create
+   */
+  export type PayrollSettlementTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * The data needed to create a PayrollSettlementType.
+     */
+    data: XOR<PayrollSettlementTypeCreateInput, PayrollSettlementTypeUncheckedCreateInput>
+  }
+
+  /**
+   * PayrollSettlementType createMany
+   */
+  export type PayrollSettlementTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PayrollSettlementTypes.
+     */
+    data: PayrollSettlementTypeCreateManyInput | PayrollSettlementTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PayrollSettlementType update
+   */
+  export type PayrollSettlementTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * The data needed to update a PayrollSettlementType.
+     */
+    data: XOR<PayrollSettlementTypeUpdateInput, PayrollSettlementTypeUncheckedUpdateInput>
+    /**
+     * Choose, which PayrollSettlementType to update.
+     */
+    where: PayrollSettlementTypeWhereUniqueInput
+  }
+
+  /**
+   * PayrollSettlementType updateMany
+   */
+  export type PayrollSettlementTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PayrollSettlementTypes.
+     */
+    data: XOR<PayrollSettlementTypeUpdateManyMutationInput, PayrollSettlementTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which PayrollSettlementTypes to update
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * Limit how many PayrollSettlementTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollSettlementType upsert
+   */
+  export type PayrollSettlementTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * The filter to search for the PayrollSettlementType to update in case it exists.
+     */
+    where: PayrollSettlementTypeWhereUniqueInput
+    /**
+     * In case the PayrollSettlementType found by the `where` argument doesn't exist, create a new PayrollSettlementType with this data.
+     */
+    create: XOR<PayrollSettlementTypeCreateInput, PayrollSettlementTypeUncheckedCreateInput>
+    /**
+     * In case the PayrollSettlementType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PayrollSettlementTypeUpdateInput, PayrollSettlementTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * PayrollSettlementType delete
+   */
+  export type PayrollSettlementTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+    /**
+     * Filter which PayrollSettlementType to delete.
+     */
+    where: PayrollSettlementTypeWhereUniqueInput
+  }
+
+  /**
+   * PayrollSettlementType deleteMany
+   */
+  export type PayrollSettlementTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PayrollSettlementTypes to delete
+     */
+    where?: PayrollSettlementTypeWhereInput
+    /**
+     * Limit how many PayrollSettlementTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PayrollSettlementType without action
+   */
+  export type PayrollSettlementTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PayrollSettlementType
+     */
+    select?: PayrollSettlementTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PayrollSettlementType
+     */
+    omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -54886,6 +55999,27 @@ export namespace Prisma {
   export type SanctionIncidentLinkScalarFieldEnum = (typeof SanctionIncidentLinkScalarFieldEnum)[keyof typeof SanctionIncidentLinkScalarFieldEnum]
 
 
+  export const PayrollSettlementTypeScalarFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    conceptPrefix: 'conceptPrefix',
+    includeInLsd: 'includeInLsd',
+    arcaLsdType: 'arcaLsdType',
+    defaultWorkedDays: 'defaultWorkedDays',
+    appliesStatutoryDeductions: 'appliesStatutoryDeductions',
+    triggersEmployeeTermination: 'triggersEmployeeTermination',
+    isSystem: 'isSystem',
+    isActive: 'isActive',
+    sortOrder: 'sortOrder',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PayrollSettlementTypeScalarFieldEnum = (typeof PayrollSettlementTypeScalarFieldEnum)[keyof typeof PayrollSettlementTypeScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -55479,6 +56613,18 @@ export namespace Prisma {
   };
 
   export type SanctionIncidentLinkOrderByRelevanceFieldEnum = (typeof SanctionIncidentLinkOrderByRelevanceFieldEnum)[keyof typeof SanctionIncidentLinkOrderByRelevanceFieldEnum]
+
+
+  export const PayrollSettlementTypeOrderByRelevanceFieldEnum: {
+    id: 'id',
+    code: 'code',
+    name: 'name',
+    description: 'description',
+    conceptPrefix: 'conceptPrefix',
+    arcaLsdType: 'arcaLsdType'
+  };
+
+  export type PayrollSettlementTypeOrderByRelevanceFieldEnum = (typeof PayrollSettlementTypeOrderByRelevanceFieldEnum)[keyof typeof PayrollSettlementTypeOrderByRelevanceFieldEnum]
 
 
   /**
@@ -60213,6 +61359,111 @@ export namespace Prisma {
     sanctionId?: StringWithAggregatesFilter<"SanctionIncidentLink"> | string
     incidentId?: StringWithAggregatesFilter<"SanctionIncidentLink"> | string
     createdAt?: DateTimeWithAggregatesFilter<"SanctionIncidentLink"> | Date | string
+  }
+
+  export type PayrollSettlementTypeWhereInput = {
+    AND?: PayrollSettlementTypeWhereInput | PayrollSettlementTypeWhereInput[]
+    OR?: PayrollSettlementTypeWhereInput[]
+    NOT?: PayrollSettlementTypeWhereInput | PayrollSettlementTypeWhereInput[]
+    id?: StringFilter<"PayrollSettlementType"> | string
+    code?: StringFilter<"PayrollSettlementType"> | string
+    name?: StringFilter<"PayrollSettlementType"> | string
+    description?: StringNullableFilter<"PayrollSettlementType"> | string | null
+    conceptPrefix?: StringFilter<"PayrollSettlementType"> | string
+    includeInLsd?: BoolFilter<"PayrollSettlementType"> | boolean
+    arcaLsdType?: StringFilter<"PayrollSettlementType"> | string
+    defaultWorkedDays?: IntFilter<"PayrollSettlementType"> | number
+    appliesStatutoryDeductions?: BoolFilter<"PayrollSettlementType"> | boolean
+    triggersEmployeeTermination?: BoolFilter<"PayrollSettlementType"> | boolean
+    isSystem?: BoolFilter<"PayrollSettlementType"> | boolean
+    isActive?: BoolFilter<"PayrollSettlementType"> | boolean
+    sortOrder?: IntFilter<"PayrollSettlementType"> | number
+    createdAt?: DateTimeFilter<"PayrollSettlementType"> | Date | string
+    updatedAt?: DateTimeFilter<"PayrollSettlementType"> | Date | string
+  }
+
+  export type PayrollSettlementTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    conceptPrefix?: SortOrder
+    includeInLsd?: SortOrder
+    arcaLsdType?: SortOrder
+    defaultWorkedDays?: SortOrder
+    appliesStatutoryDeductions?: SortOrder
+    triggersEmployeeTermination?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _relevance?: PayrollSettlementTypeOrderByRelevanceInput
+  }
+
+  export type PayrollSettlementTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    code?: string
+    AND?: PayrollSettlementTypeWhereInput | PayrollSettlementTypeWhereInput[]
+    OR?: PayrollSettlementTypeWhereInput[]
+    NOT?: PayrollSettlementTypeWhereInput | PayrollSettlementTypeWhereInput[]
+    name?: StringFilter<"PayrollSettlementType"> | string
+    description?: StringNullableFilter<"PayrollSettlementType"> | string | null
+    conceptPrefix?: StringFilter<"PayrollSettlementType"> | string
+    includeInLsd?: BoolFilter<"PayrollSettlementType"> | boolean
+    arcaLsdType?: StringFilter<"PayrollSettlementType"> | string
+    defaultWorkedDays?: IntFilter<"PayrollSettlementType"> | number
+    appliesStatutoryDeductions?: BoolFilter<"PayrollSettlementType"> | boolean
+    triggersEmployeeTermination?: BoolFilter<"PayrollSettlementType"> | boolean
+    isSystem?: BoolFilter<"PayrollSettlementType"> | boolean
+    isActive?: BoolFilter<"PayrollSettlementType"> | boolean
+    sortOrder?: IntFilter<"PayrollSettlementType"> | number
+    createdAt?: DateTimeFilter<"PayrollSettlementType"> | Date | string
+    updatedAt?: DateTimeFilter<"PayrollSettlementType"> | Date | string
+  }, "id" | "code">
+
+  export type PayrollSettlementTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    conceptPrefix?: SortOrder
+    includeInLsd?: SortOrder
+    arcaLsdType?: SortOrder
+    defaultWorkedDays?: SortOrder
+    appliesStatutoryDeductions?: SortOrder
+    triggersEmployeeTermination?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PayrollSettlementTypeCountOrderByAggregateInput
+    _avg?: PayrollSettlementTypeAvgOrderByAggregateInput
+    _max?: PayrollSettlementTypeMaxOrderByAggregateInput
+    _min?: PayrollSettlementTypeMinOrderByAggregateInput
+    _sum?: PayrollSettlementTypeSumOrderByAggregateInput
+  }
+
+  export type PayrollSettlementTypeScalarWhereWithAggregatesInput = {
+    AND?: PayrollSettlementTypeScalarWhereWithAggregatesInput | PayrollSettlementTypeScalarWhereWithAggregatesInput[]
+    OR?: PayrollSettlementTypeScalarWhereWithAggregatesInput[]
+    NOT?: PayrollSettlementTypeScalarWhereWithAggregatesInput | PayrollSettlementTypeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PayrollSettlementType"> | string
+    code?: StringWithAggregatesFilter<"PayrollSettlementType"> | string
+    name?: StringWithAggregatesFilter<"PayrollSettlementType"> | string
+    description?: StringNullableWithAggregatesFilter<"PayrollSettlementType"> | string | null
+    conceptPrefix?: StringWithAggregatesFilter<"PayrollSettlementType"> | string
+    includeInLsd?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    arcaLsdType?: StringWithAggregatesFilter<"PayrollSettlementType"> | string
+    defaultWorkedDays?: IntWithAggregatesFilter<"PayrollSettlementType"> | number
+    appliesStatutoryDeductions?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    triggersEmployeeTermination?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    isSystem?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    isActive?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    sortOrder?: IntWithAggregatesFilter<"PayrollSettlementType"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"PayrollSettlementType"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"PayrollSettlementType"> | Date | string
   }
 
   export type CompanyProfileCreateInput = {
@@ -65601,6 +66852,132 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PayrollSettlementTypeCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    conceptPrefix: string
+    includeInLsd?: boolean
+    arcaLsdType?: string
+    defaultWorkedDays?: number
+    appliesStatutoryDeductions?: boolean
+    triggersEmployeeTermination?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollSettlementTypeUncheckedCreateInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    conceptPrefix: string
+    includeInLsd?: boolean
+    arcaLsdType?: string
+    defaultWorkedDays?: number
+    appliesStatutoryDeductions?: boolean
+    triggersEmployeeTermination?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollSettlementTypeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptPrefix?: StringFieldUpdateOperationsInput | string
+    includeInLsd?: BoolFieldUpdateOperationsInput | boolean
+    arcaLsdType?: StringFieldUpdateOperationsInput | string
+    defaultWorkedDays?: IntFieldUpdateOperationsInput | number
+    appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
+    triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollSettlementTypeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptPrefix?: StringFieldUpdateOperationsInput | string
+    includeInLsd?: BoolFieldUpdateOperationsInput | boolean
+    arcaLsdType?: StringFieldUpdateOperationsInput | string
+    defaultWorkedDays?: IntFieldUpdateOperationsInput | number
+    appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
+    triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollSettlementTypeCreateManyInput = {
+    id?: string
+    code: string
+    name: string
+    description?: string | null
+    conceptPrefix: string
+    includeInLsd?: boolean
+    arcaLsdType?: string
+    defaultWorkedDays?: number
+    appliesStatutoryDeductions?: boolean
+    triggersEmployeeTermination?: boolean
+    isSystem?: boolean
+    isActive?: boolean
+    sortOrder?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PayrollSettlementTypeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptPrefix?: StringFieldUpdateOperationsInput | string
+    includeInLsd?: BoolFieldUpdateOperationsInput | boolean
+    arcaLsdType?: StringFieldUpdateOperationsInput | string
+    defaultWorkedDays?: IntFieldUpdateOperationsInput | number
+    appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
+    triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PayrollSettlementTypeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    code?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    conceptPrefix?: StringFieldUpdateOperationsInput | string
+    includeInLsd?: BoolFieldUpdateOperationsInput | boolean
+    arcaLsdType?: StringFieldUpdateOperationsInput | string
+    defaultWorkedDays?: IntFieldUpdateOperationsInput | number
+    appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
+    triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    isSystem?: BoolFieldUpdateOperationsInput | boolean
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -69372,6 +70749,76 @@ export namespace Prisma {
     sanctionId?: SortOrder
     incidentId?: SortOrder
     createdAt?: SortOrder
+  }
+
+  export type PayrollSettlementTypeOrderByRelevanceInput = {
+    fields: PayrollSettlementTypeOrderByRelevanceFieldEnum | PayrollSettlementTypeOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type PayrollSettlementTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    conceptPrefix?: SortOrder
+    includeInLsd?: SortOrder
+    arcaLsdType?: SortOrder
+    defaultWorkedDays?: SortOrder
+    appliesStatutoryDeductions?: SortOrder
+    triggersEmployeeTermination?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollSettlementTypeAvgOrderByAggregateInput = {
+    defaultWorkedDays?: SortOrder
+    sortOrder?: SortOrder
+  }
+
+  export type PayrollSettlementTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    conceptPrefix?: SortOrder
+    includeInLsd?: SortOrder
+    arcaLsdType?: SortOrder
+    defaultWorkedDays?: SortOrder
+    appliesStatutoryDeductions?: SortOrder
+    triggersEmployeeTermination?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollSettlementTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    code?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+    conceptPrefix?: SortOrder
+    includeInLsd?: SortOrder
+    arcaLsdType?: SortOrder
+    defaultWorkedDays?: SortOrder
+    appliesStatutoryDeductions?: SortOrder
+    triggersEmployeeTermination?: SortOrder
+    isSystem?: SortOrder
+    isActive?: SortOrder
+    sortOrder?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PayrollSettlementTypeSumOrderByAggregateInput = {
+    defaultWorkedDays?: SortOrder
+    sortOrder?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {

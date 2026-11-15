@@ -88,7 +88,7 @@ class ConceptsMethods {
             </td>
             <td>${typeBadges[c.type] || c.type}</td>
             <td>${scopeBadge}</td>
-            <td>${periodTypeBadges[c.periodType] || `<span class="badge bg-light text-muted">${escapeHtml(c.periodType || 'Todas')}</span>`}</td>
+            <td>${periodTypeBadges[c.periodType] || `<span class="badge bg-indigo-lt">${escapeHtml(this.getSettlementTypeLabel ? this.getSettlementTypeLabel(c.periodType) : (c.periodType || 'Todas'))}</span>`}</td>
             <td>${persistentBadge}</td>
             <td>${calcBadges[c.calculationType] || c.calculationType}</td>
             <td class="text-center"><span class="badge bg-success-lt">Activo</span></td>
@@ -139,6 +139,15 @@ class ConceptsMethods {
   }
 
   getPrefixForPeriodType(periodType) {
+    const dynamicCfg = this.getSettlementTypeConfig?.(periodType);
+    if (dynamicCfg?.conceptPrefix) {
+      return dynamicCfg.conceptPrefix;
+    }
+    const sel = document.getElementById('concept-input-period-type');
+    const selectedOpt = sel ? Array.from(sel.options || []).find((o) => o.value === periodType) : null;
+    if (selectedOpt?.dataset?.prefix) {
+      return selectedOpt.dataset.prefix;
+    }
     const map = {
       MONTHLY: 'SU',
       QUINCE: 'QU',
@@ -153,6 +162,50 @@ class ConceptsMethods {
       GRATIFICATION: 'GR',
     };
     return map[periodType] || 'SU';
+  }
+
+  isConceptArcaMandatory(periodType, conceptType) {
+    if (conceptType === 'AUXILIARY') return false;
+    const dynamicCfg = this.getSettlementTypeConfig?.(periodType);
+    if (dynamicCfg) {
+      return dynamicCfg.includeInLsd !== false;
+    }
+    const sel = document.getElementById('concept-input-period-type');
+    const opt = sel ? Array.from(sel.options || []).find((o) => o.value === periodType) : null;
+    if (opt?.dataset?.includeLsd !== undefined) {
+      return opt.dataset.includeLsd !== 'false';
+    }
+    return true;
+  }
+
+  updateConceptArcaRequirementUI() {
+    const periodType = document.getElementById('concept-input-period-type')?.value || 'MONTHLY';
+    const conceptType = document.getElementById('concept-input-type')?.value || 'REMUNERATIVE';
+    const isMandatory = this.isConceptArcaMandatory(periodType, conceptType);
+
+    const label = document.getElementById('concept-arca-code-label');
+    if (label) {
+      label.classList.toggle('required', isMandatory);
+      label.innerHTML = isMandatory
+        ? 'Código ARCA (Libro de Sueldos Digital) <span class="badge bg-azure-lt ms-1">Obligatorio LSD</span>'
+        : 'Código ARCA (Libro de Sueldos Digital) <span class="badge bg-secondary-lt ms-1">Opcional / No aplica</span>';
+    }
+
+    const arcaSelect = document.getElementById('concept-input-arca-code');
+    if (arcaSelect) {
+      arcaSelect.required = isMandatory;
+    }
+
+    const emptyOpt = document.getElementById('concept-arca-empty-option');
+    if (emptyOpt) {
+      if (conceptType === 'AUXILIARY') {
+        emptyOpt.textContent = '-- Sin código ARCA / No aplica (Auxiliar de cálculo) --';
+      } else if (!isMandatory) {
+        emptyOpt.textContent = '-- Sin código ARCA / Excluido de LSD --';
+      } else {
+        emptyOpt.textContent = '-- Seleccione un Concepto ARCA (Obligatorio LSD) --';
+      }
+    }
   }
 
   updateConceptNormalizedCode(forcePad = false) {
@@ -339,6 +392,7 @@ class ConceptsMethods {
   }
 
   async openNewConceptModal() {
+    this.populateSettlementTypeSelects?.();
     await this.fetchAllPayrollConcepts(true);
 
     const form = document.getElementById('form-payroll-concept');
@@ -350,9 +404,13 @@ class ConceptsMethods {
 
     const periodTypeSelect = document.getElementById('concept-input-period-type');
     if (periodTypeSelect) {
-      periodTypeSelect.value = 'MONTHLY';
+      const hasMonthly = Array.from(periodTypeSelect.options).some((o) => o.value === 'MONTHLY');
+      periodTypeSelect.value = hasMonthly ? 'MONTHLY' : (periodTypeSelect.options[0]?.value || 'MONTHLY');
       periodTypeSelect.disabled = false;
     }
+
+    const activePeriodType = periodTypeSelect?.value || 'MONTHLY';
+    const activePrefix = this.getPrefixForPeriodType(activePeriodType);
 
     const numberInput = document.getElementById('concept-input-number');
     if (numberInput) {
@@ -366,13 +424,14 @@ class ConceptsMethods {
       codeInput.value = '';
     }
     const badge = document.getElementById('concept-prefix-badge');
-    if (badge) badge.textContent = 'SU';
+    if (badge) badge.textContent = activePrefix;
 
     document.getElementById('concept-input-type').value = 'REMUNERATIVE';
+    // Decisión 3 Opción A: eliminar preselección silenciosa de código ARCA; el usuario debe elegirlo explícitamente
     const arcaSelect = document.getElementById('concept-input-arca-code');
     if (arcaSelect) {
-      arcaSelect.value = '110000';
-      arcaSelect.dataset.prevValue = '110000';
+      arcaSelect.value = '';
+      arcaSelect.dataset.prevValue = '';
     }
     const scopeSelect = document.getElementById('concept-input-scope');
     if (scopeSelect) scopeSelect.value = 'GENERAL';
@@ -393,12 +452,13 @@ class ConceptsMethods {
     document.getElementById('concept-formula-box')?.classList.remove('d-none');
     document.getElementById('concept-matrix-box')?.classList.add('d-none');
 
-    this.applyArcaSubsystemsSuggestion('110000');
+    this.applyArcaSubsystemsSuggestion('');
+    this.updateConceptArcaRequirementUI();
     this.updateFormulaAccumulatorsFilter();
     this.updateFormulaNoveltiesFilter();
 
     this.populateConceptModalMatrixOptions();
-    await this.populateFormulaConceptOptions('', 'MONTHLY');
+    await this.populateFormulaConceptOptions('', activePeriodType);
     this.populateFormulaFixedValuesSelect();
     this.populateFormulaSalaryScalesSelect();
     const matrixSelect = document.getElementById('concept-select-matrix');
@@ -410,6 +470,7 @@ class ConceptsMethods {
   }
 
   async openEditConceptModal(c) {
+    this.populateSettlementTypeSelects?.();
     await this.fetchAllPayrollConcepts(true);
     const freshC = (this.allPayrollConcepts || []).find((x) => x.id === c.id) || c;
     c = freshC;
@@ -433,7 +494,17 @@ class ConceptsMethods {
 
     const editPeriodTypeSelect = document.getElementById('concept-input-period-type');
     if (editPeriodTypeSelect) {
-      editPeriodTypeSelect.value = c.periodType || 'MONTHLY';
+      const targetVal = c.periodType || 'MONTHLY';
+      if (!Array.from(editPeriodTypeSelect.options).some((o) => o.value === targetVal)) {
+        const extraOpt = document.createElement('option');
+        extraOpt.value = targetVal;
+        extraOpt.textContent = `${this.getSettlementTypeLabel ? this.getSettlementTypeLabel(targetVal) : targetVal} (${prefix})`;
+        extraOpt.dataset.prefix = prefix;
+        const stCfg = this.getSettlementTypeConfig?.(targetVal);
+        extraOpt.dataset.includeLsd = stCfg ? (stCfg.includeInLsd !== false ? 'true' : 'false') : 'true';
+        editPeriodTypeSelect.appendChild(extraOpt);
+      }
+      editPeriodTypeSelect.value = targetVal;
       editPeriodTypeSelect.disabled = true;
     }
 
@@ -512,6 +583,7 @@ class ConceptsMethods {
     const r10 = document.getElementById('subsys-r10'); if (r10) r10.checked = Boolean(c.appliesDetraccion);
 
     this.updateArcaSubsystemsUiState(c.arcaConceptCode);
+    this.updateConceptArcaRequirementUI();
 
     this.updateFormulaAccumulatorsFilter();
     this.updateFormulaNoveltiesFilter();
@@ -612,6 +684,18 @@ class ConceptsMethods {
       appliesRegEspAporte: document.getElementById('subsys-r7')?.checked || false,
       appliesDetraccion: document.getElementById('subsys-r10')?.checked || false,
     };
+
+    // Validación frontend Decisión 3 Opción A: concepto ARCA obligatorio si el tipo de liquidación incluye LSD y no es Auxiliar
+    if (this.isConceptArcaMandatory(payload.periodType, payload.type) && !payload.arcaConceptCode) {
+      const msg = 'Debe seleccionar un Código ARCA porque el tipo de liquidación seleccionado se incluye en el Libro de Sueldos Digital (excepto conceptos Auxiliares de Cálculo).';
+      if (alertBox) {
+        alertBox.textContent = msg;
+        alertBox.classList.remove('d-none');
+      }
+      showToast(msg, 'warning');
+      document.getElementById('concept-input-arca-code')?.focus();
+      return;
+    }
 
     // Regla estricta ARCA LSD: Retenciones/Descuentos (810000..829999 o tipo DEDUCTION)
     // tienen prohibido informar '1' en subsistemas F.931 (pos. 168 a 186)
@@ -772,8 +856,17 @@ class ConceptsMethods {
     const periodTypeSelect = document.getElementById('concept-input-period-type');
     if (periodTypeSelect) {
       periodTypeSelect.addEventListener('change', (e) => {
+        this.updateConceptNormalizedCode();
+        this.updateConceptArcaRequirementUI();
         const curCode = document.getElementById('concept-input-code')?.value?.trim() || '';
         this.populateFormulaConceptOptions(curCode, e.target.value);
+      });
+    }
+
+    const conceptTypeSelect = document.getElementById('concept-input-type');
+    if (conceptTypeSelect) {
+      conceptTypeSelect.addEventListener('change', () => {
+        this.updateConceptArcaRequirementUI();
       });
     }
 
