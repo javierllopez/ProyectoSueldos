@@ -316,6 +316,11 @@ export async function getPeriodNovelties(req, res) {
   return res.status(200).json({ data: novelties });
 }
 
+export async function getCarryoverSourceNovelties(req, res) {
+  const result = await payrollService.getCarryoverSourceNovelties(req.tenantPrisma, req.params.id, req.query);
+  return res.status(200).json({ data: result });
+}
+
 export async function upsertPeriodNovelty(req, res) {
   const result = await payrollService.upsertPeriodNovelty(req.tenantPrisma, req.params.id, req.body);
   return res.status(200).json({
@@ -330,9 +335,23 @@ export async function deletePeriodNovelty(req, res) {
 }
 
 export async function batchPeriodNovelties(req, res) {
-  const result = await payrollService.batchUpsertPeriodNovelties(req.tenantPrisma, req.params.id, req.body.items);
+  const result = await payrollService.batchUpsertPeriodNovelties(
+    req.tenantPrisma,
+    req.params.id,
+    req.body.items,
+    {
+      conceptId: req.body.conceptId,
+      removeEmployeeIds: req.body.removeEmployeeIds,
+      removals: req.body.removals,
+      returnData: req.body.returnData,
+      requireActiveEmployees: req.body.requireActiveEmployees,
+    }
+  );
   return res.status(200).json({
-    message: `Se guardaron ${result.savedCount} novedades correctamente`,
+    message: `Se procesaron ${result.processedCount} novedades correctamente`,
+    savedCount: result.savedCount,
+    deletedCount: result.deletedCount || 0,
+    processedCount: result.processedCount,
     data: result,
   });
 }
@@ -403,5 +422,40 @@ export async function deleteSettlementType(req, res) {
     message: 'Tipo de liquidación eliminado exitosamente',
     data: result,
   });
+}
+
+// --- ASISTENTE DE LIQUIDACIÓN FINAL Y EGRESOS (PROP-03) ---
+
+export async function previewFinalSettlement(req, res) {
+  const data = await payrollService.previewFinalSettlement(req.tenantPrisma, req.params.id, req.body);
+  return res.status(200).json({ data });
+}
+
+export async function applyFinalSettlement(req, res) {
+  const data = await payrollService.applyFinalSettlement(req.tenantPrisma, req.params.id, req.body);
+  return res.status(200).json({
+    message: 'Liquidación final aplicada y recibo calculado exitosamente',
+    data,
+  });
+}
+
+// --- LIQUIDADOR DE RETROACTIVOS PARITARIOS (PROP-07) ---
+
+export async function previewRetroactiveSettlement(req, res) {
+  const data = await payrollService.previewRetroactiveSettlement(req.tenantPrisma, req.body);
+  return res.status(200).json({ data });
+}
+
+export async function applyRetroactiveSettlement(req, res) {
+  const data = await payrollService.applyRetroactiveSettlement(req.tenantPrisma, req.body, req.user || null);
+  return res.status(200).json({
+    message: 'Retroactivos paritarios aplicados exitosamente en la liquidación destino',
+    data,
+  });
+}
+
+export async function listRetroactiveRuns(req, res) {
+  const data = await payrollService.listRetroactiveRuns(req.tenantPrisma, { limit: req.query.limit });
+  return res.status(200).json({ data });
 }
 

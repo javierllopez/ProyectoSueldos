@@ -86,8 +86,8 @@
                     <!-- 2. CONCEPTOS Y FÓRMULAS (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
                       <a href="#submenu-payroll-concepts"
-                        class="payroll-nav-item d-flex align-items-center justify-content-between"
-                        id="side-payroll-concepts-menu" data-bs-toggle="collapse"
+                        class="payroll-nav-item collapsed d-flex align-items-center justify-content-between"
+                        id="side-payroll-concepts-menu" data-payroll-toggle="submenu"
                         data-bs-target="#submenu-payroll-concepts" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
@@ -102,33 +102,36 @@
                         <i class="ti ti-chevron-down submenu-caret text-muted"
                           style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse payroll-submenu" id="submenu-payroll-concepts">
-                        <a href="#pane-payroll-concepts" class="payroll-nav-subitem" id="side-payroll-concepts"
-                          data-bs-target="#pane-payroll-concepts">
-                          <i class="ti ti-list-details"></i>
-                          <span class="flex-fill">Conceptos de Liquidación</span>
-                          <span class="badge bg-purple-lt ms-auto" id="payroll-badge-concepts-count">0</span>
-                        </a>
-                        <a href="#pane-payroll-matrices" class="payroll-nav-subitem" id="side-payroll-matrices"
-                          data-bs-target="#pane-payroll-matrices">
-                          <i class="ti ti-table"></i>
-                          <span class="flex-fill">Matrices de Liquidación</span>
-                          <span class="badge bg-indigo-lt ms-auto" id="payroll-badge-matrices-count">0</span>
-                        </a>
-                        <a href="#pane-payroll-fixed-values" class="payroll-nav-subitem" id="side-payroll-fixed-values"
-                          data-bs-target="#pane-payroll-fixed-values">
-                          <i class="ti ti-pinned"></i>
-                          <span class="flex-fill">Valores Fijos</span>
-                          <span class="badge bg-azure-lt ms-auto" id="payroll-badge-fixed-values-count">0</span>
-                        </a>
+                      <div class="collapse payroll-submenu" id="submenu-payroll-concepts"
+                        data-bs-parent="#payroll-sidebar-nav">
+                        <div class="payroll-submenu-wrap">
+                          <a href="#pane-payroll-concepts" class="payroll-nav-subitem" id="side-payroll-concepts"
+                            data-bs-target="#pane-payroll-concepts">
+                            <i class="ti ti-list-details"></i>
+                            <span class="flex-fill">Conceptos de Liquidación</span>
+                            <span class="badge bg-purple-lt ms-auto" id="payroll-badge-concepts-count">0</span>
+                          </a>
+                          <a href="#pane-payroll-matrices" class="payroll-nav-subitem" id="side-payroll-matrices"
+                            data-bs-target="#pane-payroll-matrices">
+                            <i class="ti ti-table"></i>
+                            <span class="flex-fill">Matrices de Liquidación</span>
+                            <span class="badge bg-indigo-lt ms-auto" id="payroll-badge-matrices-count">0</span>
+                          </a>
+                          <a href="#pane-payroll-fixed-values" class="payroll-nav-subitem" id="side-payroll-fixed-values"
+                            data-bs-target="#pane-payroll-fixed-values">
+                            <i class="ti ti-pinned"></i>
+                            <span class="flex-fill">Valores Fijos</span>
+                            <span class="badge bg-azure-lt ms-auto" id="payroll-badge-fixed-values-count">0</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
 
                     <!-- 3. NOVEDADES PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
                       <a href="#submenu-novedades-persistentes"
-                        class="payroll-nav-item d-flex align-items-center justify-content-between"
-                        id="side-nov-pers-menu" data-bs-toggle="collapse"
+                        class="payroll-nav-item collapsed d-flex align-items-center justify-content-between"
+                        id="side-nov-pers-menu" data-payroll-toggle="submenu"
                         data-bs-target="#submenu-novedades-persistentes" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
@@ -143,31 +146,34 @@
                         <i class="ti ti-chevron-down submenu-caret text-muted"
                           style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse payroll-submenu" id="submenu-novedades-persistentes">
-                        <a href="#pane-nov-pers-emp" class="payroll-nav-subitem" id="side-nov-pers-emp"
-                          data-bs-target="#pane-nov-pers-emp">
-                          <i class="ti ti-user-check"></i>
-                          <span class="flex-fill">Conceptos por empleado</span>
-                        </a>
-                        <a href="#pane-nov-pers-con" class="payroll-nav-subitem" id="side-nov-pers-con"
-                          data-bs-target="#pane-nov-pers-con">
-                          <i class="ti ti-users-group"></i>
-                          <span class="flex-fill">Empleados por concepto</span>
-                        </a>
-                        <a href="#pane-payroll-embargoes" class="payroll-nav-subitem" id="side-payroll-embargoes"
-                          data-bs-target="#pane-payroll-embargoes">
-                          <i class="ti ti-scale text-primary"></i>
-                          <span class="flex-fill">Embargos de Haberes</span>
-                          <span class="badge bg-primary-lt ms-auto" id="payroll-badge-embargoes-count">0</span>
-                        </a>
+                      <div class="collapse payroll-submenu" id="submenu-novedades-persistentes"
+                        data-bs-parent="#payroll-sidebar-nav">
+                        <div class="payroll-submenu-wrap">
+                          <a href="#pane-nov-pers-emp" class="payroll-nav-subitem" id="side-nov-pers-emp"
+                            data-bs-target="#pane-nov-pers-emp">
+                            <i class="ti ti-user-check"></i>
+                            <span class="flex-fill">Conceptos por empleado</span>
+                          </a>
+                          <a href="#pane-nov-pers-con" class="payroll-nav-subitem" id="side-nov-pers-con"
+                            data-bs-target="#pane-nov-pers-con">
+                            <i class="ti ti-users-group"></i>
+                            <span class="flex-fill">Empleados por concepto</span>
+                          </a>
+                          <a href="#pane-payroll-embargoes" class="payroll-nav-subitem" id="side-payroll-embargoes"
+                            data-bs-target="#pane-payroll-embargoes">
+                            <i class="ti ti-scale text-primary"></i>
+                            <span class="flex-fill">Embargos de Haberes</span>
+                            <span class="badge bg-primary-lt ms-auto" id="payroll-badge-embargoes-count">0</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
 
                     <!-- 4. NOVEDADES NO PERSISTENTES (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
                       <a href="#submenu-novedades-no-persistentes"
-                        class="payroll-nav-item d-flex align-items-center justify-content-between"
-                        id="side-nov-nopers-menu" data-bs-toggle="collapse"
+                        class="payroll-nav-item collapsed d-flex align-items-center justify-content-between"
+                        id="side-nov-nopers-menu" data-payroll-toggle="submenu"
                         data-bs-target="#submenu-novedades-no-persistentes" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
@@ -182,17 +188,25 @@
                         <i class="ti ti-chevron-down submenu-caret text-muted"
                           style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse payroll-submenu" id="submenu-novedades-no-persistentes">
-                        <a href="#pane-nov-nopers-emp" class="payroll-nav-subitem" id="side-nov-nopers-emp"
-                          data-bs-target="#pane-nov-nopers-emp">
-                          <i class="ti ti-user-edit"></i>
-                          <span class="flex-fill">Conceptos por empleado</span>
-                        </a>
-                        <a href="#pane-nov-nopers-con" class="payroll-nav-subitem" id="side-nov-nopers-con"
-                          data-bs-target="#pane-nov-nopers-con">
-                          <i class="ti ti-list-numbers"></i>
-                          <span class="flex-fill">Empleados por concepto</span>
-                        </a>
+                      <div class="collapse payroll-submenu" id="submenu-novedades-no-persistentes"
+                        data-bs-parent="#payroll-sidebar-nav">
+                        <div class="payroll-submenu-wrap">
+                          <a href="#pane-nov-nopers-emp" class="payroll-nav-subitem" id="side-nov-nopers-emp"
+                            data-bs-target="#pane-nov-nopers-emp">
+                            <i class="ti ti-user-edit"></i>
+                            <span class="flex-fill">Conceptos por empleado</span>
+                          </a>
+                          <a href="#pane-nov-nopers-con" class="payroll-nav-subitem" id="side-nov-nopers-con"
+                            data-bs-target="#pane-nov-nopers-con">
+                            <i class="ti ti-list-numbers"></i>
+                            <span class="flex-fill">Empleados por concepto</span>
+                          </a>
+                          <a href="#pane-nov-nopers-matrix" class="payroll-nav-subitem" id="side-nov-nopers-matrix"
+                            data-bs-target="#pane-nov-nopers-matrix">
+                            <i class="ti ti-table-shortcut text-indigo"></i>
+                            <span class="flex-fill">Planilla Ágil Multiconcepto</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
 
@@ -238,8 +252,8 @@
                     <!-- 10. GENERADOR DE INFORMES PERSONALIZADOS (SUBMENÚ DESPLEGABLE) -->
                     <div class="payroll-nav-dropdown">
                       <a href="#submenu-payroll-reports"
-                        class="payroll-nav-item d-flex align-items-center justify-content-between"
-                        id="side-payroll-reports-menu" data-bs-toggle="collapse"
+                        class="payroll-nav-item collapsed d-flex align-items-center justify-content-between"
+                        id="side-payroll-reports-menu" data-payroll-toggle="submenu"
                         data-bs-target="#submenu-payroll-reports" role="button" aria-expanded="false">
                         <div class="d-flex align-items-center gap-2">
                           <div class="payroll-nav-icon">
@@ -254,17 +268,20 @@
                         <i class="ti ti-chevron-down submenu-caret text-muted"
                           style="transition: transform 0.2s ease;"></i>
                       </a>
-                      <div class="collapse payroll-submenu" id="submenu-payroll-reports">
-                        <a href="#pane-reports-runner" class="payroll-nav-subitem" id="side-reports-runner"
-                          data-bs-target="#pane-reports-runner">
-                          <i class="ti ti-file-analytics"></i>
-                          <span class="flex-fill">Emisión de Informes</span>
-                        </a>
-                        <a href="#pane-reports-builder" class="payroll-nav-subitem" id="side-reports-builder"
-                          data-bs-target="#pane-reports-builder">
-                          <i class="ti ti-layout-grid-add"></i>
-                          <span class="flex-fill">Diseñador de Plantillas</span>
-                        </a>
+                      <div class="collapse payroll-submenu" id="submenu-payroll-reports"
+                        data-bs-parent="#payroll-sidebar-nav">
+                        <div class="payroll-submenu-wrap">
+                          <a href="#pane-reports-runner" class="payroll-nav-subitem" id="side-reports-runner"
+                            data-bs-target="#pane-reports-runner">
+                            <i class="ti ti-file-analytics"></i>
+                            <span class="flex-fill">Emisión de Informes</span>
+                          </a>
+                          <a href="#pane-reports-builder" class="payroll-nav-subitem" id="side-reports-builder"
+                            data-bs-target="#pane-reports-builder">
+                            <i class="ti ti-layout-grid-add"></i>
+                            <span class="flex-fill">Diseñador de Plantillas</span>
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div> <!-- /#payroll-sidebar-nav -->
@@ -299,7 +316,11 @@
                               <span class="form-check-label small fw-bold text-dark text-nowrap">Agrupar por CCT</span>
                             </label>
                           </div>
-                          <div class="col-lg-3 col-md-12 d-flex justify-content-lg-end gap-2">
+                          <div class="col-lg-3 col-md-12 d-flex flex-wrap justify-content-lg-end gap-2">
+                            <button type="button" class="btn btn-outline-purple text-nowrap"
+                              id="btn-open-retroactive-wizard" title="Liquidar Retroactivos Paritarios sobre Períodos Cerrados (PROP-07)">
+                              <i class="ti ti-history me-1"></i> Retroactivos Paritarios
+                            </button>
                             <button type="button" class="btn btn-outline-teal text-nowrap"
                               id="btn-open-mass-scale-increase" title="Actualización Masiva de Sueldos Básicos">
                               <i class="ti ti-trending-up me-1"></i> Actualización Masiva
@@ -797,8 +818,8 @@
                   <div class="tab-pane fade" id="pane-nov-nopers-emp" role="tabpanel">
                     <div class="card shadow-xs mb-3 card-payroll-accent">
                       <div class="card-body py-3">
-                        <div class="row g-3 align-items-center">
-                          <div class="col-md-4">
+                        <div class="row g-2 align-items-end">
+                          <div class="col-md-5">
                             <label class="form-label small fw-bold mb-1">
                               <i class="ti ti-calendar-time me-1 text-primary"></i> Liquidación / Período:
                             </label>
@@ -806,7 +827,7 @@
                               <option value="">Seleccione una liquidación...</option>
                             </select>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-5">
                             <label class="form-label small fw-bold mb-1">
                               <i class="ti ti-user me-1 text-primary"></i> Colaborador:
                             </label>
@@ -814,14 +835,18 @@
                               <option value="">Seleccione un colaborador...</option>
                             </select>
                           </div>
-                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-end pt-3">
-                            <button type="button" class="btn btn-outline-success btn-sm"
+                          <div class="col-md-2 d-flex flex-nowrap gap-1 justify-content-end align-items-end nov-action-icon-group">
+                            <button type="button" class="btn btn-outline-success btn-sm btn-icon"
                               id="btn-nov-nopers-emp-simulate" disabled
-                              title="Calcular y ver recibo provisorio en vivo">
-                              <i class="ti ti-receipt me-1"></i> Simular Recibo
+                              title="Calcular y ver recibo provisorio en vivo"
+                              aria-label="Simular Recibo">
+                              <i class="ti ti-receipt"></i>
                             </button>
-                            <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-nopers-emp-add" disabled>
-                              <i class="ti ti-plus me-1"></i> Agregar Novedad
+                            <button type="button" class="btn btn-payroll btn-sm btn-icon"
+                              id="btn-nov-nopers-emp-add" disabled
+                              title="Agregar novedad individual"
+                              aria-label="Agregar Novedad">
+                              <i class="ti ti-plus"></i>
                             </button>
                           </div>
                         </div>
@@ -872,7 +897,7 @@
                   <div class="tab-pane fade" id="pane-nov-nopers-con" role="tabpanel">
                     <div class="card shadow-xs mb-3 card-payroll-accent">
                       <div class="card-body py-3">
-                        <div class="row g-3 align-items-center">
+                        <div class="row g-2 align-items-end">
                           <div class="col-md-4">
                             <label class="form-label small fw-bold mb-1">
                               <i class="ti ti-calendar-time me-1 text-primary"></i> Liquidación / Período:
@@ -881,7 +906,7 @@
                               <option value="">Seleccione una liquidación...</option>
                             </select>
                           </div>
-                          <div class="col-md-4">
+                          <div class="col-md-5">
                             <label class="form-label small fw-bold mb-1">
                               <i class="ti ti-variable me-1 text-primary"></i> Concepto No Persistente:
                             </label>
@@ -889,19 +914,36 @@
                               <option value="">Seleccione un concepto...</option>
                             </select>
                           </div>
-                          <div class="col-md-4 text-end d-flex gap-2 justify-content-end align-items-end pt-3">
-                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                          <div class="col-md-3 d-flex flex-nowrap gap-1 justify-content-end align-items-end nov-action-icon-group">
+                            <button type="button" class="btn btn-outline-indigo btn-sm btn-icon"
+                              id="btn-nov-nopers-con-open-matrix" disabled
+                              title="Abrir Planilla Ágil Multiconcepto y arrastre de período anterior"
+                              aria-label="Abrir Grilla Multiconcepto">
+                              <i class="ti ti-layout-grid"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-success btn-sm btn-icon"
+                              id="btn-nov-nopers-con-import-matrix-excel" disabled
+                              title="Importar Excel Multiconcepto (Columna 1 = Legajo, encabezados = Códigos de Concepto)"
+                              aria-label="Importar Excel Multiconcepto">
+                              <i class="ti ti-file-import"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-icon"
                               id="btn-nov-nopers-con-import-excel" disabled
-                              title="Importar novedades de archivo Excel o CSV">
-                              <i class="ti ti-file-spreadsheet me-1 text-success"></i> Importar Excel
+                              title="Importar novedades desde Excel/CSV para el concepto seleccionado"
+                              aria-label="Importar Excel del concepto">
+                              <i class="ti ti-file-spreadsheet text-success"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
+                            <button type="button" class="btn btn-outline-primary btn-sm btn-icon"
                               id="btn-nov-nopers-con-batch-sheet" disabled
-                              title="Carga rápida de nómina continua en lista">
-                              <i class="ti ti-table-shortcut me-1"></i> Planilla Ágil
+                              title="Abrir Planilla Ágil de carga rápida para este concepto"
+                              aria-label="Abrir Planilla Ágil">
+                              <i class="ti ti-table-shortcut"></i>
                             </button>
-                            <button type="button" class="btn btn-payroll btn-sm" id="btn-nov-nopers-con-add" disabled>
-                              <i class="ti ti-user-plus me-1"></i> Agregar
+                            <button type="button" class="btn btn-payroll btn-sm btn-icon"
+                              id="btn-nov-nopers-con-add" disabled
+                              title="Agregar novedad individual"
+                              aria-label="Agregar Novedad">
+                              <i class="ti ti-user-plus"></i>
                             </button>
                           </div>
                         </div>
@@ -953,6 +995,166 @@
                     </div>
                   </div>
 
+                  <!-- PANE: PLANILLA ÁGIL MULTICONCEPTO (MATRIZ EMPLEADO x CONCEPTOS + EXCEL + ARRASTRE) -->
+                  <div class="tab-pane fade" id="pane-nov-nopers-matrix" role="tabpanel">
+                    <div class="card shadow-xs mb-3 card-payroll-accent">
+                      <div class="card-body py-3">
+                        <div class="row g-2 align-items-end">
+                          <div class="col-lg-5 col-md-5">
+                            <label class="form-label small fw-bold mb-1" for="nov-matrix-period-select">
+                              <i class="ti ti-calendar-time me-1 text-primary"></i> Liquidación / Período Destino:
+                            </label>
+                            <select id="nov-matrix-period-select" class="form-select">
+                              <option value="">Seleccione una liquidación...</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-5 col-md-5">
+                            <label class="form-label small fw-bold mb-1" for="nov-matrix-concept-picker">
+                              <i class="ti ti-columns-3 me-1 text-indigo"></i> Agregar Concepto como Columna:
+                            </label>
+                            <select id="nov-matrix-concept-picker" class="form-select">
+                              <option value="">Seleccione un concepto para agregar...</option>
+                            </select>
+                          </div>
+                          <div class="col-lg-2 col-md-2 d-flex flex-nowrap gap-1 justify-content-end align-items-end nov-action-icon-group">
+                            <button type="button" class="btn btn-outline-secondary btn-sm btn-icon"
+                              id="btn-nov-matrix-load-current-concepts"
+                              title="Cargar como columnas los conceptos que ya poseen novedades en este período"
+                              aria-label="Con datos actuales">
+                              <i class="ti ti-list-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-indigo btn-sm btn-icon"
+                              id="btn-nov-matrix-open-carryover"
+                              title="Copiar legajos o clonar novedades desde una liquidación anterior"
+                              aria-label="Copiar de período anterior">
+                              <i class="ti ti-copy"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-success btn-sm btn-icon"
+                              id="btn-nov-matrix-import-excel"
+                              title="Importar novedades desde archivo Excel Multiconcepto"
+                              aria-label="Importar Excel Multiconcepto">
+                              <i class="ti ti-file-spreadsheet"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger btn-sm btn-icon"
+                              id="btn-nov-matrix-clear-cols"
+                              title="Ocultar todas las columnas seleccionadas"
+                              aria-label="Limpiar columnas">
+                              <i class="ti ti-layout-off"></i>
+                            </button>
+                          </div>
+                        </div>
+
+                        <div class="mt-2 pt-2 border-top d-flex align-items-center gap-2 flex-wrap">
+                          <span class="text-muted small fw-semibold"><i class="ti ti-columns me-1"></i>Columnas activas:</span>
+                          <div id="nov-matrix-selected-chips" class="d-flex align-items-center gap-1 flex-wrap">
+                            <span class="text-muted small fst-italic">Ninguna columna seleccionada</span>
+                          </div>
+                        </div>
+
+                        <div id="nov-matrix-readonly-alert" class="alert alert-warning py-2 small mb-0 mt-2 d-none">
+                          <i class="ti ti-lock me-1"></i> <strong>Período Cerrado:</strong> Esta liquidación está cerrada; la grilla funciona en modo de solo lectura y no admite guardar cambios.
+                        </div>
+
+                        <div id="nov-matrix-carryover-banner" class="alert alert-info py-2 small mb-0 mt-2 d-none d-flex align-items-center justify-content-between gap-2">
+                          <div id="nov-matrix-carryover-banner-text"></div>
+                          <button type="button" class="btn-close flex-shrink-0" id="btn-nov-matrix-dismiss-carryover-banner" aria-label="Cerrar"></button>
+                        </div>
+
+                        <div id="nov-matrix-legal-alert" class="alert alert-warning py-2 small mb-0 mt-2 d-none"></div>
+                      </div>
+                    </div>
+
+                    <div class="card shadow-xs position-relative">
+                      <div id="nov-matrix-spinner"
+                        class="position-absolute top-50 start-50 translate-middle d-none z-index-10">
+                        <div class="spinner-border text-primary" role="status"></div>
+                      </div>
+
+                      <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                          <div class="input-icon" style="width: 230px;">
+                            <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+                            <input type="text" id="nov-matrix-search" class="form-control form-control-sm"
+                              placeholder="Legajo, colaborador o CUIL..." />
+                          </div>
+                          <select id="nov-matrix-dept-filter" class="form-select form-select-sm" style="width: 170px;">
+                            <option value="">Todos los sectores</option>
+                          </select>
+                          <select id="nov-matrix-view-filter" class="form-select form-select-sm" style="width: 195px;">
+                            <option value="ALL">Todos los legajos</option>
+                            <option value="WITH_DATA">Solo con valores</option>
+                            <option value="MODIFIED">Solo modificados</option>
+                            <option value="CARRIED">Solo arrastre período ant.</option>
+                            <option value="INVALID">Solo con error</option>
+                          </select>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-1 flex-nowrap nov-action-icon-group">
+                          <button type="button" class="btn btn-outline-primary btn-sm btn-icon"
+                            id="btn-nov-matrix-smart-paste" disabled
+                            title="Pegar tabla desde Excel emparejando por Legajo o CUIL en columna 1"
+                            aria-label="Pegar por Legajo o CUIL">
+                            <i class="ti ti-clipboard-list"></i>
+                          </button>
+                          <button type="button" class="btn btn-outline-secondary btn-sm btn-icon"
+                            id="btn-nov-matrix-undo" disabled
+                            title="Deshacer el último pegado o arrastre en borrador"
+                            aria-label="Deshacer">
+                            <i class="ti ti-arrow-back-up"></i>
+                          </button>
+                          <span class="badge bg-secondary-lt fw-semibold text-nowrap" id="nov-matrix-pending-badge">
+                            Sin cambios pendientes
+                          </span>
+                          <button type="button" class="btn btn-primary btn-sm btn-icon"
+                            id="btn-nov-matrix-save" disabled
+                            title="Guardar cambios pendientes en el período"
+                            aria-label="Guardar Cambios">
+                            <i class="ti ti-device-floppy"></i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div id="nov-matrix-empty-state" class="card-body text-center py-5 text-muted">
+                        <div class="mb-2">
+                          <i class="ti ti-table-plus fs-1 text-indigo"></i>
+                        </div>
+                        <h4 class="mb-1">Planilla Ágil Multiconcepto</h4>
+                        <p class="small text-muted mb-3">
+                          Agregá uno o más conceptos no persistentes arriba, cargá los conceptos ya utilizados o arrastrá la nómina del período anterior.<br>
+                          Soporta navegación con <kbd>Enter</kbd> / <kbd>Tab</kbd> / <kbd>Flechas</kbd> y pegado directo <kbd>Ctrl+V</kbd> desde Excel o Google Sheets.
+                        </p>
+                        <div class="d-flex justify-content-center gap-2 flex-wrap">
+                          <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-nov-matrix-empty-load-current">
+                            <i class="ti ti-list-check me-1"></i> Cargar conceptos con datos actuales
+                          </button>
+                          <button type="button" class="btn btn-indigo btn-sm" id="btn-nov-matrix-empty-carryover">
+                            <i class="ti ti-copy me-1"></i> Copiar del período anterior
+                          </button>
+                          <button type="button" class="btn btn-outline-success btn-sm" id="btn-nov-matrix-empty-import-excel">
+                            <i class="ti ti-file-spreadsheet me-1"></i> Importar Excel Multiconcepto
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="card-body p-0 d-none" id="nov-matrix-table-card-body">
+                        <div class="table-responsive nov-matrix-table-wrap" id="nov-matrix-table-wrap">
+                          <table class="table table-sm table-vcenter table-hover mb-0" id="nov-matrix-table">
+                            <thead id="nov-matrix-thead"></thead>
+                            <tbody id="nov-matrix-tbody"></tbody>
+                            <tfoot id="nov-matrix-tfoot"></tfoot>
+                          </table>
+                        </div>
+                        <div class="px-3 py-2 bg-light border-top d-flex justify-content-between align-items-center flex-wrap gap-2 small text-muted">
+                          <div>
+                            <i class="ti ti-keyboard me-1"></i>
+                            Tip Excel: pegá un rango <kbd>Ctrl+V</kbd> directamente sobre cualquier celda (acepta <code>1.250,50</code>, <code>$</code>, <code>%</code> y horas <code>HH:MM</code>). Usá <kbd>Enter</kbd>/<kbd>↓</kbd> vertical y <kbd>Tab</kbd>/<kbd>Alt+→</kbd> horizontal.
+                          </div>
+                          <span id="nov-matrix-visible-count">0 legajos visibles</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- PANE: PROCESO DE LIQUIDACIÓN (NUEVA INTERFAZ) -->
                   <div class="tab-pane fade" id="pane-payroll-settlement" role="tabpanel">
                     <div class="card shadow-xs mb-3 card-payroll-accent">
@@ -977,8 +1179,12 @@
                                 liquidación desde Períodos y Liquidaciones</div>
                             </div>
                           </div>
-                          <div>
-                            <button type="button" class="btn btn-outline-secondary btn-sm"
+                          <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <button type="button" class="btn btn-outline-danger btn-sm d-none text-nowrap"
+                              id="btn-open-final-assistant">
+                              <i class="ti ti-scale me-1"></i> Asistente Liquidación Final
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary btn-sm text-nowrap"
                               id="btn-back-from-settlement">
                               <i class="ti ti-arrow-left me-1"></i> Volver a Períodos y Liquidaciones
                             </button>
@@ -1712,6 +1918,7 @@
                                     <th class="text-center">LSD ARCA</th>
                                     <th class="text-center">Días Base</th>
                                     <th class="text-center">Aportes / Ganancias</th>
+                                    <th class="text-center">Retroactivos</th>
                                     <th class="text-center">Baja Legajo</th>
                                     <th class="text-center">Uso</th>
                                     <th class="text-center">Estado</th>
@@ -1720,7 +1927,7 @@
                                 </thead>
                                 <tbody id="settlement-types-table-body">
                                   <tr>
-                                    <td colspan="9" class="text-center py-4 text-muted">Cargando tipos de liquidación...</td>
+                                    <td colspan="10" class="text-center py-4 text-muted">Cargando tipos de liquidación...</td>
                                   </tr>
                                 </tbody>
                               </table>

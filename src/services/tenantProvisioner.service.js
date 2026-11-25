@@ -25,7 +25,7 @@ import {
   getArcaContractModalitiesData,
 } from './provisioner/defaultCatalogs.js';
 import { ensureTenantProfileSchema, ensureTenantPersonnelSchema } from './provisioner/personnelAndProfile.ensurer.js';
-import { ensureTenantPayrollSchema } from './provisioner/payroll.ensurer.js';
+import { ensureTenantPayrollSchema, DEFAULT_SETTLEMENT_TYPES } from './provisioner/payroll.ensurer.js';
 import { ensureTenantIncomeTaxSchema } from './provisioner/incomeTax.ensurer.js';
 import { ensureTenantReportsSchema, ensureTenantDisciplinarySchema } from './provisioner/reportsAndDisciplinary.ensurer.js';
 
@@ -142,6 +142,15 @@ export async function provisionTenantDatabase({ cuit, name, activityCode = null,
             standardWeeklyHours: 48.00,
             standardMonthlyHours: 200.00,
           },
+        });
+
+        // 9b. Sembrar los tipos de liquidación nativos del ABM
+        await tenantClient.payrollSettlementType.createMany({
+          data: DEFAULT_SETTLEMENT_TYPES.map((st) => ({
+            id: crypto.randomUUID(),
+            ...st,
+          })),
+          skipDuplicates: true,
         });
 
         // 10. Crear Período Fiscal Inicial

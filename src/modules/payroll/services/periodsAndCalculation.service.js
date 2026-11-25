@@ -498,6 +498,49 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
     include: { concept: true },
   });
 
+  // Si la liquidación admite retroactivos y existen novedades cargadas para colaboradores INACTIVE,
+  // incorporarlos en modo complementario de egresado sin esperar selección manual.
+  if (
+    (!Array.isArray(employeeIds) || employeeIds.length === 0) &&
+    settlementTypeConfig?.allowsRetroactives === true &&
+    dbNovelties.length > 0
+  ) {
+    const activeIds = new Set(employees.map((e) => e.id));
+    const missingEmpIds = [...new Set(dbNovelties.map((dn) => dn.employeeId).filter((id) => id && !activeIds.has(id)))];
+    if (missingEmpIds.length > 0) {
+      const inactiveWithNovelties = await tenantPrisma.employee.findMany({
+        where: { id: { in: missingEmpIds }, deletedAt: null },
+        include: {
+          department: true,
+          jobPosition: true,
+          healthInsurance: true,
+          union: true,
+          mutual: true,
+          salaryScale: {
+            include: {
+              periods: {
+                orderBy: { validFrom: 'asc' },
+              },
+            },
+          },
+          workShift: true,
+          relatives: {
+            where: { deletedAt: null },
+            include: { kinship: true },
+          },
+          assignedConcepts: {
+            where: {
+              isActive: true,
+              concept: { deletedAt: null, isActive: true },
+            },
+            include: { concept: true },
+          },
+        },
+      });
+      employees.push(...inactiveWithNovelties);
+    }
+  }
+
   // Mapa de novedades agrupadas por employeeId y mapa de días trabajados explícitos
   const novedadesByEmp = new Map();
   const workedDaysByEmp = new Map();
@@ -512,10 +555,28 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       conceptCode: dn.concept.code,
       units: dn.units !== null ? Number(dn.units) : undefined,
       amount: dn.amount !== null ? Number(dn.amount) : undefined,
+      adjustmentPeriod: dn.adjustmentPeriod || null,
       notes: dn.notes,
     });
     if (dn.concept.code === 'DIAS_TRABAJADOS' && dn.units !== null) {
       workedDaysByEmp.set(dn.employeeId, Number(dn.units));
+    }
+  }
+
+  // 1.5. Aplicar días ARCA LSD guardados en Hojas de Liquidación Final (PROP-03) si no hay override explícito posterior
+  if (tenantPrisma.finalSettlementWorksheet?.findMany) {
+    try {
+      const worksheets = await tenantPrisma.finalSettlementWorksheet.findMany({
+        where: { payrollPeriodId: periodId },
+        select: { employeeId: true, workedDaysForLsd: true },
+      });
+      for (const ws of worksheets || []) {
+        if (!workedDaysByEmp.has(ws.employeeId) && ws.workedDaysForLsd !== null && ws.workedDaysForLsd !== undefined) {
+          workedDaysByEmp.set(ws.employeeId, Number(ws.workedDaysForLsd));
+        }
+      }
+    } catch (_) {
+      // Tolerancia en entornos mock sin tabla de hojas finales
     }
   }
 
@@ -714,6 +775,11 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
       },
       activeEmbargoes: empEmbargoes,
       workedDaysOverride: workedDaysByEmp.has(emp.id) ? workedDaysByEmp.get(emp.id) : null,
+      isRetroactiveOnlyInactive: Boolean(
+        emp.status !== 'ACTIVE' &&
+        settlementTypeConfig?.allowsRetroactives === true &&
+        String(period?.periodType || '').toUpperCase() !== 'FINAL'
+      ),
     });
 
     const validConcepts = (calculation.items || []).filter(
@@ -859,6 +925,7 @@ export async function calculatePeriod(tenantPrisma, periodId, { employeeIds = []
         baseAmount: it.baseAmount,
         amount: it.amount,
         arcaConceptCode: it.arcaConceptCode,
+        adjustmentPeriod: it.adjustmentPeriod || null,
         formulaExplanation: it.formulaExplanation || null,
         notes: it.notes || null,
       }));

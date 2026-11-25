@@ -23,6 +23,14 @@ import {
   ARCA_T03_ACTIVITIES,
   getArcaActivityInfo,
 } from '../../utils/helpers.js';
+import {
+  parseClipboardGrid,
+  parseClipboardCellValue,
+  formatCellValueForInput,
+  isOvertimeHoursConcept,
+  isSensitiveDeductionOrAdvance,
+  isConceptCompatibleWithPeriodType,
+} from '../../utils/clipboardMatrixParser.js?v=payroll-5.3';
 
 class MixinMethods {
   async fetchActiveEmployees() {
@@ -42,6 +50,30 @@ class MixinMethods {
     return emps;
   }
 
+  async fetchAllEmployeesForValidation() {
+    const empRes = await apiRequest('/employees?status=ALL&limit=5000');
+    const emps = empRes.data || [];
+    if (empRes.meta && empRes.meta.totalPages > 1) {
+      for (let p = 2; p <= empRes.meta.totalPages; p++) {
+        const nextRes = await apiRequest(`/employees?status=ALL&limit=5000&page=${p}`);
+        if (nextRes.data) emps.push(...nextRes.data);
+      }
+    }
+    return emps;
+  }
+
+  async fetchAllConceptsCatalog() {
+    const res = await apiRequest('/payroll/concepts?limit=1000');
+    const list = res.data || [];
+    if (res.meta && res.meta.totalPages > 1) {
+      for (let p = 2; p <= res.meta.totalPages; p++) {
+        const nextRes = await apiRequest(`/payroll/concepts?limit=1000&page=${p}`);
+        if (nextRes.data) list.push(...nextRes.data);
+      }
+    }
+    return list;
+  }
+
   async fetchIndividualConcepts(isPersistent = null, targetPeriodType = null) {
     let url = '/payroll/concepts?scope=INDIVIDUAL&limit=500&excludeCalculated=true';
     if (isPersistent !== null && isPersistent !== undefined) {
@@ -52,44 +84,7 @@ class MixinMethods {
     list = list.filter((c) => (c.noveltyDataType || '').toUpperCase() !== 'CALCULADO');
 
     if (targetPeriodType) {
-      const pType = String(targetPeriodType).toUpperCase();
-      const LEGACY_TYPES = new Set(['ALL', 'MONTHLY', 'MENSUAL', 'QUINCE', 'QUINCENA', 'QUINCE_1', 'QUINCE_2', 'SAC', 'AGUINALDO', 'SAC_1', 'SAC_2', 'VACATIONS', 'VACACIONES', 'FINAL', 'LIQUIDACION_FINAL']);
-
-      if (!LEGACY_TYPES.has(pType)) {
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          return cPeriodType === pType || cPeriodType === 'ALL';
-        });
-      } else if (pType === 'MONTHLY') {
-        // En liquidación MENSUAL no se permiten conceptos de vacaciones ni de tipos personalizados
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          const cCode = String(c.code || '').toUpperCase();
-          return LEGACY_TYPES.has(cPeriodType) && cPeriodType !== 'VACATIONS' && !cCode.startsWith('VA');
-        });
-      } else if (pType === 'VACATIONS') {
-        // En liquidación de VACACIONES solo se permiten conceptos de vacaciones
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          const cCode = String(c.code || '').toUpperCase();
-          return cPeriodType === 'VACATIONS' || cCode.startsWith('VA');
-        });
-      } else if (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC') {
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          return cPeriodType === 'SAC' || cPeriodType === 'SAC_1' || cPeriodType === 'SAC_2' || cPeriodType === 'MONTHLY';
-        });
-      } else if (pType === 'FINAL') {
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          return cPeriodType === 'FINAL' || cPeriodType === 'MONTHLY';
-        });
-      } else if (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE') {
-        list = list.filter((c) => {
-          const cPeriodType = String(c.periodType || '').toUpperCase();
-          return cPeriodType === 'QUINCE' || cPeriodType === 'QUINCE_1' || cPeriodType === 'QUINCE_2' || cPeriodType === 'MONTHLY';
-        });
-      }
+      list = list.filter((c) => isConceptCompatibleWithPeriodType(c, targetPeriodType));
     }
 
     return list;
@@ -1071,6 +1066,13 @@ class MixinMethods {
   }
 
   clearNovNoPersConView() {
+    const periodId = document.getElementById('nov-nopers-con-period-select')?.value;
+    const isClosed = periodId ? this.isPeriodClosed(periodId) : true;
+    const matrixBtn = document.getElementById('btn-nov-nopers-con-open-matrix');
+    const matrixExcelBtn = document.getElementById('btn-nov-nopers-con-import-matrix-excel');
+    if (matrixBtn) matrixBtn.disabled = !periodId;
+    if (matrixExcelBtn) matrixExcelBtn.disabled = !periodId || isClosed;
+
     const addBtn = document.getElementById('btn-nov-nopers-con-add');
     const batchBtn = document.getElementById('btn-nov-nopers-con-batch-sheet');
     const importBtn = document.getElementById('btn-nov-nopers-con-import-excel');
@@ -1093,9 +1095,13 @@ class MixinMethods {
     }
 
     const isClosed = this.isPeriodClosed(periodId);
+    const matrixBtn = document.getElementById('btn-nov-nopers-con-open-matrix');
+    const matrixExcelBtn = document.getElementById('btn-nov-nopers-con-import-matrix-excel');
     const addBtn = document.getElementById('btn-nov-nopers-con-add');
     const batchBtn = document.getElementById('btn-nov-nopers-con-batch-sheet');
     const importBtn = document.getElementById('btn-nov-nopers-con-import-excel');
+    if (matrixBtn) matrixBtn.disabled = !periodId;
+    if (matrixExcelBtn) matrixExcelBtn.disabled = isClosed;
     if (addBtn) addBtn.disabled = isClosed;
     if (batchBtn) batchBtn.disabled = isClosed;
     if (importBtn) importBtn.disabled = isClosed;
@@ -1309,17 +1315,33 @@ class MixinMethods {
 
     this.batchSheetConcept = concept;
     this.batchSheetPeriod = period;
+    this.batchSheetUndoSnapshot = null;
+    this.batchSheetCarriedEmpIds = new Set();
+
+    const undoBtn = document.getElementById('btn-batch-sheet-undo');
+    if (undoBtn) undoBtn.disabled = true;
+    const onlyCarriedWrap = document.getElementById('batch-sheet-only-carried-wrap');
+    const onlyCarriedChk = document.getElementById('batch-sheet-only-carried');
+    if (onlyCarriedWrap) onlyCarriedWrap.classList.add('d-none');
+    if (onlyCarriedChk) onlyCarriedChk.checked = false;
+    const ctxAlert = document.getElementById('batch-sheet-context-alert');
+    if (ctxAlert) ctxAlert.classList.add('d-none');
+    const filterInp = document.getElementById('batch-sheet-filter-input');
+    if (filterInp) filterInp.value = '';
 
     // Badges en cabecera
     document.getElementById('batch-sheet-period-badge').textContent = period ? `${String(period.month).padStart(2, '0')}/${period.year} - ${period.settlementName}` : '';
     document.getElementById('batch-sheet-concept-badge').textContent = concept ? `[${concept.code}] ${concept.name}` : '';
 
     // Encabezado de columna dinámico
+    const inputType = getConceptInputType(concept);
+    const isAmt = inputType === 'AMOUNT';
     const valHeader = document.getElementById('batch-sheet-col-val-header');
     if (valHeader) {
-      if (concept?.noveltyDataType === 'HOURS') valHeader.textContent = 'Horas';
-      else if (concept?.noveltyDataType === 'PERCENTAGE') valHeader.textContent = '% Porc.';
-      else if (concept?.noveltyDataType === 'AMOUNT' || concept?.noveltyDataType === 'IMPORTE') valHeader.textContent = 'Importe ($)';
+      if (inputType === 'HOURS') valHeader.textContent = 'Horas';
+      else if (inputType === 'PERCENTAGE') valHeader.textContent = '% Porc.';
+      else if (inputType === 'AMOUNT') valHeader.textContent = 'Importe ($)';
+      else if (inputType === 'NONE') valHeader.textContent = 'Asig. (1 / vacío)';
       else valHeader.textContent = 'Valor / Cantidad';
     }
 
@@ -1331,20 +1353,30 @@ class MixinMethods {
     const existingNovelties = res.data || [];
     const novMap = new Map();
     existingNovelties.forEach((n) => novMap.set(n.employeeId, n));
+    this.batchSheetExistingEmpIds = new Set(existingNovelties.map((n) => n.employeeId));
 
     const tbody = document.getElementById('batch-sheet-tbody');
     if (!tbody) return;
 
+    const valPlaceholder = inputType === 'HOURS' ? '00:00 / 0' : inputType === 'NONE' ? '1 / vacío' : '0,00';
+
     tbody.innerHTML = employees
       .map((emp, index) => {
         const existing = novMap.get(emp.id);
-        const isAmt = concept?.noveltyDataType === 'AMOUNT' || concept?.noveltyDataType === 'IMPORTE' || concept?.calculationType === 'FIXED_AMOUNT';
-        const initVal = existing ? (isAmt ? existing.amount : existing.units) : '';
+        const hadExisting = Boolean(existing);
+        const initRawNum = existing ? (isAmt ? existing.amount : existing.units) : null;
+        const initFormatted = initRawNum !== null && initRawNum !== undefined && initRawNum !== ''
+          ? formatCellValueForInput(Number(initRawNum), inputType)
+          : '';
         const initNotes = existing ? (existing.notes || '') : '';
-        const isFilled = initVal !== '' && initVal !== null && initVal !== undefined;
+        const hasPositiveInit = initRawNum !== '' && initRawNum !== null && initRawNum !== undefined && Number(initRawNum) > 0;
+        const isFilled = hasPositiveInit || Boolean(initNotes);
+        const statusBadge = isFilled
+          ? '<span class="badge bg-success-lt">Cargado</span>'
+          : (hadExisting ? '<span class="badge bg-warning-lt">Se quitará</span>' : '<span class="badge bg-secondary-lt">Pendiente</span>');
 
         return `
-          <tr data-emp-id="${emp.id}" data-row-index="${index}" class="batch-sheet-row">
+          <tr data-emp-id="${emp.id}" data-row-index="${index}" data-had-existing="${hadExisting ? 'true' : 'false'}" class="batch-sheet-row">
             <td><strong class="font-monospace text-primary">${escapeHtml(emp.fileNumber)}</strong></td>
             <td>
               <div class="fw-bold">${escapeHtml(emp.lastName)}, ${escapeHtml(emp.firstName)}</div>
@@ -1352,23 +1384,23 @@ class MixinMethods {
             <td>${formatCuit(emp.cuil)}</td>
             <td>${escapeHtml(emp.department?.name || '-')}</td>
             <td class="text-center">
-              <input type="number" step="0.01" min="0" 
-                class="form-control form-control-sm text-end font-monospace batch-sheet-val" 
-                placeholder="0.00" 
-                value="${initVal !== '' && initVal !== null ? initVal : ''}" 
-                data-emp-id="${emp.id}" 
+              <input type="text" inputmode="${inputType === 'NONE' ? 'text' : 'decimal'}"
+                class="form-control form-control-sm text-end font-monospace batch-sheet-val"
+                placeholder="${valPlaceholder}"
+                value="${escapeHtml(initFormatted)}"
+                data-emp-id="${emp.id}"
                 data-index="${index}" />
             </td>
             <td>
-              <input type="text" maxlength="255" 
-                class="form-control form-control-sm batch-sheet-notes" 
-                placeholder="Observaciones..." 
-                value="${escapeHtml(initNotes)}" 
-                data-emp-id="${emp.id}" 
+              <input type="text" maxlength="255"
+                class="form-control form-control-sm batch-sheet-notes"
+                placeholder="Observaciones..."
+                value="${escapeHtml(initNotes)}"
+                data-emp-id="${emp.id}"
                 data-index="${index}" />
             </td>
             <td class="text-center batch-sheet-status-cell">
-              ${isFilled ? '<span class="badge bg-success-lt">Cargado</span>' : '<span class="badge bg-secondary-lt">Pendiente</span>'}
+              ${statusBadge}
             </td>
           </tr>
         `;
@@ -1377,34 +1409,40 @@ class MixinMethods {
 
     this.updateBatchSheetStats();
 
-    // Navegación con teclado por Enter y Flechas
+    // Navegación con teclado por Enter/Flechas saltando filas ocultas + soporte pegado Ctrl+V desde Excel
     tbody.querySelectorAll('.batch-sheet-val').forEach((input) => {
       input.addEventListener('keydown', (e) => {
-        const idx = Number(input.dataset.index);
-        if (e.key === 'Enter' || e.key === 'ArrowDown') {
+        if (e.key === 'Enter' || e.key === 'ArrowDown' || e.key === 'ArrowUp') {
           e.preventDefault();
-          const next = tbody.querySelector(`.batch-sheet-val[data-index="${idx + 1}"]`);
-          if (next) {
-            next.focus();
-            next.select();
-          }
-        } else if (e.key === 'ArrowUp') {
-          e.preventDefault();
-          const prev = tbody.querySelector(`.batch-sheet-val[data-index="${idx - 1}"]`);
-          if (prev) {
-            prev.focus();
-            prev.select();
+          const visibleInputs = Array.from(tbody.querySelectorAll('.batch-sheet-val')).filter(
+            (inp) => inp.closest('tr')?.style.display !== 'none'
+          );
+          const pos = visibleInputs.indexOf(input);
+          if (pos === -1) return;
+          const delta = (e.key === 'ArrowUp' || (e.key === 'Enter' && e.shiftKey)) ? -1 : 1;
+          const target = visibleInputs[pos + delta];
+          if (target) {
+            target.focus();
+            target.select();
           }
         }
       });
 
-      input.addEventListener('input', () => {
-        const tr = input.closest('tr');
-        const statusCell = tr?.querySelector('.batch-sheet-status-cell');
-        const hasVal = input.value.trim() !== '';
-        if (statusCell) {
-          statusCell.innerHTML = hasVal ? '<span class="badge bg-success-lt">Cargado</span>' : '<span class="badge bg-secondary-lt">Pendiente</span>';
+      input.addEventListener('blur', () => {
+        const parsed = parseClipboardCellValue(input.value, getConceptInputType(this.batchSheetConcept));
+        if (!parsed.invalid) {
+          input.value = parsed.empty ? '' : formatCellValueForInput(parsed.value, getConceptInputType(this.batchSheetConcept));
+          this.updateBatchSheetRowState(input.closest('tr'));
+          this.updateBatchSheetStats();
         }
+      });
+
+      input.addEventListener('paste', (e) => this.handleBatchSheetPaste(e, input));
+    });
+
+    tbody.querySelectorAll('.batch-sheet-val, .batch-sheet-notes').forEach((input) => {
+      input.addEventListener('input', () => {
+        this.updateBatchSheetRowState(input.closest('tr'));
         this.updateBatchSheetStats();
       });
     });
@@ -1412,44 +1450,311 @@ class MixinMethods {
     getBootstrapModal(document.getElementById('modal-novelty-batch-sheet'))?.show();
   }
 
+  captureBatchSheetUndoSnapshot() {
+    const tbody = document.getElementById('batch-sheet-tbody');
+    if (!tbody) return;
+    const rows = Array.from(tbody.querySelectorAll('tr[data-emp-id]')).map((row) => ({
+      empId: row.dataset.empId,
+      val: row.querySelector('.batch-sheet-val')?.value || '',
+      notes: row.querySelector('.batch-sheet-notes')?.value || '',
+    }));
+    this.batchSheetUndoSnapshot = {
+      rows,
+      carriedEmpIds: new Set(this.batchSheetCarriedEmpIds || []),
+    };
+    const undoBtn = document.getElementById('btn-batch-sheet-undo');
+    if (undoBtn) undoBtn.disabled = false;
+  }
+
+  undoBatchSheetAction() {
+    const snap = this.batchSheetUndoSnapshot;
+    const tbody = document.getElementById('batch-sheet-tbody');
+    if (!snap || !tbody) return;
+
+    this.batchSheetCarriedEmpIds = new Set(snap.carriedEmpIds || []);
+    const rowByEmp = new Map(
+      Array.from(tbody.querySelectorAll('tr[data-emp-id]')).map((r) => [r.dataset.empId, r])
+    );
+
+    for (const item of snap.rows) {
+      const row = rowByEmp.get(item.empId);
+      if (!row) continue;
+      const valInp = row.querySelector('.batch-sheet-val');
+      const notesInp = row.querySelector('.batch-sheet-notes');
+      if (valInp) valInp.value = item.val;
+      if (notesInp) notesInp.value = item.notes;
+      row.classList.toggle('nov-matrix-row-carried', this.batchSheetCarriedEmpIds.has(item.empId));
+      this.updateBatchSheetRowState(row);
+    }
+
+    this.batchSheetUndoSnapshot = null;
+    const undoBtn = document.getElementById('btn-batch-sheet-undo');
+    if (undoBtn) undoBtn.disabled = true;
+    this.applyBatchSheetRowFilters();
+    this.updateBatchSheetStats();
+    showToast('Se revirtió la última carga masiva en Planilla Ágil');
+  }
+
+  handleBatchSheetPaste(e, startInput) {
+    const rawText = e.clipboardData?.getData('text/plain');
+    if (!rawText) return;
+    const grid = parseClipboardGrid(rawText);
+    if (grid.length === 0) return;
+
+    e.preventDefault();
+    this.captureBatchSheetUndoSnapshot();
+
+    const tbody = document.getElementById('batch-sheet-tbody');
+    if (!tbody) return;
+
+    const visibleRows = Array.from(tbody.querySelectorAll('tr[data-emp-id]')).filter(
+      (r) => r.style.display !== 'none'
+    );
+    const startRow = startInput.closest('tr');
+    const startIdx = visibleRows.indexOf(startRow);
+    if (startIdx === -1) return;
+
+    const inputType = getConceptInputType(this.batchSheetConcept);
+    let applied = 0;
+    let invalidCount = 0;
+    let overflowRows = 0;
+
+    for (let i = 0; i < grid.length; i++) {
+      const targetRow = visibleRows[startIdx + i];
+      if (!targetRow) {
+        overflowRows++;
+        continue;
+      }
+      const pasteCells = grid[i];
+      const valInp = targetRow.querySelector('.batch-sheet-val');
+      const notesInp = targetRow.querySelector('.batch-sheet-notes');
+
+      if (valInp && pasteCells.length >= 1) {
+        const parsed = parseClipboardCellValue(pasteCells[0], inputType);
+        valInp.value = parsed.invalid
+          ? String(pasteCells[0] ?? '').trim()
+          : (parsed.empty ? '' : formatCellValueForInput(parsed.value, inputType));
+        valInp.classList.remove('matrix-cell-pasted-flash');
+        void valInp.offsetWidth;
+        valInp.classList.add('matrix-cell-pasted-flash');
+        if (parsed.invalid) invalidCount++;
+        else applied++;
+      }
+
+      if (notesInp && pasteCells.length >= 2) {
+        notesInp.value = String(pasteCells[1] ?? '').trim().slice(0, 255);
+      }
+
+      this.updateBatchSheetRowState(targetRow);
+    }
+
+    this.updateBatchSheetStats();
+    let msg = `Pegado aplicado sobre ${applied} fila(s)`;
+    if (invalidCount > 0) msg += ` · ${invalidCount} inválida(s)`;
+    if (overflowRows > 0) msg += ` · ${overflowRows} excedente(s) omitida(s)`;
+    showToast(msg, invalidCount > 0 ? 'warning' : 'success');
+  }
+
+  applyCarryoverToSingleBatchModal(data, { mode, overwrite, includeNotes }) {
+    const tbody = document.getElementById('batch-sheet-tbody');
+    if (!tbody || !this.batchSheetConcept) return;
+
+    this.captureBatchSheetUndoSnapshot();
+    const inputType = getConceptInputType(this.batchSheetConcept);
+    const itemByEmp = new Map();
+    for (const it of data.items || []) {
+      if (it.conceptId === this.batchSheetConcept.id) {
+        itemByEmp.set(it.employeeId, it);
+      }
+    }
+
+    let affected = 0;
+    let sensitiveCloned = false;
+
+    tbody.querySelectorAll('tr[data-emp-id]').forEach((row) => {
+      const empId = row.dataset.empId;
+      const item = itemByEmp.get(empId);
+      if (!item) return;
+
+      this.batchSheetCarriedEmpIds.add(empId);
+      row.classList.add('nov-matrix-row-carried');
+
+      if (mode === 'CLONE_VALUES') {
+        const valInp = row.querySelector('.batch-sheet-val');
+        const notesInp = row.querySelector('.batch-sheet-notes');
+        const curParsed = parseClipboardCellValue(valInp?.value || '', inputType);
+        const hasCurrent = !curParsed.invalid && !curParsed.empty && Number(curParsed.value) > 0;
+        if (!overwrite && hasCurrent) return;
+
+        const srcRaw = inputType === 'AMOUNT' ? item.amount : item.units;
+        const srcNum = srcRaw !== null && srcRaw !== undefined ? Math.round(Number(srcRaw) * 100) / 100 : 0;
+        if (valInp && srcNum > 0) {
+          valInp.value = formatCellValueForInput(srcNum, inputType);
+        }
+        if (notesInp && includeNotes && item.notes) {
+          notesInp.value = String(item.notes).trim().slice(0, 255);
+        }
+        if (isSensitiveDeductionOrAdvance(this.batchSheetConcept)) {
+          sensitiveCloned = true;
+        }
+        this.updateBatchSheetRowState(row);
+        affected++;
+      } else {
+        affected++;
+      }
+    });
+
+    const onlyCarriedWrap = document.getElementById('batch-sheet-only-carried-wrap');
+    const onlyCarriedChk = document.getElementById('batch-sheet-only-carried');
+    if (onlyCarriedWrap) onlyCarriedWrap.classList.remove('d-none');
+    if (onlyCarriedChk && mode === 'ZERO_TEMPLATE') {
+      onlyCarriedChk.checked = true;
+    }
+
+    const ctxAlert = document.getElementById('batch-sheet-context-alert');
+    if (ctxAlert) {
+      const srcName = data.sourcePeriod
+        ? `${String(data.sourcePeriod.month).padStart(2, '0')}/${data.sourcePeriod.year} - ${data.sourcePeriod.settlementName}`
+        : 'Período anterior';
+      let msg = `<strong>Arrastre desde ${escapeHtml(srcName)}:</strong> ${affected} legajo(s) aplicados en borrador.`;
+      if (data.skippedInactiveCount > 0) {
+        msg += ` (${data.skippedInactiveCount} baja/inactivo omitido)`;
+      }
+      if (sensitiveCloned) {
+        msg += ' <strong>Control LCT (Arts. 130–133):</strong> verificá tope de adelantos/deducciones.';
+        ctxAlert.className = 'alert alert-warning py-1 px-3 mb-0 rounded-0 border-bottom small flex-shrink-0';
+      } else {
+        ctxAlert.className = 'alert alert-info py-1 px-3 mb-0 rounded-0 border-bottom small flex-shrink-0';
+      }
+      ctxAlert.innerHTML = msg;
+    }
+
+    this.applyBatchSheetRowFilters();
+    this.updateBatchSheetStats();
+    showToast(`Arrastre aplicado en Planilla Ágil (${affected} colaboradores)`);
+  }
+
+  applyBatchSheetRowFilters() {
+    const q = (document.getElementById('batch-sheet-filter-input')?.value || '').trim().toLowerCase();
+    const onlyCarried = document.getElementById('batch-sheet-only-carried')?.checked === true;
+    document.querySelectorAll('#batch-sheet-tbody tr[data-emp-id]').forEach((row) => {
+      const text = row.textContent.toLowerCase();
+      const matchSearch = !q || text.includes(q);
+      const matchCarried = !onlyCarried || this.batchSheetCarriedEmpIds?.has(row.dataset.empId);
+      row.style.display = matchSearch && matchCarried ? '' : 'none';
+    });
+  }
+
+  getBatchSheetRowState(row) {
+    const valStr = row.querySelector('.batch-sheet-val')?.value.trim() || '';
+    const notesStr = row.querySelector('.batch-sheet-notes')?.value.trim() || '';
+    const inputType = getConceptInputType(this.batchSheetConcept);
+    const parsed = parseClipboardCellValue(valStr, inputType);
+    const numVal = !parsed.invalid && !parsed.empty && parsed.value !== null ? Number(parsed.value) : 0;
+    const hasPositiveVal = !parsed.invalid && !parsed.empty && numVal > 0;
+    const hasNotes = notesStr !== '';
+    const hadExisting =
+      row.dataset.hadExisting === 'true' ||
+      Boolean(this.batchSheetExistingEmpIds?.has(row.dataset.empId));
+    return {
+      valStr,
+      notesStr,
+      numVal,
+      hasPositiveVal,
+      hasNotes,
+      hadExisting,
+      invalid: parsed.invalid,
+      error: parsed.error,
+      isFilled: !parsed.invalid && (hasPositiveVal || hasNotes),
+    };
+  }
+
+  updateBatchSheetRowState(row) {
+    if (!row) return;
+    const state = this.getBatchSheetRowState(row);
+    const valInp = row.querySelector('.batch-sheet-val');
+    const isOvertimeWarn = !state.invalid && state.numVal > 30 && isOvertimeHoursConcept(this.batchSheetConcept);
+
+    if (valInp) {
+      valInp.classList.toggle('matrix-cell-invalid', state.invalid);
+      valInp.classList.toggle('matrix-cell-overtime-warn', isOvertimeWarn);
+      valInp.title = state.invalid
+        ? (state.error || 'Valor inválido')
+        : (isOvertimeWarn ? 'Supera tope orientativo 30 hs/mes (Dec. 484/2000)' : '');
+    }
+
+    const statusCell = row.querySelector('.batch-sheet-status-cell');
+    if (statusCell) {
+      if (state.invalid) {
+        statusCell.innerHTML = `<span class="badge bg-danger-lt" title="${escapeHtml(state.error || '')}">Inválido</span>`;
+      } else if (state.isFilled) {
+        statusCell.innerHTML = isOvertimeWarn
+          ? '<span class="badge bg-warning-lt" title="Supera 30 hs extras (Dec. 484/2000)">Cargado &gt;30h</span>'
+          : '<span class="badge bg-success-lt">Cargado</span>';
+      } else if (state.hadExisting) {
+        statusCell.innerHTML = '<span class="badge bg-warning-lt">Se quitará</span>';
+      } else {
+        statusCell.innerHTML = '<span class="badge bg-secondary-lt">Pendiente</span>';
+      }
+    }
+  }
+
   updateBatchSheetStats() {
-    const inputs = document.querySelectorAll('.batch-sheet-val');
+    const rows = document.querySelectorAll('#batch-sheet-tbody tr[data-emp-id]');
     let filled = 0;
-    inputs.forEach((inp) => {
-      if (inp.value.trim() !== '' && Number(inp.value) > 0) filled++;
+    let invalidCount = 0;
+    rows.forEach((row) => {
+      const s = this.getBatchSheetRowState(row);
+      if (s.invalid) invalidCount++;
+      else if (s.isFilled) filled++;
     });
     const statsEl = document.getElementById('batch-sheet-stats');
-    if (statsEl) statsEl.textContent = `${filled} con valor cargado`;
+    if (statsEl) {
+      statsEl.textContent = invalidCount > 0
+        ? `${filled} cargados · ${invalidCount} error(es)`
+        : `${filled} con valor cargado`;
+    }
   }
 
   async saveBatchSheet() {
     if (!this.batchSheetPeriod || !this.batchSheetConcept) return;
 
     const rows = document.querySelectorAll('#batch-sheet-tbody tr[data-emp-id]');
-    const novelties = [];
-    const isAmt = this.batchSheetConcept.noveltyDataType === 'AMOUNT' || this.batchSheetConcept.noveltyDataType === 'IMPORTE' || this.batchSheetConcept.calculationType === 'FIXED_AMOUNT';
+    const items = [];
+    const removeEmployeeIds = [];
+    const isAmt = getConceptInputType(this.batchSheetConcept) === 'AMOUNT';
+    let firstInvalidInput = null;
 
     rows.forEach((row) => {
       const empId = row.dataset.empId;
-      const valInput = row.querySelector('.batch-sheet-val');
-      const notesInput = row.querySelector('.batch-sheet-notes');
+      const { notesStr, numVal, hasPositiveVal, hasNotes, hadExisting, isFilled, invalid } = this.getBatchSheetRowState(row);
 
-      const valStr = valInput?.value.trim();
-      const notesStr = notesInput?.value.trim();
+      if (invalid && !firstInvalidInput) {
+        firstInvalidInput = row.querySelector('.batch-sheet-val');
+        return;
+      }
 
-      if (valStr !== '' || notesStr !== '') {
-        const numVal = Number(valStr) || 0;
-        novelties.push({
+      if (isFilled) {
+        items.push({
           employeeId: empId,
           conceptId: this.batchSheetConcept.id,
-          units: isAmt ? 1 : numVal,
-          amount: isAmt ? numVal : null,
-          notes: notesStr || null,
+          units: isAmt ? 1 : (hasPositiveVal ? numVal : 0),
+          amount: isAmt ? (hasPositiveVal ? numVal : 0) : null,
+          notes: hasNotes ? notesStr : null,
         });
+      } else if (hadExisting) {
+        removeEmployeeIds.push(empId);
       }
     });
 
-    if (novelties.length === 0) {
+    if (firstInvalidInput) {
+      showToast('Corregí los valores inválidos marcados en rojo antes de guardar la planilla', 'warning');
+      firstInvalidInput.focus();
+      firstInvalidInput.select();
+      return;
+    }
+
+    if (items.length === 0 && removeEmployeeIds.length === 0) {
       showToast('No se ingresaron novedades para guardar en la planilla', 'warning');
       return;
     }
@@ -1463,10 +1768,24 @@ class MixinMethods {
     try {
       const res = await apiRequest(`/payroll/periods/${this.batchSheetPeriod.id}/novelties/batch`, {
         method: 'POST',
-        body: JSON.stringify({ novelties }),
+        body: JSON.stringify({
+          items,
+          conceptId: this.batchSheetConcept.id,
+          removeEmployeeIds,
+        }),
       });
 
-      showToast(`¡Planilla guardada exitosamente! ${res.processedCount} novedades registradas`);
+      const savedCount = res?.data?.savedCount ?? res?.savedCount ?? items.length;
+      const deletedCount = res?.data?.deletedCount ?? res?.deletedCount ?? 0;
+      const processedCount = res?.data?.processedCount ?? res?.processedCount ?? (savedCount + deletedCount);
+      let successMsg = `¡Planilla guardada exitosamente! ${processedCount} novedades registradas`;
+      if (deletedCount > 0 && savedCount > 0) {
+        successMsg = `¡Planilla guardada exitosamente! ${savedCount} novedades registradas y ${deletedCount} eliminadas`;
+      } else if (deletedCount > 0) {
+        successMsg = `¡Planilla actualizada! Se eliminaron ${deletedCount} novedades`;
+      }
+
+      showToast(successMsg);
       getBootstrapModal(document.getElementById('modal-novelty-batch-sheet'))?.hide();
       await this.refreshNovNoPersConTable(this.batchSheetPeriod.id, this.batchSheetConcept.id);
     } catch (err) {
@@ -1600,11 +1919,12 @@ class MixinMethods {
 
         const isValid = matchedEmp && (numVal > 0 || notesVal !== '');
         if (isValid) {
+          const isAmtImport = getConceptInputType(this.excelImportConcept) === 'AMOUNT';
           validRows.push({
             employeeId: matchedEmp.id,
             conceptId: this.excelImportConcept.id,
-            units: (this.excelImportConcept.noveltyDataType === 'AMOUNT' || this.excelImportConcept.noveltyDataType === 'IMPORTE') ? 1 : numVal,
-            amount: (this.excelImportConcept.noveltyDataType === 'AMOUNT' || this.excelImportConcept.noveltyDataType === 'IMPORTE') ? numVal : null,
+            units: isAmtImport ? 1 : numVal,
+            amount: isAmtImport ? numVal : null,
             notes: notesVal || null,
           });
         } else {
@@ -1650,10 +1970,11 @@ class MixinMethods {
     try {
       const res = await apiRequest(`/payroll/periods/${this.excelImportPeriod.id}/novelties/batch`, {
         method: 'POST',
-        body: JSON.stringify({ novelties: this.excelImportValidRows }),
+        body: JSON.stringify({ items: this.excelImportValidRows }),
       });
 
-      showToast(`¡Importación completada! Se registraron ${res.processedCount} novedades`);
+      const processedCount = res?.data?.processedCount ?? res?.processedCount ?? this.excelImportValidRows.length;
+      showToast(`¡Importación completada! Se registraron ${processedCount} novedades`);
       getBootstrapModal(document.getElementById('modal-novelties-import-excel'))?.hide();
       await this.refreshNovNoPersConTable(this.excelImportPeriod.id, this.excelImportConcept.id);
     } catch (err) {

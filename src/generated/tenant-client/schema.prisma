@@ -264,6 +264,7 @@ model Employee {
   incomeTaxSettlementDetails IncomeTaxSettlementDetail[]
   incidents                  EmployeeIncident[]
   sanctions                  EmployeeSanction[]
+  finalSettlementWorksheets  FinalSettlementWorksheet[]
 
   @@index([departmentId])
   @@index([jobPositionId])
@@ -525,9 +526,11 @@ model PayrollPeriod {
   createdAt         DateTime  @default(now()) @map("created_at")
   updatedAt         DateTime  @updatedAt @map("updated_at")
 
-  fiscalPeriod    PayrollFiscalPeriod? @relation(fields: [fiscalPeriodId], references: [id], onDelete: Cascade)
-  paySlips        PaySlip[]
-  periodNovelties PeriodNovelty[]
+  fiscalPeriod              PayrollFiscalPeriod?       @relation(fields: [fiscalPeriodId], references: [id], onDelete: Cascade)
+  paySlips                  PaySlip[]
+  periodNovelties           PeriodNovelty[]
+  finalSettlementWorksheets FinalSettlementWorksheet[]
+  retroactiveAdjustmentRuns RetroactiveAdjustmentRun[]
 
   @@unique([year, month, periodType, settlementNumber])
   @@index([fiscalPeriodId])
@@ -608,6 +611,7 @@ model PaySlipItem {
   baseAmount         Decimal? @map("base_amount") @db.Decimal(12, 2)
   amount             Decimal  @map("amount") @db.Decimal(12, 2)
   arcaConceptCode    String?  @map("arca_concept_code") @db.VarChar(10)
+  adjustmentPeriod   String?  @map("adjustment_period") @db.VarChar(6)
   formulaExplanation String?  @map("formula_explanation") @db.Text
   notes              String?  @map("notes") @db.VarChar(255)
   createdAt          DateTime @default(now()) @map("created_at")
@@ -723,15 +727,16 @@ model PayrollSetting {
 }
 
 model PeriodNovelty {
-  id              String   @id @default(uuid())
-  payrollPeriodId String   @map("payroll_period_id")
-  employeeId      String   @map("employee_id")
-  conceptId       String   @map("concept_id")
-  units           Decimal? @map("units") @db.Decimal(12, 2)
-  amount          Decimal? @map("amount") @db.Decimal(12, 2)
-  notes           String?  @map("notes") @db.VarChar(255)
-  createdAt       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  id               String   @id @default(uuid())
+  payrollPeriodId  String   @map("payroll_period_id")
+  employeeId       String   @map("employee_id")
+  conceptId        String   @map("concept_id")
+  units            Decimal? @map("units") @db.Decimal(12, 2)
+  amount           Decimal? @map("amount") @db.Decimal(12, 2)
+  adjustmentPeriod String?  @map("adjustment_period") @db.VarChar(6)
+  notes            String?  @map("notes") @db.VarChar(255)
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
 
   payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
   employee      Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
@@ -1093,6 +1098,7 @@ model PayrollSettlementType {
   defaultWorkedDays           Int      @default(30) @map("default_worked_days")
   appliesStatutoryDeductions  Boolean  @default(true) @map("applies_statutory_deductions")
   triggersEmployeeTermination Boolean  @default(false) @map("triggers_employee_termination")
+  allowsRetroactives          Boolean  @default(false) @map("allows_retroactives")
   isSystem                    Boolean  @default(false) @map("is_system")
   isActive                    Boolean  @default(true) @map("is_active")
   sortOrder                   Int      @default(0) @map("sort_order")
@@ -1102,4 +1108,76 @@ model PayrollSettlementType {
   @@index([conceptPrefix])
   @@index([isActive, sortOrder])
   @@map("payroll_settlement_types")
+}
+
+model FinalSettlementWorksheet {
+  id                     String    @id @default(uuid())
+  payrollPeriodId        String    @map("payroll_period_id")
+  employeeId             String    @map("employee_id")
+  terminationDate        DateTime  @map("termination_date")
+  terminationCause       String    @map("termination_cause") @db.VarChar(50)
+  terminationReasonLabel String    @map("termination_reason_label") @db.VarChar(255)
+  includeWorkedDays      Boolean   @default(true) @map("include_worked_days")
+  daysDivisorMode        String    @default("CALENDAR") @map("days_divisor_mode") @db.VarChar(20)
+  preavisoGiven          Boolean   @default(false) @map("preaviso_given")
+  vacationDaysTaken      Int       @default(0) @map("vacation_days_taken")
+  applyVizzoti           Boolean   @default(true) @map("apply_vizzoti")
+  cctCapAmount           Decimal?  @map("cct_cap_amount") @db.Decimal(12, 2)
+  isExecutive            Boolean   @default(false) @map("is_executive")
+  seniorityYears         Int       @default(0) @map("seniority_years")
+  seniorityMonths        Int       @default(0) @map("seniority_months")
+  seniorityDays          Int       @default(0) @map("seniority_days")
+  indemnityPeriods       Int       @default(0) @map("indemnity_periods")
+  inProbationPeriod      Boolean   @default(false) @map("in_probation_period")
+  mrmnhAmount            Decimal   @default(0.00) @map("mrmnh_amount") @db.Decimal(12, 2)
+  mrmnhSourcePeriodLabel String?   @map("mrmnh_source_period_label") @db.VarChar(100)
+  bestSemesterRemun      Decimal   @default(0.00) @map("best_semester_remun") @db.Decimal(12, 2)
+  workedDaysForLsd       Int       @default(0) @map("worked_days_for_lsd")
+  legalDueDate           DateTime? @map("legal_due_date")
+  worksheetPayload       Json      @map("worksheet_payload")
+  appliedAt              DateTime? @map("applied_at")
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  payrollPeriod PayrollPeriod @relation(fields: [payrollPeriodId], references: [id], onDelete: Cascade)
+  employee      Employee      @relation(fields: [employeeId], references: [id], onDelete: Cascade)
+
+  @@unique([payrollPeriodId, employeeId], map: "uniq_final_ws_period_emp")
+  @@index([payrollPeriodId], map: "idx_final_ws_period")
+  @@index([employeeId], map: "idx_final_ws_emp")
+  @@map("final_settlement_worksheets")
+}
+
+model RetroactiveAdjustmentRun {
+  id                       String   @id @default(uuid())
+  targetPeriodId           String   @map("target_period_id")
+  targetPeriodName         String?  @map("target_period_name") @db.VarChar(191)
+  cctCode                  String?  @map("cct_code") @db.VarChar(50)
+  scaleIdsJson             Json?    @map("scale_ids_json")
+  fromYear                 Int      @map("from_year")
+  fromMonth                Int      @map("from_month")
+  toYear                   Int      @map("to_year")
+  toMonth                  Int      @map("to_month")
+  scaleSourceMode          String   @default("EXISTING_SCALE_PERIODS") @map("scale_source_mode") @db.VarChar(40)
+  agreementLabel           String?  @map("agreement_label") @db.VarChar(255)
+  employeesAppliedCount    Int      @default(0) @map("employees_applied_count")
+  activeAppliedCount       Int      @default(0) @map("active_applied_count")
+  inactiveAppliedCount     Int      @default(0) @map("inactive_applied_count")
+  ignoredInactiveConfirmed Boolean  @default(false) @map("ignored_inactive_confirmed")
+  ignoredInactiveCount     Int      @default(0) @map("ignored_inactive_count")
+  ignoredInactiveSummary   Json?    @map("ignored_inactive_summary")
+  totalRemunerative        Decimal  @default(0.00) @map("total_remunerative") @db.Decimal(14, 2)
+  totalNonRemunerative     Decimal  @default(0.00) @map("total_non_remunerative") @db.Decimal(14, 2)
+  totalSacDelta            Decimal  @default(0.00) @map("total_sac_delta") @db.Decimal(14, 2)
+  grandTotal               Decimal  @default(0.00) @map("grand_total") @db.Decimal(14, 2)
+  runPayload               Json     @map("run_payload")
+  createdBy                String?  @map("created_by") @db.VarChar(191)
+  createdByName            String?  @map("created_by_name") @db.VarChar(191)
+  createdAt                DateTime @default(now()) @map("created_at")
+
+  targetPeriod PayrollPeriod @relation(fields: [targetPeriodId], references: [id], onDelete: Cascade)
+
+  @@index([targetPeriodId], map: "idx_retro_runs_target_period")
+  @@index([createdAt], map: "idx_retro_runs_created_at")
+  @@map("retroactive_adjustment_runs")
 }

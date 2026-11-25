@@ -536,6 +536,7 @@ exports.Prisma.PaySlipItemScalarFieldEnum = {
   baseAmount: 'baseAmount',
   amount: 'amount',
   arcaConceptCode: 'arcaConceptCode',
+  adjustmentPeriod: 'adjustmentPeriod',
   formulaExplanation: 'formulaExplanation',
   notes: 'notes',
   createdAt: 'createdAt',
@@ -624,6 +625,7 @@ exports.Prisma.PeriodNoveltyScalarFieldEnum = {
   conceptId: 'conceptId',
   units: 'units',
   amount: 'amount',
+  adjustmentPeriod: 'adjustmentPeriod',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -883,11 +885,70 @@ exports.Prisma.PayrollSettlementTypeScalarFieldEnum = {
   defaultWorkedDays: 'defaultWorkedDays',
   appliesStatutoryDeductions: 'appliesStatutoryDeductions',
   triggersEmployeeTermination: 'triggersEmployeeTermination',
+  allowsRetroactives: 'allowsRetroactives',
   isSystem: 'isSystem',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.FinalSettlementWorksheetScalarFieldEnum = {
+  id: 'id',
+  payrollPeriodId: 'payrollPeriodId',
+  employeeId: 'employeeId',
+  terminationDate: 'terminationDate',
+  terminationCause: 'terminationCause',
+  terminationReasonLabel: 'terminationReasonLabel',
+  includeWorkedDays: 'includeWorkedDays',
+  daysDivisorMode: 'daysDivisorMode',
+  preavisoGiven: 'preavisoGiven',
+  vacationDaysTaken: 'vacationDaysTaken',
+  applyVizzoti: 'applyVizzoti',
+  cctCapAmount: 'cctCapAmount',
+  isExecutive: 'isExecutive',
+  seniorityYears: 'seniorityYears',
+  seniorityMonths: 'seniorityMonths',
+  seniorityDays: 'seniorityDays',
+  indemnityPeriods: 'indemnityPeriods',
+  inProbationPeriod: 'inProbationPeriod',
+  mrmnhAmount: 'mrmnhAmount',
+  mrmnhSourcePeriodLabel: 'mrmnhSourcePeriodLabel',
+  bestSemesterRemun: 'bestSemesterRemun',
+  workedDaysForLsd: 'workedDaysForLsd',
+  legalDueDate: 'legalDueDate',
+  worksheetPayload: 'worksheetPayload',
+  appliedAt: 'appliedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RetroactiveAdjustmentRunScalarFieldEnum = {
+  id: 'id',
+  targetPeriodId: 'targetPeriodId',
+  targetPeriodName: 'targetPeriodName',
+  cctCode: 'cctCode',
+  scaleIdsJson: 'scaleIdsJson',
+  fromYear: 'fromYear',
+  fromMonth: 'fromMonth',
+  toYear: 'toYear',
+  toMonth: 'toMonth',
+  scaleSourceMode: 'scaleSourceMode',
+  agreementLabel: 'agreementLabel',
+  employeesAppliedCount: 'employeesAppliedCount',
+  activeAppliedCount: 'activeAppliedCount',
+  inactiveAppliedCount: 'inactiveAppliedCount',
+  ignoredInactiveConfirmed: 'ignoredInactiveConfirmed',
+  ignoredInactiveCount: 'ignoredInactiveCount',
+  ignoredInactiveSummary: 'ignoredInactiveSummary',
+  totalRemunerative: 'totalRemunerative',
+  totalNonRemunerative: 'totalNonRemunerative',
+  totalSacDelta: 'totalSacDelta',
+  grandTotal: 'grandTotal',
+  runPayload: 'runPayload',
+  createdBy: 'createdBy',
+  createdByName: 'createdByName',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -1152,6 +1213,7 @@ exports.Prisma.PaySlipItemOrderByRelevanceFieldEnum = {
   type: 'type',
   unitLabel: 'unitLabel',
   arcaConceptCode: 'arcaConceptCode',
+  adjustmentPeriod: 'adjustmentPeriod',
   formulaExplanation: 'formulaExplanation',
   notes: 'notes'
 };
@@ -1197,6 +1259,7 @@ exports.Prisma.PeriodNoveltyOrderByRelevanceFieldEnum = {
   payrollPeriodId: 'payrollPeriodId',
   employeeId: 'employeeId',
   conceptId: 'conceptId',
+  adjustmentPeriod: 'adjustmentPeriod',
   notes: 'notes'
 };
 
@@ -1341,6 +1404,27 @@ exports.Prisma.PayrollSettlementTypeOrderByRelevanceFieldEnum = {
   arcaLsdType: 'arcaLsdType'
 };
 
+exports.Prisma.FinalSettlementWorksheetOrderByRelevanceFieldEnum = {
+  id: 'id',
+  payrollPeriodId: 'payrollPeriodId',
+  employeeId: 'employeeId',
+  terminationCause: 'terminationCause',
+  terminationReasonLabel: 'terminationReasonLabel',
+  daysDivisorMode: 'daysDivisorMode',
+  mrmnhSourcePeriodLabel: 'mrmnhSourcePeriodLabel'
+};
+
+exports.Prisma.RetroactiveAdjustmentRunOrderByRelevanceFieldEnum = {
+  id: 'id',
+  targetPeriodId: 'targetPeriodId',
+  targetPeriodName: 'targetPeriodName',
+  cctCode: 'cctCode',
+  scaleSourceMode: 'scaleSourceMode',
+  agreementLabel: 'agreementLabel',
+  createdBy: 'createdBy',
+  createdByName: 'createdByName'
+};
+
 
 exports.Prisma.ModelName = {
   CompanyProfile: 'CompanyProfile',
@@ -1388,7 +1472,9 @@ exports.Prisma.ModelName = {
   EmployeeIncident: 'EmployeeIncident',
   EmployeeSanction: 'EmployeeSanction',
   SanctionIncidentLink: 'SanctionIncidentLink',
-  PayrollSettlementType: 'PayrollSettlementType'
+  PayrollSettlementType: 'PayrollSettlementType',
+  FinalSettlementWorksheet: 'FinalSettlementWorksheet',
+  RetroactiveAdjustmentRun: 'RetroactiveAdjustmentRun'
 };
 
 /**

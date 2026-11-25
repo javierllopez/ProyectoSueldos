@@ -471,6 +471,7 @@ export function calculateEmployeePayroll({
   indices = null, // Pre-indexación opcional para cálculos masivos
   activeEmbargoes = [], // Embargos judiciales activos del empleado con control de topes y acumulados
   workedDaysOverride = null, // Override directo de días trabajados / días para proporcionar tope (Reg 02)
+  isRetroactiveOnlyInactive = false, // Cuando un colaborador egresado recibe únicamente ajustes retroactivos
 }) {
   const appliesStatutory = settlementTypeConfig
     ? settlementTypeConfig.appliesStatutoryDeductions !== false
@@ -743,6 +744,9 @@ export function calculateEmployeePayroll({
   } else if (pType === 'SAC_1' || pType === 'SAC_2' || pType === 'SAC' || pType === 'AGUINALDO') {
     // El SAC no proporciona tope mensual ordinario en Reg 02
     workedDays = 0;
+  } else if (pType === 'RETROACTIVE' || pType === 'RETROACTIVO') {
+    // Retroactivo paritario complementario: 0 días para no duplicar tope mensual de 30 días
+    workedDays = 0;
   } else if (pType === 'VACATIONS' || pType === 'VACACIONES') {
     // Por directiva del usuario: en vacaciones informar 000 en Reg 02
     workedDays = 0;
@@ -782,9 +786,12 @@ export function calculateEmployeePayroll({
   if (workedDaysOverride !== undefined && workedDaysOverride !== null && !isNaN(Number(workedDaysOverride))) {
     workedDays = Math.max(0, Math.min(30, Math.round(Number(workedDaysOverride))));
   }
+  if (isRetroactiveOnlyInactive) {
+    workedDays = 0;
+  }
 
   const defaultHours = isIntern ? 80 : (employee.isPartTime ? 80 : 160);
-  let workedHours = employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours;
+  let workedHours = isRetroactiveOnlyInactive ? 0 : (employee.monthlyWorkingHours ? Number(employee.monthlyWorkingHours) : defaultHours);
 
   const empScaleWithPeriods =
     (employee.salaryScale?.periods ? employee.salaryScale : null) ||
@@ -815,8 +822,8 @@ export function calculateEmployeePayroll({
   const legajoPct = (legajoPctRaw !== undefined && legajoPctRaw !== null && String(legajoPctRaw).trim() !== '')
     ? Number(legajoPctRaw)
     : (employee.workShift?.percentage !== undefined && employee.workShift?.percentage !== null
-        ? Number(employee.workShift.percentage)
-        : 100.00);
+      ? Number(employee.workShift.percentage)
+      : 100.00);
   const effectivePartTimePct = isIntern ? 50.00 : legajoPct;
   const jornadaCoef = Math.round((effectivePartTimePct / 100) * 10000) / 10000;
   const isPartTimeBool = Boolean(isIntern || employee.isPartTime || effectivePartTimePct < 100);
@@ -877,6 +884,7 @@ export function calculateEmployeePayroll({
     TOTAL_BRUTO: 0,
     BASE_OBRA_SOCIAL: 0,
     BASE_OBRA_SOCIAL_COMPLETA: 0,
+    BASE_LRT: 0,
     CANTIDAD_ADHERENTES: adherentsCount,
     ADHERENTES: adherentsCount,
     ADHERENTES_OS: adherentsCount,
@@ -1088,6 +1096,7 @@ export function calculateEmployeePayroll({
     if ((cType === 'QUINCE' || cType === 'QUINCENA') && (pType === 'QUINCE_1' || pType === 'QUINCE_2' || pType === 'QUINCE')) return true;
     if ((cType === 'VACATIONS' || cType === 'VACACIONES') && (pType === 'VACATIONS' || pType === 'VACACIONES')) return true;
     if ((cType === 'FINAL' || cType === 'LIQUIDACION_FINAL') && (pType === 'FINAL' || pType === 'LIQUIDACION_FINAL')) return true;
+    if ((cType === 'RETROACTIVE' || cType === 'RETROACTIVO') && (pType === 'RETROACTIVE' || pType === 'RETROACTIVO')) return true;
     return false;
   };
 
@@ -1152,6 +1161,11 @@ export function calculateEmployeePayroll({
       continue;
     }
 
+    // Egresado recibiendo únicamente ajuste retroactivo: no liquidar haberes ordinarios corrientes ni conceptos no cargados manualmente
+    if (isRetroactiveOnlyInactive && concept.type !== 'DEDUCTION' && !manualOverride) {
+      continue;
+    }
+
     const isBasic = concept.code === basicCode;
     const isInternStimulus = isIntern && (concept.code === 'SU1001' || concept.code === '1001' || concept.arcaConceptCode === '550000');
     const isDirectorSalary = isDirector && (concept.code === 'SU1002' || concept.code === '1002' || (isBasic && !allConcepts.some((c) => c.code === 'SU1002')));
@@ -1193,7 +1207,8 @@ export function calculateEmployeePayroll({
     if ((isDirector || isIntern) && concept.type === 'DEDUCTION' && !manualOverride && !assignedRecord) {
       const isStatutoryDeduction =
         concept.arcaConceptCode?.startsWith('810') ||
-        /^(SU|QU|SA|VA|FI|GE)600[1-4]$/.test(concept.code) ||
+        /^(SU|QU|SA|VA|FI|RT|GE)600[1-4]$/.test(concept.code) ||
+        /^(SU|QU|SA|VA|FI|RT|GE)6009$/.test(concept.code) ||
         concept.code === '6001' ||
         concept.code === '6002' ||
         concept.code === '6003' ||
@@ -1205,7 +1220,7 @@ export function calculateEmployeePayroll({
     const isUnionConcept =
       concept.arcaConceptCode === '810004' ||
       /sindic/i.test(concept.name) ||
-      /^(SU|QU|SA|VA|FI|GE)(6004|8004)$/.test(concept.code) ||
+      /^(SU|QU|SA|VA|FI|RT|GE)(6004|8004)$/.test(concept.code) ||
       concept.code === '6004' ||
       concept.code === '6005' ||
       concept.code === '304';
@@ -1427,16 +1442,32 @@ export function calculateEmployeePayroll({
         if (!isDirector) {
           context.BASE_OBRA_SOCIAL += finalAmount;
         }
+        if (concept.appliesLrtContrib !== false) {
+          context.BASE_LRT += finalAmount;
+        }
         context.TOTAL_BRUTO = Math.round((context.TOTAL_REMUNERATIVO + context.TOTAL_NO_REMUNERATIVO) * 100) / 100;
         if (finalAmount > context.MEJOR_REMUN) context.MEJOR_REMUN = finalAmount;
+
+        const hasExplicitImportUnits =
+          noveltyType === 'IMPORTE' &&
+          inputOverride?.units !== undefined &&
+          inputOverride?.units !== null &&
+          !Number.isNaN(Number(inputOverride.units)) &&
+          Number(inputOverride.units) > 0;
+        const explicitImportUnits = hasExplicitImportUnits ? Number(inputOverride.units) : null;
+        const resolvedImportUnitLabel = hasExplicitImportUnits
+          ? (String(concept.arcaConceptCode || '').trim() === '120003' || /^([A-Z]{2})?1000$/i.test(String(concept.code || '').trim())
+              ? 'Días'
+              : '$')
+          : '$';
 
         calculatedItems.push({
           conceptId: concept.id,
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'REMUNERATIVE',
-          units: (isBasic || isDirectorSalary) ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
-          unitLabel: (isBasic || isDirectorSalary) ? 'Días' : (isSeniorityConcept ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? '$' : ((noveltyType === 'CALCULADO' && qSource === 'AUTO') ? 'Auto' : unitLabel)))),
+          units: (isBasic || isDirectorSalary) ? 30 : (noveltyType === 'IMPORTE' ? (explicitImportUnits ?? 1) : units),
+          unitLabel: (isBasic || isDirectorSalary) ? 'Días' : (isSeniorityConcept ? 'Años' : (noveltyType === 'PORCENTAJE' ? '%' : (noveltyType === 'IMPORTE' ? resolvedImportUnitLabel : ((noveltyType === 'CALCULADO' && qSource === 'AUTO') ? 'Auto' : unitLabel)))),
           rate: concept.calculationType === 'PERCENTAGE' ? Number(concept.defaultValue) : null,
           baseAmount: resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false),
           amount: finalAmount,
@@ -1444,6 +1475,8 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, isBasic, isDirectorSalary, false)),
           arcaConceptCode: concept.arcaConceptCode || '110000',
+          adjustmentPeriod: inputOverride?.adjustmentPeriod || null,
+          appliesLrtContrib: concept.appliesLrtContrib !== false,
           notes: inputOverride?.notes || null,
         });
       }
@@ -1468,15 +1501,34 @@ export function calculateEmployeePayroll({
         if (concept.appliesOsAporte || isInternStimulus || concept.appliesOsContrib) {
           context.BASE_OBRA_SOCIAL += finalAmount;
         }
+        if (concept.appliesLrtContrib === true || isInternStimulus) {
+          context.BASE_LRT += finalAmount;
+        }
         context.TOTAL_BRUTO = Math.round((context.TOTAL_REMUNERATIVO + context.TOTAL_NO_REMUNERATIVO) * 100) / 100;
+
+        const hasExplicitNonRemUnits =
+          noveltyType === 'IMPORTE' &&
+          inputOverride?.units !== undefined &&
+          inputOverride?.units !== null &&
+          !Number.isNaN(Number(inputOverride.units)) &&
+          Number(inputOverride.units) > 0;
+        const explicitNonRemUnits = hasExplicitNonRemUnits ? Number(inputOverride.units) : null;
+        const arcaNorm = String(concept.arcaConceptCode || '').trim();
+        const nonRemImportUnitLabel = hasExplicitNonRemUnits
+          ? (['520012', '520016'].includes(arcaNorm)
+              ? 'Días'
+              : (['520014', '520011'].includes(arcaNorm)
+                  ? 'Años'
+                  : (arcaNorm === '520015' ? 'Meses' : '$')))
+          : '$';
 
         calculatedItems.push({
           conceptId: concept.id,
           conceptCode: concept.code,
           conceptName: concept.name,
           type: 'NON_REMUNERATIVE',
-          units: isInternStimulus ? 30 : (noveltyType === 'IMPORTE' ? 1 : units),
-          unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? '$' : ((noveltyType === 'CALCULADO' && qSource === 'AUTO' && !isSeniorityConcept) ? 'Auto' : unitLabel)),
+          units: isInternStimulus ? 30 : (noveltyType === 'IMPORTE' ? (explicitNonRemUnits ?? 1) : units),
+          unitLabel: isInternStimulus ? 'Días' : (noveltyType === 'IMPORTE' ? nonRemImportUnitLabel : ((noveltyType === 'CALCULADO' && qSource === 'AUTO' && !isSeniorityConcept) ? 'Auto' : unitLabel)),
           rate: null,
           baseAmount: resolveItemBaseAmount(concept, context, false, false, isInternStimulus),
           amount: finalAmount,
@@ -1484,6 +1536,8 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: resolveFormulaExplanation(concept, inputOverride, resolveItemBaseAmount(concept, context, false, false, isInternStimulus)),
           arcaConceptCode: concept.arcaConceptCode || '550000',
+          adjustmentPeriod: inputOverride?.adjustmentPeriod || null,
+          appliesLrtContrib: concept.appliesLrtContrib === true || isInternStimulus,
           notes: inputOverride?.notes || null,
         });
       }
@@ -1498,9 +1552,18 @@ export function calculateEmployeePayroll({
 
       const minCap = Number(payrollSettings.ansesMinCap || 82287.12);
       const maxCap = Number(payrollSettings.ansesMaxCap || 2674292.72);
+      const sac120003Item = calculatedItems.find(
+        (it) => it.type === 'REMUNERATIVE' && String(it.arcaConceptCode || '').trim() === '120003' && Number(it.units || 0) > 0
+      );
+      let effectiveMinCap = minCap;
+      if (workedDays > 0 && workedDays < 30) {
+        effectiveMinCap = Math.round(minCap * (workedDays / 30) * 100) / 100;
+      } else if (workedDays === 0 && sac120003Item) {
+        effectiveMinCap = Math.round(minCap * (Math.min(360, Number(sac120003Item.units)) / 360) * 100) / 100;
+      }
       let cappedBase = 0;
       if (baseForDeduction > 0) {
-        cappedBase = Math.min(Math.max(baseForDeduction, minCap), maxCap);
+        cappedBase = Math.min(Math.max(baseForDeduction, effectiveMinCap), maxCap);
       }
 
       // Base Obra Social Jornada Completa disponible para tokens de fórmulas
@@ -1577,6 +1640,7 @@ export function calculateEmployeePayroll({
           formula: concept.formula || null,
           formulaExplanation: explanation,
           arcaConceptCode: concept.arcaConceptCode || '810012',
+          adjustmentPeriod: inputOverride?.adjustmentPeriod || null,
           notes: inputOverride?.notes || null,
         });
       }
@@ -1596,7 +1660,30 @@ export function calculateEmployeePayroll({
   const maxCap = Number(payrollSettings.ansesMaxCap || 2674292.72);
   const detraction = Number(payrollSettings.detractionBase || 7003.68);
 
-  const hasRemuneration = appliesStatutory && (totalRemunerative > 0 || grossSalary > 0);
+  // Conceptos No Remunerativos asociados a códigos ARCA 8xxxxx (ej. 820000 Crédito en liquidación de Anticipos)
+  // acreditan neto positivo al trabajador pero no integran la Remuneración Bruta F.931 ni BI 9 (LRT).
+  const arca8CreditNonRemun = Math.round(
+    calculatedItems
+      .filter((it) => it.type === 'NON_REMUNERATIVE' && String(it.arcaConceptCode || '').trim().startsWith('8'))
+      .reduce((acc, it) => acc + Number(it.amount || 0), 0) * 100
+  ) / 100;
+  const f931GrossSalary = Math.max(0, Math.round((grossSalary - arca8CreditNonRemun) * 100) / 100);
+  const lrtTaxableBase = Math.max(0, Math.round((context.BASE_LRT || 0) * 100) / 100);
+
+  const sac120003ForCap = calculatedItems.find(
+    (it) => it.type === 'REMUNERATIVE' && String(it.arcaConceptCode || '').trim() === '120003' && Number(it.units || 0) > 0
+  );
+  let effectiveMinCap = minCap;
+  if (workedDays > 0 && workedDays < 30) {
+    effectiveMinCap = Math.round(minCap * (workedDays / 30) * 100) / 100;
+  } else if (workedDays === 0 && sac120003ForCap) {
+    effectiveMinCap = Math.round(minCap * (Math.min(360, Number(sac120003ForCap.units)) / 360) * 100) / 100;
+  }
+
+  const hasSipaBase = appliesStatutory && totalRemunerative > 0;
+  const hasOsBase = appliesStatutory && context.BASE_OBRA_SOCIAL > 0;
+  const hasLrtBase = appliesStatutory && lrtTaxableBase > 0;
+  const hasAnyStatutoryBase = hasSipaBase || hasOsBase || hasLrtBase;
 
   // Base Imponible SIPA Contribuciones (Sin tope máximo)
   let biSipaContrib = 0;
@@ -1605,44 +1692,54 @@ export function calculateEmployeePayroll({
   let biOsContrib = 0;
   let biLrt = 0;
 
-  if (hasRemuneration) {
+  if (hasAnyStatutoryBase) {
     if (isDirector) {
       biSipaContrib = 0.00;
       effectiveDetraction = 0.00;
       biSipaWithDetraction = 0.00;
       biOsContrib = 0.00;
-      biLrt = grossSalary;
+      biLrt = hasLrtBase ? lrtTaxableBase : 0.00;
     } else if (isIntern) {
       biSipaContrib = 0.00;
       effectiveDetraction = 0.00;
       biSipaWithDetraction = 0.00;
-      biOsContrib = Math.round(context.BASE_OBRA_SOCIAL * 100) / 100;
-      biLrt = grossSalary;
+      biOsContrib = hasOsBase ? Math.round(context.BASE_OBRA_SOCIAL * 100) / 100 : 0.00;
+      biLrt = hasLrtBase ? lrtTaxableBase : 0.00;
     } else {
-      biSipaContrib = Math.max(totalRemunerative, minCap);
+      if (hasSipaBase) {
+        biSipaContrib = Math.max(totalRemunerative, effectiveMinCap);
 
-      // Detracción legalmente proporcionada a jornada reducida y días trabajados (Ley 27.430 / Ley 27.541 / Dec. 99/2019)
-      let maxAllowedDetraction = detraction;
-      const isModality002 = employee.contractModalityCode === '002' || employee.contractModalityCode === '2';
-      if (isPartTimeWorker || isModality002 || (effectivePartTimePct > 0 && effectivePartTimePct < 100)) {
-        const ptPct = (effectivePartTimePct > 0 && effectivePartTimePct < 100) ? effectivePartTimePct : 67;
-        maxAllowedDetraction = Math.round(detraction * (ptPct / 100) * 100) / 100;
-      }
-      if (workedDays > 0 && workedDays < 30 && period?.periodType !== 'VACATIONS') {
-        maxAllowedDetraction = Math.round(maxAllowedDetraction * (workedDays / 30) * 100) / 100;
+        // Detracción legalmente proporcionada a jornada reducida y días trabajados (Ley 27.430 / Ley 27.541 / Dec. 99/2019)
+        // En liquidación complementaria de retroactivos o egresado con 0 días no se aplica una segunda detracción mensual.
+        const isRetroactiveDetractionZero = pType === 'RETROACTIVE' || pType === 'RETROACTIVO' || Boolean(isRetroactiveOnlyInactive);
+        let maxAllowedDetraction = isRetroactiveDetractionZero ? 0 : detraction;
+        const isModality002 = employee.contractModalityCode === '002' || employee.contractModalityCode === '2';
+        if (!isRetroactiveDetractionZero && (isPartTimeWorker || isModality002 || (effectivePartTimePct > 0 && effectivePartTimePct < 100))) {
+          const ptPct = (effectivePartTimePct > 0 && effectivePartTimePct < 100) ? effectivePartTimePct : 67;
+          maxAllowedDetraction = Math.round(detraction * (ptPct / 100) * 100) / 100;
+        }
+        if (!isRetroactiveDetractionZero && workedDays > 0 && workedDays < 30 && period?.periodType !== 'VACATIONS') {
+          maxAllowedDetraction = Math.round(maxAllowedDetraction * (workedDays / 30) * 100) / 100;
+        }
+
+        effectiveDetraction = Math.min(maxAllowedDetraction, biSipaContrib);
+        biSipaWithDetraction = Math.max(0, Math.round((biSipaContrib - effectiveDetraction) * 100) / 100);
       }
 
-      effectiveDetraction = Math.min(maxAllowedDetraction, biSipaContrib);
-      biSipaWithDetraction = Math.max(0, Math.round((biSipaContrib - effectiveDetraction) * 100) / 100);
-      biOsContrib = Math.min(Math.max(context.BASE_OBRA_SOCIAL, minCap), maxCap);
-      biLrt = grossSalary;
+      if (hasOsBase) {
+        biOsContrib = Math.min(Math.max(context.BASE_OBRA_SOCIAL, effectiveMinCap), maxCap);
+      }
+
+      if (hasLrtBase) {
+        biLrt = lrtTaxableBase;
+      }
     }
   }
 
   // Base diferencial de Obra Social para jornada parcial (Art. 92 TER LCT / LSD Posición 101-130)
   let diffOs = 0.00;
-  if (hasRemuneration && isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
-    const fullTimeOs = Math.min(Math.max(Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100, minCap), maxCap);
+  if (hasOsBase && isPartTimeWorker && jornadaCoef > 0 && jornadaCoef < 1 && context.BASE_OBRA_SOCIAL > 0) {
+    const fullTimeOs = Math.min(Math.max(Math.round((context.BASE_OBRA_SOCIAL / jornadaCoef) * 100) / 100, effectiveMinCap), maxCap);
     diffOs = Math.max(0, Math.round((fullTimeOs - biOsContrib) * 100) / 100);
   }
 
@@ -1655,16 +1752,16 @@ export function calculateEmployeePayroll({
   const artFixed = Number(payrollSettings.artFixedFee || 850.00);
   const scvoFee = Number(payrollSettings.scvoFee || 650.00);
 
-  const sipaContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
-  const inssjypContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
-  const biOsContribTotal = (!isDirector && hasRemuneration)
-    ? (isPartTimeWorker ? Math.min(Math.max(context.BASE_OBRA_SOCIAL + diffOs, minCap), maxCap) : biOsContrib)
+  const sipaContrib = (!isIntern && !isDirector && hasSipaBase) ? Math.round(biSipaWithDetraction * sipaRate * 100) / 100 : 0.00;
+  const inssjypContrib = (!isIntern && !isDirector && hasSipaBase) ? Math.round(biSipaContrib * inssjypRate * 100) / 100 : 0.00;
+  const biOsContribTotal = (!isDirector && hasOsBase)
+    ? (isPartTimeWorker ? Math.min(Math.max(context.BASE_OBRA_SOCIAL + diffOs, effectiveMinCap), maxCap) : biOsContrib)
     : 0.00;
-  const osContrib = (!isDirector && hasRemuneration) ? Math.round(biOsContribTotal * osRate * 100) / 100 : 0.00;
-  const fneContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
-  const aaffContrib = (!isIntern && !isDirector && hasRemuneration) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
-  const artContrib = hasRemuneration ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
-  const scvoContrib = hasRemuneration ? scvoFee : 0.00;
+  const osContrib = (!isDirector && hasOsBase) ? Math.round(biOsContribTotal * osRate * 100) / 100 : 0.00;
+  const fneContrib = (!isIntern && !isDirector && hasSipaBase) ? Math.round(biSipaContrib * fneRate * 100) / 100 : 0.00;
+  const aaffContrib = (!isIntern && !isDirector && hasSipaBase) ? Math.round(biSipaContrib * aaffRate * 100) / 100 : 0.00;
+  const artContrib = hasLrtBase ? Math.round((biLrt * artRate + artFixed) * 100) / 100 : 0.00;
+  const scvoContrib = hasAnyStatutoryBase ? scvoFee : 0.00;
   // Se elimina el cálculo automático oculto (0.5%); cualquier contribución sindical debe definirse explícitamente
   const unionContrib = 0.00;
 
@@ -1698,7 +1795,7 @@ export function calculateEmployeePayroll({
   }
 
   // --- PASO 7: Bases Imponibles F.931 (LSD Registro 04) ---
-  const biSipaAporte = (!isIntern && !isDirector && hasRemuneration) ? Math.min(Math.max(totalRemunerative, minCap), maxCap) : 0.00;
+  const biSipaAporte = (!isIntern && !isDirector && hasSipaBase) ? Math.min(Math.max(totalRemunerative, effectiveMinCap), maxCap) : 0.00;
   const biInssjypAporte = biSipaAporte;
 
   const hasSpouse = activeRelatives.some((r) => r.kinship?.code === 'CONYUGE' || r.kinship?.code === 'CONVIVIENTE');
@@ -1726,7 +1823,7 @@ export function calculateEmployeePayroll({
     hasSpouse,
     childrenCount,
     adherentsCount,
-    hasScvo: appliesStatutory,
+    hasScvo: hasAnyStatutoryBase,
     hasCct: (!appliesStatutory || isIntern || isDirector) ? false : Boolean(employee.jobPosition?.cctCode),
   };
 
@@ -1915,16 +2012,16 @@ export function buildEmployerContributionAuditItems(slip, payrollSettings = {}) 
     const ratePct = def.isFixedOnly
       ? 0
       : Number(
-          def.settingKey && payrollSettings[def.settingKey] !== undefined
-            ? payrollSettings[def.settingKey]
-            : def.defaultRate
-        );
+        def.settingKey && payrollSettings[def.settingKey] !== undefined
+          ? payrollSettings[def.settingKey]
+          : def.defaultRate
+      );
     const fixedFee = def.fixedSettingKey
       ? Number(
-          payrollSettings[def.fixedSettingKey] !== undefined
-            ? payrollSettings[def.fixedSettingKey]
-            : def.defaultFixed
-        )
+        payrollSettings[def.fixedSettingKey] !== undefined
+          ? payrollSettings[def.fixedSettingKey]
+          : def.defaultFixed
+      )
       : 0;
 
     let baseAmount = totalRem;

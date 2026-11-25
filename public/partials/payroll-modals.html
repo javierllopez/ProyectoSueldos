@@ -871,12 +871,20 @@
                     <option value="510000">[510000] Asignaciones Familiares</option>
                     <option value="520000">[520000] Beneficios Sociales (Art. 103 bis LCT)</option>
                     <option value="520001">[520001] Servicio de Comedor / Vales Alimentarios</option>
+                    <option value="520010">[520010] Gratificación por Cese Laboral (Art. 241 LCT)</option>
+                    <option value="520011">[520011] Indemnización por Extinción Contrato (Arts. 247/248 LCT)</option>
+                    <option value="520012">[520012] Vacaciones No Gozadas (Art. 156 LCT)</option>
+                    <option value="520014">[520014] Indemnización por Despido / Antigüedad (Art. 245 LCT)</option>
+                    <option value="520015">[520015] Indemnización Sustitutiva del Preaviso (Art. 232 LCT)</option>
+                    <option value="520016">[520016] Integración del Mes de Despido (Art. 233 LCT)</option>
+                    <option value="520017">[520017] SAC s/ Preaviso o Integración (Arts. 232/233 LCT)</option>
+                    <option value="520018">[520018] SAC s/ Vacaciones No Gozadas (Art. 156 LCT)</option>
                     <option value="530000">[530000] Viáticos y Movilidad No Remunerativos (Art. 106 LCT)</option>
                     <option value="540000">[540000] Incremento No Remunerativo c/ Aporte Obra Social</option>
                     <option value="550000">[550000] Incrementos No Remunerativos Generales (Pasantías/Acuerdos)</option>
                     <option value="551000">[551000] Importes No Remunerativos Especiales (Bases Imponibles a tributar)
                     </option>
-                    <option value="560000">[560000] Indemnizaciones Legales y Gratificaciones por Cese (Art. 245 LCT)
+                    <option value="560000">[560000] Mensual - PPC y CCT Especiales (ARCA) / Otros No Rem. Exentos
                     </option>
                   </optgroup>
                   <optgroup label="3. Descuentos y Retenciones (810000 - 829999)">
@@ -893,7 +901,7 @@
                     <option value="810010">[810010] Fondo Solidario de Redistribución - Adherentes</option>
                     <option value="810011">[810011] Impuesto a las Ganancias (Retención 4ta Categoría)</option>
                     <option value="810012">[810012] Embargos Judiciales</option>
-                    <option value="820000">[820000] Otros Descuentos Generales (Uso libre / No afectan F.931)</option>
+                    <option value="820000">[820000] Otros Descuentos Generales (Débito D / Crédito C Anticipos - No afecta F.931)</option>
                   </optgroup>
                 </select>
                 <div class="form-hint" style="font-size: 0.68rem;">Catálogo oficial ARCA (ex-AFIP) para F.931 y Libro de
@@ -1689,7 +1697,7 @@
 
             <!-- TAB 2: AUDITORÍA DE LIQUIDACIÓN Y CONCEPTOS AUXILIARES -->
             <div class="tab-pane fade" id="tab-payslip-audit" role="tabpanel">
-              <div class="p-3 bg-light-subtle" id="payslip-audit-area">
+              <div class="p-0 bg-light-subtle" id="payslip-audit-area">
                 <div class="text-center py-5 text-muted">
                   <div class="spinner-border text-purple mb-2" role="status"></div>
                   <div>Cargando auditoría integral de la liquidación...</div>
@@ -2447,20 +2455,19 @@
     </div>
   </div>
 
-  <!-- MODAL: PLANILLA ÁGIL DE CARGA RÁPIDA (TABULAR CONTINUA CON TECLADO) -->
+  <!-- MODAL: PLANILLA ÁGIL DE CARGA RÁPIDA (TABULAR CONTINUA CON TECLADO Y PEGADO EXCEL) -->
   <div class="modal modal-blur fade" id="modal-novelty-batch-sheet" tabindex="-1" role="dialog" aria-hidden="true"
     data-bs-backdrop="static">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content shadow-lg">
-        <div class="modal-header bg-light py-2 px-3 flex-wrap gap-2">
+      <div class="modal-content shadow-lg d-flex flex-column" style="overflow: hidden;">
+        <div class="modal-header bg-light py-2 px-3 flex-wrap gap-2 flex-shrink-0">
           <div class="d-flex align-items-center gap-2">
             <div class="avatar avatar-sm bg-primary-lt text-primary rounded">
               <i class="ti ti-table-shortcut fs-2"></i>
             </div>
             <div>
               <h5 class="modal-title fw-bold mb-0">Planilla Ágil de Carga Rápida de Novedades</h5>
-              <div class="text-muted small">Carga continua con teclado: use <kbd>Tab</kbd> o <kbd>Enter</kbd> para
-                avanzar de colaborador</div>
+              <div class="text-muted small">Soporta pegado <kbd>Ctrl+V</kbd> desde Excel (1 o 2 columnas: Valor y Observaciones) y teclado <kbd>Tab</kbd> / <kbd>Enter</kbd> / <kbd>↑↓</kbd></div>
             </div>
           </div>
           <div class="d-flex align-items-center gap-2 ms-auto">
@@ -2471,14 +2478,26 @@
         </div>
 
         <div
-          class="p-2 bg-light-subtle border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2">
-          <div class="input-icon" style="max-width: 320px;">
-            <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
-            <input type="text" id="batch-sheet-filter-input" class="form-control form-control-sm"
-              placeholder="Filtrar por nombre o legajo..." />
+          class="p-2 bg-light-subtle border-bottom d-flex justify-content-between align-items-center flex-wrap gap-2 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <div class="input-icon" style="max-width: 260px;">
+              <span class="input-icon-addon"><i class="ti ti-search text-muted"></i></span>
+              <input type="text" id="batch-sheet-filter-input" class="form-control form-control-sm"
+                placeholder="Filtrar por nombre o legajo..." />
+            </div>
+            <label class="form-check form-switch m-0 d-flex align-items-center gap-1 small d-none" id="batch-sheet-only-carried-wrap">
+              <input class="form-check-input" type="checkbox" id="batch-sheet-only-carried" />
+              <span class="form-check-label">Solo arrastre ant.</span>
+            </label>
           </div>
-          <div class="d-flex gap-2">
-            <button type="button" class="btn btn-outline-secondary btn-sm" id="btn-batch-sheet-clear-zeros">
+          <div class="d-flex gap-2 flex-wrap align-items-center">
+            <button type="button" class="btn btn-outline-indigo btn-sm text-nowrap" id="btn-batch-sheet-carryover">
+              <i class="ti ti-copy me-1"></i> Copiar de período anterior
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm text-nowrap" id="btn-batch-sheet-undo" disabled>
+              <i class="ti ti-arrow-back-up me-1"></i> Deshacer
+            </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm text-nowrap" id="btn-batch-sheet-clear-zeros">
               <i class="ti ti-eraser me-1"></i> Limpiar Campos Vacíos
             </button>
             <span class="badge bg-success-lt fw-bold fs-4 align-self-center" id="batch-sheet-stats">0 con valor
@@ -2486,10 +2505,12 @@
           </div>
         </div>
 
-        <div class="modal-body p-0">
+        <div id="batch-sheet-context-alert" class="alert alert-info py-1 px-3 mb-0 rounded-0 border-bottom small d-none flex-shrink-0"></div>
+
+        <div class="modal-body p-0 flex-grow-1" style="min-height: 0; overflow-y: auto;">
           <div class="table-responsive" style="max-height: 55vh;">
             <table class="table table-vcenter card-table table-hover table-striped mb-0" id="batch-sheet-table">
-              <thead class="sticky-top bg-light">
+              <thead class="sticky-top bg-light" style="z-index: 2;">
                 <tr>
                   <th style="width: 80px;">Legajo</th>
                   <th style="min-width: 200px;">Colaborador</th>
@@ -2507,7 +2528,7 @@
           </div>
         </div>
 
-        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-shrink-0">
           <div class="text-muted small">
             <i class="ti ti-info-circle me-1"></i> Se actualizarán las novedades en el período para todos los empleados
             que tengan un valor numérico o nota ingresada.
@@ -3602,6 +3623,32 @@
               </label>
             </div>
           </div>
+
+          <div class="card bg-purple-lt bg-opacity-10 border border-purple border-opacity-25 mt-3 mb-0">
+            <div class="card-body py-2 px-3">
+              <label class="form-check form-switch mb-1">
+                <input class="form-check-input" type="checkbox" id="st-input-allows-retroactives" />
+                <span class="form-check-label fw-bold text-purple">
+                  <i class="ti ti-history me-1"></i>Puede usarse para liquidar Retroactivos Paritarios
+                </span>
+              </label>
+              <div class="text-muted small">
+                Solo las liquidaciones abiertas cuyo tipo tenga esta opción activa podrán elegirse como destino en el Asistente de Retroactivos (PROP-07).
+              </div>
+              <div id="st-seed-retro-concepts-wrap" class="d-none mt-2 pt-2 border-top">
+                <label class="form-check mb-1">
+                  <input class="form-check-input" type="checkbox" id="st-input-seed-retro-concepts" checked />
+                  <span class="form-check-label small fw-semibold text-dark">
+                    Crear automáticamente conceptos específicos de retroactivo y deducciones de ley para este prefijo si faltan
+                  </span>
+                </label>
+                <div id="st-retro-days-hint" class="alert alert-warning py-1 px-2 small mb-0 mt-1 d-none">
+                  <i class="ti ti-alert-triangle me-1"></i>
+                  Si este tipo se usará como liquidación complementaria dentro del mismo mes que la Mensual, se recomienda configurar <strong>Días Base por Defecto = 0</strong> para no superar 30 días en ARCA LSD.
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer bg-light d-flex justify-content-between flex-shrink-0">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -3610,5 +3657,890 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ASISTENTE DE LIQUIDACIÓN FINAL Y EGRESOS (PROP-03) -->
+  <div class="modal modal-blur fade" id="modal-final-settlement-wizard" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <form id="form-final-settlement-wizard" class="modal-content shadow-lg d-flex flex-column flex-grow-1 m-0" style="min-height: 0; overflow: hidden;">
+        <div class="modal-header border-bottom bg-light flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-danger-lt text-danger rounded">
+              <i class="ti ti-scale"></i>
+            </span>
+            <div>
+              <h5 class="modal-title mb-0">Asistente de Liquidación Final y Egresos (LCT)</h5>
+              <small class="text-muted" id="final-ws-modal-subtitle">Liquidación Final</small>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 ms-auto">
+            <span id="final-ws-loading-indicator" class="badge bg-blue-lt d-none">
+              <span class="spinner-border spinner-border-sm me-1"></span> Calculando...
+            </span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+
+        <div class="modal-body flex-grow-1 overflow-y-auto" style="min-height: 0;">
+          <div id="final-ws-error-alert" class="alert alert-danger py-2 small d-none"></div>
+
+          <!-- PASO 1: Parámetros de Extinción -->
+          <div class="card border shadow-none mb-3">
+            <div class="card-header bg-light py-2 px-3">
+              <strong class="small text-uppercase text-primary"><i class="ti ti-user-off me-1"></i> 1. Colaborador, Fecha de Egreso y Causal Legal</strong>
+            </div>
+            <div class="card-body py-2 px-3">
+              <div class="row g-2 align-items-end">
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-emp-select">Colaborador *</label>
+                  <select class="form-select form-select-sm" id="final-ws-emp-select" required></select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-term-date">Fecha de Egreso Real *</label>
+                  <input type="date" class="form-control form-control-sm" id="final-ws-term-date" required />
+                </div>
+                <div class="col-lg-5 col-md-12">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-cause-select">Causal de Extinción *</label>
+                  <select class="form-select form-select-sm" id="final-ws-cause-select" required></select>
+                </div>
+              </div>
+
+              <div class="row g-2 mt-2 align-items-end">
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-probation-months">Período de Prueba (Art. 92 bis)</label>
+                  <select class="form-select form-select-sm" id="final-ws-probation-months">
+                    <option value="6" selected>6 meses (Régimen general Ley 27.742)</option>
+                    <option value="8">8 meses (CCT PyME 6–100 trab.)</option>
+                    <option value="12">12 meses (CCT Microempresa ≤5 trab.)</option>
+                    <option value="0">Sin período de prueba</option>
+                  </select>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-divisor-mode">Divisor Días Mes de Baja</label>
+                  <select class="form-select form-select-sm" id="final-ws-divisor-mode">
+                    <option value="CALENDAR" selected>Días calendario reales (28/30/31)</option>
+                    <option value="FIXED_30">Base fija 30 días</option>
+                  </select>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-vacation-taken">Vac. ya gozadas (año)</label>
+                  <input type="number" class="form-control form-control-sm" id="final-ws-vacation-taken" min="0" max="60" value="0" />
+                </div>
+                <div class="col-lg-2 col-md-4">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-worked-days-lsd">Días ARCA LSD Reg. 02/04</label>
+                  <input type="number" class="form-control form-control-sm font-monospace" id="final-ws-worked-days-lsd" min="0" max="30" value="0" />
+                </div>
+                <div class="col-lg-2 col-md-4">
+                  <label class="form-check form-switch mb-1">
+                    <input class="form-check-input" type="checkbox" id="final-ws-include-worked-days" checked />
+                    <span class="form-check-label small fw-semibold">Incluir días del mes</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="row g-2 mt-2 align-items-end">
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-custom-mrmnh">Override MRMNH ($)</label>
+                  <input type="number" step="0.01" min="0" class="form-control form-control-sm font-monospace" id="final-ws-custom-mrmnh" placeholder="Automático 12M" />
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-custom-sem">Override Mejor Semestre SAC ($)</label>
+                  <input type="number" step="0.01" min="0" class="form-control form-control-sm font-monospace" id="final-ws-custom-sem" placeholder="Automático semestre" />
+                </div>
+                <div class="col-lg-3 col-md-6" id="final-ws-cct-cap-group">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-cct-cap">Tope CCT Art. 245 (opc.) + Vizzoti</label>
+                  <div class="input-group input-group-sm">
+                    <input type="number" step="0.01" min="0" class="form-control font-monospace" id="final-ws-cct-cap" placeholder="Sin tope CCT" />
+                    <span class="input-group-text">
+                      <label class="form-check mb-0 d-flex align-items-center gap-1" title="Piso 67% CSJN Vizzoti / Art. 51 Ley 27.802">
+                        <input class="form-check-input mt-0" type="checkbox" id="final-ws-apply-vizzoti" checked />
+                        <span class="small">67%</span>
+                      </label>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6" id="final-ws-gratification-wrap">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-gratification">Gratificación p/ Cese ($)</label>
+                  <input type="number" step="0.01" min="0" class="form-control form-control-sm font-monospace" id="final-ws-gratification" value="0" />
+                </div>
+              </div>
+
+              <div class="row g-2 mt-2 align-items-center">
+                <div class="col-lg-4 col-md-6">
+                  <label class="form-label small fw-semibold mb-1" for="final-ws-reason-label">Motivo de baja para legajo y cierre</label>
+                  <input type="text" maxlength="255" class="form-control form-control-sm" id="final-ws-reason-label" placeholder="Autocompletado según causal" />
+                </div>
+                <div class="col-lg-4 col-md-6 pt-3" id="final-ws-preaviso-wrap">
+                  <label class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="final-ws-preaviso-given" />
+                    <span class="form-check-label small fw-semibold">Preaviso otorgado / trabajado (exime Art. 232 e Integración)</span>
+                  </label>
+                </div>
+                <div class="col-lg-4 col-md-6 pt-3" id="final-ws-executive-wrap">
+                  <label class="form-check form-switch mb-0">
+                    <input class="form-check-input" type="checkbox" id="final-ws-is-executive" />
+                    <span class="form-check-label small fw-semibold">Cargo directivo / ejecutivo (Ganancias s/ excedente Art. 245)</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPIs Normativos -->
+          <div class="row g-2 mb-3">
+            <div class="col-md-3 col-6">
+              <div class="border rounded p-2 bg-light h-100">
+                <div class="text-muted" style="font-size: 0.7rem;">FECHA DE INGRESO</div>
+                <div class="fw-bold fs-4 text-dark" id="final-ws-kpi-hire">-</div>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="border rounded p-2 bg-light h-100">
+                <div class="text-muted" style="font-size: 0.7rem;">ANTIGÜEDAD Y PERÍODOS</div>
+                <div class="fw-bold fs-4 text-primary" id="final-ws-kpi-seniority">-</div>
+                <small class="text-muted" id="final-ws-kpi-periods">-</small>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="border rounded p-2 bg-light h-100">
+                <div class="text-muted" style="font-size: 0.7rem;">MRMNH DETECTADA (12M)</div>
+                <div class="fw-bold fs-4 text-success font-monospace" id="final-ws-kpi-mrmnh">$0,00</div>
+                <small class="text-muted text-truncate d-block" id="final-ws-kpi-mrmnh-src">-</small>
+              </div>
+            </div>
+            <div class="col-md-3 col-6">
+              <div class="border rounded p-2 bg-light h-100">
+                <div class="text-muted" style="font-size: 0.7rem;">VENCIMIENTO PAGO (4 DÍAS HÁB.)</div>
+                <div class="fw-bold fs-4 text-danger" id="final-ws-kpi-due">-</div>
+                <small class="text-muted">Arts. 128 y 255 bis LCT</small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Alertas legales / LSD -->
+          <div id="final-ws-warnings-container" class="d-none"></div>
+
+          <!-- Auditoría 12 meses -->
+          <div class="card border shadow-none mb-3">
+            <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+              <strong class="small text-uppercase text-muted"><i class="ti ti-history me-1"></i> Auditoría Remuneraciones Ordinarias (Últimos 12 Meses — Base Art. 245 / Art. 51 Ley 27.802)</strong>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive" style="max-height: 170px; overflow-y: auto;">
+                <table class="table table-sm table-hover table-vcenter mb-0">
+                  <thead class="bg-light" style="position: sticky; top: 0; z-index: 2;">
+                    <tr>
+                      <th>Período</th>
+                      <th>Liquidación(es) Ordinarias</th>
+                      <th class="text-center">Días</th>
+                      <th class="text-end">Total Remunerativo</th>
+                    </tr>
+                  </thead>
+                  <tbody id="final-ws-history-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Grilla editable de rubros -->
+          <div class="card border shadow-none">
+            <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <strong class="small text-uppercase text-primary"><i class="ti ti-list-check me-1"></i> 2. Previsualización y Ajuste de Rubros (Conceptos FI* + ARCA LSD + Ganancias)</strong>
+              <div class="d-flex flex-wrap gap-2 small">
+                <span class="badge bg-green-lt">Remunerativo: <strong class="font-monospace" id="final-ws-total-rem">$0,00</strong></span>
+                <span class="badge bg-azure-lt">Indemniz. / No Rem.: <strong class="font-monospace" id="final-ws-total-nonrem">$0,00</strong></span>
+                <span class="badge bg-orange-lt">Gravado Ganancias: <strong class="font-monospace" id="final-ws-total-taxable">$0,00</strong></span>
+                <span class="badge bg-teal-lt">Exento Ganancias: <strong class="font-monospace" id="final-ws-total-exempt">$0,00</strong></span>
+                <span class="badge bg-primary text-white">Bruto Total: <strong class="font-monospace" id="final-ws-total-gross">$0,00</strong></span>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <table class="table table-sm table-hover table-vcenter mb-0">
+                  <thead class="bg-light" style="position: sticky; top: 0; z-index: 2;">
+                    <tr>
+                      <th class="text-center" style="width: 48px;">Incluir</th>
+                      <th>Concepto / Base Legal / Fórmula</th>
+                      <th class="text-center" style="width: 190px;">Tratamiento SUSS y Ganancias</th>
+                      <th class="text-end" style="width: 110px;">Cantidad / Unid.</th>
+                      <th class="text-end" style="width: 175px;">Importe ($)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="final-ws-rubros-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light d-flex justify-content-between align-items-center flex-shrink-0">
+          <small class="text-muted">Al aplicar se guardará la hoja de cálculo, se actualizarán las novedades del legajo y se recalculará su recibo.</small>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" id="btn-apply-final-settlement">
+              <i class="ti ti-check me-1"></i> Aplicar al Recibo y Calcular
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: COPIAR NOVEDADES DESDE PERÍODO ANTERIOR (PROP-05) -->
+  <div class="modal modal-blur fade" id="modal-nov-carryover" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg d-flex flex-column" style="overflow: hidden;">
+        <div class="modal-header bg-light py-2 px-3 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-indigo-lt text-indigo rounded">
+              <i class="ti ti-copy fs-2"></i>
+            </span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Copiar Novedades del Período Anterior</h5>
+              <div class="text-muted small">Lee períodos abiertos y reconstruye desde recibos liquidados en períodos cerrados (sin grabar hasta confirmar)</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body flex-grow-1" style="min-height: 0; overflow-y: auto;">
+          <div class="mb-3">
+            <label class="form-label fw-bold small" for="nov-carryover-source-period">Liquidación Origen:</label>
+            <select id="nov-carryover-source-period" class="form-select"></select>
+          </div>
+
+          <div id="nov-carryover-origin-info" class="alert alert-info py-2 px-3 small mb-3">
+            Consultando novedades disponibles...
+          </div>
+
+          <div class="mb-3" id="nov-carryover-add-concepts-wrap">
+            <label class="form-check">
+              <input class="form-check-input" type="checkbox" id="nov-carryover-add-concepts" checked />
+              <span class="form-check-label fw-semibold">Agregar automáticamente como columnas los conceptos utilizados en la liquidación origen</span>
+            </label>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <div class="border rounded p-2 h-100 bg-light-subtle">
+                <div class="fw-bold small mb-2 text-primary">1. Modo de Arrastre</div>
+                <label class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="nov-carryover-mode" id="nov-carryover-mode-zero" value="ZERO_TEMPLATE" checked />
+                  <span class="form-check-label">
+                    <strong>Solo legajos con valor en 0 (Plantilla)</strong><br />
+                    <small class="text-muted">Resalta quiénes tuvieron novedades sin copiar importes ni horas previas.</small>
+                  </span>
+                </label>
+                <label class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="nov-carryover-mode" id="nov-carryover-mode-clone" value="CLONE_VALUES" />
+                  <span class="form-check-label">
+                    <strong>Clonar unidades / importes como borrador</strong><br />
+                    <small class="text-muted">Precarga valores previos editables en memoria antes de guardar.</small>
+                  </span>
+                </label>
+                <label class="form-check ms-3 mb-0">
+                  <input class="form-check-input" type="checkbox" id="nov-carryover-include-notes" checked />
+                  <span class="form-check-label small">Incluir observaciones previas</span>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border rounded p-2 h-100 bg-light-subtle">
+                <div class="fw-bold small mb-2 text-primary">2. Regla ante Celdas ya Cargadas</div>
+                <label class="form-check mb-2">
+                  <input class="form-check-input" type="radio" name="nov-carryover-conflict" id="nov-carryover-conflict-empty" value="ONLY_EMPTY" checked />
+                  <span class="form-check-label">
+                    <strong>Completar solo celdas vacías</strong><br />
+                    <small class="text-muted">Respeta cualquier valor ya ingresado o modificado en el período actual.</small>
+                  </span>
+                </label>
+                <label class="form-check mb-0">
+                  <input class="form-check-input" type="radio" name="nov-carryover-conflict" id="nov-carryover-conflict-overwrite" value="OVERWRITE" />
+                  <span class="form-check-label">
+                    <strong>Reemplazar valores existentes</strong><br />
+                    <small class="text-muted">Sobrescribe celdas actuales con el borrador del período origen.</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="nov-carryover-legal-warning" class="alert alert-warning py-2 px-3 small mb-0 d-none"></div>
+        </div>
+
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-shrink-0">
+          <small class="text-muted">Se aplicará solo en el borrador visual; podés deshacer o ajustar antes de guardar.</small>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-indigo" id="btn-apply-nov-carryover" disabled>
+              <i class="ti ti-check me-1"></i> Aplicar a la Grilla (Borrador)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: PEGADO INTELIGENTE POR LEGAJO O CUIL DESDE EXCEL (PROP-05) -->
+  <div class="modal modal-blur fade" id="modal-nov-matrix-smart-paste" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg d-flex flex-column" style="overflow: hidden;">
+        <div class="modal-header bg-light py-2 px-3 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-primary-lt text-primary rounded">
+              <i class="ti ti-clipboard-list fs-2"></i>
+            </span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Pegado Inteligente desde Excel (Emparejado por Legajo / CUIL)</h5>
+              <div class="text-muted small">Útil cuando tu planilla de Excel no sigue el mismo orden de filas que la tabla en pantalla</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body flex-grow-1" style="min-height: 0; overflow-y: auto;">
+          <div class="alert alert-info py-2 px-3 small mb-2">
+            <strong>Orden esperado de columnas:</strong> Columna 1 = <code>Legajo o CUIL</code>, seguida de las columnas seleccionadas actualmente:<br />
+            <span id="nov-smart-paste-columns-hint" class="fw-semibold"></span>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label fw-bold small mb-1" for="nov-smart-paste-textarea">Pegá aquí el rango copiado desde Excel (<kbd>Ctrl+V</kbd>):</label>
+            <textarea id="nov-smart-paste-textarea" class="form-control font-monospace small" rows="5"
+              placeholder="Ejemplo:&#10;Legajo&#9;Horas Extras&#9;Comisiones&#10;1001&#9;08:30&#9;15.250,50&#10;20-30111222-3&#9;12,5&#9;$ 8.000"></textarea>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+            <div class="d-flex align-items-center gap-3 small">
+              <span class="fw-bold">Si la celda ya tiene valor:</span>
+              <label class="form-check form-check-inline mb-0">
+                <input class="form-check-input" type="radio" name="nov-smart-paste-conflict" id="nov-smart-paste-conflict-empty" value="ONLY_EMPTY" checked />
+                <span class="form-check-label">Solo completar vacías</span>
+              </label>
+              <label class="form-check form-check-inline mb-0">
+                <input class="form-check-input" type="radio" name="nov-smart-paste-conflict" id="nov-smart-paste-conflict-overwrite" value="OVERWRITE" />
+                <span class="form-check-label">Sobrescribir existentes</span>
+              </label>
+            </div>
+            <span class="badge bg-azure-lt fw-semibold" id="nov-smart-paste-summary">Pegá filas arriba para previsualizar el emparejamiento</span>
+          </div>
+
+          <div class="card border mb-0">
+            <div class="card-body p-0">
+              <div class="table-responsive" style="max-height: 34vh;">
+                <table class="table table-sm table-vcenter table-hover mb-0">
+                  <thead class="sticky-top bg-light" id="nov-smart-paste-preview-thead"></thead>
+                  <tbody id="nov-smart-paste-preview-tbody">
+                    <tr><td class="text-center py-3 text-muted small">Sin filas para previsualizar.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-shrink-0">
+          <small class="text-muted">Los legajos no encontrados se informan y omiten automáticamente.</small>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-nov-smart-paste" disabled>
+              <i class="ti ti-check me-1"></i> Aplicar Emparejados a la Grilla
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL COMPACTO: OBSERVACIÓN POR CELDA EN GRILLA MULTICONCEPTO (PROP-05) -->
+  <div class="modal modal-blur fade" id="modal-matrix-cell-note" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content shadow-lg d-flex flex-column" style="overflow: hidden;">
+        <div class="modal-header bg-light py-2 px-3 flex-shrink-0">
+          <div>
+            <h5 class="modal-title fw-bold mb-0">Observación de Novedad</h5>
+            <div class="text-muted small" id="matrix-note-subtitle">-</div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body flex-grow-1">
+          <label class="form-label small fw-bold" for="matrix-note-input">Detalle / Justificación (máx. 255 caracteres):</label>
+          <textarea id="matrix-note-input" class="form-control" rows="3" maxlength="255" placeholder="Ej: Horas turno noche autorizado por supervisor..."></textarea>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-shrink-0">
+          <button type="button" class="btn btn-outline-danger btn-sm" id="btn-clear-matrix-note">Quitar Nota</button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-save-matrix-note">Guardar Nota en Borrador</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: IMPORTADOR EXCEL MULTICONCEPTO (COLUMNA 1 = LEGAJO, ENCABEZADOS = CÓDIGOS DE CONCEPTO) -->
+  <div class="modal modal-blur fade" id="modal-novelties-import-matrix-excel" tabindex="-1" role="dialog" aria-hidden="true"
+    data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content shadow-lg d-flex flex-column" style="overflow: hidden;">
+        <div class="modal-header bg-light py-2 px-3 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <span class="avatar avatar-sm bg-success-lt text-success rounded">
+              <i class="ti ti-file-import fs-2"></i>
+            </span>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Importar Novedades desde Excel (Multiconcepto)</h5>
+              <div class="text-muted small">
+                Columna 1 = <strong>Legajo</strong> (relación laboral activa) &bull; Columnas siguientes = <strong>Código de concepto</strong> compatible con la liquidación
+              </div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 ms-auto">
+            <span class="badge bg-azure-lt fs-4" id="nov-matrix-excel-period-badge">-</span>
+            <span class="badge bg-indigo-lt fs-4" id="nov-matrix-excel-type-badge">-</span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+
+        <div class="modal-body flex-grow-1" style="min-height: 0; overflow-y: auto;">
+          <div class="card shadow-none border bg-light mb-3">
+            <div class="card-body p-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+              <div class="small">
+                <strong>Estructura requerida (.xlsx / .xls / .csv):</strong>
+                Fila 1 con encabezados <code>Legajo</code> | <code>COD1</code> | <code>COD2</code>... Solo se admiten legajos activos y conceptos no persistentes del tipo de liquidación seleccionado.
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-success text-nowrap" id="btn-download-matrix-excel-template">
+                <i class="ti ti-file-download me-1"></i> Descargar Plantilla .xlsx
+              </button>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label required fw-bold small" for="nov-matrix-excel-file-input">Seleccione el archivo Excel (.xlsx, .xls, .csv):</label>
+            <input type="file" class="form-control" id="nov-matrix-excel-file-input" accept=".xlsx,.xls,.csv" />
+          </div>
+
+          <div id="nov-matrix-excel-error-alert" class="alert alert-danger py-2 px-3 small mb-3 d-none"></div>
+          <div id="nov-matrix-excel-legal-alert" class="alert alert-warning py-2 px-3 small mb-3 d-none"></div>
+
+          <div id="nov-matrix-excel-preview-section" class="d-none">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+              <h6 class="fw-bold mb-0"><i class="ti ti-eye me-1 text-azure"></i> Validación y Vista Previa del Archivo</h6>
+              <div class="d-flex flex-wrap gap-1">
+                <span class="badge bg-success-lt fw-bold" id="nov-matrix-excel-cols-valid-badge">0 columnas válidas</span>
+                <span class="badge bg-danger-lt fw-bold d-none" id="nov-matrix-excel-cols-invalid-badge">0 columnas rechazadas</span>
+                <span class="badge bg-blue-lt fw-bold" id="nov-matrix-excel-rows-active-badge">0 legajos activos</span>
+                <span class="badge bg-danger-lt fw-bold d-none" id="nov-matrix-excel-rows-invalid-badge">0 legajos con error</span>
+                <span class="badge bg-indigo-lt fw-bold" id="nov-matrix-excel-items-badge">0 novedades a importar</span>
+              </div>
+            </div>
+
+            <div id="nov-matrix-excel-invalid-cols-box" class="alert alert-danger py-2 px-3 small mb-2 d-none"></div>
+
+            <div id="nov-matrix-excel-skip-errors-wrap" class="border rounded bg-warning-lt p-2 px-3 mb-2 d-none">
+              <label class="form-check m-0">
+                <input class="form-check-input" type="checkbox" id="nov-matrix-excel-skip-errors" />
+                <span class="form-check-label small fw-semibold" id="nov-matrix-excel-skip-errors-label">
+                  Omitir filas con legajo inactivo/inexistente/duplicado y celdas con error para importar únicamente los registros válidos.
+                </span>
+              </label>
+            </div>
+
+            <div class="card border mb-0">
+              <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 36vh;">
+                  <table class="table table-sm table-vcenter table-hover mb-0">
+                    <thead class="sticky-top bg-light" id="nov-matrix-excel-preview-thead"></thead>
+                    <tbody id="nov-matrix-excel-preview-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2 flex-shrink-0">
+          <small class="text-muted">Se validará nuevamente en servidor que todos los conceptos y legajos correspondan al período abierto y relación laboral activa.</small>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-outline-indigo" id="btn-load-matrix-excel-to-grid" disabled>
+              <i class="ti ti-table-import me-1"></i> Cargar en Grilla (Borrador)
+            </button>
+            <button type="button" class="btn btn-success" id="btn-confirm-matrix-excel-import" disabled>
+              <i class="ti ti-upload me-1"></i> Importar al Período
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: ASISTENTE DE RETROACTIVOS PARITARIOS (PROP-07) -->
+  <div class="modal modal-blur fade" id="modal-retroactive-settlement" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document" style="max-height: 92vh;">
+      <div class="modal-content shadow-lg card-payroll-accent d-flex flex-column" style="max-height: 92vh; overflow: hidden;">
+        <div class="modal-header py-2 px-3 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <div class="avatar avatar-sm bg-purple-lt text-purple rounded">
+              <i class="ti ti-history fs-2"></i>
+            </div>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Generar Diferencias por Retroactivo Paritario</h5>
+              <div class="text-muted small">Doble simulación diferencial sobre períodos cerrados • Ley 14.250 • ARCA LSD Reg. 03</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body p-3 flex-grow-1 overflow-y-auto" style="min-height: 0;">
+          <div id="retro-wizard-alert" class="alert alert-danger d-none mb-2 py-2"></div>
+
+          <!-- Navegación rápida del Asistente vs Historial -->
+          <ul class="nav nav-tabs mb-3" id="retro-wizard-main-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button type="button" class="nav-link active fw-bold" id="retro-tab-btn-wizard" data-retro-tab="wizard">
+                <i class="ti ti-wand me-1 text-purple"></i> Asistente de Cálculo y Aplicación
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button type="button" class="nav-link fw-bold" id="retro-tab-btn-history" data-retro-tab="history">
+                <i class="ti ti-list-check me-1 text-indigo"></i> Historial de Corridas Aplicadas
+              </button>
+            </li>
+          </ul>
+
+          <div id="retro-pane-wizard">
+            <!-- PASO 1: PARÁMETROS Y LIQUIDACIÓN DESTINO -->
+            <div class="card border shadow-2xs mb-3">
+              <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <span class="fw-bold text-dark"><i class="ti ti-adjustments me-1 text-purple"></i>1. Alcance Paritario, Rango Cerrado y Liquidación Destino</span>
+                <span class="badge bg-purple-lt text-purple" id="retro-target-type-badge">Solo liquidaciones habilitadas para retroactivos</span>
+              </div>
+              <div class="card-body p-3">
+                <div class="row g-2 mb-2">
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold small mb-1" for="retro-cct-select">Convenio Colectivo (CCT)</label>
+                    <select class="form-select form-select-sm" id="retro-cct-select">
+                      <option value="ALL">Todos los Convenios / Escalas</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-bold small mb-1" for="retro-from-month">Mes Desde</label>
+                    <select class="form-select form-select-sm" id="retro-from-month"></select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-bold small mb-1" for="retro-from-year">Año Desde</label>
+                    <input type="number" class="form-control form-control-sm" id="retro-from-year" min="2000" max="2100" />
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-bold small mb-1" for="retro-to-month">Mes Hasta</label>
+                    <select class="form-select form-select-sm" id="retro-to-month"></select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label fw-bold small mb-1" for="retro-to-year">Año Hasta</label>
+                    <input type="number" class="form-control form-control-sm" id="retro-to-year" min="2000" max="2100" />
+                  </div>
+                </div>
+
+                <div class="row g-2 align-items-end">
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small mb-1 required" for="retro-target-period-select">
+                      Liquidación Abierta Destino <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select form-select-sm" id="retro-target-period-select">
+                      <option value="">Cargando liquidaciones elegibles...</option>
+                    </select>
+                    <div id="retro-no-eligible-warning" class="alert alert-warning py-1 px-2 small mt-1 mb-0 d-none">
+                      <i class="ti ti-alert-triangle me-1"></i>
+                      No hay ninguna liquidación abierta habilitada para recibir retroactivos. Cree una liquidación de tipo <strong>Retroactivo Paritario</strong> o active la opción en <em>Tipos de Liquidación</em>.
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label fw-bold small mb-1" for="retro-source-mode">Fuente de Nuevos Valores</label>
+                    <select class="form-select form-select-sm" id="retro-source-mode">
+                      <option value="EXISTING_SCALE_PERIODS">Desde escalas ya actualizadas en Nómina</option>
+                      <option value="SIMULATE_INCREASE">Definir aumento paritario aquí (% o fijo)</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2 d-flex align-items-center justify-content-end">
+                    <button type="button" class="btn btn-purple btn-sm w-100 fw-bold" id="btn-retro-run-preview">
+                      <i class="ti ti-calculator me-1"></i> Calcular Preview
+                    </button>
+                  </div>
+                </div>
+
+                <div id="retro-simulate-rule-box" class="row g-2 mt-2 pt-2 border-top d-none">
+                  <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1" for="retro-rule-type">Tipo de Incremento</label>
+                    <select class="form-select form-select-sm" id="retro-rule-type">
+                      <option value="PERCENTAGE">Porcentaje (%)</option>
+                      <option value="FIXED_AMOUNT">Monto Fijo ($)</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label small fw-bold mb-1" for="retro-rule-value">Valor</label>
+                    <input type="number" step="0.01" min="0" class="form-control form-control-sm" id="retro-rule-value" placeholder="Ej. 12.5" />
+                  </div>
+                  <div class="col-md-3">
+                    <label class="form-label small fw-bold mb-1" for="retro-rule-treatment">Carácter Legal</label>
+                    <select class="form-select form-select-sm" id="retro-rule-treatment">
+                      <option value="REMUNERATIVE">Remunerativo (en escala)</option>
+                      <option value="NON_REMUNERATIVE">No Remunerativo Paritario</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label small fw-bold mb-1" for="retro-rule-rounding">Redondeo</label>
+                    <select class="form-select form-select-sm" id="retro-rule-rounding">
+                      <option value="DECIMAL_2">2 decimales</option>
+                      <option value="INTEGER">Entero</option>
+                      <option value="NONE">Exacto</option>
+                    </select>
+                  </div>
+                  <div class="col-md-2 d-flex align-items-end">
+                    <label class="form-check mb-1">
+                      <input class="form-check-input" type="checkbox" id="retro-update-scales-check" />
+                      <span class="form-check-label small">Guardar escala</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mt-2 pt-2 border-top">
+                  <label class="form-check mb-0">
+                    <input class="form-check-input" type="checkbox" id="retro-include-sac-check" checked />
+                    <span class="form-check-label small fw-semibold">Recalcular automáticamente diferencias de SAC si existe cuota cerrada en el semestre (Arts. 121–122 LCT)</span>
+                  </label>
+                  <div class="d-flex align-items-center gap-2">
+                    <input type="text" class="form-control form-control-sm" id="retro-agreement-label" style="width: 260px;" maxlength="255" placeholder="Etiqueta Acuerdo / Acta Paritaria (opcional)" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PASO 2: RESULTADOS Y PREVIEW -->
+            <div id="retro-preview-results-section" class="d-none">
+              <div id="retro-legal-alerts-container" class="mb-2"></div>
+
+              <!-- KPIs -->
+              <div class="row g-2 mb-2">
+                <div class="col-6 col-md-2">
+                  <div class="card border shadow-2xs p-2 text-center">
+                    <div class="text-muted small">Activos c/ Dif.</div>
+                    <div class="fw-bold fs-3 text-dark" id="retro-kpi-active-count">0</div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <div class="card border shadow-2xs p-2 text-center">
+                    <div class="text-muted small">Inactivos c/ Dif.</div>
+                    <div class="fw-bold fs-3 text-warning" id="retro-kpi-inactive-count">0</div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <div class="card border shadow-2xs p-2 text-center">
+                    <div class="text-muted small">Remunerativo</div>
+                    <div class="fw-bold fs-4 font-monospace text-success" id="retro-kpi-rem-total">$ 0,00</div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <div class="card border shadow-2xs p-2 text-center">
+                    <div class="text-muted small">No Remunerativo</div>
+                    <div class="fw-bold fs-4 font-monospace text-blue" id="retro-kpi-nr-total">$ 0,00</div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <div class="card border shadow-2xs p-2 text-center">
+                    <div class="text-muted small">Dif. SAC</div>
+                    <div class="fw-bold fs-4 font-monospace text-indigo" id="retro-kpi-sac-total">$ 0,00</div>
+                  </div>
+                </div>
+                <div class="col-6 col-md-2">
+                  <div class="card border border-purple shadow-2xs p-2 text-center bg-purple-lt">
+                    <div class="text-purple small fw-bold">Total Activos</div>
+                    <div class="fw-bold fs-4 font-monospace text-purple" id="retro-kpi-grand-total">$ 0,00</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barra de pestañas Activos vs Egresados + Buscador + Exportar -->
+              <div class="card border shadow-2xs mb-3">
+                <div class="card-header bg-light py-2 px-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="btn-group btn-group-sm" role="group">
+                      <button type="button" class="btn btn-purple active" id="retro-subtab-active">
+                        Activos (<span id="retro-subtab-active-count">0</span>)
+                      </button>
+                      <button type="button" class="btn btn-outline-warning" id="retro-subtab-inactive">
+                        Inactivos / Egresados (<span id="retro-subtab-inactive-count">0</span>)
+                      </button>
+                    </div>
+                    <div id="retro-ignore-inactive-wrap" class="d-none ms-2 px-2 py-1 border rounded bg-warning-lt">
+                      <label class="form-check form-switch mb-0 d-flex align-items-center gap-2">
+                        <input class="form-check-input m-0" type="checkbox" id="retro-ignore-inactive-switch" />
+                        <span class="form-check-label small fw-bold text-dark">Ignorar liquidaciones de inactivos</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="d-flex align-items-center gap-2">
+                    <input type="text" class="form-control form-control-sm" id="retro-preview-search" style="width: 220px;" placeholder="Filtrar legajo o colaborador..." />
+                    <button type="button" class="btn btn-outline-success btn-sm text-nowrap" id="btn-retro-export-excel">
+                      <i class="ti ti-file-spreadsheet me-1"></i> Exportar Excel
+                    </button>
+                  </div>
+                </div>
+                <div class="card-body p-0">
+                  <div class="table-responsive" style="max-height: 290px; overflow: auto;">
+                    <table class="table table-sm table-vcenter table-hover mb-0">
+                      <thead class="table-light" style="position: sticky; top: 0; z-index: 2;">
+                        <tr>
+                          <th style="width: 36px;" class="text-center">
+                            <input type="checkbox" class="form-check-input" id="retro-select-all-emp" checked />
+                          </th>
+                          <th>Legajo</th>
+                          <th>Colaborador</th>
+                          <th>Escala</th>
+                          <th class="text-end">Remunerativo</th>
+                          <th class="text-end">No Remun.</th>
+                          <th class="text-end">Dif. SAC</th>
+                          <th class="text-end fw-bold">Total Ajuste</th>
+                          <th style="width: 70px;" class="text-center">Detalle</th>
+                        </tr>
+                      </thead>
+                      <tbody id="retro-preview-tbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mapeo y Opciones de Aplicación -->
+              <div class="card border shadow-2xs mb-0">
+                <div class="card-header bg-light py-1 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+                  <span class="small fw-bold text-dark"><i class="ti ti-arrows-exchange me-1 text-purple"></i>3. Mapeo de Conceptos Destino y Regla de Inserción</span>
+                  <div class="d-flex align-items-center gap-3">
+                    <select class="form-select form-select-sm" id="retro-duplicate-strategy" style="width: 200px;">
+                      <option value="ADD">Si existe novedad: Sumar</option>
+                      <option value="REPLACE">Si existe novedad: Reemplazar</option>
+                    </select>
+                    <label class="form-check mb-0 d-none" id="retro-allow-duplicate-wrap">
+                      <input class="form-check-input" type="checkbox" id="retro-allow-duplicate-check" />
+                      <span class="form-check-label small fw-bold text-danger">Permitir reaplicación sobre período ya corrido</span>
+                    </label>
+                  </div>
+                </div>
+                <div class="card-body py-2 px-3">
+                  <div class="row g-2" id="retro-concept-mapping-grid">
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-BASIC">Básico Retroactivo</label>
+                      <select class="form-select form-select-sm" id="retro-map-BASIC"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-ADDITIONALS">Adicionales Retroactivos</label>
+                      <select class="form-select form-select-sm" id="retro-map-ADDITIONALS"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-OVERTIME">Horas Extras Retroactivas</label>
+                      <select class="form-select form-select-sm" id="retro-map-OVERTIME"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-VACATIONS">Vacaciones Retroactivas</label>
+                      <select class="form-select form-select-sm" id="retro-map-VACATIONS"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-SAC">Dif. Retroactiva SAC</label>
+                      <select class="form-select form-select-sm" id="retro-map-SAC"></select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label small mb-0 text-muted" for="retro-map-NON_REMUNERATIVE">No Remunerativo Paritario</label>
+                      <select class="form-select form-select-sm" id="retro-map-NON_REMUNERATIVE"></select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PANE HISTORIAL DE CORRIDAS -->
+          <div id="retro-pane-history" class="d-none">
+            <div class="card border shadow-2xs mb-0">
+              <div class="card-header bg-light py-2 px-3 d-flex justify-content-between align-items-center">
+                <span class="fw-bold small text-dark"><i class="ti ti-history me-1 text-indigo"></i>Registro Auditable de Corridas Retroactivas Aplicadas</span>
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="btn-retro-refresh-history">
+                  <i class="ti ti-refresh me-1"></i> Actualizar
+                </button>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive" style="max-height: 440px; overflow: auto;">
+                  <table class="table table-sm table-vcenter table-hover mb-0">
+                    <thead class="table-light" style="position: sticky; top: 0; z-index: 2;">
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Acuerdo / Rango</th>
+                        <th>Liquidación Destino</th>
+                        <th class="text-center">Activos / Inact.</th>
+                        <th class="text-center">Inactivos Omitidos</th>
+                        <th class="text-end">Total Aplicado</th>
+                      </tr>
+                    </thead>
+                    <tbody id="retro-history-tbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-wrap gap-2 flex-shrink-0">
+          <small class="text-muted" id="retro-footer-status">Seleccione rango cerrado y liquidación destino habilitada para generar vista previa.</small>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-payroll fw-bold" id="btn-retro-apply" disabled>
+              <i class="ti ti-check me-1"></i> Aplicar Novedades a Liquidación Destino
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL CONFIRMACIÓN LEGAL OBLIGATORIA AL IGNORAR INACTIVOS (PROP-07) -->
+  <div class="modal modal-blur fade" id="modal-retroactive-ignore-inactive-confirm" tabindex="-1" role="dialog" aria-hidden="true" data-bs-backdrop="static" style="z-index: 1085;">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document" style="max-height: 88vh;">
+      <div class="modal-content shadow-lg border-warning d-flex flex-column" style="max-height: 88vh; overflow: hidden;">
+        <div class="modal-header bg-warning text-dark py-2 px-3 flex-shrink-0">
+          <div class="d-flex align-items-center gap-2">
+            <i class="ti ti-scale fs-2"></i>
+            <div>
+              <h5 class="modal-title fw-bold mb-0">Advertencia Legal — Omisión de Colaboradores Inactivos / Egresados</h5>
+              <div class="small">Plenario CNAT N° 71 ("Maza c/ La Agraria") • Art. 256 LCT • Art. 245 &amp; Art. 80 LCT</div>
+            </div>
+          </div>
+          <button type="button" class="btn-close" id="btn-retro-close-ignore-inactive" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-3 flex-grow-1 overflow-y-auto" style="min-height: 0;">
+          <div class="alert alert-warning mb-3" id="retro-ignore-inactive-summary-box">
+            Se omitirán <strong><span id="retro-ignore-inactive-count">0</span> colaborador(es) egresado(s)</strong> por un total estimado de <strong class="font-monospace" id="retro-ignore-inactive-amount">$ 0,00</strong>.
+          </div>
+          <div class="small text-dark">
+            <p class="fw-bold mb-1">Implicancias legales de NO liquidar el ajuste retroactivo a trabajadores egresados que prestaron servicios durante los períodos alcanzados:</p>
+            <ul class="mb-2">
+              <li><strong>Derecho adquirido (Plenario CNAT N° 71 "Maza c/ La Agraria" y CSJN "Reinhart"):</strong> las escalas homologadas con efecto retroactivo obligan al empleador respecto de quienes trabajaron en esos meses, aun cuando el vínculo se haya extinguido antes de la homologación (salvo exclusión expresa del texto convencional homologado).</li>
+              <li><strong>Exigibilidad por prescripción bienal (Art. 256 LCT) e intereses moratorios (Art. 137 LCT):</strong> las diferencias impagas quedan sujetas a reclamo administrativo (SECLO) o judicial durante 2 años con más intereses moratorios.</li>
+              <li><strong>Reajuste potencial de Liquidación Final e Indemnizaciones (Arts. 123, 156 y 245 LCT):</strong> si el aumento impactó remuneraciones computables para la MRMNH o el mes de baja, puede originar diferencias indemnizatorias y proporcionales.</li>
+              <li><strong>Certificado de Trabajo Art. 80 LCT (F.984):</strong> puede requerirse la emisión de certificación complementaria o rectificativa de remuneraciones.</li>
+            </ul>
+            <div class="alert alert-info py-2 px-3 mb-0 small">
+              <i class="ti ti-info-circle me-1"></i>
+              <strong>Nota operativa:</strong> Los egresados ignorados <strong>no</strong> quedarán bloqueados en el historial anti-duplicación; podrá exportar su detalle en Excel ahora y liquidarlos por separado más adelante mediante una liquidación complementaria.
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer bg-light py-2 px-3 d-flex justify-content-between align-items-center flex-shrink-0">
+          <button type="button" class="btn btn-outline-secondary" id="btn-retro-cancel-ignore-inactive">
+            <i class="ti ti-arrow-back-up me-1"></i> Volver e Incluir Egresados
+          </button>
+          <button type="button" class="btn btn-warning fw-bold text-dark" id="btn-retro-confirm-ignore-inactive">
+            <i class="ti ti-alert-triangle me-1"></i> Confirmar Omisión bajo mi Responsabilidad
+          </button>
+        </div>
+      </div>
     </div>
   </div>

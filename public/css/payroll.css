@@ -373,11 +373,16 @@
   margin-bottom: var(--pay-space-4);
 }
 
-.payroll-submenu:not(.show) {
-  display: none !important;
+.payroll-nav-item .submenu-caret {
+  transition: transform 0.2s ease;
 }
 
-.payroll-submenu.show {
+.payroll-nav-item:not(.collapsed) .submenu-caret,
+.payroll-nav-item[aria-expanded="true"] .submenu-caret {
+  transform: rotate(180deg);
+}
+
+.payroll-submenu-wrap {
   padding-left: var(--pay-space-16);
   padding-top: var(--pay-space-4);
   padding-bottom: var(--pay-space-4);
@@ -385,8 +390,8 @@
   margin-left: var(--pay-space-20);
   margin-top: var(--pay-space-4);
   margin-bottom: var(--pay-space-4);
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
   gap: var(--pay-space-4);
 }
 
@@ -1209,7 +1214,7 @@
   height: 100% !important;
   max-height: 100% !important;
   background-color: var(--pay-slate-50, #f8fafc) !important;
-  padding: 1.25rem 1.5rem 3.5rem 1.5rem !important;
+  padding: 1rem 1rem 3rem 1rem !important;
   box-sizing: border-box !important;
 }
 
@@ -1820,3 +1825,167 @@
 
 
 
+
+
+/* ============================================================================
+   PROP-05: PLANILLA ÁGIL MULTICONCEPTO & ESTADOS DE CELDA
+   ============================================================================ */
+
+.nov-matrix-table-wrap {
+  max-height: 58vh;
+  overflow: auto;
+  position: relative;
+  border-top: 1px solid #e2e8f0;
+}
+
+#nov-matrix-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+#nov-matrix-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background-color: #f8fafc;
+  border-bottom: 2px solid #cbd5e1;
+  vertical-align: middle;
+  padding: 0.5rem 0.55rem;
+}
+
+#nov-matrix-table tfoot td,
+#nov-matrix-table tfoot th {
+  position: sticky;
+  bottom: 0;
+  z-index: 4;
+  background-color: #f1f5f9;
+  border-top: 2px solid #cbd5e1;
+  font-weight: 700;
+  padding: 0.5rem 0.55rem;
+}
+
+#nov-matrix-table .nov-matrix-sticky-legajo {
+  position: sticky;
+  left: 0;
+  width: 88px;
+  min-width: 88px;
+  max-width: 88px;
+  z-index: 3;
+  background-color: #ffffff;
+  border-right: 1px solid #e2e8f0;
+}
+
+#nov-matrix-table .nov-matrix-sticky-emp {
+  position: sticky;
+  left: 88px;
+  min-width: 220px;
+  max-width: 260px;
+  z-index: 3;
+  background-color: #ffffff;
+  border-right: 1px solid #cbd5e1;
+  box-shadow: 2px 0 6px -2px rgba(15, 23, 42, 0.12);
+}
+
+#nov-matrix-table tbody tr:hover .nov-matrix-sticky-legajo,
+#nov-matrix-table tbody tr:hover .nov-matrix-sticky-emp {
+  background-color: #f8fafc;
+}
+
+#nov-matrix-table thead th.nov-matrix-sticky-legajo,
+#nov-matrix-table thead th.nov-matrix-sticky-emp {
+  z-index: 6;
+  background-color: #f8fafc;
+}
+
+#nov-matrix-table tfoot td.nov-matrix-sticky-legajo,
+#nov-matrix-table tfoot td.nov-matrix-sticky-emp,
+#nov-matrix-table tfoot th.nov-matrix-sticky-legajo,
+#nov-matrix-table tfoot th.nov-matrix-sticky-emp {
+  z-index: 6;
+  background-color: #f1f5f9;
+}
+
+.nov-matrix-col-header {
+  min-width: 158px;
+  max-width: 190px;
+}
+
+.nov-matrix-cell-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.matrix-cell-input,
+.batch-sheet-val {
+  transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.matrix-cell-dirty,
+.batch-sheet-val.matrix-cell-dirty {
+  background-color: #eff6ff !important;
+  border-color: #3b82f6 !important;
+}
+
+.matrix-cell-removal,
+.batch-sheet-val.matrix-cell-removal {
+  background-color: #fefce8 !important;
+  border-color: #eab308 !important;
+  color: #854d0e !important;
+}
+
+.matrix-cell-overtime-warn,
+.batch-sheet-val.matrix-cell-overtime-warn {
+  background-color: #fffbeb !important;
+  border-color: #f59e0b !important;
+  color: #92400e !important;
+}
+
+.matrix-cell-invalid,
+.batch-sheet-val.matrix-cell-invalid {
+  background-color: #fef2f2 !important;
+  border-color: #dc2626 !important;
+  color: #991b1b !important;
+  box-shadow: 0 0 0 1px rgba(220, 38, 38, 0.25);
+}
+
+.nov-matrix-row-carried .nov-matrix-sticky-legajo,
+.batch-sheet-row.nov-matrix-row-carried > td:first-child {
+  box-shadow: inset 3px 0 0 #0ea5e9;
+}
+
+@keyframes novMatrixPasteFlash {
+  0% { background-color: #bae6fd; }
+  100% { background-color: transparent; }
+}
+
+.matrix-cell-pasted-flash {
+  animation: novMatrixPasteFlash 0.9s ease-out;
+}
+
+.nov-action-icon-group .btn-icon {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal Asistente de Retroactivos Paritarios (PROP-07) */
+#modal-retroactive-settlement .modal-header {
+  background: linear-gradient(135deg, var(--pay-indigo-950) 0%, var(--pay-indigo-900) 60%, var(--pay-indigo-850) 100%) !important;
+  color: var(--pay-white) !important;
+  border-bottom: 1px solid var(--pay-border-indigo) !important;
+}
+#modal-retroactive-settlement .modal-title {
+  color: var(--pay-white) !important;
+}
+#modal-retroactive-settlement .modal-header .text-muted {
+  color: var(--pay-violet-200) !important;
+}
+#modal-retroactive-settlement .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%) !important;
+}

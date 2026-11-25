@@ -177,6 +177,7 @@ export async function getMonthlyLsdPeriods(tenantPrisma) {
     SAC_2: '2do SAC',
     VACATIONS: 'Vacaciones',
     FINAL: 'Final',
+    RETROACTIVE: 'Retroactivo Paritario',
   };
 
   const groups = new Map();
@@ -288,6 +289,7 @@ export async function getMonthlyLsdPreview(tenantPrisma, year, month) {
     SAC_2: '2do SAC (Diciembre)',
     VACATIONS: 'Vacaciones',
     FINAL: 'Liquidación Final',
+    RETROACTIVE: 'Retroactivo Paritario',
   };
 
   const totalSlips = settlements.reduce((sum, s) => sum + (s._count?.paySlips || 0), 0);
@@ -482,11 +484,29 @@ export async function exportMonthlyLsdPayroll(tenantPrisma, year, month, company
 
 // =====================================================================
 
-export async function listPeriodNovelties(tenantPrisma, periodId, { employeeId, conceptId } = {}) {
+function parseIdList(input) {
+  if (!input) return [];
+  const raw = Array.isArray(input) ? input : String(input).split(',');
+  return Array.from(new Set(raw.map((x) => String(x || '').trim()).filter(Boolean)));
+}
+
+export async function listPeriodNovelties(tenantPrisma, periodId, { employeeId, conceptId, conceptIds } = {}) {
   await ensureTenantPayrollSchema(tenantPrisma);
   const where = { payrollPeriodId: periodId };
   if (employeeId) where.employeeId = employeeId;
-  if (conceptId) where.conceptId = conceptId;
+
+  const multiConceptIds = parseIdList(conceptIds);
+  if (conceptId) {
+    const cid = String(conceptId).trim();
+    if (multiConceptIds.length > 0) {
+      if (!multiConceptIds.includes(cid)) multiConceptIds.push(cid);
+    } else {
+      where.conceptId = cid;
+    }
+  }
+  if (multiConceptIds.length > 0) {
+    where.conceptId = { in: multiConceptIds };
+  }
 
   return tenantPrisma.periodNovelty.findMany({
     where,
@@ -513,66 +533,350 @@ export async function listPeriodNovelties(tenantPrisma, periodId, { employeeId, 
   });
 }
 
-function assertNoveltyConceptCompatible(concept, period) {
+function resolveCanonicalPeriodFamily(periodType) {
+  const upper = String(periodType || 'MONTHLY').trim().toUpperCase();
+  if (upper === 'ALL') return 'ALL';
+  if (upper === 'MONTHLY' || upper === 'MENSUAL') return 'MONTHLY';
+  if (upper === 'QUINCE' || upper === 'QUINCENA' || upper === 'QUINCE_1' || upper === 'QUINCE_2') return 'QUINCE';
+  if (upper === 'SAC' || upper === 'AGUINALDO' || upper === 'SAC_1' || upper === 'SAC_2') return 'SAC';
+  if (upper === 'VACATIONS' || upper === 'VACACIONES') return 'VACATIONS';
+  if (upper === 'FINAL' || upper === 'LIQUIDACION_FINAL') return 'FINAL';
+  if (upper === 'RETROACTIVE' || upper === 'RETROACTIVO') return 'RETROACTIVE';
+  return upper;
+}
+
+export function checkNoveltyConceptCompatibility(concept, period) {
   if (!concept || concept.deletedAt) {
-    const err = new Error('El concepto especificado no existe');
-    err.status = 400;
-    throw err;
+    return { ok: false, message: 'El concepto especificado no existe' };
   }
   if (String(concept.scope || '').toUpperCase() !== 'INDIVIDUAL') {
-    const err = new Error(`Solo pueden asignarse conceptos con alcance INDIVIDUAL. El concepto ${concept.code} es GENERAL.`);
-    err.status = 400;
-    throw err;
+    return {
+      ok: false,
+      message: `Solo pueden asignarse conceptos con alcance INDIVIDUAL. El concepto ${concept.code} es GENERAL.`,
+    };
   }
   if (concept.isPersistent) {
-    const err = new Error(`El concepto ${concept.code} (${concept.name}) es persistente. Debe gestionarse en Novedades Persistentes.`);
+    return {
+      ok: false,
+      message: `El concepto ${concept.code} (${concept.name}) es persistente. Debe gestionarse en Novedades Persistentes.`,
+    };
+  }
+  if (String(concept.noveltyDataType || '').toUpperCase() === 'CALCULADO') {
+    return {
+      ok: false,
+      message: `El concepto ${concept.code} (${concept.name}) es calculado automáticamente y no admite carga manual de novedades.`,
+    };
+  }
+
+  const pType = String(period?.periodType || 'MONTHLY').trim().toUpperCase();
+  const cPeriodType = String(concept.periodType || 'MONTHLY').trim().toUpperCase();
+  const cFamily = resolveCanonicalPeriodFamily(cPeriodType);
+  const pFamily = resolveCanonicalPeriodFamily(pType);
+
+  if (cFamily !== 'ALL' && cFamily !== pFamily) {
+    return {
+      ok: false,
+      message: `El concepto ${concept.code} (${concept.name}) pertenece al tipo "${cPeriodType}" y no corresponde a una liquidación de tipo "${pType}".`,
+    };
+  }
+  return { ok: true };
+}
+
+function assertNoveltyConceptCompatible(concept, period) {
+  const res = checkNoveltyConceptCompatibility(concept, period);
+  if (!res.ok) {
+    const err = new Error(res.message);
     err.status = 400;
     throw err;
   }
+}
 
-  const pType = (period.periodType || 'MONTHLY').toUpperCase();
-  const cPeriodType = (concept.periodType || 'MONTHLY').toUpperCase();
-  const LEGACY_TYPES = new Set([
-    'ALL', 'MONTHLY', 'MENSUAL', 'QUINCE', 'QUINCENA', 'QUINCE_1', 'QUINCE_2',
-    'SAC', 'AGUINALDO', 'SAC_1', 'SAC_2', 'VACATIONS', 'VACACIONES', 'FINAL', 'LIQUIDACION_FINAL',
-  ]);
+export async function getCarryoverSourceNovelties(
+  tenantPrisma,
+  targetPeriodId,
+  { sourcePeriodId = null, conceptIds = null, includeInactive = false } = {}
+) {
+  await ensureTenantPayrollSchema(tenantPrisma);
 
-  if (!LEGACY_TYPES.has(pType) || !LEGACY_TYPES.has(cPeriodType)) {
-    if (cPeriodType !== 'ALL' && cPeriodType !== pType) {
-      const err = new Error(
-        `El concepto ${concept.code} (${concept.name}) pertenece al tipo "${cPeriodType}" y no puede cargarse en una liquidación de tipo "${pType}".`
-      );
+  const targetPeriod = await tenantPrisma.payrollPeriod.findUnique({
+    where: { id: targetPeriodId },
+  });
+  if (!targetPeriod) {
+    const err = new Error('La liquidación destino solicitada no existe');
+    err.status = 404;
+    throw err;
+  }
+
+  const allOtherPeriods = await tenantPrisma.payrollPeriod.findMany({
+    where: { id: { not: targetPeriodId } },
+    orderBy: [{ year: 'desc' }, { month: 'desc' }, { settlementNumber: 'desc' }],
+    select: {
+      id: true,
+      year: true,
+      month: true,
+      periodType: true,
+      settlementNumber: true,
+      settlementName: true,
+      status: true,
+    },
+  });
+
+  const targetType = String(targetPeriod.periodType || 'MONTHLY').toUpperCase();
+  const statusWeight = { CLOSED: 3, CALCULATED: 2, DRAFT: 1 };
+
+  const availableSourcePeriods = [...allOtherPeriods]
+    .map((p) => ({
+      ...p,
+      samePeriodType: String(p.periodType || '').toUpperCase() === targetType,
+    }))
+    .sort((a, b) => {
+      if (a.samePeriodType !== b.samePeriodType) return a.samePeriodType ? -1 : 1;
+      if (b.year !== a.year) return b.year - a.year;
+      if (b.month !== a.month) return b.month - a.month;
+      return (b.settlementNumber || 1) - (a.settlementNumber || 1);
+    });
+
+  let sourcePeriod = null;
+  if (sourcePeriodId) {
+    const cleanSourceId = String(sourcePeriodId).trim();
+    if (cleanSourceId === targetPeriodId) {
+      const err = new Error('No puede copiar novedades desde la misma liquidación destino');
       err.status = 400;
       throw err;
     }
-    return;
+    sourcePeriod = availableSourcePeriods.find((p) => p.id === cleanSourceId) || null;
+    if (!sourcePeriod) {
+      const err = new Error('La liquidación origen especificada no existe');
+      err.status = 404;
+      throw err;
+    }
+  } else {
+    const sameTypeList = availableSourcePeriods.filter((p) => p.samePeriodType);
+    const earlierSameType = sameTypeList.filter(
+      (p) =>
+        p.year < targetPeriod.year ||
+        (p.year === targetPeriod.year && p.month < targetPeriod.month) ||
+        (p.year === targetPeriod.year &&
+          p.month === targetPeriod.month &&
+          (p.settlementNumber || 1) < (targetPeriod.settlementNumber || 1))
+    );
+    const pool = earlierSameType.length > 0 ? earlierSameType : sameTypeList;
+    if (pool.length > 0) {
+      pool.sort((a, b) => {
+        if (b.year !== a.year) return b.year - a.year;
+        if (b.month !== a.month) return b.month - a.month;
+        if ((b.settlementNumber || 1) !== (a.settlementNumber || 1)) {
+          return (b.settlementNumber || 1) - (a.settlementNumber || 1);
+        }
+        return (statusWeight[b.status] || 0) - (statusWeight[a.status] || 0);
+      });
+      sourcePeriod = pool[0];
+    }
   }
 
-  if (pType === 'MONTHLY' && cPeriodType === 'VACATIONS') {
-    const err = new Error(`No se pueden cargar conceptos de tipo VACACIONES (${concept.code} - ${concept.name}) en una liquidación de tipo MENSUAL.`);
-    err.status = 400;
-    throw err;
+  if (!sourcePeriod) {
+    return {
+      sourcePeriod: null,
+      sourceOrigin: 'NONE',
+      availableSourcePeriods,
+      concepts: [],
+      items: [],
+      skippedInactiveCount: 0,
+      skippedIncompatibleConceptsCount: 0,
+    };
   }
-  if (pType === 'VACATIONS' && cPeriodType !== 'VACATIONS') {
-    const err = new Error(`En una liquidación de VACACIONES solo pueden cargarse conceptos del tipo VACACIONES. El concepto ${concept.code} es ${cPeriodType}.`);
-    err.status = 400;
-    throw err;
+
+  const allNonPersConcepts = await tenantPrisma.concept.findMany({
+    where: {
+      deletedAt: null,
+      scope: 'INDIVIDUAL',
+      isPersistent: false,
+    },
+    orderBy: [{ code: 'asc' }],
+  });
+
+  const compatibleNonCalc = allNonPersConcepts.filter(
+    (c) =>
+      String(c.noveltyDataType || '').toUpperCase() !== 'CALCULADO' &&
+      checkNoveltyConceptCompatibility(c, targetPeriod).ok
+  );
+
+  const requestedIds = parseIdList(conceptIds);
+  let candidateConcepts = compatibleNonCalc;
+  let skippedIncompatibleConceptsCount = 0;
+
+  if (requestedIds.length > 0) {
+    const requestedSet = new Set(requestedIds);
+    candidateConcepts = compatibleNonCalc.filter((c) => requestedSet.has(c.id));
+    skippedIncompatibleConceptsCount = Math.max(0, requestedSet.size - candidateConcepts.length);
   }
-  if (pType !== 'VACATIONS' && cPeriodType === 'VACATIONS') {
-    const err = new Error(`El concepto ${concept.code} (${concept.name}) es de tipo VACACIONES y solo puede cargarse en una liquidación de VACACIONES.`);
-    err.status = 400;
-    throw err;
+
+  if (candidateConcepts.length === 0) {
+    return {
+      sourcePeriod,
+      sourceOrigin: 'NONE',
+      availableSourcePeriods,
+      concepts: [],
+      items: [],
+      skippedInactiveCount: 0,
+      skippedIncompatibleConceptsCount,
+    };
   }
-  if ((pType === 'SAC_1' || pType === 'SAC_2') && cPeriodType !== 'SAC' && cPeriodType !== 'SAC_1' && cPeriodType !== 'SAC_2' && cPeriodType !== 'MONTHLY') {
-    const err = new Error(`En una liquidación de SAC solo pueden cargarse conceptos correspondientes a SAC.`);
-    err.status = 400;
-    throw err;
+
+  const candidateConceptMap = new Map(candidateConcepts.map((c) => [c.id, c]));
+  const candidateIds = candidateConcepts.map((c) => c.id);
+
+  let sourceOrigin = 'NONE';
+  const rawRecords = [];
+
+  if (sourcePeriod.status !== 'CLOSED') {
+    const openNovs = await tenantPrisma.periodNovelty.findMany({
+      where: {
+        payrollPeriodId: sourcePeriod.id,
+        conceptId: { in: candidateIds },
+      },
+      include: {
+        employee: {
+          select: { id: true, status: true, deletedAt: true },
+        },
+      },
+    });
+    if (openNovs.length > 0) {
+      sourceOrigin = 'PERIOD_NOVELTIES';
+      for (const nov of openNovs) {
+        rawRecords.push({
+          employeeId: nov.employeeId,
+          employeeStatus: nov.employee?.status || 'ACTIVE',
+          employeeDeletedAt: nov.employee?.deletedAt || null,
+          conceptId: nov.conceptId,
+          units: nov.units !== null && nov.units !== undefined ? Number(nov.units) : null,
+          amount: nov.amount !== null && nov.amount !== undefined ? Number(nov.amount) : null,
+          notes: nov.notes ? String(nov.notes).trim() : null,
+          formulaAmountWarning: false,
+        });
+      }
+    }
   }
-  if (pType === 'FINAL' && cPeriodType !== 'FINAL' && cPeriodType !== 'MONTHLY') {
-    const err = new Error(`El concepto ${concept.code} no corresponde a liquidaciones FINALES.`);
-    err.status = 400;
-    throw err;
+
+  if (rawRecords.length === 0) {
+    const slipItems = await tenantPrisma.paySlipItem.findMany({
+      where: {
+        conceptId: { in: candidateIds },
+        paySlip: {
+          payrollPeriodId: sourcePeriod.id,
+          deletedAt: null,
+        },
+      },
+      include: {
+        paySlip: {
+          select: {
+            employeeId: true,
+            employee: {
+              select: { id: true, status: true, deletedAt: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (slipItems.length > 0) {
+      sourceOrigin = 'CLOSED_PAYSLIPS';
+      const seenKeys = new Set();
+      for (const item of slipItems) {
+        const empId = item.paySlip?.employeeId;
+        const cId = item.conceptId;
+        const concept = candidateConceptMap.get(cId);
+        if (!empId || !cId || !concept) continue;
+
+        const pairKey = `${empId}::${cId}`;
+        if (seenKeys.has(pairKey)) continue;
+        seenKeys.add(pairKey);
+
+        const dt = String(concept.noveltyDataType || '').toUpperCase();
+        const isAmountType =
+          dt === 'IMPORTE' || dt === 'AMOUNT' || concept.calculationType === 'FIXED_AMOUNT';
+        const isNoneType = dt === 'SOLO_ASIGNACION' || dt === 'NONE' || dt === 'SIN_NOVEDAD';
+
+        let unitsVal = null;
+        let amountVal = null;
+        let formulaAmountWarning = false;
+
+        if (isAmountType) {
+          unitsVal = 1;
+          amountVal = item.amount !== null && item.amount !== undefined ? Number(item.amount) : 0;
+          if (String(concept.calculationType || '').toUpperCase() === 'FORMULA') {
+            formulaAmountWarning = true;
+          }
+        } else if (isNoneType) {
+          unitsVal = 1;
+          amountVal = null;
+        } else {
+          unitsVal = item.units !== null && item.units !== undefined ? Number(item.units) : 0;
+          amountVal = null;
+        }
+
+        rawRecords.push({
+          employeeId: empId,
+          employeeStatus: item.paySlip?.employee?.status || 'ACTIVE',
+          employeeDeletedAt: item.paySlip?.employee?.deletedAt || null,
+          conceptId: cId,
+          units: unitsVal,
+          amount: amountVal,
+          notes: item.notes ? String(item.notes).trim() : null,
+          formulaAmountWarning,
+        });
+      }
+    }
   }
+
+  const allowInactive = includeInactive === true || includeInactive === 'true';
+  const skippedInactiveEmpIds = new Set();
+  const filteredItems = [];
+  const conceptCounts = new Map();
+
+  for (const rec of rawRecords) {
+    if (rec.employeeDeletedAt) {
+      skippedInactiveEmpIds.add(rec.employeeId);
+      continue;
+    }
+    const isInactive = String(rec.employeeStatus || 'ACTIVE').toUpperCase() !== 'ACTIVE';
+    if (isInactive && !allowInactive) {
+      skippedInactiveEmpIds.add(rec.employeeId);
+      continue;
+    }
+    filteredItems.push({
+      employeeId: rec.employeeId,
+      conceptId: rec.conceptId,
+      units: rec.units,
+      amount: rec.amount,
+      notes: rec.notes,
+      formulaAmountWarning: rec.formulaAmountWarning,
+    });
+    conceptCounts.set(rec.conceptId, (conceptCounts.get(rec.conceptId) || 0) + 1);
+  }
+
+  const conceptsSummary = candidateConcepts
+    .filter((c) => conceptCounts.has(c.id))
+    .map((c) => ({
+      id: c.id,
+      code: c.code,
+      name: c.name,
+      type: c.type,
+      noveltyDataType: c.noveltyDataType,
+      calculationType: c.calculationType,
+      arcaConceptCode: c.arcaConceptCode,
+      count: conceptCounts.get(c.id) || 0,
+    }));
+
+  return {
+    sourcePeriod,
+    sourceOrigin,
+    availableSourcePeriods,
+    concepts: conceptsSummary,
+    items: filteredItems,
+    skippedInactiveCount: skippedInactiveEmpIds.size,
+    skippedIncompatibleConceptsCount,
+  };
 }
 
 export async function upsertPeriodNovelty(tenantPrisma, periodId, data) {
@@ -679,7 +983,12 @@ export async function deletePeriodNovelty(tenantPrisma, periodId, noveltyId) {
   return { message: 'Novedad eliminada correctamente' };
 }
 
-export async function batchUpsertPeriodNovelties(tenantPrisma, periodId, items) {
+export async function batchUpsertPeriodNovelties(
+  tenantPrisma,
+  periodId,
+  items = [],
+  { conceptId = null, removeEmployeeIds = [], removals = [], returnData = true, requireActiveEmployees = false } = {}
+) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
   const period = await tenantPrisma.payrollPeriod.findUnique({
@@ -697,17 +1006,49 @@ export async function batchUpsertPeriodNovelties(tenantPrisma, periodId, items) 
     throw err;
   }
 
-  if (!Array.isArray(items) || items.length === 0) {
-    return { savedCount: 0, processedCount: 0, data: [] };
-  }
+  const safeItems = Array.isArray(items) ? items : [];
 
   // Deduplicar pares (employeeId, conceptId) conservando la última entrada del lote
   const dedupedMap = new Map();
-  for (const item of items) {
+  for (const item of safeItems) {
     dedupedMap.set(`${item.employeeId}::${item.conceptId}`, item);
   }
   const dedupedItems = Array.from(dedupedMap.values());
-  const conceptIds = Array.from(new Set(dedupedItems.map((i) => i.conceptId)));
+
+  // Unificar eliminaciones multiconcepto (removals[]) y formato monoconcepto legacy (removeEmployeeIds[])
+  const removalsByConcept = new Map();
+  const addRemovalPair = (empId, cId) => {
+    const cleanEmp = empId ? String(empId).trim() : '';
+    const cleanCon = cId ? String(cId).trim() : '';
+    if (!cleanEmp || !cleanCon) return;
+    if (dedupedMap.has(`${cleanEmp}::${cleanCon}`)) return;
+    if (!removalsByConcept.has(cleanCon)) removalsByConcept.set(cleanCon, new Set());
+    removalsByConcept.get(cleanCon).add(cleanEmp);
+  };
+
+  if (Array.isArray(removals)) {
+    for (const rem of removals) {
+      addRemovalPair(rem?.employeeId, rem?.conceptId);
+    }
+  }
+
+  const targetRemoveConceptId = conceptId || dedupedItems[0]?.conceptId || null;
+  if (Array.isArray(removeEmployeeIds) && targetRemoveConceptId) {
+    for (const empId of removeEmployeeIds) {
+      addRemovalPair(empId, targetRemoveConceptId);
+    }
+  }
+
+  if (dedupedItems.length === 0 && removalsByConcept.size === 0) {
+    return { savedCount: 0, deletedCount: 0, processedCount: 0, data: [] };
+  }
+
+  const conceptIds = Array.from(
+    new Set([
+      ...dedupedItems.map((i) => i.conceptId),
+      ...Array.from(removalsByConcept.keys()),
+    ])
+  );
   const employeeIds = Array.from(new Set(dedupedItems.map((i) => i.employeeId)));
 
   const concepts = await tenantPrisma.concept.findMany({
@@ -718,82 +1059,136 @@ export async function batchUpsertPeriodNovelties(tenantPrisma, periodId, items) 
     assertNoveltyConceptCompatible(conceptMap.get(cid), period);
   }
 
-  const savedIds = await tenantPrisma.$transaction(async (tx) => {
-    const existingList = await tx.periodNovelty.findMany({
-      where: {
-        payrollPeriodId: periodId,
-        employeeId: { in: employeeIds },
-        conceptId: { in: conceptIds },
-      },
-      select: { id: true, employeeId: true, conceptId: true },
+  if (employeeIds.length > 0 && tenantPrisma.employee?.findMany) {
+    const validEmployees = await tenantPrisma.employee.findMany({
+      where: { id: { in: employeeIds }, deletedAt: null },
+      select: { id: true, fileNumber: true, firstName: true, lastName: true, status: true },
     });
-    const existingMap = new Map(
-      existingList.map((e) => [`${e.employeeId}::${e.conceptId}`, e.id])
-    );
-
-    const toCreate = [];
-    const toUpdate = [];
-    const resultIds = [];
-
-    for (const item of dedupedItems) {
-      const unitsVal = item.units !== undefined && item.units !== null && item.units !== '' ? Number(item.units) : null;
-      const amountVal = item.amount !== undefined && item.amount !== null && item.amount !== '' ? Number(item.amount) : null;
-      const notesVal = item.notes ? String(item.notes).trim() : null;
-      const key = `${item.employeeId}::${item.conceptId}`;
-      const existingId = existingMap.get(key);
-
-      if (existingId) {
-        toUpdate.push({ id: existingId, units: unitsVal, amount: amountVal, notes: notesVal });
-        resultIds.push(existingId);
-      } else {
-        const newId = crypto.randomUUID();
-        toCreate.push({
-          id: newId,
-          payrollPeriodId: periodId,
-          employeeId: item.employeeId,
-          conceptId: item.conceptId,
-          units: unitsVal,
-          amount: amountVal,
-          notes: notesVal,
-        });
-        resultIds.push(newId);
+    if (validEmployees.length !== employeeIds.length) {
+      const err = new Error('Uno o más colaboradores incluidos en el lote no existen o fueron eliminados');
+      err.status = 400;
+      throw err;
+    }
+    if (requireActiveEmployees === true) {
+      const inactiveEmps = validEmployees.filter(
+        (e) => String(e.status || '').toUpperCase() !== 'ACTIVE'
+      );
+      if (inactiveEmps.length > 0) {
+        const labels = inactiveEmps
+          .slice(0, 5)
+          .map((e) => (e.fileNumber ? `Legajo ${e.fileNumber}` : e.id))
+          .join(', ');
+        const suffix = inactiveEmps.length > 5 ? ` y ${inactiveEmps.length - 5} más` : '';
+        const err = new Error(
+          `No se pueden importar novedades para colaboradores sin relación laboral activa: ${labels}${suffix}.`
+        );
+        err.status = 400;
+        throw err;
       }
     }
+  }
 
-    for (let i = 0; i < toCreate.length; i += 200) {
-      await tx.periodNovelty.createMany({ data: toCreate.slice(i, i + 200) });
-    }
+  const { savedIds, deletedCount } = await tenantPrisma.$transaction(
+    async (tx) => {
+      let delCount = 0;
+      for (const [remConceptId, empIdSet] of removalsByConcept.entries()) {
+        const empIdsForDel = Array.from(empIdSet);
+        if (empIdsForDel.length === 0) continue;
+        const delRes = await tx.periodNovelty.deleteMany({
+          where: {
+            payrollPeriodId: periodId,
+            conceptId: remConceptId,
+            employeeId: { in: empIdsForDel },
+          },
+        });
+        delCount += delRes.count || 0;
+      }
 
-    for (let i = 0; i < toUpdate.length; i += 20) {
-      const chunk = toUpdate.slice(i, i + 20);
-      await Promise.all(
-        chunk.map((upd) =>
-          tx.periodNovelty.update({
-            where: { id: upd.id },
-            data: {
-              units: upd.units,
-              amount: upd.amount,
-              notes: upd.notes,
-            },
-          })
-        )
-      );
-    }
+      const resultIds = [];
+      if (dedupedItems.length > 0) {
+        const existingList = await tx.periodNovelty.findMany({
+          where: {
+            payrollPeriodId: periodId,
+            employeeId: { in: employeeIds },
+            conceptId: { in: conceptIds },
+          },
+          select: { id: true, employeeId: true, conceptId: true },
+        });
+        const existingMap = new Map(
+          existingList.map((e) => [`${e.employeeId}::${e.conceptId}`, e.id])
+        );
 
-    return resultIds;
-  });
+        const toCreate = [];
+        const toUpdate = [];
 
-  const results = await tenantPrisma.periodNovelty.findMany({
-    where: { id: { in: savedIds } },
-    include: {
-      employee: true,
-      concept: true,
+        for (const item of dedupedItems) {
+          const unitsVal = item.units !== undefined && item.units !== null && item.units !== '' ? Number(item.units) : null;
+          const amountVal = item.amount !== undefined && item.amount !== null && item.amount !== '' ? Number(item.amount) : null;
+          const notesVal = item.notes ? String(item.notes).trim() : null;
+          const key = `${item.employeeId}::${item.conceptId}`;
+          const existingId = existingMap.get(key);
+
+          if (existingId) {
+            toUpdate.push({ id: existingId, units: unitsVal, amount: amountVal, notes: notesVal });
+            resultIds.push(existingId);
+          } else {
+            const newId = crypto.randomUUID();
+            toCreate.push({
+              id: newId,
+              payrollPeriodId: periodId,
+              employeeId: item.employeeId,
+              conceptId: item.conceptId,
+              units: unitsVal,
+              amount: amountVal,
+              notes: notesVal,
+            });
+            resultIds.push(newId);
+          }
+        }
+
+        for (let i = 0; i < toCreate.length; i += 200) {
+          await tx.periodNovelty.createMany({ data: toCreate.slice(i, i + 200) });
+        }
+
+        for (let i = 0; i < toUpdate.length; i += 20) {
+          const chunk = toUpdate.slice(i, i + 20);
+          await Promise.all(
+            chunk.map((upd) =>
+              tx.periodNovelty.update({
+                where: { id: upd.id },
+                data: {
+                  units: upd.units,
+                  amount: upd.amount,
+                  notes: upd.notes,
+                },
+              })
+            )
+          );
+        }
+      }
+
+      return { savedIds: resultIds, deletedCount: delCount };
     },
-  });
+    { maxWait: 10000, timeout: 30000 }
+  );
 
+  const shouldReturnData = returnData !== false;
+  const results =
+    shouldReturnData && savedIds.length > 0
+      ? await tenantPrisma.periodNovelty.findMany({
+        where: { id: { in: savedIds } },
+        include: {
+          employee: true,
+          concept: true,
+        },
+      })
+      : [];
+
+  const savedCount = shouldReturnData ? results.length : savedIds.length;
   return {
-    savedCount: results.length,
-    processedCount: results.length,
+    savedCount,
+    deletedCount,
+    processedCount: savedCount + deletedCount,
     data: results,
   };
 }

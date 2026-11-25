@@ -42,6 +42,25 @@ function formatBoolNum(val) {
   return val ? '1' : '0';
 }
 
+/**
+ * Determina si un ítem liquidado corresponde a un concepto No Remunerativo asociado
+ * a un código ARCA 8xxxxx (ej. 820000 "Otros descuentos generales" usado como Crédito 'C'
+ * en liquidaciones de Anticipo de Haberes). Se informa con indicador 'C' en Registro 03,
+ * pero según normativa ARCA LSD no integra Remuneración Bruta ni BI 9 (LRT) del Registro 04.
+ */
+export function isArcaDiscountCreditItem(item) {
+  return item?.type === 'NON_REMUNERATIVE' && String(item?.arcaConceptCode || '').trim().startsWith('8');
+}
+
+export function getSlipLsdGrossSalary(slip) {
+  const rawGross = Number(slip?.grossSalary || 0);
+  const items = Array.isArray(slip?.items) ? slip.items : [];
+  const arca8CreditSum = items
+    .filter((it) => isArcaDiscountCreditItem(it))
+    .reduce((acc, it) => acc + Number(it.amount || 0), 0);
+  return Math.max(0, Math.round((rawGross - arca8CreditSum) * 100) / 100);
+}
+
 function formatDate(dateVal) {
   if (!dateVal) return '00000000';
   if (typeof dateVal === 'string' && /^\d{4}-\d{2}-\d{2}/.test(dateVal)) {
@@ -161,8 +180,12 @@ export function calculateMaxAllowedDetraction({
   contractModality = '001',
   workedDays = 30,
   isVacationPeriod = false,
+  isRetroactivePeriod = false,
   bi2 = Infinity,
 } = {}) {
+  if (isRetroactivePeriod) {
+    return 0;
+  }
   const base = Number(detractionBase) || 7003.68;
   const modStr = String(contractModality || '').trim();
   const isPartTimeModality = modStr === '002' || modStr === '2';
@@ -206,24 +229,26 @@ export function generateLsdConceptsFile(concepts) {
 
   for (const c of exportableConcepts) {
     const isDeduction = c.type === 'DEDUCTION';
+    const isArca8Code = String(c.arcaConceptCode || '').trim().startsWith('8');
+    const forceZeroSubsystems = isDeduction || isArca8Code;
 
     // Regla de negocio ARCA:
-    // Descuentos (810000 a 829999): subsistemas pos. 168-186 deben ser estrictamente '0'
-    const sipaAporte = isDeduction ? '0' : formatBoolNum(c.appliesSipaAporte);
-    const sipaContrib = isDeduction ? '0' : formatBoolNum(c.appliesSipaContrib);
-    const inssjypAporte = isDeduction ? '0' : formatBoolNum(c.appliesInssjypAporte);
-    const inssjypContrib = isDeduction ? '0' : formatBoolNum(c.appliesInssjypContrib);
-    const osAporte = isDeduction ? '0' : formatBoolNum(c.appliesOsAporte);
-    const osContrib = isDeduction ? '0' : formatBoolNum(c.appliesOsContrib);
-    const fsrAporte = isDeduction ? '0' : formatBoolNum(c.appliesFsrAporte);
-    const fsrContrib = isDeduction ? '0' : formatBoolNum(c.appliesFsrContrib);
-    const renatreAporte = isDeduction ? '0' : formatBoolNum(c.appliesRenatreAporte);
-    const renatreContrib = isDeduction ? '0' : formatBoolNum(c.appliesRenatreContrib);
-    const aaffContrib = isDeduction ? '0' : formatBoolNum(c.appliesAaffContrib);
-    const fneContrib = isDeduction ? '0' : formatBoolNum(c.appliesFneContrib);
-    const lrtContrib = isDeduction ? '0' : formatBoolNum(c.appliesLrtContrib);
-    const regDifAporte = isDeduction ? '0' : formatBoolNum(c.appliesRegDifAporte);
-    const regEspAporte = isDeduction ? '0' : formatBoolNum(c.appliesRegEspAporte);
+    // Descuentos (810000 a 829999) y créditos sobre 820000: subsistemas pos. 168-186 deben ser estrictamente '0'
+    const sipaAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesSipaAporte);
+    const sipaContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesSipaContrib);
+    const inssjypAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesInssjypAporte);
+    const inssjypContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesInssjypContrib);
+    const osAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesOsAporte);
+    const osContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesOsContrib);
+    const fsrAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesFsrAporte);
+    const fsrContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesFsrContrib);
+    const renatreAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesRenatreAporte);
+    const renatreContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesRenatreContrib);
+    const aaffContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesAaffContrib);
+    const fneContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesFneContrib);
+    const lrtContrib = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesLrtContrib);
+    const regDifAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesRegDifAporte);
+    const regEspAporte = forceZeroSubsystems ? '0' : formatBoolNum(c.appliesRegEspAporte);
 
     const line =
       formatAlpha(c.arcaConceptCode || (isDeduction ? '810000' : '110000'), 6) + // 1-6
@@ -338,6 +363,9 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
         cantidadStr = formatMoney(item.units, 5);
       }
 
+      const rawAdjPeriod = String(item.adjustmentPeriod || '').trim();
+      const adjPeriod = /^\d{6}$/.test(rawAdjPeriod) ? rawAdjPeriod : '000000';
+
       let reg03 =
         '03' + // 1-2
         formatNumeric(cuilClean, 11) + // 3-13
@@ -346,7 +374,7 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
         (item.unitLabel === '%' ? '%' : '$') + // 29
         formatMoney(item.amount, 15) + // 30-44 Importe
         indicator + // 45 Indicador Débito / Crédito
-        '000000'; // 46-51 Período ajuste retroactivo
+        adjPeriod; // 46-51 Período ajuste retroactivo
 
       if (reg03.length !== 51) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length} (esperado 51)`);
       lines.push(reg03);
@@ -375,6 +403,7 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
     const locCode = getArcaLocalityCode(emp.province || company?.province, emp.city || company?.city);
 
     const detractionBase = Number(payrollSettings?.detractionBase || 7003.68);
+    const isRetroPeriod = period?.periodType === 'RETROACTIVE' || period?.periodType === 'RETROACTIVO';
     const maxAllowedDetr = calculateMaxAllowedDetraction({
       detractionBase,
       isPartTime: emp.isPartTime,
@@ -382,6 +411,7 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
       contractModality: basis.contractModality,
       workedDays: reg04Days,
       isVacationPeriod: period?.periodType === 'VACATIONS',
+      isRetroactivePeriod: isRetroPeriod,
       bi2: basis.baseImponible2,
     });
     const actualDetraction = Math.min(
@@ -389,6 +419,8 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
       maxAllowedDetr
     );
     const actualBi10 = Math.max(0, Math.round(((Number(basis.baseImponible2) || 0) - actualDetraction) * 100) / 100);
+    const lsdGrossSalary = getSlipLsdGrossSalary(slip);
+    const lsdBi9 = Math.min(Number(basis.baseImponible9 || 0), lsdGrossSalary);
 
     let reg04 =
       '04' + // 1-2
@@ -424,7 +456,7 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
       formatMoney(basis.baseDifContribOs || 0, 15) + // 116-130 Base Dif Contrib OS
       formatMoney(basis.baseDifLrt || 0, 15) + // 131-145 Base Dif LRT
       formatMoney(0, 15) + // 146-160 Maternidad
-      formatMoney(slip.grossSalary, 15) + // 161-175 Remuneración Bruta Total
+      formatMoney(lsdGrossSalary, 15) + // 161-175 Remuneración Bruta Total
       formatMoney(basis.baseImponible1, 15) + // 176-190 BI 1 (SIPA Aportes)
       formatMoney(basis.baseImponible2, 15) + // 191-205 BI 2 (SIPA Contribuciones)
       formatMoney(basis.baseImponible3, 15) + // 206-220 BI 3 (INSSJyP Contribuciones)
@@ -433,7 +465,7 @@ export function generateLsdPayrollFile({ company, period, paySlips, payrollSetti
       formatMoney(basis.baseImponible6 || 0, 15) + // 251-265 BI 6
       formatMoney(basis.baseImponible7 || 0, 15) + // 266-280 BI 7
       formatMoney(basis.baseImponible8 || basis.baseImponible4, 15) + // 281-295 BI 8 (FSR)
-      formatMoney(basis.baseImponible9, 15) + // 296-310 BI 9 (LRT)
+      formatMoney(lsdBi9, 15) + // 296-310 BI 9 (LRT)
       formatMoney(0, 15) + // 311-325 Base Dif SS
       formatMoney(0, 15) + // 326-340 Base Dif Contrib SS
       formatMoney(actualBi10, 15) + // 341-355 BI 10 (SIPA con Detracción)
@@ -488,11 +520,11 @@ export function validateLsdConsistency({ paySlips, payrollSettings = {}, company
       .reduce((acc, i) => acc + Number(i.amount || 0), 0);
 
     const sumNoRemun = items
-      .filter((i) => i.type === 'NON_REMUNERATIVE')
+      .filter((i) => i.type === 'NON_REMUNERATIVE' && !isArcaDiscountCreditItem(i))
       .reduce((acc, i) => acc + Number(i.amount || 0), 0);
 
     const calcBruto = Math.round((sumRemun + sumNoRemun) * 100) / 100;
-    const slipBruto = Math.round(Number(slip.grossSalary || 0) * 100) / 100;
+    const slipBruto = getSlipLsdGrossSalary(slip);
 
     if (Math.abs(calcBruto - slipBruto) > 0.01) {
       issues.push({
@@ -763,6 +795,9 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
           cantidadStr = formatMoney(item.units, 5);
         }
 
+        const rawAdjPeriod = String(item.adjustmentPeriod || '').trim();
+        const adjPeriod = /^\d{6}$/.test(rawAdjPeriod) ? rawAdjPeriod : '000000';
+
         let reg03 =
           '03' + // 1-2
           formatNumeric(cuilClean, 11) + // 3-13
@@ -771,7 +806,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
           (item.unitLabel === '%' ? '%' : '$') + // 29
           formatMoney(item.amount, 15) + // 30-44 Importe
           indicator + // 45 Indicador Débito / Crédito
-          '000000'; // 46-51 Período ajuste retroactivo
+          adjPeriod; // 46-51 Período ajuste retroactivo
 
         if (reg03.length !== 51) throw new Error(`Registro 03 [Concepto ${item.conceptCode}] longitud inválida: ${reg03.length} (esperado 51)`);
         lines.push(reg03);
@@ -779,7 +814,7 @@ export function generateMonthlyLsdPayrollFile({ company, year, month, period, se
     }
 
     // REGISTRO 04: ATRIBUTOS LABORALES Y BASES IMPONIBLES UNIFICADAS (F.931)
-    const monthlyGross = Math.round(empSlips.reduce((sum, s) => sum + Number(s.grossSalary || 0), 0) * 100) / 100;
+    const monthlyGross = Math.round(empSlips.reduce((sum, s) => sum + getSlipLsdGrossSalary(s), 0) * 100) / 100;
     const monthlyRemunerative = Math.round(empSlips.reduce((sum, s) => sum + Number(s.remunerativeSalary || 0), 0) * 100) / 100;
 
     const isIntern = Boolean(emp.salaryScale?.isInternOnly || emp.contractModalityCode === '027');
@@ -1009,7 +1044,7 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
     }
 
     // 3. Remuneración Bruta Total Consolidada vs Suma de Conceptos de todos los 03
-    const monthlyGross = Math.round(empSlips.reduce((sum, s) => sum + Number(s.grossSalary || 0), 0) * 100) / 100;
+    const monthlyGross = Math.round(empSlips.reduce((sum, s) => sum + getSlipLsdGrossSalary(s), 0) * 100) / 100;
     const monthlyRemunerative = Math.round(empSlips.reduce((sum, s) => sum + Number(s.remunerativeSalary || 0), 0) * 100) / 100;
 
     totalGrossAll += monthlyGross;
@@ -1029,7 +1064,7 @@ export function validateMonthlyLsdConsistency({ year, month, period, settlements
 
         if (item.type === 'REMUNERATIVE') {
           sumConceptsRemun += amt;
-        } else if (item.type === 'NON_REMUNERATIVE') {
+        } else if (item.type === 'NON_REMUNERATIVE' && !isArcaDiscountCreditItem(item)) {
           sumConceptsNoRemun += amt;
         } else if (item.type === 'DEDUCTION') {
           const code = String(item.conceptCode || '');

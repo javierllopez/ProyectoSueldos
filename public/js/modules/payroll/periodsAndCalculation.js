@@ -52,12 +52,18 @@ class MixinMethods {
         const parentBtn = parentDropdown.querySelector('.payroll-nav-item');
         if (parentBtn) {
           parentBtn.classList.add('active');
+          parentBtn.classList.remove('collapsed');
           parentBtn.setAttribute('aria-expanded', 'true');
         }
 
         const collapseSubmenu = parentDropdown.querySelector('.collapse, .payroll-submenu');
-        if (collapseSubmenu && !collapseSubmenu.classList.contains('show')) {
-          collapseSubmenu.classList.add('show');
+        if (collapseSubmenu) {
+          if (window.bootstrap?.Collapse) {
+            const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseSubmenu, { toggle: false });
+            inst.show();
+          } else {
+            collapseSubmenu.classList.add('show');
+          }
         }
         const caret = parentBtn?.querySelector('.submenu-caret');
         if (caret) {
@@ -91,6 +97,9 @@ class MixinMethods {
     } else if (cleanId === '#pane-nov-nopers-con') {
       this.syncPayrollPeriodSelectors();
       this.loadNovNoPersCon();
+    } else if (cleanId === '#pane-nov-nopers-matrix') {
+      this.syncPayrollPeriodSelectors();
+      this.loadNovNoPersMatrix();
     } else if (cleanId === '#pane-payroll-settlement') {
       this.syncPayrollPeriodSelectors();
       this.loadSettlementView();
@@ -129,24 +138,29 @@ class MixinMethods {
   }
 
   setupPayrollNavigation() {
-    const navLinks = document.querySelectorAll(
-      '#payroll-sidebar-nav .payroll-nav-item:not([data-bs-toggle="collapse"]), #payroll-sidebar-nav .payroll-nav-subitem'
-    );
-    navLinks.forEach((item) => {
-      item.onclick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        const targetPaneId = item.getAttribute('href') || item.getAttribute('data-bs-target');
-        if (targetPaneId) {
-          this.switchPayrollPane(targetPaneId);
-        }
-      };
-    });
+    const sidebarNav = document.getElementById('payroll-sidebar-nav');
+    if (!sidebarNav) return;
 
-    // Soporte para desplegar y colapsar acordeones de submenús de forma robusta
-    const dropdownToggles = document.querySelectorAll('#payroll-sidebar-nav .payroll-nav-item[data-bs-toggle="collapse"]');
+    const syncSubmenuToggleState = (btn, isShown) => {
+      if (!btn) return;
+      btn.classList.toggle('collapsed', !isShown);
+      btn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
+      const caret = btn.querySelector('.submenu-caret');
+      if (caret) {
+        caret.style.transform = isShown ? 'rotate(180deg)' : 'rotate(0deg)';
+      }
+    };
+
+    // Acordeones de submenús con transición nativa suave de Bootstrap Collapse (homologado con Personal)
+    const dropdownToggles = sidebarNav.querySelectorAll(
+      '.payroll-nav-dropdown > .payroll-nav-item, .payroll-nav-item[data-payroll-toggle="submenu"], .payroll-nav-item[data-bs-toggle="collapse"]'
+    );
     dropdownToggles.forEach((btn) => {
+      if (btn.hasAttribute('data-bs-toggle')) {
+        btn.removeAttribute('data-bs-toggle');
+      }
+      btn.setAttribute('data-payroll-toggle', 'submenu');
+
       btn.onclick = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -155,19 +169,50 @@ class MixinMethods {
         if (targetId) {
           const collapseEl = document.querySelector(targetId);
           if (collapseEl) {
-            collapseEl.classList.toggle('show');
-            const isShown = collapseEl.classList.contains('show');
-            btn.setAttribute('aria-expanded', isShown ? 'true' : 'false');
-            const caret = btn.querySelector('.submenu-caret');
-            if (caret) {
-              caret.style.transform = isShown ? 'rotate(180deg)' : 'rotate(0deg)';
-            }
-            if (isShown) {
-              setTimeout(() => {
-                collapseEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-              }, 30);
+            if (window.bootstrap?.Collapse) {
+              const inst = window.bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+              inst.toggle();
+            } else {
+              const isShown = collapseEl.classList.toggle('show');
+              syncSubmenuToggleState(btn, isShown);
             }
           }
+        }
+      };
+    });
+
+    // Sincronización precisa de chevron y aria-expanded mediante eventos nativos del collapse
+    sidebarNav.querySelectorAll('.collapse').forEach((collapseEl) => {
+      if (collapseEl.dataset.collapseListenersBound === '1') return;
+      collapseEl.dataset.collapseListenersBound = '1';
+
+      collapseEl.addEventListener('show.bs.collapse', () => {
+        const parent = sidebarNav.querySelector(`[data-bs-target="#${collapseEl.id}"], [href="#${collapseEl.id}"]`);
+        syncSubmenuToggleState(parent, true);
+      });
+      collapseEl.addEventListener('shown.bs.collapse', () => {
+        collapseEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      collapseEl.addEventListener('hide.bs.collapse', () => {
+        const parent = sidebarNav.querySelector(`[data-bs-target="#${collapseEl.id}"], [href="#${collapseEl.id}"]`);
+        syncSubmenuToggleState(parent, false);
+      });
+    });
+
+    const navLinks = sidebarNav.querySelectorAll(
+      '.payroll-nav-item:not([data-payroll-toggle="submenu"]):not([data-bs-toggle="collapse"]), .payroll-nav-subitem'
+    );
+    navLinks.forEach((item) => {
+      item.onclick = (e) => {
+        if (item.closest('.payroll-nav-dropdown') && item.classList.contains('payroll-nav-item')) {
+          return;
+        }
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        const targetPaneId = item.getAttribute('href') || item.getAttribute('data-bs-target');
+        if (targetPaneId) {
+          this.switchPayrollPane(targetPaneId);
         }
       };
     });
@@ -208,6 +253,8 @@ class MixinMethods {
   setupPayrollModals() {
     this.setupEmbargoModals?.();
     this.setupReportsEvents?.();
+    this.setupFinalSettlementAssistant?.();
+    this.setupRetroactiveSettlementWizard?.();
 
     // --- Fiscal Period Modal & Cierre ---
     const newFiscalPeriodBtn = document.getElementById('btn-new-fiscal-period');
@@ -341,6 +388,7 @@ class MixinMethods {
     this.setupNoveltyNoPersistentHandlers();
     this.setupSettlementHandlers();
     this.setupBatchSheetHandlers();
+    this.setupNoveltyMatrixHandlers();
     this.setupExcelImportHandlers();
     this.setupSimulatePayslipHandlers();
 
@@ -559,29 +607,38 @@ class MixinMethods {
     if (conceptTypeSelect) {
       conceptTypeSelect.addEventListener('change', () => {
         const arcaSelect = document.getElementById('concept-input-arca-code');
-        const formId = document.getElementById('concept-form-id')?.value;
         if (arcaSelect) {
           const t = conceptTypeSelect.value;
           const currentArca = arcaSelect.value;
-          const isCurrentRem = currentArca && (currentArca.startsWith('1') || (parseInt(currentArca, 10) >= 110000 && parseInt(currentArca, 10) <= 499999));
-          const isCurrentNonRem = currentArca && (currentArca.startsWith('5') || (parseInt(currentArca, 10) >= 510000 && parseInt(currentArca, 10) <= 799999));
-          const isCurrentDed = currentArca && (currentArca.startsWith('8') || (parseInt(currentArca, 10) >= 810000 && parseInt(currentArca, 10) <= 899999));
+          const arcaNum = parseInt(currentArca, 10);
+          const isCurrentRem = currentArca && (currentArca.startsWith('1') || (arcaNum >= 110000 && arcaNum <= 499999));
+          // Excepción normativa ARCA LSD: 820000 admite Modo Crédito ('C') para conceptos NON_REMUNERATIVE (Anticipos)
+          const isCurrentNonRem = currentArca === '820000' || (currentArca && (currentArca.startsWith('5') || (arcaNum >= 510000 && arcaNum <= 799999)));
+          const isCurrentDed = currentArca && (currentArca.startsWith('8') || (arcaNum >= 810000 && arcaNum <= 899999));
 
-          let shouldChangeArca = !formId;
-          if (formId) {
+          let shouldChangeArca = false;
+          if (t === 'AUXILIARY' && currentArca) {
+            shouldChangeArca = true;
+          } else if (currentArca) {
             if (t === 'REMUNERATIVE' && !isCurrentRem) shouldChangeArca = true;
             else if (t === 'NON_REMUNERATIVE' && !isCurrentNonRem) shouldChangeArca = true;
             else if (t === 'DEDUCTION' && !isCurrentDed) shouldChangeArca = true;
-            else if (t === 'AUXILIARY' && currentArca) shouldChangeArca = true;
           }
 
           if (shouldChangeArca) {
-            if (t === 'REMUNERATIVE') arcaSelect.value = '110000';
-            else if (t === 'NON_REMUNERATIVE') arcaSelect.value = '550000';
-            else if (t === 'DEDUCTION') arcaSelect.value = '810000';
-            else if (t === 'AUXILIARY') arcaSelect.value = '';
+            if (t === 'AUXILIARY') {
+              arcaSelect.value = '';
+            } else if (t === 'REMUNERATIVE') {
+              arcaSelect.value = '110000';
+            } else if (t === 'NON_REMUNERATIVE') {
+              arcaSelect.value = '550000';
+            } else if (t === 'DEDUCTION') {
+              arcaSelect.value = '810000';
+            }
             arcaSelect.dataset.prevValue = arcaSelect.value;
             this.applyArcaSubsystemsSuggestion(arcaSelect.value, { syncType: false });
+          } else if (currentArca) {
+            this.applyArcaSubsystemsSuggestion(currentArca, { syncType: false });
           }
         }
         this.updateFormulaAccumulatorsFilter();
@@ -1219,6 +1276,15 @@ class MixinMethods {
             <td class="text-end">
               <div class="btn-group btn-group-sm">
                 ${
+                  !isClosed && this.isTerminalSettlementType?.(p.periodType)
+                    ? `
+                  <button type="button" class="btn btn-outline-danger btn-final-assistant-period" data-id="${p.id}" title="Asistente de Liquidación Final e Indemnizaciones">
+                    <i class="ti ti-scale"></i>
+                  </button>
+                `
+                    : ''
+                }
+                ${
                   !isClosed
                     ? `
                   <button type="button" class="btn btn-outline-primary btn-calc-period" data-id="${p.id}" title="Cargar novedades y calcular">
@@ -1278,6 +1344,17 @@ class MixinMethods {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
         this.openFiscalPeriodSummaryModal(btn.dataset.fiscalId || btn.dataset.periodKey);
+      });
+    });
+
+    tbody.querySelectorAll('.btn-final-assistant-period').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const periodId = btn.dataset.id;
+        this.activePayrollPeriodId = periodId;
+        this.syncPayrollPeriodSelectors(periodId);
+        this.showOmittedAlert(0, 0, []);
+        this.switchPayrollPane('#pane-payroll-settlement');
+        this.openFinalSettlementAssistant?.(periodId);
       });
     });
 
@@ -1352,6 +1429,7 @@ class MixinMethods {
     const dropdownSelectors = [
       'nov-nopers-emp-period-select',
       'nov-nopers-con-period-select',
+      'nov-matrix-period-select',
       'novedades-period-select',
     ];
     dropdownSelectors.forEach((selId) => {
@@ -1855,6 +1933,18 @@ class MixinMethods {
     const roAlert = document.getElementById('settlement-readonly-alert');
     if (roAlert) roAlert.classList.toggle('d-none', !isClosed);
 
+    const currentPeriodObj =
+      this.payrollPeriods?.find((p) => p.id === periodId) ||
+      this.activeFiscalPeriod?.settlements?.find((p) => p.id === periodId) ||
+      null;
+    const finalAssistBtn = document.getElementById('btn-open-final-assistant');
+    if (finalAssistBtn) {
+      const showFinalAssist = Boolean(
+        !isClosed && currentPeriodObj && this.isTerminalSettlementType?.(currentPeriodObj.periodType)
+      );
+      finalAssistBtn.classList.toggle('d-none', !showFinalAssist);
+    }
+
     document.getElementById('btn-settlement-calc-single').disabled = isClosed;
     document.getElementById('btn-settlement-calc-batch').disabled = isClosed;
     document.getElementById('btn-settlement-calc-all').disabled = isClosed;
@@ -1944,6 +2034,7 @@ class MixinMethods {
   }
 
   clearSettlementView() {
+    document.getElementById('btn-open-final-assistant')?.classList.add('d-none');
     document.getElementById('settlement-stat-total').textContent = '0';
     document.getElementById('settlement-stat-liquidated').textContent = '0';
     document.getElementById('settlement-stat-pending').textContent = '0';
@@ -2574,16 +2665,48 @@ class MixinMethods {
   }
 
   setupBatchSheetHandlers() {
+    const btnOpenMatrix = document.getElementById('btn-nov-nopers-con-open-matrix');
+    if (btnOpenMatrix) {
+      btnOpenMatrix.addEventListener('click', () => {
+        const periodId = document.getElementById('nov-nopers-con-period-select')?.value || this.activePayrollPeriodId;
+        const conceptId = document.getElementById('nov-nopers-con-select')?.value;
+        this._pendingMatrixPeriodId = periodId || null;
+        this._pendingMatrixPreselectConceptIds = conceptId ? [conceptId] : null;
+        this.switchPayrollPane('#pane-nov-nopers-matrix');
+      });
+    }
+
     const btnOpen = document.getElementById('btn-nov-nopers-con-batch-sheet');
     if (btnOpen) {
       btnOpen.addEventListener('click', () => this.openBatchSheetModal());
+    }
+
+    const btnCarryover = document.getElementById('btn-batch-sheet-carryover');
+    if (btnCarryover) {
+      btnCarryover.addEventListener('click', () => {
+        if (!this.batchSheetPeriod || !this.batchSheetConcept) return;
+        this.openCarryoverModal({
+          targetMode: 'SINGLE',
+          periodId: this.batchSheetPeriod.id,
+          conceptIds: [this.batchSheetConcept.id],
+        });
+      });
+    }
+
+    const btnUndo = document.getElementById('btn-batch-sheet-undo');
+    if (btnUndo) {
+      btnUndo.addEventListener('click', () => this.undoBatchSheetAction());
     }
 
     const btnClear = document.getElementById('btn-batch-sheet-clear-zeros');
     if (btnClear) {
       btnClear.addEventListener('click', () => {
         document.querySelectorAll('.batch-sheet-val').forEach((inp) => {
-          if (Number(inp.value) === 0) inp.value = '';
+          const val = inp.value.trim();
+          if (val === '0' || val === '0.00' || val === '0,00') {
+            inp.value = '';
+            this.updateBatchSheetRowState(inp.closest('tr'));
+          }
         });
         this.updateBatchSheetStats();
       });
@@ -2591,13 +2714,12 @@ class MixinMethods {
 
     const filterInput = document.getElementById('batch-sheet-filter-input');
     if (filterInput) {
-      filterInput.addEventListener('input', () => {
-        const q = filterInput.value.trim().toLowerCase();
-        document.querySelectorAll('#batch-sheet-tbody tr').forEach((row) => {
-          const t = row.textContent.toLowerCase();
-          row.style.display = !q || t.includes(q) ? '' : 'none';
-        });
-      });
+      filterInput.addEventListener('input', () => this.applyBatchSheetRowFilters());
+    }
+
+    const onlyCarriedChk = document.getElementById('batch-sheet-only-carried');
+    if (onlyCarriedChk) {
+      onlyCarriedChk.addEventListener('change', () => this.applyBatchSheetRowFilters());
     }
 
     const btnSave = document.getElementById('btn-save-batch-sheet');

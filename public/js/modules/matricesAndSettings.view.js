@@ -1088,6 +1088,7 @@ class MatricesAndSettingsMethods {
     if (map.has('MONTHLY') && !map.has('MENSUAL')) map.set('MENSUAL', map.get('MONTHLY'));
     if (map.has('VACATIONS') && !map.has('VACACIONES')) map.set('VACACIONES', map.get('VACATIONS'));
     if (map.has('FINAL') && !map.has('LIQUIDACION_FINAL')) map.set('LIQUIDACION_FINAL', map.get('FINAL'));
+    if (map.has('RETROACTIVE') && !map.has('RETROACTIVO')) map.set('RETROACTIVO', map.get('RETROACTIVE'));
     return map;
   }
 
@@ -1110,6 +1111,7 @@ class MatricesAndSettingsMethods {
       SAC_2: '2do SAC',
       VACATIONS: 'Vacaciones',
       FINAL: 'Liquidación Final',
+      RETROACTIVE: 'Retroactivo Paritario',
     };
     return fallbackLabels[key] || periodType || 'Mensual';
   }
@@ -1229,7 +1231,7 @@ class MatricesAndSettingsMethods {
     if (list.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="9" class="text-center py-4 text-muted">No hay tipos de liquidación configurados.</td>
+          <td colspan="10" class="text-center py-4 text-muted">No hay tipos de liquidación configurados.</td>
         </tr>
       `;
       return;
@@ -1238,7 +1240,7 @@ class MatricesAndSettingsMethods {
     if (filtered.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="9" class="text-center py-4 text-muted">No se encontraron tipos de liquidación que coincidan con "${escapeHtml(query)}".</td>
+          <td colspan="10" class="text-center py-4 text-muted">No se encontraron tipos de liquidación que coincidan con "${escapeHtml(query)}".</td>
         </tr>
       `;
       return;
@@ -1255,6 +1257,10 @@ class MatricesAndSettingsMethods {
       const statutoryBadge = t.appliesStatutoryDeductions !== false
         ? '<span class="badge bg-blue-lt">Sí</span>'
         : '<span class="badge bg-warning-lt text-warning">No (Neto directo)</span>';
+
+      const retroBadge = t.allowsRetroactives === true
+        ? '<span class="badge bg-purple-lt text-purple"><i class="ti ti-history me-1"></i>Sí</span>'
+        : '<span class="text-muted small">No</span>';
 
       const terminationBadge = t.triggersEmployeeTermination
         ? '<span class="badge bg-danger-lt text-danger">Sí (Baja)</span>'
@@ -1301,6 +1307,7 @@ class MatricesAndSettingsMethods {
           <td class="text-center">${lsdBadge}</td>
           <td class="text-center font-monospace fw-bold">${Number(t.defaultWorkedDays ?? 30)}</td>
           <td class="text-center">${statutoryBadge}</td>
+          <td class="text-center">${retroBadge}</td>
           <td class="text-center">${terminationBadge}</td>
           <td class="text-center">${usageHtml}</td>
           <td class="text-center">${statusBadge}</td>
@@ -1395,6 +1402,22 @@ class MatricesAndSettingsMethods {
     }
     this._toggleSettlementArcaTypeBox = toggleArcaTypeBox;
 
+    const toggleRetroConceptsBox = () => {
+      const allowRetro = Boolean(document.getElementById('st-input-allows-retroactives')?.checked);
+      const wrap = document.getElementById('st-seed-retro-concepts-wrap');
+      const daysVal = Number(document.getElementById('st-input-worked-days')?.value || 0);
+      const codeVal = String(document.getElementById('st-input-code')?.value || '').toUpperCase();
+      const hintEl = document.getElementById('st-retro-days-hint');
+      if (wrap) wrap.classList.toggle('d-none', !allowRetro);
+      if (hintEl) {
+        const showHint = allowRetro && daysVal > 0 && !['MONTHLY', 'QUINCE_1', 'QUINCE_2'].includes(codeVal);
+        hintEl.classList.toggle('d-none', !showHint);
+      }
+    };
+    document.getElementById('st-input-allows-retroactives')?.addEventListener('change', toggleRetroConceptsBox);
+    document.getElementById('st-input-worked-days')?.addEventListener('input', toggleRetroConceptsBox);
+    this._toggleSettlementRetroBox = toggleRetroConceptsBox;
+
     const form = document.getElementById('form-settlement-type');
     if (form) {
       form.addEventListener('submit', async (e) => {
@@ -1435,9 +1458,14 @@ class MatricesAndSettingsMethods {
     document.getElementById('st-input-worked-days').value = 30;
     document.getElementById('st-input-applies-statutory').checked = true;
     document.getElementById('st-input-triggers-termination').checked = false;
+    const allowRetroEl = document.getElementById('st-input-allows-retroactives');
+    if (allowRetroEl) allowRetroEl.checked = false;
+    const seedRetroEl = document.getElementById('st-input-seed-retro-concepts');
+    if (seedRetroEl) seedRetroEl.checked = true;
     document.getElementById('st-input-active').checked = true;
 
     this._toggleSettlementArcaTypeBox?.();
+    this._toggleSettlementRetroBox?.();
 
     const modalEl = document.getElementById('modal-settlement-type-form');
     getBootstrapModal(modalEl)?.show();
@@ -1481,9 +1509,14 @@ class MatricesAndSettingsMethods {
     document.getElementById('st-input-worked-days').value = Number(item.defaultWorkedDays ?? 30);
     document.getElementById('st-input-applies-statutory').checked = item.appliesStatutoryDeductions !== false;
     document.getElementById('st-input-triggers-termination').checked = Boolean(item.triggersEmployeeTermination);
+    const allowRetroEl = document.getElementById('st-input-allows-retroactives');
+    if (allowRetroEl) allowRetroEl.checked = Boolean(item.allowsRetroactives);
+    const seedRetroEl = document.getElementById('st-input-seed-retro-concepts');
+    if (seedRetroEl) seedRetroEl.checked = true;
     document.getElementById('st-input-active').checked = item.isActive !== false;
 
     this._toggleSettlementArcaTypeBox?.();
+    this._toggleSettlementRetroBox?.();
 
     const modalEl = document.getElementById('modal-settlement-type-form');
     getBootstrapModal(modalEl)?.show();
@@ -1504,6 +1537,11 @@ class MatricesAndSettingsMethods {
       defaultWorkedDays: Number(document.getElementById('st-input-worked-days').value || 0),
       appliesStatutoryDeductions: Boolean(document.getElementById('st-input-applies-statutory').checked),
       triggersEmployeeTermination: Boolean(document.getElementById('st-input-triggers-termination').checked),
+      allowsRetroactives: Boolean(document.getElementById('st-input-allows-retroactives')?.checked),
+      seedRetroactiveConcepts: Boolean(
+        document.getElementById('st-input-allows-retroactives')?.checked &&
+        document.getElementById('st-input-seed-retro-concepts')?.checked
+      ),
       isActive: Boolean(document.getElementById('st-input-active').checked),
     };
 
@@ -1541,19 +1579,21 @@ class MatricesAndSettingsMethods {
     }
   }
 
-  async deletePayrollSettlementType(id) {
+  deletePayrollSettlementType(id) {
     const item = (this.payrollSettlementTypes || []).find((t) => t.id === id);
     if (!item) return;
 
-    if (!confirm(`¿Desea eliminar el tipo de liquidación "${item.name}" (${item.code})?`)) return;
-
-    try {
-      await apiRequest(`/payroll/settlement-types/${id}`, { method: 'DELETE' });
-      showToast('Tipo de liquidación eliminado exitosamente');
-      await this.loadPayrollSettlementTypes();
-    } catch (err) {
-      showToast(err.message || 'No se pudo eliminar el tipo de liquidación', 'danger');
-    }
+    this.confirmDeleteAction({
+      title: 'Eliminar Tipo de Liquidación',
+      message: `¿Estás seguro de que deseas eliminar el tipo de liquidación <strong>"${escapeHtml(item.name)}"</strong> (<code class="font-monospace">${escapeHtml(item.code)}</code>)?`,
+      warning: 'Solo puede eliminarse si no posee liquidaciones ni conceptos asociados.',
+      onConfirm: async () => {
+        await apiRequest(`/payroll/settlement-types/${id}`, { method: 'DELETE' });
+        showToast('Tipo de liquidación eliminado exitosamente');
+        await this.loadPayrollSettlementTypes();
+        this.populateSettlementTypeSelects?.();
+      },
+    });
   }
 }
 

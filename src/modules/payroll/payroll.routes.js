@@ -20,6 +20,10 @@ import {
   closePeriodSchema,
   createSettlementTypeSchema,
   updateSettlementTypeSchema,
+  finalSettlementPreviewSchema,
+  finalSettlementApplySchema,
+  retroactivePreviewSchema,
+  retroactiveApplySchema,
 } from './payroll.validation.js';
 import {
   createSalaryScaleSchema,
@@ -94,6 +98,11 @@ router.get('/periods/:id/summary', payrollController.getPeriodConceptsSummary);
 
 // --- Novedades de Período (No Persistentes) ---
 router.get('/periods/:id/novelties', payrollController.getPeriodNovelties);
+router.get(
+  '/periods/:id/novelties/carryover-source',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.getCarryoverSourceNovelties
+);
 router.post(
   '/periods/:id/novelties',
   requireCompanyRole('ADMIN', 'OPERATOR'),
@@ -129,6 +138,39 @@ router.post(
   requireCompanyRole('ADMIN', 'OPERATOR'),
   validate(calculateBatchSchema),
   payrollController.calculateBatchEmployees
+);
+
+// --- Asistente de Liquidación Final y Egresos (PROP-03) ---
+router.post(
+  '/periods/:id/final-assistant/preview',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(finalSettlementPreviewSchema),
+  payrollController.previewFinalSettlement
+);
+router.post(
+  '/periods/:id/final-assistant/apply',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(finalSettlementApplySchema),
+  payrollController.applyFinalSettlement
+);
+
+// --- Liquidador Automático de Retroactivos Paritarios (PROP-07) ---
+router.post(
+  '/retroactives/preview',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(retroactivePreviewSchema),
+  payrollController.previewRetroactiveSettlement
+);
+router.post(
+  '/retroactives/apply',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  validate(retroactiveApplySchema),
+  payrollController.applyRetroactiveSettlement
+);
+router.get(
+  '/retroactives/runs',
+  requireCompanyRole('ADMIN', 'OPERATOR'),
+  payrollController.listRetroactiveRuns
 );
 
 // --- Recibos de Sueldo ---

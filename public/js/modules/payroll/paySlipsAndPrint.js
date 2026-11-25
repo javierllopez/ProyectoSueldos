@@ -443,7 +443,7 @@ class MixinMethods {
         <div class="p-0">
           <table class="payslip-table-items">
             <colgroup>
-              <col style="width: 48px;">
+              <col style="width: 58px;">
               <col style="width: auto;">
               <col style="width: 55px;">
               <col style="width: 105px;">
@@ -1159,8 +1159,8 @@ class MixinMethods {
         : this.resolveAuditItemFormula(it, slip, formatMoney);
 
       const formulaExplHtml = formulaExpl ? `
-        <div class="text-muted small font-monospace mt-1" style="font-size: 0.76rem;">
-          <i class="ti ti-math-function text-purple me-1"></i>Fórmula: <span class="badge bg-light text-dark border font-monospace px-1 py-0">${escapeHtml(formulaExpl)}</span>
+        <div class="text-muted small font-monospace mt-1 audit-formula-wrap">
+          <i class="ti ti-math-function text-purple me-1"></i>Fórmula: <span class="badge bg-light text-dark border font-monospace px-1 py-0 audit-formula-badge">${escapeHtml(formulaExpl)}</span>
         </div>
       ` : '';
 
@@ -1173,18 +1173,18 @@ class MixinMethods {
       return `
         <tr class="${rowClass}">
           <td class="text-center font-monospace text-muted small py-1 col-audit-idx">${idx + 1}</td>
-          <td class="font-monospace fw-bold ${codeClass} py-1 col-audit-code" style="white-space: nowrap;">${escapeHtml(it.conceptCode)}</td>
+          <td class="font-monospace fw-bold ${codeClass} py-1 col-audit-code">${escapeHtml(it.conceptCode)}</td>
           <td class="py-1 col-audit-name">
             <span class="fw-semibold text-dark d-inline-block align-middle" title="${escapeHtml(it.conceptName)}">${escapeHtml(it.conceptName)}</span>
             ${formulaExplHtml}
           </td>
-          <td class="py-1 col-audit-type" style="white-space: nowrap;">${typeBadges[it.type] || it.type}</td>
-          <td class="text-center font-monospace py-1 col-audit-units" style="white-space: nowrap;">${escapeHtml(unitsStr)}</td>
-          <td class="text-end font-monospace text-muted py-1 col-audit-base" style="white-space: nowrap;">${escapeHtml(baseStr)}</td>
-          <td class="text-end font-monospace fw-bold py-1 col-audit-amount ${amountClass}" style="white-space: nowrap;">
+          <td class="py-1 col-audit-type">${typeBadges[it.type] || it.type}</td>
+          <td class="text-center font-monospace py-1 col-audit-units">${escapeHtml(unitsStr)}</td>
+          <td class="text-end font-monospace text-muted py-1 col-audit-base">${escapeHtml(baseStr)}</td>
+          <td class="text-end font-monospace fw-bold py-1 col-audit-amount ${amountClass}">
             ${it.type === 'DEDUCTION' ? '-' : ''}$ ${amountStr}
           </td>
-          <td class="text-center py-1 col-audit-arca" style="white-space: nowrap;">
+          <td class="text-center py-1 col-audit-arca">
             ${arcaCellHtml}
           </td>
         </tr>
@@ -1248,18 +1248,28 @@ class MixinMethods {
             <span class="small">Variables intermedias de cálculo (no impresas en recibo legal ni ARCA)</span>
           </div>
         </div>
-        <div class="table-responsive" style="max-height: 440px; overflow-y: auto;">
+        <div class="audit-concepts-table-wrap">
           <table class="table table-vcenter card-table table-hover table-sm mb-0 table-audit-concepts">
+            <colgroup>
+              <col class="col-audit-idx" style="width: 36px;">
+              <col class="col-audit-code" style="width: 76px;">
+              <col class="col-audit-name">
+              <col class="col-audit-type" style="width: 148px;">
+              <col class="col-audit-units" style="width: 74px;">
+              <col class="col-audit-base" style="width: 112px;">
+              <col class="col-audit-amount" style="width: 124px;">
+              <col class="col-audit-arca" style="width: 86px;">
+            </colgroup>
             <thead class="sticky-top bg-light border-bottom" style="z-index: 2;">
               <tr class="table-light">
-                <th class="text-center py-1 col-audit-idx" style="width: 45px;">#</th>
-                <th class="py-1 col-audit-code" style="width: 80px;">Código</th>
+                <th class="text-center py-1 col-audit-idx">#</th>
+                <th class="py-1 col-audit-code">Código</th>
                 <th class="py-1 col-audit-name">Concepto / Variable</th>
-                <th class="py-1 col-audit-type" style="width: 170px;">Tipo</th>
-                <th class="text-center py-1 col-audit-units" style="width: 90px;">Unidades</th>
-                <th class="text-end py-1 col-audit-base" style="width: 120px;">Base / Tasa</th>
-                <th class="text-end py-1 col-audit-amount" style="width: 140px;">Importe ($)</th>
-                <th class="text-center py-1 col-audit-arca" style="width: 90px;">Código ARCA</th>
+                <th class="py-1 col-audit-type">Tipo</th>
+                <th class="text-center py-1 col-audit-units">Unidades</th>
+                <th class="text-end py-1 col-audit-base">Base / Tasa</th>
+                <th class="text-end py-1 col-audit-amount">Importe ($)</th>
+                <th class="text-center py-1 col-audit-arca">Código ARCA</th>
               </tr>
             </thead>
             <tbody>

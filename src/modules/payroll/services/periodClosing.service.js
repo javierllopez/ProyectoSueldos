@@ -173,22 +173,22 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
       }),
       dbClient.incomeTaxSettlement?.findMany
         ? dbClient.incomeTaxSettlement.findMany({
-            where: {
-              exportedPayrollPeriodId: { in: closingPeriodIds },
-              OR: [{ fiscalYear: { not: targetYear } }, { month: { not: targetMonth } }],
-            },
-            select: {
-              id: true,
-              fiscalYear: true,
-              month: true,
-              settlementType: true,
-              status: true,
-              totalEmployeesWithheld: true,
-              totalWithheldAmount: true,
-              totalRefundAmount: true,
-              exportedPayrollPeriodId: true,
-            },
-          })
+          where: {
+            exportedPayrollPeriodId: { in: closingPeriodIds },
+            OR: [{ fiscalYear: { not: targetYear } }, { month: { not: targetMonth } }],
+          },
+          select: {
+            id: true,
+            fiscalYear: true,
+            month: true,
+            settlementType: true,
+            status: true,
+            totalEmployeesWithheld: true,
+            totalWithheldAmount: true,
+            totalRefundAmount: true,
+            exportedPayrollPeriodId: true,
+          },
+        })
         : Promise.resolve([]),
     ]);
     validSlips = fetchedSlips;
@@ -201,25 +201,25 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     const [expCount, itRows] = await Promise.all([
       dbClient.employeeConcept?.count
         ? dbClient.employeeConcept.count({
-            where: { isActive: true, validTo: { not: null, lte: periodEndDate } },
-          })
+          where: { isActive: true, validTo: { not: null, lte: periodEndDate } },
+        })
         : Promise.resolve(0),
       dbClient.incomeTaxSettlement?.findMany
         ? dbClient.incomeTaxSettlement.findMany({
-            where: { fiscalYear: targetYear, month: targetMonth },
-            select: {
-              id: true,
-              fiscalYear: true,
-              month: true,
-              settlementType: true,
-              status: true,
-              description: true,
-              totalEmployeesWithheld: true,
-              totalWithheldAmount: true,
-              totalRefundAmount: true,
-              exportedPayrollPeriodId: true,
-            },
-          })
+          where: { fiscalYear: targetYear, month: targetMonth },
+          select: {
+            id: true,
+            fiscalYear: true,
+            month: true,
+            settlementType: true,
+            status: true,
+            description: true,
+            totalEmployeesWithheld: true,
+            totalWithheldAmount: true,
+            totalRefundAmount: true,
+            exportedPayrollPeriodId: true,
+          },
+        })
         : Promise.resolve([]),
     ]);
     expiredConceptsCount = expCount || 0;
@@ -341,6 +341,28 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
   }
   const settlementTypeMap = new Map(settlementTypesList.map((st) => [st.code, st]));
 
+  // Cargar Hojas de Liquidación Final (PROP-03) para proponer fecha real y causal individual de baja
+  const finalWorksheetsByKey = new Map();
+  if (closingPeriodIds.length > 0 && dbClient.finalSettlementWorksheet?.findMany) {
+    try {
+      const wsList = await dbClient.finalSettlementWorksheet.findMany({
+        where: { payrollPeriodId: { in: closingPeriodIds } },
+        select: {
+          payrollPeriodId: true,
+          employeeId: true,
+          terminationDate: true,
+          terminationReasonLabel: true,
+          terminationCause: true,
+        },
+      });
+      for (const ws of wsList || []) {
+        finalWorksheetsByKey.set(`${ws.payrollPeriodId}::${ws.employeeId}`, ws);
+      }
+    } catch (_) {
+      // Fallback tolerante si no existe la tabla o está mockeada
+    }
+  }
+
   // Evaluar bajas por liquidaciones cuyo tipo tenga triggersEmployeeTermination = true (ej. FINAL)
   const terminationsMap = new Map();
   for (const p of openSettlements) {
@@ -352,7 +374,11 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     if (finalSlips.length === 0) continue;
 
     const normalizedDate = normalizeUtcNoonDate(p.liquidationDate);
-    if (!normalizedDate) {
+    const hasMissingDate = finalSlips.some((s) => {
+      const ws = finalWorksheetsByKey.get(`${p.id}::${s.employeeId}`);
+      return !normalizeUtcNoonDate(ws?.terminationDate) && !normalizedDate;
+    });
+    if (hasMissingDate) {
       blockingErrors.push({
         code: 'FINAL_MISSING_LIQUIDATION_DATE',
         message: `La liquidación "${p.settlementName}" (${stCfg?.name || p.periodType}) no tiene definida la Fecha de Liquidación requerida para asignar la fecha de baja del personal.`,
@@ -365,6 +391,10 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     for (const s of finalSlips) {
       const emp = s.employee;
       if (!emp) continue;
+      const ws = finalWorksheetsByKey.get(`${p.id}::${emp.id}`);
+      const wsTermDate = normalizeUtcNoonDate(ws?.terminationDate);
+      const effectiveTermDate = wsTermDate || normalizedDate;
+      const wsReason = ws?.terminationReasonLabel && String(ws.terminationReasonLabel).trim();
       terminationsMap.set(emp.id, {
         employeeId: emp.id,
         fileNumber: emp.fileNumber,
@@ -373,11 +403,11 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
         previousStatus: emp.status,
         previousTerminationDate: emp.terminationDate || null,
         existingTerminationReason: emp.terminationReason || null,
-        proposedTerminationDate: normalizedDate,
+        proposedTerminationDate: effectiveTermDate,
         proposedTerminationReason:
           emp.terminationReason && String(emp.terminationReason).trim()
             ? String(emp.terminationReason).trim()
-            : `Baja por ${reasonPrefix} (${p.settlementName || `${String(targetMonth).padStart(2, '0')}/${targetYear}`})`,
+            : wsReason || `Baja por ${reasonPrefix} (${p.settlementName || `${String(targetMonth).padStart(2, '0')}/${targetYear}`})`,
         sourcePeriodId: p.id,
         sourceSettlementName: p.settlementName,
         activeEmbargoesCount: 0,
@@ -397,9 +427,9 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     const termEmpIds = terminationsPreview.map((t) => t.employeeId);
     const activeEmbargoes = dbClient.employeeEmbargo?.findMany
       ? await dbClient.employeeEmbargo.findMany({
-          where: { employeeId: { in: termEmpIds }, status: 'ACTIVE' },
-          select: { id: true, employeeId: true },
-        })
+        where: { employeeId: { in: termEmpIds }, status: 'ACTIVE' },
+        select: { id: true, employeeId: true },
+      })
       : [];
 
     const embCountByEmp = new Map();
@@ -501,9 +531,9 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
   const shouldRunLsdPreFlight =
     scope === 'FISCAL_PERIOD'
       ? openSettlements.some((s) => {
-          const cfg = settlementTypeMap.get(resolveSettlementTypeLookupCode(s.periodType));
-          return cfg ? cfg.includeInLsd !== false : true;
-        })
+        const cfg = settlementTypeMap.get(resolveSettlementTypeLookupCode(s.periodType));
+        return cfg ? cfg.includeInLsd !== false : true;
+      })
       : (targetStCfg ? targetStCfg.includeInLsd !== false : true);
 
   if (includeLsdValidation && shouldRunLsdPreFlight && validSlips.length > 0) {
@@ -542,20 +572,20 @@ async function evaluateClosing(dbClient, { fiscalPeriodId = null, periodId = nul
     scope,
     fiscalPeriod: fiscalPeriod
       ? {
-          id: fiscalPeriod.id,
-          year: fiscalPeriod.year,
-          month: fiscalPeriod.month,
-          status: fiscalPeriod.status,
-        }
+        id: fiscalPeriod.id,
+        year: fiscalPeriod.year,
+        month: fiscalPeriod.month,
+        status: fiscalPeriod.status,
+      }
       : null,
     targetPeriod: targetPeriod
       ? {
-          id: targetPeriod.id,
-          settlementName: targetPeriod.settlementName,
-          periodType: targetPeriod.periodType,
-          status: targetPeriod.status,
-          liquidationDate: targetPeriod.liquidationDate,
-        }
+        id: targetPeriod.id,
+        settlementName: targetPeriod.settlementName,
+        periodType: targetPeriod.periodType,
+        status: targetPeriod.status,
+        liquidationDate: targetPeriod.liquidationDate,
+      }
       : null,
     targetYear,
     targetMonth,
@@ -753,8 +783,8 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
             const rowOverride = terminationReasonOverrideMap.get(t.employeeId) || '';
             const effectiveTerminationReason = normalizeBriefTerminationReason(
               rowOverride ||
-                (!t.existingTerminationReason && defaultTerminationReason ? defaultTerminationReason : '') ||
-                t.proposedTerminationReason
+              (!t.existingTerminationReason && defaultTerminationReason ? defaultTerminationReason : '') ||
+              t.proposedTerminationReason
             );
             terminatedEmpIds.push(t.employeeId);
             terminatedEmployeesAudit.push({
@@ -877,13 +907,13 @@ async function executeClosingTransaction(tenantPrisma, { fiscalPeriodId = null, 
       const entity =
         scope === 'FISCAL_PERIOD'
           ? await tx.payrollFiscalPeriod.findUnique({
-              where: { id: fiscalPeriodId },
-              include: { settlements: { orderBy: { settlementNumber: 'asc' } } },
-            })
+            where: { id: fiscalPeriodId },
+            include: { settlements: { orderBy: { settlementNumber: 'asc' } } },
+          })
           : await tx.payrollPeriod.findUnique({
-              where: { id: periodId },
-              include: { fiscalPeriod: true },
-            });
+            where: { id: periodId },
+            include: { fiscalPeriod: true },
+          });
 
       return {
         ...(entity || {}),

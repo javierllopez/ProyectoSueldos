@@ -18,6 +18,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 30,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 10,
@@ -32,6 +33,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 15,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 20,
@@ -46,6 +48,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 15,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 30,
@@ -60,6 +63,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 0,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 40,
@@ -74,6 +78,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 0,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 50,
@@ -88,6 +93,7 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 0,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: false,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 60,
@@ -102,9 +108,25 @@ export const DEFAULT_SETTLEMENT_TYPES = [
     defaultWorkedDays: 0,
     appliesStatutoryDeductions: true,
     triggersEmployeeTermination: true,
+    allowsRetroactives: false,
     isSystem: true,
     isActive: true,
     sortOrder: 70,
+  },
+  {
+    code: 'RETROACTIVE',
+    name: 'Retroactivo Paritario',
+    description: 'Liquidación complementaria de diferencias salariales retroactivas por homologación tardía de paritarias (0 días base).',
+    conceptPrefix: 'RT',
+    includeInLsd: true,
+    arcaLsdType: 'M',
+    defaultWorkedDays: 0,
+    appliesStatutoryDeductions: true,
+    triggersEmployeeTermination: false,
+    allowsRetroactives: true,
+    isSystem: true,
+    isActive: true,
+    sortOrder: 80,
   },
 ];
 
@@ -194,6 +216,7 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
         \`concept_id\` VARCHAR(191) NOT NULL,
         \`units\` DECIMAL(12, 2) NULL,
         \`amount\` DECIMAL(12, 2) NULL,
+        \`adjustment_period\` VARCHAR(6) NULL,
         \`notes\` VARCHAR(255) NULL,
         \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
@@ -812,7 +835,7 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       console.warn('Aviso al sanear períodos fiscales huérfanos:', repairErr.message);
     }
 
-    // 12. Tabla de Tipos de Liquidación configurables (ABM) y siembra de los 7 tipos nativos
+    // 12. Tabla de Tipos de Liquidación configurables (ABM) y siembra de tipos nativos
     await tenantClient.$executeRawUnsafe(`
       CREATE TABLE IF NOT EXISTS \`payroll_settlement_types\` (
         \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
@@ -825,6 +848,7 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
         \`default_worked_days\` INT NOT NULL DEFAULT 30,
         \`applies_statutory_deductions\` BOOLEAN NOT NULL DEFAULT TRUE,
         \`triggers_employee_termination\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`allows_retroactives\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`is_system\` BOOLEAN NOT NULL DEFAULT FALSE,
         \`is_active\` BOOLEAN NOT NULL DEFAULT TRUE,
         \`sort_order\` INT NOT NULL DEFAULT 0,
@@ -835,11 +859,36 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
+    // Backfill idempotente de columnas nuevas en tablas existentes (PROP-07)
+    try {
+      const prop07Cols = await tenantClient.$queryRawUnsafe(
+        `SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME IN ('payroll_settlement_types', 'period_novelties', 'pay_slip_items')`
+      );
+      const prop07ColSet = new Set(
+        (prop07Cols || []).map((c) => `${String(c.TABLE_NAME || c.table_name || '').toLowerCase()}::${String(c.COLUMN_NAME || c.column_name || '').toLowerCase()}`)
+      );
+      if (!prop07ColSet.has('payroll_settlement_types::allows_retroactives')) {
+        await tenantClient.$executeRawUnsafe(
+          'ALTER TABLE `payroll_settlement_types` ADD COLUMN `allows_retroactives` BOOLEAN NOT NULL DEFAULT FALSE;'
+        );
+      }
+      if (!prop07ColSet.has('period_novelties::adjustment_period')) {
+        await tenantClient.$executeRawUnsafe(
+          'ALTER TABLE `period_novelties` ADD COLUMN `adjustment_period` VARCHAR(6) NULL;'
+        );
+      }
+      if (!prop07ColSet.has('pay_slip_items::adjustment_period')) {
+        await tenantClient.$executeRawUnsafe(
+          'ALTER TABLE `pay_slip_items` ADD COLUMN `adjustment_period` VARCHAR(6) NULL;'
+        );
+      }
+    } catch (_) {}
+
     for (const st of DEFAULT_SETTLEMENT_TYPES) {
       await tenantClient.$executeRawUnsafe(
         `INSERT IGNORE INTO \`payroll_settlement_types\`
-          (\`id\`, \`code\`, \`name\`, \`description\`, \`concept_prefix\`, \`include_in_lsd\`, \`arca_lsd_type\`, \`default_worked_days\`, \`applies_statutory_deductions\`, \`triggers_employee_termination\`, \`is_system\`, \`is_active\`, \`sort_order\`)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          (\`id\`, \`code\`, \`name\`, \`description\`, \`concept_prefix\`, \`include_in_lsd\`, \`arca_lsd_type\`, \`default_worked_days\`, \`applies_statutory_deductions\`, \`triggers_employee_termination\`, \`allows_retroactives\`, \`is_system\`, \`is_active\`, \`sort_order\`)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         crypto.randomUUID(),
         st.code,
         st.name,
@@ -850,11 +899,84 @@ export async function ensureTenantPayrollSchema(tenantClient, { force = false } 
         st.defaultWorkedDays,
         st.appliesStatutoryDeductions ? 1 : 0,
         st.triggersEmployeeTermination ? 1 : 0,
+        st.allowsRetroactives ? 1 : 0,
         st.isSystem ? 1 : 0,
         st.isActive ? 1 : 0,
         st.sortOrder
       );
     }
+
+    // 14. Tabla de Corridas Auditables de Retroactivos Paritarios (PROP-07)
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`retroactive_adjustment_runs\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`target_period_id\` VARCHAR(191) NOT NULL,
+        \`target_period_name\` VARCHAR(191) NULL,
+        \`cct_code\` VARCHAR(50) NULL,
+        \`scale_ids_json\` JSON NULL,
+        \`from_year\` INT NOT NULL,
+        \`from_month\` INT NOT NULL,
+        \`to_year\` INT NOT NULL,
+        \`to_month\` INT NOT NULL,
+        \`scale_source_mode\` VARCHAR(40) NOT NULL DEFAULT 'EXISTING_SCALE_PERIODS',
+        \`agreement_label\` VARCHAR(255) NULL,
+        \`employees_applied_count\` INT NOT NULL DEFAULT 0,
+        \`active_applied_count\` INT NOT NULL DEFAULT 0,
+        \`inactive_applied_count\` INT NOT NULL DEFAULT 0,
+        \`ignored_inactive_confirmed\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`ignored_inactive_count\` INT NOT NULL DEFAULT 0,
+        \`ignored_inactive_summary\` JSON NULL,
+        \`total_remunerative\` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+        \`total_non_remunerative\` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+        \`total_sac_delta\` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+        \`grand_total\` DECIMAL(14, 2) NOT NULL DEFAULT 0.00,
+        \`run_payload\` JSON NOT NULL,
+        \`created_by\` VARCHAR(191) NULL,
+        \`created_by_name\` VARCHAR(191) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        INDEX \`idx_retro_runs_target_period\` (\`target_period_id\`),
+        INDEX \`idx_retro_runs_created_at\` (\`created_at\`),
+        CONSTRAINT \`fk_retro_runs_target_period\` FOREIGN KEY (\`target_period_id\`) REFERENCES \`payroll_periods\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
+
+    // 13. Tabla de Hojas de Trabajo del Asistente de Liquidación Final (PROP-03)
+    await tenantClient.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS \`final_settlement_worksheets\` (
+        \`id\` VARCHAR(191) NOT NULL PRIMARY KEY,
+        \`payroll_period_id\` VARCHAR(191) NOT NULL,
+        \`employee_id\` VARCHAR(191) NOT NULL,
+        \`termination_date\` DATETIME(3) NOT NULL,
+        \`termination_cause\` VARCHAR(50) NOT NULL,
+        \`termination_reason_label\` VARCHAR(255) NOT NULL,
+        \`include_worked_days\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`days_divisor_mode\` VARCHAR(20) NOT NULL DEFAULT 'CALENDAR',
+        \`preaviso_given\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`vacation_days_taken\` INT NOT NULL DEFAULT 0,
+        \`apply_vizzoti\` BOOLEAN NOT NULL DEFAULT TRUE,
+        \`cct_cap_amount\` DECIMAL(12, 2) NULL,
+        \`is_executive\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`seniority_years\` INT NOT NULL DEFAULT 0,
+        \`seniority_months\` INT NOT NULL DEFAULT 0,
+        \`seniority_days\` INT NOT NULL DEFAULT 0,
+        \`indemnity_periods\` INT NOT NULL DEFAULT 0,
+        \`in_probation_period\` BOOLEAN NOT NULL DEFAULT FALSE,
+        \`mrmnh_amount\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`mrmnh_source_period_label\` VARCHAR(100) NULL,
+        \`best_semester_remun\` DECIMAL(12, 2) NOT NULL DEFAULT 0.00,
+        \`worked_days_for_lsd\` INT NOT NULL DEFAULT 0,
+        \`legal_due_date\` DATETIME(3) NULL,
+        \`worksheet_payload\` JSON NOT NULL,
+        \`applied_at\` DATETIME(3) NULL,
+        \`created_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+        \`updated_at\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+        UNIQUE KEY \`uniq_final_ws_period_emp\` (\`payroll_period_id\`, \`employee_id\`),
+        INDEX \`idx_final_ws_period\` (\`payroll_period_id\`),
+        INDEX \`idx_final_ws_emp\` (\`employee_id\`),
+        CONSTRAINT \`fk_final_ws_period\` FOREIGN KEY (\`payroll_period_id\`) REFERENCES \`payroll_periods\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE,
+        CONSTRAINT \`fk_final_ws_emp\` FOREIGN KEY (\`employee_id\`) REFERENCES \`employees\`(\`id\`) ON DELETE CASCADE ON UPDATE CASCADE
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    `);
 
     return true;
   } catch (err) {

@@ -28,6 +28,8 @@ const settlementTypeFieldsShape = {
   defaultWorkedDays: z.coerce.number().int().min(0, 'Los días base deben estar entre 0 y 31').max(31, 'Los días base deben estar entre 0 y 31'),
   appliesStatutoryDeductions: z.boolean(),
   triggersEmployeeTermination: z.boolean(),
+  allowsRetroactives: z.boolean(),
+  seedRetroactiveConcepts: z.boolean().optional(),
   isActive: z.boolean(),
   sortOrder: z.coerce.number().int().min(0).max(9999),
 };
@@ -39,6 +41,8 @@ export const settlementTypeBaseSchema = z.object({
   defaultWorkedDays: settlementTypeFieldsShape.defaultWorkedDays.default(30),
   appliesStatutoryDeductions: settlementTypeFieldsShape.appliesStatutoryDeductions.default(true),
   triggersEmployeeTermination: settlementTypeFieldsShape.triggersEmployeeTermination.default(false),
+  allowsRetroactives: settlementTypeFieldsShape.allowsRetroactives.default(false),
+  seedRetroactiveConcepts: settlementTypeFieldsShape.seedRetroactiveConcepts.default(false),
   isActive: settlementTypeFieldsShape.isActive.default(true),
   sortOrder: settlementTypeFieldsShape.sortOrder.default(100),
 });
@@ -307,20 +311,76 @@ export const updatePayrollFixedValueSchema = createPayrollFixedValueSchema.parti
 export const createPeriodNoveltySchema = z.object({
   employeeId: z.string().min(1, 'El ID de empleado es obligatorio'),
   conceptId: z.string().min(1, 'El ID de concepto es obligatorio'),
-  units: z.coerce.number().optional().nullable(),
-  amount: z.coerce.number().optional().nullable(),
+  units: z.coerce.number().min(0, 'Las unidades no pueden ser negativas').optional().nullable(),
+  amount: z.coerce.number().min(0, 'El importe no puede ser negativo').optional().nullable(),
   notes: z.string().trim().max(255).optional().nullable(),
 });
 
 export const updatePeriodNoveltySchema = z.object({
-  units: z.coerce.number().optional().nullable(),
-  amount: z.coerce.number().optional().nullable(),
+  units: z.coerce.number().min(0, 'Las unidades no pueden ser negativas').optional().nullable(),
+  amount: z.coerce.number().min(0, 'El importe no puede ser negativo').optional().nullable(),
   notes: z.string().trim().max(255).optional().nullable(),
 });
 
-export const batchPeriodNoveltiesSchema = z.object({
-  items: z.array(createPeriodNoveltySchema).min(1, 'Debe enviar al menos una novedad'),
+const batchNoveltyRemovalSchema = z.object({
+  employeeId: z.string().trim().min(1, 'El ID de empleado es obligatorio'),
+  conceptId: z.string().trim().min(1, 'El ID de concepto es obligatorio'),
 });
+
+export const batchPeriodNoveltiesSchema = z.preprocess(
+  (raw) => {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return raw;
+    const normalized = { ...raw };
+    if (normalized.items === undefined && Array.isArray(normalized.novelties)) {
+      normalized.items = normalized.novelties;
+    }
+    if (
+      normalized.items === undefined &&
+      ((Array.isArray(normalized.removeEmployeeIds) && normalized.removeEmployeeIds.length > 0) ||
+        (Array.isArray(normalized.removals) && normalized.removals.length > 0))
+    ) {
+      normalized.items = [];
+    }
+    return normalized;
+  },
+  z
+    .object({
+      items: z.array(createPeriodNoveltySchema),
+      conceptId: z.string().trim().min(1).optional().nullable(),
+      removeEmployeeIds: z.array(z.string().trim().min(1)).optional().default([]),
+      removals: z.array(batchNoveltyRemovalSchema).optional().default([]),
+      returnData: z.boolean().optional().default(true),
+      requireActiveEmployees: z.boolean().optional().default(false),
+    })
+    .superRefine((val, ctx) => {
+      const hasItems = Array.isArray(val.items) && val.items.length > 0;
+      const hasLegacyRemovals = Array.isArray(val.removeEmployeeIds) && val.removeEmployeeIds.length > 0;
+      const hasMatrixRemovals = Array.isArray(val.removals) && val.removals.length > 0;
+      if (!hasItems && !hasLegacyRemovals && !hasMatrixRemovals) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['items'],
+          message: 'Debe enviar al menos una novedad o eliminación',
+        });
+      }
+      if (hasLegacyRemovals && !val.conceptId && (!hasItems || !val.items[0]?.conceptId)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['conceptId'],
+          message: 'El ID de concepto es obligatorio para depurar novedades vaciadas',
+        });
+      }
+      const totalOps =
+        (val.items?.length || 0) + (val.removeEmployeeIds?.length || 0) + (val.removals?.length || 0);
+      if (totalOps > 10000) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['items'],
+          message: 'El lote supera el límite máximo permitido de 10.000 operaciones por envío',
+        });
+      }
+    })
+);
 
 export const calculateBatchSchema = z.object({
   employeeIds: z.array(z.string().min(1)).min(1, 'Debe seleccionar al menos un colaborador'),
@@ -356,3 +416,156 @@ export const closePeriodSchema = z
   })
   .optional()
   .default({});
+
+const FINAL_CAUSES_ENUM = z.enum([
+  'DESPIDO_SIN_CAUSA',
+  'PERIODO_PRUEBA',
+  'RENUNCIA',
+  'DESPIDO_CON_CAUSA',
+  'MUTUO_ACUERDO',
+  'JUBILACION',
+  'FALLECIMIENTO',
+  'FUERZA_MAYOR',
+  'FIN_CONTRATO_EVENTUAL',
+]);
+
+export const finalSettlementPreviewSchema = z.object({
+  employeeId: z.string().trim().min(1, 'El colaborador es obligatorio'),
+  terminationDate: z.coerce.date({ invalid_type_error: 'La fecha de egreso debe ser válida' }).optional().nullable(),
+  terminationCause: FINAL_CAUSES_ENUM.optional(),
+  includeWorkedDays: z.boolean().optional(),
+  daysDivisorMode: z.enum(['CALENDAR', 'FIXED_30']).optional(),
+  preavisoGiven: z.boolean().optional(),
+  probationMonthsLimit: z.coerce.number().int().min(0).max(12).optional(),
+  vacationDaysTaken: z.coerce.number().int().min(0).max(60).optional(),
+  applyVizzoti: z.boolean().optional(),
+  cctCapAmount: z.coerce.number().min(0).optional().nullable(),
+  isExecutive: z.boolean().optional(),
+  customMrmnh: z.coerce.number().min(0).optional().nullable(),
+  customBestSemesterRemun: z.coerce.number().min(0).optional().nullable(),
+  gratificationAmount: z.coerce.number().min(0).optional(),
+});
+
+export const finalSettlementApplySchema = z.object({
+  employeeId: z.string().trim().min(1, 'El colaborador es obligatorio'),
+  terminationDate: z.coerce.date({ invalid_type_error: 'La fecha de egreso es obligatoria y debe ser válida' }),
+  terminationCause: FINAL_CAUSES_ENUM,
+  terminationReasonLabel: z.string().trim().max(255).optional().nullable(),
+  includeWorkedDays: z.boolean().default(true),
+  daysDivisorMode: z.enum(['CALENDAR', 'FIXED_30']).default('CALENDAR'),
+  preavisoGiven: z.boolean().default(false),
+  probationMonthsLimit: z.coerce.number().int().min(0).max(12).default(6),
+  vacationDaysTaken: z.coerce.number().int().min(0).max(60).default(0),
+  applyVizzoti: z.boolean().default(true),
+  cctCapAmount: z.coerce.number().min(0).optional().nullable(),
+  isExecutive: z.boolean().default(false),
+  customMrmnh: z.coerce.number().min(0).optional().nullable(),
+  customBestSemesterRemun: z.coerce.number().min(0).optional().nullable(),
+  gratificationAmount: z.coerce.number().min(0).default(0),
+  workedDaysForLsd: z.coerce.number().int().min(0).max(30).default(0),
+  items: z
+    .array(
+      z.object({
+        conceptCode: z.string().trim().min(1),
+        included: z.boolean().default(true),
+        amount: z.coerce.number().min(0),
+        units: z.coerce.number().min(0).optional().nullable(),
+      })
+    )
+    .max(30)
+    .default([]),
+});
+
+const retroactiveIncreaseRuleSchema = z
+  .object({
+    increaseType: z.enum(['PERCENTAGE', 'FIXED_AMOUNT']).default('PERCENTAGE'),
+    value: z.coerce.number().min(0, 'El valor del incremento retroactivo no puede ser negativo'),
+    rounding: z.enum(['DECIMAL_2', 'INTEGER', 'NONE']).default('DECIMAL_2'),
+    treatment: z.enum(['REMUNERATIVE', 'NON_REMUNERATIVE']).default('REMUNERATIVE'),
+  })
+  .optional()
+  .nullable();
+
+const retroactivePreviewBaseShape = {
+  cctCode: z.string().trim().max(50).optional().default('ALL'),
+  scaleIds: z.array(z.string().trim().min(1)).max(500).optional(),
+  fromYear: z.coerce.number().int().min(2000).max(2100),
+  fromMonth: z.coerce.number().int().min(1).max(12),
+  toYear: z.coerce.number().int().min(2000).max(2100),
+  toMonth: z.coerce.number().int().min(1).max(12),
+  periodTypes: z.array(z.string().trim().min(1)).max(20).optional(),
+  scaleSourceMode: z.enum(['EXISTING_SCALE_PERIODS', 'SIMULATE_INCREASE']).default('EXISTING_SCALE_PERIODS'),
+  increaseRule: retroactiveIncreaseRuleSchema,
+  includeSacRecalculation: z.boolean().optional().default(true),
+  targetPeriodId: z.string().trim().min(1).optional().nullable(),
+};
+
+export const retroactivePreviewSchema = z.object(retroactivePreviewBaseShape).superRefine((val, ctx) => {
+  const fromYm = val.fromYear * 100 + val.fromMonth;
+  const toYm = val.toYear * 100 + val.toMonth;
+  if (fromYm > toYm) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['fromMonth'],
+      message: 'El período "Desde" no puede ser posterior al período "Hasta".',
+    });
+  }
+  const monthSpan = (val.toYear - val.fromYear) * 12 + (val.toMonth - val.fromMonth) + 1;
+  if (monthSpan > 24) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['toMonth'],
+      message: 'El rango retroactivo no puede superar 24 meses por corrida.',
+    });
+  }
+  if (val.scaleSourceMode === 'SIMULATE_INCREASE' && (!val.increaseRule || Number(val.increaseRule.value) <= 0)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['increaseRule'],
+      message: 'Debe indicar un incremento paritario mayor a 0 en modo simulación.',
+    });
+  }
+});
+
+export const retroactiveApplySchema = z
+  .object({
+    ...retroactivePreviewBaseShape,
+    targetPeriodId: z.string().trim().min(1, 'Debe seleccionar una liquidación abierta destino'),
+    selectedEmployeeIds: z.array(z.string().trim().min(1)).max(5000).optional(),
+    ignoreInactiveEmployees: z.boolean().optional().default(true),
+    ignoredInactiveConfirmed: z.boolean().optional().default(false),
+    includeSacRecalculation: z.boolean().optional().default(true),
+    conceptMapping: z
+      .object({
+        BASIC: z.string().trim().optional().nullable(),
+        ADDITIONALS: z.string().trim().optional().nullable(),
+        OVERTIME: z.string().trim().optional().nullable(),
+        VACATIONS: z.string().trim().optional().nullable(),
+        SAC: z.string().trim().optional().nullable(),
+        NON_REMUNERATIVE: z.string().trim().optional().nullable(),
+      })
+      .optional()
+      .default({}),
+    agreementLabel: z.string().trim().max(255).optional().nullable(),
+    updateSalaryScales: z.boolean().optional().default(false),
+    allowDuplicateOverride: z.boolean().optional().default(false),
+    duplicateStrategy: z.enum(['ADD', 'REPLACE']).optional().default('ADD'),
+  })
+  .superRefine((val, ctx) => {
+    const fromYm = val.fromYear * 100 + val.fromMonth;
+    const toYm = val.toYear * 100 + val.toMonth;
+    if (fromYm > toYm) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['fromMonth'],
+        message: 'El período "Desde" no puede ser posterior al período "Hasta".',
+      });
+    }
+    if (val.scaleSourceMode === 'SIMULATE_INCREASE' && (!val.increaseRule || Number(val.increaseRule.value) <= 0)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ['increaseRule'],
+        message: 'Debe indicar un incremento paritario mayor a 0 en modo simulación.',
+      });
+    }
+  });

@@ -145,6 +145,54 @@ export const ARCA_CONCEPT_PROFILES = {
     lockSubsystems: false,
     description: 'Servicio de Comedor / Vales Alimentarios (Art. 103 bis inc. a LCT): Exento de SUSS',
   },
+  '520010': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Gratificación por cese laboral (Art. 241 LCT / Art. 7 Ley 24.241): Exento de SUSS y LRT',
+  },
+  '520011': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Indemnización por extinción del contrato (Arts. 247/248 LCT): Exento de SUSS y LRT',
+  },
+  '520012': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Vacaciones no gozadas (Art. 156 LCT / Art. 7 Ley 24.241): Exento de SUSS y LRT',
+  },
+  '520014': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Indemnización por despido / antigüedad (Art. 245 LCT): Exento de SUSS y LRT',
+  },
+  '520015': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Indemnización sustitutiva del preaviso (Art. 232 LCT): Exento de SUSS y LRT',
+  },
+  '520016': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'Integración del mes de despido (Art. 233 LCT): Exento de SUSS y LRT',
+  },
+  '520017': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'SAC sobre integración o preaviso (Arts. 232/233 LCT): Exento de SUSS y LRT',
+  },
+  '520018': {
+    type: 'NON_REMUNERATIVE',
+    subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+    lockSubsystems: false,
+    description: 'SAC sobre vacaciones no gozadas (Art. 156 LCT): Exento de SUSS y LRT',
+  },
   '530000': {
     type: 'NON_REMUNERATIVE',
     subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
@@ -173,7 +221,7 @@ export const ARCA_CONCEPT_PROFILES = {
     type: 'NON_REMUNERATIVE',
     subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
     lockSubsystems: false,
-    description: 'Indemnizaciones Legales y Gratificaciones por Cese (Art. 245 LCT): Exento de SUSS',
+    description: 'Mensual - PPC y CCT Especiales (ARCA) / Otros No Remunerativos exentos (para egresos use 520010-520018)',
   },
 
   // 3. DESCUENTOS Y RETENCIONES (810000 - 829999)
@@ -258,9 +306,10 @@ export const ARCA_CONCEPT_PROFILES = {
   },
   '820000': {
     type: 'DEDUCTION',
+    allowedTypes: ['DEDUCTION', 'NON_REMUNERATIVE'],
     subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
     lockSubsystems: true,
-    description: 'Otros Descuentos Generales: Retención interna (Bases R1..R10 en 0 según ARCA)',
+    description: 'Otros Descuentos Generales: Retención interna informada como Débito "D" en LSD (Bases R1..R10 en 0 según ARCA). Para usarlo como Crédito "C" (ej. Pago de Anticipo de Haberes), seleccione Tipo de Haber "No Remunerativo (4000-5999)".',
   },
 };
 
@@ -268,9 +317,28 @@ export const ARCA_CONCEPT_PROFILES = {
  * Obtiene el perfil de bases y comportamiento para un código ARCA dado.
  * Si no está explícito en la tabla, infiere por rango numérico oficial.
  */
-export function getArcaProfile(arcaCode, currentConceptCode = '') {
+export function getArcaProfile(arcaCode, currentConceptCode = '', currentConceptType = '') {
   const code = String(arcaCode || '').trim();
+  const numMatch = String(currentConceptCode || '').match(/(\d{4})$/);
+  const conceptNum = numMatch ? parseInt(numMatch[1], 10) : NaN;
+
   if (ARCA_CONCEPT_PROFILES[code]) {
+    // Excepción normativa ARCA LSD: código 820000 como Crédito ('C') para Pago de Anticipos de Haberes
+    // (Conceptos No Remunerativos rango 4000-5999 con subsistemas R1..R10 y Bruto F.931 en cero)
+    if (code === '820000') {
+      const isNonRemRange = !Number.isNaN(conceptNum) && conceptNum >= 4000 && conceptNum <= 5999;
+      const isCreditMode = currentConceptType === 'NON_REMUNERATIVE' || (isNonRemRange && currentConceptType !== 'DEDUCTION');
+      if (isCreditMode) {
+        return {
+          type: 'NON_REMUNERATIVE',
+          allowedTypes: ['DEDUCTION', 'NON_REMUNERATIVE'],
+          isLsdCreditException: true,
+          subsystems: { r1: false, r2: false, r3: false, r4: false, r5: false, r6: false, r7: false, r8: false, r9: false, r10: false },
+          lockSubsystems: true,
+          description: 'Modo Crédito LSD (C): Se liquida como haber positivo (No Remunerativo 4000-5999) y se informa en LSD bajo 820000 con indicador "C" (Crédito), manteniendo Bases R1..R10 y Remuneración Bruta F.931 en 0 (ej. Pago de Anticipo de Haberes).',
+        };
+      }
+    }
     // Caso especial para Honorarios Director S.A. (Mod. 099): solo LRT
     if (code === '110000' && currentConceptCode === 'SU1002') {
       return {

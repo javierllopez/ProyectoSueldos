@@ -243,6 +243,16 @@ export type SanctionIncidentLink = $Result.DefaultSelection<Prisma.$SanctionInci
  * 
  */
 export type PayrollSettlementType = $Result.DefaultSelection<Prisma.$PayrollSettlementTypePayload>
+/**
+ * Model FinalSettlementWorksheet
+ * 
+ */
+export type FinalSettlementWorksheet = $Result.DefaultSelection<Prisma.$FinalSettlementWorksheetPayload>
+/**
+ * Model RetroactiveAdjustmentRun
+ * 
+ */
+export type RetroactiveAdjustmentRun = $Result.DefaultSelection<Prisma.$RetroactiveAdjustmentRunPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -821,6 +831,26 @@ export class PrismaClient<
     * ```
     */
   get payrollSettlementType(): Prisma.PayrollSettlementTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.finalSettlementWorksheet`: Exposes CRUD operations for the **FinalSettlementWorksheet** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more FinalSettlementWorksheets
+    * const finalSettlementWorksheets = await prisma.finalSettlementWorksheet.findMany()
+    * ```
+    */
+  get finalSettlementWorksheet(): Prisma.FinalSettlementWorksheetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.retroactiveAdjustmentRun`: Exposes CRUD operations for the **RetroactiveAdjustmentRun** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more RetroactiveAdjustmentRuns
+    * const retroactiveAdjustmentRuns = await prisma.retroactiveAdjustmentRun.findMany()
+    * ```
+    */
+  get retroactiveAdjustmentRun(): Prisma.RetroactiveAdjustmentRunDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1307,7 +1337,9 @@ export namespace Prisma {
     EmployeeIncident: 'EmployeeIncident',
     EmployeeSanction: 'EmployeeSanction',
     SanctionIncidentLink: 'SanctionIncidentLink',
-    PayrollSettlementType: 'PayrollSettlementType'
+    PayrollSettlementType: 'PayrollSettlementType',
+    FinalSettlementWorksheet: 'FinalSettlementWorksheet',
+    RetroactiveAdjustmentRun: 'RetroactiveAdjustmentRun'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1326,7 +1358,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "companyProfile" | "department" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "payrollClosingAudit" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink" | "payrollSettlementType"
+      modelProps: "companyProfile" | "department" | "jobPosition" | "workShift" | "workShiftDetail" | "healthInsurance" | "union" | "unionConcept" | "mutual" | "mutualConcept" | "employee" | "paymentMethod" | "salaryScale" | "salaryScalePeriod" | "kinship" | "employeeRelative" | "concept" | "employeeConcept" | "payrollMatrix" | "payrollFixedValue" | "payrollFiscalPeriod" | "payrollPeriod" | "paySlip" | "paySlipItem" | "payrollClosingAudit" | "paySlipBasis" | "payrollSetting" | "periodNovelty" | "employeeEmbargo" | "employeeEmbargoConcept" | "incomeTaxTable" | "incomeTaxScale" | "incomeTaxGeneralDeductionLimit" | "employeeIncomeTaxDeduction" | "employeeOtherIncome" | "employeeIncomeTaxPaymentOnAccount" | "siradigImport" | "incomeTaxSettlement" | "incomeTaxSettlementDetail" | "reportTemplate" | "incidentType" | "sanctionType" | "employeeIncident" | "employeeSanction" | "sanctionIncidentLink" | "payrollSettlementType" | "finalSettlementWorksheet" | "retroactiveAdjustmentRun"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4366,6 +4398,138 @@ export namespace Prisma {
           }
         }
       }
+      FinalSettlementWorksheet: {
+        payload: Prisma.$FinalSettlementWorksheetPayload<ExtArgs>
+        fields: Prisma.FinalSettlementWorksheetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FinalSettlementWorksheetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FinalSettlementWorksheetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          findFirst: {
+            args: Prisma.FinalSettlementWorksheetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FinalSettlementWorksheetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          findMany: {
+            args: Prisma.FinalSettlementWorksheetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>[]
+          }
+          create: {
+            args: Prisma.FinalSettlementWorksheetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          createMany: {
+            args: Prisma.FinalSettlementWorksheetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.FinalSettlementWorksheetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          update: {
+            args: Prisma.FinalSettlementWorksheetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          deleteMany: {
+            args: Prisma.FinalSettlementWorksheetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FinalSettlementWorksheetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.FinalSettlementWorksheetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FinalSettlementWorksheetPayload>
+          }
+          aggregate: {
+            args: Prisma.FinalSettlementWorksheetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFinalSettlementWorksheet>
+          }
+          groupBy: {
+            args: Prisma.FinalSettlementWorksheetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FinalSettlementWorksheetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FinalSettlementWorksheetCountArgs<ExtArgs>
+            result: $Utils.Optional<FinalSettlementWorksheetCountAggregateOutputType> | number
+          }
+        }
+      }
+      RetroactiveAdjustmentRun: {
+        payload: Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>
+        fields: Prisma.RetroactiveAdjustmentRunFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.RetroactiveAdjustmentRunFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.RetroactiveAdjustmentRunFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          findFirst: {
+            args: Prisma.RetroactiveAdjustmentRunFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.RetroactiveAdjustmentRunFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          findMany: {
+            args: Prisma.RetroactiveAdjustmentRunFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>[]
+          }
+          create: {
+            args: Prisma.RetroactiveAdjustmentRunCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          createMany: {
+            args: Prisma.RetroactiveAdjustmentRunCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.RetroactiveAdjustmentRunDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          update: {
+            args: Prisma.RetroactiveAdjustmentRunUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          deleteMany: {
+            args: Prisma.RetroactiveAdjustmentRunDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.RetroactiveAdjustmentRunUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.RetroactiveAdjustmentRunUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$RetroactiveAdjustmentRunPayload>
+          }
+          aggregate: {
+            args: Prisma.RetroactiveAdjustmentRunAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateRetroactiveAdjustmentRun>
+          }
+          groupBy: {
+            args: Prisma.RetroactiveAdjustmentRunGroupByArgs<ExtArgs>
+            result: $Utils.Optional<RetroactiveAdjustmentRunGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.RetroactiveAdjustmentRunCountArgs<ExtArgs>
+            result: $Utils.Optional<RetroactiveAdjustmentRunCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4508,6 +4672,8 @@ export namespace Prisma {
     employeeSanction?: EmployeeSanctionOmit
     sanctionIncidentLink?: SanctionIncidentLinkOmit
     payrollSettlementType?: PayrollSettlementTypeOmit
+    finalSettlementWorksheet?: FinalSettlementWorksheetOmit
+    retroactiveAdjustmentRun?: RetroactiveAdjustmentRunOmit
   }
 
   /* Types for Logging */
@@ -4812,6 +4978,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails: number
     incidents: number
     sanctions: number
+    finalSettlementWorksheets: number
   }
 
   export type EmployeeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4826,6 +4993,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: boolean | EmployeeCountOutputTypeCountIncomeTaxSettlementDetailsArgs
     incidents?: boolean | EmployeeCountOutputTypeCountIncidentsArgs
     sanctions?: boolean | EmployeeCountOutputTypeCountSanctionsArgs
+    finalSettlementWorksheets?: boolean | EmployeeCountOutputTypeCountFinalSettlementWorksheetsArgs
   }
 
   // Custom InputTypes
@@ -4914,6 +5082,13 @@ export namespace Prisma {
    */
   export type EmployeeCountOutputTypeCountSanctionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: EmployeeSanctionWhereInput
+  }
+
+  /**
+   * EmployeeCountOutputType without action
+   */
+  export type EmployeeCountOutputTypeCountFinalSettlementWorksheetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FinalSettlementWorksheetWhereInput
   }
 
 
@@ -5173,11 +5348,15 @@ export namespace Prisma {
   export type PayrollPeriodCountOutputType = {
     paySlips: number
     periodNovelties: number
+    finalSettlementWorksheets: number
+    retroactiveAdjustmentRuns: number
   }
 
   export type PayrollPeriodCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlips?: boolean | PayrollPeriodCountOutputTypeCountPaySlipsArgs
     periodNovelties?: boolean | PayrollPeriodCountOutputTypeCountPeriodNoveltiesArgs
+    finalSettlementWorksheets?: boolean | PayrollPeriodCountOutputTypeCountFinalSettlementWorksheetsArgs
+    retroactiveAdjustmentRuns?: boolean | PayrollPeriodCountOutputTypeCountRetroactiveAdjustmentRunsArgs
   }
 
   // Custom InputTypes
@@ -5203,6 +5382,20 @@ export namespace Prisma {
    */
   export type PayrollPeriodCountOutputTypeCountPeriodNoveltiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PeriodNoveltyWhereInput
+  }
+
+  /**
+   * PayrollPeriodCountOutputType without action
+   */
+  export type PayrollPeriodCountOutputTypeCountFinalSettlementWorksheetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FinalSettlementWorksheetWhereInput
+  }
+
+  /**
+   * PayrollPeriodCountOutputType without action
+   */
+  export type PayrollPeriodCountOutputTypeCountRetroactiveAdjustmentRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RetroactiveAdjustmentRunWhereInput
   }
 
 
@@ -16089,6 +16282,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
     incidents?: boolean | Employee$incidentsArgs<ExtArgs>
     sanctions?: boolean | Employee$sanctionsArgs<ExtArgs>
+    finalSettlementWorksheets?: boolean | Employee$finalSettlementWorksheetsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["employee"]>
 
@@ -16162,6 +16356,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: boolean | Employee$incomeTaxSettlementDetailsArgs<ExtArgs>
     incidents?: boolean | Employee$incidentsArgs<ExtArgs>
     sanctions?: boolean | Employee$sanctionsArgs<ExtArgs>
+    finalSettlementWorksheets?: boolean | Employee$finalSettlementWorksheetsArgs<ExtArgs>
     _count?: boolean | EmployeeCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -16187,6 +16382,7 @@ export namespace Prisma {
       incomeTaxSettlementDetails: Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>[]
       incidents: Prisma.$EmployeeIncidentPayload<ExtArgs>[]
       sanctions: Prisma.$EmployeeSanctionPayload<ExtArgs>[]
+      finalSettlementWorksheets: Prisma.$FinalSettlementWorksheetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -16592,6 +16788,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails<T extends Employee$incomeTaxSettlementDetailsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incomeTaxSettlementDetailsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncomeTaxSettlementDetailPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     incidents<T extends Employee$incidentsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeIncidentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sanctions<T extends Employee$sanctionsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$sanctionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EmployeeSanctionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    finalSettlementWorksheets<T extends Employee$finalSettlementWorksheetsArgs<ExtArgs> = {}>(args?: Subset<T, Employee$finalSettlementWorksheetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17421,6 +17618,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: EmployeeSanctionScalarFieldEnum | EmployeeSanctionScalarFieldEnum[]
+  }
+
+  /**
+   * Employee.finalSettlementWorksheets
+   */
+  export type Employee$finalSettlementWorksheetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    where?: FinalSettlementWorksheetWhereInput
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FinalSettlementWorksheetScalarFieldEnum | FinalSettlementWorksheetScalarFieldEnum[]
   }
 
   /**
@@ -28645,6 +28866,8 @@ export namespace Prisma {
     fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
     periodNovelties?: boolean | PayrollPeriod$periodNoveltiesArgs<ExtArgs>
+    finalSettlementWorksheets?: boolean | PayrollPeriod$finalSettlementWorksheetsArgs<ExtArgs>
+    retroactiveAdjustmentRuns?: boolean | PayrollPeriod$retroactiveAdjustmentRunsArgs<ExtArgs>
     _count?: boolean | PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["payrollPeriod"]>
 
@@ -28680,6 +28903,8 @@ export namespace Prisma {
     fiscalPeriod?: boolean | PayrollPeriod$fiscalPeriodArgs<ExtArgs>
     paySlips?: boolean | PayrollPeriod$paySlipsArgs<ExtArgs>
     periodNovelties?: boolean | PayrollPeriod$periodNoveltiesArgs<ExtArgs>
+    finalSettlementWorksheets?: boolean | PayrollPeriod$finalSettlementWorksheetsArgs<ExtArgs>
+    retroactiveAdjustmentRuns?: boolean | PayrollPeriod$retroactiveAdjustmentRunsArgs<ExtArgs>
     _count?: boolean | PayrollPeriodCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -28689,6 +28914,8 @@ export namespace Prisma {
       fiscalPeriod: Prisma.$PayrollFiscalPeriodPayload<ExtArgs> | null
       paySlips: Prisma.$PaySlipPayload<ExtArgs>[]
       periodNovelties: Prisma.$PeriodNoveltyPayload<ExtArgs>[]
+      finalSettlementWorksheets: Prisma.$FinalSettlementWorksheetPayload<ExtArgs>[]
+      retroactiveAdjustmentRuns: Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -29056,6 +29283,8 @@ export namespace Prisma {
     fiscalPeriod<T extends PayrollPeriod$fiscalPeriodArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$fiscalPeriodArgs<ExtArgs>>): Prisma__PayrollFiscalPeriodClient<$Result.GetResult<Prisma.$PayrollFiscalPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     paySlips<T extends PayrollPeriod$paySlipsArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$paySlipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaySlipPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     periodNovelties<T extends PayrollPeriod$periodNoveltiesArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$periodNoveltiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PeriodNoveltyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    finalSettlementWorksheets<T extends PayrollPeriod$finalSettlementWorksheetsArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$finalSettlementWorksheetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    retroactiveAdjustmentRuns<T extends PayrollPeriod$retroactiveAdjustmentRunsArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriod$retroactiveAdjustmentRunsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -29514,6 +29743,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PeriodNoveltyScalarFieldEnum | PeriodNoveltyScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollPeriod.finalSettlementWorksheets
+   */
+  export type PayrollPeriod$finalSettlementWorksheetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    where?: FinalSettlementWorksheetWhereInput
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FinalSettlementWorksheetScalarFieldEnum | FinalSettlementWorksheetScalarFieldEnum[]
+  }
+
+  /**
+   * PayrollPeriod.retroactiveAdjustmentRuns
+   */
+  export type PayrollPeriod$retroactiveAdjustmentRunsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    where?: RetroactiveAdjustmentRunWhereInput
+    orderBy?: RetroactiveAdjustmentRunOrderByWithRelationInput | RetroactiveAdjustmentRunOrderByWithRelationInput[]
+    cursor?: RetroactiveAdjustmentRunWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: RetroactiveAdjustmentRunScalarFieldEnum | RetroactiveAdjustmentRunScalarFieldEnum[]
   }
 
   /**
@@ -31056,6 +31333,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal | null
     arcaConceptCode: string | null
+    adjustmentPeriod: string | null
     formulaExplanation: string | null
     notes: string | null
     createdAt: Date | null
@@ -31075,6 +31353,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal | null
     arcaConceptCode: string | null
+    adjustmentPeriod: string | null
     formulaExplanation: string | null
     notes: string | null
     createdAt: Date | null
@@ -31094,6 +31373,7 @@ export namespace Prisma {
     baseAmount: number
     amount: number
     arcaConceptCode: number
+    adjustmentPeriod: number
     formulaExplanation: number
     notes: number
     createdAt: number
@@ -31129,6 +31409,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    adjustmentPeriod?: true
     formulaExplanation?: true
     notes?: true
     createdAt?: true
@@ -31148,6 +31429,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    adjustmentPeriod?: true
     formulaExplanation?: true
     notes?: true
     createdAt?: true
@@ -31167,6 +31449,7 @@ export namespace Prisma {
     baseAmount?: true
     amount?: true
     arcaConceptCode?: true
+    adjustmentPeriod?: true
     formulaExplanation?: true
     notes?: true
     createdAt?: true
@@ -31273,6 +31556,7 @@ export namespace Prisma {
     baseAmount: Decimal | null
     amount: Decimal
     arcaConceptCode: string | null
+    adjustmentPeriod: string | null
     formulaExplanation: string | null
     notes: string | null
     createdAt: Date
@@ -31311,6 +31595,7 @@ export namespace Prisma {
     baseAmount?: boolean
     amount?: boolean
     arcaConceptCode?: boolean
+    adjustmentPeriod?: boolean
     formulaExplanation?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -31333,13 +31618,14 @@ export namespace Prisma {
     baseAmount?: boolean
     amount?: boolean
     arcaConceptCode?: boolean
+    adjustmentPeriod?: boolean
     formulaExplanation?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "formulaExplanation" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
+  export type PaySlipItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paySlipId" | "conceptId" | "conceptCode" | "conceptName" | "type" | "units" | "unitLabel" | "rate" | "baseAmount" | "amount" | "arcaConceptCode" | "adjustmentPeriod" | "formulaExplanation" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["paySlipItem"]>
   export type PaySlipItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     paySlip?: boolean | PaySlipDefaultArgs<ExtArgs>
   }
@@ -31362,6 +31648,7 @@ export namespace Prisma {
       baseAmount: Prisma.Decimal | null
       amount: Prisma.Decimal
       arcaConceptCode: string | null
+      adjustmentPeriod: string | null
       formulaExplanation: string | null
       notes: string | null
       createdAt: Date
@@ -31748,6 +32035,7 @@ export namespace Prisma {
     readonly baseAmount: FieldRef<"PaySlipItem", 'Decimal'>
     readonly amount: FieldRef<"PaySlipItem", 'Decimal'>
     readonly arcaConceptCode: FieldRef<"PaySlipItem", 'String'>
+    readonly adjustmentPeriod: FieldRef<"PaySlipItem", 'String'>
     readonly formulaExplanation: FieldRef<"PaySlipItem", 'String'>
     readonly notes: FieldRef<"PaySlipItem", 'String'>
     readonly createdAt: FieldRef<"PaySlipItem", 'DateTime'>
@@ -35614,6 +35902,7 @@ export namespace Prisma {
     conceptId: string | null
     units: Decimal | null
     amount: Decimal | null
+    adjustmentPeriod: string | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -35626,6 +35915,7 @@ export namespace Prisma {
     conceptId: string | null
     units: Decimal | null
     amount: Decimal | null
+    adjustmentPeriod: string | null
     notes: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -35638,6 +35928,7 @@ export namespace Prisma {
     conceptId: number
     units: number
     amount: number
+    adjustmentPeriod: number
     notes: number
     createdAt: number
     updatedAt: number
@@ -35662,6 +35953,7 @@ export namespace Prisma {
     conceptId?: true
     units?: true
     amount?: true
+    adjustmentPeriod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -35674,6 +35966,7 @@ export namespace Prisma {
     conceptId?: true
     units?: true
     amount?: true
+    adjustmentPeriod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -35686,6 +35979,7 @@ export namespace Prisma {
     conceptId?: true
     units?: true
     amount?: true
+    adjustmentPeriod?: true
     notes?: true
     createdAt?: true
     updatedAt?: true
@@ -35785,6 +36079,7 @@ export namespace Prisma {
     conceptId: string
     units: Decimal | null
     amount: Decimal | null
+    adjustmentPeriod: string | null
     notes: string | null
     createdAt: Date
     updatedAt: Date
@@ -35816,6 +36111,7 @@ export namespace Prisma {
     conceptId?: boolean
     units?: boolean
     amount?: boolean
+    adjustmentPeriod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -35833,12 +36129,13 @@ export namespace Prisma {
     conceptId?: boolean
     units?: boolean
     amount?: boolean
+    adjustmentPeriod?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type PeriodNoveltyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollPeriodId" | "employeeId" | "conceptId" | "units" | "amount" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["periodNovelty"]>
+  export type PeriodNoveltyOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollPeriodId" | "employeeId" | "conceptId" | "units" | "amount" | "adjustmentPeriod" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["periodNovelty"]>
   export type PeriodNoveltyInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     payrollPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
     employee?: boolean | EmployeeDefaultArgs<ExtArgs>
@@ -35859,6 +36156,7 @@ export namespace Prisma {
       conceptId: string
       units: Prisma.Decimal | null
       amount: Prisma.Decimal | null
+      adjustmentPeriod: string | null
       notes: string | null
       createdAt: Date
       updatedAt: Date
@@ -36240,6 +36538,7 @@ export namespace Prisma {
     readonly conceptId: FieldRef<"PeriodNovelty", 'String'>
     readonly units: FieldRef<"PeriodNovelty", 'Decimal'>
     readonly amount: FieldRef<"PeriodNovelty", 'Decimal'>
+    readonly adjustmentPeriod: FieldRef<"PeriodNovelty", 'String'>
     readonly notes: FieldRef<"PeriodNovelty", 'String'>
     readonly createdAt: FieldRef<"PeriodNovelty", 'DateTime'>
     readonly updatedAt: FieldRef<"PeriodNovelty", 'DateTime'>
@@ -54102,6 +54401,7 @@ export namespace Prisma {
     defaultWorkedDays: number | null
     appliesStatutoryDeductions: boolean | null
     triggersEmployeeTermination: boolean | null
+    allowsRetroactives: boolean | null
     isSystem: boolean | null
     isActive: boolean | null
     sortOrder: number | null
@@ -54120,6 +54420,7 @@ export namespace Prisma {
     defaultWorkedDays: number | null
     appliesStatutoryDeductions: boolean | null
     triggersEmployeeTermination: boolean | null
+    allowsRetroactives: boolean | null
     isSystem: boolean | null
     isActive: boolean | null
     sortOrder: number | null
@@ -54138,6 +54439,7 @@ export namespace Prisma {
     defaultWorkedDays: number
     appliesStatutoryDeductions: number
     triggersEmployeeTermination: number
+    allowsRetroactives: number
     isSystem: number
     isActive: number
     sortOrder: number
@@ -54168,6 +54470,7 @@ export namespace Prisma {
     defaultWorkedDays?: true
     appliesStatutoryDeductions?: true
     triggersEmployeeTermination?: true
+    allowsRetroactives?: true
     isSystem?: true
     isActive?: true
     sortOrder?: true
@@ -54186,6 +54489,7 @@ export namespace Prisma {
     defaultWorkedDays?: true
     appliesStatutoryDeductions?: true
     triggersEmployeeTermination?: true
+    allowsRetroactives?: true
     isSystem?: true
     isActive?: true
     sortOrder?: true
@@ -54204,6 +54508,7 @@ export namespace Prisma {
     defaultWorkedDays?: true
     appliesStatutoryDeductions?: true
     triggersEmployeeTermination?: true
+    allowsRetroactives?: true
     isSystem?: true
     isActive?: true
     sortOrder?: true
@@ -54309,6 +54614,7 @@ export namespace Prisma {
     defaultWorkedDays: number
     appliesStatutoryDeductions: boolean
     triggersEmployeeTermination: boolean
+    allowsRetroactives: boolean
     isSystem: boolean
     isActive: boolean
     sortOrder: number
@@ -54346,6 +54652,7 @@ export namespace Prisma {
     defaultWorkedDays?: boolean
     appliesStatutoryDeductions?: boolean
     triggersEmployeeTermination?: boolean
+    allowsRetroactives?: boolean
     isSystem?: boolean
     isActive?: boolean
     sortOrder?: boolean
@@ -54366,6 +54673,7 @@ export namespace Prisma {
     defaultWorkedDays?: boolean
     appliesStatutoryDeductions?: boolean
     triggersEmployeeTermination?: boolean
+    allowsRetroactives?: boolean
     isSystem?: boolean
     isActive?: boolean
     sortOrder?: boolean
@@ -54373,7 +54681,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type PayrollSettlementTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "conceptPrefix" | "includeInLsd" | "arcaLsdType" | "defaultWorkedDays" | "appliesStatutoryDeductions" | "triggersEmployeeTermination" | "isSystem" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollSettlementType"]>
+  export type PayrollSettlementTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "name" | "description" | "conceptPrefix" | "includeInLsd" | "arcaLsdType" | "defaultWorkedDays" | "appliesStatutoryDeductions" | "triggersEmployeeTermination" | "allowsRetroactives" | "isSystem" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["payrollSettlementType"]>
 
   export type $PayrollSettlementTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PayrollSettlementType"
@@ -54389,6 +54697,7 @@ export namespace Prisma {
       defaultWorkedDays: number
       appliesStatutoryDeductions: boolean
       triggersEmployeeTermination: boolean
+      allowsRetroactives: boolean
       isSystem: boolean
       isActive: boolean
       sortOrder: number
@@ -54773,6 +55082,7 @@ export namespace Prisma {
     readonly defaultWorkedDays: FieldRef<"PayrollSettlementType", 'Int'>
     readonly appliesStatutoryDeductions: FieldRef<"PayrollSettlementType", 'Boolean'>
     readonly triggersEmployeeTermination: FieldRef<"PayrollSettlementType", 'Boolean'>
+    readonly allowsRetroactives: FieldRef<"PayrollSettlementType", 'Boolean'>
     readonly isSystem: FieldRef<"PayrollSettlementType", 'Boolean'>
     readonly isActive: FieldRef<"PayrollSettlementType", 'Boolean'>
     readonly sortOrder: FieldRef<"PayrollSettlementType", 'Int'>
@@ -55096,6 +55406,2458 @@ export namespace Prisma {
      * Omit specific fields from the PayrollSettlementType
      */
     omit?: PayrollSettlementTypeOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model FinalSettlementWorksheet
+   */
+
+  export type AggregateFinalSettlementWorksheet = {
+    _count: FinalSettlementWorksheetCountAggregateOutputType | null
+    _avg: FinalSettlementWorksheetAvgAggregateOutputType | null
+    _sum: FinalSettlementWorksheetSumAggregateOutputType | null
+    _min: FinalSettlementWorksheetMinAggregateOutputType | null
+    _max: FinalSettlementWorksheetMaxAggregateOutputType | null
+  }
+
+  export type FinalSettlementWorksheetAvgAggregateOutputType = {
+    vacationDaysTaken: number | null
+    cctCapAmount: Decimal | null
+    seniorityYears: number | null
+    seniorityMonths: number | null
+    seniorityDays: number | null
+    indemnityPeriods: number | null
+    mrmnhAmount: Decimal | null
+    bestSemesterRemun: Decimal | null
+    workedDaysForLsd: number | null
+  }
+
+  export type FinalSettlementWorksheetSumAggregateOutputType = {
+    vacationDaysTaken: number | null
+    cctCapAmount: Decimal | null
+    seniorityYears: number | null
+    seniorityMonths: number | null
+    seniorityDays: number | null
+    indemnityPeriods: number | null
+    mrmnhAmount: Decimal | null
+    bestSemesterRemun: Decimal | null
+    workedDaysForLsd: number | null
+  }
+
+  export type FinalSettlementWorksheetMinAggregateOutputType = {
+    id: string | null
+    payrollPeriodId: string | null
+    employeeId: string | null
+    terminationDate: Date | null
+    terminationCause: string | null
+    terminationReasonLabel: string | null
+    includeWorkedDays: boolean | null
+    daysDivisorMode: string | null
+    preavisoGiven: boolean | null
+    vacationDaysTaken: number | null
+    applyVizzoti: boolean | null
+    cctCapAmount: Decimal | null
+    isExecutive: boolean | null
+    seniorityYears: number | null
+    seniorityMonths: number | null
+    seniorityDays: number | null
+    indemnityPeriods: number | null
+    inProbationPeriod: boolean | null
+    mrmnhAmount: Decimal | null
+    mrmnhSourcePeriodLabel: string | null
+    bestSemesterRemun: Decimal | null
+    workedDaysForLsd: number | null
+    legalDueDate: Date | null
+    appliedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FinalSettlementWorksheetMaxAggregateOutputType = {
+    id: string | null
+    payrollPeriodId: string | null
+    employeeId: string | null
+    terminationDate: Date | null
+    terminationCause: string | null
+    terminationReasonLabel: string | null
+    includeWorkedDays: boolean | null
+    daysDivisorMode: string | null
+    preavisoGiven: boolean | null
+    vacationDaysTaken: number | null
+    applyVizzoti: boolean | null
+    cctCapAmount: Decimal | null
+    isExecutive: boolean | null
+    seniorityYears: number | null
+    seniorityMonths: number | null
+    seniorityDays: number | null
+    indemnityPeriods: number | null
+    inProbationPeriod: boolean | null
+    mrmnhAmount: Decimal | null
+    mrmnhSourcePeriodLabel: string | null
+    bestSemesterRemun: Decimal | null
+    workedDaysForLsd: number | null
+    legalDueDate: Date | null
+    appliedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FinalSettlementWorksheetCountAggregateOutputType = {
+    id: number
+    payrollPeriodId: number
+    employeeId: number
+    terminationDate: number
+    terminationCause: number
+    terminationReasonLabel: number
+    includeWorkedDays: number
+    daysDivisorMode: number
+    preavisoGiven: number
+    vacationDaysTaken: number
+    applyVizzoti: number
+    cctCapAmount: number
+    isExecutive: number
+    seniorityYears: number
+    seniorityMonths: number
+    seniorityDays: number
+    indemnityPeriods: number
+    inProbationPeriod: number
+    mrmnhAmount: number
+    mrmnhSourcePeriodLabel: number
+    bestSemesterRemun: number
+    workedDaysForLsd: number
+    legalDueDate: number
+    worksheetPayload: number
+    appliedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FinalSettlementWorksheetAvgAggregateInputType = {
+    vacationDaysTaken?: true
+    cctCapAmount?: true
+    seniorityYears?: true
+    seniorityMonths?: true
+    seniorityDays?: true
+    indemnityPeriods?: true
+    mrmnhAmount?: true
+    bestSemesterRemun?: true
+    workedDaysForLsd?: true
+  }
+
+  export type FinalSettlementWorksheetSumAggregateInputType = {
+    vacationDaysTaken?: true
+    cctCapAmount?: true
+    seniorityYears?: true
+    seniorityMonths?: true
+    seniorityDays?: true
+    indemnityPeriods?: true
+    mrmnhAmount?: true
+    bestSemesterRemun?: true
+    workedDaysForLsd?: true
+  }
+
+  export type FinalSettlementWorksheetMinAggregateInputType = {
+    id?: true
+    payrollPeriodId?: true
+    employeeId?: true
+    terminationDate?: true
+    terminationCause?: true
+    terminationReasonLabel?: true
+    includeWorkedDays?: true
+    daysDivisorMode?: true
+    preavisoGiven?: true
+    vacationDaysTaken?: true
+    applyVizzoti?: true
+    cctCapAmount?: true
+    isExecutive?: true
+    seniorityYears?: true
+    seniorityMonths?: true
+    seniorityDays?: true
+    indemnityPeriods?: true
+    inProbationPeriod?: true
+    mrmnhAmount?: true
+    mrmnhSourcePeriodLabel?: true
+    bestSemesterRemun?: true
+    workedDaysForLsd?: true
+    legalDueDate?: true
+    appliedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FinalSettlementWorksheetMaxAggregateInputType = {
+    id?: true
+    payrollPeriodId?: true
+    employeeId?: true
+    terminationDate?: true
+    terminationCause?: true
+    terminationReasonLabel?: true
+    includeWorkedDays?: true
+    daysDivisorMode?: true
+    preavisoGiven?: true
+    vacationDaysTaken?: true
+    applyVizzoti?: true
+    cctCapAmount?: true
+    isExecutive?: true
+    seniorityYears?: true
+    seniorityMonths?: true
+    seniorityDays?: true
+    indemnityPeriods?: true
+    inProbationPeriod?: true
+    mrmnhAmount?: true
+    mrmnhSourcePeriodLabel?: true
+    bestSemesterRemun?: true
+    workedDaysForLsd?: true
+    legalDueDate?: true
+    appliedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FinalSettlementWorksheetCountAggregateInputType = {
+    id?: true
+    payrollPeriodId?: true
+    employeeId?: true
+    terminationDate?: true
+    terminationCause?: true
+    terminationReasonLabel?: true
+    includeWorkedDays?: true
+    daysDivisorMode?: true
+    preavisoGiven?: true
+    vacationDaysTaken?: true
+    applyVizzoti?: true
+    cctCapAmount?: true
+    isExecutive?: true
+    seniorityYears?: true
+    seniorityMonths?: true
+    seniorityDays?: true
+    indemnityPeriods?: true
+    inProbationPeriod?: true
+    mrmnhAmount?: true
+    mrmnhSourcePeriodLabel?: true
+    bestSemesterRemun?: true
+    workedDaysForLsd?: true
+    legalDueDate?: true
+    worksheetPayload?: true
+    appliedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FinalSettlementWorksheetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FinalSettlementWorksheet to aggregate.
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinalSettlementWorksheets to fetch.
+     */
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinalSettlementWorksheets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinalSettlementWorksheets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned FinalSettlementWorksheets
+    **/
+    _count?: true | FinalSettlementWorksheetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FinalSettlementWorksheetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FinalSettlementWorksheetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FinalSettlementWorksheetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FinalSettlementWorksheetMaxAggregateInputType
+  }
+
+  export type GetFinalSettlementWorksheetAggregateType<T extends FinalSettlementWorksheetAggregateArgs> = {
+        [P in keyof T & keyof AggregateFinalSettlementWorksheet]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFinalSettlementWorksheet[P]>
+      : GetScalarType<T[P], AggregateFinalSettlementWorksheet[P]>
+  }
+
+
+
+
+  export type FinalSettlementWorksheetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FinalSettlementWorksheetWhereInput
+    orderBy?: FinalSettlementWorksheetOrderByWithAggregationInput | FinalSettlementWorksheetOrderByWithAggregationInput[]
+    by: FinalSettlementWorksheetScalarFieldEnum[] | FinalSettlementWorksheetScalarFieldEnum
+    having?: FinalSettlementWorksheetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FinalSettlementWorksheetCountAggregateInputType | true
+    _avg?: FinalSettlementWorksheetAvgAggregateInputType
+    _sum?: FinalSettlementWorksheetSumAggregateInputType
+    _min?: FinalSettlementWorksheetMinAggregateInputType
+    _max?: FinalSettlementWorksheetMaxAggregateInputType
+  }
+
+  export type FinalSettlementWorksheetGroupByOutputType = {
+    id: string
+    payrollPeriodId: string
+    employeeId: string
+    terminationDate: Date
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays: boolean
+    daysDivisorMode: string
+    preavisoGiven: boolean
+    vacationDaysTaken: number
+    applyVizzoti: boolean
+    cctCapAmount: Decimal | null
+    isExecutive: boolean
+    seniorityYears: number
+    seniorityMonths: number
+    seniorityDays: number
+    indemnityPeriods: number
+    inProbationPeriod: boolean
+    mrmnhAmount: Decimal
+    mrmnhSourcePeriodLabel: string | null
+    bestSemesterRemun: Decimal
+    workedDaysForLsd: number
+    legalDueDate: Date | null
+    worksheetPayload: JsonValue
+    appliedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FinalSettlementWorksheetCountAggregateOutputType | null
+    _avg: FinalSettlementWorksheetAvgAggregateOutputType | null
+    _sum: FinalSettlementWorksheetSumAggregateOutputType | null
+    _min: FinalSettlementWorksheetMinAggregateOutputType | null
+    _max: FinalSettlementWorksheetMaxAggregateOutputType | null
+  }
+
+  type GetFinalSettlementWorksheetGroupByPayload<T extends FinalSettlementWorksheetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FinalSettlementWorksheetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FinalSettlementWorksheetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FinalSettlementWorksheetGroupByOutputType[P]>
+            : GetScalarType<T[P], FinalSettlementWorksheetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FinalSettlementWorksheetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    payrollPeriodId?: boolean
+    employeeId?: boolean
+    terminationDate?: boolean
+    terminationCause?: boolean
+    terminationReasonLabel?: boolean
+    includeWorkedDays?: boolean
+    daysDivisorMode?: boolean
+    preavisoGiven?: boolean
+    vacationDaysTaken?: boolean
+    applyVizzoti?: boolean
+    cctCapAmount?: boolean
+    isExecutive?: boolean
+    seniorityYears?: boolean
+    seniorityMonths?: boolean
+    seniorityDays?: boolean
+    indemnityPeriods?: boolean
+    inProbationPeriod?: boolean
+    mrmnhAmount?: boolean
+    mrmnhSourcePeriodLabel?: boolean
+    bestSemesterRemun?: boolean
+    workedDaysForLsd?: boolean
+    legalDueDate?: boolean
+    worksheetPayload?: boolean
+    appliedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    payrollPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["finalSettlementWorksheet"]>
+
+
+
+  export type FinalSettlementWorksheetSelectScalar = {
+    id?: boolean
+    payrollPeriodId?: boolean
+    employeeId?: boolean
+    terminationDate?: boolean
+    terminationCause?: boolean
+    terminationReasonLabel?: boolean
+    includeWorkedDays?: boolean
+    daysDivisorMode?: boolean
+    preavisoGiven?: boolean
+    vacationDaysTaken?: boolean
+    applyVizzoti?: boolean
+    cctCapAmount?: boolean
+    isExecutive?: boolean
+    seniorityYears?: boolean
+    seniorityMonths?: boolean
+    seniorityDays?: boolean
+    indemnityPeriods?: boolean
+    inProbationPeriod?: boolean
+    mrmnhAmount?: boolean
+    mrmnhSourcePeriodLabel?: boolean
+    bestSemesterRemun?: boolean
+    workedDaysForLsd?: boolean
+    legalDueDate?: boolean
+    worksheetPayload?: boolean
+    appliedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FinalSettlementWorksheetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "payrollPeriodId" | "employeeId" | "terminationDate" | "terminationCause" | "terminationReasonLabel" | "includeWorkedDays" | "daysDivisorMode" | "preavisoGiven" | "vacationDaysTaken" | "applyVizzoti" | "cctCapAmount" | "isExecutive" | "seniorityYears" | "seniorityMonths" | "seniorityDays" | "indemnityPeriods" | "inProbationPeriod" | "mrmnhAmount" | "mrmnhSourcePeriodLabel" | "bestSemesterRemun" | "workedDaysForLsd" | "legalDueDate" | "worksheetPayload" | "appliedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["finalSettlementWorksheet"]>
+  export type FinalSettlementWorksheetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payrollPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
+    employee?: boolean | EmployeeDefaultArgs<ExtArgs>
+  }
+
+  export type $FinalSettlementWorksheetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "FinalSettlementWorksheet"
+    objects: {
+      payrollPeriod: Prisma.$PayrollPeriodPayload<ExtArgs>
+      employee: Prisma.$EmployeePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      payrollPeriodId: string
+      employeeId: string
+      terminationDate: Date
+      terminationCause: string
+      terminationReasonLabel: string
+      includeWorkedDays: boolean
+      daysDivisorMode: string
+      preavisoGiven: boolean
+      vacationDaysTaken: number
+      applyVizzoti: boolean
+      cctCapAmount: Prisma.Decimal | null
+      isExecutive: boolean
+      seniorityYears: number
+      seniorityMonths: number
+      seniorityDays: number
+      indemnityPeriods: number
+      inProbationPeriod: boolean
+      mrmnhAmount: Prisma.Decimal
+      mrmnhSourcePeriodLabel: string | null
+      bestSemesterRemun: Prisma.Decimal
+      workedDaysForLsd: number
+      legalDueDate: Date | null
+      worksheetPayload: Prisma.JsonValue
+      appliedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["finalSettlementWorksheet"]>
+    composites: {}
+  }
+
+  type FinalSettlementWorksheetGetPayload<S extends boolean | null | undefined | FinalSettlementWorksheetDefaultArgs> = $Result.GetResult<Prisma.$FinalSettlementWorksheetPayload, S>
+
+  type FinalSettlementWorksheetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FinalSettlementWorksheetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FinalSettlementWorksheetCountAggregateInputType | true
+    }
+
+  export interface FinalSettlementWorksheetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['FinalSettlementWorksheet'], meta: { name: 'FinalSettlementWorksheet' } }
+    /**
+     * Find zero or one FinalSettlementWorksheet that matches the filter.
+     * @param {FinalSettlementWorksheetFindUniqueArgs} args - Arguments to find a FinalSettlementWorksheet
+     * @example
+     * // Get one FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FinalSettlementWorksheetFindUniqueArgs>(args: SelectSubset<T, FinalSettlementWorksheetFindUniqueArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one FinalSettlementWorksheet that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FinalSettlementWorksheetFindUniqueOrThrowArgs} args - Arguments to find a FinalSettlementWorksheet
+     * @example
+     * // Get one FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FinalSettlementWorksheetFindUniqueOrThrowArgs>(args: SelectSubset<T, FinalSettlementWorksheetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FinalSettlementWorksheet that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetFindFirstArgs} args - Arguments to find a FinalSettlementWorksheet
+     * @example
+     * // Get one FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FinalSettlementWorksheetFindFirstArgs>(args?: SelectSubset<T, FinalSettlementWorksheetFindFirstArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first FinalSettlementWorksheet that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetFindFirstOrThrowArgs} args - Arguments to find a FinalSettlementWorksheet
+     * @example
+     * // Get one FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FinalSettlementWorksheetFindFirstOrThrowArgs>(args?: SelectSubset<T, FinalSettlementWorksheetFindFirstOrThrowArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more FinalSettlementWorksheets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FinalSettlementWorksheets
+     * const finalSettlementWorksheets = await prisma.finalSettlementWorksheet.findMany()
+     * 
+     * // Get first 10 FinalSettlementWorksheets
+     * const finalSettlementWorksheets = await prisma.finalSettlementWorksheet.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const finalSettlementWorksheetWithIdOnly = await prisma.finalSettlementWorksheet.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FinalSettlementWorksheetFindManyArgs>(args?: SelectSubset<T, FinalSettlementWorksheetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a FinalSettlementWorksheet.
+     * @param {FinalSettlementWorksheetCreateArgs} args - Arguments to create a FinalSettlementWorksheet.
+     * @example
+     * // Create one FinalSettlementWorksheet
+     * const FinalSettlementWorksheet = await prisma.finalSettlementWorksheet.create({
+     *   data: {
+     *     // ... data to create a FinalSettlementWorksheet
+     *   }
+     * })
+     * 
+     */
+    create<T extends FinalSettlementWorksheetCreateArgs>(args: SelectSubset<T, FinalSettlementWorksheetCreateArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many FinalSettlementWorksheets.
+     * @param {FinalSettlementWorksheetCreateManyArgs} args - Arguments to create many FinalSettlementWorksheets.
+     * @example
+     * // Create many FinalSettlementWorksheets
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FinalSettlementWorksheetCreateManyArgs>(args?: SelectSubset<T, FinalSettlementWorksheetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a FinalSettlementWorksheet.
+     * @param {FinalSettlementWorksheetDeleteArgs} args - Arguments to delete one FinalSettlementWorksheet.
+     * @example
+     * // Delete one FinalSettlementWorksheet
+     * const FinalSettlementWorksheet = await prisma.finalSettlementWorksheet.delete({
+     *   where: {
+     *     // ... filter to delete one FinalSettlementWorksheet
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FinalSettlementWorksheetDeleteArgs>(args: SelectSubset<T, FinalSettlementWorksheetDeleteArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one FinalSettlementWorksheet.
+     * @param {FinalSettlementWorksheetUpdateArgs} args - Arguments to update one FinalSettlementWorksheet.
+     * @example
+     * // Update one FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FinalSettlementWorksheetUpdateArgs>(args: SelectSubset<T, FinalSettlementWorksheetUpdateArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more FinalSettlementWorksheets.
+     * @param {FinalSettlementWorksheetDeleteManyArgs} args - Arguments to filter FinalSettlementWorksheets to delete.
+     * @example
+     * // Delete a few FinalSettlementWorksheets
+     * const { count } = await prisma.finalSettlementWorksheet.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FinalSettlementWorksheetDeleteManyArgs>(args?: SelectSubset<T, FinalSettlementWorksheetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more FinalSettlementWorksheets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FinalSettlementWorksheets
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FinalSettlementWorksheetUpdateManyArgs>(args: SelectSubset<T, FinalSettlementWorksheetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one FinalSettlementWorksheet.
+     * @param {FinalSettlementWorksheetUpsertArgs} args - Arguments to update or create a FinalSettlementWorksheet.
+     * @example
+     * // Update or create a FinalSettlementWorksheet
+     * const finalSettlementWorksheet = await prisma.finalSettlementWorksheet.upsert({
+     *   create: {
+     *     // ... data to create a FinalSettlementWorksheet
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FinalSettlementWorksheet we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FinalSettlementWorksheetUpsertArgs>(args: SelectSubset<T, FinalSettlementWorksheetUpsertArgs<ExtArgs>>): Prisma__FinalSettlementWorksheetClient<$Result.GetResult<Prisma.$FinalSettlementWorksheetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of FinalSettlementWorksheets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetCountArgs} args - Arguments to filter FinalSettlementWorksheets to count.
+     * @example
+     * // Count the number of FinalSettlementWorksheets
+     * const count = await prisma.finalSettlementWorksheet.count({
+     *   where: {
+     *     // ... the filter for the FinalSettlementWorksheets we want to count
+     *   }
+     * })
+    **/
+    count<T extends FinalSettlementWorksheetCountArgs>(
+      args?: Subset<T, FinalSettlementWorksheetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FinalSettlementWorksheetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a FinalSettlementWorksheet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FinalSettlementWorksheetAggregateArgs>(args: Subset<T, FinalSettlementWorksheetAggregateArgs>): Prisma.PrismaPromise<GetFinalSettlementWorksheetAggregateType<T>>
+
+    /**
+     * Group by FinalSettlementWorksheet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FinalSettlementWorksheetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FinalSettlementWorksheetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FinalSettlementWorksheetGroupByArgs['orderBy'] }
+        : { orderBy?: FinalSettlementWorksheetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FinalSettlementWorksheetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFinalSettlementWorksheetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the FinalSettlementWorksheet model
+   */
+  readonly fields: FinalSettlementWorksheetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FinalSettlementWorksheet.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FinalSettlementWorksheetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    payrollPeriod<T extends PayrollPeriodDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriodDefaultArgs<ExtArgs>>): Prisma__PayrollPeriodClient<$Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    employee<T extends EmployeeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EmployeeDefaultArgs<ExtArgs>>): Prisma__EmployeeClient<$Result.GetResult<Prisma.$EmployeePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the FinalSettlementWorksheet model
+   */
+  interface FinalSettlementWorksheetFieldRefs {
+    readonly id: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly payrollPeriodId: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly employeeId: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly terminationDate: FieldRef<"FinalSettlementWorksheet", 'DateTime'>
+    readonly terminationCause: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly terminationReasonLabel: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly includeWorkedDays: FieldRef<"FinalSettlementWorksheet", 'Boolean'>
+    readonly daysDivisorMode: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly preavisoGiven: FieldRef<"FinalSettlementWorksheet", 'Boolean'>
+    readonly vacationDaysTaken: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly applyVizzoti: FieldRef<"FinalSettlementWorksheet", 'Boolean'>
+    readonly cctCapAmount: FieldRef<"FinalSettlementWorksheet", 'Decimal'>
+    readonly isExecutive: FieldRef<"FinalSettlementWorksheet", 'Boolean'>
+    readonly seniorityYears: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly seniorityMonths: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly seniorityDays: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly indemnityPeriods: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly inProbationPeriod: FieldRef<"FinalSettlementWorksheet", 'Boolean'>
+    readonly mrmnhAmount: FieldRef<"FinalSettlementWorksheet", 'Decimal'>
+    readonly mrmnhSourcePeriodLabel: FieldRef<"FinalSettlementWorksheet", 'String'>
+    readonly bestSemesterRemun: FieldRef<"FinalSettlementWorksheet", 'Decimal'>
+    readonly workedDaysForLsd: FieldRef<"FinalSettlementWorksheet", 'Int'>
+    readonly legalDueDate: FieldRef<"FinalSettlementWorksheet", 'DateTime'>
+    readonly worksheetPayload: FieldRef<"FinalSettlementWorksheet", 'Json'>
+    readonly appliedAt: FieldRef<"FinalSettlementWorksheet", 'DateTime'>
+    readonly createdAt: FieldRef<"FinalSettlementWorksheet", 'DateTime'>
+    readonly updatedAt: FieldRef<"FinalSettlementWorksheet", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * FinalSettlementWorksheet findUnique
+   */
+  export type FinalSettlementWorksheetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter, which FinalSettlementWorksheet to fetch.
+     */
+    where: FinalSettlementWorksheetWhereUniqueInput
+  }
+
+  /**
+   * FinalSettlementWorksheet findUniqueOrThrow
+   */
+  export type FinalSettlementWorksheetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter, which FinalSettlementWorksheet to fetch.
+     */
+    where: FinalSettlementWorksheetWhereUniqueInput
+  }
+
+  /**
+   * FinalSettlementWorksheet findFirst
+   */
+  export type FinalSettlementWorksheetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter, which FinalSettlementWorksheet to fetch.
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinalSettlementWorksheets to fetch.
+     */
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FinalSettlementWorksheets.
+     */
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinalSettlementWorksheets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinalSettlementWorksheets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FinalSettlementWorksheets.
+     */
+    distinct?: FinalSettlementWorksheetScalarFieldEnum | FinalSettlementWorksheetScalarFieldEnum[]
+  }
+
+  /**
+   * FinalSettlementWorksheet findFirstOrThrow
+   */
+  export type FinalSettlementWorksheetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter, which FinalSettlementWorksheet to fetch.
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinalSettlementWorksheets to fetch.
+     */
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for FinalSettlementWorksheets.
+     */
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinalSettlementWorksheets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinalSettlementWorksheets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of FinalSettlementWorksheets.
+     */
+    distinct?: FinalSettlementWorksheetScalarFieldEnum | FinalSettlementWorksheetScalarFieldEnum[]
+  }
+
+  /**
+   * FinalSettlementWorksheet findMany
+   */
+  export type FinalSettlementWorksheetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter, which FinalSettlementWorksheets to fetch.
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of FinalSettlementWorksheets to fetch.
+     */
+    orderBy?: FinalSettlementWorksheetOrderByWithRelationInput | FinalSettlementWorksheetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing FinalSettlementWorksheets.
+     */
+    cursor?: FinalSettlementWorksheetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` FinalSettlementWorksheets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` FinalSettlementWorksheets.
+     */
+    skip?: number
+    distinct?: FinalSettlementWorksheetScalarFieldEnum | FinalSettlementWorksheetScalarFieldEnum[]
+  }
+
+  /**
+   * FinalSettlementWorksheet create
+   */
+  export type FinalSettlementWorksheetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a FinalSettlementWorksheet.
+     */
+    data: XOR<FinalSettlementWorksheetCreateInput, FinalSettlementWorksheetUncheckedCreateInput>
+  }
+
+  /**
+   * FinalSettlementWorksheet createMany
+   */
+  export type FinalSettlementWorksheetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many FinalSettlementWorksheets.
+     */
+    data: FinalSettlementWorksheetCreateManyInput | FinalSettlementWorksheetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * FinalSettlementWorksheet update
+   */
+  export type FinalSettlementWorksheetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a FinalSettlementWorksheet.
+     */
+    data: XOR<FinalSettlementWorksheetUpdateInput, FinalSettlementWorksheetUncheckedUpdateInput>
+    /**
+     * Choose, which FinalSettlementWorksheet to update.
+     */
+    where: FinalSettlementWorksheetWhereUniqueInput
+  }
+
+  /**
+   * FinalSettlementWorksheet updateMany
+   */
+  export type FinalSettlementWorksheetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update FinalSettlementWorksheets.
+     */
+    data: XOR<FinalSettlementWorksheetUpdateManyMutationInput, FinalSettlementWorksheetUncheckedUpdateManyInput>
+    /**
+     * Filter which FinalSettlementWorksheets to update
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * Limit how many FinalSettlementWorksheets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * FinalSettlementWorksheet upsert
+   */
+  export type FinalSettlementWorksheetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the FinalSettlementWorksheet to update in case it exists.
+     */
+    where: FinalSettlementWorksheetWhereUniqueInput
+    /**
+     * In case the FinalSettlementWorksheet found by the `where` argument doesn't exist, create a new FinalSettlementWorksheet with this data.
+     */
+    create: XOR<FinalSettlementWorksheetCreateInput, FinalSettlementWorksheetUncheckedCreateInput>
+    /**
+     * In case the FinalSettlementWorksheet was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FinalSettlementWorksheetUpdateInput, FinalSettlementWorksheetUncheckedUpdateInput>
+  }
+
+  /**
+   * FinalSettlementWorksheet delete
+   */
+  export type FinalSettlementWorksheetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+    /**
+     * Filter which FinalSettlementWorksheet to delete.
+     */
+    where: FinalSettlementWorksheetWhereUniqueInput
+  }
+
+  /**
+   * FinalSettlementWorksheet deleteMany
+   */
+  export type FinalSettlementWorksheetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which FinalSettlementWorksheets to delete
+     */
+    where?: FinalSettlementWorksheetWhereInput
+    /**
+     * Limit how many FinalSettlementWorksheets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * FinalSettlementWorksheet without action
+   */
+  export type FinalSettlementWorksheetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FinalSettlementWorksheet
+     */
+    select?: FinalSettlementWorksheetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the FinalSettlementWorksheet
+     */
+    omit?: FinalSettlementWorksheetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FinalSettlementWorksheetInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model RetroactiveAdjustmentRun
+   */
+
+  export type AggregateRetroactiveAdjustmentRun = {
+    _count: RetroactiveAdjustmentRunCountAggregateOutputType | null
+    _avg: RetroactiveAdjustmentRunAvgAggregateOutputType | null
+    _sum: RetroactiveAdjustmentRunSumAggregateOutputType | null
+    _min: RetroactiveAdjustmentRunMinAggregateOutputType | null
+    _max: RetroactiveAdjustmentRunMaxAggregateOutputType | null
+  }
+
+  export type RetroactiveAdjustmentRunAvgAggregateOutputType = {
+    fromYear: number | null
+    fromMonth: number | null
+    toYear: number | null
+    toMonth: number | null
+    employeesAppliedCount: number | null
+    activeAppliedCount: number | null
+    inactiveAppliedCount: number | null
+    ignoredInactiveCount: number | null
+    totalRemunerative: Decimal | null
+    totalNonRemunerative: Decimal | null
+    totalSacDelta: Decimal | null
+    grandTotal: Decimal | null
+  }
+
+  export type RetroactiveAdjustmentRunSumAggregateOutputType = {
+    fromYear: number | null
+    fromMonth: number | null
+    toYear: number | null
+    toMonth: number | null
+    employeesAppliedCount: number | null
+    activeAppliedCount: number | null
+    inactiveAppliedCount: number | null
+    ignoredInactiveCount: number | null
+    totalRemunerative: Decimal | null
+    totalNonRemunerative: Decimal | null
+    totalSacDelta: Decimal | null
+    grandTotal: Decimal | null
+  }
+
+  export type RetroactiveAdjustmentRunMinAggregateOutputType = {
+    id: string | null
+    targetPeriodId: string | null
+    targetPeriodName: string | null
+    cctCode: string | null
+    fromYear: number | null
+    fromMonth: number | null
+    toYear: number | null
+    toMonth: number | null
+    scaleSourceMode: string | null
+    agreementLabel: string | null
+    employeesAppliedCount: number | null
+    activeAppliedCount: number | null
+    inactiveAppliedCount: number | null
+    ignoredInactiveConfirmed: boolean | null
+    ignoredInactiveCount: number | null
+    totalRemunerative: Decimal | null
+    totalNonRemunerative: Decimal | null
+    totalSacDelta: Decimal | null
+    grandTotal: Decimal | null
+    createdBy: string | null
+    createdByName: string | null
+    createdAt: Date | null
+  }
+
+  export type RetroactiveAdjustmentRunMaxAggregateOutputType = {
+    id: string | null
+    targetPeriodId: string | null
+    targetPeriodName: string | null
+    cctCode: string | null
+    fromYear: number | null
+    fromMonth: number | null
+    toYear: number | null
+    toMonth: number | null
+    scaleSourceMode: string | null
+    agreementLabel: string | null
+    employeesAppliedCount: number | null
+    activeAppliedCount: number | null
+    inactiveAppliedCount: number | null
+    ignoredInactiveConfirmed: boolean | null
+    ignoredInactiveCount: number | null
+    totalRemunerative: Decimal | null
+    totalNonRemunerative: Decimal | null
+    totalSacDelta: Decimal | null
+    grandTotal: Decimal | null
+    createdBy: string | null
+    createdByName: string | null
+    createdAt: Date | null
+  }
+
+  export type RetroactiveAdjustmentRunCountAggregateOutputType = {
+    id: number
+    targetPeriodId: number
+    targetPeriodName: number
+    cctCode: number
+    scaleIdsJson: number
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode: number
+    agreementLabel: number
+    employeesAppliedCount: number
+    activeAppliedCount: number
+    inactiveAppliedCount: number
+    ignoredInactiveConfirmed: number
+    ignoredInactiveCount: number
+    ignoredInactiveSummary: number
+    totalRemunerative: number
+    totalNonRemunerative: number
+    totalSacDelta: number
+    grandTotal: number
+    runPayload: number
+    createdBy: number
+    createdByName: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type RetroactiveAdjustmentRunAvgAggregateInputType = {
+    fromYear?: true
+    fromMonth?: true
+    toYear?: true
+    toMonth?: true
+    employeesAppliedCount?: true
+    activeAppliedCount?: true
+    inactiveAppliedCount?: true
+    ignoredInactiveCount?: true
+    totalRemunerative?: true
+    totalNonRemunerative?: true
+    totalSacDelta?: true
+    grandTotal?: true
+  }
+
+  export type RetroactiveAdjustmentRunSumAggregateInputType = {
+    fromYear?: true
+    fromMonth?: true
+    toYear?: true
+    toMonth?: true
+    employeesAppliedCount?: true
+    activeAppliedCount?: true
+    inactiveAppliedCount?: true
+    ignoredInactiveCount?: true
+    totalRemunerative?: true
+    totalNonRemunerative?: true
+    totalSacDelta?: true
+    grandTotal?: true
+  }
+
+  export type RetroactiveAdjustmentRunMinAggregateInputType = {
+    id?: true
+    targetPeriodId?: true
+    targetPeriodName?: true
+    cctCode?: true
+    fromYear?: true
+    fromMonth?: true
+    toYear?: true
+    toMonth?: true
+    scaleSourceMode?: true
+    agreementLabel?: true
+    employeesAppliedCount?: true
+    activeAppliedCount?: true
+    inactiveAppliedCount?: true
+    ignoredInactiveConfirmed?: true
+    ignoredInactiveCount?: true
+    totalRemunerative?: true
+    totalNonRemunerative?: true
+    totalSacDelta?: true
+    grandTotal?: true
+    createdBy?: true
+    createdByName?: true
+    createdAt?: true
+  }
+
+  export type RetroactiveAdjustmentRunMaxAggregateInputType = {
+    id?: true
+    targetPeriodId?: true
+    targetPeriodName?: true
+    cctCode?: true
+    fromYear?: true
+    fromMonth?: true
+    toYear?: true
+    toMonth?: true
+    scaleSourceMode?: true
+    agreementLabel?: true
+    employeesAppliedCount?: true
+    activeAppliedCount?: true
+    inactiveAppliedCount?: true
+    ignoredInactiveConfirmed?: true
+    ignoredInactiveCount?: true
+    totalRemunerative?: true
+    totalNonRemunerative?: true
+    totalSacDelta?: true
+    grandTotal?: true
+    createdBy?: true
+    createdByName?: true
+    createdAt?: true
+  }
+
+  export type RetroactiveAdjustmentRunCountAggregateInputType = {
+    id?: true
+    targetPeriodId?: true
+    targetPeriodName?: true
+    cctCode?: true
+    scaleIdsJson?: true
+    fromYear?: true
+    fromMonth?: true
+    toYear?: true
+    toMonth?: true
+    scaleSourceMode?: true
+    agreementLabel?: true
+    employeesAppliedCount?: true
+    activeAppliedCount?: true
+    inactiveAppliedCount?: true
+    ignoredInactiveConfirmed?: true
+    ignoredInactiveCount?: true
+    ignoredInactiveSummary?: true
+    totalRemunerative?: true
+    totalNonRemunerative?: true
+    totalSacDelta?: true
+    grandTotal?: true
+    runPayload?: true
+    createdBy?: true
+    createdByName?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type RetroactiveAdjustmentRunAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RetroactiveAdjustmentRun to aggregate.
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetroactiveAdjustmentRuns to fetch.
+     */
+    orderBy?: RetroactiveAdjustmentRunOrderByWithRelationInput | RetroactiveAdjustmentRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: RetroactiveAdjustmentRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetroactiveAdjustmentRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetroactiveAdjustmentRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned RetroactiveAdjustmentRuns
+    **/
+    _count?: true | RetroactiveAdjustmentRunCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: RetroactiveAdjustmentRunAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: RetroactiveAdjustmentRunSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: RetroactiveAdjustmentRunMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: RetroactiveAdjustmentRunMaxAggregateInputType
+  }
+
+  export type GetRetroactiveAdjustmentRunAggregateType<T extends RetroactiveAdjustmentRunAggregateArgs> = {
+        [P in keyof T & keyof AggregateRetroactiveAdjustmentRun]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateRetroactiveAdjustmentRun[P]>
+      : GetScalarType<T[P], AggregateRetroactiveAdjustmentRun[P]>
+  }
+
+
+
+
+  export type RetroactiveAdjustmentRunGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: RetroactiveAdjustmentRunWhereInput
+    orderBy?: RetroactiveAdjustmentRunOrderByWithAggregationInput | RetroactiveAdjustmentRunOrderByWithAggregationInput[]
+    by: RetroactiveAdjustmentRunScalarFieldEnum[] | RetroactiveAdjustmentRunScalarFieldEnum
+    having?: RetroactiveAdjustmentRunScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: RetroactiveAdjustmentRunCountAggregateInputType | true
+    _avg?: RetroactiveAdjustmentRunAvgAggregateInputType
+    _sum?: RetroactiveAdjustmentRunSumAggregateInputType
+    _min?: RetroactiveAdjustmentRunMinAggregateInputType
+    _max?: RetroactiveAdjustmentRunMaxAggregateInputType
+  }
+
+  export type RetroactiveAdjustmentRunGroupByOutputType = {
+    id: string
+    targetPeriodId: string
+    targetPeriodName: string | null
+    cctCode: string | null
+    scaleIdsJson: JsonValue | null
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode: string
+    agreementLabel: string | null
+    employeesAppliedCount: number
+    activeAppliedCount: number
+    inactiveAppliedCount: number
+    ignoredInactiveConfirmed: boolean
+    ignoredInactiveCount: number
+    ignoredInactiveSummary: JsonValue | null
+    totalRemunerative: Decimal
+    totalNonRemunerative: Decimal
+    totalSacDelta: Decimal
+    grandTotal: Decimal
+    runPayload: JsonValue
+    createdBy: string | null
+    createdByName: string | null
+    createdAt: Date
+    _count: RetroactiveAdjustmentRunCountAggregateOutputType | null
+    _avg: RetroactiveAdjustmentRunAvgAggregateOutputType | null
+    _sum: RetroactiveAdjustmentRunSumAggregateOutputType | null
+    _min: RetroactiveAdjustmentRunMinAggregateOutputType | null
+    _max: RetroactiveAdjustmentRunMaxAggregateOutputType | null
+  }
+
+  type GetRetroactiveAdjustmentRunGroupByPayload<T extends RetroactiveAdjustmentRunGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<RetroactiveAdjustmentRunGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof RetroactiveAdjustmentRunGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], RetroactiveAdjustmentRunGroupByOutputType[P]>
+            : GetScalarType<T[P], RetroactiveAdjustmentRunGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type RetroactiveAdjustmentRunSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    targetPeriodId?: boolean
+    targetPeriodName?: boolean
+    cctCode?: boolean
+    scaleIdsJson?: boolean
+    fromYear?: boolean
+    fromMonth?: boolean
+    toYear?: boolean
+    toMonth?: boolean
+    scaleSourceMode?: boolean
+    agreementLabel?: boolean
+    employeesAppliedCount?: boolean
+    activeAppliedCount?: boolean
+    inactiveAppliedCount?: boolean
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: boolean
+    ignoredInactiveSummary?: boolean
+    totalRemunerative?: boolean
+    totalNonRemunerative?: boolean
+    totalSacDelta?: boolean
+    grandTotal?: boolean
+    runPayload?: boolean
+    createdBy?: boolean
+    createdByName?: boolean
+    createdAt?: boolean
+    targetPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["retroactiveAdjustmentRun"]>
+
+
+
+  export type RetroactiveAdjustmentRunSelectScalar = {
+    id?: boolean
+    targetPeriodId?: boolean
+    targetPeriodName?: boolean
+    cctCode?: boolean
+    scaleIdsJson?: boolean
+    fromYear?: boolean
+    fromMonth?: boolean
+    toYear?: boolean
+    toMonth?: boolean
+    scaleSourceMode?: boolean
+    agreementLabel?: boolean
+    employeesAppliedCount?: boolean
+    activeAppliedCount?: boolean
+    inactiveAppliedCount?: boolean
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: boolean
+    ignoredInactiveSummary?: boolean
+    totalRemunerative?: boolean
+    totalNonRemunerative?: boolean
+    totalSacDelta?: boolean
+    grandTotal?: boolean
+    runPayload?: boolean
+    createdBy?: boolean
+    createdByName?: boolean
+    createdAt?: boolean
+  }
+
+  export type RetroactiveAdjustmentRunOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "targetPeriodId" | "targetPeriodName" | "cctCode" | "scaleIdsJson" | "fromYear" | "fromMonth" | "toYear" | "toMonth" | "scaleSourceMode" | "agreementLabel" | "employeesAppliedCount" | "activeAppliedCount" | "inactiveAppliedCount" | "ignoredInactiveConfirmed" | "ignoredInactiveCount" | "ignoredInactiveSummary" | "totalRemunerative" | "totalNonRemunerative" | "totalSacDelta" | "grandTotal" | "runPayload" | "createdBy" | "createdByName" | "createdAt", ExtArgs["result"]["retroactiveAdjustmentRun"]>
+  export type RetroactiveAdjustmentRunInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    targetPeriod?: boolean | PayrollPeriodDefaultArgs<ExtArgs>
+  }
+
+  export type $RetroactiveAdjustmentRunPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "RetroactiveAdjustmentRun"
+    objects: {
+      targetPeriod: Prisma.$PayrollPeriodPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      targetPeriodId: string
+      targetPeriodName: string | null
+      cctCode: string | null
+      scaleIdsJson: Prisma.JsonValue | null
+      fromYear: number
+      fromMonth: number
+      toYear: number
+      toMonth: number
+      scaleSourceMode: string
+      agreementLabel: string | null
+      employeesAppliedCount: number
+      activeAppliedCount: number
+      inactiveAppliedCount: number
+      ignoredInactiveConfirmed: boolean
+      ignoredInactiveCount: number
+      ignoredInactiveSummary: Prisma.JsonValue | null
+      totalRemunerative: Prisma.Decimal
+      totalNonRemunerative: Prisma.Decimal
+      totalSacDelta: Prisma.Decimal
+      grandTotal: Prisma.Decimal
+      runPayload: Prisma.JsonValue
+      createdBy: string | null
+      createdByName: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["retroactiveAdjustmentRun"]>
+    composites: {}
+  }
+
+  type RetroactiveAdjustmentRunGetPayload<S extends boolean | null | undefined | RetroactiveAdjustmentRunDefaultArgs> = $Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload, S>
+
+  type RetroactiveAdjustmentRunCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<RetroactiveAdjustmentRunFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: RetroactiveAdjustmentRunCountAggregateInputType | true
+    }
+
+  export interface RetroactiveAdjustmentRunDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['RetroactiveAdjustmentRun'], meta: { name: 'RetroactiveAdjustmentRun' } }
+    /**
+     * Find zero or one RetroactiveAdjustmentRun that matches the filter.
+     * @param {RetroactiveAdjustmentRunFindUniqueArgs} args - Arguments to find a RetroactiveAdjustmentRun
+     * @example
+     * // Get one RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends RetroactiveAdjustmentRunFindUniqueArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunFindUniqueArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one RetroactiveAdjustmentRun that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {RetroactiveAdjustmentRunFindUniqueOrThrowArgs} args - Arguments to find a RetroactiveAdjustmentRun
+     * @example
+     * // Get one RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends RetroactiveAdjustmentRunFindUniqueOrThrowArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunFindUniqueOrThrowArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RetroactiveAdjustmentRun that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunFindFirstArgs} args - Arguments to find a RetroactiveAdjustmentRun
+     * @example
+     * // Get one RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends RetroactiveAdjustmentRunFindFirstArgs>(args?: SelectSubset<T, RetroactiveAdjustmentRunFindFirstArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first RetroactiveAdjustmentRun that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunFindFirstOrThrowArgs} args - Arguments to find a RetroactiveAdjustmentRun
+     * @example
+     * // Get one RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends RetroactiveAdjustmentRunFindFirstOrThrowArgs>(args?: SelectSubset<T, RetroactiveAdjustmentRunFindFirstOrThrowArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more RetroactiveAdjustmentRuns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all RetroactiveAdjustmentRuns
+     * const retroactiveAdjustmentRuns = await prisma.retroactiveAdjustmentRun.findMany()
+     * 
+     * // Get first 10 RetroactiveAdjustmentRuns
+     * const retroactiveAdjustmentRuns = await prisma.retroactiveAdjustmentRun.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const retroactiveAdjustmentRunWithIdOnly = await prisma.retroactiveAdjustmentRun.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends RetroactiveAdjustmentRunFindManyArgs>(args?: SelectSubset<T, RetroactiveAdjustmentRunFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a RetroactiveAdjustmentRun.
+     * @param {RetroactiveAdjustmentRunCreateArgs} args - Arguments to create a RetroactiveAdjustmentRun.
+     * @example
+     * // Create one RetroactiveAdjustmentRun
+     * const RetroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.create({
+     *   data: {
+     *     // ... data to create a RetroactiveAdjustmentRun
+     *   }
+     * })
+     * 
+     */
+    create<T extends RetroactiveAdjustmentRunCreateArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunCreateArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many RetroactiveAdjustmentRuns.
+     * @param {RetroactiveAdjustmentRunCreateManyArgs} args - Arguments to create many RetroactiveAdjustmentRuns.
+     * @example
+     * // Create many RetroactiveAdjustmentRuns
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends RetroactiveAdjustmentRunCreateManyArgs>(args?: SelectSubset<T, RetroactiveAdjustmentRunCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a RetroactiveAdjustmentRun.
+     * @param {RetroactiveAdjustmentRunDeleteArgs} args - Arguments to delete one RetroactiveAdjustmentRun.
+     * @example
+     * // Delete one RetroactiveAdjustmentRun
+     * const RetroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.delete({
+     *   where: {
+     *     // ... filter to delete one RetroactiveAdjustmentRun
+     *   }
+     * })
+     * 
+     */
+    delete<T extends RetroactiveAdjustmentRunDeleteArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunDeleteArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one RetroactiveAdjustmentRun.
+     * @param {RetroactiveAdjustmentRunUpdateArgs} args - Arguments to update one RetroactiveAdjustmentRun.
+     * @example
+     * // Update one RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends RetroactiveAdjustmentRunUpdateArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunUpdateArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more RetroactiveAdjustmentRuns.
+     * @param {RetroactiveAdjustmentRunDeleteManyArgs} args - Arguments to filter RetroactiveAdjustmentRuns to delete.
+     * @example
+     * // Delete a few RetroactiveAdjustmentRuns
+     * const { count } = await prisma.retroactiveAdjustmentRun.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends RetroactiveAdjustmentRunDeleteManyArgs>(args?: SelectSubset<T, RetroactiveAdjustmentRunDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more RetroactiveAdjustmentRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many RetroactiveAdjustmentRuns
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends RetroactiveAdjustmentRunUpdateManyArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one RetroactiveAdjustmentRun.
+     * @param {RetroactiveAdjustmentRunUpsertArgs} args - Arguments to update or create a RetroactiveAdjustmentRun.
+     * @example
+     * // Update or create a RetroactiveAdjustmentRun
+     * const retroactiveAdjustmentRun = await prisma.retroactiveAdjustmentRun.upsert({
+     *   create: {
+     *     // ... data to create a RetroactiveAdjustmentRun
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the RetroactiveAdjustmentRun we want to update
+     *   }
+     * })
+     */
+    upsert<T extends RetroactiveAdjustmentRunUpsertArgs>(args: SelectSubset<T, RetroactiveAdjustmentRunUpsertArgs<ExtArgs>>): Prisma__RetroactiveAdjustmentRunClient<$Result.GetResult<Prisma.$RetroactiveAdjustmentRunPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of RetroactiveAdjustmentRuns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunCountArgs} args - Arguments to filter RetroactiveAdjustmentRuns to count.
+     * @example
+     * // Count the number of RetroactiveAdjustmentRuns
+     * const count = await prisma.retroactiveAdjustmentRun.count({
+     *   where: {
+     *     // ... the filter for the RetroactiveAdjustmentRuns we want to count
+     *   }
+     * })
+    **/
+    count<T extends RetroactiveAdjustmentRunCountArgs>(
+      args?: Subset<T, RetroactiveAdjustmentRunCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], RetroactiveAdjustmentRunCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a RetroactiveAdjustmentRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends RetroactiveAdjustmentRunAggregateArgs>(args: Subset<T, RetroactiveAdjustmentRunAggregateArgs>): Prisma.PrismaPromise<GetRetroactiveAdjustmentRunAggregateType<T>>
+
+    /**
+     * Group by RetroactiveAdjustmentRun.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {RetroactiveAdjustmentRunGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends RetroactiveAdjustmentRunGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: RetroactiveAdjustmentRunGroupByArgs['orderBy'] }
+        : { orderBy?: RetroactiveAdjustmentRunGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, RetroactiveAdjustmentRunGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetRetroactiveAdjustmentRunGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the RetroactiveAdjustmentRun model
+   */
+  readonly fields: RetroactiveAdjustmentRunFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for RetroactiveAdjustmentRun.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__RetroactiveAdjustmentRunClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    targetPeriod<T extends PayrollPeriodDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PayrollPeriodDefaultArgs<ExtArgs>>): Prisma__PayrollPeriodClient<$Result.GetResult<Prisma.$PayrollPeriodPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the RetroactiveAdjustmentRun model
+   */
+  interface RetroactiveAdjustmentRunFieldRefs {
+    readonly id: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly targetPeriodId: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly targetPeriodName: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly cctCode: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly scaleIdsJson: FieldRef<"RetroactiveAdjustmentRun", 'Json'>
+    readonly fromYear: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly fromMonth: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly toYear: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly toMonth: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly scaleSourceMode: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly agreementLabel: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly employeesAppliedCount: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly activeAppliedCount: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly inactiveAppliedCount: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly ignoredInactiveConfirmed: FieldRef<"RetroactiveAdjustmentRun", 'Boolean'>
+    readonly ignoredInactiveCount: FieldRef<"RetroactiveAdjustmentRun", 'Int'>
+    readonly ignoredInactiveSummary: FieldRef<"RetroactiveAdjustmentRun", 'Json'>
+    readonly totalRemunerative: FieldRef<"RetroactiveAdjustmentRun", 'Decimal'>
+    readonly totalNonRemunerative: FieldRef<"RetroactiveAdjustmentRun", 'Decimal'>
+    readonly totalSacDelta: FieldRef<"RetroactiveAdjustmentRun", 'Decimal'>
+    readonly grandTotal: FieldRef<"RetroactiveAdjustmentRun", 'Decimal'>
+    readonly runPayload: FieldRef<"RetroactiveAdjustmentRun", 'Json'>
+    readonly createdBy: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly createdByName: FieldRef<"RetroactiveAdjustmentRun", 'String'>
+    readonly createdAt: FieldRef<"RetroactiveAdjustmentRun", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * RetroactiveAdjustmentRun findUnique
+   */
+  export type RetroactiveAdjustmentRunFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter, which RetroactiveAdjustmentRun to fetch.
+     */
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+  }
+
+  /**
+   * RetroactiveAdjustmentRun findUniqueOrThrow
+   */
+  export type RetroactiveAdjustmentRunFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter, which RetroactiveAdjustmentRun to fetch.
+     */
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+  }
+
+  /**
+   * RetroactiveAdjustmentRun findFirst
+   */
+  export type RetroactiveAdjustmentRunFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter, which RetroactiveAdjustmentRun to fetch.
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetroactiveAdjustmentRuns to fetch.
+     */
+    orderBy?: RetroactiveAdjustmentRunOrderByWithRelationInput | RetroactiveAdjustmentRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RetroactiveAdjustmentRuns.
+     */
+    cursor?: RetroactiveAdjustmentRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetroactiveAdjustmentRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetroactiveAdjustmentRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RetroactiveAdjustmentRuns.
+     */
+    distinct?: RetroactiveAdjustmentRunScalarFieldEnum | RetroactiveAdjustmentRunScalarFieldEnum[]
+  }
+
+  /**
+   * RetroactiveAdjustmentRun findFirstOrThrow
+   */
+  export type RetroactiveAdjustmentRunFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter, which RetroactiveAdjustmentRun to fetch.
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetroactiveAdjustmentRuns to fetch.
+     */
+    orderBy?: RetroactiveAdjustmentRunOrderByWithRelationInput | RetroactiveAdjustmentRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for RetroactiveAdjustmentRuns.
+     */
+    cursor?: RetroactiveAdjustmentRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetroactiveAdjustmentRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetroactiveAdjustmentRuns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of RetroactiveAdjustmentRuns.
+     */
+    distinct?: RetroactiveAdjustmentRunScalarFieldEnum | RetroactiveAdjustmentRunScalarFieldEnum[]
+  }
+
+  /**
+   * RetroactiveAdjustmentRun findMany
+   */
+  export type RetroactiveAdjustmentRunFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter, which RetroactiveAdjustmentRuns to fetch.
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of RetroactiveAdjustmentRuns to fetch.
+     */
+    orderBy?: RetroactiveAdjustmentRunOrderByWithRelationInput | RetroactiveAdjustmentRunOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing RetroactiveAdjustmentRuns.
+     */
+    cursor?: RetroactiveAdjustmentRunWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` RetroactiveAdjustmentRuns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` RetroactiveAdjustmentRuns.
+     */
+    skip?: number
+    distinct?: RetroactiveAdjustmentRunScalarFieldEnum | RetroactiveAdjustmentRunScalarFieldEnum[]
+  }
+
+  /**
+   * RetroactiveAdjustmentRun create
+   */
+  export type RetroactiveAdjustmentRunCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * The data needed to create a RetroactiveAdjustmentRun.
+     */
+    data: XOR<RetroactiveAdjustmentRunCreateInput, RetroactiveAdjustmentRunUncheckedCreateInput>
+  }
+
+  /**
+   * RetroactiveAdjustmentRun createMany
+   */
+  export type RetroactiveAdjustmentRunCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many RetroactiveAdjustmentRuns.
+     */
+    data: RetroactiveAdjustmentRunCreateManyInput | RetroactiveAdjustmentRunCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * RetroactiveAdjustmentRun update
+   */
+  export type RetroactiveAdjustmentRunUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * The data needed to update a RetroactiveAdjustmentRun.
+     */
+    data: XOR<RetroactiveAdjustmentRunUpdateInput, RetroactiveAdjustmentRunUncheckedUpdateInput>
+    /**
+     * Choose, which RetroactiveAdjustmentRun to update.
+     */
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+  }
+
+  /**
+   * RetroactiveAdjustmentRun updateMany
+   */
+  export type RetroactiveAdjustmentRunUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update RetroactiveAdjustmentRuns.
+     */
+    data: XOR<RetroactiveAdjustmentRunUpdateManyMutationInput, RetroactiveAdjustmentRunUncheckedUpdateManyInput>
+    /**
+     * Filter which RetroactiveAdjustmentRuns to update
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * Limit how many RetroactiveAdjustmentRuns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * RetroactiveAdjustmentRun upsert
+   */
+  export type RetroactiveAdjustmentRunUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * The filter to search for the RetroactiveAdjustmentRun to update in case it exists.
+     */
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+    /**
+     * In case the RetroactiveAdjustmentRun found by the `where` argument doesn't exist, create a new RetroactiveAdjustmentRun with this data.
+     */
+    create: XOR<RetroactiveAdjustmentRunCreateInput, RetroactiveAdjustmentRunUncheckedCreateInput>
+    /**
+     * In case the RetroactiveAdjustmentRun was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<RetroactiveAdjustmentRunUpdateInput, RetroactiveAdjustmentRunUncheckedUpdateInput>
+  }
+
+  /**
+   * RetroactiveAdjustmentRun delete
+   */
+  export type RetroactiveAdjustmentRunDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
+    /**
+     * Filter which RetroactiveAdjustmentRun to delete.
+     */
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+  }
+
+  /**
+   * RetroactiveAdjustmentRun deleteMany
+   */
+  export type RetroactiveAdjustmentRunDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which RetroactiveAdjustmentRuns to delete
+     */
+    where?: RetroactiveAdjustmentRunWhereInput
+    /**
+     * Limit how many RetroactiveAdjustmentRuns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * RetroactiveAdjustmentRun without action
+   */
+  export type RetroactiveAdjustmentRunDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RetroactiveAdjustmentRun
+     */
+    select?: RetroactiveAdjustmentRunSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RetroactiveAdjustmentRun
+     */
+    omit?: RetroactiveAdjustmentRunOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RetroactiveAdjustmentRunInclude<ExtArgs> | null
   }
 
 
@@ -55597,6 +58359,7 @@ export namespace Prisma {
     baseAmount: 'baseAmount',
     amount: 'amount',
     arcaConceptCode: 'arcaConceptCode',
+    adjustmentPeriod: 'adjustmentPeriod',
     formulaExplanation: 'formulaExplanation',
     notes: 'notes',
     createdAt: 'createdAt',
@@ -55697,6 +58460,7 @@ export namespace Prisma {
     conceptId: 'conceptId',
     units: 'units',
     amount: 'amount',
+    adjustmentPeriod: 'adjustmentPeriod',
     notes: 'notes',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -56010,6 +58774,7 @@ export namespace Prisma {
     defaultWorkedDays: 'defaultWorkedDays',
     appliesStatutoryDeductions: 'appliesStatutoryDeductions',
     triggersEmployeeTermination: 'triggersEmployeeTermination',
+    allowsRetroactives: 'allowsRetroactives',
     isSystem: 'isSystem',
     isActive: 'isActive',
     sortOrder: 'sortOrder',
@@ -56018,6 +58783,70 @@ export namespace Prisma {
   };
 
   export type PayrollSettlementTypeScalarFieldEnum = (typeof PayrollSettlementTypeScalarFieldEnum)[keyof typeof PayrollSettlementTypeScalarFieldEnum]
+
+
+  export const FinalSettlementWorksheetScalarFieldEnum: {
+    id: 'id',
+    payrollPeriodId: 'payrollPeriodId',
+    employeeId: 'employeeId',
+    terminationDate: 'terminationDate',
+    terminationCause: 'terminationCause',
+    terminationReasonLabel: 'terminationReasonLabel',
+    includeWorkedDays: 'includeWorkedDays',
+    daysDivisorMode: 'daysDivisorMode',
+    preavisoGiven: 'preavisoGiven',
+    vacationDaysTaken: 'vacationDaysTaken',
+    applyVizzoti: 'applyVizzoti',
+    cctCapAmount: 'cctCapAmount',
+    isExecutive: 'isExecutive',
+    seniorityYears: 'seniorityYears',
+    seniorityMonths: 'seniorityMonths',
+    seniorityDays: 'seniorityDays',
+    indemnityPeriods: 'indemnityPeriods',
+    inProbationPeriod: 'inProbationPeriod',
+    mrmnhAmount: 'mrmnhAmount',
+    mrmnhSourcePeriodLabel: 'mrmnhSourcePeriodLabel',
+    bestSemesterRemun: 'bestSemesterRemun',
+    workedDaysForLsd: 'workedDaysForLsd',
+    legalDueDate: 'legalDueDate',
+    worksheetPayload: 'worksheetPayload',
+    appliedAt: 'appliedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FinalSettlementWorksheetScalarFieldEnum = (typeof FinalSettlementWorksheetScalarFieldEnum)[keyof typeof FinalSettlementWorksheetScalarFieldEnum]
+
+
+  export const RetroactiveAdjustmentRunScalarFieldEnum: {
+    id: 'id',
+    targetPeriodId: 'targetPeriodId',
+    targetPeriodName: 'targetPeriodName',
+    cctCode: 'cctCode',
+    scaleIdsJson: 'scaleIdsJson',
+    fromYear: 'fromYear',
+    fromMonth: 'fromMonth',
+    toYear: 'toYear',
+    toMonth: 'toMonth',
+    scaleSourceMode: 'scaleSourceMode',
+    agreementLabel: 'agreementLabel',
+    employeesAppliedCount: 'employeesAppliedCount',
+    activeAppliedCount: 'activeAppliedCount',
+    inactiveAppliedCount: 'inactiveAppliedCount',
+    ignoredInactiveConfirmed: 'ignoredInactiveConfirmed',
+    ignoredInactiveCount: 'ignoredInactiveCount',
+    ignoredInactiveSummary: 'ignoredInactiveSummary',
+    totalRemunerative: 'totalRemunerative',
+    totalNonRemunerative: 'totalNonRemunerative',
+    totalSacDelta: 'totalSacDelta',
+    grandTotal: 'grandTotal',
+    runPayload: 'runPayload',
+    createdBy: 'createdBy',
+    createdByName: 'createdByName',
+    createdAt: 'createdAt'
+  };
+
+  export type RetroactiveAdjustmentRunScalarFieldEnum = (typeof RetroactiveAdjustmentRunScalarFieldEnum)[keyof typeof RetroactiveAdjustmentRunScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -56363,6 +59192,7 @@ export namespace Prisma {
     type: 'type',
     unitLabel: 'unitLabel',
     arcaConceptCode: 'arcaConceptCode',
+    adjustmentPeriod: 'adjustmentPeriod',
     formulaExplanation: 'formulaExplanation',
     notes: 'notes'
   };
@@ -56426,6 +59256,7 @@ export namespace Prisma {
     payrollPeriodId: 'payrollPeriodId',
     employeeId: 'employeeId',
     conceptId: 'conceptId',
+    adjustmentPeriod: 'adjustmentPeriod',
     notes: 'notes'
   };
 
@@ -56625,6 +59456,33 @@ export namespace Prisma {
   };
 
   export type PayrollSettlementTypeOrderByRelevanceFieldEnum = (typeof PayrollSettlementTypeOrderByRelevanceFieldEnum)[keyof typeof PayrollSettlementTypeOrderByRelevanceFieldEnum]
+
+
+  export const FinalSettlementWorksheetOrderByRelevanceFieldEnum: {
+    id: 'id',
+    payrollPeriodId: 'payrollPeriodId',
+    employeeId: 'employeeId',
+    terminationCause: 'terminationCause',
+    terminationReasonLabel: 'terminationReasonLabel',
+    daysDivisorMode: 'daysDivisorMode',
+    mrmnhSourcePeriodLabel: 'mrmnhSourcePeriodLabel'
+  };
+
+  export type FinalSettlementWorksheetOrderByRelevanceFieldEnum = (typeof FinalSettlementWorksheetOrderByRelevanceFieldEnum)[keyof typeof FinalSettlementWorksheetOrderByRelevanceFieldEnum]
+
+
+  export const RetroactiveAdjustmentRunOrderByRelevanceFieldEnum: {
+    id: 'id',
+    targetPeriodId: 'targetPeriodId',
+    targetPeriodName: 'targetPeriodName',
+    cctCode: 'cctCode',
+    scaleSourceMode: 'scaleSourceMode',
+    agreementLabel: 'agreementLabel',
+    createdBy: 'createdBy',
+    createdByName: 'createdByName'
+  };
+
+  export type RetroactiveAdjustmentRunOrderByRelevanceFieldEnum = (typeof RetroactiveAdjustmentRunOrderByRelevanceFieldEnum)[keyof typeof RetroactiveAdjustmentRunOrderByRelevanceFieldEnum]
 
 
   /**
@@ -57562,6 +60420,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
     incidents?: EmployeeIncidentListRelationFilter
     sanctions?: EmployeeSanctionListRelationFilter
+    finalSettlementWorksheets?: FinalSettlementWorksheetListRelationFilter
   }
 
   export type EmployeeOrderByWithRelationInput = {
@@ -57628,6 +60487,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailOrderByRelationAggregateInput
     incidents?: EmployeeIncidentOrderByRelationAggregateInput
     sanctions?: EmployeeSanctionOrderByRelationAggregateInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetOrderByRelationAggregateInput
     _relevance?: EmployeeOrderByRelevanceInput
   }
 
@@ -57698,6 +60558,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailListRelationFilter
     incidents?: EmployeeIncidentListRelationFilter
     sanctions?: EmployeeSanctionListRelationFilter
+    finalSettlementWorksheets?: FinalSettlementWorksheetListRelationFilter
   }, "id" | "fileNumber" | "cuil">
 
   export type EmployeeOrderByWithAggregationInput = {
@@ -58856,6 +61717,8 @@ export namespace Prisma {
     fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    finalSettlementWorksheets?: FinalSettlementWorksheetListRelationFilter
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunListRelationFilter
   }
 
   export type PayrollPeriodOrderByWithRelationInput = {
@@ -58884,6 +61747,8 @@ export namespace Prisma {
     fiscalPeriod?: PayrollFiscalPeriodOrderByWithRelationInput
     paySlips?: PaySlipOrderByRelationAggregateInput
     periodNovelties?: PeriodNoveltyOrderByRelationAggregateInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetOrderByRelationAggregateInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunOrderByRelationAggregateInput
     _relevance?: PayrollPeriodOrderByRelevanceInput
   }
 
@@ -58917,6 +61782,8 @@ export namespace Prisma {
     fiscalPeriod?: XOR<PayrollFiscalPeriodNullableScalarRelationFilter, PayrollFiscalPeriodWhereInput> | null
     paySlips?: PaySlipListRelationFilter
     periodNovelties?: PeriodNoveltyListRelationFilter
+    finalSettlementWorksheets?: FinalSettlementWorksheetListRelationFilter
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunListRelationFilter
   }, "id" | "year_month_periodType_settlementNumber">
 
   export type PayrollPeriodOrderByWithAggregationInput = {
@@ -59231,6 +62098,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    adjustmentPeriod?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
@@ -59251,6 +62119,7 @@ export namespace Prisma {
     baseAmount?: SortOrderInput | SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
+    adjustmentPeriod?: SortOrderInput | SortOrder
     formulaExplanation?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -59275,6 +62144,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    adjustmentPeriod?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
@@ -59295,6 +62165,7 @@ export namespace Prisma {
     baseAmount?: SortOrderInput | SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrderInput | SortOrder
+    adjustmentPeriod?: SortOrderInput | SortOrder
     formulaExplanation?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -59322,6 +62193,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableWithAggregatesFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalWithAggregatesFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
+    adjustmentPeriod?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     notes?: StringNullableWithAggregatesFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PaySlipItem"> | Date | string
@@ -59761,6 +62633,7 @@ export namespace Prisma {
     conceptId?: StringFilter<"PeriodNovelty"> | string
     units?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: StringNullableFilter<"PeriodNovelty"> | string | null
     notes?: StringNullableFilter<"PeriodNovelty"> | string | null
     createdAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
     updatedAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
@@ -59776,6 +62649,7 @@ export namespace Prisma {
     conceptId?: SortOrder
     units?: SortOrderInput | SortOrder
     amount?: SortOrderInput | SortOrder
+    adjustmentPeriod?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59796,6 +62670,7 @@ export namespace Prisma {
     conceptId?: StringFilter<"PeriodNovelty"> | string
     units?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: StringNullableFilter<"PeriodNovelty"> | string | null
     notes?: StringNullableFilter<"PeriodNovelty"> | string | null
     createdAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
     updatedAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
@@ -59811,6 +62686,7 @@ export namespace Prisma {
     conceptId?: SortOrder
     units?: SortOrderInput | SortOrder
     amount?: SortOrderInput | SortOrder
+    adjustmentPeriod?: SortOrderInput | SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -59831,6 +62707,7 @@ export namespace Prisma {
     conceptId?: StringWithAggregatesFilter<"PeriodNovelty"> | string
     units?: DecimalNullableWithAggregatesFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalNullableWithAggregatesFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: StringNullableWithAggregatesFilter<"PeriodNovelty"> | string | null
     notes?: StringNullableWithAggregatesFilter<"PeriodNovelty"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PeriodNovelty"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PeriodNovelty"> | Date | string
@@ -61375,6 +64252,7 @@ export namespace Prisma {
     defaultWorkedDays?: IntFilter<"PayrollSettlementType"> | number
     appliesStatutoryDeductions?: BoolFilter<"PayrollSettlementType"> | boolean
     triggersEmployeeTermination?: BoolFilter<"PayrollSettlementType"> | boolean
+    allowsRetroactives?: BoolFilter<"PayrollSettlementType"> | boolean
     isSystem?: BoolFilter<"PayrollSettlementType"> | boolean
     isActive?: BoolFilter<"PayrollSettlementType"> | boolean
     sortOrder?: IntFilter<"PayrollSettlementType"> | number
@@ -61393,6 +64271,7 @@ export namespace Prisma {
     defaultWorkedDays?: SortOrder
     appliesStatutoryDeductions?: SortOrder
     triggersEmployeeTermination?: SortOrder
+    allowsRetroactives?: SortOrder
     isSystem?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
@@ -61415,6 +64294,7 @@ export namespace Prisma {
     defaultWorkedDays?: IntFilter<"PayrollSettlementType"> | number
     appliesStatutoryDeductions?: BoolFilter<"PayrollSettlementType"> | boolean
     triggersEmployeeTermination?: BoolFilter<"PayrollSettlementType"> | boolean
+    allowsRetroactives?: BoolFilter<"PayrollSettlementType"> | boolean
     isSystem?: BoolFilter<"PayrollSettlementType"> | boolean
     isActive?: BoolFilter<"PayrollSettlementType"> | boolean
     sortOrder?: IntFilter<"PayrollSettlementType"> | number
@@ -61433,6 +64313,7 @@ export namespace Prisma {
     defaultWorkedDays?: SortOrder
     appliesStatutoryDeductions?: SortOrder
     triggersEmployeeTermination?: SortOrder
+    allowsRetroactives?: SortOrder
     isSystem?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
@@ -61459,11 +64340,342 @@ export namespace Prisma {
     defaultWorkedDays?: IntWithAggregatesFilter<"PayrollSettlementType"> | number
     appliesStatutoryDeductions?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
     triggersEmployeeTermination?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
+    allowsRetroactives?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
     isSystem?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
     isActive?: BoolWithAggregatesFilter<"PayrollSettlementType"> | boolean
     sortOrder?: IntWithAggregatesFilter<"PayrollSettlementType"> | number
     createdAt?: DateTimeWithAggregatesFilter<"PayrollSettlementType"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"PayrollSettlementType"> | Date | string
+  }
+
+  export type FinalSettlementWorksheetWhereInput = {
+    AND?: FinalSettlementWorksheetWhereInput | FinalSettlementWorksheetWhereInput[]
+    OR?: FinalSettlementWorksheetWhereInput[]
+    NOT?: FinalSettlementWorksheetWhereInput | FinalSettlementWorksheetWhereInput[]
+    id?: StringFilter<"FinalSettlementWorksheet"> | string
+    payrollPeriodId?: StringFilter<"FinalSettlementWorksheet"> | string
+    employeeId?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationDate?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    terminationCause?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationReasonLabel?: StringFilter<"FinalSettlementWorksheet"> | string
+    includeWorkedDays?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    daysDivisorMode?: StringFilter<"FinalSettlementWorksheet"> | string
+    preavisoGiven?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    vacationDaysTaken?: IntFilter<"FinalSettlementWorksheet"> | number
+    applyVizzoti?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    cctCapAmount?: DecimalNullableFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    seniorityYears?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityMonths?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityDays?: IntFilter<"FinalSettlementWorksheet"> | number
+    indemnityPeriods?: IntFilter<"FinalSettlementWorksheet"> | number
+    inProbationPeriod?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    mrmnhAmount?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: StringNullableFilter<"FinalSettlementWorksheet"> | string | null
+    bestSemesterRemun?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFilter<"FinalSettlementWorksheet"> | number
+    legalDueDate?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    worksheetPayload?: JsonFilter<"FinalSettlementWorksheet">
+    appliedAt?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    createdAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    updatedAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    payrollPeriod?: XOR<PayrollPeriodScalarRelationFilter, PayrollPeriodWhereInput>
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }
+
+  export type FinalSettlementWorksheetOrderByWithRelationInput = {
+    id?: SortOrder
+    payrollPeriodId?: SortOrder
+    employeeId?: SortOrder
+    terminationDate?: SortOrder
+    terminationCause?: SortOrder
+    terminationReasonLabel?: SortOrder
+    includeWorkedDays?: SortOrder
+    daysDivisorMode?: SortOrder
+    preavisoGiven?: SortOrder
+    vacationDaysTaken?: SortOrder
+    applyVizzoti?: SortOrder
+    cctCapAmount?: SortOrderInput | SortOrder
+    isExecutive?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    inProbationPeriod?: SortOrder
+    mrmnhAmount?: SortOrder
+    mrmnhSourcePeriodLabel?: SortOrderInput | SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+    legalDueDate?: SortOrderInput | SortOrder
+    worksheetPayload?: SortOrder
+    appliedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    payrollPeriod?: PayrollPeriodOrderByWithRelationInput
+    employee?: EmployeeOrderByWithRelationInput
+    _relevance?: FinalSettlementWorksheetOrderByRelevanceInput
+  }
+
+  export type FinalSettlementWorksheetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    payrollPeriodId_employeeId?: FinalSettlementWorksheetPayrollPeriodIdEmployeeIdCompoundUniqueInput
+    AND?: FinalSettlementWorksheetWhereInput | FinalSettlementWorksheetWhereInput[]
+    OR?: FinalSettlementWorksheetWhereInput[]
+    NOT?: FinalSettlementWorksheetWhereInput | FinalSettlementWorksheetWhereInput[]
+    payrollPeriodId?: StringFilter<"FinalSettlementWorksheet"> | string
+    employeeId?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationDate?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    terminationCause?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationReasonLabel?: StringFilter<"FinalSettlementWorksheet"> | string
+    includeWorkedDays?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    daysDivisorMode?: StringFilter<"FinalSettlementWorksheet"> | string
+    preavisoGiven?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    vacationDaysTaken?: IntFilter<"FinalSettlementWorksheet"> | number
+    applyVizzoti?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    cctCapAmount?: DecimalNullableFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    seniorityYears?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityMonths?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityDays?: IntFilter<"FinalSettlementWorksheet"> | number
+    indemnityPeriods?: IntFilter<"FinalSettlementWorksheet"> | number
+    inProbationPeriod?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    mrmnhAmount?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: StringNullableFilter<"FinalSettlementWorksheet"> | string | null
+    bestSemesterRemun?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFilter<"FinalSettlementWorksheet"> | number
+    legalDueDate?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    worksheetPayload?: JsonFilter<"FinalSettlementWorksheet">
+    appliedAt?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    createdAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    updatedAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    payrollPeriod?: XOR<PayrollPeriodScalarRelationFilter, PayrollPeriodWhereInput>
+    employee?: XOR<EmployeeScalarRelationFilter, EmployeeWhereInput>
+  }, "id" | "payrollPeriodId_employeeId">
+
+  export type FinalSettlementWorksheetOrderByWithAggregationInput = {
+    id?: SortOrder
+    payrollPeriodId?: SortOrder
+    employeeId?: SortOrder
+    terminationDate?: SortOrder
+    terminationCause?: SortOrder
+    terminationReasonLabel?: SortOrder
+    includeWorkedDays?: SortOrder
+    daysDivisorMode?: SortOrder
+    preavisoGiven?: SortOrder
+    vacationDaysTaken?: SortOrder
+    applyVizzoti?: SortOrder
+    cctCapAmount?: SortOrderInput | SortOrder
+    isExecutive?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    inProbationPeriod?: SortOrder
+    mrmnhAmount?: SortOrder
+    mrmnhSourcePeriodLabel?: SortOrderInput | SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+    legalDueDate?: SortOrderInput | SortOrder
+    worksheetPayload?: SortOrder
+    appliedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FinalSettlementWorksheetCountOrderByAggregateInput
+    _avg?: FinalSettlementWorksheetAvgOrderByAggregateInput
+    _max?: FinalSettlementWorksheetMaxOrderByAggregateInput
+    _min?: FinalSettlementWorksheetMinOrderByAggregateInput
+    _sum?: FinalSettlementWorksheetSumOrderByAggregateInput
+  }
+
+  export type FinalSettlementWorksheetScalarWhereWithAggregatesInput = {
+    AND?: FinalSettlementWorksheetScalarWhereWithAggregatesInput | FinalSettlementWorksheetScalarWhereWithAggregatesInput[]
+    OR?: FinalSettlementWorksheetScalarWhereWithAggregatesInput[]
+    NOT?: FinalSettlementWorksheetScalarWhereWithAggregatesInput | FinalSettlementWorksheetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    payrollPeriodId?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    employeeId?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    terminationDate?: DateTimeWithAggregatesFilter<"FinalSettlementWorksheet"> | Date | string
+    terminationCause?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    terminationReasonLabel?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    includeWorkedDays?: BoolWithAggregatesFilter<"FinalSettlementWorksheet"> | boolean
+    daysDivisorMode?: StringWithAggregatesFilter<"FinalSettlementWorksheet"> | string
+    preavisoGiven?: BoolWithAggregatesFilter<"FinalSettlementWorksheet"> | boolean
+    vacationDaysTaken?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    applyVizzoti?: BoolWithAggregatesFilter<"FinalSettlementWorksheet"> | boolean
+    cctCapAmount?: DecimalNullableWithAggregatesFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolWithAggregatesFilter<"FinalSettlementWorksheet"> | boolean
+    seniorityYears?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    seniorityMonths?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    seniorityDays?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    indemnityPeriods?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    inProbationPeriod?: BoolWithAggregatesFilter<"FinalSettlementWorksheet"> | boolean
+    mrmnhAmount?: DecimalWithAggregatesFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: StringNullableWithAggregatesFilter<"FinalSettlementWorksheet"> | string | null
+    bestSemesterRemun?: DecimalWithAggregatesFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntWithAggregatesFilter<"FinalSettlementWorksheet"> | number
+    legalDueDate?: DateTimeNullableWithAggregatesFilter<"FinalSettlementWorksheet"> | Date | string | null
+    worksheetPayload?: JsonWithAggregatesFilter<"FinalSettlementWorksheet">
+    appliedAt?: DateTimeNullableWithAggregatesFilter<"FinalSettlementWorksheet"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"FinalSettlementWorksheet"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"FinalSettlementWorksheet"> | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunWhereInput = {
+    AND?: RetroactiveAdjustmentRunWhereInput | RetroactiveAdjustmentRunWhereInput[]
+    OR?: RetroactiveAdjustmentRunWhereInput[]
+    NOT?: RetroactiveAdjustmentRunWhereInput | RetroactiveAdjustmentRunWhereInput[]
+    id?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodId?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    cctCode?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    scaleIdsJson?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    fromYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    fromMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    scaleSourceMode?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    agreementLabel?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    employeesAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    activeAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    inactiveAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveConfirmed?: BoolFilter<"RetroactiveAdjustmentRun"> | boolean
+    ignoredInactiveCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveSummary?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    totalRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonFilter<"RetroactiveAdjustmentRun">
+    createdBy?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdByName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdAt?: DateTimeFilter<"RetroactiveAdjustmentRun"> | Date | string
+    targetPeriod?: XOR<PayrollPeriodScalarRelationFilter, PayrollPeriodWhereInput>
+  }
+
+  export type RetroactiveAdjustmentRunOrderByWithRelationInput = {
+    id?: SortOrder
+    targetPeriodId?: SortOrder
+    targetPeriodName?: SortOrderInput | SortOrder
+    cctCode?: SortOrderInput | SortOrder
+    scaleIdsJson?: SortOrderInput | SortOrder
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    scaleSourceMode?: SortOrder
+    agreementLabel?: SortOrderInput | SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveConfirmed?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    ignoredInactiveSummary?: SortOrderInput | SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+    runPayload?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdByName?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    targetPeriod?: PayrollPeriodOrderByWithRelationInput
+    _relevance?: RetroactiveAdjustmentRunOrderByRelevanceInput
+  }
+
+  export type RetroactiveAdjustmentRunWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: RetroactiveAdjustmentRunWhereInput | RetroactiveAdjustmentRunWhereInput[]
+    OR?: RetroactiveAdjustmentRunWhereInput[]
+    NOT?: RetroactiveAdjustmentRunWhereInput | RetroactiveAdjustmentRunWhereInput[]
+    targetPeriodId?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    cctCode?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    scaleIdsJson?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    fromYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    fromMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    scaleSourceMode?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    agreementLabel?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    employeesAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    activeAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    inactiveAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveConfirmed?: BoolFilter<"RetroactiveAdjustmentRun"> | boolean
+    ignoredInactiveCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveSummary?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    totalRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonFilter<"RetroactiveAdjustmentRun">
+    createdBy?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdByName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdAt?: DateTimeFilter<"RetroactiveAdjustmentRun"> | Date | string
+    targetPeriod?: XOR<PayrollPeriodScalarRelationFilter, PayrollPeriodWhereInput>
+  }, "id">
+
+  export type RetroactiveAdjustmentRunOrderByWithAggregationInput = {
+    id?: SortOrder
+    targetPeriodId?: SortOrder
+    targetPeriodName?: SortOrderInput | SortOrder
+    cctCode?: SortOrderInput | SortOrder
+    scaleIdsJson?: SortOrderInput | SortOrder
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    scaleSourceMode?: SortOrder
+    agreementLabel?: SortOrderInput | SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveConfirmed?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    ignoredInactiveSummary?: SortOrderInput | SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+    runPayload?: SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdByName?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: RetroactiveAdjustmentRunCountOrderByAggregateInput
+    _avg?: RetroactiveAdjustmentRunAvgOrderByAggregateInput
+    _max?: RetroactiveAdjustmentRunMaxOrderByAggregateInput
+    _min?: RetroactiveAdjustmentRunMinOrderByAggregateInput
+    _sum?: RetroactiveAdjustmentRunSumOrderByAggregateInput
+  }
+
+  export type RetroactiveAdjustmentRunScalarWhereWithAggregatesInput = {
+    AND?: RetroactiveAdjustmentRunScalarWhereWithAggregatesInput | RetroactiveAdjustmentRunScalarWhereWithAggregatesInput[]
+    OR?: RetroactiveAdjustmentRunScalarWhereWithAggregatesInput[]
+    NOT?: RetroactiveAdjustmentRunScalarWhereWithAggregatesInput | RetroactiveAdjustmentRunScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodId?: StringWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodName?: StringNullableWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string | null
+    cctCode?: StringNullableWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string | null
+    scaleIdsJson?: JsonNullableWithAggregatesFilter<"RetroactiveAdjustmentRun">
+    fromYear?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    fromMonth?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    toYear?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    toMonth?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    scaleSourceMode?: StringWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string
+    agreementLabel?: StringNullableWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string | null
+    employeesAppliedCount?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    activeAppliedCount?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    inactiveAppliedCount?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveConfirmed?: BoolWithAggregatesFilter<"RetroactiveAdjustmentRun"> | boolean
+    ignoredInactiveCount?: IntWithAggregatesFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveSummary?: JsonNullableWithAggregatesFilter<"RetroactiveAdjustmentRun">
+    totalRemunerative?: DecimalWithAggregatesFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalWithAggregatesFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalWithAggregatesFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalWithAggregatesFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonWithAggregatesFilter<"RetroactiveAdjustmentRun">
+    createdBy?: StringNullableWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdByName?: StringNullableWithAggregatesFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"RetroactiveAdjustmentRun"> | Date | string
   }
 
   export type CompanyProfileCreateInput = {
@@ -62419,6 +65631,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateInput = {
@@ -62477,6 +65690,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUpdateInput = {
@@ -62535,6 +65749,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateInput = {
@@ -62593,6 +65808,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateManyInput = {
@@ -63947,6 +67163,8 @@ export namespace Prisma {
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateInput = {
@@ -63974,6 +67192,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodUpdateInput = {
@@ -64001,6 +67221,8 @@ export namespace Prisma {
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateInput = {
@@ -64028,6 +67250,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodCreateManyInput = {
@@ -64416,6 +67640,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -64436,6 +67661,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -64454,6 +67680,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64474,6 +67701,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64493,6 +67721,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -64511,6 +67740,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64530,6 +67760,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65064,6 +68295,7 @@ export namespace Prisma {
     id?: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65079,6 +68311,7 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65088,6 +68321,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65103,6 +68337,7 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65115,6 +68350,7 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -65124,6 +68360,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -65136,6 +68373,7 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -66863,6 +70101,7 @@ export namespace Prisma {
     defaultWorkedDays?: number
     appliesStatutoryDeductions?: boolean
     triggersEmployeeTermination?: boolean
+    allowsRetroactives?: boolean
     isSystem?: boolean
     isActive?: boolean
     sortOrder?: number
@@ -66881,6 +70120,7 @@ export namespace Prisma {
     defaultWorkedDays?: number
     appliesStatutoryDeductions?: boolean
     triggersEmployeeTermination?: boolean
+    allowsRetroactives?: boolean
     isSystem?: boolean
     isActive?: boolean
     sortOrder?: number
@@ -66899,6 +70139,7 @@ export namespace Prisma {
     defaultWorkedDays?: IntFieldUpdateOperationsInput | number
     appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
     triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    allowsRetroactives?: BoolFieldUpdateOperationsInput | boolean
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
@@ -66917,6 +70158,7 @@ export namespace Prisma {
     defaultWorkedDays?: IntFieldUpdateOperationsInput | number
     appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
     triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    allowsRetroactives?: BoolFieldUpdateOperationsInput | boolean
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
@@ -66935,6 +70177,7 @@ export namespace Prisma {
     defaultWorkedDays?: number
     appliesStatutoryDeductions?: boolean
     triggersEmployeeTermination?: boolean
+    allowsRetroactives?: boolean
     isSystem?: boolean
     isActive?: boolean
     sortOrder?: number
@@ -66953,6 +70196,7 @@ export namespace Prisma {
     defaultWorkedDays?: IntFieldUpdateOperationsInput | number
     appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
     triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    allowsRetroactives?: BoolFieldUpdateOperationsInput | boolean
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
@@ -66971,11 +70215,415 @@ export namespace Prisma {
     defaultWorkedDays?: IntFieldUpdateOperationsInput | number
     appliesStatutoryDeductions?: BoolFieldUpdateOperationsInput | boolean
     triggersEmployeeTermination?: BoolFieldUpdateOperationsInput | boolean
+    allowsRetroactives?: BoolFieldUpdateOperationsInput | boolean
     isSystem?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetCreateInput = {
+    id?: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payrollPeriod: PayrollPeriodCreateNestedOneWithoutFinalSettlementWorksheetsInput
+    employee: EmployeeCreateNestedOneWithoutFinalSettlementWorksheetsInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedCreateInput = {
+    id?: string
+    payrollPeriodId: string
+    employeeId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinalSettlementWorksheetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payrollPeriod?: PayrollPeriodUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput
+    employee?: EmployeeUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    payrollPeriodId?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetCreateManyInput = {
+    id?: string
+    payrollPeriodId: string
+    employeeId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinalSettlementWorksheetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    payrollPeriodId?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunCreateInput = {
+    id?: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
+    targetPeriod: PayrollPeriodCreateNestedOneWithoutRetroactiveAdjustmentRunsInput
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedCreateInput = {
+    id?: string
+    targetPeriodId: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetPeriod?: PayrollPeriodUpdateOneRequiredWithoutRetroactiveAdjustmentRunsNestedInput
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodId?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunCreateManyInput = {
+    id?: string
+    targetPeriodId: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodId?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -67836,6 +71484,12 @@ export namespace Prisma {
     none?: EmployeeSanctionWhereInput
   }
 
+  export type FinalSettlementWorksheetListRelationFilter = {
+    every?: FinalSettlementWorksheetWhereInput
+    some?: FinalSettlementWorksheetWhereInput
+    none?: FinalSettlementWorksheetWhereInput
+  }
+
   export type PaySlipOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -67877,6 +71531,10 @@ export namespace Prisma {
   }
 
   export type EmployeeSanctionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -68793,6 +72451,16 @@ export namespace Prisma {
     isNot?: PayrollFiscalPeriodWhereInput | null
   }
 
+  export type RetroactiveAdjustmentRunListRelationFilter = {
+    every?: RetroactiveAdjustmentRunWhereInput
+    some?: RetroactiveAdjustmentRunWhereInput
+    none?: RetroactiveAdjustmentRunWhereInput
+  }
+
+  export type RetroactiveAdjustmentRunOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type PayrollPeriodOrderByRelevanceInput = {
     fields: PayrollPeriodOrderByRelevanceFieldEnum | PayrollPeriodOrderByRelevanceFieldEnum[]
     sort: SortOrder
@@ -69132,6 +72800,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    adjustmentPeriod?: SortOrder
     formulaExplanation?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -69158,6 +72827,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    adjustmentPeriod?: SortOrder
     formulaExplanation?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -69177,6 +72847,7 @@ export namespace Prisma {
     baseAmount?: SortOrder
     amount?: SortOrder
     arcaConceptCode?: SortOrder
+    adjustmentPeriod?: SortOrder
     formulaExplanation?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -69632,6 +73303,7 @@ export namespace Prisma {
     conceptId?: SortOrder
     units?: SortOrder
     amount?: SortOrder
+    adjustmentPeriod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -69649,6 +73321,7 @@ export namespace Prisma {
     conceptId?: SortOrder
     units?: SortOrder
     amount?: SortOrder
+    adjustmentPeriod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -69661,6 +73334,7 @@ export namespace Prisma {
     conceptId?: SortOrder
     units?: SortOrder
     amount?: SortOrder
+    adjustmentPeriod?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -70768,6 +74442,7 @@ export namespace Prisma {
     defaultWorkedDays?: SortOrder
     appliesStatutoryDeductions?: SortOrder
     triggersEmployeeTermination?: SortOrder
+    allowsRetroactives?: SortOrder
     isSystem?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
@@ -70791,6 +74466,7 @@ export namespace Prisma {
     defaultWorkedDays?: SortOrder
     appliesStatutoryDeductions?: SortOrder
     triggersEmployeeTermination?: SortOrder
+    allowsRetroactives?: SortOrder
     isSystem?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
@@ -70809,6 +74485,7 @@ export namespace Prisma {
     defaultWorkedDays?: SortOrder
     appliesStatutoryDeductions?: SortOrder
     triggersEmployeeTermination?: SortOrder
+    allowsRetroactives?: SortOrder
     isSystem?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
@@ -70819,6 +74496,243 @@ export namespace Prisma {
   export type PayrollSettlementTypeSumOrderByAggregateInput = {
     defaultWorkedDays?: SortOrder
     sortOrder?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetOrderByRelevanceInput = {
+    fields: FinalSettlementWorksheetOrderByRelevanceFieldEnum | FinalSettlementWorksheetOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type FinalSettlementWorksheetPayrollPeriodIdEmployeeIdCompoundUniqueInput = {
+    payrollPeriodId: string
+    employeeId: string
+  }
+
+  export type FinalSettlementWorksheetCountOrderByAggregateInput = {
+    id?: SortOrder
+    payrollPeriodId?: SortOrder
+    employeeId?: SortOrder
+    terminationDate?: SortOrder
+    terminationCause?: SortOrder
+    terminationReasonLabel?: SortOrder
+    includeWorkedDays?: SortOrder
+    daysDivisorMode?: SortOrder
+    preavisoGiven?: SortOrder
+    vacationDaysTaken?: SortOrder
+    applyVizzoti?: SortOrder
+    cctCapAmount?: SortOrder
+    isExecutive?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    inProbationPeriod?: SortOrder
+    mrmnhAmount?: SortOrder
+    mrmnhSourcePeriodLabel?: SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+    legalDueDate?: SortOrder
+    worksheetPayload?: SortOrder
+    appliedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetAvgOrderByAggregateInput = {
+    vacationDaysTaken?: SortOrder
+    cctCapAmount?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    mrmnhAmount?: SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    payrollPeriodId?: SortOrder
+    employeeId?: SortOrder
+    terminationDate?: SortOrder
+    terminationCause?: SortOrder
+    terminationReasonLabel?: SortOrder
+    includeWorkedDays?: SortOrder
+    daysDivisorMode?: SortOrder
+    preavisoGiven?: SortOrder
+    vacationDaysTaken?: SortOrder
+    applyVizzoti?: SortOrder
+    cctCapAmount?: SortOrder
+    isExecutive?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    inProbationPeriod?: SortOrder
+    mrmnhAmount?: SortOrder
+    mrmnhSourcePeriodLabel?: SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+    legalDueDate?: SortOrder
+    appliedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetMinOrderByAggregateInput = {
+    id?: SortOrder
+    payrollPeriodId?: SortOrder
+    employeeId?: SortOrder
+    terminationDate?: SortOrder
+    terminationCause?: SortOrder
+    terminationReasonLabel?: SortOrder
+    includeWorkedDays?: SortOrder
+    daysDivisorMode?: SortOrder
+    preavisoGiven?: SortOrder
+    vacationDaysTaken?: SortOrder
+    applyVizzoti?: SortOrder
+    cctCapAmount?: SortOrder
+    isExecutive?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    inProbationPeriod?: SortOrder
+    mrmnhAmount?: SortOrder
+    mrmnhSourcePeriodLabel?: SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+    legalDueDate?: SortOrder
+    appliedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FinalSettlementWorksheetSumOrderByAggregateInput = {
+    vacationDaysTaken?: SortOrder
+    cctCapAmount?: SortOrder
+    seniorityYears?: SortOrder
+    seniorityMonths?: SortOrder
+    seniorityDays?: SortOrder
+    indemnityPeriods?: SortOrder
+    mrmnhAmount?: SortOrder
+    bestSemesterRemun?: SortOrder
+    workedDaysForLsd?: SortOrder
+  }
+
+  export type RetroactiveAdjustmentRunOrderByRelevanceInput = {
+    fields: RetroactiveAdjustmentRunOrderByRelevanceFieldEnum | RetroactiveAdjustmentRunOrderByRelevanceFieldEnum[]
+    sort: SortOrder
+    search: string
+  }
+
+  export type RetroactiveAdjustmentRunCountOrderByAggregateInput = {
+    id?: SortOrder
+    targetPeriodId?: SortOrder
+    targetPeriodName?: SortOrder
+    cctCode?: SortOrder
+    scaleIdsJson?: SortOrder
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    scaleSourceMode?: SortOrder
+    agreementLabel?: SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveConfirmed?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    ignoredInactiveSummary?: SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+    runPayload?: SortOrder
+    createdBy?: SortOrder
+    createdByName?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RetroactiveAdjustmentRunAvgOrderByAggregateInput = {
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+  }
+
+  export type RetroactiveAdjustmentRunMaxOrderByAggregateInput = {
+    id?: SortOrder
+    targetPeriodId?: SortOrder
+    targetPeriodName?: SortOrder
+    cctCode?: SortOrder
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    scaleSourceMode?: SortOrder
+    agreementLabel?: SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveConfirmed?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+    createdBy?: SortOrder
+    createdByName?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RetroactiveAdjustmentRunMinOrderByAggregateInput = {
+    id?: SortOrder
+    targetPeriodId?: SortOrder
+    targetPeriodName?: SortOrder
+    cctCode?: SortOrder
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    scaleSourceMode?: SortOrder
+    agreementLabel?: SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveConfirmed?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
+    createdBy?: SortOrder
+    createdByName?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type RetroactiveAdjustmentRunSumOrderByAggregateInput = {
+    fromYear?: SortOrder
+    fromMonth?: SortOrder
+    toYear?: SortOrder
+    toMonth?: SortOrder
+    employeesAppliedCount?: SortOrder
+    activeAppliedCount?: SortOrder
+    inactiveAppliedCount?: SortOrder
+    ignoredInactiveCount?: SortOrder
+    totalRemunerative?: SortOrder
+    totalNonRemunerative?: SortOrder
+    totalSacDelta?: SortOrder
+    grandTotal?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -71470,6 +75384,13 @@ export namespace Prisma {
     connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
   }
 
+  export type FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput> | FinalSettlementWorksheetCreateWithoutEmployeeInput[] | FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput | FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput[]
+    createMany?: FinalSettlementWorksheetCreateManyEmployeeInputEnvelope
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+  }
+
   export type PaySlipUncheckedCreateNestedManyWithoutEmployeeInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -71545,6 +75466,13 @@ export namespace Prisma {
     connectOrCreate?: EmployeeSanctionCreateOrConnectWithoutEmployeeInput | EmployeeSanctionCreateOrConnectWithoutEmployeeInput[]
     createMany?: EmployeeSanctionCreateManyEmployeeInputEnvelope
     connect?: EmployeeSanctionWhereUniqueInput | EmployeeSanctionWhereUniqueInput[]
+  }
+
+  export type FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput> | FinalSettlementWorksheetCreateWithoutEmployeeInput[] | FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput | FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput[]
+    createMany?: FinalSettlementWorksheetCreateManyEmployeeInputEnvelope
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
   }
 
   export type DepartmentUpdateOneWithoutEmployeesNestedInput = {
@@ -71781,6 +75709,20 @@ export namespace Prisma {
     deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
   }
 
+  export type FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput> | FinalSettlementWorksheetCreateWithoutEmployeeInput[] | FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput | FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput[]
+    upsert?: FinalSettlementWorksheetUpsertWithWhereUniqueWithoutEmployeeInput | FinalSettlementWorksheetUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: FinalSettlementWorksheetCreateManyEmployeeInputEnvelope
+    set?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    disconnect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    delete?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    update?: FinalSettlementWorksheetUpdateWithWhereUniqueWithoutEmployeeInput | FinalSettlementWorksheetUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: FinalSettlementWorksheetUpdateManyWithWhereWithoutEmployeeInput | FinalSettlementWorksheetUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
+  }
+
   export type PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput = {
     create?: XOR<PaySlipCreateWithoutEmployeeInput, PaySlipUncheckedCreateWithoutEmployeeInput> | PaySlipCreateWithoutEmployeeInput[] | PaySlipUncheckedCreateWithoutEmployeeInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutEmployeeInput | PaySlipCreateOrConnectWithoutEmployeeInput[]
@@ -71933,6 +75875,20 @@ export namespace Prisma {
     update?: EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput | EmployeeSanctionUpdateWithWhereUniqueWithoutEmployeeInput[]
     updateMany?: EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput | EmployeeSanctionUpdateManyWithWhereWithoutEmployeeInput[]
     deleteMany?: EmployeeSanctionScalarWhereInput | EmployeeSanctionScalarWhereInput[]
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput> | FinalSettlementWorksheetCreateWithoutEmployeeInput[] | FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput | FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput[]
+    upsert?: FinalSettlementWorksheetUpsertWithWhereUniqueWithoutEmployeeInput | FinalSettlementWorksheetUpsertWithWhereUniqueWithoutEmployeeInput[]
+    createMany?: FinalSettlementWorksheetCreateManyEmployeeInputEnvelope
+    set?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    disconnect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    delete?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    update?: FinalSettlementWorksheetUpdateWithWhereUniqueWithoutEmployeeInput | FinalSettlementWorksheetUpdateWithWhereUniqueWithoutEmployeeInput[]
+    updateMany?: FinalSettlementWorksheetUpdateManyWithWhereWithoutEmployeeInput | FinalSettlementWorksheetUpdateManyWithWhereWithoutEmployeeInput[]
+    deleteMany?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
   }
 
   export type EmployeeCreateNestedManyWithoutPaymentMethodInput = {
@@ -72595,6 +76551,20 @@ export namespace Prisma {
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
   }
 
+  export type FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput> | FinalSettlementWorksheetCreateWithoutPayrollPeriodInput[] | FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput | FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput[]
+    createMany?: FinalSettlementWorksheetCreateManyPayrollPeriodInputEnvelope
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+  }
+
+  export type RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput = {
+    create?: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput> | RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput[] | RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput[]
+    connectOrCreate?: RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput | RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput[]
+    createMany?: RetroactiveAdjustmentRunCreateManyTargetPeriodInputEnvelope
+    connect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+  }
+
   export type PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput = {
     create?: XOR<PaySlipCreateWithoutPayrollPeriodInput, PaySlipUncheckedCreateWithoutPayrollPeriodInput> | PaySlipCreateWithoutPayrollPeriodInput[] | PaySlipUncheckedCreateWithoutPayrollPeriodInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutPayrollPeriodInput | PaySlipCreateOrConnectWithoutPayrollPeriodInput[]
@@ -72607,6 +76577,20 @@ export namespace Prisma {
     connectOrCreate?: PeriodNoveltyCreateOrConnectWithoutPayrollPeriodInput | PeriodNoveltyCreateOrConnectWithoutPayrollPeriodInput[]
     createMany?: PeriodNoveltyCreateManyPayrollPeriodInputEnvelope
     connect?: PeriodNoveltyWhereUniqueInput | PeriodNoveltyWhereUniqueInput[]
+  }
+
+  export type FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput> | FinalSettlementWorksheetCreateWithoutPayrollPeriodInput[] | FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput | FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput[]
+    createMany?: FinalSettlementWorksheetCreateManyPayrollPeriodInputEnvelope
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput = {
+    create?: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput> | RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput[] | RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput[]
+    connectOrCreate?: RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput | RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput[]
+    createMany?: RetroactiveAdjustmentRunCreateManyTargetPeriodInputEnvelope
+    connect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
   }
 
   export type PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput = {
@@ -72647,6 +76631,34 @@ export namespace Prisma {
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
   }
 
+  export type FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput> | FinalSettlementWorksheetCreateWithoutPayrollPeriodInput[] | FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput | FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput[]
+    upsert?: FinalSettlementWorksheetUpsertWithWhereUniqueWithoutPayrollPeriodInput | FinalSettlementWorksheetUpsertWithWhereUniqueWithoutPayrollPeriodInput[]
+    createMany?: FinalSettlementWorksheetCreateManyPayrollPeriodInputEnvelope
+    set?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    disconnect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    delete?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    update?: FinalSettlementWorksheetUpdateWithWhereUniqueWithoutPayrollPeriodInput | FinalSettlementWorksheetUpdateWithWhereUniqueWithoutPayrollPeriodInput[]
+    updateMany?: FinalSettlementWorksheetUpdateManyWithWhereWithoutPayrollPeriodInput | FinalSettlementWorksheetUpdateManyWithWhereWithoutPayrollPeriodInput[]
+    deleteMany?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
+  }
+
+  export type RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput = {
+    create?: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput> | RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput[] | RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput[]
+    connectOrCreate?: RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput | RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput[]
+    upsert?: RetroactiveAdjustmentRunUpsertWithWhereUniqueWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpsertWithWhereUniqueWithoutTargetPeriodInput[]
+    createMany?: RetroactiveAdjustmentRunCreateManyTargetPeriodInputEnvelope
+    set?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    disconnect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    delete?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    connect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    update?: RetroactiveAdjustmentRunUpdateWithWhereUniqueWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpdateWithWhereUniqueWithoutTargetPeriodInput[]
+    updateMany?: RetroactiveAdjustmentRunUpdateManyWithWhereWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpdateManyWithWhereWithoutTargetPeriodInput[]
+    deleteMany?: RetroactiveAdjustmentRunScalarWhereInput | RetroactiveAdjustmentRunScalarWhereInput[]
+  }
+
   export type PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput = {
     create?: XOR<PaySlipCreateWithoutPayrollPeriodInput, PaySlipUncheckedCreateWithoutPayrollPeriodInput> | PaySlipCreateWithoutPayrollPeriodInput[] | PaySlipUncheckedCreateWithoutPayrollPeriodInput[]
     connectOrCreate?: PaySlipCreateOrConnectWithoutPayrollPeriodInput | PaySlipCreateOrConnectWithoutPayrollPeriodInput[]
@@ -72673,6 +76685,34 @@ export namespace Prisma {
     update?: PeriodNoveltyUpdateWithWhereUniqueWithoutPayrollPeriodInput | PeriodNoveltyUpdateWithWhereUniqueWithoutPayrollPeriodInput[]
     updateMany?: PeriodNoveltyUpdateManyWithWhereWithoutPayrollPeriodInput | PeriodNoveltyUpdateManyWithWhereWithoutPayrollPeriodInput[]
     deleteMany?: PeriodNoveltyScalarWhereInput | PeriodNoveltyScalarWhereInput[]
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput = {
+    create?: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput> | FinalSettlementWorksheetCreateWithoutPayrollPeriodInput[] | FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput[]
+    connectOrCreate?: FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput | FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput[]
+    upsert?: FinalSettlementWorksheetUpsertWithWhereUniqueWithoutPayrollPeriodInput | FinalSettlementWorksheetUpsertWithWhereUniqueWithoutPayrollPeriodInput[]
+    createMany?: FinalSettlementWorksheetCreateManyPayrollPeriodInputEnvelope
+    set?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    disconnect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    delete?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    connect?: FinalSettlementWorksheetWhereUniqueInput | FinalSettlementWorksheetWhereUniqueInput[]
+    update?: FinalSettlementWorksheetUpdateWithWhereUniqueWithoutPayrollPeriodInput | FinalSettlementWorksheetUpdateWithWhereUniqueWithoutPayrollPeriodInput[]
+    updateMany?: FinalSettlementWorksheetUpdateManyWithWhereWithoutPayrollPeriodInput | FinalSettlementWorksheetUpdateManyWithWhereWithoutPayrollPeriodInput[]
+    deleteMany?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput = {
+    create?: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput> | RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput[] | RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput[]
+    connectOrCreate?: RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput | RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput[]
+    upsert?: RetroactiveAdjustmentRunUpsertWithWhereUniqueWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpsertWithWhereUniqueWithoutTargetPeriodInput[]
+    createMany?: RetroactiveAdjustmentRunCreateManyTargetPeriodInputEnvelope
+    set?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    disconnect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    delete?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    connect?: RetroactiveAdjustmentRunWhereUniqueInput | RetroactiveAdjustmentRunWhereUniqueInput[]
+    update?: RetroactiveAdjustmentRunUpdateWithWhereUniqueWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpdateWithWhereUniqueWithoutTargetPeriodInput[]
+    updateMany?: RetroactiveAdjustmentRunUpdateManyWithWhereWithoutTargetPeriodInput | RetroactiveAdjustmentRunUpdateManyWithWhereWithoutTargetPeriodInput[]
+    deleteMany?: RetroactiveAdjustmentRunScalarWhereInput | RetroactiveAdjustmentRunScalarWhereInput[]
   }
 
   export type PayrollPeriodCreateNestedOneWithoutPaySlipsInput = {
@@ -73295,6 +77335,48 @@ export namespace Prisma {
     update?: XOR<XOR<EmployeeIncidentUpdateToOneWithWhereWithoutSanctionLinksInput, EmployeeIncidentUpdateWithoutSanctionLinksInput>, EmployeeIncidentUncheckedUpdateWithoutSanctionLinksInput>
   }
 
+  export type PayrollPeriodCreateNestedOneWithoutFinalSettlementWorksheetsInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFinalSettlementWorksheetsInput
+    connect?: PayrollPeriodWhereUniqueInput
+  }
+
+  export type EmployeeCreateNestedOneWithoutFinalSettlementWorksheetsInput = {
+    create?: XOR<EmployeeCreateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutFinalSettlementWorksheetsInput
+    connect?: EmployeeWhereUniqueInput
+  }
+
+  export type PayrollPeriodUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput = {
+    create?: XOR<PayrollPeriodCreateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutFinalSettlementWorksheetsInput
+    upsert?: PayrollPeriodUpsertWithoutFinalSettlementWorksheetsInput
+    connect?: PayrollPeriodWhereUniqueInput
+    update?: XOR<XOR<PayrollPeriodUpdateToOneWithWhereWithoutFinalSettlementWorksheetsInput, PayrollPeriodUpdateWithoutFinalSettlementWorksheetsInput>, PayrollPeriodUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type EmployeeUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput = {
+    create?: XOR<EmployeeCreateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    connectOrCreate?: EmployeeCreateOrConnectWithoutFinalSettlementWorksheetsInput
+    upsert?: EmployeeUpsertWithoutFinalSettlementWorksheetsInput
+    connect?: EmployeeWhereUniqueInput
+    update?: XOR<XOR<EmployeeUpdateToOneWithWhereWithoutFinalSettlementWorksheetsInput, EmployeeUpdateWithoutFinalSettlementWorksheetsInput>, EmployeeUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type PayrollPeriodCreateNestedOneWithoutRetroactiveAdjustmentRunsInput = {
+    create?: XOR<PayrollPeriodCreateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedCreateWithoutRetroactiveAdjustmentRunsInput>
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutRetroactiveAdjustmentRunsInput
+    connect?: PayrollPeriodWhereUniqueInput
+  }
+
+  export type PayrollPeriodUpdateOneRequiredWithoutRetroactiveAdjustmentRunsNestedInput = {
+    create?: XOR<PayrollPeriodCreateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedCreateWithoutRetroactiveAdjustmentRunsInput>
+    connectOrCreate?: PayrollPeriodCreateOrConnectWithoutRetroactiveAdjustmentRunsInput
+    upsert?: PayrollPeriodUpsertWithoutRetroactiveAdjustmentRunsInput
+    connect?: PayrollPeriodWhereUniqueInput
+    update?: XOR<XOR<PayrollPeriodUpdateToOneWithWhereWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUpdateWithoutRetroactiveAdjustmentRunsInput>, PayrollPeriodUncheckedUpdateWithoutRetroactiveAdjustmentRunsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -73655,6 +77737,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutDepartmentInput = {
@@ -73712,6 +77795,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutDepartmentInput = {
@@ -73845,6 +77929,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutJobPositionInput = {
@@ -73902,6 +77987,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutJobPositionInput = {
@@ -74027,6 +78113,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutWorkShiftInput = {
@@ -74084,6 +78171,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutWorkShiftInput = {
@@ -74291,6 +78379,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutHealthInsuranceInput = {
@@ -74348,6 +78437,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutHealthInsuranceInput = {
@@ -74552,6 +78642,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutUnionInput = {
@@ -74609,6 +78700,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutUnionInput = {
@@ -75208,6 +79300,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutMutualInput = {
@@ -75265,6 +79358,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutMutualInput = {
@@ -76110,6 +80204,7 @@ export namespace Prisma {
     id?: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -76123,6 +80218,7 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -76437,6 +80533,74 @@ export namespace Prisma {
 
   export type EmployeeSanctionCreateManyEmployeeInputEnvelope = {
     data: EmployeeSanctionCreateManyEmployeeInput | EmployeeSanctionCreateManyEmployeeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FinalSettlementWorksheetCreateWithoutEmployeeInput = {
+    id?: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payrollPeriod: PayrollPeriodCreateNestedOneWithoutFinalSettlementWorksheetsInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput = {
+    id?: string
+    payrollPeriodId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinalSettlementWorksheetCreateOrConnectWithoutEmployeeInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    create: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type FinalSettlementWorksheetCreateManyEmployeeInputEnvelope = {
+    data: FinalSettlementWorksheetCreateManyEmployeeInput | FinalSettlementWorksheetCreateManyEmployeeInput[]
     skipDuplicates?: boolean
   }
 
@@ -76882,6 +81046,7 @@ export namespace Prisma {
     conceptId?: StringFilter<"PeriodNovelty"> | string
     units?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalNullableFilter<"PeriodNovelty"> | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: StringNullableFilter<"PeriodNovelty"> | string | null
     notes?: StringNullableFilter<"PeriodNovelty"> | string | null
     createdAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
     updatedAt?: DateTimeFilter<"PeriodNovelty"> | Date | string
@@ -77140,6 +81305,55 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"EmployeeSanction"> | Date | string | null
   }
 
+  export type FinalSettlementWorksheetUpsertWithWhereUniqueWithoutEmployeeInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    update: XOR<FinalSettlementWorksheetUpdateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedUpdateWithoutEmployeeInput>
+    create: XOR<FinalSettlementWorksheetCreateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedCreateWithoutEmployeeInput>
+  }
+
+  export type FinalSettlementWorksheetUpdateWithWhereUniqueWithoutEmployeeInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    data: XOR<FinalSettlementWorksheetUpdateWithoutEmployeeInput, FinalSettlementWorksheetUncheckedUpdateWithoutEmployeeInput>
+  }
+
+  export type FinalSettlementWorksheetUpdateManyWithWhereWithoutEmployeeInput = {
+    where: FinalSettlementWorksheetScalarWhereInput
+    data: XOR<FinalSettlementWorksheetUpdateManyMutationInput, FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeInput>
+  }
+
+  export type FinalSettlementWorksheetScalarWhereInput = {
+    AND?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
+    OR?: FinalSettlementWorksheetScalarWhereInput[]
+    NOT?: FinalSettlementWorksheetScalarWhereInput | FinalSettlementWorksheetScalarWhereInput[]
+    id?: StringFilter<"FinalSettlementWorksheet"> | string
+    payrollPeriodId?: StringFilter<"FinalSettlementWorksheet"> | string
+    employeeId?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationDate?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    terminationCause?: StringFilter<"FinalSettlementWorksheet"> | string
+    terminationReasonLabel?: StringFilter<"FinalSettlementWorksheet"> | string
+    includeWorkedDays?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    daysDivisorMode?: StringFilter<"FinalSettlementWorksheet"> | string
+    preavisoGiven?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    vacationDaysTaken?: IntFilter<"FinalSettlementWorksheet"> | number
+    applyVizzoti?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    cctCapAmount?: DecimalNullableFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    seniorityYears?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityMonths?: IntFilter<"FinalSettlementWorksheet"> | number
+    seniorityDays?: IntFilter<"FinalSettlementWorksheet"> | number
+    indemnityPeriods?: IntFilter<"FinalSettlementWorksheet"> | number
+    inProbationPeriod?: BoolFilter<"FinalSettlementWorksheet"> | boolean
+    mrmnhAmount?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: StringNullableFilter<"FinalSettlementWorksheet"> | string | null
+    bestSemesterRemun?: DecimalFilter<"FinalSettlementWorksheet"> | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFilter<"FinalSettlementWorksheet"> | number
+    legalDueDate?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    worksheetPayload?: JsonFilter<"FinalSettlementWorksheet">
+    appliedAt?: DateTimeNullableFilter<"FinalSettlementWorksheet"> | Date | string | null
+    createdAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+    updatedAt?: DateTimeFilter<"FinalSettlementWorksheet"> | Date | string
+  }
+
   export type EmployeeCreateWithoutPaymentMethodInput = {
     id?: string
     fileNumber: string
@@ -77195,6 +81409,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPaymentMethodInput = {
@@ -77252,6 +81467,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPaymentMethodInput = {
@@ -77335,6 +81551,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSalaryScaleInput = {
@@ -77392,6 +81609,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSalaryScaleInput = {
@@ -77690,6 +81908,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutRelativesInput = {
@@ -77747,6 +81966,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutRelativesInput = {
@@ -77843,6 +82063,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutRelativesInput = {
@@ -77900,6 +82121,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type KinshipUpsertWithoutRelativesInput = {
@@ -78006,6 +82228,7 @@ export namespace Prisma {
     id?: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -78019,6 +82242,7 @@ export namespace Prisma {
     employeeId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -78408,6 +82632,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutAssignedConceptsInput = {
@@ -78465,6 +82690,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutAssignedConceptsInput = {
@@ -78637,6 +82863,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutAssignedConceptsInput = {
@@ -78694,6 +82921,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutAssignedEmployeesInput = {
@@ -78989,6 +83217,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateWithoutFiscalPeriodInput = {
@@ -79015,6 +83245,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodCreateOrConnectWithoutFiscalPeriodInput = {
@@ -79200,6 +83432,7 @@ export namespace Prisma {
     id?: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -79213,6 +83446,7 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -79225,6 +83459,138 @@ export namespace Prisma {
 
   export type PeriodNoveltyCreateManyPayrollPeriodInputEnvelope = {
     data: PeriodNoveltyCreateManyPayrollPeriodInput | PeriodNoveltyCreateManyPayrollPeriodInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FinalSettlementWorksheetCreateWithoutPayrollPeriodInput = {
+    id?: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    employee: EmployeeCreateNestedOneWithoutFinalSettlementWorksheetsInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput = {
+    id?: string
+    employeeId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FinalSettlementWorksheetCreateOrConnectWithoutPayrollPeriodInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    create: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput>
+  }
+
+  export type FinalSettlementWorksheetCreateManyPayrollPeriodInputEnvelope = {
+    data: FinalSettlementWorksheetCreateManyPayrollPeriodInput | FinalSettlementWorksheetCreateManyPayrollPeriodInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput = {
+    id?: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput = {
+    id?: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
+  }
+
+  export type RetroactiveAdjustmentRunCreateOrConnectWithoutTargetPeriodInput = {
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+    create: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput>
+  }
+
+  export type RetroactiveAdjustmentRunCreateManyTargetPeriodInputEnvelope = {
+    data: RetroactiveAdjustmentRunCreateManyTargetPeriodInput | RetroactiveAdjustmentRunCreateManyTargetPeriodInput[]
     skipDuplicates?: boolean
   }
 
@@ -79295,6 +83661,69 @@ export namespace Prisma {
     data: XOR<PeriodNoveltyUpdateManyMutationInput, PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodInput>
   }
 
+  export type FinalSettlementWorksheetUpsertWithWhereUniqueWithoutPayrollPeriodInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    update: XOR<FinalSettlementWorksheetUpdateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedUpdateWithoutPayrollPeriodInput>
+    create: XOR<FinalSettlementWorksheetCreateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedCreateWithoutPayrollPeriodInput>
+  }
+
+  export type FinalSettlementWorksheetUpdateWithWhereUniqueWithoutPayrollPeriodInput = {
+    where: FinalSettlementWorksheetWhereUniqueInput
+    data: XOR<FinalSettlementWorksheetUpdateWithoutPayrollPeriodInput, FinalSettlementWorksheetUncheckedUpdateWithoutPayrollPeriodInput>
+  }
+
+  export type FinalSettlementWorksheetUpdateManyWithWhereWithoutPayrollPeriodInput = {
+    where: FinalSettlementWorksheetScalarWhereInput
+    data: XOR<FinalSettlementWorksheetUpdateManyMutationInput, FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodInput>
+  }
+
+  export type RetroactiveAdjustmentRunUpsertWithWhereUniqueWithoutTargetPeriodInput = {
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+    update: XOR<RetroactiveAdjustmentRunUpdateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedUpdateWithoutTargetPeriodInput>
+    create: XOR<RetroactiveAdjustmentRunCreateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedCreateWithoutTargetPeriodInput>
+  }
+
+  export type RetroactiveAdjustmentRunUpdateWithWhereUniqueWithoutTargetPeriodInput = {
+    where: RetroactiveAdjustmentRunWhereUniqueInput
+    data: XOR<RetroactiveAdjustmentRunUpdateWithoutTargetPeriodInput, RetroactiveAdjustmentRunUncheckedUpdateWithoutTargetPeriodInput>
+  }
+
+  export type RetroactiveAdjustmentRunUpdateManyWithWhereWithoutTargetPeriodInput = {
+    where: RetroactiveAdjustmentRunScalarWhereInput
+    data: XOR<RetroactiveAdjustmentRunUpdateManyMutationInput, RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodInput>
+  }
+
+  export type RetroactiveAdjustmentRunScalarWhereInput = {
+    AND?: RetroactiveAdjustmentRunScalarWhereInput | RetroactiveAdjustmentRunScalarWhereInput[]
+    OR?: RetroactiveAdjustmentRunScalarWhereInput[]
+    NOT?: RetroactiveAdjustmentRunScalarWhereInput | RetroactiveAdjustmentRunScalarWhereInput[]
+    id?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodId?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    targetPeriodName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    cctCode?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    scaleIdsJson?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    fromYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    fromMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toYear?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    toMonth?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    scaleSourceMode?: StringFilter<"RetroactiveAdjustmentRun"> | string
+    agreementLabel?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    employeesAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    activeAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    inactiveAppliedCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveConfirmed?: BoolFilter<"RetroactiveAdjustmentRun"> | boolean
+    ignoredInactiveCount?: IntFilter<"RetroactiveAdjustmentRun"> | number
+    ignoredInactiveSummary?: JsonNullableFilter<"RetroactiveAdjustmentRun">
+    totalRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFilter<"RetroactiveAdjustmentRun"> | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonFilter<"RetroactiveAdjustmentRun">
+    createdBy?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdByName?: StringNullableFilter<"RetroactiveAdjustmentRun"> | string | null
+    createdAt?: DateTimeFilter<"RetroactiveAdjustmentRun"> | Date | string
+  }
+
   export type PayrollPeriodCreateWithoutPaySlipsInput = {
     id?: string
     year: number
@@ -79319,6 +83748,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateWithoutPaySlipsInput = {
@@ -79345,6 +83776,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodCreateOrConnectWithoutPaySlipsInput = {
@@ -79407,6 +83840,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPaySlipsInput = {
@@ -79464,6 +83898,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPaySlipsInput = {
@@ -79483,6 +83918,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -79501,6 +83937,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -79615,6 +84052,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateWithoutPaySlipsInput = {
@@ -79641,6 +84080,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type EmployeeUpsertWithoutPaySlipsInput = {
@@ -79709,6 +84150,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPaySlipsInput = {
@@ -79766,6 +84208,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type PaySlipItemUpsertWithWhereUniqueWithoutPaySlipInput = {
@@ -79800,6 +84243,7 @@ export namespace Prisma {
     baseAmount?: DecimalNullableFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFilter<"PaySlipItem"> | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: StringNullableFilter<"PaySlipItem"> | string | null
+    adjustmentPeriod?: StringNullableFilter<"PaySlipItem"> | string | null
     formulaExplanation?: StringNullableFilter<"PaySlipItem"> | string | null
     notes?: StringNullableFilter<"PaySlipItem"> | string | null
     createdAt?: DateTimeFilter<"PaySlipItem"> | Date | string
@@ -80275,6 +84719,8 @@ export namespace Prisma {
     updatedAt?: Date | string
     fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
     paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -80301,6 +84747,8 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput
   }
 
   export type PayrollPeriodCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -80363,6 +84811,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutPeriodNoveltiesInput = {
@@ -80420,6 +84869,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutPeriodNoveltiesInput = {
@@ -80561,6 +85011,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -80587,6 +85039,8 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type EmployeeUpsertWithoutPeriodNoveltiesInput = {
@@ -80655,6 +85109,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPeriodNoveltiesInput = {
@@ -80712,6 +85167,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type ConceptUpsertWithoutPeriodNoveltiesInput = {
@@ -80874,6 +85330,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutEmbargoesInput = {
@@ -80931,6 +85388,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutEmbargoesInput = {
@@ -81026,6 +85484,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutEmbargoesInput = {
@@ -81083,6 +85542,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeEmbargoConceptUpsertWithWhereUniqueWithoutEmbargoInput = {
@@ -81456,6 +85916,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxDeductionsInput = {
@@ -81513,6 +85974,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxDeductionsInput = {
@@ -81586,6 +86048,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxDeductionsInput = {
@@ -81643,6 +86106,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutOtherIncomesInput = {
@@ -81700,6 +86164,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutOtherIncomesInput = {
@@ -81757,6 +86222,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutOtherIncomesInput = {
@@ -81830,6 +86296,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutOtherIncomesInput = {
@@ -81887,6 +86354,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeCreateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -81944,6 +86412,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -82001,6 +86470,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -82074,6 +86544,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxPaymentsOnAccountInput = {
@@ -82131,6 +86602,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type IncomeTaxSettlementDetailCreateWithoutSettlementInput = {
@@ -82303,6 +86775,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncomeTaxSettlementDetailsInput = {
@@ -82360,6 +86833,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncomeTaxSettlementDetailsInput = {
@@ -82482,6 +86956,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncomeTaxSettlementDetailsInput = {
@@ -82539,6 +87014,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeIncidentCreateWithoutIncidentTypeInput = {
@@ -82698,6 +87174,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutIncidentsInput = {
@@ -82755,6 +87232,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutIncidentsInput = {
@@ -82879,6 +87357,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutIncidentsInput = {
@@ -82936,6 +87415,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type IncidentTypeUpsertWithoutIncidentsInput = {
@@ -83054,6 +87534,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeUncheckedCreateWithoutSanctionsInput = {
@@ -83111,6 +87592,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
     incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutEmployeeInput
   }
 
   export type EmployeeCreateOrConnectWithoutSanctionsInput = {
@@ -83235,6 +87717,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSanctionsInput = {
@@ -83292,6 +87775,7 @@ export namespace Prisma {
     incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type SanctionTypeUpsertWithoutSanctionsInput = {
@@ -83477,6 +87961,510 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type PayrollPeriodCreateWithoutFinalSettlementWorksheetsInput = {
+    id?: string
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
+    paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunCreateNestedManyWithoutTargetPeriodInput
+  }
+
+  export type PayrollPeriodUncheckedCreateWithoutFinalSettlementWorksheetsInput = {
+    id?: string
+    fiscalPeriodId?: string | null
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedCreateNestedManyWithoutTargetPeriodInput
+  }
+
+  export type PayrollPeriodCreateOrConnectWithoutFinalSettlementWorksheetsInput = {
+    where: PayrollPeriodWhereUniqueInput
+    create: XOR<PayrollPeriodCreateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type EmployeeCreateWithoutFinalSettlementWorksheetsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    contractModalityCode?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    department?: DepartmentCreateNestedOneWithoutEmployeesInput
+    jobPosition?: JobPositionCreateNestedOneWithoutEmployeesInput
+    healthInsurance?: HealthInsuranceCreateNestedOneWithoutEmployeesInput
+    union?: UnionCreateNestedOneWithoutEmployeesInput
+    mutual?: MutualCreateNestedOneWithoutEmployeesInput
+    salaryScale?: SalaryScaleCreateNestedOneWithoutEmployeesInput
+    workShift?: WorkShiftCreateNestedOneWithoutEmployeesInput
+    paymentMethod?: PaymentMethodCreateNestedOneWithoutEmployeesInput
+    paySlips?: PaySlipCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeUncheckedCreateWithoutFinalSettlementWorksheetsInput = {
+    id?: string
+    fileNumber: string
+    lastName: string
+    firstName: string
+    photo?: string | null
+    hireDate: Date | string
+    birthDate: Date | string
+    documentType?: string
+    documentNumber: string
+    cuil: string
+    gender?: string
+    street?: string | null
+    streetNumber?: string | null
+    floor?: string | null
+    apartment?: string | null
+    city?: string | null
+    postalCode?: string | null
+    province?: string | null
+    email?: string | null
+    phone?: string | null
+    status?: string
+    terminationDate?: Date | string | null
+    terminationReason?: string | null
+    departmentId?: string | null
+    jobPositionId?: string | null
+    healthInsuranceId?: string | null
+    unionId?: string | null
+    mutualId?: string | null
+    contractModalityCode?: string | null
+    salaryScaleId?: string | null
+    workShiftId?: string | null
+    paymentMethodId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    deletedAt?: Date | string | null
+    payrollGroup?: string
+    isPartTime?: boolean
+    weeklyWorkingHours?: Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: Decimal | DecimalJsLike | number | string
+    partTimePercentage?: Decimal | DecimalJsLike | number | string
+    basicSalary?: Decimal | DecimalJsLike | number | string
+    hourlyRate?: Decimal | DecimalJsLike | number | string
+    cbu?: string | null
+    bankAccountType?: string | null
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutEmployeeInput
+    relatives?: EmployeeRelativeUncheckedCreateNestedManyWithoutEmployeeInput
+    assignedConcepts?: EmployeeConceptUncheckedCreateNestedManyWithoutEmployeeInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutEmployeeInput
+    embargoes?: EmployeeEmbargoUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedCreateNestedManyWithoutEmployeeInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedCreateNestedManyWithoutEmployeeInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedCreateNestedManyWithoutEmployeeInput
+    incidents?: EmployeeIncidentUncheckedCreateNestedManyWithoutEmployeeInput
+    sanctions?: EmployeeSanctionUncheckedCreateNestedManyWithoutEmployeeInput
+  }
+
+  export type EmployeeCreateOrConnectWithoutFinalSettlementWorksheetsInput = {
+    where: EmployeeWhereUniqueInput
+    create: XOR<EmployeeCreateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type PayrollPeriodUpsertWithoutFinalSettlementWorksheetsInput = {
+    update: XOR<PayrollPeriodUpdateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+    create: XOR<PayrollPeriodCreateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    where?: PayrollPeriodWhereInput
+  }
+
+  export type PayrollPeriodUpdateToOneWithWhereWithoutFinalSettlementWorksheetsInput = {
+    where?: PayrollPeriodWhereInput
+    data: XOR<PayrollPeriodUpdateWithoutFinalSettlementWorksheetsInput, PayrollPeriodUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type PayrollPeriodUpdateWithoutFinalSettlementWorksheetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
+    paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput
+  }
+
+  export type PayrollPeriodUncheckedUpdateWithoutFinalSettlementWorksheetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput
+  }
+
+  export type EmployeeUpsertWithoutFinalSettlementWorksheetsInput = {
+    update: XOR<EmployeeUpdateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+    create: XOR<EmployeeCreateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedCreateWithoutFinalSettlementWorksheetsInput>
+    where?: EmployeeWhereInput
+  }
+
+  export type EmployeeUpdateToOneWithWhereWithoutFinalSettlementWorksheetsInput = {
+    where?: EmployeeWhereInput
+    data: XOR<EmployeeUpdateWithoutFinalSettlementWorksheetsInput, EmployeeUncheckedUpdateWithoutFinalSettlementWorksheetsInput>
+  }
+
+  export type EmployeeUpdateWithoutFinalSettlementWorksheetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    department?: DepartmentUpdateOneWithoutEmployeesNestedInput
+    jobPosition?: JobPositionUpdateOneWithoutEmployeesNestedInput
+    healthInsurance?: HealthInsuranceUpdateOneWithoutEmployeesNestedInput
+    union?: UnionUpdateOneWithoutEmployeesNestedInput
+    mutual?: MutualUpdateOneWithoutEmployeesNestedInput
+    salaryScale?: SalaryScaleUpdateOneWithoutEmployeesNestedInput
+    workShift?: WorkShiftUpdateOneWithoutEmployeesNestedInput
+    paymentMethod?: PaymentMethodUpdateOneWithoutEmployeesNestedInput
+    paySlips?: PaySlipUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type EmployeeUncheckedUpdateWithoutFinalSettlementWorksheetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fileNumber?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    firstName?: StringFieldUpdateOperationsInput | string
+    photo?: NullableStringFieldUpdateOperationsInput | string | null
+    hireDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    birthDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    documentType?: StringFieldUpdateOperationsInput | string
+    documentNumber?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    gender?: StringFieldUpdateOperationsInput | string
+    street?: NullableStringFieldUpdateOperationsInput | string | null
+    streetNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    floor?: NullableStringFieldUpdateOperationsInput | string | null
+    apartment?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    postalCode?: NullableStringFieldUpdateOperationsInput | string | null
+    province?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    terminationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    terminationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    jobPositionId?: NullableStringFieldUpdateOperationsInput | string | null
+    healthInsuranceId?: NullableStringFieldUpdateOperationsInput | string | null
+    unionId?: NullableStringFieldUpdateOperationsInput | string | null
+    mutualId?: NullableStringFieldUpdateOperationsInput | string | null
+    contractModalityCode?: NullableStringFieldUpdateOperationsInput | string | null
+    salaryScaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    workShiftId?: NullableStringFieldUpdateOperationsInput | string | null
+    paymentMethodId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    payrollGroup?: StringFieldUpdateOperationsInput | string
+    isPartTime?: BoolFieldUpdateOperationsInput | boolean
+    weeklyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    monthlyWorkingHours?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    partTimePercentage?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    basicSalary?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    hourlyRate?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cbu?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountType?: NullableStringFieldUpdateOperationsInput | string | null
+    paySlips?: PaySlipUncheckedUpdateManyWithoutEmployeeNestedInput
+    relatives?: EmployeeRelativeUncheckedUpdateManyWithoutEmployeeNestedInput
+    assignedConcepts?: EmployeeConceptUncheckedUpdateManyWithoutEmployeeNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutEmployeeNestedInput
+    embargoes?: EmployeeEmbargoUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxDeductions?: EmployeeIncomeTaxDeductionUncheckedUpdateManyWithoutEmployeeNestedInput
+    otherIncomes?: EmployeeOtherIncomeUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxPaymentsOnAccount?: EmployeeIncomeTaxPaymentOnAccountUncheckedUpdateManyWithoutEmployeeNestedInput
+    incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
+    incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
+    sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+  }
+
+  export type PayrollPeriodCreateWithoutRetroactiveAdjustmentRunsInput = {
+    id?: string
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    fiscalPeriod?: PayrollFiscalPeriodCreateNestedOneWithoutSettlementsInput
+    paySlips?: PaySlipCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetCreateNestedManyWithoutPayrollPeriodInput
+  }
+
+  export type PayrollPeriodUncheckedCreateWithoutRetroactiveAdjustmentRunsInput = {
+    id?: string
+    fiscalPeriodId?: string | null
+    year: number
+    month: number
+    periodType?: string
+    settlementNumber?: number
+    settlementName?: string | null
+    settlementType?: string
+    liquidationDate?: Date | string | null
+    paymentDate?: Date | string | null
+    paymentPlace?: string | null
+    depositDate?: Date | string | null
+    depositBank?: string | null
+    rubricDate?: Date | string | null
+    status?: string
+    totalGross?: Decimal | DecimalJsLike | number | string
+    totalNet?: Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: Decimal | DecimalJsLike | number | string
+    closedAt?: Date | string | null
+    closedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    paySlips?: PaySlipUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    periodNovelties?: PeriodNoveltyUncheckedCreateNestedManyWithoutPayrollPeriodInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedCreateNestedManyWithoutPayrollPeriodInput
+  }
+
+  export type PayrollPeriodCreateOrConnectWithoutRetroactiveAdjustmentRunsInput = {
+    where: PayrollPeriodWhereUniqueInput
+    create: XOR<PayrollPeriodCreateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedCreateWithoutRetroactiveAdjustmentRunsInput>
+  }
+
+  export type PayrollPeriodUpsertWithoutRetroactiveAdjustmentRunsInput = {
+    update: XOR<PayrollPeriodUpdateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedUpdateWithoutRetroactiveAdjustmentRunsInput>
+    create: XOR<PayrollPeriodCreateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedCreateWithoutRetroactiveAdjustmentRunsInput>
+    where?: PayrollPeriodWhereInput
+  }
+
+  export type PayrollPeriodUpdateToOneWithWhereWithoutRetroactiveAdjustmentRunsInput = {
+    where?: PayrollPeriodWhereInput
+    data: XOR<PayrollPeriodUpdateWithoutRetroactiveAdjustmentRunsInput, PayrollPeriodUncheckedUpdateWithoutRetroactiveAdjustmentRunsInput>
+  }
+
+  export type PayrollPeriodUpdateWithoutRetroactiveAdjustmentRunsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    fiscalPeriod?: PayrollFiscalPeriodUpdateOneWithoutSettlementsNestedInput
+    paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput
+  }
+
+  export type PayrollPeriodUncheckedUpdateWithoutRetroactiveAdjustmentRunsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fiscalPeriodId?: NullableStringFieldUpdateOperationsInput | string | null
+    year?: IntFieldUpdateOperationsInput | number
+    month?: IntFieldUpdateOperationsInput | number
+    periodType?: StringFieldUpdateOperationsInput | string
+    settlementNumber?: IntFieldUpdateOperationsInput | number
+    settlementName?: NullableStringFieldUpdateOperationsInput | string | null
+    settlementType?: StringFieldUpdateOperationsInput | string
+    liquidationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paymentPlace?: NullableStringFieldUpdateOperationsInput | string | null
+    depositDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    depositBank?: NullableStringFieldUpdateOperationsInput | string | null
+    rubricDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    totalGross?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNet?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalEmployerCost?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    closedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    closedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+  }
+
   export type EmployeeCreateManyDepartmentInput = {
     id?: string
     fileNumber: string
@@ -83578,6 +88566,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutDepartmentInput = {
@@ -83635,6 +88624,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutDepartmentInput = {
@@ -83784,6 +88774,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutJobPositionInput = {
@@ -83841,6 +88832,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutJobPositionInput = {
@@ -84054,6 +89046,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutWorkShiftInput = {
@@ -84111,6 +89104,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutWorkShiftInput = {
@@ -84260,6 +89254,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutHealthInsuranceInput = {
@@ -84317,6 +89312,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutHealthInsuranceInput = {
@@ -84490,6 +89486,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutUnionInput = {
@@ -84547,6 +89544,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutUnionInput = {
@@ -84720,6 +89718,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutMutualInput = {
@@ -84777,6 +89776,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutMutualInput = {
@@ -84907,6 +89907,7 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -85023,6 +90024,35 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     deletedAt?: Date | string | null
+  }
+
+  export type FinalSettlementWorksheetCreateManyEmployeeInput = {
+    id?: string
+    payrollPeriodId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type PaySlipUpdateWithoutEmployeeInput = {
@@ -85261,6 +90291,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85274,6 +90305,7 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85285,6 +90317,7 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -85635,6 +90668,93 @@ export namespace Prisma {
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
+  export type FinalSettlementWorksheetUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payrollPeriod?: PayrollPeriodUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    payrollPeriodId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    payrollPeriodId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EmployeeCreateManyPaymentMethodInput = {
     id?: string
     fileNumber: string
@@ -85736,6 +90856,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutPaymentMethodInput = {
@@ -85793,6 +90914,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutPaymentMethodInput = {
@@ -85955,6 +91077,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateWithoutSalaryScaleInput = {
@@ -86012,6 +91135,7 @@ export namespace Prisma {
     incomeTaxSettlementDetails?: IncomeTaxSettlementDetailUncheckedUpdateManyWithoutEmployeeNestedInput
     incidents?: EmployeeIncidentUncheckedUpdateManyWithoutEmployeeNestedInput
     sanctions?: EmployeeSanctionUncheckedUpdateManyWithoutEmployeeNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutEmployeeNestedInput
   }
 
   export type EmployeeUncheckedUpdateManyWithoutSalaryScaleInput = {
@@ -86206,6 +91330,7 @@ export namespace Prisma {
     employeeId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -86290,6 +91415,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86303,6 +91429,7 @@ export namespace Prisma {
     employeeId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86314,6 +91441,7 @@ export namespace Prisma {
     employeeId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86657,6 +91785,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUpdateManyWithoutPayrollPeriodNestedInput
     periodNovelties?: PeriodNoveltyUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateWithoutFiscalPeriodInput = {
@@ -86683,6 +91813,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     paySlips?: PaySlipUncheckedUpdateManyWithoutPayrollPeriodNestedInput
     periodNovelties?: PeriodNoveltyUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    finalSettlementWorksheets?: FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodNestedInput
+    retroactiveAdjustmentRuns?: RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodNestedInput
   }
 
   export type PayrollPeriodUncheckedUpdateManyWithoutFiscalPeriodInput = {
@@ -86756,9 +91888,66 @@ export namespace Prisma {
     conceptId: string
     units?: Decimal | DecimalJsLike | number | string | null
     amount?: Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: string | null
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type FinalSettlementWorksheetCreateManyPayrollPeriodInput = {
+    id?: string
+    employeeId: string
+    terminationDate: Date | string
+    terminationCause: string
+    terminationReasonLabel: string
+    includeWorkedDays?: boolean
+    daysDivisorMode?: string
+    preavisoGiven?: boolean
+    vacationDaysTaken?: number
+    applyVizzoti?: boolean
+    cctCapAmount?: Decimal | DecimalJsLike | number | string | null
+    isExecutive?: boolean
+    seniorityYears?: number
+    seniorityMonths?: number
+    seniorityDays?: number
+    indemnityPeriods?: number
+    inProbationPeriod?: boolean
+    mrmnhAmount?: Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: string | null
+    bestSemesterRemun?: Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: number
+    legalDueDate?: Date | string | null
+    worksheetPayload: JsonNullValueInput | InputJsonValue
+    appliedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type RetroactiveAdjustmentRunCreateManyTargetPeriodInput = {
+    id?: string
+    targetPeriodName?: string | null
+    cctCode?: string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear: number
+    fromMonth: number
+    toYear: number
+    toMonth: number
+    scaleSourceMode?: string
+    agreementLabel?: string | null
+    employeesAppliedCount?: number
+    activeAppliedCount?: number
+    inactiveAppliedCount?: number
+    ignoredInactiveConfirmed?: boolean
+    ignoredInactiveCount?: number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: Decimal | DecimalJsLike | number | string
+    totalSacDelta?: Decimal | DecimalJsLike | number | string
+    grandTotal?: Decimal | DecimalJsLike | number | string
+    runPayload: JsonNullValueInput | InputJsonValue
+    createdBy?: string | null
+    createdByName?: string | null
+    createdAt?: Date | string
   }
 
   export type PaySlipUpdateWithoutPayrollPeriodInput = {
@@ -86892,6 +92081,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86905,6 +92095,7 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86916,9 +92107,178 @@ export namespace Prisma {
     conceptId?: StringFieldUpdateOperationsInput | string
     units?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetUpdateWithoutPayrollPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    employee?: EmployeeUpdateOneRequiredWithoutFinalSettlementWorksheetsNestedInput
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateWithoutPayrollPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FinalSettlementWorksheetUncheckedUpdateManyWithoutPayrollPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    employeeId?: StringFieldUpdateOperationsInput | string
+    terminationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    terminationCause?: StringFieldUpdateOperationsInput | string
+    terminationReasonLabel?: StringFieldUpdateOperationsInput | string
+    includeWorkedDays?: BoolFieldUpdateOperationsInput | boolean
+    daysDivisorMode?: StringFieldUpdateOperationsInput | string
+    preavisoGiven?: BoolFieldUpdateOperationsInput | boolean
+    vacationDaysTaken?: IntFieldUpdateOperationsInput | number
+    applyVizzoti?: BoolFieldUpdateOperationsInput | boolean
+    cctCapAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
+    isExecutive?: BoolFieldUpdateOperationsInput | boolean
+    seniorityYears?: IntFieldUpdateOperationsInput | number
+    seniorityMonths?: IntFieldUpdateOperationsInput | number
+    seniorityDays?: IntFieldUpdateOperationsInput | number
+    indemnityPeriods?: IntFieldUpdateOperationsInput | number
+    inProbationPeriod?: BoolFieldUpdateOperationsInput | boolean
+    mrmnhAmount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    mrmnhSourcePeriodLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    bestSemesterRemun?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    workedDaysForLsd?: IntFieldUpdateOperationsInput | number
+    legalDueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    worksheetPayload?: JsonNullValueInput | InputJsonValue
+    appliedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUpdateWithoutTargetPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedUpdateWithoutTargetPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type RetroactiveAdjustmentRunUncheckedUpdateManyWithoutTargetPeriodInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetPeriodName?: NullableStringFieldUpdateOperationsInput | string | null
+    cctCode?: NullableStringFieldUpdateOperationsInput | string | null
+    scaleIdsJson?: NullableJsonNullValueInput | InputJsonValue
+    fromYear?: IntFieldUpdateOperationsInput | number
+    fromMonth?: IntFieldUpdateOperationsInput | number
+    toYear?: IntFieldUpdateOperationsInput | number
+    toMonth?: IntFieldUpdateOperationsInput | number
+    scaleSourceMode?: StringFieldUpdateOperationsInput | string
+    agreementLabel?: NullableStringFieldUpdateOperationsInput | string | null
+    employeesAppliedCount?: IntFieldUpdateOperationsInput | number
+    activeAppliedCount?: IntFieldUpdateOperationsInput | number
+    inactiveAppliedCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveConfirmed?: BoolFieldUpdateOperationsInput | boolean
+    ignoredInactiveCount?: IntFieldUpdateOperationsInput | number
+    ignoredInactiveSummary?: NullableJsonNullValueInput | InputJsonValue
+    totalRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalNonRemunerative?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    totalSacDelta?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    grandTotal?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    runPayload?: JsonNullValueInput | InputJsonValue
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByName?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PaySlipItemCreateManyPaySlipInput = {
@@ -86933,6 +92293,7 @@ export namespace Prisma {
     baseAmount?: Decimal | DecimalJsLike | number | string | null
     amount: Decimal | DecimalJsLike | number | string
     arcaConceptCode?: string | null
+    adjustmentPeriod?: string | null
     formulaExplanation?: string | null
     notes?: string | null
     createdAt?: Date | string
@@ -86951,6 +92312,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86969,6 +92331,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -86987,6 +92350,7 @@ export namespace Prisma {
     baseAmount?: NullableDecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string | null
     amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     arcaConceptCode?: NullableStringFieldUpdateOperationsInput | string | null
+    adjustmentPeriod?: NullableStringFieldUpdateOperationsInput | string | null
     formulaExplanation?: NullableStringFieldUpdateOperationsInput | string | null
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

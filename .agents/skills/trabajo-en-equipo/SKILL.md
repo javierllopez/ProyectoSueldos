@@ -115,6 +115,17 @@ En toda iniciativa con impacto en reglas de liquidación, haberes, deducciones, 
 
 ---
 
+## Referencia Rápida al Catálogo de Propuestas de Mejora (PROP-01..PROP-15)
+
+El repositorio mantiene el registro persistente de mejoras estratégicas en [`Docs/catalogo_propuestas_mejora.md`](Docs/catalogo_propuestas_mejora.md), numeradas de **`PROP-01`** a **`PROP-15`**.
+
+Cuando el Director invoque `/trabajo-en-equipo` haciendo referencia a una propuesta por su **código** (ej. `PROP-05`), **número** (ej. `Propuesta 5`, `#5`) o **título**:
+1. **Lectura obligatoria en Fase 1 (Brainstorming):** Leer inmediatamente [`Docs/catalogo_propuestas_mejora.md`](Docs/catalogo_propuestas_mejora.md) para tomar la ficha completa de la propuesta (`Diagnóstico actual`, `Alcance propuesto` y `Fundamento detallado`) como punto de partida del análisis multidisciplinario y verificación normativa vigente.
+2. **Actualización al iniciar Fase 2 (Ejecución):** Cuando el Director apruebe avanzar a la Fase 2, actualizar el estado de esa propuesta en `Docs/catalogo_propuestas_mejora.md` a `EN_CURSO`.
+3. **Cierre y trazabilidad al finalizar Fase 2:** Una vez superada la verificación de QA y la inspección conjunta del Auditor Adversarial Técnico y Asesor Legal Adversarial, actualizar el estado en `Docs/catalogo_propuestas_mejora.md` a `IMPLEMENTADA` (o `DESCARTADA` si el Director resuelve no avanzarla), completando la tabla índice y la sección `Trazabilidad` de su ficha con la fecha y los nombres de los artefactos de Fase 1 y Fase 2.
+
+---
+
 ## Formato de Respuestas y Presentación en Artefactos
 - **Entrega obligatoria en Artefacto por cada fase (pantalla principal):**
   - Al finalizar la **Fase 1 (Brainstorming)**, crea un artefacto `.md` en el directorio de artefactos de la conversación (por ejemplo, `fase1_brainstorming_<tema>.md`) con `UserFacing: true` y `RequestFeedback: true` para que el Director pueda leer todo el análisis en la pantalla principal con claridad y aprobar el avance.

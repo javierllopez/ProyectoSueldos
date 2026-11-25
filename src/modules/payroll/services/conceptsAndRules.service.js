@@ -1,5 +1,9 @@
 import crypto from 'crypto';
 import { ensureTenantPayrollSchema } from '../../../services/tenantProvisioner.service.js';
+import {
+  buildRetroactiveConceptsForType,
+  buildStatutoryDeductionConceptsForType,
+} from '../../../services/provisioner/defaultCatalogs.js';
 import { validateConceptFormula } from '../formulaValidator.js';
 import { hoursToDecimal, decimalToHours } from '../../../utils/timeFormat.js';
 
@@ -13,6 +17,7 @@ const LEGACY_TYPE_ALIASES = {
   AGUINALDO: 'SAC_1',
   VACACIONES: 'VACATIONS',
   LIQUIDACION_FINAL: 'FINAL',
+  RETROACTIVO: 'RETROACTIVE',
 };
 
 export function resolveSettlementTypeLookupCode(periodType) {
@@ -117,6 +122,55 @@ export async function getSettlementTypes(tenantPrisma, { activeOnly = false } = 
   });
 }
 
+async function seedRetroactiveCatalogForSettlementType(tenantPrisma, settlementType, { includeStatutory = true } = {}) {
+  if (!settlementType?.code || !settlementType?.conceptPrefix) return { seededCodes: [] };
+  const retroDefs = buildRetroactiveConceptsForType(settlementType.conceptPrefix, settlementType.code);
+  const statutoryDefs =
+    includeStatutory && settlementType.appliesStatutoryDeductions !== false
+      ? buildStatutoryDeductionConceptsForType(settlementType.conceptPrefix, settlementType.code)
+      : [];
+
+  const candidateDefs = [...retroDefs, ...statutoryDefs];
+  const existingConcepts = await tenantPrisma.concept.findMany({
+    where: {
+      OR: [
+        { code: { in: candidateDefs.map((d) => d.code) } },
+        { periodType: settlementType.code, type: 'DEDUCTION', deletedAt: null },
+      ],
+    },
+    select: { code: true, type: true, periodType: true, deletedAt: true },
+  });
+
+  const existingCodes = new Set(existingConcepts.map((c) => String(c.code || '').toUpperCase()));
+  const hasExistingDeductions = existingConcepts.some(
+    (c) => c.deletedAt === null && c.periodType === settlementType.code && c.type === 'DEDUCTION'
+  );
+
+  const toCreate = candidateDefs.filter((d) => {
+    if (existingCodes.has(d.code.toUpperCase())) return false;
+    if (d.type === 'DEDUCTION' && hasExistingDeductions) return false;
+    return true;
+  });
+
+  if (toCreate.length > 0 && tenantPrisma.concept?.createMany) {
+    await tenantPrisma.concept.createMany({
+      data: toCreate.map((d) => ({
+        id: crypto.randomUUID(),
+        ...d,
+      })),
+      skipDuplicates: true,
+    });
+  } else {
+    for (const d of toCreate) {
+      await tenantPrisma.concept.create({
+        data: { id: crypto.randomUUID(), ...d },
+      });
+    }
+  }
+
+  return { seededCodes: toCreate.map((d) => d.code) };
+}
+
 export async function createSettlementType(tenantPrisma, data) {
   await ensureTenantPayrollSchema(tenantPrisma);
 
@@ -151,7 +205,9 @@ export async function createSettlementType(tenantPrisma, data) {
     throw err;
   }
 
-  return tenantPrisma.payrollSettlementType.create({
+  const allowsRetroactives = Boolean(data.allowsRetroactives);
+
+  const created = await tenantPrisma.payrollSettlementType.create({
     data: {
       id: crypto.randomUUID(),
       code,
@@ -163,11 +219,19 @@ export async function createSettlementType(tenantPrisma, data) {
       defaultWorkedDays: data.defaultWorkedDays !== undefined ? Number(data.defaultWorkedDays) : 30,
       appliesStatutoryDeductions: data.appliesStatutoryDeductions !== undefined ? Boolean(data.appliesStatutoryDeductions) : true,
       triggersEmployeeTermination: Boolean(data.triggersEmployeeTermination),
+      allowsRetroactives,
       isSystem: false,
       isActive: data.isActive !== undefined ? Boolean(data.isActive) : true,
       sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : 100,
     },
   });
+
+  if (allowsRetroactives && data.seedRetroactiveConcepts === true) {
+    const seedRes = await seedRetroactiveCatalogForSettlementType(tenantPrisma, created);
+    return { ...created, seededRetroactiveCodes: seedRes.seededCodes };
+  }
+
+  return created;
 }
 
 export async function updateSettlementType(tenantPrisma, id, data) {
@@ -256,7 +320,11 @@ export async function updateSettlementType(tenantPrisma, id, data) {
     }
   }
 
-  return tenantPrisma.payrollSettlementType.update({
+  const nextAllowsRetroactives = data.allowsRetroactives !== undefined
+    ? Boolean(data.allowsRetroactives)
+    : Boolean(existing.allowsRetroactives);
+
+  const updated = await tenantPrisma.payrollSettlementType.update({
     where: { id },
     data: {
       name: nextName,
@@ -271,10 +339,18 @@ export async function updateSettlementType(tenantPrisma, id, data) {
       triggersEmployeeTermination: data.triggersEmployeeTermination !== undefined
         ? Boolean(data.triggersEmployeeTermination)
         : existing.triggersEmployeeTermination,
+      allowsRetroactives: nextAllowsRetroactives,
       isActive: nextIsActive,
       sortOrder: data.sortOrder !== undefined ? Number(data.sortOrder) : existing.sortOrder,
     },
   });
+
+  if (nextAllowsRetroactives && data.seedRetroactiveConcepts === true) {
+    const seedRes = await seedRetroactiveCatalogForSettlementType(tenantPrisma, updated);
+    return { ...updated, seededRetroactiveCodes: seedRes.seededCodes };
+  }
+
+  return updated;
 }
 
 export async function deleteSettlementType(tenantPrisma, id) {
@@ -604,6 +680,10 @@ export async function createConcept(tenantPrisma, data) {
     }
   }
 
+  // Regla estricta ARCA LSD: Deducciones y conceptos vinculados a códigos 8xxxxx (ej. 820000 Crédito/Débito)
+  // deben registrar todos los subsistemas F.931 en false (0)
+  const forceZeroSubsystems = data.type === 'DEDUCTION' || String(normalizedArca || '').trim().startsWith('8');
+
   return tenantPrisma.concept.create({
     data: {
       code: cleanCode,
@@ -621,22 +701,22 @@ export async function createConcept(tenantPrisma, data) {
       matrixData: data.matrixData || null,
       matrixId: data.matrixId || null,
       arcaConceptCode: normalizedArca,
-      appliesSipaAporte: Boolean(data.appliesSipaAporte),
-      appliesSipaContrib: Boolean(data.appliesSipaContrib),
-      appliesInssjypAporte: Boolean(data.appliesInssjypAporte),
-      appliesInssjypContrib: Boolean(data.appliesInssjypContrib),
-      appliesOsAporte: Boolean(data.appliesOsAporte),
-      appliesOsContrib: Boolean(data.appliesOsContrib),
-      appliesFsrAporte: Boolean(data.appliesFsrAporte),
-      appliesFsrContrib: Boolean(data.appliesFsrContrib),
-      appliesRenatreAporte: Boolean(data.appliesRenatreAporte),
-      appliesRenatreContrib: Boolean(data.appliesRenatreContrib),
-      appliesAaffContrib: Boolean(data.appliesAaffContrib),
-      appliesFneContrib: Boolean(data.appliesFneContrib),
-      appliesLrtContrib: Boolean(data.appliesLrtContrib),
-      appliesRegDifAporte: Boolean(data.appliesRegDifAporte),
-      appliesRegEspAporte: Boolean(data.appliesRegEspAporte),
-      appliesDetraccion: Boolean(data.appliesDetraccion),
+      appliesSipaAporte: forceZeroSubsystems ? false : Boolean(data.appliesSipaAporte),
+      appliesSipaContrib: forceZeroSubsystems ? false : Boolean(data.appliesSipaContrib),
+      appliesInssjypAporte: forceZeroSubsystems ? false : Boolean(data.appliesInssjypAporte),
+      appliesInssjypContrib: forceZeroSubsystems ? false : Boolean(data.appliesInssjypContrib),
+      appliesOsAporte: forceZeroSubsystems ? false : Boolean(data.appliesOsAporte),
+      appliesOsContrib: forceZeroSubsystems ? false : Boolean(data.appliesOsContrib),
+      appliesFsrAporte: forceZeroSubsystems ? false : Boolean(data.appliesFsrAporte),
+      appliesFsrContrib: forceZeroSubsystems ? false : Boolean(data.appliesFsrContrib),
+      appliesRenatreAporte: forceZeroSubsystems ? false : Boolean(data.appliesRenatreAporte),
+      appliesRenatreContrib: forceZeroSubsystems ? false : Boolean(data.appliesRenatreContrib),
+      appliesAaffContrib: forceZeroSubsystems ? false : Boolean(data.appliesAaffContrib),
+      appliesFneContrib: forceZeroSubsystems ? false : Boolean(data.appliesFneContrib),
+      appliesLrtContrib: forceZeroSubsystems ? false : Boolean(data.appliesLrtContrib),
+      appliesRegDifAporte: forceZeroSubsystems ? false : Boolean(data.appliesRegDifAporte),
+      appliesRegEspAporte: forceZeroSubsystems ? false : Boolean(data.appliesRegEspAporte),
+      appliesDetraccion: forceZeroSubsystems ? false : Boolean(data.appliesDetraccion),
       isRepeatable: Boolean(data.isRepeatable),
       isEmbargo: Boolean(data.isEmbargo),
     },
@@ -713,6 +793,9 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
     }
   }
 
+  const finalArcaCode = data.arcaConceptCode !== undefined ? normalizedArca : concept.arcaConceptCode;
+  const forceZeroSubsystems = effectiveType === 'DEDUCTION' || String(finalArcaCode || '').trim().startsWith('8');
+
   return tenantPrisma.concept.update({
     where: { id: conceptId },
     data: {
@@ -730,22 +813,22 @@ export async function updateConcept(tenantPrisma, conceptId, data) {
       matrixData: data.matrixData !== undefined ? data.matrixData : concept.matrixData,
       matrixId: data.matrixId !== undefined ? (data.matrixId || null) : concept.matrixId,
       arcaConceptCode: data.arcaConceptCode !== undefined ? normalizedArca : concept.arcaConceptCode,
-      appliesSipaAporte: data.appliesSipaAporte !== undefined ? Boolean(data.appliesSipaAporte) : concept.appliesSipaAporte,
-      appliesSipaContrib: data.appliesSipaContrib !== undefined ? Boolean(data.appliesSipaContrib) : concept.appliesSipaContrib,
-      appliesInssjypAporte: data.appliesInssjypAporte !== undefined ? Boolean(data.appliesInssjypAporte) : concept.appliesInssjypAporte,
-      appliesInssjypContrib: data.appliesInssjypContrib !== undefined ? Boolean(data.appliesInssjypContrib) : concept.appliesInssjypContrib,
-      appliesOsAporte: data.appliesOsAporte !== undefined ? Boolean(data.appliesOsAporte) : concept.appliesOsAporte,
-      appliesOsContrib: data.appliesOsContrib !== undefined ? Boolean(data.appliesOsContrib) : concept.appliesOsContrib,
-      appliesFsrAporte: data.appliesFsrAporte !== undefined ? Boolean(data.appliesFsrAporte) : concept.appliesFsrAporte,
-      appliesFsrContrib: data.appliesFsrContrib !== undefined ? Boolean(data.appliesFsrContrib) : concept.appliesFsrContrib,
-      appliesRenatreAporte: data.appliesRenatreAporte !== undefined ? Boolean(data.appliesRenatreAporte) : concept.appliesRenatreAporte,
-      appliesRenatreContrib: data.appliesRenatreContrib !== undefined ? Boolean(data.appliesRenatreContrib) : concept.appliesRenatreContrib,
-      appliesAaffContrib: data.appliesAaffContrib !== undefined ? Boolean(data.appliesAaffContrib) : concept.appliesAaffContrib,
-      appliesFneContrib: data.appliesFneContrib !== undefined ? Boolean(data.appliesFneContrib) : concept.appliesFneContrib,
-      appliesLrtContrib: data.appliesLrtContrib !== undefined ? Boolean(data.appliesLrtContrib) : concept.appliesLrtContrib,
-      appliesRegDifAporte: data.appliesRegDifAporte !== undefined ? Boolean(data.appliesRegDifAporte) : concept.appliesRegDifAporte,
-      appliesRegEspAporte: data.appliesRegEspAporte !== undefined ? Boolean(data.appliesRegEspAporte) : concept.appliesRegEspAporte,
-      appliesDetraccion: data.appliesDetraccion !== undefined ? Boolean(data.appliesDetraccion) : concept.appliesDetraccion,
+      appliesSipaAporte: forceZeroSubsystems ? false : (data.appliesSipaAporte !== undefined ? Boolean(data.appliesSipaAporte) : concept.appliesSipaAporte),
+      appliesSipaContrib: forceZeroSubsystems ? false : (data.appliesSipaContrib !== undefined ? Boolean(data.appliesSipaContrib) : concept.appliesSipaContrib),
+      appliesInssjypAporte: forceZeroSubsystems ? false : (data.appliesInssjypAporte !== undefined ? Boolean(data.appliesInssjypAporte) : concept.appliesInssjypAporte),
+      appliesInssjypContrib: forceZeroSubsystems ? false : (data.appliesInssjypContrib !== undefined ? Boolean(data.appliesInssjypContrib) : concept.appliesInssjypContrib),
+      appliesOsAporte: forceZeroSubsystems ? false : (data.appliesOsAporte !== undefined ? Boolean(data.appliesOsAporte) : concept.appliesOsAporte),
+      appliesOsContrib: forceZeroSubsystems ? false : (data.appliesOsContrib !== undefined ? Boolean(data.appliesOsContrib) : concept.appliesOsContrib),
+      appliesFsrAporte: forceZeroSubsystems ? false : (data.appliesFsrAporte !== undefined ? Boolean(data.appliesFsrAporte) : concept.appliesFsrAporte),
+      appliesFsrContrib: forceZeroSubsystems ? false : (data.appliesFsrContrib !== undefined ? Boolean(data.appliesFsrContrib) : concept.appliesFsrContrib),
+      appliesRenatreAporte: forceZeroSubsystems ? false : (data.appliesRenatreAporte !== undefined ? Boolean(data.appliesRenatreAporte) : concept.appliesRenatreAporte),
+      appliesRenatreContrib: forceZeroSubsystems ? false : (data.appliesRenatreContrib !== undefined ? Boolean(data.appliesRenatreContrib) : concept.appliesRenatreContrib),
+      appliesAaffContrib: forceZeroSubsystems ? false : (data.appliesAaffContrib !== undefined ? Boolean(data.appliesAaffContrib) : concept.appliesAaffContrib),
+      appliesFneContrib: forceZeroSubsystems ? false : (data.appliesFneContrib !== undefined ? Boolean(data.appliesFneContrib) : concept.appliesFneContrib),
+      appliesLrtContrib: forceZeroSubsystems ? false : (data.appliesLrtContrib !== undefined ? Boolean(data.appliesLrtContrib) : concept.appliesLrtContrib),
+      appliesRegDifAporte: forceZeroSubsystems ? false : (data.appliesRegDifAporte !== undefined ? Boolean(data.appliesRegDifAporte) : concept.appliesRegDifAporte),
+      appliesRegEspAporte: forceZeroSubsystems ? false : (data.appliesRegEspAporte !== undefined ? Boolean(data.appliesRegEspAporte) : concept.appliesRegEspAporte),
+      appliesDetraccion: forceZeroSubsystems ? false : (data.appliesDetraccion !== undefined ? Boolean(data.appliesDetraccion) : concept.appliesDetraccion),
       isRepeatable: data.isRepeatable !== undefined ? Boolean(data.isRepeatable) : concept.isRepeatable,
       isEmbargo: data.isEmbargo !== undefined ? Boolean(data.isEmbargo) : concept.isEmbargo,
       isActive: data.isActive !== undefined ? Boolean(data.isActive) : concept.isActive,

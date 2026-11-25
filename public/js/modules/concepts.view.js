@@ -23,7 +23,7 @@ import {
   ARCA_T03_ACTIVITIES,
   getArcaActivityInfo,
 } from '../utils/helpers.js';
-import { ARCA_CONCEPT_PROFILES, getArcaProfile } from '../utils/arcaProfiles.js';
+import { ARCA_CONCEPT_PROFILES, getArcaProfile } from '../utils/arcaProfiles.js?v=arca-1.2';
 
 
 class ConceptsMethods {
@@ -236,13 +236,20 @@ class ConceptsMethods {
       codeInput.value = '';
     }
 
+    const currentArcaCode = document.getElementById('concept-input-arca-code')?.value?.trim() || '';
+    if (currentArcaCode === '820000') {
+      this.updateArcaSubsystemsUiState(currentArcaCode);
+    }
+
     this.populateFormulaConceptOptions(codeInput.value);
   }
 
   applyArcaSubsystemsSuggestion(arcaCode, options = {}) {
     const code = String(arcaCode || '').trim();
     const currentConceptCode = document.getElementById('concept-input-code')?.value?.trim() || '';
-    const profile = getArcaProfile(code, currentConceptCode);
+    const typeSelect = document.getElementById('concept-input-type');
+    const currentType = typeSelect?.value || '';
+    const profile = getArcaProfile(code, currentConceptCode, currentType);
 
     for (let i = 1; i <= 10; i++) {
       const el = document.getElementById(`subsys-r${i}`);
@@ -252,12 +259,15 @@ class ConceptsMethods {
       }
     }
 
-    // Sincronizar automáticamente el Tipo de Haber
+    // Sincronizar automáticamente el Tipo de Haber respetando tipos admitidos (ej. 820000 Crédito en NON_REMUNERATIVE)
     if (options.syncType !== false && profile.type) {
-      const typeSelect = document.getElementById('concept-input-type');
       if (typeSelect && typeSelect.value !== profile.type) {
-        typeSelect.value = profile.type;
-        this.updateFormulaAccumulatorsFilter();
+        const isCurrentAllowed = Array.isArray(profile.allowedTypes) && profile.allowedTypes.includes(typeSelect.value);
+        if (!isCurrentAllowed) {
+          typeSelect.value = profile.type;
+          this.updateFormulaAccumulatorsFilter();
+          this.updateConceptArcaRequirementUI();
+        }
       }
     }
 
@@ -267,7 +277,8 @@ class ConceptsMethods {
   updateArcaSubsystemsUiState(arcaCode, profile = null) {
     const code = String(arcaCode || '').trim();
     const currentConceptCode = document.getElementById('concept-input-code')?.value?.trim() || '';
-    const prof = profile || getArcaProfile(code, currentConceptCode);
+    const currentType = document.getElementById('concept-input-type')?.value || '';
+    const prof = profile || getArcaProfile(code, currentConceptCode, currentType);
 
     const badge = document.getElementById('arca-subsystems-badge');
     const hint = document.getElementById('arca-subsystems-hint');
@@ -275,14 +286,19 @@ class ConceptsMethods {
     if (badge) {
       if (code) {
         badge.classList.remove('d-none');
-        const typeLabels = {
-          REMUNERATIVE: 'Remunerativo',
-          NON_REMUNERATIVE: 'No Remunerativo',
-          DEDUCTION: 'Retención / Deducción',
-          AUXILIARY: 'Auxiliar',
-        };
-        badge.textContent = `ARCA [${code}]: ${typeLabels[prof.type] || prof.type}`;
-        badge.className = `badge font-monospace small ${prof.type === 'REMUNERATIVE' ? 'bg-green-lt text-green' : (prof.type === 'DEDUCTION' ? 'bg-danger-lt text-danger' : 'bg-blue-lt text-blue')}`;
+        if (prof.isLsdCreditException) {
+          badge.textContent = `ARCA [${code}]: Crédito LSD (C) — Anticipo / No Rem.`;
+          badge.className = 'badge font-monospace small bg-teal-lt text-teal';
+        } else {
+          const typeLabels = {
+            REMUNERATIVE: 'Remunerativo',
+            NON_REMUNERATIVE: 'No Remunerativo',
+            DEDUCTION: 'Retención / Deducción',
+            AUXILIARY: 'Auxiliar',
+          };
+          badge.textContent = `ARCA [${code}]: ${typeLabels[prof.type] || prof.type}`;
+          badge.className = `badge font-monospace small ${prof.type === 'REMUNERATIVE' ? 'bg-green-lt text-green' : (prof.type === 'DEDUCTION' ? 'bg-danger-lt text-danger' : 'bg-blue-lt text-blue')}`;
+        }
       } else {
         badge.classList.add('d-none');
       }
@@ -867,6 +883,12 @@ class ConceptsMethods {
     if (conceptTypeSelect) {
       conceptTypeSelect.addEventListener('change', () => {
         this.updateConceptArcaRequirementUI();
+        const currentArcaCode = document.getElementById('concept-input-arca-code')?.value || '';
+        if (currentArcaCode === '820000') {
+          this.applyArcaSubsystemsSuggestion(currentArcaCode, { syncType: false });
+        } else {
+          this.updateArcaSubsystemsUiState(currentArcaCode);
+        }
       });
     }
 
